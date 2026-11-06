@@ -1,0 +1,6 @@
+The following is a diff from the previous accessibility tree for Window: "Ngertiin · Web Client" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+~								29 pop up button (disabled) Buat baru
+~									273 button (disabled) Lampirkan file ke pesan: No file chosen
+~									274 button (disabled) Tambah lampiran, Help: Working copies of attachments are shared on your agents’ machine.
+~									276 button (disabled) Mengirim, Help: Kirim pesan
+The focused UI element is 24 HTML content Ngertiin · Web Client, URL: 127.0.0.1:3001/

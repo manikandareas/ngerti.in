@@ -1,0 +1,172 @@
+$ bun run --filter @ngertiin/server lint && bun run lint:web-client
+@ngertiin/server lint: src/run-controls.ts:30:9 lint/complexity/useOptionalChain  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+@ngertiin/server lint: 
+@ngertiin/server lint:   ! Change to an optional chain.
+@ngertiin/server lint:   
+@ngertiin/server lint:     28 │       ? this.lifecycle.store.get("run", message.run_id)
+@ngertiin/server lint:     29 │       : this.lifecycle.store.list("run").findLast((run) => run.input_message_id === message.id);
+@ngertiin/server lint:   > 30 │     if (!run || run.status !== "queued" || run.delivery !== "pending")
+@ngertiin/server lint:        │         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+@ngertiin/server lint:     31 │       throw new DomainError("CONFLICT");
+@ngertiin/server lint:     32 │     if (
+@ngertiin/server lint:   
+@ngertiin/server lint:   i Unsafe fix: Change to an optional chain.
+@ngertiin/server lint:   
+@ngertiin/server lint:      28  28 │         ? this.lifecycle.store.get("run", message.run_id)
+@ngertiin/server lint:      29  29 │         : this.lifecycle.store.list("run").findLast((run) => run.input_message_id === message.id);
+@ngertiin/server lint:      30     │ - ····if·(!run·||·run.status·!==·"queued"·||·run.delivery·!==·"pending")
+@ngertiin/server lint:          30 │ + ····if·(run?.status·!==·"queued"·||·run.delivery·!==·"pending")
+@ngertiin/server lint:      31  31 │         throw new DomainError("CONFLICT");
+@ngertiin/server lint:      32  32 │       if (
+@ngertiin/server lint:   
+@ngertiin/server lint: 
+@ngertiin/server lint: tests/product-interactions.test.ts:15:19 lint/style/noNonNullAssertion ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+@ngertiin/server lint: 
+@ngertiin/server lint:   ! Forbidden non-null assertion.
+@ngertiin/server lint:   
+@ngertiin/server lint:     13 │   }
+@ngertiin/server lint:     14 │   const { run } = f.admit();
+@ngertiin/server lint:   > 15 │   const claimed = f.lifecycle.claimNext(f.thread.id, f.agent.id)!;
+@ngertiin/server lint:        │                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+@ngertiin/server lint:     16 │   f.lifecycle.started(claimed.id, claimed.dispatch_token!, "native");
+@ngertiin/server lint:     17 │   return f.store.get("run", run.id);
+@ngertiin/server lint:   
+@ngertiin/server lint: 
+@ngertiin/server lint: tests/product-interactions.test.ts:16:35 lint/style/noNonNullAssertion ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+@ngertiin/server lint: 
+@ngertiin/server lint:   ! Forbidden non-null assertion.
+@ngertiin/server lint:   
+@ngertiin/server lint:     14 │   const { run } = f.admit();
+@ngertiin/server lint:     15 │   const claimed = f.lifecycle.claimNext(f.thread.id, f.agent.id)!;
+@ngertiin/server lint:   > 16 │   f.lifecycle.started(claimed.id, claimed.dispatch_token!, "native");
+@ngertiin/server lint:        │                                   ^^^^^^^^^^^^^^^^^^^^^^^
+@ngertiin/server lint:     17 │   return f.store.get("run", run.id);
+@ngertiin/server lint:     18 │ }
+@ngertiin/server lint:   
+@ngertiin/server lint: 
+@ngertiin/server lint: tests/product-interactions.test.ts:20:30 lint/style/noNonNullAssertion ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+@ngertiin/server lint: 
+@ngertiin/server lint:   ! Forbidden non-null assertion.
+@ngertiin/server lint:   
+@ngertiin/server lint:     18 │ }
+@ngertiin/server lint:     19 │ function settle(run: Entity<"run">) {
+@ngertiin/server lint:   > 20 │   f.lifecycle.settle(run.id, run.dispatch_token!, "succeeded");
+@ngertiin/server lint:        │                              ^^^^^^^^^^^^^^^^^^^
+@ngertiin/server lint:     21 │ }
+@ngertiin/server lint:     22 │ test("DM questions survive restart and owner submission admits exactly one bound continuation", () => {
+@ngertiin/server lint:   
+@ngertiin/server lint: 
+@ngertiin/server lint: tests/product-interactions.test.ts:119:41 lint/style/noNonNullAssertion ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+@ngertiin/server lint: 
+@ngertiin/server lint:   ! Forbidden non-null assertion.
+@ngertiin/server lint:   
+@ngertiin/server lint:     117 │   const groups = new Groups(f.lifecycle);
+@ngertiin/server lint:     118 │   const route = groups.send(group.id, { text: "Ask for a city", agent_id: f.agent.id });
+@ngertiin/server lint:   > 119 │   const task = f.store.get("peer_task", route.task_id!);
+@ngertiin/server lint:         │                                         ^^^^^^^^^^^^^^
+@ngertiin/server lint:     120 │   f.lifecycle.bind(group.id, f.agent.id, crypto.randomUUID());
+@ngertiin/server lint:     121 │   const run = f.lifecycle.claimNext(group.id, f.agent.id)!;
+@ngertiin/server lint:   
+@ngertiin/server lint: 
+@ngertiin/server lint: tests/product-interactions.test.ts:121:15 lint/style/noNonNullAssertion ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+@ngertiin/server lint: 
+@ngertiin/server lint:   ! Forbidden non-null assertion.
+@ngertiin/server lint:   
+@ngertiin/server lint:     119 │   const task = f.store.get("peer_task", route.task_id!);
+@ngertiin/server lint:     120 │   f.lifecycle.bind(group.id, f.agent.id, crypto.randomUUID());
+@ngertiin/server lint:   > 121 │   const run = f.lifecycle.claimNext(group.id, f.agent.id)!;
+@ngertiin/server lint:         │               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+@ngertiin/server lint:     122 │   f.lifecycle.started(run.id, run.dispatch_token!, "native");
+@ngertiin/server lint:     123 │   const request = groups.askUser(run.id, { purpose: "input", question: "City?" });
+@ngertiin/server lint:   
+@ngertiin/server lint: 
+@ngertiin/server lint: tests/product-interactions.test.ts:122:31 lint/style/noNonNullAssertion ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+@ngertiin/server lint: 
+@ngertiin/server lint:   ! Forbidden non-null assertion.
+@ngertiin/server lint:   
+@ngertiin/server lint:     120 │   f.lifecycle.bind(group.id, f.agent.id, crypto.randomUUID());
+@ngertiin/server lint:     121 │   const run = f.lifecycle.claimNext(group.id, f.agent.id)!;
+@ngertiin/server lint:   > 122 │   f.lifecycle.started(run.id, run.dispatch_token!, "native");
+@ngertiin/server lint:         │                               ^^^^^^^^^^^^^^^^^^^
+@ngertiin/server lint:     123 │   const request = groups.askUser(run.id, { purpose: "input", question: "City?" });
+@ngertiin/server lint:     124 │   settle(run);
+@ngertiin/server lint:   
+@ngertiin/server lint: 
+@ngertiin/server lint: tests/response-retry.test.ts:13:15 lint/style/noNonNullAssertion ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+@ngertiin/server lint: 
+@ngertiin/server lint:   ! Forbidden non-null assertion.
+@ngertiin/server lint:   
+@ngertiin/server lint:     11 │   f.bind();
+@ngertiin/server lint:     12 │   const { message } = f.admit("Original request");
+@ngertiin/server lint:   > 13 │   const run = f.lifecycle.claimNext(f.thread.id, f.agent.id)!;
+@ngertiin/server lint:        │               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+@ngertiin/server lint:     14 │   f.lifecycle.started(run.id, run.dispatch_token!, "native");
+@ngertiin/server lint:     15 │   f.lifecycle.appendAnswer(run.id, "Incomplete output");
+@ngertiin/server lint:   
+@ngertiin/server lint: 
+@ngertiin/server lint: tests/response-retry.test.ts:14:31 lint/style/noNonNullAssertion ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+@ngertiin/server lint: 
+@ngertiin/server lint:   ! Forbidden non-null assertion.
+@ngertiin/server lint:   
+@ngertiin/server lint:     12 │   const { message } = f.admit("Original request");
+@ngertiin/server lint:     13 │   const run = f.lifecycle.claimNext(f.thread.id, f.agent.id)!;
+@ngertiin/server lint:   > 14 │   f.lifecycle.started(run.id, run.dispatch_token!, "native");
+@ngertiin/server lint:        │                               ^^^^^^^^^^^^^^^^^^^
+@ngertiin/server lint:     15 │   f.lifecycle.appendAnswer(run.id, "Incomplete output");
+@ngertiin/server lint:     16 │   f.lifecycle.settle(run.id, run.dispatch_token!, "failed");
+@ngertiin/server lint:   
+@ngertiin/server lint: 
+@ngertiin/server lint: tests/response-retry.test.ts:16:30 lint/style/noNonNullAssertion ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+@ngertiin/server lint: 
+@ngertiin/server lint:   ! Forbidden non-null assertion.
+@ngertiin/server lint:   
+@ngertiin/server lint:     14 │   f.lifecycle.started(run.id, run.dispatch_token!, "native");
+@ngertiin/server lint:     15 │   f.lifecycle.appendAnswer(run.id, "Incomplete output");
+@ngertiin/server lint:   > 16 │   f.lifecycle.settle(run.id, run.dispatch_token!, "failed");
+@ngertiin/server lint:        │                              ^^^^^^^^^^^^^^^^^^^
+@ngertiin/server lint:     17 │   const failed = f.store.get("run", run.id);
+@ngertiin/server lint:     18 │   const next = new RunControls(f.lifecycle).retry(run.id, failed.revision);
+@ngertiin/server lint:   
+@ngertiin/server lint: 
+@ngertiin/server lint: tests/response-retry.test.ts:35:17 lint/style/noNonNullAssertion ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+@ngertiin/server lint: 
+@ngertiin/server lint:   ! Forbidden non-null assertion.
+@ngertiin/server lint:   
+@ngertiin/server lint:     33 │     f.bind();
+@ngertiin/server lint:     34 │     f.admit();
+@ngertiin/server lint:   > 35 │     const run = f.lifecycle.claimNext(f.thread.id, f.agent.id)!;
+@ngertiin/server lint:        │                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+@ngertiin/server lint:     36 │     f.lifecycle.started(run.id, run.dispatch_token!, "native");
+@ngertiin/server lint:     37 │     f.lifecycle.settle(run.id, run.dispatch_token!, status);
+@ngertiin/server lint:   
+@ngertiin/server lint: 
+@ngertiin/server lint: tests/response-retry.test.ts:36:33 lint/style/noNonNullAssertion ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+@ngertiin/server lint: 
+@ngertiin/server lint:   ! Forbidden non-null assertion.
+@ngertiin/server lint:   
+@ngertiin/server lint:     34 │     f.admit();
+@ngertiin/server lint:     35 │     const run = f.lifecycle.claimNext(f.thread.id, f.agent.id)!;
+@ngertiin/server lint:   > 36 │     f.lifecycle.started(run.id, run.dispatch_token!, "native");
+@ngertiin/server lint:        │                                 ^^^^^^^^^^^^^^^^^^^
+@ngertiin/server lint:     37 │     f.lifecycle.settle(run.id, run.dispatch_token!, status);
+@ngertiin/server lint:     38 │     expect(() =>
+@ngertiin/server lint:   
+@ngertiin/server lint: 
+@ngertiin/server lint: tests/response-retry.test.ts:37:32 lint/style/noNonNullAssertion ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+@ngertiin/server lint: 
+@ngertiin/server lint:   ! Forbidden non-null assertion.
+@ngertiin/server lint:   
+@ngertiin/server lint:     35 │     const run = f.lifecycle.claimNext(f.thread.id, f.agent.id)!;
+@ngertiin/server lint:     36 │     f.lifecycle.started(run.id, run.dispatch_token!, "native");
+@ngertiin/server lint:   > 37 │     f.lifecycle.settle(run.id, run.dispatch_token!, status);
+@ngertiin/server lint:        │                                ^^^^^^^^^^^^^^^^^^^
+@ngertiin/server lint:     38 │     expect(() =>
+@ngertiin/server lint:     39 │       new RunControls(f.lifecycle).retry(run.id, f.store.get("run", run.id).revision),
+@ngertiin/server lint:   
+@ngertiin/server lint: 
+@ngertiin/server lint: Checked 195 files in 298ms. No fixes applied.
+@ngertiin/server lint: Found 13 warnings.
+@ngertiin/server lint: Exited with code 0
+$ bun --filter @ngertiin/web-client lint
+@ngertiin/web-client lint: Checked 306 files in 257ms. No fixes applied.
+@ngertiin/web-client lint: Exited with code 0

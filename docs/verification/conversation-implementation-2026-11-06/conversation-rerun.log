@@ -1,0 +1,13 @@
+[WebServer] $ vite preview --host "127.0.0.1" --port "4311" --strictPort
+[WebServer] (node:25162) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 3 tests using 1 worker
+
+(node:25163) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [desktop] › tests/conversation.spec.ts:36:1 › switching conversations keeps exactly one attachment button and editor (2.4s)
+  ✓  2 [desktop] › tests/rich-answer.spec.ts:27:3 › rich reply matches source blocks, table/code interactions and safe rendering (dark) (4.0s)
+  ✓  3 [desktop] › tests/rich-answer.spec.ts:173:1 › long reply tables virtualize, scroll to the last row and filter without dropping data (1.6s)
+
+  3 passed (10.2s)

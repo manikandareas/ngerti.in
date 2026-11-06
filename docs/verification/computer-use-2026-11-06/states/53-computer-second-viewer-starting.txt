@@ -1,0 +1,5 @@
+The following is a diff from the previous accessibility tree for Window: "Ngertiin · Web Client" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
++											291 HTML content ngertiin-machine · Cua viewer, URL: 127.0.0.1:3001/v1/machine/viewer/[redacted-view-token]/viewer/#view_only=1&ngertiin_preview=1
++												292 container
++													293 text Connecting to the sandbox…
+The focused UI element is 24 HTML content Ngertiin · Web Client, URL: 127.0.0.1:3001/

@@ -1,0 +1,199 @@
+[WebServer] $ vite preview --host "127.0.0.1" --port "4311" --strictPort
+[WebServer] (node:23492) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 84 tests using 1 worker
+
+(node:23495) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [desktop] › tests/activity.spec.ts:110:1 › DM activity updates one bubble, follows streaming output and survives reload without technical text (7.0s)
+  ✓   2 [desktop] › tests/activity.spec.ts:214:1 › group activity belongs to each working agent and hands off without idle member bubbles (5.3s)
+  ✓   3 [desktop] › tests/activity.spec.ts:267:1 › a dark tablet DM keeps its avatar and bubble geometry stable when loading stops (3.6s)
+  ✓   4 [desktop] › tests/activity.spec.ts:315:1 › waiting, uncertain results, confirmed stop and reduced motion never imply active thinking (5.7s)
+  ✓   5 [desktop] › tests/activity.spec.ts:367:1 › streamed bursts settle promptly, preserve emoji and flush completed replies (6.5s)
+  ✓   6 [desktop] › tests/activity.spec.ts:412:1 › an active composer switches Stop to Send while dirty without stopping its run (5.1s)
+  ✓   7 [desktop] › tests/activity.spec.ts:434:1 › message actions stay reachable across the bubble edge and sources belong to the assistant answer (10.9s)
+  ✓   8 [desktop] › tests/activity.spec.ts:499:1 › an empty group composer exposes Stop with an explicit target for concurrent agents (8.7s)
+  ✓   9 [desktop] › tests/activity.spec.ts:521:1 › the web studio previews the redesigned native question, plain composer and approval without dispatch (2.9s)
+  ✓  10 [desktop] › tests/agent-avatar.spec.ts:14:1 › a large roster paints the conversation before preparing only visible avatars (2.6s)
+  ✓  11 [desktop] › tests/agent-avatar.spec.ts:77:1 › stored message times appear for users and agents in both DM and group (7.3s)
+  ✓  12 [desktop] › tests/agent-avatar.spec.ts:181:3 › group bubble contains author and saved time around rich content (light) (4.0s)
+  ✓  13 [desktop] › tests/agent-avatar.spec.ts:181:3 › group bubble contains author and saved time around rich content (dark) (4.5s)
+  ✓  14 [desktop] › tests/agent-avatar.spec.ts:284:1 › saved avatar identity appears outside the left of group replies and survives reload (8.6s)
+  ✓  15 [desktop] › tests/agent-avatar.spec.ts:383:1 › avatar activity follows live refreshes, celebrates once and keeps DM/group activity separate (15.5s)
+  ✓  16 [desktop] › tests/avatar-motion.spec.ts:47:1 › sidebar portraits idle independently and group conversation portraits share pointer tracking (22.9s)
+  ✓  17 [desktop] › tests/avatar-motion.spec.ts:177:1 › DM gaze resets on exit and motion preferences stop and resume idle animation (7.5s)
+  ✓  18 [desktop] › tests/conversation-recovery.spec.ts:53:1 › reconnect cancels a hanging DM snapshot and keeps later live updates and the draft (9.4s)
+  ✓  19 [desktop] › tests/conversation-recovery.spec.ts:84:1 › a hanging group snapshot times out and recovers automatically without a reload (30.8s)
+  ✓  20 [desktop] › tests/conversation-recovery.spec.ts:113:1 › foreground reconciliation repairs a missed answer without another event connection or inference (13.2s)
+  ✘  21 [desktop] › tests/conversation.spec.ts:36:1 › switching conversations keeps exactly one attachment button and editor (44.4s)
+(node:23823) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  22 [desktop] › tests/conversation.spec.ts:61:1 › an idle DM shows its first admitted message directly in the conversation (4.6s)
+  ✓  23 [desktop] › tests/conversation.spec.ts:77:1 › event bursts update the conversation without repeatedly reloading global catalogs (4.9s)
+  ✓  24 [desktop] › tests/conversation.spec.ts:121:1 › blocked preparation explains readiness and exposes an exact-input retry (4.7s)
+  ✓  25 [desktop] › tests/conversation.spec.ts:158:1 › queued inputs enter the transcript after the preceding answer, including late answers and reload (14.3s)
+  ✓  26 [desktop] › tests/conversation.spec.ts:266:1 › real API: create, durable opener, queued edit/delete, memory, panel and reload (14.6s)
+  ✓  27 [desktop] › tests/conversation.spec.ts:375:1 › queued composer edit replays a lost acknowledgement without another message or revision (5.8s)
+  ✓  28 [desktop] › tests/conversation.spec.ts:439:1 › a second empty Enter steers only inside the source window and after a fresh native check (11.7s)
+  ✓  29 [desktop] › tests/conversation.spec.ts:613:1 › lost acknowledgement reuses exact creation operation across reload (15.8s)
+  ✓  30 [desktop] › tests/conversation.spec.ts:641:1 › loopback bridge refuses cross-origin requests (991ms)
+  ✓  31 [desktop] › tests/conversation.spec.ts:649:1 › lost message acknowledgement remains recoverable after reload without duplicate admission (8.1s)
+  ✓  32 [desktop] › tests/conversation.spec.ts:680:1 › cancelled opening can continue in the same chat without another opener (3.8s)
+  ✓  33 [desktop] › tests/model-picker.spec.ts:59:1 › model menu searches accounts, persists model/reasoning and explicitly selects billing (9.7s)
+  ✓  34 [desktop] › tests/model-picker.spec.ts:191:1 › unverified discovery exposes inspection failure and a repair entry without inventing models (4.7s)
+  ✓  35 [desktop] › tests/preparation.spec.ts:58:1 › navigation and Settings do not warm the previous DM; composer activity renews the selected one (6.1s)
+  ✓  36 [desktop] › tests/preparation.spec.ts:93:1 › skipped preparation retries to ready and stops instead of polling indefinitely (12.6s)
+  ✓  37 [desktop] › tests/preparation.spec.ts:127:1 › switching DM cancels scheduled retries from the previous selection (7.3s)
+  ✓  38 [desktop] › tests/rich-answer.spec.ts:27:3 › rich reply matches source blocks, table/code interactions and safe rendering (light) (20.6s)
+  ✘  39 [desktop] › tests/rich-answer.spec.ts:27:3 › rich reply matches source blocks, table/code interactions and safe rendering (dark) (15.3s)
+(node:24062) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  40 [desktop] › tests/rich-answer.spec.ts:173:1 › long reply tables virtualize, scroll to the last row and filter without dropping data (15.0s)
+(node:24086) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  41 [desktop] › tests/sidebar.spec.ts:24:3 › light: unified sidebar shows latest messages and live activity in unopened DMs and groups (11.1s)
+  ✓  42 [desktop] › tests/sidebar.spec.ts:24:3 › dark: unified sidebar shows latest messages and live activity in unopened DMs and groups (20.8s)
+(node:24155) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  43 [mobile] › tests/activity.spec.ts:110:1 › DM activity updates one bubble, follows streaming output and survives reload without technical text (16.4s)
+  ✓  44 [mobile] › tests/activity.spec.ts:214:1 › group activity belongs to each working agent and hands off without idle member bubbles (11.7s)
+  ✓  45 [mobile] › tests/activity.spec.ts:267:1 › a dark tablet DM keeps its avatar and bubble geometry stable when loading stops (16.8s)
+  ✓  46 [mobile] › tests/activity.spec.ts:315:1 › waiting, uncertain results, confirmed stop and reduced motion never imply active thinking (3.3s)
+  ✓  47 [mobile] › tests/activity.spec.ts:367:1 › streamed bursts settle promptly, preserve emoji and flush completed replies (3.1s)
+  ✓  48 [mobile] › tests/activity.spec.ts:412:1 › an active composer switches Stop to Send while dirty without stopping its run (2.7s)
+  ✓  49 [mobile] › tests/activity.spec.ts:434:1 › message actions stay reachable across the bubble edge and sources belong to the assistant answer (2.6s)
+  ✓  50 [mobile] › tests/activity.spec.ts:499:1 › an empty group composer exposes Stop with an explicit target for concurrent agents (2.9s)
+  ✓  51 [mobile] › tests/activity.spec.ts:521:1 › the web studio previews the redesigned native question, plain composer and approval without dispatch (2.6s)
+  ✓  52 [mobile] › tests/agent-avatar.spec.ts:14:1 › a large roster paints the conversation before preparing only visible avatars (3.2s)
+  ✓  53 [mobile] › tests/agent-avatar.spec.ts:77:1 › stored message times appear for users and agents in both DM and group (4.3s)
+  ✓  54 [mobile] › tests/agent-avatar.spec.ts:181:3 › group bubble contains author and saved time around rich content (light) (2.7s)
+  ✓  55 [mobile] › tests/agent-avatar.spec.ts:181:3 › group bubble contains author and saved time around rich content (dark) (2.9s)
+  ✓  56 [mobile] › tests/agent-avatar.spec.ts:284:1 › saved avatar identity appears outside the left of group replies and survives reload (6.5s)
+  ✓  57 [mobile] › tests/agent-avatar.spec.ts:383:1 › avatar activity follows live refreshes, celebrates once and keeps DM/group activity separate (8.5s)
+  ✓  58 [mobile] › tests/avatar-motion.spec.ts:47:1 › sidebar portraits idle independently and group conversation portraits share pointer tracking (8.5s)
+  ✓  59 [mobile] › tests/avatar-motion.spec.ts:177:1 › DM gaze resets on exit and motion preferences stop and resume idle animation (2.2s)
+  ✓  60 [mobile] › tests/conversation-recovery.spec.ts:53:1 › reconnect cancels a hanging DM snapshot and keeps later live updates and the draft (1.4s)
+  ✓  61 [mobile] › tests/conversation-recovery.spec.ts:84:1 › a hanging group snapshot times out and recovers automatically without a reload (17.3s)
+  ✓  62 [mobile] › tests/conversation-recovery.spec.ts:113:1 › foreground reconciliation repairs a missed answer without another event connection or inference (1.3s)
+  ✓  63 [mobile] › tests/conversation.spec.ts:36:1 › switching conversations keeps exactly one attachment button and editor (28.2s)
+  ✓  64 [mobile] › tests/conversation.spec.ts:61:1 › an idle DM shows its first admitted message directly in the conversation (1.7s)
+  ✓  65 [mobile] › tests/conversation.spec.ts:77:1 › event bursts update the conversation without repeatedly reloading global catalogs (1.4s)
+  ✓  66 [mobile] › tests/conversation.spec.ts:121:1 › blocked preparation explains readiness and exposes an exact-input retry (1.5s)
+  ✓  67 [mobile] › tests/conversation.spec.ts:158:1 › queued inputs enter the transcript after the preceding answer, including late answers and reload (3.9s)
+  ✓  68 [mobile] › tests/conversation.spec.ts:266:1 › real API: create, durable opener, queued edit/delete, memory, panel and reload (4.6s)
+  ✓  69 [mobile] › tests/conversation.spec.ts:375:1 › queued composer edit replays a lost acknowledgement without another message or revision (3.9s)
+  ✓  70 [mobile] › tests/conversation.spec.ts:439:1 › a second empty Enter steers only inside the source window and after a fresh native check (4.1s)
+  ✓  71 [mobile] › tests/conversation.spec.ts:613:1 › lost acknowledgement reuses exact creation operation across reload (5.0s)
+  ✓  72 [mobile] › tests/conversation.spec.ts:641:1 › loopback bridge refuses cross-origin requests (135ms)
+  ✓  73 [mobile] › tests/conversation.spec.ts:649:1 › lost message acknowledgement remains recoverable after reload without duplicate admission (5.8s)
+  ✓  74 [mobile] › tests/conversation.spec.ts:680:1 › cancelled opening can continue in the same chat without another opener (4.4s)
+  ✓  75 [mobile] › tests/model-picker.spec.ts:59:1 › model menu searches accounts, persists model/reasoning and explicitly selects billing (4.7s)
+  ✓  76 [mobile] › tests/model-picker.spec.ts:191:1 › unverified discovery exposes inspection failure and a repair entry without inventing models (1.5s)
+  ✓  77 [mobile] › tests/preparation.spec.ts:58:1 › navigation and Settings do not warm the previous DM; composer activity renews the selected one (5.2s)
+  ✓  78 [mobile] › tests/preparation.spec.ts:93:1 › skipped preparation retries to ready and stops instead of polling indefinitely (7.1s)
+  ✓  79 [mobile] › tests/preparation.spec.ts:127:1 › switching DM cancels scheduled retries from the previous selection (3.3s)
+  ✓  80 [mobile] › tests/rich-answer.spec.ts:27:3 › rich reply matches source blocks, table/code interactions and safe rendering (light) (4.3s)
+  ✓  81 [mobile] › tests/rich-answer.spec.ts:27:3 › rich reply matches source blocks, table/code interactions and safe rendering (dark) (5.8s)
+  ✓  82 [mobile] › tests/rich-answer.spec.ts:173:1 › long reply tables virtualize, scroll to the last row and filter without dropping data (2.4s)
+  ✓  83 [mobile] › tests/sidebar.spec.ts:24:3 › light: unified sidebar shows latest messages and live activity in unopened DMs and groups (19.4s)
+  ✓  84 [mobile] › tests/sidebar.spec.ts:24:3 › dark: unified sidebar shows latest messages and live activity in unopened DMs and groups (13.8s)
+
+
+  1) [desktop] › tests/conversation.spec.ts:36:1 › switching conversations keeps exactly one attachment button and editor 
+
+    Test timeout of 30000ms exceeded.
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/conversation-switching-con-2f3d9-ttachment-button-and-editor-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/conversation-switching-con-2f3d9-ttachment-button-and-editor-desktop/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/conversation-switching-con-2f3d9-ttachment-button-and-editor-desktop/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/conversation-switching-con-2f3d9-ttachment-button-and-editor-desktop/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) [desktop] › tests/rich-answer.spec.ts:27:3 › rich reply matches source blocks, table/code interactions and safe rendering (dark) 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('button', { name: 'Detail Tobi', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('button', { name: 'Detail Tobi', exact: true }) with timeout 5000ms
+      - waiting for getByRole('button', { name: 'Detail Tobi', exact: true })
+
+
+      54 |     });
+      55 |     await page.goto("/");
+    > 56 |     await expect(page.getByRole("button", { name: "Detail Tobi", exact: true })).toBeVisible();
+         |                                                                                  ^
+      57 |     await expect(page.locator("html")).toHaveClass(new RegExp(theme));
+      58 |     const answer = page.locator(".assistant-answer").first();
+      59 |     await expect(
+        at /Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests/rich-answer.spec.ts:56:82
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/rich-answer-rich-reply-mat-14b29-ns-and-safe-rendering-dark--desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/rich-answer-rich-reply-mat-14b29-ns-and-safe-rendering-dark--desktop/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/rich-answer-rich-reply-mat-14b29-ns-and-safe-rendering-dark--desktop/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/rich-answer-rich-reply-mat-14b29-ns-and-safe-rendering-dark--desktop/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  3) [desktop] › tests/rich-answer.spec.ts:173:1 › long reply tables virtualize, scroll to the last row and filter without dropping data 
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator: locator('[data-table-card]').first().getByRole('table', { name: 'Tabel', exact: true })
+    Expected: "121"
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toHaveAttribute" locator('[data-table-card]').first().getByRole('table', { name: 'Tabel', exact: true }) with timeout 5000ms
+      - waiting for locator('[data-table-card]').first().getByRole('table', { name: 'Tabel', exact: true })
+
+
+      195 |   const card = page.locator("[data-table-card]").first();
+      196 |   const table = card.getByRole("table", { name: "Tabel", exact: true });
+    > 197 |   await expect(table).toHaveAttribute("aria-rowcount", "121");
+          |                       ^
+      198 |   expect(await table.locator("tbody tr").count()).toBeLessThan(120);
+      199 |   const scroll = card.getByRole("region", { name: "Tabel", exact: true });
+      200 |   await scroll.evaluate((element) => {
+        at /Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests/rich-answer.spec.ts:197:23
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/rich-answer-long-reply-tab-893b2-ilter-without-dropping-data-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/rich-answer-long-reply-tab-893b2-ilter-without-dropping-data-desktop/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/rich-answer-long-reply-tab-893b2-ilter-without-dropping-data-desktop/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/rich-answer-long-reply-tab-893b2-ilter-without-dropping-data-desktop/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  3 failed
+    [desktop] › tests/conversation.spec.ts:36:1 › switching conversations keeps exactly one attachment button and editor 
+    [desktop] › tests/rich-answer.spec.ts:27:3 › rich reply matches source blocks, table/code interactions and safe rendering (dark) 
+    [desktop] › tests/rich-answer.spec.ts:173:1 › long reply tables virtualize, scroll to the last row and filter without dropping data 
+  81 passed (12.0m)

@@ -1,0 +1,34 @@
+[WebServer] $ vite preview --host "127.0.0.1" --port "4321" --strictPort
+[WebServer] (node:51159) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 22 tests using 1 worker
+
+(node:51161) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [desktop] › tests/work.spec.ts:707:1 › native acknowledgements survive lost HTTP replies, completion, reload and connection revocation (10.9s)
+  ✓   2 [desktop] › tests/work.spec.ts:842:1 › an ambiguous native submission stays fenced through status reads, reload and cancellation (7.8s)
+  ✓   3 [desktop] › tests/work.spec.ts:909:1 › unsafe Markdown cuts and changed prefixes keep complete content beside a labeled native-history fallback (9.7s)
+  ✓   4 [desktop] › tests/work.spec.ts:1149:1 › group writers serialize native questions and free text uses one answer representation (4.5s)
+  ✓   5 [desktop] › tests/work.spec.ts:1204:1 › an unconfirmed option reply reuses the same decision across reload (7.8s)
+  ✓   6 [desktop] › tests/work.spec.ts:1564:1 › a native text-only question uses the ordinary composer and preserves its answer representation (3.4s)
+  ✓   7 [desktop] › tests/work.spec.ts:1609:1 › an uncertain text answer stays locked but confirmed cancellation releases the normal composer (3.0s)
+  ✓   8 [desktop] › tests/work.spec.ts:1644:1 › product text questions let the next user change topic and later answer in the normal composer (3.5s)
+  ✓   9 [desktop] › tests/work.spec.ts:1679:1 › approval is inline and retains only its question after a typed owner decision (6.3s)
+  ✓  10 [desktop] › tests/work.spec.ts:1713:1 › retry is available only for a failed assistant response and preserves the authored input (3.2s)
+  ✓  11 [desktop] › tests/work.spec.ts:1745:1 › group interaction history keeps rendered mentions and an adjacent avatar after replies and reload (9.5s)
+(node:51309) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  12 [mobile] › tests/work.spec.ts:707:1 › native acknowledgements survive lost HTTP replies, completion, reload and connection revocation (8.2s)
+  ✓  13 [mobile] › tests/work.spec.ts:842:1 › an ambiguous native submission stays fenced through status reads, reload and cancellation (3.4s)
+  ✓  14 [mobile] › tests/work.spec.ts:909:1 › unsafe Markdown cuts and changed prefixes keep complete content beside a labeled native-history fallback (4.4s)
+  ✓  15 [mobile] › tests/work.spec.ts:1149:1 › group writers serialize native questions and free text uses one answer representation (3.9s)
+  ✓  16 [mobile] › tests/work.spec.ts:1204:1 › an unconfirmed option reply reuses the same decision across reload (3.8s)
+  ✓  17 [mobile] › tests/work.spec.ts:1564:1 › a native text-only question uses the ordinary composer and preserves its answer representation (1.2s)
+  ✓  18 [mobile] › tests/work.spec.ts:1609:1 › an uncertain text answer stays locked but confirmed cancellation releases the normal composer (960ms)
+  ✓  19 [mobile] › tests/work.spec.ts:1644:1 › product text questions let the next user change topic and later answer in the normal composer (3.5s)
+  ✓  20 [mobile] › tests/work.spec.ts:1679:1 › approval is inline and retains only its question after a typed owner decision (3.3s)
+  ✓  21 [mobile] › tests/work.spec.ts:1713:1 › retry is available only for a failed assistant response and preserves the authored input (2.9s)
+  ✓  22 [mobile] › tests/work.spec.ts:1745:1 › group interaction history keeps rendered mentions and an adjacent avatar after replies and reload (4.5s)
+
+  22 passed (2.0m)

@@ -1,0 +1,107 @@
+{
+  "scope": "HITL question history, mention rendering, group attribution and DM presentation",
+  "changes": "Frontend presentation only; application reply authority, action binding and unknown-acknowledgment fences are retained.",
+  "checks": {
+    "build": "pass",
+    "web_lint": "pass (307 files)",
+    "unit_tests": {
+      "pass": 50,
+      "fail": 0
+    },
+    "browser_regressions": {
+      "unique_pass": 34,
+      "remaining_fail": 0,
+      "projects": [
+        "desktop",
+        "mobile"
+      ]
+    }
+  },
+  "browser_cohorts": {
+    "activity_dm_waiting_studio_avatar": 12,
+    "group_activity": 2,
+    "product_native_interactions_and_recovery": 20
+  },
+  "iterations": "Initial browser attempts included three selector failures: one assertion accidentally matched the sidebar waiting label and two expected an accessibility name without chip spacing. Selectors were scoped/updated, and the affected cases passed on rerun.",
+  "live_observations": "Existing QA history and completed Computer activity verified after reload; one new real group ask_user interaction was selected, submitted and reloaded; existing DM history verified without side avatars.",
+  "live_retry": "The new group prompt initially hit a routing failure. One UI retry succeeded. This does not prove failed assistant-response retry.",
+  "limits": [
+    "No new active Computer stream or reconnect-fault exercise in this follow-up.",
+    "Pending approval and native acknowledgment/recovery behavior covered by controlled browser fixtures; existing real approval history inspected after reload.",
+    "No production deployment, commit, push, data reset, credential change or external message."
+  ],
+  "evidence": [
+    {
+      "file": "screenshots/01-group-avatars.png",
+      "title": "Avatar pada pesan grup",
+      "observation": "Percakapan QA lama dibuka kembali. Avatar Tobi terlihat berdampingan dengan jawaban, termasuk jawaban pendek.",
+      "sha256": "2c1a1ce4f23f837edd416eda8df2d50b0038225cfb5d9ef67fe5bb404ff1412f",
+      "captured_at": "2026-11-06T12:07:13.634240+00:00",
+      "bytes": 217485
+    },
+    {
+      "file": "screenshots/02-settled-question-mention.png",
+      "title": "Pertanyaan lama dan mention setelah reload",
+      "observation": "Pertanyaan yang sebelumnya telah dijawab kembali muncul sebagai kartu berisi judul saja. Mention owner terender sebagai Kamu; opsi dan tombol tidak muncul.",
+      "sha256": "f173ea7dcea7c00aa08fecc42112a88f83af65e199eabbc2d35466cdeac1c5f9",
+      "captured_at": "2026-11-06T12:08:15.864946+00:00",
+      "bytes": 308628
+    },
+    {
+      "file": "screenshots/03-settled-approval.png",
+      "title": "Riwayat approval setelah penolakan",
+      "observation": "Approval yang telah ditolak tetap menyisakan judul pertanyaan. Rincian tindakan dan tombol keputusan tidak ditampilkan.",
+      "sha256": "e4fd1a26145b5546e8c71175fe5c0fa9be508a41571cddb19b524995560bd4e4",
+      "captured_at": "2026-11-06T12:09:55.976707+00:00",
+      "bytes": 348088
+    },
+    {
+      "file": "screenshots/04-computer-avatar.png",
+      "title": "Avatar di samping kartu Computer",
+      "observation": "Kartu Computer dari aktivitas nyata yang telah selesai memiliki avatar Tobi. Kartu tetap ringkas tanpa viewer atau Open Computer.",
+      "sha256": "8c9b8d07a7d449a2da787db1d32dc270bb22df1e2838a2c8be51d2e8fb198b29",
+      "captured_at": "2026-11-06T12:10:30.242138+00:00",
+      "bytes": 364540
+    },
+    {
+      "file": "screenshots/05-live-question-pending.png",
+      "title": "Pertanyaan baru: menunggu pilihan",
+      "observation": "Prompt baru dijalankan melalui UI grup. Kartu options dengan mention owner tampil, tanpa bubble Waiting for your reply tambahan. Continue nonaktif sebelum ada pilihan.",
+      "sha256": "6ece055d4a5a9a2a6810efb9c64c558eab316d1e8deb48578d6ad6f0c1d603ac",
+      "captured_at": "2026-11-06T12:13:30.494128+00:00",
+      "bytes": 228126
+    },
+    {
+      "file": "screenshots/06-live-question-selected.png",
+      "title": "Pertanyaan baru: pilihan terpilih",
+      "observation": "Ringkas dipilih. Continue aktif dan kartu masih terbuka sampai pengguna menekan submit.",
+      "sha256": "e30484465510224d32ec84ab5e45f81f01d02123809ae2a7039a1d9a54fde60d",
+      "captured_at": "2026-11-06T12:13:45.043220+00:00",
+      "bytes": 231198
+    },
+    {
+      "file": "screenshots/07-live-question-answered.png",
+      "title": "Pertanyaan baru: setelah submit",
+      "observation": "Continue diklik. Kartu menyisakan pertanyaan, jawaban Ringkas menjadi pesan user, dan Tobi mengonfirmasi pilihan. Tidak ada receipt jawaban tersimpan.",
+      "sha256": "d44a218bac7dc5a77c4588841230c72293dbd895ea28b416275631c4b1e0830f",
+      "captured_at": "2026-11-06T12:14:59.061903+00:00",
+      "bytes": 236060
+    },
+    {
+      "file": "screenshots/08-live-question-reloaded.png",
+      "title": "Pertanyaan baru: setelah reload",
+      "observation": "Reload aplikasi mempertahankan judul kartu beserta mention yang telah dirender dan avatar Tobi. Opsi serta aksi tidak kembali muncul.",
+      "sha256": "d45aafa0cc673b66fa74b1bbb40cfb100726fb2239deae241c81d8c6bb43a98b",
+      "captured_at": "2026-11-06T12:15:09.986385+00:00",
+      "bytes": 235749
+    },
+    {
+      "file": "screenshots/09-dm-no-avatars.png",
+      "title": "DM tetap tanpa avatar di area pesan",
+      "observation": "DM Tobi dibuka lewat navigasi UI. Pesan assistant, aktivitas Stopped, dan kartu pertanyaan yang sudah dijawab tidak memiliki avatar samping. Avatar identitas di header tetap tersedia.",
+      "sha256": "707b36a56bfc7fbf6bc463c05751bcae59e7ac1e7a6bda45bb606750c183cc10",
+      "captured_at": "2026-11-06T12:16:14.574812+00:00",
+      "bytes": 229929
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+The following is a diff from the previous accessibility tree for Window: "Ngertiin · Web Client" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 233-235, 239-248
+~									39 button QA Interaksi · 6 Nov 2026 Tobi: - Header opsional berada di baris pertama; jumlah kolomnya harus sama dengan baris data. [RFC 4180 §2](https://www.rfc-editor.org/rfc/rfc4180#section-2) - RFC memakai koma sebagai delimiter; nilai yang mengandung koma perlu diapit tanda kut
++												310 text RFC memakai koma sebagai delimiter; nilai yang mengandung koma perlu diapit tanda kutip ganda. 
++												311 link RFC 4180 §2, Value: rfc-editor.org/rfc/rfc4180#section-2
++											312 container
++												313 AXListMarker • 
++												314 text Python mendukung delimiter satu karakter;  DictReader  memakai baris pertama sebagai header jika  fieldnames  tidak diberikan. 
++												315 link Dokumentasi Python, Value: docs.python.org/3/library/csv.html#csv.DictReader
++										316 text Kedua sumber sudah dibaca melalui browser desktop; halaman RFC terakhir tetap terbuka.
++									317 container Computer · Tobi
++										318 image
++										319 container
++											320 text Computer ·  Tobi
++										321 text Activity finished
+~									253 button (disabled) Kirim, Help: Kirim pesan
+The focused UI element is 24 HTML content Ngertiin · Web Client, URL: 127.0.0.1:3001/

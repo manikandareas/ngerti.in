@@ -1,0 +1,2 @@
+There has been no change in the accessibility tree for Window: "Assistant studio · Ngertiin".
+The focused UI element is 391 link 01 Computer 3, Value: 127.0.0.1:3001/assistant-studio?section=computer&state=preparing&mode=group

@@ -1,0 +1,18 @@
+The following is a diff from the previous accessibility tree for Window: "Ngertiin · Web Client" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+~									31 button Tobi Getting ready…
++									495 text Kamu
++									496 container
++										497 text QA UI sekali selesai, jangan buat Goal atau Routine. Siapkan tabel 30 contoh validasi CSV untuk staf gudang, dengan kolom kasus, input, dan hasil. Saya akan menguji tombol Stop pada proses ini.
++										498 text 19.15
++										499 container Aksi pesan
++											500 button Salin pesan
++									501 button Open Tobi’s profile
++									502 container
++										503 container
++											504 text Tobi :  Getting ready…
++										505 container Aksi pesan
++											506 button Salin pesan
+~									452 text entry area (settable) Pesan, Placeholder: Pesan untuk Tobi…, Value: 
+
+~									453 button (disabled) Stop run
+The focused UI element is 24 HTML content Ngertiin · Web Client, URL: 127.0.0.1:3001/

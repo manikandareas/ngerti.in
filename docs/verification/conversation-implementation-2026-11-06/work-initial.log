@@ -1,0 +1,165 @@
+[WebServer] $ vite preview --host "127.0.0.1" --port "4321" --strictPort
+[WebServer] (node:23494) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 78 tests using 1 worker
+
+(node:23497) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [desktop] › tests/composer.spec.ts:55:1 › expanded composer keeps full-width text above the attachment and send toolbar (6.6s)
+  ✓   2 [desktop] › tests/composer.spec.ts:113:1 › inline chips align with surrounding text, keep default gaps and allow file-only sends (4.4s)
+  ✓   3 [desktop] › tests/composer.spec.ts:160:1 › long filenames leave only one normal space before the following text (3.0s)
+  ✓   4 [desktop] › tests/composer.spec.ts:199:1 › files stay inline at the cursor and send stable references in sentence order (6.7s)
+  ✓   5 [desktop] › tests/composer.spec.ts:252:1 › files stay local until submit and a lost upload reply retries the same operation (6.4s)
+  ✓   6 [desktop] › tests/composer.spec.ts:307:1 › removing a selected file never uploads it and status stays behind its icon (6.3s)
+  ✓   7 [desktop] › tests/composer.spec.ts:361:1 › image chips preview through shadcn overlays and remove, undo and paste as whole objects (10.9s)
+  ✓   8 [desktop] › tests/composer.spec.ts:424:1 › a rejected second file restores an editable draft without publishing the first file (8.8s)
+  ✓   9 [desktop] › tests/composer.spec.ts:453:1 › pending sends restore inline file references and replay the exact message after reload (5.0s)
+  ✓  10 [desktop] › tests/group-attachments.spec.ts:79:1 › group file-only sends stay local, route through the group API and keep uploads in chat instead of the results panel (7.6s)
+  ✓  11 [desktop] › tests/group-attachments.spec.ts:122:1 › a lost group-send acknowledgement restores the same submission after reload without publishing twice (7.1s)
+  ✓  12 [desktop] › tests/group-attachments.spec.ts:154:1 › a rejected second group upload restores both local files and can be corrected without partial publication (6.8s)
+  ✓  13 [desktop] › tests/group-attachments.spec.ts:185:1 › rejected routing retries the original group message and source attachment (12.1s)
+  ✓  14 [desktop] › tests/group-attachments.spec.ts:231:1 › group image eligibility follows the mentioned member and a capable member receives normalized visual input (13.9s)
+  ✓  15 [desktop] › tests/group-responsibilities.spec.ts:117:1 › group collaboration displays friendly activity and shared goal evidence without technical bubbles (28.6s)
+  ✓  16 [desktop] › tests/work.spec.ts:110:1 › contextual goals, Routine and files use real scoped state and keep stop responsibility distinct from stop run (39.1s)
+  ✓  17 [desktop] › tests/work.spec.ts:281:1 › file previews reuse source tables, code and markdown without executing file HTML (22.2s)
+  ✘  18 [desktop] › tests/work.spec.ts:368:1 › group creation recovers a lost acknowledgement, routes messages and keeps member DM resources private (33.8s)
+(node:23830) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  19 [desktop] › tests/work.spec.ts:447:1 › Computer explains unavailable machine access without launching a conversation browser (5.2s)
+  ✓  20 [desktop] › tests/work.spec.ts:459:1 › application access is assigned explicitly to this context and unsupported images never upload (18.9s)
+  ✓  21 [desktop] › tests/work.spec.ts:558:1 › apps catalog searches live and authorization recovers from blocked popups and failed reads without changing grants (22.8s)
+  ✓  22 [desktop] › tests/work.spec.ts:671:1 › tool calls stay out of the conversation while native receipts remain persisted (11.4s)
+  ✓  23 [desktop] › tests/work.spec.ts:707:1 › native acknowledgements survive lost HTTP replies, completion, reload and connection revocation (29.9s)
+  ✓  24 [desktop] › tests/work.spec.ts:842:1 › an ambiguous native submission stays fenced through status reads, reload and cancellation (13.3s)
+  ✓  25 [desktop] › tests/work.spec.ts:909:1 › unsafe Markdown cuts and changed prefixes keep complete content beside a labeled native-history fallback (14.5s)
+  ✓  26 [desktop] › tests/work.spec.ts:1054:1 › rejected group membership preserves the draft and allows a corrected operation (5.5s)
+  ✓  27 [desktop] › tests/work.spec.ts:1082:1 › sharing copies only the selected file into the explicit destination and preserves byte identity (7.0s)
+  ✓  28 [desktop] › tests/work.spec.ts:1149:1 › group writers serialize native questions and free text uses one answer representation (40.4s)
+  ✘  29 [desktop] › tests/work.spec.ts:1204:1 › an unconfirmed option reply reuses the same decision across reload (20.8s)
+(node:24107) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  30 [desktop] › tests/work.spec.ts:1239:1 › membership editing keeps its original revision and cannot overwrite a concurrent change (19.1s)
+  ✓  31 [desktop] › tests/work.spec.ts:1268:1 › four ordinary file attachments still allow a supported image (9.5s)
+  ✓  32 [desktop] › tests/work.spec.ts:1309:1 › agent detail list shows essential goals and only agent outputs (14.6s)
+  ✓  33 [desktop] › tests/work.spec.ts:1390:3 › light: detail lists show all goals and routines with dialogs and library memory (27.4s)
+  ✓  34 [desktop] › tests/work.spec.ts:1390:3 › dark: detail lists show all goals and routines with dialogs and library memory (10.0s)
+  ✓  35 [desktop] › tests/work.spec.ts:1559:1 › a native text-only question uses the ordinary composer and preserves its answer representation (4.6s)
+  ✓  36 [desktop] › tests/work.spec.ts:1604:1 › an uncertain text answer stays locked but confirmed cancellation releases the normal composer (3.9s)
+  ✓  37 [desktop] › tests/work.spec.ts:1639:1 › product text questions let the next user change topic and later answer in the normal composer (6.5s)
+  ✓  38 [desktop] › tests/work.spec.ts:1674:1 › approval is inline with reject and accept and vanishes after a typed owner decision (6.2s)
+  ✓  39 [desktop] › tests/work.spec.ts:1700:1 › retry is available only for a failed assistant response and preserves the authored input (7.0s)
+(node:24289) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  40 [mobile] › tests/composer.spec.ts:55:1 › expanded composer keeps full-width text above the attachment and send toolbar (2.9s)
+  ✓  41 [mobile] › tests/composer.spec.ts:113:1 › inline chips align with surrounding text, keep default gaps and allow file-only sends (3.9s)
+  ✓  42 [mobile] › tests/composer.spec.ts:160:1 › long filenames leave only one normal space before the following text (3.2s)
+  ✓  43 [mobile] › tests/composer.spec.ts:199:1 › files stay inline at the cursor and send stable references in sentence order (5.5s)
+  ✓  44 [mobile] › tests/composer.spec.ts:252:1 › files stay local until submit and a lost upload reply retries the same operation (2.0s)
+  ✓  45 [mobile] › tests/composer.spec.ts:307:1 › removing a selected file never uploads it and status stays behind its icon (2.2s)
+  ✓  46 [mobile] › tests/composer.spec.ts:361:1 › image chips preview through shadcn overlays and remove, undo and paste as whole objects (1.6s)
+  ✓  47 [mobile] › tests/composer.spec.ts:424:1 › a rejected second file restores an editable draft without publishing the first file (2.1s)
+  ✓  48 [mobile] › tests/composer.spec.ts:453:1 › pending sends restore inline file references and replay the exact message after reload (1.9s)
+  ✓  49 [mobile] › tests/group-attachments.spec.ts:79:1 › group file-only sends stay local, route through the group API and keep uploads in chat instead of the results panel (3.8s)
+  ✓  50 [mobile] › tests/group-attachments.spec.ts:122:1 › a lost group-send acknowledgement restores the same submission after reload without publishing twice (3.1s)
+  ✓  51 [mobile] › tests/group-attachments.spec.ts:154:1 › a rejected second group upload restores both local files and can be corrected without partial publication (2.5s)
+  ✓  52 [mobile] › tests/group-attachments.spec.ts:185:1 › rejected routing retries the original group message and source attachment (5.7s)
+  ✓  53 [mobile] › tests/group-attachments.spec.ts:231:1 › group image eligibility follows the mentioned member and a capable member receives normalized visual input (8.4s)
+  ✓  54 [mobile] › tests/group-responsibilities.spec.ts:117:1 › group collaboration displays friendly activity and shared goal evidence without technical bubbles (15.9s)
+  ✓  55 [mobile] › tests/work.spec.ts:110:1 › contextual goals, Routine and files use real scoped state and keep stop responsibility distinct from stop run (12.2s)
+  ✓  56 [mobile] › tests/work.spec.ts:281:1 › file previews reuse source tables, code and markdown without executing file HTML (7.2s)
+  ✓  57 [mobile] › tests/work.spec.ts:368:1 › group creation recovers a lost acknowledgement, routes messages and keeps member DM resources private (20.1s)
+  ✓  58 [mobile] › tests/work.spec.ts:447:1 › Computer explains unavailable machine access without launching a conversation browser (3.2s)
+  ✓  59 [mobile] › tests/work.spec.ts:459:1 › application access is assigned explicitly to this context and unsupported images never upload (12.3s)
+  ✓  60 [mobile] › tests/work.spec.ts:558:1 › apps catalog searches live and authorization recovers from blocked popups and failed reads without changing grants (17.0s)
+  ✓  61 [mobile] › tests/work.spec.ts:671:1 › tool calls stay out of the conversation while native receipts remain persisted (16.3s)
+  ✓  62 [mobile] › tests/work.spec.ts:707:1 › native acknowledgements survive lost HTTP replies, completion, reload and connection revocation (21.2s)
+  ✓  63 [mobile] › tests/work.spec.ts:842:1 › an ambiguous native submission stays fenced through status reads, reload and cancellation (6.0s)
+  ✓  64 [mobile] › tests/work.spec.ts:909:1 › unsafe Markdown cuts and changed prefixes keep complete content beside a labeled native-history fallback (5.2s)
+  ✓  65 [mobile] › tests/work.spec.ts:1054:1 › rejected group membership preserves the draft and allows a corrected operation (3.0s)
+  ✓  66 [mobile] › tests/work.spec.ts:1082:1 › sharing copies only the selected file into the explicit destination and preserves byte identity (3.1s)
+  ✓  67 [mobile] › tests/work.spec.ts:1149:1 › group writers serialize native questions and free text uses one answer representation (5.3s)
+  ✓  68 [mobile] › tests/work.spec.ts:1204:1 › an unconfirmed option reply reuses the same decision across reload (4.0s)
+  ✓  69 [mobile] › tests/work.spec.ts:1239:1 › membership editing keeps its original revision and cannot overwrite a concurrent change (5.2s)
+  ✓  70 [mobile] › tests/work.spec.ts:1268:1 › four ordinary file attachments still allow a supported image (3.4s)
+  ✓  71 [mobile] › tests/work.spec.ts:1309:1 › agent detail list shows essential goals and only agent outputs (4.8s)
+  ✓  72 [mobile] › tests/work.spec.ts:1390:3 › light: detail lists show all goals and routines with dialogs and library memory (5.5s)
+  ✓  73 [mobile] › tests/work.spec.ts:1390:3 › dark: detail lists show all goals and routines with dialogs and library memory (5.9s)
+  ✓  74 [mobile] › tests/work.spec.ts:1559:1 › a native text-only question uses the ordinary composer and preserves its answer representation (2.3s)
+  ✓  75 [mobile] › tests/work.spec.ts:1604:1 › an uncertain text answer stays locked but confirmed cancellation releases the normal composer (2.2s)
+  ✓  76 [mobile] › tests/work.spec.ts:1639:1 › product text questions let the next user change topic and later answer in the normal composer (4.8s)
+  ✓  77 [mobile] › tests/work.spec.ts:1674:1 › approval is inline with reject and accept and vanishes after a typed owner decision (4.7s)
+  ✓  78 [mobile] › tests/work.spec.ts:1700:1 › retry is available only for a failed assistant response and preserves the authored input (3.2s)
+
+
+  1) [desktop] › tests/work.spec.ts:368:1 › group creation recovers a lost acknowledgement, routes messages and keeps member DM resources private 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: apiRequestContext.get: Test timeout of 30000ms exceeded.
+
+      409 |   else await page.getByRole("button", { name: "Close", exact: true }).click();
+      410 |   const opening = await (
+    > 411 |     await page.request.get(`/v1/threads/${created?.thread.id}/opening`)
+          |                        ^
+      412 |   ).json();
+      413 |   await post(page, `/v1/runs/${opening.run.id}/cancel`, {});
+      414 |   await page.getByRole("button", { name: "Lanjutkan pembuka", exact: true }).click();
+        at /Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests/work.spec.ts:411:24
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../.dev/nma062-playwright/work-group-creation-recove-26d1f-member-DM-resources-private-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../.dev/nma062-playwright/work-group-creation-recove-26d1f-member-DM-resources-private-desktop/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../.dev/nma062-playwright/work-group-creation-recove-26d1f-member-DM-resources-private-desktop/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../.dev/nma062-playwright/work-group-creation-recove-26d1f-member-DM-resources-private-desktop/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) [desktop] › tests/work.spec.ts:1204:1 › an unconfirmed option reply reuses the same decision across reload 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('button', { name: 'Detail Human request 42502771', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('button', { name: 'Detail Human request 42502771', exact: true }) with timeout 5000ms
+      - waiting for getByRole('button', { name: 'Detail Human request 42502771', exact: true })
+
+
+       99 |     .filter({ has: page.getByText(name, { exact: true }) })
+      100 |     .click();
+    > 101 |   await expect(page.getByRole("button", { name: `Detail ${name}`, exact: true })).toBeVisible();
+          |                                                                                   ^
+      102 | }
+      103 | async function revokeFixtureApps(page: Page, toolkit: string) {
+      104 |   const connections = await (await page.request.get("/v1/apps/connections")).json();
+        at chooseAgent (/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests/work.spec.ts:101:83)
+        at /Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests/work.spec.ts:1216:3
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../.dev/nma062-playwright/work-an-unconfirmed-option-e5a46-same-decision-across-reload-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../.dev/nma062-playwright/work-an-unconfirmed-option-e5a46-same-decision-across-reload-desktop/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../.dev/nma062-playwright/work-an-unconfirmed-option-e5a46-same-decision-across-reload-desktop/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../.dev/nma062-playwright/work-an-unconfirmed-option-e5a46-same-decision-across-reload-desktop/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2 failed
+    [desktop] › tests/work.spec.ts:368:1 › group creation recovers a lost acknowledgement, routes messages and keeps member DM resources private 
+    [desktop] › tests/work.spec.ts:1204:1 › an unconfirmed option reply reuses the same decision across reload 
+  76 passed (13.2m)

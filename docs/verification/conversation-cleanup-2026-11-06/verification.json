@@ -1,0 +1,51 @@
+{
+  "base": "69ac673412ca155aa18db2d6ed3be1df751efd40",
+  "source_commits": [
+    "f3d955d691545d4194eca25d8bb0ef9aeaa13f0b",
+    "ddd563c529a9ab3d7f31c64812c55513b957a181"
+  ],
+  "scope": [
+    "Unify response retry eligibility and its dispatch guard without changing error codes.",
+    "Separate native question and approval presenters from native interaction orchestration.",
+    "Reuse the production assistant row in Studio; remove unused identity props.",
+    "Clarify Computer labels, interaction payload construction and test preconditions."
+  ],
+  "checks": {
+    "make_check": {
+      "result": "pass",
+      "server_tests": 411,
+      "server_failures": 0,
+      "lint": "server 195 files; web 309 files",
+      "typecheck": "server and web pass"
+    },
+    "frontend_unit": {
+      "pass": 50,
+      "fail": 0
+    },
+    "browser_conversation": {
+      "pass": 14,
+      "fail": 0
+    },
+    "browser_interactions": {
+      "pass": 22,
+      "fail": 0
+    },
+    "build": "pass; existing large-chunk advisory remains",
+    "docs_check": {
+      "result": "baseline failure",
+      "broken_link_occurrences": 85,
+      "unique_broken_links": 75,
+      "new_broken_links": 0,
+      "baseline_comparison": "Pinned HEAD document contents at 69ac673 against the same checkout paths."
+    }
+  },
+  "proof_boundaries": [
+    "Browser cohorts use isolated HTTP/protocol fixtures and real application persistence.",
+    "No new paid-provider or active Computer native exercise during cleanup. Existing point-in-time evidence is retained.",
+    "Local commits only; no push, deployment, external message, data reset or credential changes."
+  ],
+  "preserved_work": [
+    "skills-lock.json",
+    ".agents/skills/tauri-v2/"
+  ]
+}

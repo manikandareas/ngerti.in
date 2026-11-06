@@ -1,0 +1,20 @@
+[WebServer] $ vite preview --host "127.0.0.1" --port "4321" --strictPort
+[WebServer] (node:27421) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 8 tests using 1 worker
+
+(node:27423) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [desktop] › tests/work.spec.ts:1204:1 › an unconfirmed option reply reuses the same decision across reload (2.8s)
+  ✓  2 [desktop] › tests/work.spec.ts:1639:1 › product text questions let the next user change topic and later answer in the normal composer (1.6s)
+  ✓  3 [desktop] › tests/work.spec.ts:1674:1 › approval is inline with reject and accept and vanishes after a typed owner decision (1.2s)
+  ✓  4 [desktop] › tests/work.spec.ts:1700:1 › retry is available only for a failed assistant response and preserves the authored input (1.5s)
+(node:27443) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  5 [mobile] › tests/work.spec.ts:1204:1 › an unconfirmed option reply reuses the same decision across reload (2.7s)
+  ✓  6 [mobile] › tests/work.spec.ts:1639:1 › product text questions let the next user change topic and later answer in the normal composer (1.7s)
+  ✓  7 [mobile] › tests/work.spec.ts:1674:1 › approval is inline with reject and accept and vanishes after a typed owner decision (2.4s)
+  ✓  8 [mobile] › tests/work.spec.ts:1700:1 › retry is available only for a failed assistant response and preserves the authored input (2.1s)
+
+  8 passed (19.8s)

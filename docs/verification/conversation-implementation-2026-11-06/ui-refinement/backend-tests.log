@@ -1,0 +1,36 @@
+bun test v1.3.10 (30e609e0)
+
+apps/server/tests/machines/domain.test.ts:
+(pass) DM and group contexts bind one machine while retaining distinct logical workspaces [56.68ms]
+(pass) multi-step input has one owner; human takeover waits for in-flight input and fences agents [117.23ms]
+(pass) unknown input survives restart, cannot replay, and can be reconciled by a fresh observation [46.03ms]
+(pass) server-owned session identity and current grants cannot be supplied or bypassed by tool arguments [26.48ms]
+(pass) async file commands commit independently while I/O waits and coalesce exact concurrent retries [10.86ms]
+(pass) interrupted file projection retains its reservation across restart and rechecks scope before commit [14.55ms]
+(pass) human handback waits for media quiescence and disconnected control expires [169.47ms]
+
+apps/server/tests/machines/cleanup.test.ts:
+(pass) successful task closes only its explicit temporary window, retaining the browser profile and user window [113.54ms]
+(pass) whole handoff chain owns the window until the peer delivers its result [116.52ms]
+(pass) result previews and explicit retention remain available [194.08ms]
+(pass) a failed task does not dispose of its debugging context [64.80ms]
+(pass) human takeover preserves potentially edited task windows and never races cleanup [52.86ms]
+(pass) save prompts block graceful cleanup without force-close or retries [114.40ms]
+(pass) lost close acknowledgement survives restart without repeating the effect [55.65ms]
+(pass) owner API exports managed window state and its versioned schema [110.78ms]
+(pass) a task-owned terminal stays open until its attributed process exits [57.54ms]
+(pass) deferred successful cleanup resumes after restart without reopening a window [49.57ms]
+(pass) human takeover waits for an in-flight cleanup before granting interactive input [67.44ms]
+(pass) another request cannot retain this task's windows or prevent its independent cleanup [87.86ms]
+(pass) window commands reject missing mutation identities and unsupported URL schemes [24.09ms]
+(pass) existing native sessions receive current cleanup policy in every turn context [20.61ms]
+(pass) observations made during cleanup cannot authorize a subsequent agent click [118.46ms]
+
+apps/server/tests/machines/view-sessions.test.ts:
+(pass) viewer renewals keep the gateway identity and independent consumers cannot revoke each other [34.03ms]
+(pass) a renewal racing explicit revocation never resurrects the view [18.94ms]
+
+ 24 pass
+ 0 fail
+ 100 expect() calls
+Ran 24 tests across 3 files. [2.77s]

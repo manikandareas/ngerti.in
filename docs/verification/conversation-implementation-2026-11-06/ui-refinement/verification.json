@@ -1,0 +1,38 @@
+{
+  "date": "2026-11-06",
+  "scope": "Studio catalogue and Computer preview presentation",
+  "contract_version": "1.31.0",
+  "browser": {
+    "studio": {
+      "passed": 2,
+      "failed": 0
+    },
+    "machine": {
+      "passed": 4,
+      "failed": 0,
+      "real_video": true,
+      "inference": "fixture"
+    },
+    "interactions": {
+      "passed": 8,
+      "failed": 0
+    }
+  },
+  "backend": {
+    "machine_tests_passed": 24,
+    "failed": 0
+  },
+  "frontend_unit": {
+    "passed": 49,
+    "failed": 0
+  },
+  "checks": {
+    "lint": "passed",
+    "typecheck": "passed",
+    "build": "passed with existing large-bundle advisory",
+    "whitespace": "passed"
+  },
+  "screenshots": "screenshots.json",
+  "review_url": "http://127.0.0.1:3001/assistant-studio",
+  "native_provider_inference_rerun": false
+}

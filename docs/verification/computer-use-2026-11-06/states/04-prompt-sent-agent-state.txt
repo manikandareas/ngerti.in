@@ -1,0 +1,11 @@
+The following is a diff from the previous accessibility tree for Window: "Ngertiin · Web Client" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 183-186
+~									142 button QA Interaksi · 6 Nov 2026 Tobi: Getting ready…
+~									182 button Open Tobi’s profile
++									183 container
++										184 container
++											185 button Tobi
++											186 text Tobi :  Getting ready…
++										187 container Aksi pesan
++											188 button Salin pesan
+The focused UI element is 127 HTML content Ngertiin · Web Client, URL: 127.0.0.1:3001/

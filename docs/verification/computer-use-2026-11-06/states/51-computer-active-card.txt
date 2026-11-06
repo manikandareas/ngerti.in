@@ -1,0 +1,3 @@
+The following is a diff from the previous accessibility tree for Window: "Ngertiin · Web Client" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+~									39 button QA Interaksi · 6 Nov 2026 Tobi: Working on it…
+The focused UI element is 24 HTML content Ngertiin · Web Client, URL: 127.0.0.1:3001/

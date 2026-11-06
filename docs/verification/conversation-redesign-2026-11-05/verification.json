@@ -1,0 +1,141 @@
+{
+  "date": "2026-11-05",
+  "scope": "Frontend redesign using existing API contracts; external harness is a fixture.",
+  "build": "passed",
+  "lint": "passed",
+  "unit_tests": {
+    "passed": 10,
+    "failed": 0
+  },
+  "browser_tests": {
+    "work": {
+      "startTime": "2026-11-05T09:37:06.439Z",
+      "duration": 56124.937,
+      "expected": 14,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "conversation": {
+      "startTime": "2026-11-05T09:37:06.439Z",
+      "duration": 37948.848000000005,
+      "expected": 12,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    }
+  },
+  "screenshots": [
+    {
+      "path": "screenshots/desktop-active-composer-dirty.png",
+      "sha256": "423bf2f486dd45ee6557622aeea61d180f2ec703a7d3eca2be4e820eaff23e32"
+    },
+    {
+      "path": "screenshots/desktop-active-composer-empty.png",
+      "sha256": "2deb3def0c937415f4b670fa7886f497d240300817a38c1243e6f65a25c2dcc8"
+    },
+    {
+      "path": "screenshots/desktop-group-stop-target.png",
+      "sha256": "01755eff59e675119b2e607cb093ee74c35cfca90bcf2d3aefd36c9602dec686"
+    },
+    {
+      "path": "screenshots/desktop-hover-actions-and-sources.png",
+      "sha256": "368fa30e59c1ac0fc07db32775660b7ec17fc745a5af4bd6f0d2fd0a9749cc0f"
+    },
+    {
+      "path": "screenshots/desktop-inline-attachment-alignment.png",
+      "sha256": "66a0ad3f9353f41641b4216da34564229b205714055958c673e2454971c86a2d"
+    },
+    {
+      "path": "screenshots/desktop-native-approval.png",
+      "sha256": "3edaad9cf3c0f891793e68cab7ef2e04b30e45b91a3f442378695e2266a95995"
+    },
+    {
+      "path": "screenshots/desktop-native-question-selected.png",
+      "sha256": "a0950d8d37b0805f161d973e708f226591ffd5eab361f48cc77a961804786e19"
+    },
+    {
+      "path": "screenshots/desktop-native-question.png",
+      "sha256": "26f399976a4f84134586068e0be32844abc5a5b1db5f03bbd4b19475e14c26cb"
+    },
+    {
+      "path": "screenshots/desktop-native-settled.png",
+      "sha256": "cc9c78376e255ba44f3cc317ba56410d7a4ba376de1987127a0f27b2ce9d7296"
+    },
+    {
+      "path": "screenshots/desktop-native-text-composer.png",
+      "sha256": "7e4cd08a4977f2c24ff0f5f7ca1669449d5ba35fc924a35bf8a2a6783b423ba8"
+    },
+    {
+      "path": "screenshots/desktop-studio-file-actions.png",
+      "sha256": "1830ab319a1f7f572bc1a49eacd89709cdf1a5d403c6681310fe30fff9675435"
+    },
+    {
+      "path": "screenshots/desktop-studio-product-approval.png",
+      "sha256": "77f811e651d8c45819d399a90237175ae9542a87b0cbc68e83519a1787a232f4"
+    },
+    {
+      "path": "screenshots/desktop-studio-text-composer.png",
+      "sha256": "bdb7cd2fe2105fc424045e35695bce96b1f30d8058773728a197236f881b8ec6"
+    },
+    {
+      "path": "screenshots/mobile-active-composer-dirty.png",
+      "sha256": "dd104bc6fe8165e39568e4656f98dd7fe50f4dfb3a9a6beb5d88f753f5aed67b"
+    },
+    {
+      "path": "screenshots/mobile-active-composer-empty.png",
+      "sha256": "b5fcb53ea3035f6853c8504287066785ec8b7d65c48c3d409500ce389e3f3845"
+    },
+    {
+      "path": "screenshots/mobile-group-stop-target.png",
+      "sha256": "50c0f321bb1e2fcc30f2dabab3edd7dda5f5ebf1cc206021c637ebb57bce038d"
+    },
+    {
+      "path": "screenshots/mobile-hover-actions-and-sources.png",
+      "sha256": "2bda5f65e92a7a57ad87b6f36279c9085da9bcb8064b0e3b985f61c948c929eb"
+    },
+    {
+      "path": "screenshots/mobile-native-approval.png",
+      "sha256": "0d57b5041cde2afc041804e6dcd236888c8bc9dd34f73b8a3706d9fdb73796a5"
+    },
+    {
+      "path": "screenshots/mobile-native-question-selected.png",
+      "sha256": "199d6f6a8c21c7f3fe78ace30f6ae4fedaf82b04966ea13e02de4ebd1df64e53"
+    },
+    {
+      "path": "screenshots/mobile-native-question.png",
+      "sha256": "bccbf727e0d5c7b86da5a9ead25294830383d619fed3b261b60c484f6e5758ba"
+    },
+    {
+      "path": "screenshots/mobile-native-settled.png",
+      "sha256": "1b1f19aa4cb56cda09146af4602ecc5725d25dc67459d1ac4a2206aa729c2cf4"
+    },
+    {
+      "path": "screenshots/mobile-native-text-composer.png",
+      "sha256": "f22e6e04461af15dac6dd226e6f42421da83e90e197b06df2048ca90eb617df0"
+    },
+    {
+      "path": "screenshots/mobile-studio-file-actions.png",
+      "sha256": "d7ba7d0cfa9374be44a40443c1c5f1fd20febdabe4b38fa3e44c4689a263191c"
+    },
+    {
+      "path": "screenshots/mobile-studio-product-approval.png",
+      "sha256": "db6e534b992fe40caee97120e418aec91e1fbf31738647de62c9be40f914727e"
+    },
+    {
+      "path": "screenshots/mobile-studio-text-composer.png",
+      "sha256": "4af50845801d2f834342009c65750648ec20ec6eef6157c9087d7aa016fe4862"
+    }
+  ],
+  "studio_followup": {
+    "note": "Rerun of the same desktop/mobile studio cases after sharing FileActionChip and updating catalog copy.",
+    "stats": {
+      "startTime": "2026-11-05T09:44:40.500Z",
+      "duration": 9230.204,
+      "expected": 2,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    }
+  }
+}

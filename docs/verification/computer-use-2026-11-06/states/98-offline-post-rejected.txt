@@ -1,0 +1,2 @@
+There has been no change in the accessibility tree for Window: "Ngertiin · Web Client".
+The focused UI element is 93 pop up button Throttling, Value: Presets: Offline

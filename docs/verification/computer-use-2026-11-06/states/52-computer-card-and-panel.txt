@@ -1,0 +1,6 @@
+The following is a diff from the previous accessibility tree for Window: "Ngertiin · Web Client" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+~									39 button QA Interaksi · 6 Nov 2026 Tobi: Working on it…
++										478 text Connecting desktop…
+~										475 button View desktop
+~										476 text Tobi has control
+The focused UI element is 464 button Open Computer

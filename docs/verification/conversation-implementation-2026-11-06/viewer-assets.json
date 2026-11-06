@@ -1,0 +1,15 @@
+{
+  "image": "sha256:9ac0d6f6f7dd95392554ec95163f83c5061de3db05b64977696c78d71cd4861c",
+  "assets": [
+    {
+      "name": "viewer.js",
+      "bytes": 259635,
+      "sha256": "2bbb1646ce2be3045fe89188a52dfd12cf7e9079c33b568339199c74e178bbe6"
+    },
+    {
+      "name": "ngertiin-health.js",
+      "bytes": 418,
+      "sha256": "787c3b6313c05337b87db83a937f3d3f2e7e3a6f61db214bd629185f051fd5da"
+    }
+  ]
+}

@@ -1,0 +1,122 @@
+[
+  {
+    "file": "screenshots/desktop-computer-card-and-panel.png",
+    "sha256": "4be3d6b808d806735f0a9e734f79ea096e455523ef419b2c7362fd1c68e8355c"
+  },
+  {
+    "file": "screenshots/desktop-computer-conversation-finished.png",
+    "sha256": "650279c5ebc00ca8fd4605689080768f654ec899aa4042de5b509dbe7504bfc3"
+  },
+  {
+    "file": "screenshots/desktop-computer-conversation-live.png",
+    "sha256": "6d0699ec2106442ee8231781c6f2602f8d4374b12ecae777e19f356bc5f26cdc"
+  },
+  {
+    "file": "screenshots/desktop-computer-interactive.png",
+    "sha256": "a66ebb09248aad8f0c818060ade0d8b341539dbdb5bf322cfb14d796f8ba34da"
+  },
+  {
+    "file": "screenshots/desktop-computer-panel-live.png",
+    "sha256": "a3fc1abc42bf5acad9c923a19de0dc1164b5e3fe6f8ad33ab6394ef06bd84309"
+  },
+  {
+    "file": "screenshots/desktop-computer-reconnecting.png",
+    "sha256": "26520c246f806fc5b6e6f3ab152661de00203ec24e0846ff235387b4e5947ceb"
+  },
+  {
+    "file": "screenshots/desktop-computer-recovered.png",
+    "sha256": "f029a7833aab08673a16e00b5af8bdb86d865d53c41f9f291bcdd4017cfcd345"
+  },
+  {
+    "file": "screenshots/desktop-failed-response-retried.png",
+    "sha256": "76da85590affdc0542a3dd2adc8d5475ec831fd0ad917a8bdca564b75723966d"
+  },
+  {
+    "file": "screenshots/desktop-failed-response-retry.png",
+    "sha256": "522057619f20bdf0a5b58022040814680a4fe46132dcdad1e4949f8907440bfc"
+  },
+  {
+    "file": "screenshots/desktop-natural-question-answered.png",
+    "sha256": "f646bb4250bc0cd6e176c6fae9b21857304c4ca2b588e40d74a325f55d626d02"
+  },
+  {
+    "file": "screenshots/desktop-product-approval-pending.png",
+    "sha256": "1ca10f3ccb73b7236b51b035d8a1f8d4ce640780647dd168483ab377b0850308"
+  },
+  {
+    "file": "screenshots/desktop-product-approval-submitted.png",
+    "sha256": "c34c52f7ec467e3aeefd79e36fc513a76675c154f1e669d919dd6961754bb75c"
+  },
+  {
+    "file": "screenshots/desktop-product-question-answered.png",
+    "sha256": "51e5d0daaba5e3471fb10aaaf1d5683fdf8acb9870ec1b31e07e76ee281c3e38"
+  },
+  {
+    "file": "screenshots/desktop-product-question-pending.png",
+    "sha256": "9a267a11ea823b72cdf65e628d0fe7d140caa83894715a643579570e9f8d7f1f"
+  },
+  {
+    "file": "screenshots/desktop-product-question-selected.png",
+    "sha256": "3724be0c6a269ef1561f3c6c7097a63b7fde2eca3f480c45936a2de35b6628e1"
+  },
+  {
+    "file": "screenshots/mobile-computer-card-and-panel.png",
+    "sha256": "60a462a04b3a3bee10b0b2fed67748f13f2850e35852bd9a7c9721e71d623d04"
+  },
+  {
+    "file": "screenshots/mobile-computer-conversation-finished.png",
+    "sha256": "fba70897717887dfd1a2715b9f1584f6c54e9b30aa9a5b3a54f4db4ab9e645b8"
+  },
+  {
+    "file": "screenshots/mobile-computer-conversation-live.png",
+    "sha256": "4c17d0a861ea1df863534382cc52aeea1451874b6002188901e255afa64e4a2e"
+  },
+  {
+    "file": "screenshots/mobile-computer-interactive.png",
+    "sha256": "396a91aa232db1827173008915c40f8babce4e5e8d2376510db99b3c67386e4a"
+  },
+  {
+    "file": "screenshots/mobile-computer-panel-live.png",
+    "sha256": "870839ef740103cc9a1f43a372003daf244fae5a90a92730016b22896d7a39d0"
+  },
+  {
+    "file": "screenshots/mobile-computer-reconnecting.png",
+    "sha256": "e2c26983bb6dfa896efbda45468fd6eadd19a7565809e62f93ebec440a614cac"
+  },
+  {
+    "file": "screenshots/mobile-computer-recovered.png",
+    "sha256": "1cf0f807649af20cc5bf6695bb0641948b9cf6803bee58092c67b0935fd3a06e"
+  },
+  {
+    "file": "screenshots/mobile-failed-response-retried.png",
+    "sha256": "cbdb87260604ce0c4b07191ee410c60d08a9548ce4f4492c86a20dbc11af0756"
+  },
+  {
+    "file": "screenshots/mobile-failed-response-retry.png",
+    "sha256": "e1146e01b07f98b56e77e179e602e094abc85ef51a7d196637e2f347312e81cf"
+  },
+  {
+    "file": "screenshots/mobile-natural-question-answered.png",
+    "sha256": "6e5a34a8392c676dce13e193d8ce3655170ccf975708d6510f19e81a68164649"
+  },
+  {
+    "file": "screenshots/mobile-product-approval-pending.png",
+    "sha256": "40fbc0883846dfd98cd3e97c2648aa15970d588d9d44a5991d8c8b1053b42bb2"
+  },
+  {
+    "file": "screenshots/mobile-product-approval-submitted.png",
+    "sha256": "6ab5828d0a10a7d5850a01b0bb01dc2884f6bbcfd529b5c684727bd051e044d7"
+  },
+  {
+    "file": "screenshots/mobile-product-question-answered.png",
+    "sha256": "76cafd3877951ee8a7c0f58b3f1dca872b76cc57bf5b9eafbc0ef2f706c20038"
+  },
+  {
+    "file": "screenshots/mobile-product-question-pending.png",
+    "sha256": "69542f89074a266cd1fe489bce3f424f87b23dfba5e7c06b4bddae1cdf2d5d72"
+  },
+  {
+    "file": "screenshots/mobile-product-question-selected.png",
+    "sha256": "e9192638e1557a5a16f946f74c816caccd09f198358a12d2d3f5fc5e371b96a8"
+  }
+]

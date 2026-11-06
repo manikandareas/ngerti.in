@@ -1,0 +1,26 @@
+[WebServer] $ vite preview --host "127.0.0.1" --port "4311" --strictPort
+[WebServer] (node:51158) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 14 tests using 1 worker
+
+(node:51160) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [desktop] › tests/activity.spec.ts:110:1 › DM activity updates one bubble, follows streaming output and survives reload without technical text (7.0s)
+  ✓   2 [desktop] › tests/activity.spec.ts:205:1 › group activity belongs to each working agent and hands off without idle member bubbles (5.3s)
+  ✓   3 [desktop] › tests/activity.spec.ts:258:1 › a dark tablet DM omits the avatar and keeps bubble geometry stable when loading stops (4.7s)
+  ✓   4 [desktop] › tests/activity.spec.ts:301:1 › waiting, uncertain results, confirmed stop and reduced motion never imply active thinking (7.1s)
+  ✓   5 [desktop] › tests/activity.spec.ts:509:1 › the web studio uses product interactions and consistent Computer cards without dispatch (4.1s)
+  ✓   6 [desktop] › tests/activity.spec.ts:578:1 › editable alternatives behave as options and approval details remain readable while scrolling (3.5s)
+  ✓   7 [desktop] › tests/agent-avatar.spec.ts:284:1 › saved avatar identity appears outside the left of group replies and survives reload (9.6s)
+(node:51251) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   8 [mobile] › tests/activity.spec.ts:110:1 › DM activity updates one bubble, follows streaming output and survives reload without technical text (4.7s)
+  ✓   9 [mobile] › tests/activity.spec.ts:205:1 › group activity belongs to each working agent and hands off without idle member bubbles (4.4s)
+  ✓  10 [mobile] › tests/activity.spec.ts:258:1 › a dark tablet DM omits the avatar and keeps bubble geometry stable when loading stops (5.4s)
+  ✓  11 [mobile] › tests/activity.spec.ts:301:1 › waiting, uncertain results, confirmed stop and reduced motion never imply active thinking (3.0s)
+  ✓  12 [mobile] › tests/activity.spec.ts:509:1 › the web studio uses product interactions and consistent Computer cards without dispatch (3.3s)
+  ✓  13 [mobile] › tests/activity.spec.ts:578:1 › editable alternatives behave as options and approval details remain readable while scrolling (2.9s)
+  ✓  14 [mobile] › tests/agent-avatar.spec.ts:284:1 › saved avatar identity appears outside the left of group replies and survives reload (7.3s)
+
+  14 passed (1.3m)

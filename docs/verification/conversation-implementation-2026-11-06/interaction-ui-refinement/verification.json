@@ -1,0 +1,32 @@
+{
+  "recorded_at": "2026-11-06T10:51:42.113766+00:00",
+  "contract_version": "1.31.0",
+  "scope": "Computer inactive actions, editable custom options, always-visible approval details",
+  "checks": {
+    "server_web_typecheck": "passed",
+    "server_web_lint": "passed; 13 existing server warnings",
+    "web_build": "passed; existing bundle-size advisory",
+    "frontend_unit": {
+      "passed": 49,
+      "failed": 0
+    },
+    "studio_browser": {
+      "passed": 4,
+      "failed": 0
+    },
+    "interaction_browser": {
+      "passed": 8,
+      "failed": 0
+    },
+    "machine_browser": {
+      "passed": 4,
+      "failed": 0
+    }
+  },
+  "browser_viewports": [
+    "desktop 1440x1000",
+    "mobile 390x844"
+  ],
+  "machine_evidence": "Retained real Cua desktop/video, real API and product-tool observation; inference fixture.",
+  "boundaries": "UI-only follow-up; no API/native grant changes, no provider inference rerun, no production/package acceptance."
+}

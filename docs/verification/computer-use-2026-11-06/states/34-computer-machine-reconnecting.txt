@@ -1,0 +1,2 @@
+There has been no change in the accessibility tree for Window: "Ngertiin · Web Client".
+The focused UI element is 364 HTML content ngertiin-machine · Cua viewer, URL: 127.0.0.1:3001/v1/machine/viewer/[redacted-view-token]/viewer/#view_only=1&ngertiin_preview=1

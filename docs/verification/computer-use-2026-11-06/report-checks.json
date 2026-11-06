@@ -1,0 +1,12 @@
+{
+  "html_http": "200 OK verified locally",
+  "embedded_screenshots": "105/105 PNG bytes and hashes matched",
+  "external_assets": 0,
+  "inline_javascript": "node --check passed",
+  "internal_anchor_links": "passed",
+  "report_browser": "Opened and visually inspected using native CUA",
+  "search_filter": "approval produced 4/33 visible cases",
+  "status_filter": "Temuan produced 2/33 visible cases",
+  "gallery": "Disclosure expanded; full-size viewer confirmation interrupted by browser user-change guard",
+  "html_sha256": "6f9494b143a40b7305225fbb678ef672dee7c6514eb3c305432fc5f12aead3b7"
+}

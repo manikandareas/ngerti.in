@@ -1,0 +1,92 @@
+{
+  "date": "2026-11-06",
+  "contract_version": "1.31.0",
+  "git_base": "69ac673412ca155aa18db2d6ed3be1df751efd40",
+  "delivery": "working_tree_local_web",
+  "checks": {
+    "backend": {
+      "passed": 411,
+      "failed": 0,
+      "files": 46,
+      "assertions": 2487
+    },
+    "frontend_unit": {
+      "passed": 49,
+      "failed": 0
+    },
+    "lint": "passed",
+    "typecheck": "passed",
+    "web_build": "passed_with_existing_large_bundle_advisory",
+    "whitespace": "passed"
+  },
+  "browser": {
+    "conversation": {
+      "cases": 84,
+      "initial_passed": 81,
+      "initial_failed": 3,
+      "isolated_rerun_passed": 3,
+      "initial_log": "conversation-initial.log",
+      "rerun_log": "conversation-rerun.log"
+    },
+    "work": {
+      "cases": 78,
+      "initial_passed": 76,
+      "initial_failed": 2,
+      "isolated_rerun_passed": 2,
+      "initial_log": "work-initial.log",
+      "rerun_log": "work-rerun.log"
+    },
+    "computer": {
+      "passed": 4,
+      "failed": 0,
+      "log": "machine.log",
+      "boundary": "Real Cua video and product-tool observation; inference fixture"
+    },
+    "final_focused_interactions": {
+      "passed": 8,
+      "failed": 0,
+      "log": "interactions-final.log"
+    },
+    "final_studio": {
+      "passed": 2,
+      "failed": 0,
+      "log": "studio-final.log"
+    },
+    "unique_cases_verified": 166
+  },
+  "native": {
+    "families": [
+      "codex",
+      "muse"
+    ],
+    "completed_turns": 6,
+    "evidence": "native-interactions.json",
+    "scope": "Product ask, topic change without decision, later answer through the existing user turn"
+  },
+  "local_review": {
+    "web": "http://127.0.0.1:3001/",
+    "studio": "http://127.0.0.1:3001/assistant-studio",
+    "api": "http://127.0.0.1:8000",
+    "installation_data_reset": false,
+    "packaged_native_client_rebuilt": false,
+    "commit": false,
+    "push": false
+  },
+  "reproduce": [
+    "bun run lint",
+    "bun run typecheck",
+    "bun run test:server",
+    "bun test apps/web-client/verification",
+    "bun run build:web-client",
+    "cd apps/web-client && bunx playwright test --config playwright.conversation.config.ts",
+    "cd apps/web-client && bunx playwright test --config playwright.work.config.ts",
+    "cd apps/web-client && bunx playwright test --config playwright.machine.config.ts",
+    "bun scripts/verification/conversation/native.ts"
+  ],
+  "limits": [
+    "Client deadline accelerated for real ticket renewal; hours-long soak and full real expiry/backend restart fault matrix not claimed.",
+    "Pinned viewer status and decoder counters do not prove frozen capture versus healthy idle.",
+    "Full all-feature same-thread journey on both real providers is not claimed; see separate evidence boundaries."
+  ],
+  "screenshots": "screenshots.json"
+}

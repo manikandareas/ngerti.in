@@ -1,14 +1,40 @@
-# Ngertiin product direction
+# Ngertiin product scope
 
-The authority for product decisions is [Ngertiin Multi Agent](https://app.notion.com/p/402abdd6187381e3a720f4b01d824e1a), updated for harness-first development on 2026-10-30.
+This repository is the authority for Ngertiin product decisions, implementation scope, acceptance and delivery status. Start with [the documentation index](docs/README.md), [feature decisions](docs/product/feature-decisions.md), and [the local backlog](docs/backlog/README.md). Explicit user decisions take precedence and must be recorded locally when they change scope.
 
-- One human owner works with persistent agents through private DMs and groups. Agent identity persists while conversation context and native sessions remain separate.
-- Ngertiin owns admission, queues, domain persistence, event publication, goals/Routine, stop intent and recovery decisions. Each harness owns its inner agent/model/tool loop.
-- Required runtimes are Codex/ChatGPT through App Server and Muse Code through SDK/MSP. Subscription and explicitly selected API-key billing remain distinct. Hermes and additional runtimes are deferred.
-- Agents capture goals from conversation. Stopping a run differs from pausing/stopping the responsibility and its continuations. Unknown external outcomes require reconciliation before replay.
-- Composio supplies app connections. The approved shared-machine amendment provides one persistent local Linux desktop per installation/owner through Cua SDK, spacesd and Driver. Browser, terminal and working files share that machine; Computer supports viewing and human takeover. Private history/memory/provider credentials and saved artifact metadata stay in Ngertiin. Remote/VPS attachment and native Ngertiin clients remain future scope. See docs/architecture/shared-machine-cua-plan-2026-11-04.md.
-- Backend/API implementation precedes the NMA-060 readiness gate, UI NMA-061–063, and installation NMA-064. Historical results do not satisfy these gates.
+Ngertiin is a persistent agent workspace for one human owner, private DMs and groups. Agents can use tools, collaborate, retain scoped memory, and continue durable responsibilities through Goals and Routine while the backend and harness host remain alive. Closing a tab does not stop work; a sleeping or powered-off host cannot execute.
 
-The approved foundation stack is Bun + TypeScript + Elysia + SQLite with background scheduler and dispatcher modules under one application authority. See the [ADR](docs/architecture/adr-0001-harness-first-foundation.md) and [contract](docs/architecture/harness-first-contract.md). Foundation completion does not imply provider, UI, installer or production acceptance.
+## Product behavior
 
-Historical development data may be reset without a compatibility migration. Unrelated work and historical evidence remain preserved; new runtime data must persist and recover correctly during normal operation.
+- Tobi, its primary DM and an authored welcome are created idempotently. Reopening a conversation reads history without model inference.
+- One conversation workspace is the main interface. The left sidebar lists agents/groups and their chats. Detail contains contextual profile/member, Goals and Routine views; Library contains scoped saved artifacts and shared working files; Computer shows the shared machine. Settings opens in place. See [interface behavior](docs/product/interface.md).
+- Create agent immediately creates an owner-unique library-generated name, default avatar and DM using the selected connection/model/billing defaults. Create group asks for a name and valid owned agents. Each intentional creation has one durable human-authored automatic opener and admission; retry, reconnect or restart does not repeat it.
+- Personalization follows useful work. Ask one necessary question, accept a clear task immediately, and update profiles or shared group directions through scoped tools. Name, role, persona, Goals and working style are examples, not a required checklist. Failed opening preserves the created entity and conversation.
+- Agent identity persists across DM/group use. Native sessions, transcript, private memory and saved-artifact metadata retain their logical scope. Group updates do not rewrite every member's private profile.
+- Groups contain one human owner and their agents. Valid explicit mentions select the target; semantic routing otherwise chooses the first member asked to act. Only the selected member speaks. Handoff/review transfers real work without requiring the human to relay instructions. See [conversation behavior](docs/product/conversations.md).
+- Busy conversations retain FIFO input with edit/delete before dispatch. Contextual steer uses native capability; cancellation through agent-selected tools and the direct control endpoint has separate receipt semantics. Stop intent differs from native confirmation; stop run differs from stopping a Goal or Routine.
+- Goals preserve outcomes needing durable ownership, progress and follow-through, or explicit Goal tracking. An ordinary request, many steps, file output, research or temporary wait alone does not require a Goal. Standalone reminders/checks may use Routine without a Goal. See [responsibilities](docs/product/goals-routine.md).
+
+## Runtime and machine
+
+Ngertiin owns one application lifecycle: identity, admission, queue, persistence, events, scheduling, stop intent and recovery. Codex/ChatGPT App Server and Muse Code SDK/MSP own their inner model/tool loops. Bun + TypeScript + Elysia + SQLite is the implemented foundation. ACP is an optional transport, not a requirement for a generic runtime registry. Hermes and additional harnesses remain deferred; there is no legacy runtime fallback.
+
+Subscription and API-key billing remain distinct. Use only the selected connection; never silently switch billing. The accepted NMA-050/NMA-060 scope verifies ChatGPT subscription and explicitly selected Muse API-key billing. Muse subscription remains unverified. Missing or unsupported capability is represented honestly, with actionable errors and redacted diagnostics.
+
+One persistent local Linux desktop per installation/owner is shared by all agents through Cua SDK → cua-spacesd → Driver. Browser, terminal, working files and attachment copies use that same machine. Foreground input has one agent-or-human lease; terminal processes may run concurrently. Private history, memory, provider credentials and immutable artifact bytes remain in the backend. The shared working root is a cooperative device, not adversarial OS isolation between authorized agents. See [architecture and trust boundaries](docs/architecture/overview.md).
+
+Composio supplies app connections. Application skills and inherited harness skills are separate: agents create/repair only app-owned packages. Source availability does not promote an upstream feature into scope.
+
+## Optional and deferred work
+
+The [83-row decision register](docs/product/feature-decisions.md) retains every selected decision and note. Optional work requires an explicit promotion before becoming an acceptance commitment: VPS, advanced CLI editor, managed harness updates, full connection/usage dashboards, context meter/search/fork UI, temporary subagents, webhooks, image/document generation and app previews.
+
+Deferred work includes additional runtimes, full web login/pairing, local model endpoints/managers, agent import/export, marketplace, voice, external messaging channels, multiple humans/RBAC, remote/multi-host enrollment and platform hosting/billing services. Basic resource authorization and secret protection remain required independently of deferred account login.
+
+The Tauri macOS ARM64 host is an implemented development application and the sole desktop implementation. General native-client distribution, other platforms, fresh-device installation and production readiness remain separate. This development exception supersedes the earlier blanket deferral of native application experiments; it does not complete NMA-064.
+
+## Delivery and data
+
+Delivery order remains engine/backend → NMA-060 API gate → NMA-061/062 UI → NMA-063 product acceptance → NMA-064 installation. The local backlog records 16 completed active milestones, NMA-063/NMA-064 Backlog, and NMA-051 deferred. A later API delta must be verified before UI consumption; prior acceptance covers its captured scope only.
+
+Historical development data may be reset when needed without a compatibility migration. Limit any reset to the authorized development scope and preserve unrelated work. New-runtime persistence, crash recovery and isolation remain mandatory during ordinary operation. Unknown external outcomes require reconciliation before replay. Rollback uses Git and verified backups.

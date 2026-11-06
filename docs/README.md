@@ -1,105 +1,31 @@
-> Historical V1 mirror. Current product and implementation: [Ngertiin Multi Agent](https://app.notion.com/p/402abdd6187381e3a720f4b01d824e1a) and [repository guide](../README.md). The retired runtime is not available as a mode. Content below is preserved evidence.
+# Ngertiin documentation
 
-# Ngertiin
+This repository is the authority for product decisions, local backlog, implementation and acceptance. Start with [PRODUCT.md](../PRODUCT.md) for scope and [the repository guide](../README.md) for setup. [The local workflow](development/workflow.md) explains how to maintain these documents and milestones together.
 
-> Pembaruan 22 Oktober 2026: runtime aktif hanya E2B. Kode, resource dan data Daytona telah dihapus. Keterangan provider lama di bawah adalah konteks historis, bukan instruksi operasi saat ini. Lihat [pembersihan provider](engineering/e2b-only-cleanup.md).
+## Product and work
 
+- [All 83 feature decisions](product/feature-decisions.md), [agents/conversations/groups](product/conversations.md), [Goals and Routine](product/goals-routine.md), and [current interface](product/interface.md).
+- [Local backlog and delivery status](backlog/README.md), [feature ownership](backlog/feature-coverage.md), and [acceptance/readiness gates](development/acceptance.md).
+- [Source adoption and upgrades](development/source-adoption.md), [decision handoff provenance](development/decision-record.json), and [historical evidence/Git recovery](development/history.md).
 
-Sumber: [Notion](https://app.notion.com/p/3f8abdd6187381e39753f0d54ee2556b) · Readback: 2026-10-18T06:04:56.780944+00:00
+The handoff reconciles eleven decision documents and nineteen milestone records, including the deferred runtime reference. Current implementation amendments take precedence over the older planning sections they replace. The provenance record identifies the captured source/version and reconciliation boundaries; ongoing work updates this repository directly.
 
-<!-- notion-content:start -->
-Ngertiin V1 adalah asisten personal umum untuk chat, task background, file/hasil persisten, kode/browser di Daytona, VNC/live desktop/takeover pada sesi yang sama, jadwal offline, persona, memory, goals dan proaktivitas terkontrol.
-Target V1 dibedakan dari current implementation. NG-026–030 menerima baseline sebelum trial Daytona; fitur baru tetap gap bertiket. Course/Lesson/Practice hanya arah berikutnya dan bukan dependency aktif.
+## Architecture and API
 
-## Mulai membaca
+- [Current architecture and trust boundaries](architecture/overview.md).
+- [Foundation ADR](architecture/adr-0001-harness-first-foundation.md), [lifecycle contract](architecture/harness-first-contract.md), and [consumer contract](architecture/api-consumer-contract.md).
+- [Harness broker](architecture/harness-broker-contract.md), [Codex adapter](architecture/codex-adapter.md), and [Muse adapter](architecture/muse-adapter.md).
+- [Agents/conversations API](architecture/agent-conversation-api.md), [queue/control/recovery](architecture/conversation-control-api.md), and [group collaboration](architecture/group-collaboration-api.md).
+- [Goals/Routine API](architecture/goals-routines-api.md), [memory/skills](architecture/memory-skills-api.md), [workspace/artifacts](architecture/workspace-artifact-api.md), and [app connections/research/visual input](architecture/apps-research-visual-api.md).
+- [Current checked-in contract 1.31.0](contracts/1.31.0.json). Earlier bundles and versioned guides retain their original scope; authenticated `/v1/contracts` identifies the installed server's export.
 
-1. [01 · Produk & Scope V1](product/01-produk-dan-paket.md)
-2. [02 · UX & User Flow](product/02-user-flow.md)
-3. [03 · Perilaku Agent](product/03-agent.md)
-4. [04 · Arsitektur, Runtime & Kontrak](product/04-arsitektur-dan-delivery.md)
-5. [05 · Usage, Paket & Pembayaran](product/05-usage-paket-pembayaran.md)
-6. [06 · Development, Operasi & Acceptance](engineering/development.md)
-7. [07 · Backlog Implementasi V1](backlog/README.md)
-8. [08 · Bukti Riset & REA](research/muse-ai-v1/README.md)
-Rantai: spesifikasi → bukti REA/riset → tiket → bukti penerimaan. Tiket Done lama tetap riwayat. Notion menjadi sumber keputusan/status; mirror repo dan manifest mengikuti readback.
+## Machine, desktop and evidence
 
-## Halaman sumber
+- [Shared-machine architecture](architecture/shared-machine-cua-plan-2026-11-04.md), [setup/native verification](verification/shared-machine/README.md), and [task-window cleanup](verification/shared-machine/cleanup-2026-11-04.md).
+- [Tauri development/packaging/lifecycle](architecture/tauri-development.md), [design rationale](architecture/tauri-desktop-design-2026-11-04.md), and [native verification](verification/tauri-development/README.md).
+- [Conversation/Computer plan](architecture/conversation-interactions-and-computer-plan-2026-11-06.md), [implementation evidence](verification/conversation-implementation-2026-11-06/README.md), and [later refinements](verification/conversation-followup-2026-11-06/report.html).
+- [Research index](research/README.md), [initial NMA-060 API gate](verification/nma-060/final-cohort/README.md), [NMA-061 UI](verification/nma-061/README.md), and [NMA-062 UI](verification/nma-062/README.md).
 
-[01 · Produk & Scope V1](product/01-produk-dan-paket.md)
+Sixteen active milestones are Done for their recorded scope. NMA-063 product-wide acceptance and NMA-064 distribution remain Backlog. Native/provider, billing, API, browser/UI and installation claims have separate evidence. Retained historical captures are evidence, not workflow instructions or a blanket production-readiness claim.
 
-[02 · UX & User Flow](product/02-user-flow.md)
-
-[03 · Perilaku Agent](product/03-agent.md)
-
-[04 · Arsitektur, Runtime & Kontrak](product/04-arsitektur-dan-delivery.md)
-
-[05 · Usage, Paket & Pembayaran](product/05-usage-paket-pembayaran.md)
-
-[06 · Development, Operasi & Acceptance](engineering/development.md)
-
-[07 · Backlog Implementasi V1](backlog/README.md)
-
-[08 · Bukti Riset & REA](research/muse-ai-v1/README.md)
-
-## Database tugas
-
-[07 · Backlog Implementasi V1](backlog/README.md)
-<!-- notion-content:end -->
-
-## Status kerja terbaru
-
-Readback status 2026-10-19T15:31:57.122490+00:00: [NG-042 · Redesign shell dan percakapan](backlog/tasks/42-redesign-shell-dan-percakapan-mengikuti-muse.md) berstatus **Review**. Shell, composer, panel bersama, navigasi mobile dan kontinuitas chat diimplementasikan. Check/build, 46 kontrak quota dan 47 kontrak files lulus. [Bukti dan sisa acceptance](engineering/shell-42-acceptance.md) mencatat batas upload browser dan parity visual. NG-043–046 hanya dimirror sebagai Backlog.
-
-Readback status 2026-10-19T13:56:22.261Z: [NG-023 · Recovery end-to-end dan konsistensi state](backlog/tasks/23-recovery-end-to-end-dan-konsistensi-state.md) berstatus **Done**. [Penerimaan recovery](engineering/recovery-23-acceptance.md) mencatat 41 kontrak, dua SIGKILL nyata, restore PostgreSQL/MinIO terisolasi, workflow compatibility, lookup Daytona read-only dan walkthrough desktop/mobile. Migrasi 0016/0017 tanpa reset; worker dimuat ulang. NG-041 menjadi urutan berikutnya; status tiket lain dipertahankan.
-
-Readback status 2026-10-19T13:28:12.210Z: [NG-022 · Paket pengguna usage expiry dan downgrade](backlog/tasks/22-paket-pengguna-usage-expiry-dan-downgrade.md) berstatus **Done**. Lifecycle renewal, expiry, downgrade dan refund diterima development. 49 kontrak lifecycle, regresi terkait, refund provider test nyata dan browser desktop/mobile diverifikasi. Bukti pada docs/engineering/billing-22-acceptance.md. NG-023 menjadi pekerjaan berikutnya. Status tiket lain dipertahankan.
-
-Readback status 2026-10-19T13:01:04.050Z: [NG-021 · Checkout dan aktivasi pembayaran V1](backlog/tasks/21-checkout-plus-dan-aktivasi-pembayaran.md) berstatus **Done**. Scope development yang diterima memakai subscription Lemon Squeezy saja, checkout, webhook, aktivasi, pembatalan dan recovery. Duitku dinonaktifkan sementara sesuai keputusan pengguna. Status tiket lain dipertahankan.
-
-
-
-Readback status 2026-10-19T10:53:47.949Z: [NG-040 · Usage komputasi dan kontrak paket V1](backlog/tasks/40-usage-komputasi-dan-kontrak-paket-v1.md) berstatus **In Progress**. Implementasi mengikuti scope yang disetujui: ledger lintas kemampuan, allowance komputasi, charge/refund, estimasi dan Usage. Status tiket lain dipertahankan.
-
-Readback status 2026-10-19T10:22:42.085Z: [NG-039 · Library pencarian dan penemuan kemampuan](backlog/tasks/39-library-pencarian-dan-penemuan-kemampuan.md) berstatus **Done**. Tools pencarian/read, pilihan exact dalam chat, revisi lintas thread, Library dan discovery aktif diterima development; konektor di luar V1. [Penerimaan NG-039](engineering/library-39-acceptance.md) mencatat 65 kontrak, model nyata, desktop/mobile dan batas bukti. NG-040 menjadi urutan berikutnya; status tiket lain dipertahankan.
-
-Readback status 2026-10-19T09:53:09.491Z: [NG-039 · Library pencarian dan penemuan kemampuan](backlog/tasks/39-library-pencarian-dan-penemuan-kemampuan.md) berstatus **In Progress**. Implementasi mengikuti final plan yang disetujui: pencarian/read tools agent, pilihan exact dalam chat, Library, dan discovery kemampuan aktif; konektor di luar V1.
-
-Readback status 2026-10-19T09:02:27.281Z: [NG-020 · Delivery proaktif per thread dan batas global](backlog/tasks/20-delivery-proaktif-per-thread-dan-batas-global.md) berstatus **Done**. Preferensi lewat chat/UI, pesan informatif dan delivery atomik diterima development; 105 kontrak, regresi terkait dan browser desktop/mobile lulus. Delivery offline memakai fixture positif terkontrol; dua evaluasi provider nyata memilih no-op. Rincian dan batas bukti pada [penerimaan NG-020](engineering/proactivity-20-acceptance.md).
-
-Readback status 2026-10-19T08:21:59Z: [NG-019 · Kandidat proaktif dinamis dan reranking](backlog/tasks/19-kandidat-proaktif-dinamis-dan-reranking.md) berstatus **Done**. LLM membentuk kandidat, Jev menilai dan code memilih; 68 kontrak, provider/worker nyata serta desktop/mobile diterima. Rincian dan batas bukti pada [penerimaan NG-019](engineering/proactivity-19-acceptance.md); delivery otomatis tetap NG-020.
-
-Readback status 2026-10-19T07:47:26.467Z: [NG-019 · Kandidat proaktif dinamis dan reranking](backlog/tasks/19-kandidat-proaktif-dinamis-dan-reranking.md) berstatus **In Progress**. Implementasi mengikuti scope yang disetujui: LLM membentuk kandidat, Jev menilai, code memilih; delivery otomatis mengikuti NG-020.
-
-Readback status 2026-10-19T06:29:38.106391+00:00: [NG-038 · Goals umum dengan evidence progress](backlog/tasks/38-goals-umum-dengan-evidence-progress.md) berstatus **Done**. [Penerimaan Goal](engineering/goals-38-acceptance.md) mencatat 74 kontrak, integrasi Task/Jadwal, bukti per kriteria, model nyata serta desktop/mobile. NG-019 adalah urutan berikutnya; status tiket lain dipertahankan.
-
-Readback status 2026-10-19T05:53:03.400Z: [NG-038 · Goals umum dengan evidence progress](backlog/tasks/38-goals-umum-dengan-evidence-progress.md) berstatus **In Progress**. Implementasi dimulai sesuai scope yang disetujui; acceptance belum dinyatakan selesai.
-
-Readback status 2026-10-19T05:41:03.122Z: [NG-017](backlog/tasks/17-memory-aktif-capture-evidence-dan-recall.md) dan [NG-018](backlog/tasks/18-pengaturan-untuk-inspeksi-dan-koreksi-memory.md) berstatus **Done**. [Penerimaan memory](engineering/memory-17-acceptance.md) dan [cara kerja memory](engineering/memory-runtime.md) mencatat Mem0 OSS, evidence, recall dan kontrol pengguna. NG-038 adalah urutan berikutnya; status tiket lain dipertahankan.
-
-Readback status 2026-10-19T03:42:13.950127+00:00: [NG-016 · Perubahan soul atas permintaan dan HITL](backlog/tasks/16-perubahan-soul-atas-permintaan-dan-hitl.md) berstatus **Done**. [Penerimaan persona](engineering/persona-16-acceptance.md) mencatat editor, review, history/restore, snapshot dan desktop/mobile. NG-017 adalah urutan berikutnya.
-
-Readback status 2026-10-19T03:21:43.382056+00:00: [NG-016 · Perubahan soul atas permintaan dan HITL](backlog/tasks/16-perubahan-soul-atas-permintaan-dan-hitl.md) berstatus **In Progress**. Panel asisten, Identity/Soul, editor dan review persona mulai diimplementasikan sesuai final plan yang disetujui.
-
-Readback status 2026-10-19T02:21:49.327704+00:00: [NG-037 · Scheduler pengguna saat offline](backlog/tasks/37-scheduler-pengguna-saat-offline.md) berstatus **Done**. [Laporan penerimaan](engineering/schedule-37-acceptance.md) memuat eksekusi saat halaman tertutup, chat create/edit/pause, 82 kontrak scheduler, interval setiap N jam, timezone/DST, budget dan desktop/mobile. NG-016 menjadi urutan implementasi berikutnya; status tiket lain dipertahankan.
-
-Readback status 2026-10-19T01:56:38.366Z: [NG-037 · Scheduler pengguna saat offline](backlog/tasks/37-scheduler-pengguna-saat-offline.md) berstatus **In Progress**. Implementasi scheduler offline dimulai sesuai scope yang disetujui; acceptance belum dinyatakan selesai.
-
-Readback status 2026-10-18T17:56:53.897Z: [NG-036 · Browser VNC live desktop dan takeover](backlog/tasks/36-browser-vnc-live-desktop-dan-takeover.md) berstatus **Done**. [Laporan penerimaan](engineering/computer-36-acceptance.md) memuat login nyata lintas Task sesudah provider stop/start, VNC privat desktop/mobile, exact action approval, 47 kontrak, SIGKILL/idle stop, reset profil dan hasil persisten. NG-037 menjadi urutan berikutnya; status tiket lain dipertahankan.
-
-Readback status 2026-10-18T15:44:00.527Z: [NG-035 · Eksekusi kode dalam sandbox](backlog/tasks/35-eksekusi-kode-dalam-sandbox.md) berstatus **Done**. [Laporan penerimaan](engineering/sandbox-35-acceptance.md) memuat interface Python yang dapat diganti, adapter Daytona, isolasi kernel, 45 kontrak runtime, CSV/model nyata, review/revisi/download desktop/mobile serta stop/cleanup. NG-036 menjadi urutan implementasi berikutnya; status tiket lain dipertahankan.
-
-Readback status 2026-10-18T14:17:35.163Z: [NG-034 · File produk dan hasil tersimpan](backlog/tasks/34-file-produk-dan-hasil-tersimpan.md) berstatus **Done**. [Laporan penerimaan](engineering/files-34-acceptance.md) memuat Mistral OCR, immutable revisions, result manifest, preview/download/delete, 47 kontrak file dan walkthrough desktop/mobile. Eksekusi kode umum dan full Library search mengikuti NG-035/NG-039.
-
-Readback status 2026-10-18T10:08:03.263Z: [NG-033 · Task background dan approval umum](backlog/tasks/33-task-background-dan-approval-umum.md) berstatus **Done**. [Laporan penerimaan](engineering/task-33-acceptance.md) memuat Task teks, chat bersamaan, exact approval/revision, stop/retry, 55 kontrak backend dan walkthrough model nyata. NG-034 belum dimulai.
-
-Readback status 2026-10-18T08:14:37.582446+00:00: [NG-032 · Shell onboarding dan walkthrough asisten umum](backlog/tasks/32-shell-onboarding-dan-walkthrough-asisten-umum.md) berstatus **Done**. [Laporan penerimaan](engineering/shell-onboarding-32-acceptance.md) memuat bantuan pertama dengan model nyata, navigasi/usage/pengaturan, walkthrough desktop/mobile dan batas fitur berikutnya. NG-033 belum dimulai.
-
-Readback status 2026-10-18T07:40:29.161083+00:00: [NG-032 · Shell onboarding dan walkthrough asisten umum](backlog/tasks/32-shell-onboarding-dan-walkthrough-asisten-umum.md) berstatus **In Progress** untuk brainstorming dan persiapan implementasi berikutnya, sesuai Urutan 7. NG-031 telah Done; acceptance NG-032 belum dijalankan.
-
-Readback status 2026-10-18T07:13:08.912354+00:00: [NG-031 · Validasi Daytona dengan trial terbatas](backlog/tasks/31-validasi-daytona-dengan-trial-terbatas.md) berstatus **Done**. Empat acceptance criteria memiliki bukti live; [laporan penerimaan](engineering/daytona-31-acceptance.md) mencatat hasil dan batasnya. Dua sandbox trial sudah dihapus; readback provider mengonfirmasi tidak ada resource tersisa.
-
-Readback NG-043 2026-10-20T07:54:34.975Z: **Review**. Aktivitas, Persetujuan, task inline dan komputer telah diimplementasikan; check/build, 10 assertions UI, 56 kontrak task dan 47 kontrak komputer (allowance fixture khusus) lulus. [Bukti dan sisa acceptance NG-043](engineering/activity-43-acceptance.md) mencatat walkthrough desktop/mobile dan state Muse yang belum teramati.
-
-Readback NG-044 2026-10-20T08:11:42.656Z: **Review**. Settings berkategori, usage terpusat, perlindungan draft dan entry identitas telah diimplementasikan. [Bukti dan sisa acceptance NG-044](engineering/settings-44-acceptance.md) mencatat gate lulus serta batas verifikasi browser.
-
-Readback NG-045 dan NG-046 2026-10-20T08:39:44.741Z: **Review**. Viewer konten, Library, diskusi, perencanaan goals/jadwal dan matriks acceptance telah diimplementasikan. [Bukti dan sisa acceptance](engineering/redesign-45-46-acceptance.md) membedakan walkthrough yang lulus dari parity dan skenario terpadu yang belum terbukti.
+Run `make docs-check` or `bun run docs:check` to validate local links and backlog consistency. Only byte-identical registered historical captures may resolve missing targets in pinned Git trees. Current guides resolve against the working tree.

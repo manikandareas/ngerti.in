@@ -27,7 +27,7 @@ The default Tauri profile is `~/Library/Application Support/Ngertiin Tauri/profi
 
 Plain Tauri text drafts survive a full Quit/relaunch. Files and pending upload/submission operations retain the existing IndexedDB mechanism. The TypeScript helpers in `apps/desktop/scripts/profile.ts` provide setup and tooling validation; the Rust host owns runtime profile validation and supervision.
 
-Electron source, dependencies, scripts and tests have been removed. Its historical profile and any separately installed application are untouched; browser storage is not imported into WebKit. The retired implementation is available at Git revision `6de957e7145c0367a52b10f5fd19bbd91c50e458`. See the historical [Electron architecture](electron-development.md) and [original trial evidence](../verification/tauri-development/README.md) for their recorded scope.
+Electron source, dependencies, scripts and tests have been removed. Its historical profile and any separately installed application are untouched; browser storage is not imported into WebKit. The retired implementation is available at Git revision `6de957e7145c0367a52b10f5fd19bbd91c50e458`. See [historical recovery](../development/history.md) for its retired architecture guide and [original trial evidence](../verification/tauri-development/README.md) for its recorded scope.
 
 ## Runtime and lifecycle
 

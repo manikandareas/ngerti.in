@@ -16,12 +16,12 @@ Keep the current visual identity, Hugeicons, conversation layout, Detail/Library
 
 ## Decision sources and current evidence
 
-Read live Notion product scope, architecture, feature matrix, roadmap, acceptance, NMA-060 and NMA-064 during this investigation. NMA-060 currently has **Done** status for its recorded engine/API scope; NMA-064 remains **Backlog**, depending on NMA-063. The November 4 shared-machine amendment supersedes older browser-use/VNC paragraphs. Older index text still lists native clients as deferred; the user's present request authorizes this scoped desktop design, without promoting mobile, remote hosting, or full distribution.
+The investigation reviewed product scope, architecture, feature decisions, roadmap, acceptance and milestone status. Their maintained local equivalents are linked below. NMA-060 is Done for its captured engine/API scope; NMA-064 remains Backlog after NMA-063. The shared-machine amendment replaces browser-use/VNC planning. Tauri is now implemented for macOS ARM64 development, with general distribution and other platforms still separate.
 
-- [Product scope](https://app.notion.com/p/402abdd61873816e871ae24804345b56), [active architecture](https://app.notion.com/p/402abdd6187381beacd6c48fa521b99f), [feature decisions](https://app.notion.com/p/409abdd61873813284bbf75698073d8e).
-- [Roadmap](https://app.notion.com/p/402abdd6187381ceaa4fe40ebf41001c), [acceptance](https://app.notion.com/p/402abdd61873812a97a9f41032dd854f), [NMA-060](https://app.notion.com/p/409abdd61873819b80c4dd2b3e593834), [NMA-064](https://app.notion.com/p/409abdd618738198a715db475e9e6f81).
+- [Product scope](../../PRODUCT.md), [active architecture](overview.md), [feature decisions](../product/feature-decisions.md).
+- [Roadmap](../backlog/README.md), [acceptance](../development/acceptance.md), [NMA-060](../backlog/NMA-060.md), [NMA-064](../backlog/NMA-064.md).
 - Electron baseline: `1226b91f697bbb063d993e4a1043e00fca597fde`; latest frontend optimization: `807bfa08b984cdbaa3feb9387b661f1e02b2e873`.
-- Current package manifests pin Electron 45.2.2 and Bun 1.3.10. The native host serves the existing React/Vite UI through a saved loopback origin and launches or attaches the Bun backend. See [Electron design](electron-development.md).
+- At proposal time, package manifests pinned Electron 45.2.2 and Bun 1.3.10. That host served the React/Vite UI through a saved loopback origin and launched or attached the Bun backend. Its retired design is available in the [historical Git snapshot](../development/history.md); [Tauri development](tauri-development.md) describes the current host.
 - Existing [performance evidence](../verification/electron-development/ui-performance-2026-11-04.md) reports zero historical Markdown rerenders on repeated Detail/composer interactions after optimization, and a median p95 Detail-open frame interval of 17.5 ms across three opens. Some approximately 33 ms frames and a 94 ms first-open task in a content-heavy group remain. This small cohort is not a general smoothness guarantee.
 - Computer now uses a Cua iframe and media protocol, with one retained Linux machine. The old noVNC UI was removed. See [machine evidence](../verification/shared-machine/README.md).
 

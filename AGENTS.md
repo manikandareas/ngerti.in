@@ -1,44 +1,42 @@
-# Status repository
+# Ngertiin repository guidance
 
-Ngertiin adalah workspace agent persisten berbasis web. Lanjutkan repository ini mengikuti keputusan **harness-first** di Notion pada 30 Oktober 2026. Implementasi yang ada menjadi baseline untuk diaudit, direuse, atau dibersihkan; keputusan arsitektur baru bukan bukti implementasi atau acceptance sudah selesai.
+Ngertiin is a persistent agent workspace with one human owner, private DMs, groups, automatic Goals and Routine. The repository is the authority for product decisions, scope, acceptance and delivery status. Explicit user instructions take precedence; record resulting scope changes locally.
 
-## Acuan dokumentasi utama
+## Read for the task
 
-1. Sebelum merancang atau mengimplementasikan perubahan produk/runtime, baca [Ngertiin Multi Agent](https://app.notion.com/p/402abdd6187381e3a720f4b01d824e1a), [scope produk](https://app.notion.com/p/402abdd61873816e871ae24804345b56), dan dokumen anak yang relevan. Kolom `Keputusan kamu` pada [matriks fitur](https://app.notion.com/p/409abdd61873813284bbf75698073d8e) menentukan Wajib/Opsional/Tunda; rekomendasi awal bukan keputusan final.
-2. Ambil scope, acceptance, dan dependensi dari tiket di [backlog NMA](https://app.notion.com/p/116e1edcee864b5da91887466d728aac). Gunakan `Rencana: Harness-first` untuk pekerjaan aktif; baca `Depends on` sebelum mulai. Tiket `Historis` dan `Ditunda` bukan antrean aktif atau prasyarat tersembunyi.
-3. Untuk urutan kerja, ikuti [roadmap Engine/API → UI → Instalasi](https://app.notion.com/p/402abdd6187381ceaa4fe40ebf41001c). Untuk boundary runtime/API, baca [arsitektur aktif](https://app.notion.com/p/402abdd6187381beacd6c48fa521b99f); untuk pembuktian dan Done, baca [acceptance dan gerbang kesiapan](https://app.notion.com/p/402abdd61873812a97a9f41032dd854f).
+- Product/runtime design or implementation: read [PRODUCT.md](PRODUCT.md), the relevant [feature decisions](docs/product/feature-decisions.md), [architecture](docs/architecture/overview.md), and the applicable local API guide.
+- A named milestone: read its file in [the local backlog](docs/backlog/README.md), including acceptance and `Depends on`. NMA-051 is deferred; historical milestones are not an active queue.
+- Readiness or completion claims: use [acceptance gates](docs/development/acceptance.md) and the relevant retained evidence. [The local workflow](docs/development/workflow.md) owns status and documentation maintenance.
+- Machine changes: read [the shared-machine trust/implementation plan](docs/architecture/shared-machine-cua-plan-2026-11-04.md) and [setup/native evidence](docs/verification/shared-machine/README.md). Desktop-host changes use [Tauri development](docs/architecture/tauri-development.md).
 
-Instruksi eksplisit pengguna dan keputusan terbaru di Notion mengungguli panduan produk lama di repo. Riset lokal, dokumen V1, rancangan Hermes-first/106-family, dan hasil Done historis adalah bukti pendukung untuk scope lamanya. Jika Notion tidak dapat diakses, nyatakan keterbatasannya dan lanjutkan hanya scope yang sudah jelas; jangan menganggap salinan lama sebagai keputusan terkini.
+Keep detailed policy in these documents; update the affected local specification, milestone/checklist, backlog status and evidence together when behavior or decisions change. Research, old planning text and historical Done apply only to their captured scope.
 
-## Arsitektur dan scope aktif
+## Runtime and product invariants
 
-- **Satu otoritas lifecycle aplikasi di Ngertiin** mengelola identity agent/thread/goal/Routine, admission, queue, domain persistence, event publication, cancellation intent, dan keputusan recovery. Harness memiliki inner agent/model/tool loop; adapter menangani protokol, proses, capabilities, dan native-session binding. Backend API dan UI mengikuti state otoritatif ini.
-- Runtime wajib saat ini hanya **Codex/ChatGPT** melalui App Server dan **Muse Code** melalui SDK/MSP sesuai pembuktian adapter. ACP adalah salah satu transport, bukan kewajiban membangun adapter ACP generik. Hermes, Grok, OpenCode, Claude Code, Gemini, Cursor, Cline, dan custom ACP ditunda.
-- Hermes tidak menjadi engine wajib atau fallback. Audit modul lama dan bersihkan kode/config/docs/tooling yang tidak relevan setelah penggantinya tersedia; reuse yang relevan boleh dipertahankan dengan boundary jelas. Gunakan satu jalur lifecycle aplikasi tanpa engine lama yang paralel; rollback memakai versi Git dan backup terverifikasi.
-- Subscription menjadi fokus; API key tetap pilihan jika didukung harness. Bedakan metode autentikasi dari sumber billing, dan jangan beralih dari subscription ke billing API key secara diam-diam. Capabilities, minimum/tested versions, dan state unsupported/unknown ditetapkan per harness.
-- Produk-tools memakai jalur terstruktur seperti MCP sesuai adapter, dengan scope dan akses resource divalidasi server-side. Periksa kembali perubahan grant/capability sebelum dispatch. Rekonsiliasi status/receipt saat recovery; tindakan eksternal dengan hasil unknown tidak diulang secara buta. Bedakan permintaan stop dari konfirmasi native stop.
-- Tobi dan primary DM tersedia otomatis. Agent dapat dibuat/diubah melalui percakapan dan produk-tools. Identitas agent persisten sama di DM/grup; native session, transcript, dan konteks privat tetap terpisah. Grup berisi satu pemilik manusia dan beberapa agent miliknya; routing berbasis model memilih penjawab tanpa pass/skip bubbles dari agent lain.
-- Goals ditangkap dan diperbarui otomatis dari percakapan tanpa formulir atau tombol aktivasi wajib. Jadwal/pemeriksaan disebut **Routine**. Kelanjutan berjalan saat tab tertutup selama backend dan host harness tetap hidup. Stop run berbeda dari pause/stop goal beserta kelanjutannya; jangan menambahkan universal approval atau pembatas inisiatif baru tanpa kebutuhan yang disepakati.
-- **Shared machine**: satu persistent Linux desktop lokal per installation/owner untuk seluruh agent melalui Cua SDK → cua-spacesd → Driver. Browser, terminal dan working files memakai machine yang ditampilkan Computer; foreground input memakai satu agent/human lease. History, memory, provider credentials dan saved artifact metadata tetap scoped di backend; working files serta attachment copies pada machine dibagikan. Untuk perubahan machine, baca [plan dan batas kepercayaan](docs/architecture/shared-machine-cua-plan-2026-11-04.md) serta [bukti/setup](docs/verification/shared-machine/README.md). Remote/VPS attachment dan native client Ngertiin tetap rencana. **Composio** dipakai untuk koneksi aplikasi. Skills bawaan harness terpisah dari skills aplikasi; agent hanya membuat/memperbaiki paket skill milik aplikasi.
-- Fitur Opsional memerlukan keputusan eksplisit sebelum menjadi komitmen wajib; fitur Tunda tetap di luar implementasi aktif. Source upstream yang tersedia tidak otomatis memperluas scope.
+- Ngertiin owns one application lifecycle: identity, admission, queue, persistence, events, scheduling, cancellation intent and recovery decisions. Harnesses own their inner model/tool loops; adapters own protocol/process/capability/native-session binding.
+- Required harnesses are Codex/ChatGPT App Server and Muse Code SDK/MSP. ACP is an optional transport. Additional runtimes and Hermes remain deferred; the active application has no legacy fallback.
+- Authentication and effective billing are separate. Use only the selected connection and never silently switch subscription to API-key billing. Muse API-key billing is the accepted current gate scope; Muse subscription remains unverified.
+- Product tools derive server-validated owner/agent/thread/run/binding scope and recheck current grants/membership/capabilities before dispatch. Reconcile unknown external effects before replay. Stop intent differs from confirmed native stop.
+- Agent identity is persistent across DM/group use; native session, transcript, private memory and saved-artifact metadata retain their scope. Only the selected group member answers. Keep prompts, commands, raw observations and technical handoff instructions private.
+- Goals capture durable responsibility or explicit tracking, not every request or multi-step run. Routine covers schedules/checks and may have no Goal. Stop run differs from stopping a responsibility and its continuation. Do not introduce a universal approval or initiative restriction without an agreed need.
+- All agents share one retained local Linux desktop through Cua SDK → spacesd → Driver. Browser, terminal and working files use that machine. Foreground input has one human-or-agent lease; terminal processes may run concurrently. Shared working files/attachment copies are cooperative, owner-wide OS resources; private backend data remains scoped.
+- Composio supplies app connections. App-owned and inherited harness skills remain separate; agents only create/repair app-owned packages. Tauri is the sole macOS ARM64 development host; fresh-device distribution and other platforms remain separate.
+- Optional/deferred features require an explicit scope decision before becoming implementation commitments. Upstream source availability does not expand scope.
 
-## Urutan implementasi dan data
+## Delivery, data and evidence
 
-- Kerjakan **engine/backend → gate API NMA-060 Done → UI NMA-061–063 → instalasi lokal NMA-064**. Verifikasi gate di Notion sebelum mulai UI. Installer/perangkat lain dikerjakan terakhir; VPS opsional. NMA-051 untuk runtime tambahan ditunda dan bukan dependency aktif.
-- NMA-047 menetapkan seam adopsi/port Openbot, bahasa/proses/storage, dan kontrak domain awal berdasarkan bukti kompatibilitas. Pilihan teknis yang belum ditutup bukan keputusan final yang boleh diasumsikan dari arsitektur lama.
-- Gunakan HTTP/events/native clients atau test clients/CLI/headless scripts untuk membuktikan backend sebelum UI. Perubahan boundary API setelah gate memerlukan verifikasi ulang sebelum UI menggunakannya.
-- Data development lama boleh direset dan tidak memerlukan jalur migrasi/kompatibilitas. Batasi reset pada data development yang diperlukan; pertahankan pekerjaan pengguna yang tidak terkait dan bukti historis. Persistence, recovery, dan isolasi data baru saat operasi normal tetap wajib.
+Engine/backend precedes the NMA-060 API gate, followed by UI and NMA-063 product acceptance, then NMA-064 installation. Check current local status; later API deltas require affected verification before UI consumption. A development bundle or completed API gate does not imply installation or production readiness.
 
-## Adopsi source dan verifikasi
+Use HTTP/events/native clients or headless probes for backend proof; use real API desktop/mobile journeys for UI acceptance. Record exact source/config/versions, setup, denominator, pass/fail/skip, unknowns and limitations. Distinguish login, catalog discovery, completed inference and useful product-tool execution.
 
-- Openbot menjadi pegangan utama source/logic/flow aplikasi dan runtime. Baca exact module/flow pada revision yang dirujuk tiket dan [pegangan source](https://app.notion.com/p/402abdd6187381329ecfccbc490cff2c); catat file/module/commit, alasan reuse, perubahan lokal, versi dependency, dan cara upgrade. Pengurusan lisensi ditangani pengguna terpisah; provenance tetap dicatat. Referensi Hermes/Nakama/Rakazo lama dapat dipakai sebagai pembanding terarah.
-- Bedakan keputusan produk, source observed, contract/fixture tested, native/live verified, API readiness, UI acceptance, dan distribusi. Login, model discovery, completed inference, dan useful product-tool round trip adalah bukti berbeda. Catat setup/command, versi/config, denominator, pass/fail/skip, unknown outcomes, dan keterbatasan.
-- Tandai tiket Done hanya setelah scope, acceptance, dan dependency terpenuhi dengan bukti yang dapat ditelusuri. Source tersedia, fixture lulus, atau Done historis tidak membuktikan acceptance baru; API siap belum berarti UI, installer, atau produksi siap.
+Openbot is the primary application-flow source reference. Follow [source adoption](docs/development/source-adoption.md): record exact module/revision, reuse reasons, local adaptation, dependency pin and upgrade checks. License administration is handled separately by the user; preserve provenance.
+
+Historical development data may be reset within the authorized scope without an old-data migration. Preserve unrelated work, credentials and retained evidence. New-runtime persistence/recovery/isolation remain mandatory. Rollback uses Git and verified backups. A commit request authorizes a scoped local commit, not push or deployment.
 
 ## Engine and backend language
 
-Write all engine and backend code and authored text in English: function, variable, class, module, and schema names; API fields and authored request/response bodies; messages, errors, logs, comments, docstrings, and agent prompts/instructions. Apply this rule to all new or modified engine/backend code. Preserve user-provided content in its original language.
+Write all engine/backend code and authored technical/runtime text in English: names, API fields and bodies, errors, logs, comments, docstrings and agent prompts/instructions. Preserve user content and imported user decision text in its original language.
 
-## Penelusuran kode
+## Code discovery
 
-Utamakan MCP knowledge graph: `search_graph` → `trace_path` → `get_code_snippet` → `query_graph` → `get_architecture`. Gunakan `rg`/pencarian file untuk literal, konfigurasi, non-code, atau ketika graph tidak tersedia/tidak memadai.
+Prefer available knowledge-graph MCP tools in this order: `search_graph`, `trace_path`, `get_code_snippet`, `query_graph`, `get_architecture`. Use `rg` for literals/configuration/non-code or when graph tools are unavailable or insufficient.

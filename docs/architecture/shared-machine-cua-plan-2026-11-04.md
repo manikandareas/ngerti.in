@@ -25,7 +25,7 @@ Remote/VPS attachment, SSH enrollment, remote provisioning, multiple-machine sel
 - Parallel terminal jobs are supported. Browser operations are parallel only where explicit target binding and focus independence are proven. Shared mouse/keyboard work and foreground-sensitive browser actions have one multi-step input owner, including human takeover.
 - Existing group responder selection, turn ordering, responsibility ownership and lifecycle admission remain authoritative. Machine parallelism does not implicitly enable parallel group writers or bypass application queues.
 
-Current Notion [scope](https://app.notion.com/p/402abdd61873816e871ae24804345b56), [feature matrix](https://app.notion.com/p/409abdd61873813284bbf75698073d8e) and [architecture](https://app.notion.com/p/402abdd6187381beacd6c48fa521b99f) still describe browser-only operation, deferred general desktop and conversation-scoped working files. The user's newer decision authorizes this planned change. The amendment to F06/F07 and F01/D05 was recorded during implementation. Preserve historical NMA-054/NMA-058 acceptance as evidence for its original scope. The existing [NMA-060 API gate](https://app.notion.com/p/409abdd61873819b80c4dd2b3e593834) does not prove the new machine boundary; verify the contract delta before consuming it in UI. The original audit was read-only; implementation updated the feature matrix, scope and architecture with the explicit user decision.
+The current local [scope](../../PRODUCT.md), [feature matrix](../product/feature-decisions.md) and [architecture](overview.md) adopt the approved shared-machine boundary. This supersedes earlier browser-only and private working-root planning. F06/F07 and F01/D05 retain their recorded user decision identities. Historical NMA-054/NMA-058 acceptance proves only its original implementation; the [shared-machine API/native report](../verification/shared-machine/README.md) proves the later delta. Reverify any new boundary change before UI consumption.
 
 ## Observed implementation and required changes
 
@@ -43,7 +43,7 @@ The table below records the pre-implementation audit at the baseline revision ab
 | Computer UI | [`context-panel.tsx`](../../apps/web-client/src/features/conversation/components/context-panel.tsx) renders `BrowserSection` under Computer. `browser-section.tsx` selects a member browser. `browser-viewer.tsx` uses view-only noVNC/RFB. | Show one shared machine and its controller. Reuse Cua's viewer through its own protocol, replacing the per-member browser selector and RFB transport. |
 | Library | [`files-panel.tsx`](../../apps/web-client/src/features/conversation/components/files-panel.tsx) lists conversation artifacts rather than a live machine filesystem. | Add a machine-backed Working files surface while retaining scoped attachment/output/download behavior. |
 
-Graph-discovery tools were unavailable in the enabled tool inventory, so this audit used targeted `rg` and source reads. Notion and upstream sources were checked live. No existing unit/native/UI check was rerun merely to label this planning audit as tested.
+Graph-discovery tools were unavailable in the enabled tool inventory, so this audit used targeted `rg` and source reads. Decision records and upstream sources were checked during the original audit. No existing unit/native/UI check was rerun merely to label this planning audit as tested.
 
 ## Architecture
 

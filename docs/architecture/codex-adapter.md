@@ -1,6 +1,6 @@
 # Native Codex adapter
 
-Implemented for [NMA-049](https://app.notion.com/p/409abdd61873813fb849e4bb010f85f7). The development bootstrap explicitly registers Codex through `CodexAdapter`; The [Muse adapter](muse-adapter.md) is registered separately; its evidence and remaining subscription acceptance belong to NMA-050. The application still owns admission, binding, queue, cancellation intent, transcript publication and recovery decisions. App Server owns inference and its inner tool loop. No ACP wrapper, second model loop or provider fallback is introduced.
+Implemented for [NMA-049](../backlog/NMA-049.md). The development bootstrap explicitly registers Codex through `CodexAdapter`; The [Muse adapter](muse-adapter.md) is registered separately; its evidence and accepted API-key billing scope belong to NMA-050, while Muse subscription remains unverified. The application still owns admission, binding, queue, cancellation intent, transcript publication and recovery decisions. App Server owns inference and its inner tool loop. No ACP wrapper, second model loop or provider fallback is introduced.
 
 Implementation lives in `apps/server/src/harness/codex/`: `adapter.ts` implements the broker entry point, `client.ts` maps native sessions/events/tools, `accounts.ts` owns account operations, and `rpc.ts` owns the JSONL process transport. Imports use the specific module; shared harness contracts and services remain in the parent directory.
 

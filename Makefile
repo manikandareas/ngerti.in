@@ -15,4 +15,4 @@ build:
 	bun run build
 
 docs-check:
-	python3 scripts/check_docs.py
+	bun run docs:check

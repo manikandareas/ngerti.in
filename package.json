@@ -21,6 +21,7 @@
     "lint": "bun run --filter @ngertiin/server lint && bun run lint:web-client",
     "format": "bun --filter @ngertiin/web-client format",
     "check": "bun run lint && bun run typecheck && bun run test:server",
+    "docs:check": "bun scripts/check-docs.ts",
     "test:server": "bun run --filter @ngertiin/server test",
     "verify:foundation": "bun scripts/verification/nma047/foundation.ts",
     "setup:machine": "bun apps/server/src/machines/setup.ts",

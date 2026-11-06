@@ -1,0 +1,262 @@
+{
+  "recorded_at": "2026-11-06",
+  "authority": "repository",
+  "maintenance": "Update local documents, backlog and evidence together; external synchronization is not part of project work.",
+  "records": [
+    {
+      "source_id": "402abdd6187381e3a720f4b01d824e1a",
+      "source_title": "🤝 Ngertiin Multi Agent",
+      "source_last_edited_at": "2026-11-01T07:16:04.327Z",
+      "source_text_sha256": "48f3099d73c341f25f36f1ee20ca2ad5586bb6381422bbff3caf38d42abc094d",
+      "local_path": "docs/README.md"
+    },
+    {
+      "source_id": "402abdd61873816e871ae24804345b56",
+      "source_title": "01 · Arah produk dan scope harness-first",
+      "source_last_edited_at": "2026-11-04T07:36:45.160Z",
+      "source_text_sha256": "50513b27de2521168492d7978661600498e7f09153f61689d8e8437a0a7398ed",
+      "local_path": "PRODUCT.md"
+    },
+    {
+      "source_id": "409abdd61873813284bbf75698073d8e",
+      "source_title": "🧭 10 · Matriks keputusan fitur · Harness-first",
+      "source_last_edited_at": "2026-11-04T07:36:42.684Z",
+      "source_text_sha256": "7718e796e9a8263b5d93be6b3e1ddebadbdc2202d90a343b8dffa3b4396e2ebf",
+      "local_path": "docs/product/feature-decisions.md"
+    },
+    {
+      "source_id": "402abdd618738113aa55c1bd18e53144",
+      "source_title": "02 · Agent, percakapan, grup dan flow kontrol",
+      "source_last_edited_at": "2026-11-03T13:32:49.504Z",
+      "source_text_sha256": "f14800fa06308c4ccafad56ab14299f95f50be03125537f1ac8374be86bb29a5",
+      "local_path": "docs/product/conversations.md"
+    },
+    {
+      "source_id": "402abdd6187381018df4cf984901016a",
+      "source_title": "03 · Goals otomatis, Routine dan proaktivitas",
+      "source_last_edited_at": "2026-11-03T07:55:52.569Z",
+      "source_text_sha256": "5704110601f3965f4f7581c27cb33c7d3d4ea4e36ff554171dc49f39140f4e5a",
+      "local_path": "docs/product/goals-routine.md"
+    },
+    {
+      "source_id": "402abdd6187381beacd6c48fa521b99f",
+      "source_title": "04 · Arsitektur runtime, backend dan kontrak API",
+      "source_last_edited_at": "2026-11-04T07:36:46.225Z",
+      "source_text_sha256": "985438c4d3c968888deef65ede25db82bc26b56cc39961468ed90d552c73dcfc",
+      "local_path": "docs/architecture/overview.md"
+    },
+    {
+      "source_id": "402abdd6187381329ecfccbc490cff2c",
+      "source_title": "05 · Pegangan source dan tingkat bukti",
+      "source_last_edited_at": "2026-11-01T07:16:10.440Z",
+      "source_text_sha256": "f8464b2ab577abcad5521eb2038738e8b95194eb85e0ad85bcd564bab9d830a9",
+      "local_path": "docs/development/source-adoption.md"
+    },
+    {
+      "source_id": "402abdd6187381ceaa4fe40ebf41001c",
+      "source_title": "06 · Roadmap · Engine/API → UI → Instalasi",
+      "source_last_edited_at": "2026-11-01T07:20:47.173Z",
+      "source_text_sha256": "68642987bca2a98b044934c63da5248321814690b0a3d34afcb03057822d13d3",
+      "local_path": "docs/backlog/README.md"
+    },
+    {
+      "source_id": "402abdd61873812a97a9f41032dd854f",
+      "source_title": "07 · Acceptance dan gerbang kesiapan",
+      "source_last_edited_at": "2026-11-01T07:16:12.670Z",
+      "source_text_sha256": "2eeac17b204138175fe0bd9e2e31f08dba2540371dce360dd967252d8c4c3e67",
+      "local_path": "docs/development/acceptance.md"
+    },
+    {
+      "source_id": "402abdd6187381099dddd3cd60ffb210",
+      "source_title": "08 · Panduan backlog, status dan pemeliharaan",
+      "source_last_edited_at": "2026-11-01T07:16:46.409Z",
+      "source_text_sha256": "8e915e844171afb58af8211784100b30e339602528b6ebd6d7b739e3951a5fc9",
+      "local_path": "docs/development/workflow.md"
+    },
+    {
+      "source_id": "40babdd6187381abba02d29c7363474d",
+      "source_title": "🗺️ 11 · Peta screen dan fitur frontend · Harness-first",
+      "source_last_edited_at": "2026-11-01T07:13:27.335Z",
+      "source_text_sha256": "926f90b9428e6b44c6aba80390dc3a1b5704dd15781b7a0148f2eb90b565d04f",
+      "local_path": "docs/product/interface.md"
+    },
+    {
+      "source_id": "116e1edcee864b5da91887466d728aac",
+      "source_title": "Ngertiin Multi Agent · Backlog",
+      "source_last_edited_at": null,
+      "source_text_sha256": "17ff1cea0b97ee1bd8cafd3f43ffdfd83b4c52a61781445f616ee211b9d553cd",
+      "local_path": "docs/backlog/README.md"
+    },
+    {
+      "source_id": "409abdd6187381bab741d401c8031f67",
+      "source_title": "NMA-047 · Fondasi harness-first, kontrak domain dan pensiun runtime lama",
+      "source_last_edited_at": "2026-10-30T15:12:14.115Z",
+      "source_text_sha256": "9847b85d7e4ecd75d26c65bd5393f3facbc306c7cfa74f8b0d0f36a9d4b51d88",
+      "local_path": "docs/backlog/NMA-047.md"
+    },
+    {
+      "source_id": "409abdd618738145ae75fb44fdf47e83",
+      "source_title": "NMA-048 · Broker harness, minimum version dan kontrak koneksi/tools",
+      "source_last_edited_at": "2026-10-30T15:40:41.887Z",
+      "source_text_sha256": "76effb4e1c773820b442bf0b109473d0e1d82450d7d47f63975ae9a23d3c6327",
+      "local_path": "docs/backlog/NMA-048.md"
+    },
+    {
+      "source_id": "409abdd61873813fb849e4bb010f85f7",
+      "source_title": "NMA-049 · Adapter native Codex / ChatGPT",
+      "source_last_edited_at": "2026-10-30T16:10:14.549Z",
+      "source_text_sha256": "733e527586bc5a03cabd562ab138c7161d38011bea087e078c57ecf4dd079270",
+      "local_path": "docs/backlog/NMA-049.md"
+    },
+    {
+      "source_id": "409abdd6187381399191ffae63c495ec",
+      "source_title": "NMA-050 · Adapter Muse Code melalui SDK/MSP",
+      "source_last_edited_at": "2026-11-01T08:17:23.523Z",
+      "source_text_sha256": "405d20e4698623f8bf6724d140e94d95b3370366f5a1ee131b918dc2bf6e1e3b",
+      "local_path": "docs/backlog/NMA-050.md"
+    },
+    {
+      "source_id": "409abdd618738197b8a5cd37f419aa9f",
+      "source_title": "NMA-051 · Ditunda · Claude Code dan runtime ACP tambahan",
+      "source_last_edited_at": "2026-10-30T14:09:25.621Z",
+      "source_text_sha256": "0bddca9d3835793f94a79894bc7557590d4855a90ffb4694dd4c21b54190414f",
+      "local_path": "docs/backlog/NMA-051.md"
+    },
+    {
+      "source_id": "409abdd6187381ce87a5ea72daa0dbde",
+      "source_title": "NMA-052 · Agent persisten, Tobi, DM dan conversational configuration API",
+      "source_last_edited_at": "2026-11-01T07:18:46.274Z",
+      "source_text_sha256": "1fc7966e2f064e430e833ca3581e26efc9b1165f1d6bbbbdd0e11c42de0066e1",
+      "local_path": "docs/backlog/NMA-052.md"
+    },
+    {
+      "source_id": "409abdd61873817f9182cff7b0d6eedc",
+      "source_title": "NMA-053 · Antrean, steer, conversational stop dan durable recovery API",
+      "source_last_edited_at": "2026-10-31T10:23:47.898Z",
+      "source_text_sha256": "2cef5f854857be560369f9054791da3a31f822a7f12c04607b1c6fccd36c289e",
+      "local_path": "docs/backlog/NMA-053.md"
+    },
+    {
+      "source_id": "409abdd61873819face8d1b11a5fd203",
+      "source_title": "NMA-054 · Workspace, lampiran, artifact dan native coding tools API",
+      "source_last_edited_at": "2026-11-02T13:59:08.430Z",
+      "source_text_sha256": "cfc5d415697949221d15a88a65e1e4c1a79e68fc1388f3a6b39306c0a140892f",
+      "local_path": "docs/backlog/NMA-054.md"
+    },
+    {
+      "source_id": "409abdd6187381babaf9cf865a97e223",
+      "source_title": "NMA-055 · Memory, inherited skills dan app-owned learning tools/API",
+      "source_last_edited_at": "2026-11-01T07:18:47.918Z",
+      "source_text_sha256": "55cf9a1a1ad88e5a144d5cbea1f3d881d1714d16b015cef4e99da8a64c33a44a",
+      "local_path": "docs/backlog/NMA-055.md"
+    },
+    {
+      "source_id": "409abdd61873813285faf568d52394bc",
+      "source_title": "NMA-056 · Grup, model-based routing, handoff dan HITL API",
+      "source_last_edited_at": "2026-11-03T13:35:12.611Z",
+      "source_text_sha256": "5d2cc751c1166b6f5c7cbafce4cb4e772b8d2827f8577bdf9cd839037120d9bc",
+      "local_path": "docs/backlog/NMA-056.md"
+    },
+    {
+      "source_id": "409abdd61873817ebf6fc6973ab41e3f",
+      "source_title": "NMA-057 · Automatic goals, Routine dan proactive continuation API",
+      "source_last_edited_at": "2026-11-03T07:55:51.736Z",
+      "source_text_sha256": "88f5d002ce6d6878724b32714b1e313de8985e9c3d89a701ae7ef84f19c76b5b",
+      "local_path": "docs/backlog/NMA-057.md"
+    },
+    {
+      "source_id": "409abdd61873812daf0cc500aa15aab3",
+      "source_title": "NMA-058 · Browser-use MCP, VNC dan browser-session API",
+      "source_last_edited_at": "2026-10-31T08:35:04.357Z",
+      "source_text_sha256": "040e681c3b6820d166c2df38ada75e34e9b5869bc5f53440983bc837670140cc",
+      "local_path": "docs/backlog/NMA-058.md"
+    },
+    {
+      "source_id": "409abdd618738103a776e10dc0ed1579",
+      "source_title": "NMA-059 · Composio, riset web dan multimodal capability API",
+      "source_last_edited_at": "2026-10-31T09:28:54.629Z",
+      "source_text_sha256": "ad3035281ac79d394bd9d84a105cc738063ea6aebc8178f5951e0de7adf1c906",
+      "local_path": "docs/backlog/NMA-059.md"
+    },
+    {
+      "source_id": "40babdd61873819b9d04e1e33442a7e1",
+      "source_title": "NMA-065 · Agent/group creation and conversational personalization API",
+      "source_last_edited_at": "2026-11-01T07:39:09.260Z",
+      "source_text_sha256": "f8c1e6aa3e20ee406d76a0f5d4964b768f4294f7549c1d88b21e29fb6ad4dbd2",
+      "local_path": "docs/backlog/NMA-065.md"
+    },
+    {
+      "source_id": "409abdd61873819b80c4dd2b3e593834",
+      "source_title": "NMA-060 · Gate engine/backend dan kontrak API siap untuk UI",
+      "source_last_edited_at": "2026-11-04T07:49:51.046Z",
+      "source_text_sha256": "9a1b4c757d7f9fc374f19f4b2f7f6d5c83e24d038677ea37ddc76902950d6190",
+      "local_path": "docs/backlog/NMA-060.md"
+    },
+    {
+      "source_id": "409abdd61873816fadd3e28e1d3bbe5d",
+      "source_title": "NMA-061 · UI percakapan, agent dan koneksi berbasis API siap",
+      "source_last_edited_at": "2026-11-03T16:53:11.369Z",
+      "source_text_sha256": "8ffa98faffe8344838253199319171824d899e8d69fdf0fce4a5f33359c66e8d",
+      "local_path": "docs/backlog/NMA-061.md"
+    },
+    {
+      "source_id": "409abdd618738165877cc6c59f2a8cde",
+      "source_title": "NMA-062 · UI grup, goals/Routine, workspace dan browser VNC",
+      "source_last_edited_at": "2026-11-03T13:32:48.472Z",
+      "source_text_sha256": "1ce925e9ac934fab6cd9a9214e19eeebe63f99864828b90bce31ca8461b5fa4e",
+      "local_path": "docs/backlog/NMA-062.md"
+    },
+    {
+      "source_id": "409abdd6187381e3a083dfb7644b7c90",
+      "source_title": "NMA-063 · Acceptance UI dan alur produk wajib harness-first",
+      "source_last_edited_at": "2026-11-01T07:18:45.259Z",
+      "source_text_sha256": "3912a261695abebb2ab1ef5e9a588928b27112dda3783e53db70eb6246d87e60",
+      "local_path": "docs/backlog/NMA-063.md"
+    },
+    {
+      "source_id": "409abdd618738198a715db475e9e6f81",
+      "source_title": "NMA-064 · Instalasi lokal dan distribusi setelah produk siap",
+      "source_last_edited_at": "2026-11-01T07:18:52.625Z",
+      "source_text_sha256": "a9101d387525542d3b2f8271e6a0790ff02d676c76055479b38159ef834de087",
+      "local_path": "docs/backlog/NMA-064.md"
+    }
+  ],
+  "reconciliations": [
+    {
+      "topic": "Milestone status",
+      "resolution": "Use the nineteen milestone properties: sixteen active Done, two active Backlog and one deferred Backlog; early overview/roadmap status counts are superseded."
+    },
+    {
+      "topic": "Machine and working files",
+      "resolution": "The 2026-11-04 shared Cua amendment replaces browser-only operation and private host working-file assumptions; logical private data remains scoped."
+    },
+    {
+      "topic": "Group routing",
+      "resolution": "The 2026-11-03 semantic Jev decision supersedes earlier not-selected statements; later local routing-policy evidence supplies implementation details."
+    },
+    {
+      "topic": "Goal capture",
+      "resolution": "The 2026-11-03 durable-responsibility boundary supersedes over-capture of ordinary requests."
+    },
+    {
+      "topic": "Native development host",
+      "resolution": "The user-authorized Tauri macOS ARM64 implementation is a development exception to general native-client deferral; NMA-064 remains Backlog."
+    },
+    {
+      "topic": "Interface and interaction updates",
+      "resolution": "Current local Detail/Library/Computer and 2026-11-06 interaction evidence supersede the older tab labels and initial card behavior."
+    },
+    {
+      "topic": "Ongoing documentation authority",
+      "resolution": "The user selected repository-only scope, status and acceptance maintenance on 2026-11-06."
+    }
+  ],
+  "schema_export": {
+    "version": "1.31.0",
+    "path": "docs/contracts/1.31.0.json",
+    "routes": 99,
+    "product_tools": 50,
+    "method": "Authenticated in-process API with disposable application state and unconfigured machine module; no native connection or provider inference.",
+    "sha256": "5278548fa5d4881be204a24d9ff883369300f03abfc203db213392b776545230"
+  }
+}

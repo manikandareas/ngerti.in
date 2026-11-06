@@ -1,4 +1,6 @@
-# API consumer contract 1.21.0
+# API consumer contract
+
+Current source export: **1.31.0**. The [full machine-mode schema snapshot](../contracts/1.31.0.json) was regenerated from the authenticated in-process `/v1/contracts` route using disposable application state on 2026-11-06: 99 routes and 50 product tools, with zero provider inference or machine connection. It includes the implemented interaction/retry/Computer amendments. [Implementation evidence](../verification/conversation-implementation-2026-11-06/README.md) supplies their separate native/UI proof. The older bundles and examples below preserve the contract versions they originally tested.
 
 Authenticated `GET /v1/contracts` exports the installed server's contract. The checked-in [1.16.0 bundle](../contracts/1.16.0.json) is an equivalent JSON Schema contract, not an OpenAPI document. [Consumer fixtures](../verification/nma-060/final-cohort/consumer-fixtures.json) are actual responses from an isolated HTTP test client. [Gate evidence](../verification/nma-060/final-cohort/README.md) records accepted engine/API readiness, including the explicit Muse API-key billing scope. UI, installation and production acceptance remain separate.
 
@@ -52,11 +54,11 @@ Read run `status`, `outcome`, `cancellation`, `delivery`, `activity`, diagnostic
 
 Ordinary errors use `{"error":{"code":"...","message":"..."}}`; harness errors also carry `outcome: not_dispatched | unknown`. Validation uses 422, declared oversized input 413, MCP protocol mismatch 400, authentication 401, scope 403, missing resources 404, domain conflicts and harness errors 409, and unexpected errors a generic 500. Do not parse agent prose or raw provider messages to infer reconnect, retry or success. Preserve safe diagnostic codes and unavailable usage as unknown. Authentication method, selected billing and effective billing are separate fields.
 
-## Domain guides and remaining gate work
+## Domain guides and current gate status
 
 Use the exact operation result descriptions in [agents/DMs](agent-conversation-api.md), [control/recovery](conversation-control-api.md), [groups](group-collaboration-api.md), [goals/Routine](goals-routines-api.md), [memory/skills](memory-skills-api.md), [workspace/artifacts](workspace-artifact-api.md), [browser/VNC](browser-session-api.md), [apps/research/visual](apps-research-visual-api.md), [Codex](codex-adapter.md) and [Muse](muse-adapter.md). Entity/schema ownership and reproducible test/evidence references are in [coverage.json](../verification/nma-060/coverage.json).
 
-NMA-050 remains In Progress; its live native permission-decision cycle remains a gate condition. Muse subscription is separately unverified but excluded as a gate blocker by the explicit billing amendment. The response-surface review and obsolete-source cleanup are recorded in the completion report; gate-wide native integration/fault acceptance remains open. Unsupported Muse steer/native coding/visual input and native video are explicit capability boundaries, not implicit fallback work. UI, installer and production acceptance are later phases.
+NMA-050 and NMA-060 are Done under the accepted Codex subscription/Muse explicit API-key configuration. Muse subscription remains unverified. [The final API cohort](../verification/nma-060/final-cohort/README.md) and [Muse interaction repair](../verification/nma-050/interactions/README.md) supersede the older pending gate notes. Native unsupported/unknown capabilities remain explicit; current machine mode exposes scoped Cua file/process/desktop tools rather than assuming unrestricted host-native coding. NMA-063 product-wide acceptance, NMA-064 installation and production remain separate.
 
 ## Version 1.16.0 response review
 
@@ -64,6 +66,6 @@ Each `http.response.schema` is a JSON Schema for that operation's successful bod
 
 A workspace query with no bound workspace returns JSON `null`, rather than an empty successful body. This behavior is covered by an HTTP consumer regression. Native interaction answers return `{ "status": "submitted" }` after the adapter acknowledges the command. This is not permission resolution or tool completion: refresh pending interactions and observe authoritative run/events. Unsupported Codex interactive permissions remain capability errors; Muse approval choice IDs and stage guards remain native and must be returned unchanged.
 
-The latest gate billing decision accepts Codex ChatGPT subscription plus explicitly selected Muse API-key billing. Muse subscription is not a blocker for this gate. Native permission acceptance remains separate and unverified until a real native cycle is captured. See [current completion evidence](../verification/nma-060/completion/README.md) for fresh checks and remaining conditions.
+The latest gate billing decision accepts Codex ChatGPT subscription plus explicitly selected Muse API-key billing. Muse subscription is not a blocker for this gate. Native permission acceptance was subsequently captured in [Muse interaction evidence](../verification/nma-050/interactions/README.md); the [final API cohort](../verification/nma-060/final-cohort/README.md) records gate closure. Earlier completion captures retain their original limits.
 
 Native approval projections preserve the tool name, arguments and native choice labels/previews for display. Treat these strings as untrusted text; submit only a currently offered choice and stage. Submitted does not mean the action completed.

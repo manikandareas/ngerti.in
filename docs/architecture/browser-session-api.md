@@ -1,5 +1,7 @@
 # Browser sessions and direct MCP
 
+Historical implementation record: browser-use/VNC describes NMA-058's original contract and retained evidence. The active controller is the shared Cua Linux desktop; use [the current architecture](overview.md), [machine plan](shared-machine-cua-plan-2026-11-04.md) and [setup/evidence](../verification/shared-machine/README.md). The launch instructions below reproduce the original implementation rather than the current Computer path.
+
 Contract `1.9.0` adds backend browser resources. Codex and Muse keep their own model/tool loop. Ngertiin routes a bounded set of direct `browser_use.mcp.server` tools through its existing run-scoped product-tool gateway. The server never invokes browser-use Agent, LLM extraction, `retry_with_browser_use_agent`, CLI-MCP, Browser Harness CLI, or an extra model billing fallback.
 
 ## Host and setup

@@ -1,6 +1,6 @@
 # Persistent agents and conversation API
 
-Application contract **1.3.0** extends the harness-first backend with product identity, atomic Tobi setup, conversational configuration and conversation reads. This is the NMA-052 implementation. [NMA-050](https://app.notion.com/p/409abdd6187381399191ffae63c495ec) remains In Progress for subscription/permission acceptance; this document does not close that dependency or the NMA-060 API gate. There are no UI changes.
+Application contract **1.3.0** extends the harness-first backend with product identity, atomic Tobi setup, conversational configuration and conversation reads. This is the NMA-052 implementation. [NMA-050](../backlog/NMA-050.md) and the NMA-060 API gate are Done under the accepted Muse API-key billing scope; Muse subscription remains unverified. This guide records the original backend milestone; current UI and distribution status is maintained in [the local backlog](../backlog/README.md).
 
 ## Identity and setup
 

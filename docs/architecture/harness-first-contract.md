@@ -1,8 +1,8 @@
 # Harness-first domain and API contract v1.12.0
 
-The [consumer contract](api-consumer-contract.md) is the current integration entry point. It links the versioned executable export, response examples, HTTP operation semantics and requirement coverage. The sections below retain the original foundation contract and its extension history; later domain guides and executable schemas supersede foundation-only limits. NMA-060 is In Progress and the API readiness gate remains pending.
+The [consumer contract](api-consumer-contract.md) is the current integration entry point. It links the versioned executable export, response examples, HTTP operation semantics and requirement coverage. The sections below retain the original foundation contract and its extension history; later domain guides and executable schemas supersede foundation-only limits. NMA-060 is Done for its accepted engine/API scope; later deltas retain separate evidence. See [the local backlog](../backlog/README.md).
 
-NMA-052 adds the [agent/conversation API](agent-conversation-api.md). NMA-053 adds the [conversation control, streaming and recovery contract](conversation-control-api.md), which supersedes the foundation-only queue/streaming/recovery limits below. NMA-054 adds the [workspace/file/artifact API](workspace-artifact-api.md) and scoped native coding. The executable schemas describe the complete current version; NMA-060 remains pending.
+NMA-052 adds the [agent/conversation API](agent-conversation-api.md). NMA-053 adds the [conversation control, streaming and recovery contract](conversation-control-api.md), which supersedes the foundation-only queue/streaming/recovery limits below. NMA-054 adds the [workspace/file/artifact API](workspace-artifact-api.md) and scoped native coding. The executable schemas describe the complete current version; NMA-060 is Done for the captured gate scope.
 
 Executable schemas live in [contracts.ts](../../apps/server/src/contracts.ts) and are exported by authenticated `GET /v1/contracts`. These are foundation contracts; NMA-060 remains the API readiness gate before UI adoption. JSON Schema describes field shapes. Runtime Zod refinements and the application service enforce the cross-field and relational invariants below.
 
@@ -36,7 +36,7 @@ SQLite stores typed projections, immutable event envelopes and command receipts.
 
 | Route | Behavior |
 | --- | --- |
-| `GET /health/ready` | Foundation status and registered executor count. `api_readiness_gate=pending`; not a completed-inference check. |
+| `GET /health/ready` | Foundation status and registered executor count. `api_readiness_gate=ready` for the accepted gate; not a completed-inference check. |
 | `GET /v1/harnesses` | Backend-host executable/version policy detection for Codex and Muse. |
 | `GET /v1/harness/contracts` | Broker schemas, explicit capability/error/terminal/tool-scope contracts. |
 | `POST /v1/connections` | Persist an explicit connection/auth/billing choice without secret values. |

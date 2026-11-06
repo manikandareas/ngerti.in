@@ -1,6 +1,6 @@
 # Native Muse Code adapter
 
-Implemented for [NMA-050](https://app.notion.com/p/409abdd6187381399191ffae63c495ec), on the existing application lifecycle and broker. The development bootstrap registers Muse and Codex explicitly. Muse owns its model/tool loop; Ngertiin owns identity, admission, queue, transcript publication, grants, stop intent and recovery decisions. This change contains backend/API work only. NMA-060, UI and installation acceptance remain pending.
+Implemented for [NMA-050](../backlog/NMA-050.md), on the existing application lifecycle and broker. The development bootstrap registers Muse and Codex explicitly. Muse owns its model/tool loop; Ngertiin owns identity, admission, queue, transcript publication, grants, stop intent and recovery decisions. This guide records the backend/API adapter milestone. NMA-050 and NMA-060 are Done under the explicitly accepted API-key billing scope; product-wide UI acceptance and installation remain open in [the local backlog](../backlog/README.md).
 
 ## Versions and adoption
 
@@ -57,7 +57,7 @@ NMA-053 reports Muse steer as `unknown`: live R7309.1 behavior did not preserve 
 
 ## Evidence and remaining acceptance
 
-[Verification](../verification/nma-050/README.md) separates SDK fixtures from native HTTP checks. The user has developer credits, without an active subscription available for this task. Native key-backed inference, useful product-tool calls, separate DM/group history, restart resume, question/answer and cancellation passed. Native browser subscription login/inference/tool billing and a live interactive permission-decision cycle remain unverified. Fixture approval, rejection, scope, failure, lost connection and acknowledgement-only stop tests are separate evidence. NMA-050 remains **In Progress** until its remaining native acceptance is satisfied; no UI, installer or production readiness is claimed.
+[Verification](../verification/nma-050/README.md) separates SDK fixtures from native HTTP checks. Completed key-backed inference, useful scoped tools, separate DM/group history, restart resume, native question/answer and confirmed cancellation have recorded proof. The subsequent [interaction repair](../verification/nma-050/interactions/README.md) verifies native allow-once/deny/stale decisions and the repaired question flow. NMA-050 is Done under the user-approved API-key billing exception; Muse subscription remains unavailable/unverified. Earlier fixture and failed native iterations keep their original boundaries. This does not establish installation or production readiness.
 
 ## Native interaction repair (2026-11-01)
 

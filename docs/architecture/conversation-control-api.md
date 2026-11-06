@@ -1,6 +1,6 @@
 # Conversation control and recovery API v1.12.0
 
-NMA-053 uses the existing application authority, SQLite event/receipt store and native adapters. The [agent/conversation API](agent-conversation-api.md) remains the identity/history foundation. Application contract **1.12.0** replaces the original deterministic cancellation recognizer with agent-selected structured tools, following the user's decision on 2026-10-31. Broker contract remains **1.5.0**. NMA-060 remains pending; this work changes no UI.
+NMA-053 uses the existing application authority, SQLite event/receipt store and native adapters. The [agent/conversation API](agent-conversation-api.md) remains the identity/history foundation. Application contract **1.12.0** replaces the original deterministic cancellation recognizer with agent-selected structured tools, following the user's decision on 2026-10-31. Broker contract remains **1.5.0**. The original milestone changed backend/API behavior. NMA-060 is now Done for its accepted scope; [the local backlog](../backlog/README.md) tracks later UI and distribution gates.
 
 ## Ordinary input, steering and cancellation
 

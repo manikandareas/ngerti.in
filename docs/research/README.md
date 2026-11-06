@@ -1,39 +1,12 @@
-# Current acceptance and transition
+# Research supporting the current project
 
-- [Multi-agent acceptance, single-path cutover and retirement](nma-025-026-acceptance-cutover.md)
+Product scope and delivery order are maintained in [PRODUCT.md](../../PRODUCT.md) and [the local backlog](../backlog/README.md). Start with the [documentation index](../README.md) for implemented APIs and setup. A research recommendation is not implementation or acceptance evidence.
 
-# Riset dan bukti
+- [Persistent shared machine and Cua source assessment](agent-desktop-machine-options-2026-11-03.md): source pins, compatibility findings and the shared-machine decision. The [architecture plan](../architecture/shared-machine-cua-plan-2026-11-04.md) and [verification](../verification/shared-machine/README.md) record its subsequent implementation.
+- [Computer preview transport](computer-preview-transport-2026-11-06.md): viewer behavior, protocol versions and source constraints for the current Cua integration.
+- [Tauri feasibility and platform boundaries](tauri-v2-desktop-feasibility-2026-11-04.md): source research behind the [current Tauri application](../architecture/tauri-development.md).
+- [OpenMausBot source and design study](openmausbot-2026-11-01/README.md): source excerpts, tokens, licenses and provenance used by the web client.
+- [Application authentication options](app-auth-library-options-2026-11-02.md): a deferred login/session proposal; it does not describe the current development bearer-token boundary.
+- [AI application-generation fact check](ai-app-generation-age-fact-check-2026-11-04.md): a dated research note, separate from the implementation roadmap.
 
-Keputusan pivot aktif berada di [Ngertiin Multi Agent di Notion](https://app.notion.com/p/402abdd6187381e3a720f4b01d824e1a) dan [backlog NMA](https://app.notion.com/p/116e1edcee864b5da91887466d728aac). [Produk & Scope V1](../product/01-produk-dan-paket.md), [spesifikasi runtime V1](../product/04-arsitektur-dan-delivery.md) dan [backlog V1](../backlog/README.md) tetap menjadi konteks historis. Riset di sini mendukung keputusan dan menyimpan batas verifikasi; bukan sumber roadmap paralel.
-
-- [NMA-021–024 · Delivery, workspace and diagnosis](nma-021-024-integration.md): offline delivery, immutable artifacts, scoped E2B tools, isolation/revocation evidence and native run usage/correlation.
-- [Hermes feature inventory and Ngertiin gap mapping](hermes-feature-inventory-2026-10-24.md): 106 source-backed feature families, current product status, adoption opportunities and explicit runtime/service boundaries; research, not an approved roadmap.
-- [NMA-001 · Audit runtime Hermes dan provenance](nma-001-hermes-runtime-audit.md): setup terulang, dua profile dan hosted room dengan model nyata, restart/dedup, hasil test upstream, inventaris dependency/lisensi, dan gap runtime untuk ADR.
-- [NMA-003 · Repository reuse and engine boundary audit](nma-003-repository-reuse-audit.md): source-backed reuse/replace/retire matrix, data preservation, coupling evidence and proposed engine location; no runtime or data changes.
-- [NMA-004 · Engine integration and proactivity ADRs](nma-004-engine-integration-adrs.md): single Hermes service authority, conversational capture, canonical routing, durable triggers, design traces and explicit production gates.
-- [NMA-005 · Domain, persistence and API contract](nma-005-domain-contract.md): ADR-03, owner-scoped entities, privacy, generations, storage boundaries, command/event examples and additive migration plan.
-- [NMA-006 · Isolated runtime adapter](nma-006-runtime-adapter.md): separately packaged Hermes authority adapter, real-runtime contracts, partition bootstrap, provenance and explicit production gates.
-- [Foundation packaging closure](nma-006-packaging-closure.md): pinned deployment profile, versioned notices, separate runtime/test dependencies, and macOS/Linux acceptance.
-
-- [Agent identity and capability closure](nma-007-008-closure.md): persisted DM/group identity consumers, MCP metadata credential rejection, and current runtime/browser acceptance.
-- [NMA-008 · Per-agent capability assignment](nma-008-capability-assignment.md): native tools, session-scoped MCP, skill snapshots, credential redaction, queued revocation and browser evidence; dependency gates remain open.
-
-- [NMA-016/017 · Durable webhooks and group membership](nma-016-017-webhooks-membership.md): signed external events, durable coalescing/recovery, revision-checked rosters and multi-author transcript.
-- [NMA-015 · Scheduled and idle heartbeat wakes](nma-015-schedules-heartbeats.md): durable clock coalescing, offline execution, user priority, restart fences and browser closure evidence.
-- [NMA-014 · Goal lifecycle and continuation](nma-014-goal-lifecycle.md): multi-run work, persisted progress and evidence, wait/resume, generation fences, native admission/card reconciliation and visible DM goals.
-- [NMA-013 · Conversational goal capture](nma-013-conversational-goals.md): ordinary Hermes responsibility tools, atomic provenance and receipts, scoped goals, live DM dataset and restart/stop evidence.
-- [NMA-011 · DM API and streaming](nma-011-dm-api-streaming.md): durable DM ingress, scoped HTTP/SSE, interrupt and reconnect/crash acceptance.
-- [NMA-010 · Durable execution and recovery](nma-010-durable-execution.md): persistent replay/snapshot, run stop fences, native receipt reconciliation and real-process fault injection.
-
-- [Bukti Riset & REA per modul](muse-ai-v1/README.md): chat/session, task/scheduler, file/artifact, memory/goals, permissions dan browser/computer.
-- [Mesin privat: Daytona, VNC dan takeover](agent-private-machine-options-2026-10-18.md): snapshot dokumen vendor sebelum trial NG-031.
-- [Alternatif provider browser privat](browser-provider-alternatives-2026-10-20.md): perbandingan E2B Desktop, Hopx, Kernel dan Browserbase berdasarkan kredit/trial, internet, viewer dan profil lintas Task; rekomendasi PoC, belum acceptance runtime.
-- [NG-031 · Research dan rancangan trial Daytona](daytona-trial-31-2026-10-18.md): snapshot riset sebelum trial. [Hasil penerimaan](../engineering/daytona-31-acceptance.md) mencatat implementasi dan bukti live berikut batasnya.
-- [Soul dan memory](agent-soul-memory.md), [framework agent](agent-framework-selection.md), [stack proaktif](proactive-agent-frameworks-2026-10-14.md).
-- [Algoritma memory agent: hybrid, temporal graph, dan evaluasi](agent-memory-algorithms-2026-10-19.md): perbandingan sumber primer dan usulan PoC untuk NG-017; belum menjadi keputusan implementasi atau hasil benchmark lokal.
-- [Evaluasi Mem0 untuk NG-017](mem0-evaluation-2026-10-19.md): audit SDK stabil, kecocokan pgvector, dan batas koreksi/forget sebelum keputusan integrasi; bukan hasil benchmark lokal.
-- [Rencana memory dengan Mem0 OSS](memory-mem0-plan-2026-10-19.md): keputusan memakai library, pembagian tanggung jawab dan urutan delivery NG-017/018; implementasi belum dimulai.
-- [Chat streaming/tools/recovery](chat-04-streaming-research-2026-10-16.md).
-- [Audit lingkungan REA](rea-environment-audit-2026-10-18.md) dan [penilaian awal Muse](muse-reverse-engineering-assessment-2026-10-18.md): catatan sesuai tanggalnya.
-
-[Model bisnis lama](business-model-2026-10-13.md), [engine Course](course-generation-engine-2026-10-15.md), [brainstorm belajar](archive/user-flow-brainstorm-2026-10-13.md), serta [blueprint](archive/muse-pre-reset/04-blueprint-ngertiin.md)/[roadmap sebelum reset](archive/muse-pre-reset/05-roadmap-dan-acceptance.md) adalah arsip. Harga, batas, instruksi mempertahankan kode pembelajaran, serta urutan A0–A10 tidak berlaku sebagai scope aktif V1. Observasi dan hash tetap dapat ditelusuri.
+Superseded learning-product, V1, Hermes-runtime and rejected desktop-alternative guides have been removed. Raw research evidence and attribution remain available under their recorded paths; see [historical evidence and recovery](../development/history.md).

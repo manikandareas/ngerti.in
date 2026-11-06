@@ -1,6 +1,6 @@
 # Scoped memory and skills API
 
-Application contract **1.6.0**. This is the backend boundary for [NMA-055](https://app.notion.com/p/409abdd6187381babaf9cf865a97e223), after NMA-054. The [verification report](../verification/nma-055/README.md) distinguishes fixtures, native inference and recovery evidence. UI and the NMA-060 API readiness gate remain separate work.
+Application contract **1.6.0**. This is the backend boundary for [NMA-055](../backlog/NMA-055.md), after NMA-054. The [verification report](../verification/nma-055/README.md) distinguishes fixtures, native inference and recovery evidence. The API gate subsequently passed; later UI and distribution status remains separately recorded in [the local backlog](../backlog/README.md).
 
 ## Scope and ownership
 

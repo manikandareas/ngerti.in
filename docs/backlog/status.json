@@ -1,0 +1,235 @@
+[
+  {
+    "ticket": "NMA-047",
+    "title": "Fondasi harness-first, kontrak domain dan pensiun runtime lama",
+    "plan": "Harness-first",
+    "status": "Done",
+    "order": 1,
+    "layer": "Engine / Backend",
+    "depends_on": []
+  },
+  {
+    "ticket": "NMA-048",
+    "title": "Broker harness, minimum version dan kontrak koneksi/tools",
+    "plan": "Harness-first",
+    "status": "Done",
+    "order": 2,
+    "layer": "Engine / Backend",
+    "depends_on": [
+      "NMA-047"
+    ]
+  },
+  {
+    "ticket": "NMA-049",
+    "title": "Adapter native Codex / ChatGPT",
+    "plan": "Harness-first",
+    "status": "Done",
+    "order": 3,
+    "layer": "Engine / Backend",
+    "depends_on": [
+      "NMA-048"
+    ]
+  },
+  {
+    "ticket": "NMA-050",
+    "title": "Adapter Muse Code melalui SDK/MSP",
+    "plan": "Harness-first",
+    "status": "Done",
+    "order": 4,
+    "layer": "Engine / Backend",
+    "depends_on": [
+      "NMA-048"
+    ]
+  },
+  {
+    "ticket": "NMA-051",
+    "title": "Ditunda · Claude Code dan runtime ACP tambahan",
+    "plan": "Deferred",
+    "status": "Backlog",
+    "order": 5,
+    "layer": "Engine / Backend",
+    "depends_on": [
+      "NMA-048"
+    ]
+  },
+  {
+    "ticket": "NMA-052",
+    "title": "Agent persisten, Tobi, DM dan conversational configuration API",
+    "plan": "Harness-first",
+    "status": "Done",
+    "order": 6,
+    "layer": "Engine / Backend",
+    "depends_on": [
+      "NMA-048",
+      "NMA-049",
+      "NMA-050"
+    ]
+  },
+  {
+    "ticket": "NMA-053",
+    "title": "Antrean, steer, conversational stop dan durable recovery API",
+    "plan": "Harness-first",
+    "status": "Done",
+    "order": 7,
+    "layer": "Engine / Backend",
+    "depends_on": [
+      "NMA-052"
+    ]
+  },
+  {
+    "ticket": "NMA-054",
+    "title": "Workspace, lampiran, artifact dan native coding tools API",
+    "plan": "Harness-first",
+    "status": "Done",
+    "order": 8,
+    "layer": "Engine / Backend",
+    "depends_on": [
+      "NMA-053"
+    ]
+  },
+  {
+    "ticket": "NMA-055",
+    "title": "Memory, inherited skills dan app-owned learning tools/API",
+    "plan": "Harness-first",
+    "status": "Done",
+    "order": 9,
+    "layer": "Engine / Backend",
+    "depends_on": [
+      "NMA-054"
+    ]
+  },
+  {
+    "ticket": "NMA-056",
+    "title": "Grup, model-based routing, handoff dan HITL API",
+    "plan": "Harness-first",
+    "status": "Done",
+    "order": 10,
+    "layer": "Engine / Backend",
+    "depends_on": [
+      "NMA-053",
+      "NMA-055"
+    ]
+  },
+  {
+    "ticket": "NMA-057",
+    "title": "Automatic goals, Routine dan proactive continuation API",
+    "plan": "Harness-first",
+    "status": "Done",
+    "order": 11,
+    "layer": "Engine / Backend",
+    "depends_on": [
+      "NMA-053",
+      "NMA-055",
+      "NMA-056"
+    ]
+  },
+  {
+    "ticket": "NMA-058",
+    "title": "Browser-use MCP, VNC dan browser-session API",
+    "plan": "Harness-first",
+    "status": "Done",
+    "order": 12,
+    "layer": "Engine / Backend",
+    "depends_on": [
+      "NMA-053",
+      "NMA-054"
+    ]
+  },
+  {
+    "ticket": "NMA-059",
+    "title": "Composio, riset web dan multimodal capability API",
+    "plan": "Harness-first",
+    "status": "Done",
+    "order": 13,
+    "layer": "Engine / Backend",
+    "depends_on": [
+      "NMA-048",
+      "NMA-053",
+      "NMA-054",
+      "NMA-055",
+      "NMA-058"
+    ]
+  },
+  {
+    "ticket": "NMA-065",
+    "title": "Agent/group creation and conversational personalization API",
+    "plan": "Harness-first",
+    "status": "Done",
+    "order": 13.5,
+    "layer": "Engine / Backend",
+    "depends_on": [
+      "NMA-052",
+      "NMA-053",
+      "NMA-055",
+      "NMA-056",
+      "NMA-057"
+    ]
+  },
+  {
+    "ticket": "NMA-060",
+    "title": "Gate engine/backend dan kontrak API siap untuk UI",
+    "plan": "Harness-first",
+    "status": "Done",
+    "order": 14,
+    "layer": "Engine / Backend",
+    "depends_on": [
+      "NMA-049",
+      "NMA-050",
+      "NMA-052",
+      "NMA-053",
+      "NMA-054",
+      "NMA-055",
+      "NMA-056",
+      "NMA-057",
+      "NMA-058",
+      "NMA-059",
+      "NMA-065"
+    ]
+  },
+  {
+    "ticket": "NMA-061",
+    "title": "UI percakapan, agent dan koneksi berbasis API siap",
+    "plan": "Harness-first",
+    "status": "Done",
+    "order": 15,
+    "layer": "UI",
+    "depends_on": [
+      "NMA-060"
+    ]
+  },
+  {
+    "ticket": "NMA-062",
+    "title": "UI grup, goals/Routine, workspace dan browser VNC",
+    "plan": "Harness-first",
+    "status": "Done",
+    "order": 16,
+    "layer": "UI",
+    "depends_on": [
+      "NMA-060",
+      "NMA-061"
+    ]
+  },
+  {
+    "ticket": "NMA-063",
+    "title": "Acceptance UI dan alur produk wajib harness-first",
+    "plan": "Harness-first",
+    "status": "Backlog",
+    "order": 17,
+    "layer": "UI",
+    "depends_on": [
+      "NMA-061",
+      "NMA-062"
+    ]
+  },
+  {
+    "ticket": "NMA-064",
+    "title": "Instalasi lokal dan distribusi setelah produk siap",
+    "plan": "Harness-first",
+    "status": "Backlog",
+    "order": 18,
+    "layer": "Distribusi",
+    "depends_on": [
+      "NMA-063"
+    ]
+  }
+]

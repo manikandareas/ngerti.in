@@ -2,7 +2,7 @@
 
 This ADR retains the NMA-047 foundation evidence at adoption time. NMA-049 subsequently registers the [native Codex adapter](codex-adapter.md); references below to zero native executors describe the original foundation revision.
 
-Accepted for development on 2026-10-30. The user explicitly approved **Bun + SQLite + Elysia with background scheduler and dispatcher** during NMA-047. Product scope remains governed by [the active Notion architecture](https://app.notion.com/p/402abdd6187381beacd6c48fa521b99f) and [NMA-047](https://app.notion.com/p/409abdd6187381bab741d401c8031f67). This ADR records an implemented foundation, not completed native adapters or API readiness.
+Accepted for development on 2026-10-30. The user explicitly approved **Bun + SQLite + Elysia with background scheduler and dispatcher** during NMA-047. Product scope remains governed by [the current local architecture](overview.md) and [NMA-047](../backlog/NMA-047.md). This ADR records an implemented foundation, not completed native adapters or API readiness.
 
 ## Decision and executable boundary
 
@@ -48,9 +48,9 @@ Heavy model/tool execution belongs to the native harness processes. Dedicated wo
 
 ## Historical runtime retirement and data
 
-The root launcher, Makefile, dependency installation, CI, `.env.example`, README and PRODUCT guide use the new stack. The old Python API entry point is replaced by a retirement error. Hermes engine and provisioner `main()` functions reject startup before calling the retained implementation. The obsolete `scripts/dev_engine.py` rejects startup while preserving historical source links. `scripts/dev.py` and `scripts/check.py` only forward to their active Bun commands.
+The root launcher, Makefile, dependency installation, CI, `.env.example`, README and PRODUCT guide use the new stack. NMA-060 subsequently removed the retired Python runtime. The 2026-11-06 cleanup removed its remaining root launch/check wrappers, version marker, obsolete guides and experiment scripts. Current commands run Bun directly, including the documentation check.
 
-Historical Python modules are retained for targeted audit and reuse where their replacement is not implemented yet. Their dependency manifests and older reports are historical; the active workspace does not load them. They must not be described as new harness-first features. Continue cleanup under the relevant replacement ticket; NMA-060 rechecks the complete retirement boundary.
+Historical runtime source and tooling can be inspected in their [recorded Git snapshots](../development/history.md). Raw evidence and provenance notices remain preserved; these historical results do not describe the active harness-first implementation.
 
 No existing `.env`, historical partitions, PostgreSQL/MinIO volumes, user content or evidence were reset. A fresh `NGERTIIN_STATE_DIR` is the development reset boundary. The new installation persists owner identity and a private local token, and refuses an existing database from another owner/application/schema. No development data compatibility migration or runtime mode switch is provided. New data must survive ordinary shutdown and crash recovery. Rollback uses a prior Git revision plus a verified backup.
 

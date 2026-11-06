@@ -67,7 +67,7 @@ One public interaction projection can include app-originated and native-originat
 
 ## Delivery order
 
-The numbered steps are work packages, not newly created Notion tickets. Execute them in order. Verification within each backend step is required before advancing; step 09 is the aggregate gate before new UI behavior consumes the contracts.
+The numbered steps are work packages, not newly created milestone records. Execute them in order. Verification within each backend step is required before advancing; step 09 is the aggregate gate before new UI behavior consumes the contracts.
 
 | Step | Deliverable | Prerequisite |
 | --- | --- | --- |
@@ -89,7 +89,7 @@ The numbered steps are work packages, not newly created Notion tickets. Execute 
 
 ### Step 00 Establish the baseline and acceptance map
 
-Record the working-tree responsibility paths and preserve unrelated changes. Map the product decisions above to current behavior, required changes and test cases. Recheck the active Notion scope, exact prerequisite status, current exported contract and the installed/tested harness and Cua versions.
+Record the working-tree responsibility paths and preserve unrelated changes. Map the product decisions above to current behavior, required changes and test cases. Recheck the active local product scope, exact prerequisite status, current exported contract and the installed/tested harness and Cua versions.
 
 Reuse the approved draft and existing production components as visual references. Keep the earlier verification report immutable as historical evidence. Capture baseline timings and connection behavior before changing the preview lifecycle.
 
@@ -363,13 +363,13 @@ Store new evidence under a dated directory following `docs/verification/`. Inclu
 
 ### Current product and readiness documents
 
-- [Ngertiin Multi Agent](https://app.notion.com/p/402abdd6187381e3a720f4b01d824e1a)
-- [Product scope](https://app.notion.com/p/402abdd61873816e871ae24804345b56)
-- [Runtime architecture](https://app.notion.com/p/402abdd6187381beacd6c48fa521b99f)
-- [Feature decisions](https://app.notion.com/p/409abdd61873813284bbf75698073d8e)
-- [NMA-060 API readiness gate](https://app.notion.com/p/409abdd61873819b80c4dd2b3e593834)
-- [Frontend map](https://app.notion.com/p/40babdd6187381abba02d29c7363474d)
-- [Acceptance](https://app.notion.com/p/402abdd61873812a97a9f41032dd854f)
+- [Ngertiin Multi Agent](../README.md)
+- [Product scope](../../PRODUCT.md)
+- [Runtime architecture](overview.md)
+- [Feature decisions](../product/feature-decisions.md)
+- [NMA-060 API readiness gate](../backlog/NMA-060.md)
+- [Frontend map](../product/interface.md)
+- [Acceptance](../development/acceptance.md)
 
 ### Repository implementation and evidence
 
@@ -399,7 +399,7 @@ Latest user decisions in the current conversation govern the interaction and UI 
 
 ## Working-tree implementation — 2026-11-06
 
-The shared product-interaction service, typed protected-action decisions, failure-only response retry, natural composer flow, attributed live Computer activity, stable viewer renewal and the updated UI are implemented under contract 1.31.0. See the [implementation report, screenshots, test results and remaining proof boundaries](../verification/conversation-implementation-2026-11-06/README.md). This is a local working-tree delivery; no Notion ticket or production/package acceptance is implied. Separate viewer grants were selected for simultaneous surfaces, with in-place gateway credential renewal; no shared decoder capability is assumed.
+The shared product-interaction service, typed protected-action decisions, failure-only response retry, natural composer flow, attributed live Computer activity, stable viewer renewal and the updated UI are implemented under contract 1.31.0. See the [implementation report, screenshots, test results and remaining proof boundaries](../verification/conversation-implementation-2026-11-06/README.md). This is a local working-tree delivery; no additional milestone or production/package acceptance is implied. Separate viewer grants were selected for simultaneous surfaces, with in-place gateway credential renewal; no shared decoder capability is assumed.
 
 
 ## Studio and Computer presentation refinement

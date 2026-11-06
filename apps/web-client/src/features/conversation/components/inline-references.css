@@ -161,6 +161,7 @@ button.inline-reference:focus-visible {
   height: 16px;
 }
 .inline-reference[data-inline-reference="file"] {
+  vertical-align: middle;
   gap: 6px;
   padding: 3px 9px;
   border-radius: 999px;

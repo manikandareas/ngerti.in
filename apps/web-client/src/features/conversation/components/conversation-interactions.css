@@ -299,6 +299,7 @@
   }
 }
 .conversation-file-action {
+  vertical-align: middle;
   height: 30px;
   max-width: 100%;
   gap: 7px;
@@ -321,7 +322,7 @@
   font-size: 0.82em;
   line-height: 1.5;
   text-decoration: none;
-  vertical-align: baseline;
+  vertical-align: middle;
 }
 .source-citation > span {
   overflow: hidden;

@@ -100,6 +100,7 @@ import {
 import { runStatusLabel } from "@/features/conversation/lib/run-status";
 import { useComposerAttachments } from "@/features/conversation/lib/use-composer-attachments";
 import { useConversationDraft } from "@/features/conversation/lib/use-conversation-draft";
+import { useConversationScroll } from "@/features/conversation/lib/use-conversation-scroll";
 import { useMessageSubmission } from "@/features/conversation/lib/use-message-submission";
 import { useSettingsDialog } from "@/features/settings/hooks/use-settings-dialog";
 import type { SettingsSectionId } from "@/features/settings/lib/settings-search";
@@ -157,10 +158,11 @@ export default function Workspace() {
   const [composerFocused, setComposerFocused] = useState(false);
   const [conversationSurface, setConversationSurface] = useState<HTMLElement | null>(null);
   const composerInput = useRef<ComposerInputHandle>(null);
-  const pendingComposerFocus = useRef(false);
+  const pendingComposerFocus = useRef(true);
+  const focusComposerAfterNavigation = useRef(false);
   const bindComposerInput = useCallback((input: ComposerInputHandle | null) => {
     composerInput.current = input;
-    if (input && pendingComposerFocus.current) {
+    if (input && pendingComposerFocus.current && !focusComposerAfterNavigation.current) {
       pendingComposerFocus.current = false;
       input.focus();
     }
@@ -294,6 +296,8 @@ export default function Workspace() {
     void showSettings(page);
   }
   function choose(id: string) {
+    pendingComposerFocus.current = true;
+    focusComposerAfterNavigation.current = navigation && narrowNavigation;
     currentThread.current = id;
     select(id);
     setOlder([]);
@@ -302,7 +306,7 @@ export default function Workspace() {
     setHistoryLoaded(false);
     setNavigation(false);
     setDetails(false);
-    pendingComposerFocus.current = false;
+    if (id === threadId && !focusComposerAfterNavigation.current) focusComposer();
     setEditing(null);
     setEditText("");
     locate({ tab: "detail", id: null });
@@ -354,7 +358,10 @@ export default function Workspace() {
       const text = draft;
       void act(async () => {
         const accepted = await reply.submit(text);
-        if (accepted && currentThread.current === threadId) setDraft("");
+        if (accepted && currentThread.current === threadId) {
+          setDraft("");
+          void conversationScroll.current?.scrollToBottom({ animation: "instant" });
+        }
       });
       return;
     }
@@ -407,6 +414,7 @@ export default function Workspace() {
         );
       if (currentThread.current !== threadId) return;
       setDraft("");
+      void conversationScroll.current?.scrollToBottom({ animation: "instant" });
     });
   }
 
@@ -427,8 +435,10 @@ export default function Workspace() {
   }
   function focusComposer() {
     const input = composerInput.current;
-    if (input) input.focus();
-    else pendingComposerFocus.current = true;
+    if (input) {
+      pendingComposerFocus.current = false;
+      input.focus();
+    } else pendingComposerFocus.current = true;
   }
   function editQueued(message: MessageEntity) {
     if (busy || pending || editing) return;
@@ -489,6 +499,11 @@ export default function Workspace() {
     event.preventDefault();
     // Another modal may own focus before the navigation exit finishes.
     if (document.querySelector('[role="dialog"][data-state="open"]')) return;
+    if (focusComposerAfterNavigation.current) {
+      focusComposerAfterNavigation.current = false;
+      focusComposer();
+      return;
+    }
     const toggle = document.querySelector<HTMLButtonElement>(
       '.workspace-shell button[aria-label="Buka percakapan"]',
     );
@@ -576,6 +591,13 @@ export default function Workspace() {
     [olderParts, snapshot?.timeline.parts],
   );
   const entries = useMemo(() => conversationEntries(parts, messages), [parts, messages]);
+  const latestUserEntry = entries.findLast(
+    (entry) => entry.type === "message" && entry.message.author === "user",
+  );
+  const conversationScroll = useConversationScroll(
+    snapshot?.thread.id ?? null,
+    latestUserEntry?.type === "message" ? latestUserEntry.part.sequence : 0,
+  );
   const activityByEntry = useMemo(
     () => conversationActivity(snapshot, entries),
     [snapshot, entries],
@@ -1070,7 +1092,11 @@ export default function Workspace() {
             <ConversationLoading error={error} />
           ) : (
             <>
-              <Conversation key={threadId} className="conversation-viewport min-h-0">
+              <Conversation
+                key={threadId}
+                contextRef={conversationScroll}
+                className="conversation-viewport min-h-0"
+              >
                 <ConversationContent
                   scrollClassName="conversation-scroll"
                   className="conversation-column [max-width:var(--chat-column-max)] [margin-inline:auto] gap-4 w-full"

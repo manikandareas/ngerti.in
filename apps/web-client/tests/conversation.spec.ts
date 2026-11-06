@@ -1,4 +1,4 @@
-import { expect, type Page, test } from "@playwright/test";
+import { expect, type Locator, type Page, test } from "@playwright/test";
 import { withTimeline } from "./conversation-fixture.js";
 
 test.afterEach(async ({ page }) => {
@@ -35,6 +35,7 @@ async function idleDm(page: Page) {
 
 test("switching conversations keeps exactly one attachment button and editor", async ({ page }) => {
   const { agent, thread } = await idleDm(page);
+  await expect(page.getByRole("textbox", { name: "Pesan", exact: true })).toBeFocused();
   for (let index = 0; index < 12; index++) {
     await sidebar(page);
     const target =
@@ -51,6 +52,7 @@ test("switching conversations keeps exactly one attachment button and editor", a
     await expect(page.getByRole("button", { name: "Tambah lampiran", exact: true })).toHaveCount(1);
     await expect(page.getByLabel("Lampirkan file ke pesan", { exact: true })).toHaveCount(1);
     await expect(page.getByRole("textbox", { name: "Pesan", exact: true })).toHaveCount(1);
+    await expect(page.getByRole("textbox", { name: "Pesan", exact: true })).toBeFocused();
   }
   await page.getByRole("textbox", { name: "Pesan", exact: true }).fill("Composer still works.");
   const chooser = page.waitForEvent("filechooser");
@@ -697,3 +699,190 @@ test("cancelled opening can continue in the same chat without another opener", a
   await expect(page.locator(".message-run-state")).toContainText("Waiting to start…");
   await expect(page.getByText("Stopped.", { exact: true })).toHaveCount(0);
 });
+
+type ConversationMode = "dm" | "group";
+type ScrollRecordingWindow = typeof window & {
+  conversationScrollSamples: number[];
+  recordConversationScroll: () => void;
+};
+
+async function expectAtBottom(scroll: Locator): Promise<void> {
+  await expect
+    .poll(() => scroll.evaluate((node) => node.scrollHeight - node.clientHeight - node.scrollTop))
+    .toBeLessThanOrEqual(2);
+}
+
+async function expectRecordedScrollAtBottom(page: Page): Promise<void> {
+  await expect
+    .poll(
+      () => page.evaluate(() => (window as ScrollRecordingWindow).conversationScrollSamples.length),
+      { timeout: 15000 },
+    )
+    .toBe(12);
+  const samples = await page.evaluate(
+    () => (window as ScrollRecordingWindow).conversationScrollSamples,
+  );
+  expect(samples[0]).toBeLessThanOrEqual(2);
+  expect(Math.max(...samples)).toBeLessThanOrEqual(2);
+}
+
+async function scrollFixture(
+  page: Page,
+  mode: ConversationMode,
+  { publishSubmitted = true }: { publishSubmitted?: boolean } = {},
+) {
+  const { agent, thread: dm } = await idleDm(page);
+  let thread = dm;
+  if (mode === "group") {
+    const response = await page.request.post("/v1/threads", {
+      headers: { "Idempotency-Key": crypto.randomUUID() },
+      data: { type: "group", member_agent_ids: [agent.id] },
+    });
+    expect(response.ok()).toBeTruthy();
+    thread = await response.json();
+  }
+  const messages = Array.from({ length: 40 }, (_, index) => ({
+    id: `scroll-history-${thread.id}-${index}`,
+    revision: 1,
+    created_at: new Date(1700000000000 + index * 1000).toISOString(),
+    thread_id: thread.id,
+    author: index % 2 ? "agent" : "user",
+    author_agent_id: index % 2 ? agent.id : null,
+    run_id: null,
+    purpose: "conversation",
+    state: "complete",
+    artifact_ids: [],
+    text: `History ${index}: A message long enough to wrap on a mobile screen.\n\nA second paragraph keeps the scrollable conversation taller than its viewport.`,
+  }));
+  await page.route(`**/v1/threads/${thread.id}/snapshot`, async (route) => {
+    const response = await route.fetch();
+    const value = await response.json();
+    await route.fulfill({
+      response,
+      json: withTimeline(
+        { ...value, messages: [...messages, ...value.messages] },
+        publishSubmitted ? undefined : messages,
+      ),
+    });
+  });
+  await page.evaluate((id) => localStorage.setItem("ngertiin:thread", id), thread.id);
+  return { agent, thread, messages };
+}
+
+for (const mode of ["dm", "group"] as const) {
+  test(`${mode} opens at the latest message on its first visible frame`, async ({ page }) => {
+    const f = await scrollFixture(page, mode);
+    await page.addInitScript((lastMessageId) => {
+      const samples: number[] = [];
+      Object.assign(window, {
+        conversationScrollSamples: samples,
+        recordConversationScroll: () => {
+          samples.length = 0;
+          requestAnimationFrame(sample);
+        },
+      });
+      function sample() {
+        const scroll = document.querySelector<HTMLElement>(".conversation-scroll");
+        if (
+          scroll &&
+          document.getElementById(`message-${lastMessageId}`) &&
+          scroll.clientHeight > 0
+        )
+          samples.push(scroll.scrollHeight - scroll.clientHeight - scroll.scrollTop);
+        if (samples.length < 12) requestAnimationFrame(sample);
+      }
+      requestAnimationFrame(sample);
+    }, f.messages[39].id);
+    await page.reload();
+    await expectRecordedScrollAtBottom(page);
+    await expect(page.getByRole("textbox", { name: "Pesan", exact: true })).toBeFocused();
+
+    await sidebar(page);
+    await page.locator("[data-thread-id]").filter({ hasText: "Tobi" }).first().click();
+    await expect(page.getByRole("button", { name: "Detail Tobi", exact: true })).toBeVisible();
+    await sidebar(page);
+    await page.evaluate(() => (window as ScrollRecordingWindow).recordConversationScroll());
+    await page.locator(`[data-thread-id="${f.thread.id}"]`).click();
+    await expectRecordedScrollAtBottom(page);
+    await expect(page.getByRole("textbox", { name: "Pesan", exact: true })).toBeFocused();
+  });
+
+  test(`${mode} sending a message returns to the bottom after reading older messages`, async ({
+    page,
+  }) => {
+    await scrollFixture(page, mode);
+    await page.reload();
+    const scroll = page.locator(".conversation-scroll");
+    await expect(page.locator(".conversation-message")).toHaveCount(40, { timeout: 15000 });
+    await expectAtBottom(scroll);
+    await scroll.evaluate((node) => {
+      node.scrollTop = 0;
+    });
+    await expect(page.getByRole("button", { name: "Pesan terbaru", exact: true })).toBeVisible();
+    const text = `New ${mode} message from the normal composer`;
+    await page.getByRole("textbox", { name: "Pesan", exact: true }).fill(text);
+    await page.getByRole("button", { name: "Kirim", exact: true }).click();
+    await expect(
+      page.locator(".conversation-message [data-message-text]").filter({ hasText: text }),
+    ).toHaveCount(1);
+    await expectAtBottom(scroll);
+  });
+
+  test(`${mode} assistant updates preserve the position while reading history`, async ({
+    page,
+  }) => {
+    const f = await scrollFixture(page, mode);
+    await page.reload();
+    const scroll = page.locator(".conversation-scroll");
+    await expect(page.locator(".conversation-message")).toHaveCount(40, { timeout: 15000 });
+    await expectAtBottom(scroll);
+    await scroll.evaluate((node) => {
+      node.scrollTop = 200;
+    });
+    await expect(page.getByRole("button", { name: "Pesan terbaru", exact: true })).toBeVisible();
+    const before = await scroll.evaluate((node) => node.scrollTop);
+    f.messages.push({
+      ...f.messages[39],
+      id: `late-${f.thread.id}`,
+      text: "New assistant reply while reading history.",
+    });
+    const updated = await page.request.post(`/v1/agents/${f.agent.id}/configuration`, {
+      headers: { "Idempotency-Key": crypto.randomUUID() },
+      data: { expected_revision: f.agent.revision, changes: { soul: "Scroll history regression" } },
+    });
+    expect(updated.ok()).toBeTruthy();
+    await expect(
+      page.getByText("New assistant reply while reading history.", { exact: true }),
+    ).toHaveCount(1);
+    await page.evaluate(
+      () =>
+        new Promise<void>((resolve) =>
+          requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+        ),
+    );
+    expect(await scroll.evaluate((node) => node.scrollTop)).toBeCloseTo(before, 0);
+  });
+
+  test(`${mode} queued sends reveal the bottom without publishing pending input`, async ({
+    page,
+  }) => {
+    const f = await scrollFixture(page, mode, { publishSubmitted: false });
+    await page.reload();
+    const scroll = page.locator(".conversation-scroll");
+    await expect(page.locator(".conversation-message")).toHaveCount(40, { timeout: 15000 });
+    await expectAtBottom(scroll);
+    await scroll.evaluate((node) => {
+      node.scrollTop = 0;
+    });
+    await expect(page.getByRole("button", { name: "Pesan terbaru", exact: true })).toBeVisible();
+    const text = `Queued ${mode} message while reading history`;
+    const composer = page.getByRole("textbox", { name: "Pesan", exact: true });
+    const addressed =
+      mode === "group" ? `[@${f.agent.name}](ngertiin://agent/${f.agent.id}) ${text}` : text;
+    await composer.fill(addressed);
+    await composer.press("Enter");
+    await expect(page.locator("[data-queued-message]")).toContainText(text);
+    await expect(page.locator(".conversation-message")).toHaveCount(40, { timeout: 15000 });
+    await expectAtBottom(scroll);
+  });
+}

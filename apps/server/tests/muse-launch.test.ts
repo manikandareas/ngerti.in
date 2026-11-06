@@ -29,7 +29,7 @@ for (const purpose of ["conversation", "routing"] as const) {
       expect(setting).toBeDefined();
       if (!setting) throw new Error("Missing tool policy");
       expect(JSON.parse(setting.slice("run.toolset=".length))).toEqual(
-        purpose === "routing" ? [] : ["request_user_input", "mcp__ngertiin__*"],
+        purpose === "routing" ? [] : ["mcp__ngertiin__*"],
       );
     } finally {
       await transport.close();

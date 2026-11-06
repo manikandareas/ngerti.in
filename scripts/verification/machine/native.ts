@@ -51,7 +51,7 @@ let browser: Awaited<ReturnType<typeof chromium.launch>> | undefined;
 try {
   await machines.ready();
   const contract = await owner("/v1/contracts");
-  assert.equal(contract.version, "1.30.0");
+  assert.equal(contract.version, "1.31.0");
   assert.equal(contract.browser.state, "replaced");
   assert(contract.product_tools.some((tool: { name: string }) => tool.name === "ngertiin.computer_call"));
   assert(!contract.product_tools.some((tool: { name: string }) => tool.name.startsWith("ngertiin.browser_")));

@@ -14,6 +14,8 @@ import { registerGroupTools } from "../groups/tools";
 import type { AppHost } from "../integrations/host";
 import { Applications } from "../integrations/service";
 import { registerAppTools } from "../integrations/tools";
+import { Interactions } from "../interactions/service";
+import { registerInteractionTools } from "../interactions/tools";
 import { registerLearningTools } from "../learning/tools";
 import type { Lifecycle } from "../lifecycle";
 import { type Machines, machineFor } from "../machines/service";
@@ -71,6 +73,7 @@ export class ProductTools {
     }
     registerLearningTools(this);
     registerGroupTools(this);
+    registerInteractionTools(this);
     registerGoalTools(this);
     this.register("ngertiin.cancel_run", {
       schema: productToolSchemas["ngertiin.cancel_run"],
@@ -108,6 +111,18 @@ export class ProductTools {
           workspace_id: run.workspace_id,
           ...new Attachments(lifecycle).current(run),
           agent_snapshot: run.agent_snapshot,
+          retry_context: run.retry_of_run_id
+            ? {
+                failed_run_id: run.retry_of_run_id,
+                native_tool_receipts: lifecycle.store.get("run", run.retry_of_run_id).native_tools,
+                app_receipts: lifecycle.store
+                  .list("app_effect")
+                  .filter((effect) => effect.run_id === run.retry_of_run_id),
+                machine_receipts: lifecycle.store
+                  .list("machine_operation")
+                  .filter((effect) => effect.run_id === run.retry_of_run_id),
+              }
+            : null,
           task: run.task_id ? lifecycle.store.get("peer_task", run.task_id) : null,
         };
       },
@@ -257,6 +272,7 @@ export class ProductTools {
     const authorize = () => {
       this.lease(token);
       for (const ref of tool.resources(parsed)) this.resource(scope, ref);
+      new Interactions(this.lifecycle).guard(scope.run_id, name, parsed as Record<string, unknown>);
     };
     authorize();
     // Asynchronous tools must call authorize immediately before committing their effect.
@@ -284,6 +300,29 @@ export class ProductTools {
     );
     let result: unknown;
     try {
+      if (
+        this.machines &&
+        ["ngertiin.computer_call", "ngertiin.machine_exec", "ngertiin.machine_window"].includes(
+          name,
+        )
+      ) {
+        const machine = this.machines.snapshot();
+        const activity = {
+          machine_id: machine.id,
+          generation: machine.generation,
+          phase: "preparing" as const,
+          started_at: before.computer_activity?.started_at ?? new Date().toISOString(),
+        };
+        this.lifecycle.observe(before.id, before.dispatch_token as string, {
+          computer_activity: activity,
+        });
+        await this.machines.ready();
+        authorize();
+        this.lifecycle.observe(before.id, before.dispatch_token as string, {
+          computer_activity: { ...activity, phase: "active" },
+        });
+      }
+      new Interactions(this.lifecycle).claim(scope.run_id, name, parsed as Record<string, unknown>);
       result = await tool.execute(parsed, { scope: Object.freeze({ ...scope }), authorize });
     } catch (error) {
       if (error instanceof DomainError) {

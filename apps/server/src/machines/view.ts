@@ -118,6 +118,28 @@ export class MachineViews {
       machine_id: current.id,
     };
   }
+  async renew(id: string, origin: string) {
+    const view = this.#views.get(id);
+    if (!view || ![view.origin, view.apiOrigin].includes(origin))
+      throw new DomainError("UNAUTHORIZED", 401);
+    this.valid(view);
+    const reply = (await this.machines.host?.rpc("SystemService/CreateViewerTicket", {
+      ttl: "600s",
+      policy: view.interactive ? "SESSION_POLICY_ALLOW_ACTIVATION" : "SESSION_POLICY_VIEW_ONLY",
+      clipboard: view.interactive,
+      filesRoot: view.interactive ? this.machines.snapshot().root : "",
+      principal: { id: "owner", displayName: "You" },
+    })) as { ticket?: string } | undefined;
+    this.valid(view);
+    if (!reply?.ticket) throw new DomainError("MACHINE_UNAVAILABLE", 503);
+    view.ticket = reply.ticket;
+    view.expires = Date.now() + 590_000;
+    return {
+      viewer_id: view.id,
+      expires_at: new Date(view.expires).toISOString(),
+      control_revision: view.revision,
+    };
+  }
   private closeMedia(id: string) {
     const existing = this.#closingMedia.get(id);
     if (existing) return existing;
@@ -204,6 +226,14 @@ export class MachineViews {
   async proxy(request: Request) {
     const view = this.authorize(request);
     const { path, search } = this.path(request, view);
+    if (path === "viewer/ngertiin-health.js")
+      return new Response(viewerHealthScript, {
+        headers: { "Content-Type": "text/javascript", "Cache-Control": "no-store" },
+      });
+    if (path === "viewer/ngertiin-preview.css")
+      return new Response(viewerPreviewStyle, {
+        headers: { "Content-Type": "text/css", "Cache-Control": "no-store" },
+      });
     const staticAsset = request.method === "GET" && path.startsWith("viewer/");
     const rpc =
       /^cua\.env\.v1\.(SystemService|StreamService|PresenceService|ComputerService|FilesystemService)\/(\w+)$/.exec(
@@ -299,6 +329,16 @@ export class MachineViews {
       });
     }
     this.valid(view);
+    if (staticAsset && upstream.ok && responseHeaders.get("Content-Type")?.includes("text/html")) {
+      const html = await upstream.text();
+      return new Response(
+        html.replace(
+          "</head>",
+          '<link rel="stylesheet" href="./ngertiin-preview.css"><script src="./ngertiin-health.js" defer></script></head>',
+        ),
+        { status: upstream.status, headers: responseHeaders },
+      );
+    }
     return new Response(this.stream(upstream.body, view.abort.signal, request.signal), {
       status: upstream.status,
       headers: responseHeaders,
@@ -382,11 +422,14 @@ export class MachineViews {
           this.denyPeer(peer, "Machine view expired.");
         }
       };
-      socket.onclose = () => {
-        this.denyPeer(peer, "Machine media closed.");
+      socket.onclose = (event) => {
+        // Preserve upstream ticket-expiry semantics so Cua can reopen its media session.
+        peer.close(event.code === 1006 ? 1011 : event.code, "Machine media reconnecting.");
+        this.closePeer(peer);
       };
       socket.onerror = () => {
-        this.denyPeer(peer, "Machine view unavailable.");
+        peer.close(1011, "Machine media reconnecting.");
+        this.closePeer(peer);
       };
     } catch {
       this.denyPeer(peer, "Machine view denied.");
@@ -425,8 +468,8 @@ export class MachineViews {
     this.#peers.delete(peer);
     bridge.socket.onclose = null;
     bridge.socket.close();
-    peer.terminate?.();
-    void this.closeMedia(bridge.mediaId).catch(() => this.machines.uncertainControl());
+    // Allow an upstream close frame to flush; terminate would erase its expiry code.
+    // Transport detach is recoverable. Explicit view revoke/expiry closes media.
   }
   private denyPeer(peer: Peer, reason: string) {
     peer.close(1008, reason);
@@ -445,3 +488,18 @@ export class MachineViews {
     this.#mediaServer = undefined;
   }
 }
+
+// Loaded as a same-origin external asset to honor the pinned viewer CSP.
+const viewerHealthScript = `(() => {
+  if (new URLSearchParams(location.hash.slice(1)).get('ngertiin_preview') === '1') document.documentElement.dataset.ngertiinPreview = 'true';
+  const viewerId = location.pathname.split('/viewer/')[1]?.split('/')[0];
+  setInterval(() => {
+    const root = document.querySelector('[data-status]');
+    const stats = window.__cuaViewer?.stats?.();
+    parent.postMessage({type:'ngertiin:computer-health', viewer_id:viewerId,
+      status:root?.dataset.status ?? 'connecting', frames_decoded:stats?.framesDecoded ?? 0}, location.origin);
+  }, 1000);
+})();`;
+
+// Compact product previews retain connection/error overlays while hiding viewer controls.
+const viewerPreviewStyle = `html[data-ngertiin-preview="true"] :is(.cua-toolbar, .cua-chips, .cua-stats, .cua-overlay button) { display: none !important; }`;

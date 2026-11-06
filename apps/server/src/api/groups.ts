@@ -4,8 +4,9 @@ import { AttachmentSubmissions } from "../attachments/submissions";
 import type { Background } from "../background";
 import { DomainError, id } from "../contracts";
 import { Creation, groupConfiguration } from "../conversations/creation";
-import { groupMessage, humanReply, membershipUpdate, routeRetry } from "../groups/contracts";
+import { groupMessage, membershipUpdate, routeRetry } from "../groups/contracts";
 import { Groups } from "../groups/service";
+import { interactionReply } from "../interactions/contracts";
 import type { Lifecycle } from "../lifecycle";
 import type { Command } from "./services";
 
@@ -77,6 +78,6 @@ export function registerGroupRoutes(
     .post(
       "/v1/human-requests/:id/reply",
       ({ request, params, body }) => command(request, body, () => groups.reply(params.id, body)),
-      { params: z.object({ id }), body: humanReply },
+      { params: z.object({ id }), body: interactionReply },
     );
 }

@@ -18,6 +18,7 @@ import { dueWindow, firstDue } from "./goals/schedule";
 import { ResponsibilityScope } from "./goals/scope";
 import type { GroupRouter } from "./groups/router";
 import { InteractionJournal } from "./runs/interaction-journal";
+import { canRetryResponse } from "./runs/retry-policy";
 import type { Store } from "./store";
 import { Workspaces } from "./workspaces/service";
 
@@ -408,6 +409,10 @@ export class Lifecycle {
       thread_id: thread.id,
       agent_id: agentId,
       input_message_id: message.id,
+      computer_activity: null,
+      retry_allowed: false,
+      retry_of_run_id: null,
+      retried_by_run_id: null,
       task_id: options.task_id ?? null,
       thread_revision: thread.type === "group" ? thread.revision : null,
       goal_id: options.goal_id ?? null,
@@ -707,6 +712,7 @@ export class Lifecycle {
       return this.update(run, {
         status: outcome,
         outcome,
+        retry_allowed: canRetryResponse(this.store, { ...run, status: outcome, outcome }),
         timings: { ...run.timings, settled_at: new Date().toISOString() },
         cancellation: outcome === "cancelled" ? "confirmed" : run.cancellation,
         activity: outcome === "unknown" ? "unknown" : "idle",
@@ -797,6 +803,7 @@ export class Lifecycle {
       | "product_tools"
       | "tool_errors"
       | "sources"
+      | "computer_activity"
       | "visual_inputs"
     >,
   ) {
@@ -947,6 +954,7 @@ export class Lifecycle {
           cancellation: outcome === "cancelled" ? "confirmed" : run.cancellation,
           activity: "idle",
           native_run_id: nativeRunId ?? run.native_run_id,
+          retry_allowed: canRetryResponse(this.store, { ...run, status: outcome, outcome }),
         });
       },
     );

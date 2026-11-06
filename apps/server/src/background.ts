@@ -5,6 +5,7 @@ import { Goals } from "./goals/service";
 import { RoutingWorker } from "./groups/routing-worker";
 import { Groups } from "./groups/service";
 import { diagnostic } from "./harness/contracts";
+import { Interactions } from "./interactions/service";
 import type { Lifecycle } from "./lifecycle";
 
 export interface ExecutorContext {
@@ -79,6 +80,7 @@ export class Background {
         this.report("ATTACHMENT_CLEANUP_ERROR");
       }
     }
+    new Interactions(this.lifecycle).advance();
     new Groups(this.lifecycle).advance();
     this.#routing.advance();
     new Goals(this.lifecycle).advance(now);

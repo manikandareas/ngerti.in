@@ -7,6 +7,7 @@ import {
   steerInput,
 } from "./contracts";
 import type { Lifecycle } from "./lifecycle";
+import { hasUnresolvedResponseEffects } from "./runs/retry-policy";
 
 export class RunControls {
   constructor(readonly lifecycle: Lifecycle) {}
@@ -21,12 +22,24 @@ export class RunControls {
     if (
       message.revision !== expectedRevision ||
       message.author !== "user" ||
-      !message.run_id ||
       message.state === "deleted"
     )
       throw new DomainError("CONFLICT");
-    const run = this.lifecycle.store.get("run", message.run_id);
-    if (run.status !== "queued" || run.delivery !== "pending") throw new DomainError("CONFLICT");
+    const run = message.run_id
+      ? this.lifecycle.store.get("run", message.run_id)
+      : this.lifecycle.store.list("run").findLast((run) => run.input_message_id === message.id);
+    if (run?.status !== "queued" || run.delivery !== "pending") throw new DomainError("CONFLICT");
+    if (
+      this.lifecycle.store
+        .list("run")
+        .some(
+          (other) =>
+            other.input_message_id === message.id &&
+            other.id !== run.id &&
+            other.status !== "queued",
+        )
+    )
+      throw new DomainError("CONFLICT");
     return { message, run };
   }
   edit(messageId: string, input: unknown) {
@@ -47,6 +60,37 @@ export class RunControls {
   }
   send(input: unknown) {
     return { ...this.lifecycle.admit(admissionInput.parse(input)), control: null };
+  }
+  retry(runId: string, expectedRevision: number) {
+    return this.lifecycle.store.transaction(() => {
+      const store = this.lifecycle.store;
+      const run = store.get("run", runId);
+      if (
+        run.revision !== expectedRevision ||
+        run.status !== "failed" ||
+        run.cancellation !== "none" ||
+        run.retried_by_run_id ||
+        run.diagnostic?.outcome === "unknown"
+      )
+        throw new DomainError("CONFLICT");
+      if (hasUnresolvedResponseEffects(store, run))
+        throw new DomainError("RECONCILIATION_REQUIRED");
+      const input = store.get("message", run.input_message_id);
+      if (input.state === "deleted") throw new DomainError("CONFLICT");
+      const next = this.lifecycle.enqueue(input, run.agent_id, {
+        task_id: run.task_id ?? undefined,
+        goal_id: run.goal_id,
+        routine_id: run.routine_id,
+      });
+      this.update(run, { retried_by_run_id: next.id, retry_allowed: false });
+      const linked = this.update(next, { retry_of_run_id: run.id, sources: run.sources });
+      if (run.task_id) {
+        const task = store.get("peer_task", run.task_id);
+        if (task.current_run_id !== run.id) throw new DomainError("CONFLICT");
+        this.update(task, { current_run_id: next.id, state: "working" });
+      }
+      return linked;
+    });
   }
   requestSteer(runId: string, input: unknown) {
     const data = steerInput.parse(input);

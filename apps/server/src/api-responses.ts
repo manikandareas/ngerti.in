@@ -247,7 +247,7 @@ routes("POST", ["/v1/groups/:id/messages"], schemas.group_route);
 routes("POST", ["/v1/human-requests/:id/reply"], schemas.human_request);
 routes("POST", ["/v1/messages/:id/edit", "/v1/messages/:id/delete"], schemas.message);
 routes("POST", ["/v1/runs/:id/steer"], schemas.control);
-routes("POST", ["/v1/runs/:id/retry-preparation"], schemas.run);
+routes("POST", ["/v1/runs/:id/retry-preparation", "/v1/runs/:id/retry"], schemas.run);
 routes("GET", ["/v1/threads/:id/goals"], operationSchemas.goals);
 routes(
   "POST",
@@ -334,6 +334,15 @@ routes(
 );
 routes("POST", ["/v1/machine/control"], schemas.machine);
 routes("POST", ["/v1/machine/view"], operationSchemas.machine_view);
+routes(
+  "POST",
+  ["/v1/machine/views/:viewerId/renew"],
+  z.strictObject({
+    viewer_id: z.string(),
+    expires_at: z.iso.datetime(),
+    control_revision: z.int().nonnegative(),
+  }),
+);
 routes("DELETE", ["/v1/machine/views/:viewerId"], z.strictObject({ revoked: z.boolean() }));
 routes(
   "GET",

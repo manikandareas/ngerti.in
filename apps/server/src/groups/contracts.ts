@@ -1,5 +1,11 @@
 import { z } from "zod";
 import { base } from "../contracts/base";
+import {
+  askUserInput,
+  interactionReply,
+  protectedAction,
+  questionOptions,
+} from "../interactions/contracts";
 import { run } from "../runs/contracts";
 
 const id = z.uuid();
@@ -126,13 +132,20 @@ export const taskFields = {
 export const humanRequestFields = {
   thread_id: id,
   agent_id: id,
-  task_id: id,
+  task_id: id.nullable(),
   source_run_id: id,
   purpose: z.enum(["input", "review", "approval"]),
   message_id: id,
   state: z.enum(["pending", "answered", "cancelled"]),
   response_message_id: id.nullable(),
   continuation_run_id: id.nullable(),
+  options: questionOptions.nullable().default(null),
+  action: protectedAction.nullable().default(null),
+  action_fingerprint: z.string().length(64).nullable().default(null),
+  decision: z.enum(["approve", "reject"]).nullable().default(null),
+  decision_evidence: z.string().max(2000).nullable().default(null),
+  decision_source: z.enum(["owner", "conversation"]).nullable().default(null),
+  effect_command_id: id.nullable().default(null),
 };
 export const handoffInput = z.strictObject({
   agent_id: id,
@@ -147,14 +160,8 @@ export const handoffInput = z.strictObject({
       "Use complete for an ordinary task without a Goal when the peer will deliver the entire remaining answer; this closes the parent task without another inference if the peer succeeds with useful output. Use synthesize for a combined response or finalize for Goal bookkeeping that requires its coordinator.",
     ),
 });
-export const askHumanInput = z.strictObject({
-  purpose: humanRequestFields.purpose,
-  question: text,
-});
-export const humanReply = z.strictObject({
-  expected_revision: z.int().positive(),
-  text,
-});
+export const askHumanInput = askUserInput;
+export const humanReply = interactionReply;
 export const groupCommands = {
   group_message: groupMessage,
   group_route_retry: routeRetry,

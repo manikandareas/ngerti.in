@@ -3,6 +3,7 @@ import { DomainError, type Entity } from "../contracts";
 import { publicReferences } from "../conversations/references";
 import { Goals } from "../goals/service";
 import { Groups } from "../groups/service";
+import { Interactions } from "../interactions/service";
 import { Memories } from "../learning/memories";
 import type { Lifecycle } from "../lifecycle";
 import { machineWindowGuidance } from "../machines/instructions";
@@ -48,6 +49,10 @@ export function runLearningContext(lifecycle: Lifecycle, run: Entity<"run">) {
           ? machineWindowGuidance
           : "",
         new Groups(lifecycle).context(run),
+        new Interactions(lifecycle).context(run),
+        run.retry_of_run_id
+          ? `This is a retry of failed run ${run.retry_of_run_id}. Preserve completed tool receipts and reconcile uncertain effects. Do not repeat completed external effects. Continue from the existing conversation and original attachments.`
+          : "",
         new Goals(lifecycle).context(run),
         "Current authoritative learning state. Use these identities/revisions instead of obsolete facts in native history. Deleted records must remain deleted. Do not recreate them from older transcript or tool receipts. Use ngertiin.list_memories for fresh scoped recall and ngertiin.write_memory/delete_memory for changes; new identities start at expected_revision 0. Changes are committed when their tool receipt succeeds, even if this run later stops. Use a fresh UUID command_id for a distinct mutation and the same UUID on retries. Visibility is explicit: dm_private, group or shared (across this agent's conversations). Never promote private content into shared memory or a shared skill without an explicit sharing request.",
         JSON.stringify(

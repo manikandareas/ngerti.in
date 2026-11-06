@@ -476,6 +476,13 @@ export class Goals {
     this.scope(goal);
     const run = goal.current_run_id ? this.store.get("run", goal.current_run_id) : null;
     if (run && !terminal.has(run.status)) return;
+    if (
+      run &&
+      this.store
+        .list("human_request")
+        .some((request) => request.source_run_id === run.id && request.state === "pending")
+    )
+      return;
     let coordinator = this.scopes.coordinator(goal);
     if (goal.scope === "group" && !coordinator) {
       if (!goal.assignment_route_id) {

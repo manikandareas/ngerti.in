@@ -1,17 +1,10 @@
 import { DomainError, type Entity } from "../contracts";
 import { HarnessError } from "../harness/contracts";
+import { Interactions } from "../interactions/service";
 import type { Lifecycle } from "../lifecycle";
 import { Workspaces } from "../workspaces/service";
 import { requireAttachmentSupport } from "./attachments";
-import {
-  askHumanInput,
-  groupMessage,
-  handoffInput,
-  humanReply,
-  membershipUpdate,
-  routeResult,
-  routeRetry,
-} from "./contracts";
+import { groupMessage, handoffInput, membershipUpdate, routeResult, routeRetry } from "./contracts";
 import { nativeRoutingPrompt } from "./native-routing";
 import type { RoutingDecision, RoutingPacket } from "./router";
 import { routingEvidence } from "./routing-policy";
@@ -654,47 +647,10 @@ export class Groups {
     });
   }
   askUser(runId: string, input: unknown) {
-    const data = askHumanInput.parse(input);
-    return this.store.transaction(() => {
-      const { run, task } = this.source(runId);
-      if (task.state !== "working") throw new DomainError("CONFLICT");
-      const message = this.message(run.thread_id, data.question, "human_request", run);
-      const request = this.store.put({
-        ...this.base(),
-        kind: "human_request",
-        thread_id: run.thread_id,
-        agent_id: run.agent_id,
-        task_id: task.id,
-        source_run_id: run.id,
-        purpose: data.purpose,
-        message_id: message.id,
-        state: "pending",
-        response_message_id: null,
-        continuation_run_id: null,
-      });
-      this.update(task, { state: "waiting_user" });
-      return request;
-    });
+    return new Interactions(this.lifecycle).ask(runId, input);
   }
   reply(requestId: string, input: unknown) {
-    const data = humanReply.parse(input);
-    return this.store.transaction(() => {
-      const request = this.store.get("human_request", requestId);
-      this.member(request.thread_id, request.agent_id);
-      const task = this.store.get("peer_task", request.task_id);
-      const run = this.store.get("run", request.source_run_id);
-      if (
-        request.revision !== data.expected_revision ||
-        request.state !== "pending" ||
-        task.state !== "waiting_user" ||
-        task.current_run_id !== request.source_run_id ||
-        ["failed", "cancelled"].includes(run.status) ||
-        run.cancellation !== "none"
-      )
-        throw new DomainError("CONFLICT");
-      const message = this.message(request.thread_id, data.text, "human_reply");
-      return this.update(request, { state: "answered", response_message_id: message.id });
-    });
+    return new Interactions(this.lifecycle).reply(requestId, input);
   }
   /** Reconciliation is repeatable: each projection transition and continuation admission is atomic. */
   advance() {

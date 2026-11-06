@@ -1,5 +1,6 @@
 export const errorCodes = [
   "INVALID_REQUEST",
+  "APPROVAL_REQUIRED",
   "UNAUTHORIZED",
   "NOT_FOUND",
   "CONFLICT",

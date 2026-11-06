@@ -88,11 +88,13 @@ const durablePaths = new Set([
   "/v1/runs",
   "/v1/runs/:id/cancel",
   "/v1/runs/:id/retry-preparation",
+  "/v1/runs/:id/retry",
   "/v1/goals/:id/control",
   "/v1/apps/connections/:id/revoke",
   "/v1/apps/connections/:id/assign",
 ]);
 const operationPaths = new Set([
+  "/v1/machine/views/:viewerId/renew",
   "/v1/connections/:id/inspect",
   "/v1/connections/:id/login",
   "/v1/connections/:id/login/cancel",

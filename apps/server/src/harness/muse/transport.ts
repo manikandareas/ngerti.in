@@ -19,11 +19,11 @@ export class MuseTransport {
       args: [
         ...args,
         "serve",
-        // Select only interaction and scoped app tools; the empty preset also removes questions.
+        // Product questions use scoped application tools; native permission handling stays in the adapter.
         ...(context.workspace
           ? [
               "--config",
-              `run.toolset=${JSON.stringify(context.purpose === "routing" ? [] : ["request_user_input", "mcp__ngertiin__*"])}`,
+              `run.toolset=${JSON.stringify(context.purpose === "routing" ? [] : ["mcp__ngertiin__*"])}`,
             ]
           : []),
         "--disable-shell",

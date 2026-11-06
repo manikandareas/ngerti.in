@@ -86,6 +86,12 @@ export function registerRunRoutes(
       },
     )
     .post(
+      "/v1/runs/:id/retry",
+      ({ request, params, body }) =>
+        command(request, body, () => controls.retry(params.id, body.expected_revision)),
+      { params: z.object({ id }), body: z.strictObject({ expected_revision: z.int().positive() }) },
+    )
+    .post(
       "/v1/runs/:id/retry-preparation",
       ({ request, params, body }) =>
         command(request, body, () => lifecycle.retryPreparation(params.id, body.expected_revision)),

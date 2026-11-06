@@ -8,6 +8,7 @@ import { ProductTools } from "../src/harness/tools";
 import { type AppHost, type AppSessionConfig, ComposioHost } from "../src/integrations/host";
 import { appOutput } from "../src/integrations/output";
 import { Applications } from "../src/integrations/service";
+import { Interactions } from "../src/interactions/service";
 import { fixture } from "./helpers";
 
 let f: ReturnType<typeof fixture>;
@@ -345,4 +346,28 @@ test("SDK uncertainty retains a safe request ID without exposing exception bodie
   );
   expect(result).toMatchObject({ state: "unknown", request_id: "request-123", sdk_error: "Error" });
   expect(JSON.stringify(result)).not.toContain("private-provider-body");
+});
+
+test("product approval gates the actual scoped app dispatch and changed arguments never reuse a decision", async () => {
+  const s = await setup();
+  const request = (await s.call("ngertiin.ask_user", {
+    command_id: crypto.randomUUID(),
+    purpose: "approval",
+    question: "Read this profile?",
+    action: { tool_name: "ngertiin.execute_app_tool", arguments: s.input },
+  })) as Entity<"human_request">;
+  await expect(s.call("ngertiin.execute_app_tool", s.input)).rejects.toThrow("APPROVAL_REQUIRED");
+  expect(s.host.calls).toBe(0);
+  new Interactions(f.lifecycle).reply(request.id, {
+    expected_revision: request.revision,
+    decision: "approve",
+  });
+  await expect(
+    s.call("ngertiin.execute_app_tool", { ...s.input, arguments: { changed: true } }),
+  ).rejects.toThrow("APPROVAL_REQUIRED");
+  const receipt = await s.call("ngertiin.execute_app_tool", s.input);
+  expect(receipt).toMatchObject({ receipt: { state: "succeeded" } });
+  expect(s.host.calls).toBe(1);
+  await s.call("ngertiin.execute_app_tool", s.input);
+  expect(s.host.calls).toBe(1);
 });

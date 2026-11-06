@@ -34,6 +34,12 @@ export function registerMachineRoutes(api: Elysia, machines: Machines, views: Ma
         ),
       { body: z.strictObject({ interactive: z.boolean().default(false) }) },
     )
+    .post(
+      "/v1/machine/views/:viewerId/renew",
+      ({ params, request }) =>
+        views.renew(params.viewerId, request.headers.get("Origin") ?? new URL(request.url).origin),
+      { body: z.strictObject({}) },
+    )
     .delete("/v1/machine/views/:viewerId", ({ params }) => views.remove(params.viewerId))
     .get(
       "/v1/machine/files",

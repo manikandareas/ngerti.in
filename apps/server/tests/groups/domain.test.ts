@@ -352,10 +352,14 @@ test("HTTP exact retries, schemas, authored scope and request conflicts remain e
   const request = groups.askUser(run.id, {
     purpose: "approval",
     question: "Publish the supplied draft?",
+    action: {
+      tool_name: "ngertiin.create_file",
+      arguments: { path: "draft.md", base64: "ZHJhZnQ=" },
+    },
   });
   finish(run);
   const replyKey = crypto.randomUUID();
-  const reply = { expected_revision: 1, text: "Use the draft." };
+  const reply = { expected_revision: 1, decision: "approve" };
   const first = await post(`/v1/human-requests/${request.id}/reply`, reply, replyKey);
   expect(first.status).toBe(200);
   expect(

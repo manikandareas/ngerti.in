@@ -23,6 +23,18 @@ export const run = z
     thread_id: id,
     agent_id: id,
     input_message_id: id,
+    computer_activity: z
+      .strictObject({
+        machine_id: id,
+        generation: z.int().positive(),
+        phase: z.enum(["preparing", "active"]),
+        started_at: z.iso.datetime(),
+      })
+      .nullable()
+      .default(null),
+    retry_allowed: z.boolean().default(false),
+    retry_of_run_id: id.nullable().default(null),
+    retried_by_run_id: id.nullable().default(null),
     task_id: id.nullable().default(null),
     thread_revision: z.int().positive().nullable().default(null),
     goal_id: id.nullable(),

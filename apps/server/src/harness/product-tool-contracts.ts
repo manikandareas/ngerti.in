@@ -18,6 +18,7 @@ import {
 } from "../goals/instructions";
 import { askHumanInput, handoffInput } from "../groups/contracts";
 import { appExecute, appSearch } from "../integrations/contracts";
+import { askUserInput, resolveUserInput } from "../interactions/contracts";
 import {
   memoryDelete,
   memoryQuery,
@@ -112,8 +113,14 @@ export const productToolSchemas = {
         ),
     })
     .describe(handoffDescription),
+  "ngertiin.ask_user": askUserInput
+    .safeExtend({ command_id: z.uuid() })
+    .describe(
+      "Ask the owner for necessary input, review or approval in DM or group, then end the turn. For approval, action must contain the exact product tool_name and its full arguments, and options must be null. Other questions must omit action. Plain text replies use the normal conversation; options use a compact inline card.",
+    ),
+  "ngertiin.resolve_user_input": resolveUserInput,
   "ngertiin.group_ask_user": askHumanInput
-    .extend({ command_id: id })
+    .safeExtend({ command_id: id })
     .describe(
       "Ask for input needed by the current group task and retain its existing continuation owner. A temporary question or wait alone does not require a Goal. End this turn after asking.",
     ),

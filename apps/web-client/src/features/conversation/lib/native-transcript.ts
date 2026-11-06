@@ -55,11 +55,9 @@ export function useNativeTranscript(messages: Message[], runs: Run[]) {
   );
   const messageById = new Map(messages.map((message) => [message.id, message]));
   const records = runs.flatMap((run) =>
-    (run.native_interactions ?? []).map((record) => ({
-      run,
-      record,
-      candidate: anchorCandidate(record, run, messageById),
-    })),
+    (run.native_interactions ?? [])
+      .filter((record) => record.submission?.state !== "submitted")
+      .map((record) => ({ run, record, candidate: anchorCandidate(record, run, messageById) })),
   );
   const checks = new Map(
     records.flatMap(({ candidate }) =>

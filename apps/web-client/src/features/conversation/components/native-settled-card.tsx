@@ -1,13 +1,8 @@
-import {
-  Cancel01Icon,
-  Clock01Icon,
-  Loading03Icon,
-  StopIcon,
-  Tick02Icon,
-} from "@hugeicons/core-free-icons";
+import { Cancel01Icon, Clock01Icon, Loading03Icon, StopIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useId, useState } from "react";
 import type { NativeInteraction } from "@/types/native-interactions";
+import { InteractionCard } from "./interaction-card";
 
 const quietButton =
   "inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap rounded-full px-2 text-[12px] leading-5 text-muted-foreground transition-colors hover:bg-foreground/[0.06] hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-40 touch:h-9";
@@ -50,6 +45,7 @@ export function NativeSettledCard({
   canObserve,
   checking,
   check,
+  author,
 }: {
   record: NativeInteraction;
   runStatus: string;
@@ -57,10 +53,22 @@ export function NativeSettledCard({
   canObserve: boolean;
   checking: boolean;
   check: () => void;
+  author: string;
 }) {
   const [open, setOpen] = useState(false);
   const detailId = useId();
   const submission = record.submission;
+  // Retain the question after acknowledgment, without an answer receipt or controls.
+  if (submission?.state === "submitted")
+    return record.type === "approval" ? (
+      <InteractionCard title="Izinkan tindakan ini?" author={author} settled />
+    ) : (
+      <div className="space-y-3">
+        {record.request.questions.map((question) => (
+          <InteractionCard key={question.id} title={question.question} author={author} settled />
+        ))}
+      </div>
+    );
   const lines = answerLines(record);
   const answer = lines
     .map((line) => line.value)
@@ -70,26 +78,7 @@ export function NativeSettledCard({
   let label = "Permintaan tersimpan";
   let explanation = "Input native tidak tersedia saat ini. Riwayat ini tetap tersimpan.";
   let icon = <HugeiconsIcon icon={Clock01Icon} size={13} />;
-  if (submission?.state === "submitted") {
-    label =
-      record.type === "user_input"
-        ? lines.length === 1
-          ? lines[0]?.picked
-            ? "Kamu memilih:"
-            : "Kamu menjawab:"
-          : "Jawaban diterima harness"
-        : "Keputusan diterima harness";
-    explanation =
-      "Harness mengonfirmasi penerimaan. Ini tidak menyatakan tindakan dijalankan atau pekerjaan selesai.";
-    icon = (
-      <HugeiconsIcon
-        icon={Tick02Icon}
-        size={13}
-        strokeWidth={2.4}
-        className="text-success-foreground"
-      />
-    );
-  } else if (submission?.state === "unknown") {
+  if (submission?.state === "unknown") {
     label = `Pengiriman ${kind} belum terkonfirmasi`;
     explanation = "Belum ada konfirmasi penerimaan. Jangan kirim ulang; periksa status.";
   } else if (submission?.state === "submitting") {
@@ -141,9 +130,6 @@ export function NativeSettledCard({
         <span dir="auto" aria-live="polite" className="min-w-0 truncate">
           {label}
           {answer && <span className="text-foreground/70"> {answer}</span>}
-          {submission?.state === "submitted" &&
-            lines.length === 1 &&
-            record.type === "user_input" && <span> · diterima harness</span>}
         </span>
         {uncertain && (
           <button type="button" onClick={check} disabled={checking} className={quietButton}>

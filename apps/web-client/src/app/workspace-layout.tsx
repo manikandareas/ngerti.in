@@ -2,7 +2,6 @@ import {
   ArrowRight01Icon,
   ArrowUp02Icon,
   Cancel01Icon,
-  Clock01Icon,
   ComputerIcon,
   Menu01Icon,
   PencilEdit01Icon,
@@ -47,11 +46,17 @@ import {
 import { Spinner } from "@/components/ui/spinner";
 import { AgentActivityBubble } from "@/features/conversation/components/agent-activity-bubble";
 import { Answer } from "@/features/conversation/components/answer";
+import {
+  AgentMessageAvatar,
+  AssistantMessage,
+} from "@/features/conversation/components/assistant-message";
 import { AttachInput } from "@/features/conversation/components/attach-input";
 import {
   ComposerInput,
   type ComposerInputHandle,
 } from "@/features/conversation/components/composer-input";
+import { ComposerStopPicker } from "@/features/conversation/components/composer-stop-picker";
+import { ComputerActivity } from "@/features/conversation/components/computer-activity";
 import { ContextPanel, type PanelLocation } from "@/features/conversation/components/context-panel";
 import {
   ConversationActionsSkeleton,
@@ -59,8 +64,10 @@ import {
   ConversationLoading,
 } from "@/features/conversation/components/conversation-loading";
 import { CreateGroup } from "@/features/conversation/components/create-group";
+import { FileActionChip } from "@/features/conversation/components/file-action-chip";
 import { HumanReply } from "@/features/conversation/components/human-reply";
 import { AgentAvatar, agentStyle } from "@/features/conversation/components/identity";
+import { MessageActions } from "@/features/conversation/components/message-actions";
 import { MessageTime } from "@/features/conversation/components/message-time";
 import { ModelPicker } from "@/features/conversation/components/model-picker";
 import { NativeInteractions } from "@/features/conversation/components/native-interactions";
@@ -69,11 +76,13 @@ import {
   type QueuedMessage,
   QueuedMessages,
 } from "@/features/conversation/components/queued-messages";
+import { ResearchSources } from "@/features/conversation/components/research-sources";
 import { TimelineActivity } from "@/features/conversation/components/timeline-activity";
 import { UserMessageText } from "@/features/conversation/components/user-message-text";
 import { WorkActivity } from "@/features/conversation/components/work-activity";
 import { WorkspaceProviders } from "@/features/conversation/components/workspace-providers";
 import { attachmentParts } from "@/features/conversation/lib/attachment-references";
+import { useComposerRequests } from "@/features/conversation/lib/composer-requests";
 import {
   conversationActivity,
   waitingForUser,
@@ -142,6 +151,9 @@ export default function Workspace() {
     setError,
   } = workspace;
   const [draft, setDraft] = useConversationDraft(threadId);
+  const composerRequests = useComposerRequests(threadId);
+  const reply = composerRequests.active;
+  const replyTooLong = reply?.maxLength !== undefined && draft.length > reply.maxLength;
   const [composerFocused, setComposerFocused] = useState(false);
   const [conversationSurface, setConversationSurface] = useState<HTMLElement | null>(null);
   const composerInput = useRef<ComposerInputHandle>(null);
@@ -200,7 +212,7 @@ export default function Workspace() {
       ["running", "dispatching", "cancel_requested"].includes(run.status),
     ) ?? [];
   const activeRun = activeRuns[0];
-  const stopInSlot = !editing && activeRuns.length === 1 && !pending && !draft.trim();
+  const stopInSlot = !editing && activeRuns.length > 0 && !pending && draft.length === 0;
   function stopLabel(run: Run) {
     return run.status === "cancel_requested"
       ? "Stop diminta"
@@ -222,7 +234,13 @@ export default function Workspace() {
     draft: pending ?? draft,
     pending: submission.pending,
     input: composerInput,
-    disabled: busy || submission.loading || !!submission.failure || pending !== null || !!editing,
+    disabled:
+      busy ||
+      submission.loading ||
+      !!submission.failure ||
+      pending !== null ||
+      !!editing ||
+      !!reply,
     report,
     attached: () => {
       setDetails(false);
@@ -329,6 +347,15 @@ export default function Workspace() {
   function send() {
     if (editing) {
       saveQueuedEdit();
+      return;
+    }
+    if (reply) {
+      if (reply.busy || reply.locked || replyTooLong || !draft.trim() || attachments.length) return;
+      const text = draft;
+      void act(async () => {
+        const accepted = await reply.submit(text);
+        if (accepted && currentThread.current === threadId) setDraft("");
+      });
       return;
     }
     if (!agent || !threadId || !(pending ?? draft).trim() || (!pending && attachmentsBlocked))
@@ -561,6 +588,24 @@ export default function Workspace() {
       const target = snapshot.agents.find(
         (agent) => agent.id === run.active_tools?.at(-1)?.target_agent_id,
       );
+      if (run.computer_activity && !["failed", "unknown"].includes(run.status))
+        return (
+          <AssistantMessage
+            key={run.id}
+            agent={actor}
+            group={snapshot.thread.type === "group"}
+            open={() => openResource("agent", actor.id)}
+          >
+            <ComputerActivity
+              run={run}
+              agent={actor}
+              open={() => {
+                locate({ tab: "computer", id: null });
+                setDetails(true);
+              }}
+            />
+          </AssistantMessage>
+        );
       return (
         <AgentActivityBubble
           key={run.id}
@@ -573,6 +618,16 @@ export default function Workspace() {
           busy={busy}
           openAgent={() => openResource("agent", actor.id)}
           openSettings={() => openSettings()}
+          retryResponse={
+            run.retry_allowed
+              ? () =>
+                  void act(async () => {
+                    await queueCommand(`response-retry:${run.id}`, `/v1/runs/${run.id}/retry`, {
+                      expected_revision: run.revision,
+                    });
+                  })
+              : undefined
+          }
           retryPreparation={() =>
             void act(async () => {
               await queueCommand(`preparation:${run.id}`, `/v1/runs/${run.id}/retry-preparation`, {
@@ -679,16 +734,19 @@ export default function Workspace() {
       connection.capabilities.permission_requests === "supported"
     );
   }
-  function nativeFragment(fragment: NativeTranscriptFragment) {
+  function nativeFragment(fragment: NativeTranscriptFragment, attributed = true) {
     const author = snapshot?.agents.find((agent) => agent.id === fragment.run.agent_id);
     return (
       <div key={fragment.key} data-native-fragment={fragment.key} className="w-full py-1">
         <NativeInteractions
+          threadId={snapshot?.thread.id}
           runId={fragment.run.id}
           run={fragment.run}
           author={author?.name ?? "Agent"}
           agent={author}
           observePending={false}
+          attributed={attributed}
+          openAgent={author ? () => openResource("agent", author.id) : undefined}
           canRespond={canObserveNative(fragment.run)}
           recordIds={fragment.recordIds}
           refresh={refresh}
@@ -704,6 +762,24 @@ export default function Workspace() {
     return historical ? { ...historical, system_role: current?.system_role } : current;
   }
   function answer(message: MessageEntity) {
+    const related = snapshot?.runs.find((run) => run.id === message.run_id);
+    if (
+      related?.retried_by_run_id ||
+      snapshot?.human_requests.some(
+        (request) =>
+          request.message_id === message.id && (request.options || request.purpose === "approval"),
+      )
+    )
+      return null;
+    const retry =
+      related?.status === "failed" && related.retry_allowed
+        ? () =>
+            void act(async () => {
+              await queueCommand(`response-retry:${related.id}`, `/v1/runs/${related.id}/retry`, {
+                expected_revision: related.revision,
+              });
+            })
+        : undefined;
     const streaming =
       message.author === "agent" &&
       message.purpose !== "announcement" &&
@@ -721,6 +797,9 @@ export default function Workspace() {
     if (!anchors.length)
       return (
         <Answer
+          retry={retry}
+          busy={busy}
+          sources={snapshot?.runs.find((run) => run.id === message.run_id)?.sources}
           agentId={author?.id}
           sentAt={message.created_at}
           sender={sender}
@@ -738,6 +817,10 @@ export default function Workspace() {
         <Fragment key={offset}>
           {text && (
             <Answer
+              retry={retry}
+              busy={busy}
+              showSources={false}
+              sources={snapshot?.runs.find((run) => run.id === message.run_id)?.sources}
               agentId={author?.id}
               sentAt={message.created_at}
               sender={sender}
@@ -746,7 +829,7 @@ export default function Workspace() {
               snapshot={snapshot ?? undefined}
             />
           )}
-          {fragments.map(nativeFragment)}
+          {fragments.map((fragment) => nativeFragment(fragment, false))}
         </Fragment>
       );
     });
@@ -755,6 +838,10 @@ export default function Workspace() {
         {answerParts}
         {start < message.text.length && (
           <Answer
+            retry={retry}
+            busy={busy}
+            showSources={false}
+            sources={snapshot?.runs.find((run) => run.id === message.run_id)?.sources}
             agentId={author?.id}
             sentAt={message.created_at}
             sender={sender}
@@ -764,6 +851,9 @@ export default function Workspace() {
             snapshot={snapshot ?? undefined}
           />
         )}
+        <ResearchSources
+          sources={snapshot?.runs.find((run) => run.id === message.run_id)?.sources ?? []}
+        />
       </>
     );
   }
@@ -790,6 +880,7 @@ export default function Workspace() {
   }
   return (
     <WorkspaceProviders
+      input={composerRequests.registry}
       snapshot={snapshot}
       parts={parts}
       activity={{
@@ -1023,6 +1114,13 @@ export default function Workspace() {
                         </Fragment>
                       );
                     const { message } = entry;
+                    if (
+                      message.author === "agent" &&
+                      snapshot.runs.some(
+                        (run) => run.id === message.run_id && run.retried_by_run_id,
+                      )
+                    )
+                      return null;
                     const previous = entries[index - 1];
                     const next = entries[index + 1];
                     const run = snapshot.runs.findLast(
@@ -1058,25 +1156,11 @@ export default function Workspace() {
                           }
                         >
                           {snapshot.thread.type === "group" && message.author === "agent" && (
-                            <button
-                              type="button"
-                              className="group-message-avatar mt-0.5 shrink-0 self-start rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                              aria-label={`Profil ${author?.name ?? "agent"}`}
-                              disabled={!author}
-                              onClick={() => {
-                                if (author) openResource("agent", author.id);
-                              }}
-                            >
-                              <AgentAvatar
-                                agent={author}
-                                className="size-8"
-                                animated
-                                followPointer
-                                deferred
-                                showLoadingActivity={message.state === "partial"}
-                                state={message.state === "partial" ? undefined : "idle"}
-                              />
-                            </button>
+                            <AgentMessageAvatar
+                              agent={author}
+                              loading={message.state === "partial"}
+                              open={author ? () => openResource("agent", author.id) : undefined}
+                            />
                           )}
                           <MessageContent>
                             {!(snapshot.thread.type === "group" && message.author === "agent") && (
@@ -1103,36 +1187,42 @@ export default function Workspace() {
                               </MessageHeader>
                             )}
                             {message.author === "user" ? (
-                              <Bubble variant="secondary" className="chat-user-bubble">
-                                <BubbleContent className="chat-bubble-content text-[15px] leading-[22px] whitespace-pre-wrap">
-                                  <div data-message-text>
-                                    <UserMessageText
-                                      message={message}
-                                      artifacts={snapshot.artifacts}
-                                      documents={snapshot.attachment_documents}
-                                      preparing={
-                                        run ? ["queued", "dispatching"].includes(run.status) : false
-                                      }
-                                    />
-                                  </div>
-                                  <MessageTime at={entry.part.created_at} />
-                                </BubbleContent>
-                              </Bubble>
+                              <MessageActions text={message.text} user>
+                                <Bubble variant="secondary" className="chat-user-bubble">
+                                  <BubbleContent className="chat-bubble-content text-[15px] leading-[22px] whitespace-pre-wrap">
+                                    <div data-message-text>
+                                      <UserMessageText
+                                        message={message}
+                                        artifacts={snapshot.artifacts}
+                                        documents={snapshot.attachment_documents}
+                                        preparing={
+                                          run
+                                            ? ["queued", "dispatching"].includes(run.status)
+                                            : false
+                                        }
+                                      />
+                                    </div>
+                                    <MessageTime at={entry.part.created_at} />
+                                  </BubbleContent>
+                                </Bubble>
+                              </MessageActions>
                             ) : (
                               answer(message)
                             )}
                             {message.artifact_ids
                               ?.filter((id) => !inlineAttachmentIds.has(id))
                               .map((id) => (
-                                <Button
+                                <FileActionChip
                                   key={id}
-                                  variant="outline"
-                                  size="sm"
-                                  onClick={() => openResource("files", id)}
-                                >
-                                  {snapshot.artifacts.find((a) => a.id === id)?.name ??
-                                    "Buka lampiran"}
-                                </Button>
+                                  name={
+                                    snapshot.artifacts.find((file) => file.id === id)?.name ??
+                                    "Buka lampiran"
+                                  }
+                                  mediaType={
+                                    snapshot.artifacts.find((file) => file.id === id)?.media_type
+                                  }
+                                  open={() => openResource("files", id)}
+                                />
                               ))}
                             {snapshot.human_requests
                               .filter((r) => r.message_id === message.id)
@@ -1140,8 +1230,8 @@ export default function Workspace() {
                                 <HumanReply
                                   key={r.id}
                                   request={r}
+                                  question={message.text}
                                   author={author?.name ?? "Agent"}
-                                  agent={author}
                                   refresh={refresh}
                                 />
                               ))}
@@ -1180,7 +1270,9 @@ export default function Workspace() {
                         {message.author === "user" &&
                           nativeTranscript.anchors
                             .get(message.id)
-                            ?.flatMap(({ fragments }) => fragments.map(nativeFragment))}
+                            ?.flatMap(({ fragments }) =>
+                              fragments.map((fragment) => nativeFragment(fragment)),
+                            )}
                         {activityAfter(entry.part.id)}
                       </Fragment>
                     );
@@ -1204,9 +1296,11 @@ export default function Workspace() {
                   {activeRuns.filter(canObserveNative).map((run) => (
                     <NativeInteractions
                       key={run.id}
+                      threadId={snapshot.thread.id}
                       runId={run.id}
                       run={run}
                       observePending
+                      openAgent={() => openResource("agent", run.agent_id)}
                       recordIds={[]}
                       refresh={refresh}
                       author={snapshot.agents.find((a) => a.id === run.agent_id)?.name ?? "Agent"}
@@ -1253,38 +1347,6 @@ export default function Workspace() {
                   >
                     Siapkan koneksi agar {agent?.name} bisa mulai bekerja →
                   </Button>
-                )}
-                {activeRuns.length > 1 && (
-                  <div className="mb-2 flex flex-wrap gap-2" aria-label="Run aktif" role="status">
-                    {activeRuns.map((run) => {
-                      const label =
-                        run.status === "cancel_requested"
-                          ? "Stop diminta"
-                          : snapshot.thread.type === "group"
-                            ? `Stop ${snapshot.agents.find((a) => a.id === run.agent_id)?.name ?? "run"}`
-                            : "Stop run";
-                      return (
-                        <Button
-                          key={run.id}
-                          type="button"
-                          size="sm"
-                          variant="outline"
-                          className="max-w-full rounded-full"
-                          aria-label={label}
-                          title={label}
-                          disabled={busy || run.status === "cancel_requested"}
-                          onClick={() =>
-                            void act(async () => {
-                              await command(`/v1/runs/${run.id}/cancel`);
-                            })
-                          }
-                        >
-                          <HugeiconsIcon icon={StopIcon} size={10} className="fill-current" />
-                          <span className="truncate">{label}</span>
-                        </Button>
-                      );
-                    })}
-                  </div>
                 )}
                 <QueuedMessages
                   items={queued}
@@ -1334,6 +1396,34 @@ export default function Workspace() {
                     </button>
                   </div>
                 )}
+                {reply && !editing && (
+                  <div
+                    className="mb-2 flex flex-wrap items-center gap-2 px-2 text-[12px] text-muted-foreground"
+                    role="status"
+                  >
+                    {reply.error && <span>{reply.error}</span>}
+                    {replyTooLong && <span>Jawaban dibatasi {reply.maxLength} karakter.</span>}
+                    {attachments.length > 0 && (
+                      <span>Hapus lampiran untuk mengirim jawaban ini.</span>
+                    )}
+                    {reply.check && (
+                      <button
+                        type="button"
+                        className="text-link underline"
+                        disabled={busy || reply.busy}
+                        onClick={() =>
+                          void act(async () => {
+                            const accepted = await reply.check?.();
+                            if (accepted === true && currentThread.current === threadId)
+                              setDraft("");
+                          })
+                        }
+                      >
+                        Periksa status
+                      </button>
+                    )}
+                  </div>
+                )}
                 <form
                   ref={setComposerSurface}
                   onSubmit={(event) => {
@@ -1345,7 +1435,7 @@ export default function Workspace() {
                 >
                   <AttachInput
                     key={`attachments:${snapshot.thread.id}`}
-                    disabled={busy || pending !== null || !!editing}
+                    disabled={busy || pending !== null || !!editing || !!reply}
                     count={attachments.length}
                     addFiles={composerFiles.addFiles}
                   />
@@ -1370,8 +1460,9 @@ export default function Workspace() {
                     <ComposerInput
                       key={`editor:${snapshot.thread.id}`}
                       ref={bindComposerInput}
-                      value={pending ?? draft}
-                      readOnly={busy || pending !== null}
+                      label={undefined}
+                      value={pending ?? reply?.restoreText ?? draft}
+                      readOnly={busy || pending !== null || !!reply?.busy || !!reply?.locked}
                       placeholder={`Pesan${agent ? ` untuk ${agent.name}` : ""}…`}
                       lookup={composerFiles.lookup}
                       retry={composerFiles.retry}
@@ -1381,6 +1472,7 @@ export default function Workspace() {
                       report={report}
                       onEnter={() => {
                         if (
+                          !reply &&
                           !pending &&
                           !draft.trim() &&
                           attachments.length === 0 &&
@@ -1396,78 +1488,101 @@ export default function Workspace() {
                   )}
                   <div className="composer-actions gap-2 flex items-end shrink-0">
                     <div className="flex gap-2">
-                      {activeRuns.length === 1 && !stopInSlot && activeRun && (
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="icon"
-                          className="composer-aux rounded-full"
-                          aria-label={stopLabel(activeRun)}
-                          title={stopLabel(activeRun)}
-                          disabled={busy || activeRun.status === "cancel_requested"}
-                          onClick={() => stop(activeRun)}
+                      {reply?.locked && !stopInSlot && activeRun && (
+                        <ComposerStopPicker
+                          enabled={activeRuns.length > 1}
+                          runs={activeRuns}
+                          label={stopLabel}
+                          busy={busy}
+                          stop={stop}
                         >
-                          <HugeiconsIcon icon={StopIcon} className="size-2.5 fill-current" />
-                        </Button>
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon"
+                            className="composer-aux"
+                            aria-label={activeRuns.length > 1 ? "Stop" : stopLabel(activeRun)}
+                            disabled={
+                              busy || activeRuns.every((run) => run.status === "cancel_requested")
+                            }
+                            onClick={() => {
+                              if (activeRuns.length === 1) stop(activeRun);
+                            }}
+                          >
+                            <HugeiconsIcon icon={StopIcon} className="size-2.5 fill-current" />
+                          </Button>
+                        </ComposerStopPicker>
                       )}
-                      <Button
-                        type={stopInSlot ? "button" : "submit"}
-                        onClick={() => {
-                          if (stopInSlot && activeRun) stop(activeRun);
-                        }}
-                        className="composer-send"
-                        aria-label={
-                          stopInSlot && activeRun
-                            ? stopLabel(activeRun)
-                            : editing
-                              ? editPending !== null
-                                ? "Periksa perubahan pesan"
-                                : "Simpan pesan"
-                              : busy
-                                ? "Mengirim"
+                      <ComposerStopPicker
+                        enabled={stopInSlot && activeRuns.length > 1}
+                        runs={activeRuns}
+                        label={stopLabel}
+                        busy={busy}
+                        stop={stop}
+                      >
+                        <Button
+                          type={stopInSlot ? "button" : "submit"}
+                          onClick={() => {
+                            if (stopInSlot && activeRuns.length === 1 && activeRun) stop(activeRun);
+                          }}
+                          className="composer-send"
+                          aria-label={
+                            stopInSlot && activeRun
+                              ? activeRuns.length > 1
+                                ? "Stop"
+                                : stopLabel(activeRun)
+                              : editing
+                                ? editPending !== null
+                                  ? "Periksa perubahan pesan"
+                                  : "Simpan pesan"
+                                : busy
+                                  ? "Mengirim"
+                                  : pending
+                                    ? "Periksa pengiriman"
+                                    : reply
+                                      ? "Kirim jawaban"
+                                      : "Kirim"
+                          }
+                          title={
+                            stopInSlot && activeRun
+                              ? activeRuns.length > 1
+                                ? "Stop"
+                                : stopLabel(activeRun)
+                              : editing
+                                ? editPending !== null
+                                  ? "Periksa perubahan pesan"
+                                  : "Simpan pesan"
                                 : pending
                                   ? "Periksa pengiriman"
-                                  : activeRun
-                                    ? "Antrekan"
-                                    : "Kirim"
-                        }
-                        title={
-                          stopInSlot && activeRun
-                            ? stopLabel(activeRun)
-                            : editing
-                              ? editPending !== null
-                                ? "Periksa perubahan pesan"
-                                : "Simpan pesan"
-                              : pending
-                                ? "Periksa pengiriman"
-                                : activeRun
-                                  ? "Antrekan pesan"
-                                  : "Kirim pesan"
-                        }
-                        size="icon"
-                        disabled={
-                          busy ||
-                          !agent ||
-                          (stopInSlot
-                            ? activeRun?.status === "cancel_requested"
-                            : editing
-                              ? (editPending === null && editStale) ||
-                                !(editPending ?? editText).trim()
-                              : !(pending ?? draft).trim() || attachmentsBlocked)
-                        }
-                      >
-                        {stopInSlot ? (
-                          <HugeiconsIcon icon={StopIcon} className="size-2.5 fill-current" />
-                        ) : busy ? (
-                          <Spinner />
-                        ) : editing ? (
-                          <HugeiconsIcon icon={Tick02Icon} size={16} strokeWidth={1.75} />
-                        ) : activeRun ? (
-                          <HugeiconsIcon icon={Clock01Icon} size={14} strokeWidth={1.75} />
-                        ) : (
-                          <HugeiconsIcon icon={ArrowUp02Icon} size={16} strokeWidth={1.75} />
-                        )}
-                      </Button>
+                                  : reply
+                                    ? "Kirim jawaban"
+                                    : "Kirim pesan"
+                          }
+                          size="icon"
+                          disabled={
+                            busy ||
+                            (!stopInSlot && (!!reply?.busy || !!reply?.locked || replyTooLong)) ||
+                            (Boolean(reply) && attachments.length > 0) ||
+                            !agent ||
+                            (stopInSlot
+                              ? activeRuns.every((run) => run.status === "cancel_requested")
+                              : editing
+                                ? (editPending === null && editStale) ||
+                                  !(editPending ?? editText).trim()
+                                : !(pending ?? draft).trim() || attachmentsBlocked)
+                          }
+                        >
+                          {stopInSlot ? (
+                            <HugeiconsIcon icon={StopIcon} className="size-2.5 fill-current" />
+                          ) : busy ? (
+                            <Spinner />
+                          ) : editing ? (
+                            <HugeiconsIcon icon={Tick02Icon} size={16} strokeWidth={1.75} />
+                          ) : (
+                            <HugeiconsIcon icon={ArrowUp02Icon} size={16} strokeWidth={1.75} />
+                          )}
+                        </Button>
+                      </ComposerStopPicker>
                     </div>
                   </div>
                 </form>

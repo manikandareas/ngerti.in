@@ -26,8 +26,7 @@ export function MachineSection({ agents, cursor }: { agents: Agent[]; cursor: nu
     let timer: ReturnType<typeof setInterval> | undefined;
     const update = () => {
       clearInterval(timer);
-      if (!isPageVisible()) setOpen(false);
-      else {
+      if (isPageVisible()) {
         setTick((value) => value + 1);
         timer = setInterval(() => setTick((value) => value + 1), 3000);
       }
@@ -84,12 +83,20 @@ export function MachineSection({ agents, cursor }: { agents: Agent[]; cursor: nu
   }
   return (
     <div className="context-section space-y-3 pt-3.5">
+      {machine?.state === "ready" && (
+        <MachineScreen
+          surface="side-panel"
+          interactive={false}
+          revision={machine.lease.revision}
+          compact
+        />
+      )}
       <button
         type="button"
         aria-label="View desktop"
         disabled={machine?.state !== "ready"}
         onClick={() => setOpen(true)}
-        className="flex aspect-[16/10] w-full flex-col items-center justify-center gap-3 rounded-xl bg-composer ring-1 ring-inset ring-foreground/[0.06] hover:bg-foreground/[0.045] focus-visible:outline-2 focus-visible:outline-ring disabled:cursor-default"
+        className="flex w-full flex-col items-center justify-center gap-3 rounded-xl bg-composer ring-1 ring-inset ring-foreground/[0.06] hover:bg-foreground/[0.045] focus-visible:outline-2 focus-visible:outline-ring disabled:cursor-default"
       >
         <HugeiconsIcon
           icon={ComputerIcon}

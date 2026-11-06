@@ -1,72 +1,84 @@
-import { RefreshIcon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { request } from "@/lib/api-client";
-import type { MachineView } from "@/types/machine";
+import { useEffect, useRef, useState } from "react";
+import { useComputerView } from "../lib/computer-view-session";
 
 export function MachineScreen({
   interactive,
   revision,
+  surface = "expanded",
+  compact = false,
 }: {
   interactive: boolean;
   revision: number;
+  surface?: string;
+  compact?: boolean;
 }) {
-  const [view, setView] = useState<MachineView | null>(null);
-  const [error, setError] = useState("");
-  const [attempt, setAttempt] = useState(0);
-  // biome-ignore lint/correctness/useExhaustiveDependencies: ownership revision and attempt invalidate the issued viewer ticket.
+  const { view, error, reconnecting, reconnect } = useComputerView(surface, interactive, revision);
+  const frame = useRef<HTMLIFrameElement>(null);
+  const [health, setHealth] = useState({ id: "", live: false, received: 0, status: "connecting" });
+  const [now, setNow] = useState(Date.now());
+  const lastRecovery = useRef(0);
   useEffect(() => {
-    const abort = new AbortController();
-    let issued: MachineView | undefined;
-    let renewal: ReturnType<typeof setTimeout> | undefined;
-    const revoke = (ticket: MachineView) => {
-      void fetch(`/v1/machine/views/${ticket.viewer_id}`, {
-        method: "DELETE",
-        keepalive: true,
-      }).catch(() => {});
-    };
-    setView(null);
-    setError("");
-    void request<MachineView>("/v1/machine/view", { interactive })
-      .then((ticket) => {
-        issued = ticket;
-        if (abort.signal.aborted) {
-          revoke(ticket);
-          return;
-        }
-        if (interactive && ticket.control_revision !== revision) {
-          revoke(ticket);
-          throw new Error("Control changed. Reconnect the desktop.");
-        }
-        window.ngertiinDesktop?.reportComputerView(ticket.interactive, ticket.control_revision);
-        setView(ticket);
-        renewal = setTimeout(
-          () => setAttempt((value) => value + 1),
-          Math.max(1000, Date.parse(ticket.expires_at) - Date.now() - 30_000),
-        );
-      })
-      .catch((e) => {
-        if (!abort.signal.aborted)
-          setError(e instanceof Error ? e.message : "Desktop could not be connected.");
+    const update = (event: MessageEvent) => {
+      if (
+        !view ||
+        event.origin !== location.origin ||
+        event.source !== frame.current?.contentWindow ||
+        event.data?.type !== "ngertiin:computer-health" ||
+        event.data.viewer_id !== view.viewer_id
+      )
+        return;
+      setHealth({
+        id: view.viewer_id,
+        live: event.data.status === "streaming" && Number(event.data.frames_decoded) > 0,
+        received: Date.now(),
+        status: String(event.data.status),
       });
-    return () => {
-      abort.abort();
-      clearTimeout(renewal);
-      if (issued) {
-        window.ngertiinDesktop?.reportComputerView(false, issued.control_revision);
-        revoke(issued);
-      }
     };
-  }, [interactive, revision, attempt]);
+    window.addEventListener("message", update);
+    const timer = setInterval(() => setNow(Date.now()), 2000);
+    return () => {
+      window.removeEventListener("message", update);
+      clearInterval(timer);
+    };
+  }, [view]);
+  useEffect(() => {
+    if (!view) return;
+    window.ngertiinDesktop?.reportComputerView(view.interactive, view.control_revision);
+    return () => window.ngertiinDesktop?.reportComputerView(false, view.control_revision);
+  }, [view]);
+  useEffect(() => {
+    if (!view || document.visibilityState !== "visible" || now - lastRecovery.current < 20_000)
+      return;
+    if (
+      (health.id === view.viewer_id && health.status === "failed") ||
+      (health.received > 0 && now - health.received > 15_000)
+    ) {
+      lastRecovery.current = now;
+      reconnect();
+    }
+  }, [view, health, now, reconnect]);
+  const live =
+    !reconnecting && health.id === view?.viewer_id && health.live && now - health.received < 6000;
   return (
-    <>
-      <div className="relative h-[min(72dvh,820px)] min-h-64 overflow-hidden rounded-lg bg-muted max-sm:aspect-[16/10] max-sm:h-auto max-sm:min-h-0">
+    <div className="space-y-2" data-computer-live={live}>
+      <div
+        className={
+          compact
+            ? "relative aspect-[16/10] w-full overflow-hidden rounded-xl bg-black"
+            : "relative h-[min(72dvh,820px)] min-h-64 overflow-hidden rounded-xl bg-black max-sm:aspect-[16/10] max-sm:h-auto max-sm:min-h-0"
+        }
+      >
         {view ? (
           <iframe
-            key={view.viewer_id}
+            ref={frame}
             title="Agent desktop"
-            src={view.viewer_url}
+            src={(() => {
+              const url = new URL(view.viewer_url, location.origin);
+              const params = new URLSearchParams(url.hash.slice(1));
+              if (compact) params.set("ngertiin_preview", "1");
+              url.hash = params.toString();
+              return `${url.pathname}${url.search}${url.hash}`;
+            })()}
             referrerPolicy="no-referrer"
             allow="clipboard-read; clipboard-write; fullscreen"
             className="size-full border-0"
@@ -80,17 +92,6 @@ export function MachineScreen({
           </div>
         )}
       </div>
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <p className="text-[13px] text-muted-foreground">
-          {interactive
-            ? "Agent mouse and keyboard input waits while you have control."
-            : "View only · agent work can continue."}
-        </p>
-        <Button variant="ghost" size="sm" onClick={() => setAttempt((n) => n + 1)}>
-          <HugeiconsIcon icon={RefreshIcon} size={14} />
-          Reconnect view
-        </Button>
-      </div>
-    </>
+    </div>
   );
 }

@@ -56,7 +56,9 @@ for (const theme of ["light", "dark"] as const) {
     await expect(page.getByRole("button", { name: "Detail Tobi", exact: true })).toBeVisible();
     await expect(page.locator("html")).toHaveClass(new RegExp(theme));
     const answer = page.locator(".assistant-answer").first();
-    await expect(answer.locator(":scope > .chat-agent-bubble")).toHaveCount(2);
+    await expect(
+      answer.locator(":scope > .message-action-anchor > .chat-agent-bubble"),
+    ).toHaveCount(2);
     await expect(answer.locator(":scope > [data-reply-table]")).toHaveCount(1);
     await expect(answer.locator("[data-code-block]")).toHaveCount(2);
     await expect(answer.locator("script,img")).toHaveCount(0);

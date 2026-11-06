@@ -35,7 +35,15 @@ export default function DesignSystemPage() {
               Ngertiin <span className="font-normal text-muted-foreground">/ Design system</span>
             </span>
           </div>
-          <ThemeSwitcher />
+          <div className="flex items-center gap-4">
+            <Link
+              to="/assistant-studio"
+              className="text-sm text-muted-foreground hover:text-foreground"
+            >
+              Assistant studio
+            </Link>
+            <ThemeSwitcher />
+          </div>
         </div>
       </header>
       <main className="mx-auto max-w-content space-y-8 px-6 py-8 sm:px-10 sm:py-12">

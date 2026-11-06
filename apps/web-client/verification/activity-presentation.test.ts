@@ -112,8 +112,8 @@ test("queued work, quiet continuations and superseded failures do not create gho
         ] as Snapshot["human_requests"],
       }),
       entries,
-    ).get("part:input"),
-  ).toEqual([complete]);
+    ).size,
+  ).toBe(0);
 });
 
 test("an interactive group continuation anchors to the user's reply while unrelated deferred work stays quiet", () => {
@@ -179,4 +179,20 @@ test("routing copy varies by route and stays stable across repeated reads", asyn
     observed.add(label);
   }
   expect(observed.size).toBe(routingLabels.length);
+});
+
+test("pending product and native interactions suppress duplicate waiting activity but preserve recovery", () => {
+  const active = run("ask", "input");
+  const entries = [entry("input")];
+  const state = snapshot([active], {
+    human_requests: [{ source_run_id: active.id, state: "pending" }] as Snapshot["human_requests"],
+  });
+  expect(conversationActivity(state, entries).size).toBe(0);
+  state.human_requests = [];
+  active.native_interactions = [
+    { observed_state: "pending", submission: null },
+  ] as Run["native_interactions"];
+  expect(conversationActivity(state, entries).size).toBe(0);
+  active.status = "unknown";
+  expect(conversationActivity(state, entries).get("part:input")).toEqual([active]);
 });

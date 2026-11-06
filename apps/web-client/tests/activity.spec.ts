@@ -125,20 +125,11 @@ test("DM activity updates one bubble, follows streaming output and survives relo
   await f.refresh();
   await expect(f.bubble().locator("[data-activity-text]")).toHaveText(thinking ?? "");
 
-  expect(
-    await f
-      .bubble()
-      .locator(".agent-activity-avatar")
-      .evaluate((element) => getComputedStyle(element).position),
-  ).toBe("absolute");
+  await expect(f.bubble().locator(".agent-activity-avatar")).toHaveCount(0);
   const initialLeft = await f
     .bubble()
     .locator(".agent-activity-bubble")
     .evaluate((element) => element.getBoundingClientRect().left);
-  await expect(f.bubble().locator(".ngertiin-avatar")).toHaveAttribute(
-    "data-avatar-loading",
-    "true",
-  );
   await expect(page.locator(".chat-user-bubble")).not.toContainText("Thinking it through");
   await f.bubble().evaluate((element) => element.setAttribute("data-stable-instance", "same"));
   f.state.runs[f.admitted.run.id] = {
@@ -264,7 +255,7 @@ test("group activity belongs to each working agent and hands off without idle me
   await expect(page.locator("[data-agent-activity]")).toHaveCount(1);
 });
 
-test("a dark tablet DM keeps its avatar and bubble geometry stable when loading stops", async ({
+test("a dark tablet DM omits the avatar and keeps bubble geometry stable when loading stops", async ({
   page,
 }, info) => {
   await page.setViewportSize({ width: 820, height: 1180 });
@@ -284,16 +275,11 @@ test("a dark tablet DM keeps its avatar and bubble geometry stable when loading 
 
   const geometry = () =>
     f.bubble().evaluate((element) => {
-      const avatarElement = element.querySelector(".agent-activity-avatar");
       const bubbleElement = element.querySelector(".agent-activity-bubble");
-      if (!avatarElement || !bubbleElement)
-        throw new Error("Expected the activity avatar and bubble.");
-      const avatar = avatarElement.getBoundingClientRect();
+      if (!bubbleElement) throw new Error("Expected the activity bubble.");
       const bubble = bubbleElement.getBoundingClientRect();
       return {
-        avatarLeft: avatar.left,
-        avatarWidth: avatar.width,
-        avatarHeight: avatar.height,
+        avatarCount: element.querySelectorAll(".agent-activity-avatar").length,
         bubbleLeft: bubble.left,
         rowHeight: element.getBoundingClientRect().height,
       };
@@ -327,8 +313,10 @@ test("waiting, uncertain results, confirmed stop and reduced motion never imply 
     },
   ];
   await f.refresh();
-  await expect(f.bubble().locator("[data-activity-text]")).toHaveText("Waiting for your reply…");
-  await expect(f.bubble()).toHaveAttribute("data-loading", "false");
+  await expect(f.bubble()).toHaveCount(0);
+  await expect(
+    page.locator(".conversation-column").getByText("Waiting for your reply…", { exact: true }),
+  ).toHaveCount(0);
   f.state.humanRequests = [];
   f.state.runs[f.admitted.run.id] = { status: "cancel_requested", activity: "stopping" };
   await f.refresh();
@@ -407,4 +395,241 @@ test("streamed bursts settle promptly, preserve emoji and flush completed replie
   await expect(answer).toHaveText(message.text);
   await page.reload();
   await expect(answer).toHaveText(message.text);
+});
+
+test("an active composer switches Stop to Send while dirty without stopping its run", async ({
+  page,
+}, info) => {
+  const f = await activityFixture(page);
+  const composer = page.getByRole("textbox", { name: "Pesan", exact: true });
+  const mutations: string[] = [];
+  page.on("request", (request) => {
+    if (request.method() === "POST" && /\/v1\/(runs|groups\/[^/]+\/messages)/.test(request.url()))
+      mutations.push(request.url());
+  });
+  await expect(page.locator(".composer-send")).toHaveAccessibleName("Stop run");
+  await composer.fill("One more thought");
+  await expect(page.locator(".composer-send")).toHaveAccessibleName("Kirim");
+  await expect(page.locator(".composer-actions .composer-aux")).toHaveCount(0);
+  await page.screenshot({ path: info.outputPath("active-composer-dirty.png") });
+  await composer.fill("");
+  await expect(page.locator(".composer-send")).toHaveAccessibleName("Stop run");
+  await page.screenshot({ path: info.outputPath("active-composer-empty.png") });
+  expect(mutations).toEqual([]);
+  await expect(f.bubble()).toHaveAttribute("data-loading", "true");
+});
+
+test("message actions stay reachable across the bubble edge and sources belong to the assistant answer", async ({
+  page,
+}, info) => {
+  const f = await activityFixture(page);
+  await page.context().grantPermissions(["clipboard-read", "clipboard-write"]);
+  const outputId = crypto.randomUUID();
+  f.state.runs[f.admitted.run.id] = {
+    status: "succeeded",
+    activity: "idle",
+    sources: [
+      { url: "https://example.org/report", title: "Published report", operation: "search" },
+      { url: "https://example.org/report", title: "Published report", operation: "open" },
+      { url: "javascript:alert(1)", title: "Invalid source", operation: "search" },
+    ],
+  };
+  f.state.messages = [
+    {
+      ...f.admitted.message,
+      id: outputId,
+      author: "agent",
+      author_agent_id: f.actor.id,
+      run_id: f.admitted.run.id,
+      text: "According to [the report](https://example.org/report), this is the result.",
+      state: "complete",
+    },
+  ];
+  await f.refresh();
+  const answer = page.locator(`#message-${outputId}`);
+  const anchor = answer.locator(".message-action-anchor");
+  const copy = anchor.getByRole("button", { name: "Salin pesan", exact: true });
+  await expect(anchor).toBeVisible();
+  await expect(anchor.locator(".message-hover-actions")).toHaveCSS("opacity", "0");
+  if (info.project.name === "mobile") await anchor.tap();
+  else {
+    await anchor.hover();
+    const bubble = await anchor.boundingBox();
+    const button = await copy.boundingBox();
+    if (!bubble || !button) throw new Error("The message action geometry is missing.");
+    await page.mouse.move(bubble.x + bubble.width - 1, button.y + button.height / 2);
+    await page.mouse.move(button.x + button.width / 2, button.y + button.height / 2, { steps: 15 });
+    await page.waitForTimeout(250);
+  }
+  await expect(copy).toBeVisible();
+  await copy.click();
+  await expect(anchor.getByRole("button", { name: "Pesan disalin", exact: true })).toBeVisible();
+  expect(await page.evaluate(() => navigator.clipboard.readText())).toContain(
+    "According to [the report]",
+  );
+  await expect(answer.locator(".source-citation")).toHaveText("example.org");
+  await expect(answer.getByLabel("1 sumber riset")).toBeVisible();
+  await answer.getByLabel("1 sumber riset").click();
+  await expect(
+    answer.getByRole("list", { name: "Sumber riset", exact: true }).getByRole("link"),
+  ).toHaveCount(1);
+  await page.screenshot({ path: info.outputPath("hover-actions-and-sources.png") });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  const user = page.locator(`#message-${f.admitted.message.id} .message-action-anchor`);
+  if (info.project.name === "mobile") await user.tap();
+  else await user.hover();
+  await user.getByRole("button", { name: "Salin pesan", exact: true }).click();
+  expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(
+    "Help me with this request.",
+  );
+});
+
+test("an empty group composer exposes Stop with an explicit target for concurrent agents", async ({
+  page,
+}, info) => {
+  const f = await activityFixture(page, true);
+  const composer = page.getByRole("textbox", { name: "Pesan", exact: true });
+  await expect(page.locator(".composer-send")).toHaveAccessibleName("Stop");
+  await composer.fill("A follow-up for the group");
+  await expect(page.locator(".composer-send")).toHaveAccessibleName("Kirim");
+  await composer.fill("");
+  await page.locator(".composer-send").click();
+  const choices = page.getByRole("dialog", { name: "Pilih agent untuk dihentikan" });
+  await expect(
+    choices.getByRole("button", { name: `Stop ${f.actor.name}`, exact: true }),
+  ).toBeVisible();
+  await expect(
+    choices.getByRole("button", { name: `Stop ${f.peer.name}`, exact: true }),
+  ).toBeVisible();
+  await page.screenshot({ path: info.outputPath("group-stop-target.png") });
+  await page.keyboard.press("Escape");
+  await expect(f.bubble()).toHaveAttribute("data-loading", "true");
+});
+
+test("the web studio uses product interactions and consistent Computer cards without dispatch", async ({
+  page,
+}, info) => {
+  const writes: string[] = [];
+  page.on("request", (request) => {
+    if (request.method() === "POST") writes.push(request.url());
+  });
+  await page.goto("/assistant-studio?section=input&state=single&mode=dm");
+  await expect(
+    page.getByRole("navigation", { name: "Kategori tampilan", exact: true }).getByText(/native/i),
+  ).toHaveCount(0);
+  const radio = page.getByRole("radio", {
+    name: "Ringkas",
+    exact: true,
+  });
+  await expect(radio).toBeVisible();
+  const submit = page.getByRole("button", { name: "Continue", exact: true });
+  await expect(submit).toBeDisabled();
+  await radio.check();
+  await expect(submit).toBeEnabled();
+  await expect(radio).toBeVisible();
+  await submit.click();
+  await expect(
+    page.locator('.conversation-interaction[data-interaction-state="settled"]'),
+  ).toHaveCount(1);
+  await expect(
+    page
+      .locator(".conversation-interaction")
+      .locator("button, input, textarea, footer, .conversation-interaction-body"),
+  ).toHaveCount(0);
+  await expect(page.locator('[data-native-state="submitted"]')).toHaveCount(0);
+  await page.goto("/assistant-studio?section=input&state=input&mode=dm");
+  await expect(
+    page.getByText("Apa yang perlu dijelaskan untuk staf operasional?", { exact: true }),
+  ).toBeVisible();
+  const composer = page.getByRole("textbox", { name: "Pesan", exact: true });
+  await expect(composer).toBeEditable();
+  await expect(page.locator(".conversation-interaction")).toHaveCount(0);
+  await composer.fill("Jelaskan langkah impor.");
+  await page.screenshot({ path: info.outputPath("studio-text-composer.png") });
+  await page.goto("/assistant-studio?section=input&state=approval&mode=group");
+  await expect(page.getByRole("button", { name: "Tolak", exact: true })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Setujui", exact: true })).toBeVisible();
+  await expect(page.locator('.conversation-interaction button[aria-label*="Tutup"]')).toHaveCount(
+    0,
+  );
+  await page.getByRole("button", { name: "Setujui", exact: true }).scrollIntoViewIfNeeded();
+  await page.screenshot({ path: info.outputPath("studio-product-approval.png") });
+  await page.goto("/assistant-studio?section=files&state=attached&mode=group");
+  const file = page.locator(".conversation-file-action").first();
+  await expect(file).toBeVisible();
+  await file.scrollIntoViewIfNeeded();
+  await page.screenshot({ path: info.outputPath("studio-file-actions.png") });
+  await file.click();
+  await expect(page.getByRole("dialog")).toBeVisible();
+  await page.keyboard.press("Escape");
+  for (const state of ["preparing", "completed"]) {
+    await page.goto(`/assistant-studio?section=computer&state=${state}&mode=dm`);
+    const card = page.getByRole("region", { name: "Computer · Tobi", exact: true });
+    await expect(card).toBeVisible();
+    await expect(card.locator("iframe")).toHaveCount(0);
+    await expect(card.getByRole("button", { name: "Open Computer", exact: true })).toHaveCount(0);
+    expect(await card.evaluate((element) => element.closest(".chat-agent-bubble"))).toBeNull();
+    await card.scrollIntoViewIfNeeded();
+    await page.screenshot({ path: info.outputPath(`studio-computer-${state}.png`) });
+  }
+  expect(writes).toEqual([]);
+});
+
+test("editable alternatives behave as options and approval details remain readable while scrolling", async ({
+  page,
+}, info) => {
+  await page.goto("/assistant-studio?section=input&state=custom&mode=dm");
+  const custom = page.getByRole("radio", { name: "Jawaban lain", exact: true });
+  const input = page.getByRole("textbox", { name: "Isi jawaban lain", exact: true });
+  const submit = page.getByRole("button", { name: "Continue", exact: true });
+  await custom.check();
+  await expect(custom).toBeChecked();
+  await expect(submit).toBeDisabled();
+  await input.fill("Panduan untuk kasir baru");
+  await expect(submit).toBeEnabled();
+  await page.getByRole("radio", { name: "Ringkas", exact: true }).check();
+  await expect(custom).not.toBeChecked();
+  await expect(input).toHaveValue("");
+  await input.fill("Panduan untuk kasir baru");
+  await expect(custom).toBeChecked();
+  await expect(page.getByRole("radio", { name: "Ringkas", exact: true })).not.toBeChecked();
+  await custom.scrollIntoViewIfNeeded();
+  await page.screenshot({ path: info.outputPath("editable-custom-option.png") });
+  await submit.click();
+  await expect(page.getByText("Panduan untuk kasir baru", { exact: true })).toBeVisible();
+  await expect(
+    page.locator('.conversation-interaction[data-interaction-state="settled"]'),
+  ).toHaveCount(1);
+  await expect(
+    page
+      .locator(".conversation-interaction")
+      .locator("button, input, textarea, footer, .conversation-interaction-body"),
+  ).toHaveCount(0);
+
+  await page.goto("/assistant-studio?section=input&state=approval&mode=dm");
+  const details = page.getByRole("region", { name: "Rincian tindakan", exact: true });
+  await expect(details).toBeVisible();
+  await expect(page.locator(".conversation-interaction details")).toHaveCount(0);
+  await expect(details.getByText("checklist-impor.md", { exact: true })).toBeVisible();
+  await expect(details.getByText("Isi file", { exact: true })).toBeVisible();
+  const frame = page.locator(".approval-details-frame");
+  await expect(frame).toHaveAttribute("data-shadow-top", "false");
+  await expect(frame).toHaveAttribute("data-shadow-bottom", "true");
+  await details.scrollIntoViewIfNeeded();
+  await page.screenshot({ path: info.outputPath("approval-details-top.png") });
+  await details.focus();
+  await details.press("End");
+  await expect(frame).toHaveAttribute("data-shadow-top", "true");
+  await expect(frame).toHaveAttribute("data-shadow-bottom", "false");
+  await expect(details).toContainText("Periksa pratinjau dan laporan hasil sebelum melanjutkan.");
+  await page.screenshot({ path: info.outputPath("approval-details-bottom.png") });
+  await page.getByRole("button", { name: "Setujui", exact: true }).click();
+  await expect(
+    page.locator('.conversation-interaction[data-interaction-state="settled"]'),
+  ).toHaveCount(1);
+  await expect(
+    page
+      .locator(".conversation-interaction")
+      .locator("button, input, textarea, footer, .conversation-interaction-body"),
+  ).toHaveCount(0);
 });

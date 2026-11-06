@@ -342,6 +342,8 @@ test("saved avatar identity appears outside the left of group replies and surviv
     saved.avatar_config.seed,
   );
   for (const message of await page.locator(".conversation-message").all()) {
+    await message.scrollIntoViewIfNeeded();
+    await expect(message.locator(".group-message-avatar .ngertiin-avatar > svg")).toBeVisible();
     const avatar = await message.locator(".group-message-avatar").boundingBox();
     const bubble = await message.locator(".chat-agent-bubble").boundingBox();
     expect(avatar && bubble && avatar.x + avatar.width <= bubble.x).toBeTruthy();

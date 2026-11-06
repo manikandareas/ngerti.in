@@ -8,6 +8,7 @@ import {
 import type { Agent, Run } from "@/types/workspace";
 import { ActivityStatus } from "./activity-status";
 import { AgentAvatar } from "./identity";
+import { MessageActions } from "./message-actions";
 
 export function AgentActivityBubble({
   agent,
@@ -20,6 +21,7 @@ export function AgentActivityBubble({
   openAgent,
   openSettings,
   retryPreparation,
+  retryResponse,
   reconcile,
 }: {
   agent: Agent;
@@ -32,6 +34,7 @@ export function AgentActivityBubble({
   openAgent: () => void;
   openSettings: () => void;
   retryPreparation: () => void;
+  retryResponse?: () => void;
   reconcile: () => void;
 }) {
   const view = activityPresentation(run, { online, waitingForUser, targetName });
@@ -45,66 +48,71 @@ export function AgentActivityBubble({
       data-agent-activity={run.id}
       data-activity-agent={agent.id}
       data-loading={view.isLoading}
+      data-group={showName}
     >
-      <button
-        type="button"
-        className="agent-activity-avatar rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-        aria-label={`Open ${agent.name}’s profile`}
-        onClick={openAgent}
-      >
-        <AgentAvatar
-          agent={agent}
-          state={view.state}
-          isLoading={view.isLoading}
-          animated
-          followPointer
-          showActivityLabel={false}
-          className="size-8"
-        />
-      </button>
+      {showName && (
+        <button
+          type="button"
+          className="agent-activity-avatar rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          aria-label={`Open ${agent.name}’s profile`}
+          onClick={openAgent}
+        >
+          <AgentAvatar
+            agent={agent}
+            state={view.state}
+            isLoading={view.isLoading}
+            animated
+            followPointer
+            showActivityLabel={false}
+            className="size-8"
+          />
+        </button>
+      )}
       <MessageContent>
-        <Bubble variant="secondary" className="agent-activity-bubble" data-tone={view.tone}>
-          <BubbleContent>
-            {showName && (
-              <button
-                type="button"
-                className="agent-activity-name text-left hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                onClick={openAgent}
-              >
-                {agent.name}
-              </button>
-            )}
-            <ActivityStatus name={agent.name} label={view.label} loading={view.isLoading} />
-            {guidance && (
-              <p className="message-diagnostic text-[12px] leading-[18px] text-muted-foreground">
-                {guidance}
-              </p>
-            )}
-            {run.status === "unknown" && (
-              <Button size="sm" variant="ghost" disabled={busy || !online} onClick={reconcile}>
-                Check status
-              </Button>
-            )}
-            {run.preparation?.state === "blocked" && run.status === "queued" && (
-              <Button
-                size="sm"
-                variant="ghost"
-                disabled={busy || !online}
-                onClick={retryPreparation}
-              >
-                Try again
-              </Button>
-            )}
-            {(run.preparation?.state === "blocked" ||
-              (run.diagnostic &&
-                !["succeeded", "cancelled", "unknown"].includes(run.status) &&
-                run.diagnostic.outcome !== "not_dispatched")) && (
-              <Button size="sm" variant="ghost" onClick={openSettings}>
-                Open settings
-              </Button>
-            )}
-          </BubbleContent>
-        </Bubble>
+        <MessageActions
+          text={view.label}
+          busy={busy || !online}
+          retry={
+            run.preparation?.state === "blocked" && run.status === "queued"
+              ? retryPreparation
+              : run.status === "failed"
+                ? retryResponse
+                : undefined
+          }
+        >
+          <Bubble variant="secondary" className="agent-activity-bubble" data-tone={view.tone}>
+            <BubbleContent>
+              {showName && (
+                <button
+                  type="button"
+                  className="agent-activity-name text-left hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  onClick={openAgent}
+                >
+                  {agent.name}
+                </button>
+              )}
+              <ActivityStatus name={agent.name} label={view.label} loading={view.isLoading} />
+              {guidance && (
+                <p className="message-diagnostic text-[12px] leading-[18px] text-muted-foreground">
+                  {guidance}
+                </p>
+              )}
+              {run.status === "unknown" && (
+                <Button size="sm" variant="ghost" disabled={busy || !online} onClick={reconcile}>
+                  Check status
+                </Button>
+              )}
+              {(run.preparation?.state === "blocked" ||
+                (run.diagnostic &&
+                  !["succeeded", "cancelled", "unknown"].includes(run.status) &&
+                  run.diagnostic.outcome !== "not_dispatched")) && (
+                <Button size="sm" variant="ghost" onClick={openSettings}>
+                  Open settings
+                </Button>
+              )}
+            </BubbleContent>
+          </Bubble>
+        </MessageActions>
       </MessageContent>
     </Message>
   );

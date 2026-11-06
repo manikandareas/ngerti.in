@@ -26,16 +26,19 @@ import { blockDirection } from "@/features/conversation/lib/text-direction";
 import type { Snapshot } from "@/types/workspace";
 import { useStreamingText } from "../lib/use-streaming-text";
 import { InlineReferenceChip, useInlineReferences } from "./inline-references";
+import { MessageActions } from "./message-actions";
+import { type ResearchSource, ResearchSources, SourceCitation } from "./research-sources";
 
 interface AnswerScope {
   agentId?: string;
+  sources?: ResearchSource[];
   openResource?: (tab: "files" | "goals", id: string) => void;
   snapshot?: Snapshot;
 }
 const AnswerContext = createContext<AnswerScope>({});
 
 function AnswerLink({ children, href }: { children?: ReactNode; href?: string }) {
-  const { openResource, snapshot } = useContext(AnswerContext);
+  const { openResource, snapshot, sources } = useContext(AnswerContext);
   const reference = href ? referenceFromUrl(href, plainMarkdown(children)) : null;
   if (reference?.kind === "file") {
     const file = snapshot?.artifacts.find((file) => file.id === reference.id);
@@ -62,6 +65,8 @@ function AnswerLink({ children, href }: { children?: ReactNode; href?: string })
       </button>
     );
   if (!href) return <span>{children}</span>;
+  const source = sources?.find((source) => source.url === href);
+  if (source) return <SourceCitation source={source} />;
   return (
     <a
       href={href}
@@ -214,16 +219,23 @@ export const Answer = memo(function Answer({
   snapshot,
   sender,
   sentAt,
+  sources,
+  showSources = true,
+  retry,
+  busy,
 }: {
   text: string;
   streaming?: boolean;
+  showSources?: boolean;
+  retry?: () => void;
+  busy?: boolean;
   sentAt?: string;
   sender?: { name: string; style: CSSProperties; open?: () => void };
 } & AnswerScope) {
   const text = useStreamingText(incomingText, streaming);
   const scope = useMemo(
-    () => ({ openResource, snapshot, agentId }),
-    [openResource, snapshot, agentId],
+    () => ({ openResource, snapshot, agentId, sources }),
+    [openResource, snapshot, agentId, sources],
   );
   const blocks = useMemo(
     () =>
@@ -240,24 +252,26 @@ export const Answer = memo(function Answer({
         className="assistant-answer flex w-full max-w-full flex-col items-start gap-1"
       >
         {sender ? (
-          <Bubble
-            variant="secondary"
-            data-chat-bubble="group"
-            className="chat-agent-bubble group-agent-bubble"
-            style={sender.style}
-          >
-            <BubbleContent className="chat-bubble-content text-[15px] leading-[22px]">
-              {sender.open ? (
-                <button type="button" className="group-bubble-author" onClick={sender.open}>
-                  {sender.name}
-                </button>
-              ) : (
-                <span className="group-bubble-author">{sender.name}</span>
-              )}
-              <MarkdownBody text={text} />
-              <MessageTime at={sentAt} className="group-bubble-time" />
-            </BubbleContent>
-          </Bubble>
+          <MessageActions text={incomingText} retry={retry} busy={busy}>
+            <Bubble
+              variant="secondary"
+              data-chat-bubble="group"
+              className="chat-agent-bubble group-agent-bubble"
+              style={sender.style}
+            >
+              <BubbleContent className="chat-bubble-content text-[15px] leading-[22px]">
+                {sender.open ? (
+                  <button type="button" className="group-bubble-author" onClick={sender.open}>
+                    {sender.name}
+                  </button>
+                ) : (
+                  <span className="group-bubble-author">{sender.name}</span>
+                )}
+                <MarkdownBody text={text} />
+                <MessageTime at={sentAt} className="group-bubble-time" />
+              </BubbleContent>
+            </Bubble>
+          </MessageActions>
         ) : (
           blocks.map((block) => {
             const content = <MarkdownBody key={block.id} text={block.text} />;
@@ -271,20 +285,18 @@ export const Answer = memo(function Answer({
                 <MessageTime at={sentAt} />
               </div>
             ) : (
-              <Bubble
-                key={block.id}
-                variant="secondary"
-                data-chat-bubble="simple"
-                className="chat-agent-bubble"
-              >
-                <BubbleContent className="chat-bubble-content text-[15px] leading-[22px]">
-                  {content}
-                  <MessageTime at={sentAt} />
-                </BubbleContent>
-              </Bubble>
+              <MessageActions key={block.id} text={block.text} retry={retry} busy={busy}>
+                <Bubble variant="secondary" data-chat-bubble="simple" className="chat-agent-bubble">
+                  <BubbleContent className="chat-bubble-content text-[15px] leading-[22px]">
+                    {content}
+                    <MessageTime at={sentAt} />
+                  </BubbleContent>
+                </Bubble>
+              </MessageActions>
             );
           })
         )}
+        {sources && showSources && <ResearchSources sources={sources} />}
       </div>
     </AnswerContext.Provider>
   );

@@ -9,7 +9,7 @@ import type {
   Routine,
   Workspace,
 } from "./work";
-// Consumer projections of the published Ngertiin API 1.29.0.
+// Consumer projections of the published Ngertiin API 1.31.0.
 export interface Base {
   id: string;
   revision: number;
@@ -48,6 +48,15 @@ export interface Message extends Base {
   purpose: string;
 }
 export interface Run extends Base {
+  retry_allowed?: boolean;
+  retry_of_run_id?: string | null;
+  retried_by_run_id?: string | null;
+  computer_activity?: {
+    machine_id: string;
+    generation: number;
+    phase: "preparing" | "active";
+    started_at: string;
+  } | null;
   active_tools?: { call_id: string; kind: string; target_agent_id: string | null }[];
   preparation?: {
     state: "preparing" | "ready" | "retrying" | "blocked";

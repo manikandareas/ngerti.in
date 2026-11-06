@@ -12,6 +12,9 @@
   width: 32px;
   height: 32px;
 }
+.agent-activity-row[data-group="false"] {
+  padding-inline-start: 0;
+}
 .agent-activity-bubble {
   max-width: min(100%, 28rem);
 }

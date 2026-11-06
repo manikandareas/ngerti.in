@@ -5,6 +5,7 @@ import type { ProductTools } from "../../../apps/server/src/harness/tools";
 /** External protocol fixture; HTTP, leases, tools, persistence and the broker remain real. */
 export function fixtureAdapter(tools: ProductTools): HarnessAdapter {
   const rejectedRoutes = new Set<string>();
+  const failedInputs = new Set<string>();
   // A resumed native identity retains its prior question even after the broker
   // retires the idle transport while the task is waiting for a human.
   const askedSessions = new Set<string>();
@@ -13,6 +14,7 @@ export function fixtureAdapter(tools: ProductTools): HarnessAdapter {
     async connect(context) {
       let sessionId = crypto.randomUUID();
       let multiple = false;
+      let textOnly = false;
       let ambiguous = false;
       let pending: {
         resolve: (status: "succeeded" | "cancelled") => void;
@@ -182,6 +184,29 @@ export function fixtureAdapter(tools: ProductTools): HarnessAdapter {
               arguments: {},
             });
           }
+          if (input.text.startsWith("fixture product")) {
+            await tools.call(input.tools.token, input.tools.scope, "ngertiin.ask_user", {
+              command_id: crypto.randomUUID(),
+              purpose: input.text.includes("approval") ? "approval" : "input",
+              action: input.text.includes("approval") ? { tool_name: "ngertiin.create_file", arguments: { path: "fixture-checklist.md", base64: "Rml4dHVyZSBjaGVja2xpc3Q=" } } : null,
+              question: input.text.includes("mentions") ? "[@user](ngertiin://user/owner), which city should I use?" : input.text.includes("approval") ? "Publish this exact checklist?" : "Which city should I use?",
+              options: input.text.includes("options") ? { choices: [{ id: "makassar", label: "Makassar" }, { id: "jakarta", label: "Jakarta" }], min: 1, max: 1, allow_custom: true } : null,
+            });
+            return { status: "succeeded", native_session_id: sessionId, native_run_id: nativeRunId };
+          }
+          if (input.text === "fixture answer Makassar") {
+            const run = tools.lifecycle.store.get("run", input.tools.scope.run_id);
+            const request = tools.lifecycle.store.list("human_request").findLast(request => request.thread_id === run.thread_id && request.agent_id === run.agent_id && request.state === "pending");
+            if (request) await tools.call(input.tools.token, input.tools.scope, "ngertiin.resolve_user_input", { command_id: crypto.randomUUID(), request_id: request.id, expected_revision: request.revision, user_message_id: run.input_message_id, disposition: "answer" });
+          }
+          if (input.text === "fixture failed response") {
+            const run = tools.lifecycle.store.get("run", input.tools.scope.run_id);
+            if (!failedInputs.has(run.input_message_id)) {
+              failedInputs.add(run.input_message_id);
+              input.onEvent({ type: "text", text: "Incomplete fixture response" });
+              return { status: "failed", native_session_id: sessionId, native_run_id: nativeRunId };
+            }
+          }
           if (input.text.includes("fixture human") && !askedSessions.has(sessionId)) {
             askedSessions.add(sessionId);
             await tools.call(input.tools.token, input.tools.scope, "ngertiin.group_ask_user", {
@@ -215,6 +240,7 @@ export function fixtureAdapter(tools: ProductTools): HarnessAdapter {
             };
           }
           multiple = input.text.includes("multiple");
+          textOnly = input.text.includes("text-only");
           ambiguous = input.text.includes("unknown");
           if (input.text.includes("preface"))
             input.onEvent({
@@ -249,7 +275,7 @@ export function fixtureAdapter(tools: ProductTools): HarnessAdapter {
                         id: "format",
                         header: "Format",
                         question: "Choose the report format",
-                        options: [
+                        options: textOnly ? [] : [
                           { label: "Markdown", description: "A concise report" },
                           { label: "CSV" },
                         ],

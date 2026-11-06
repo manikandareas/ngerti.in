@@ -192,7 +192,17 @@ test("rejected routing retries the original group message and source attachment"
     .setInputFiles(documentFile("route-source.txt"));
   await page.getByRole("button", { name: "Kirim", exact: true }).click();
   const retry = page.getByRole("button", { name: "Try again", exact: true });
-  await expect(retry).toBeVisible({ timeout: 20_000 });
+  const failed = page.locator(".message-action-anchor").filter({ has: retry });
+  await expect(failed).toBeVisible({ timeout: 20_000 });
+  if (test.info().project.name === "mobile") await failed.tap();
+  else await failed.hover();
+  await expect(retry).toBeVisible();
+  await expect(retry).toHaveCSS(
+    "color",
+    await failed
+      .getByRole("button", { name: "Salin pesan", exact: true })
+      .evaluate((element) => getComputedStyle(element).color),
+  );
   const before = await snapshot(page, group.id);
   const original = before.routes.find((r: { state: string }) => r.state === "rejected");
   await retry.click();

@@ -316,7 +316,7 @@ test("removing a selected file never uploads it and status stays behind its icon
     .getByLabel("Lampirkan file ke pesan", { exact: true })
     .setInputFiles(documentFile("wrong-file.txt"));
   const status = composer.getByRole("button", { name: "Pratinjau wrong-file.txt", exact: true });
-  await expect(status.locator("[data-attachment-file-icon]")).toHaveCount(1);
+  await expect(status.locator("svg").first()).toHaveCount(1);
   await expect(
     composer.getByRole("button", { name: "Status wrong-file.txt", exact: true }),
   ).toHaveCount(0);

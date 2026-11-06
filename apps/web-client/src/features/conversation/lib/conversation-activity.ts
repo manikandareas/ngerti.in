@@ -66,12 +66,23 @@ export function conversationActivity(snapshot: Snapshot | null, entries: Convers
     )
       continue;
     const waiting = waitingForUser(run, snapshot);
+    // The question or approval already explains what is needed in the timeline.
+    if (waiting && !["failed", "unknown", "cancel_requested", "cancelled"].includes(run.status))
+      continue;
     if (waitingParents.has(run.id) && !waiting && ["running", "succeeded"].includes(run.status))
       continue;
-    if (["succeeded", "steered"].includes(run.status) && !waiting) continue;
-    if (run.publication !== "immediate" && !waiting && !replyInputs.has(run.id)) continue;
+    if (["succeeded", "steered"].includes(run.status) && !waiting && !run.computer_activity)
+      continue;
+    if (
+      run.publication !== "immediate" &&
+      !waiting &&
+      !replyInputs.has(run.id) &&
+      !run.computer_activity
+    )
+      continue;
     if (
       run.status === "queued" &&
+      !run.retry_of_run_id &&
       !handoffInputs.has(taskInputs.get(run.id) ?? run.input_message_id) &&
       (!run.preparation || run.preparation.state === "ready" || busyAgents.has(run.agent_id))
     )

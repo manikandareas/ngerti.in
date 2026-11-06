@@ -184,6 +184,7 @@ export default function ColorStudio() {
     <main className="color-studio">
       <nav>
         <Link to="/">← Workspace</Link>
+        <Link to="/assistant-studio">Assistant studio ↗</Link>
         <Link to="/avatar-studio">Avatar studio ↗</Link>
       </nav>
       <div className="cs-heading">

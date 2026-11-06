@@ -80,6 +80,19 @@ const colorStudioRoute = createRoute({
   component: lazyRouteComponent(() => import("@/features/color-studio/color-studio")),
 });
 
+const assistantStudioRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/assistant-studio",
+  validateSearch: (
+    search: Record<string, unknown>,
+  ): { section?: string; state?: string; mode?: "dm" | "group" } => ({
+    section: typeof search.section === "string" ? search.section : undefined,
+    state: typeof search.state === "string" ? search.state : undefined,
+    mode: search.mode === "dm" || search.mode === "group" ? search.mode : undefined,
+  }),
+  component: lazyRouteComponent(() => import("@/features/assistant-studio/assistant-studio")),
+});
+
 const designSystemRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/design-system",
@@ -100,6 +113,7 @@ export const router = createRouter({
     themePreviewRoute,
     avatarStudioRoute,
     colorStudioRoute,
+    assistantStudioRoute,
   ]),
   scrollRestoration: true,
 });

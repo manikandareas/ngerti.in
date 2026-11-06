@@ -64,9 +64,17 @@ export interface AttachmentDocument extends Base {
 export interface HumanRequest extends Base {
   thread_id: string;
   agent_id: string;
-  task_id: string;
+  task_id: string | null;
   source_run_id: string;
   purpose: string;
+  options?: {
+    choices: { id: string; label: string }[];
+    min: number;
+    max: number;
+    allow_custom: boolean;
+  } | null;
+  action?: { tool_name: string; arguments: Record<string, unknown> } | null;
+  decision?: "approve" | "reject" | null;
   message_id: string;
   state: string;
   response_message_id: string | null;

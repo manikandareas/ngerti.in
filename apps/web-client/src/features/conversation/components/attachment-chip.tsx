@@ -1,15 +1,11 @@
-import {
-  Cancel01Icon,
-  File02Icon,
-  Image01Icon,
-  RotateRight01Icon,
-} from "@hugeicons/core-free-icons";
+import { ArrowUpRight01Icon, Cancel01Icon, RotateRight01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useState } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import type { ComposerAttachment } from "@/features/conversation/lib/attachment-references";
 import { artifactUrl } from "@/lib/workspace-files";
+import { FileTypeIcon } from "./file-type-icon";
 
 function attachmentStatus(file: ComposerAttachment) {
   if (file.state === "failed") return "Periksa pengiriman.";
@@ -65,7 +61,6 @@ export function AttachmentChip({
 }) {
   const [open, setOpen] = useState(false);
   const working = file.state === "uploading" || file.documentState === "preparing";
-  const icon = file.mediaType.startsWith("image/") ? Image01Icon : File02Icon;
   return (
     <span
       className="attachment-chip"
@@ -84,16 +79,11 @@ export function AttachmentChip({
                 aria-label={`Pratinjau ${file.name}`}
                 onMouseDown={(event) => event.preventDefault()}
               >
-                <HugeiconsIcon
-                  icon={icon}
-                  size={12}
-                  strokeWidth={1.7}
-                  data-attachment-file-icon
-                  aria-hidden="true"
-                />
+                <FileTypeIcon name={file.name} mediaType={file.mediaType} />
                 <span dir="auto" className="truncate">
                   {file.name}
                 </span>
+                <HugeiconsIcon icon={ArrowUpRight01Icon} size={12} aria-hidden="true" />
               </button>
             </TooltipTrigger>
           </PopoverTrigger>

@@ -45,6 +45,18 @@ Examples are grouped and loaded on demand under `src/features/design-system/exam
 
 Static production hosting must route application URLs such as `/design-system` to `index.html` (SPA fallback). Vite's local dev and production-preview servers already support this.
 
+## Assistant studio
+
+Open `http://127.0.0.1:3001/assistant-studio` after `bun run dev:web-client`. The studio works without a running backend and is also linked from Color Studio and Design System.
+
+The catalog covers Computer activity, agent activity and recovery, group routing, application questions/options/review/approval, files, research sources, Goal/Routine milestones, and rich or streaming answers. Category, condition, and DM/group mode are URL-backed, for example `/assistant-studio?section=input&state=approval&mode=group`. Search, reset, and the existing theme switcher are available.
+
+Previews import the conversation components and shared styles directly. Product replies share the pure `HumanReplyCard` presentation with the persisted conversation flow. Harness-specific question, approval and history demos are not separate Studio categories. Files open in the existing `FileViewer` using local sample data URLs.
+
+All answers, approvals, recovery actions, and receipts in the studio are local examples. They do not dispatch application commands, run agents, or establish provider capabilities. Product questions and approvals use the application abstraction in both DM and group. Normal handoff bars stay hidden, matching the current timeline.
+
+After a confirmed answer, the inline interaction keeps only its question. It has no options, action details, buttons, or saved-answer receipt. Pending HITL does not add a separate waiting bubble. Group assistant messages and cards share the same adjacent agent avatar; DM rows omit it. The Studio follows these presentation rules.
+
 ## Conversation verification
 
 ```sh
@@ -88,3 +100,9 @@ Light, dark, and system modes use `next-themes` with the `ngertiin-web-client-th
 - [shadcn semantic theming](https://ui.shadcn.com/docs/theming)
 - [shadcn CLI](https://ui.shadcn.com/docs/cli)
 - [Hugeicons React](https://hugeicons.com/docs/integrations/react/quick-start)
+
+The approved conversation redesign is applied to the existing composer, questions/approvals, supported recovery actions, file chips and research sources. Text-only requests use the main composer; successful replies do not add saved-answer receipts. [Verification, screenshots and the remaining feature gaps](../../docs/verification/conversation-redesign-2026-11-05/README.md) distinguish UI changes from new runtime work.
+
+The 1.31.0 interaction update adds the Computer category with preparing/live/completed states. Preparing and completed activity use the same card shell without a historical image or viewer. Compact live previews hide upstream viewer controls and recover automatically without a manual reconnect action. The live preview requires the local backend and configured machine; the other local examples still work without them. See [the implementation evidence](../../docs/verification/conversation-implementation-2026-11-06/README.md) for product-owned DM/group questions, approval gates, failed-response retry, and live viewer proof boundaries.
+
+Only active Computer cards offer Open Computer. Custom answers appear as selectable, editable options. Approval details use an always-visible bounded scroll area with overflow-aware edge shadows. These presenters are shared with conversations; [follow-up verification and screenshots](../../docs/verification/conversation-implementation-2026-11-06/interaction-ui-refinement/README.md).

@@ -67,33 +67,6 @@ async function capture(page: Page, path: string) {
     });
   await page.screenshot({ path });
 }
-async function expectNativeReceiptOrder(page: Page, ids: string[]) {
-  expect(
-    await page.evaluate((expected) => {
-      const user = [...document.querySelectorAll(".chat-user-bubble [data-message-text]")].find(
-        (element) => element.textContent?.trim() === "fixture interaction preface",
-      );
-      const preface = [...document.querySelectorAll("p")].find(
-        (element) => element.textContent === "Before the question.",
-      );
-      const reply = [...document.querySelectorAll("p")].find(
-        (element) => element.textContent === "Fixture answer: Markdown; approval: allow-once",
-      );
-      return expected.every((id) => {
-        const card = document.querySelector(`[data-native-interaction="${id}"]`);
-        return (
-          user &&
-          preface &&
-          reply &&
-          card &&
-          !!(user.compareDocumentPosition(preface) & Node.DOCUMENT_POSITION_FOLLOWING) &&
-          !!(preface.compareDocumentPosition(card) & Node.DOCUMENT_POSITION_FOLLOWING) &&
-          !!(card.compareDocumentPosition(reply) & Node.DOCUMENT_POSITION_FOLLOWING)
-        );
-      });
-    }, ids),
-  ).toBeTruthy();
-}
 async function start(page: Page) {
   await page.goto("/");
   await expect(page.getByRole("button", { name: "Detail Tobi", exact: true })).toBeVisible();
@@ -781,19 +754,24 @@ test("native acknowledgements survive lost HTTP replies, completion, reload and 
     discardedAcknowledgement = true;
     await route.abort("failed");
   });
+  await page.locator(".conversation-interaction").first().scrollIntoViewIfNeeded();
   await capture(page, testInfo.outputPath("native-question.png"));
   await page.getByRole("radio", { name: "Markdown A concise report", exact: true }).click();
+  expect(sent).toHaveLength(0);
+  await capture(page, testInfo.outputPath("native-question-selected.png"));
+  await page.getByRole("button", { name: "Kirim jawaban", exact: true }).click();
   const questionReceipt = page.getByRole("group", { name: "Status jawaban native", exact: true });
-  await expect(questionReceipt).toHaveAttribute("data-native-state", "submitted");
-  await expect(questionReceipt).toContainText("Kamu memilih: Markdown · diterima harness");
+  await expect(questionReceipt).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "Allow this read", exact: true })).toBeVisible();
   expect(discardedAcknowledgement).toBeTruthy();
   await expect(
     page.getByRole("radio", { name: "Markdown A concise report", exact: true }),
   ).toHaveCount(0);
   await page.unroute(`**/v1/runs/${runId}/interactions`);
   await page.reload();
-  await expect(questionReceipt).toContainText("Kamu memilih: Markdown · diterima harness");
+  await expect(questionReceipt).toHaveCount(0);
   await expect(page.getByRole("button", { name: "Allow this read", exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "Allow this read", exact: true }).scrollIntoViewIfNeeded();
   await capture(page, testInfo.outputPath("native-approval.png"));
   await page.getByRole("button", { name: "Allow this read", exact: true }).click();
   await expect(
@@ -838,10 +816,6 @@ test("native acknowledgements survive lost HTTP replies, completion, reload and 
     { type: "user_input", request_id: "fixture-question", source_index: undefined },
     { type: "approval", request_id: "fixture-approval", source_index: 7 },
   ]);
-  await expectNativeReceiptOrder(
-    page,
-    history.records.map((record: { id: string }) => record.id),
-  );
   await post(page, `/v1/connections/${connection.id}/revoke`, {});
   const terminalPendingReads: string[] = [];
   page.on("request", (request) => {
@@ -849,18 +823,15 @@ test("native acknowledgements survive lost HTTP replies, completion, reload and 
       terminalPendingReads.push(request.url());
   });
   await page.reload();
-  await expect(questionReceipt).toContainText("Kamu memilih: Markdown · diterima harness");
+  await expect(questionReceipt).toHaveCount(0);
   const approvalReceipt = page.getByRole("group", { name: "Status keputusan native", exact: true });
-  await expect(approvalReceipt).toHaveAttribute("data-native-state", "submitted");
-  await expect(approvalReceipt).toContainText("Allow this read");
-  await expectNativeReceiptOrder(
-    page,
-    history.records.map((record: { id: string }) => record.id),
-  );
-  await questionReceipt.getByRole("button", { name: "Rincian", exact: true }).click();
-  await expect(questionReceipt).toContainText(
-    "Harness mengonfirmasi penerimaan. Ini tidak menyatakan tindakan dijalankan atau pekerjaan selesai.",
-  );
+  await expect(approvalReceipt).toHaveCount(0);
+  await expect(
+    page.getByText("Fixture answer: Markdown; approval: allow-once", { exact: true }),
+  ).toBeVisible();
+  await page
+    .getByText("Fixture answer: Markdown; approval: allow-once", { exact: true })
+    .scrollIntoViewIfNeeded();
   await capture(page, testInfo.outputPath("native-settled.png"));
   // More than one poll interval proves terminal history does not reopen a native session.
   await page.waitForTimeout(3200);
@@ -893,6 +864,7 @@ test("an ambiguous native submission stays fenced through status reads, reload a
   });
   // The fixture throws an ambiguous native transport error; the real broker persists its fence.
   await page.getByRole("radio", { name: "CSV", exact: true }).click();
+  await page.getByRole("button", { name: "Kirim jawaban", exact: true }).click();
   const receipt = page.getByRole("group", { name: "Status jawaban native", exact: true });
   await expect(receipt).toHaveAttribute("data-native-state", "unknown");
   await expect(receipt).toContainText("Pengiriman jawaban belum terkonfirmasi CSV");
@@ -986,6 +958,7 @@ test("unsafe Markdown cuts and changed prefixes keep complete content beside a l
       status: string;
       revision: number;
       native_interactions: {
+        submission: { state: string } | null;
         anchor_message_id: string | null;
         anchor_text_offset: number | null;
         anchor_prefix_sha256: string | null;
@@ -1044,6 +1017,8 @@ test("unsafe Markdown cuts and changed prefixes keep complete content beside a l
     const offset = item.text.indexOf(item.marker);
     const prefix = item.mismatch ? "Original introduction.\n\n" : item.text.slice(0, offset);
     for (const record of run.native_interactions) {
+      // Successful receipts are hidden; only an unresolved projected submission needs this fallback.
+      if (record.submission) record.submission.state = "unknown";
       record.anchor_message_id = message.id;
       record.anchor_text_offset = offset;
       record.anchor_prefix_sha256 = createHash("sha256").update(prefix).digest("hex");
@@ -1219,46 +1194,50 @@ test("group writers serialize native questions and free text uses one answer rep
   ).toBeTruthy();
   await second.getByRole("checkbox", { name: "Markdown A concise report", exact: true }).click();
   await second.getByRole("textbox", { name: "Jawaban: Format", exact: true }).fill("Plain summary");
-  await second.getByRole("button", { name: "Kirim jawaban ke harness", exact: true }).click();
+  await second.getByRole("button", { name: "Kirim jawaban", exact: true }).click();
   await second.getByRole("button", { name: "Allow this read", exact: true }).click();
   await expect(
     page.getByText("Fixture answer: Plain summary; approval: allow-once", { exact: true }),
   ).toBeVisible();
 });
 
-test("an unconfirmed human reply is restored verbatim and locked across reload", async ({
+test("an unconfirmed option reply reuses the same decision across reload", async ({
   page,
-}) => {
+}, testInfo) => {
   await page.goto("/");
   await expect(page.getByRole("button", { name: "Detail Tobi", exact: true })).toBeVisible();
   const agent = await fixtureAgent(page, "Human request");
-  const group = await newGroup(page, `Human ${crypto.randomUUID().slice(0, 8)}`, [agent.id]);
-  await post(page, `/v1/groups/${group.id}/messages`, {
+  const thread = await post(page, `/v1/agents/${agent.id}/dm`, {});
+  await post(page, "/v1/runs", {
     agent_id: agent.id,
-    text: "fixture human",
+    thread_id: thread.id,
+    text: "fixture product options",
   });
-  await chooseGroup(page, group.name);
-  const input = page.getByRole("textbox", { name: `Jawaban untuk ${agent.name}`, exact: true });
-  await input.fill("Keep this exact answer.");
+  await chooseAgent(page, agent.name);
+  const card = page.getByRole("region", { name: "Which city should I use?", exact: false });
+  const option = page.getByRole("radio", { name: "Makassar", exact: true });
+  await option.scrollIntoViewIfNeeded();
+  await capture(page, testInfo.outputPath("product-question-pending.png"));
+  await option.check();
+  await capture(page, testInfo.outputPath("product-question-selected.png"));
   await page.route("**/v1/human-requests/*/reply", (route) => route.abort("failed"));
-  await page.getByRole("button", { name: "Kirim jawaban", exact: true }).click();
-  await expect(page.getByRole("button", { name: "Periksa jawaban", exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "Continue", exact: true }).click();
+  await expect(page.getByRole("button", { name: "Periksa status", exact: true })).toBeVisible();
   await page.unroute("**/v1/human-requests/*/reply");
   await page.reload();
-  await expect(input).toHaveValue("Keep this exact answer.");
-  await expect(input).not.toBeEditable();
-  await page.getByRole("button", { name: "Periksa jawaban", exact: true }).click();
+  await page.getByRole("button", { name: "Periksa status", exact: true }).click();
+  await expect(page.getByText("Makassar", { exact: true })).toBeVisible();
+  await expect(card).toHaveAttribute("data-interaction-state", "settled");
   await expect(
-    page.getByText("Jawaban tersimpan untuk permintaan ini.", { exact: true }),
-  ).toBeVisible();
-  const snapshot = await (await page.request.get(`/v1/threads/${group.id}/snapshot`)).json();
-  expect(snapshot.human_requests).toHaveLength(1);
+    card.locator("button, input, textarea, footer, .conversation-interaction-body"),
+  ).toHaveCount(0);
+  await page.reload();
+  await expect(card).toHaveAttribute("data-interaction-state", "settled");
+  await capture(page, testInfo.outputPath("product-question-answered.png"));
+  const snapshot = await (await page.request.get(`/v1/threads/${thread.id}/snapshot`)).json();
   expect(snapshot.human_requests[0].state).toBe("answered");
   expect(
-    snapshot.messages.filter(
-      (m: { purpose: string; text: string }) =>
-        m.purpose === "human_reply" && m.text === "Keep this exact answer.",
-    ),
+    snapshot.messages.filter((m: { purpose: string }) => m.purpose === "human_reply"),
   ).toHaveLength(1);
 });
 
@@ -1581,3 +1560,243 @@ for (const theme of ["light", "dark"] as const) {
     ).toBeTruthy();
   });
 }
+
+test("a native text-only question uses the ordinary composer and preserves its answer representation", async ({
+  page,
+}, info) => {
+  await page.goto("/");
+  const agent = await fixtureAgent(page, "Text question");
+  const thread = await post(page, `/v1/agents/${agent.id}/dm`, {});
+  await page.evaluate((id) => localStorage.setItem("ngertiin:thread", id), thread.id);
+  await page.reload();
+  await expect(
+    page.getByRole("button", { name: `Detail ${agent.name}`, exact: true }),
+  ).toBeVisible();
+  await page
+    .getByRole("textbox", { name: "Pesan", exact: true })
+    .fill("fixture interaction text-only");
+  await page.getByRole("button", { name: "Kirim", exact: true }).click();
+  const composer = page.getByRole("textbox", { name: "Pesan", exact: true });
+  await expect(composer).toBeEditable({ timeout: 20000 });
+  await expect(page.getByText("Choose the report format", { exact: true })).toBeVisible();
+  await expect(page.locator(".conversation-interaction textarea")).toHaveCount(0);
+  await composer.fill("x".repeat(501));
+  await expect(page.getByRole("button", { name: "Kirim jawaban", exact: true })).toBeDisabled();
+  await expect(page.getByText("Jawaban dibatasi 500 karakter.", { exact: true })).toBeVisible();
+  await composer.fill("A short plain text summary");
+  await page.screenshot({ path: info.outputPath("native-text-composer.png") });
+  await page.getByRole("button", { name: "Kirim jawaban", exact: true }).click();
+  await expect(page.getByRole("textbox", { name: "Pesan", exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "Allow this read", exact: true }).click();
+  await expect(
+    page
+      .getByRole("main", { name: "Percakapan aktif" })
+      .getByText("Fixture answer: A short plain text summary; approval: allow-once", {
+        exact: true,
+      }),
+  ).toBeVisible();
+  const snapshot = await (await page.request.get(`/v1/threads/${thread.id}/snapshot`)).json();
+  expect(snapshot.runs).toHaveLength(1);
+  const history = await (
+    await page.request.get(`/v1/runs/${snapshot.runs[0].id}/interactions/history`)
+  ).json();
+  expect(
+    history.records.find((record: { type: string }) => record.type === "user_input").submission
+      .answer.answers,
+  ).toEqual([{ questionId: "format", freeText: "A short plain text summary" }]);
+});
+
+test("an uncertain text answer stays locked but confirmed cancellation releases the normal composer", async ({
+  page,
+}) => {
+  await page.goto("/");
+  const agent = await fixtureAgent(page, "Uncertain text");
+  const thread = await post(page, `/v1/agents/${agent.id}/dm`, {});
+  await page.evaluate((id) => localStorage.setItem("ngertiin:thread", id), thread.id);
+  await page.reload();
+  await expect(
+    page.getByRole("button", { name: `Detail ${agent.name}`, exact: true }),
+  ).toBeVisible();
+  await page
+    .getByRole("textbox", { name: "Pesan", exact: true })
+    .fill("fixture interaction text-only unknown");
+  await page.getByRole("button", { name: "Kirim", exact: true }).click();
+  const composer = page.getByRole("textbox", { name: "Pesan", exact: true });
+  await expect(composer).toBeEditable({ timeout: 20000 });
+  await composer.fill("Keep this answer once");
+  let submissions = 0;
+  page.on("request", (request) => {
+    if (request.method() === "POST" && /\/runs\/[^/]+\/interactions$/.test(request.url()))
+      submissions++;
+  });
+  await page.getByRole("button", { name: "Kirim jawaban", exact: true }).click();
+  const receipt = page.getByRole("group", { name: "Status jawaban native", exact: true });
+  await expect(receipt).toHaveAttribute("data-native-state", "unknown");
+  await expect(composer).not.toBeEditable();
+  await page.getByRole("button", { name: "Stop run", exact: true }).click();
+  await expect(page.getByRole("textbox", { name: "Pesan", exact: true })).toBeEditable();
+  await expect(receipt).toHaveAttribute("data-native-state", "unknown");
+  expect(submissions).toBe(1);
+  const snapshot = await (await page.request.get(`/v1/threads/${thread.id}/snapshot`)).json();
+  expect(snapshot.runs[0].status).toBe("cancelled");
+});
+
+test("product text questions let the next user change topic and later answer in the normal composer", async ({
+  page,
+}, testInfo) => {
+  await page.goto("/");
+  await expect(page.getByRole("button", { name: "Detail Tobi", exact: true })).toBeVisible();
+  const agent = await fixtureAgent(page, "Natural question");
+  const thread = await post(page, `/v1/agents/${agent.id}/dm`, {});
+  await post(page, "/v1/runs", {
+    agent_id: agent.id,
+    thread_id: thread.id,
+    text: "fixture product text",
+  });
+  await chooseAgent(page, agent.name);
+  await expect(page.getByText("Which city should I use?", { exact: true })).toBeVisible();
+  await expect(page.getByText(`Jawaban untuk ${agent.name}`, { exact: true })).toHaveCount(0);
+  const composer = page.getByRole("textbox", { name: "Pesan", exact: true });
+  await composer.fill("fixture new topic");
+  await page.getByRole("button", { name: "Kirim", exact: true }).click();
+  await expect(page.getByText("Fixture ready", { exact: true }).last()).toBeVisible();
+  let snapshot = await (await page.request.get(`/v1/threads/${thread.id}/snapshot`)).json();
+  expect(snapshot.human_requests[0].state).toBe("pending");
+  await composer.fill("fixture answer Makassar");
+  await page.getByRole("button", { name: "Kirim", exact: true }).click();
+  await expect
+    .poll(
+      async () =>
+        (await (await page.request.get(`/v1/threads/${thread.id}/snapshot`)).json())
+          .human_requests[0].state,
+    )
+    .toBe("answered");
+  snapshot = await (await page.request.get(`/v1/threads/${thread.id}/snapshot`)).json();
+  expect(snapshot.runs).toHaveLength(3);
+  await capture(page, testInfo.outputPath("natural-question-answered.png"));
+});
+
+test("approval is inline and retains only its question after a typed owner decision", async ({
+  page,
+}, testInfo) => {
+  await page.goto("/");
+  await expect(page.getByRole("button", { name: "Detail Tobi", exact: true })).toBeVisible();
+  const agent = await fixtureAgent(page, "Product approval");
+  const thread = await post(page, `/v1/agents/${agent.id}/dm`, {});
+  await post(page, "/v1/runs", {
+    agent_id: agent.id,
+    thread_id: thread.id,
+    text: "fixture product approval",
+  });
+  await chooseAgent(page, agent.name);
+  await expect(page.getByRole("button", { name: "Tolak", exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "Setujui", exact: true }).scrollIntoViewIfNeeded();
+  await capture(page, testInfo.outputPath("product-approval-pending.png"));
+  await page.getByRole("button", { name: "Setujui", exact: true }).click();
+  await expect(page.getByRole("button", { name: "Setujui", exact: true })).toHaveCount(0);
+  await expect(
+    page.getByText("Jawaban tersimpan untuk permintaan ini.", { exact: true }),
+  ).toHaveCount(0);
+  const settled = page.locator('.conversation-interaction[data-interaction-state="settled"]');
+  await expect(settled).toHaveText("Publish this exact checklist?");
+  await expect(settled.locator("button, footer, .conversation-interaction-body")).toHaveCount(0);
+  await page.reload();
+  await expect(settled).toHaveText("Publish this exact checklist?");
+  await expect(
+    page.locator(".conversation-message .group-message-avatar, .agent-activity-avatar"),
+  ).toHaveCount(0);
+  await capture(page, testInfo.outputPath("product-approval-submitted.png"));
+  const snapshot = await (await page.request.get(`/v1/threads/${thread.id}/snapshot`)).json();
+  expect(snapshot.human_requests[0].decision).toBe("approve");
+});
+
+test("retry is available only for a failed assistant response and preserves the authored input", async ({
+  page,
+}, testInfo) => {
+  await page.goto("/");
+  await expect(page.getByRole("button", { name: "Detail Tobi", exact: true })).toBeVisible();
+  const agent = await fixtureAgent(page, "Response retry");
+  const thread = await post(page, `/v1/agents/${agent.id}/dm`, {});
+  await post(page, "/v1/runs", {
+    agent_id: agent.id,
+    thread_id: thread.id,
+    text: "fixture failed response",
+  });
+  await chooseAgent(page, agent.name);
+  const bubble = page
+    .getByRole("main", { name: "Percakapan aktif", exact: true })
+    .getByText("Incomplete fixture response", { exact: true });
+  await expect(bubble).toBeVisible();
+  const actions = bubble.locator('xpath=ancestor::*[contains(@class,"message-action-anchor")][1]');
+  if (testInfo.project.name === "mobile") await bubble.tap();
+  else await bubble.hover();
+  const retry = actions.getByRole("button", { name: "Try again", exact: true });
+  await expect(retry).toBeVisible();
+  await capture(page, testInfo.outputPath("failed-response-retry.png"));
+  await retry.click();
+  await expect(bubble).toHaveCount(0);
+  await expect(page.getByText("Fixture ready", { exact: true }).last()).toBeVisible();
+  const snapshot = await (await page.request.get(`/v1/threads/${thread.id}/snapshot`)).json();
+  expect(snapshot.messages.filter((m: { author: string }) => m.author === "user")).toHaveLength(1);
+  expect(snapshot.runs).toHaveLength(2);
+  await capture(page, testInfo.outputPath("failed-response-retried.png"));
+});
+
+test("group interaction history keeps rendered mentions and an adjacent avatar after replies and reload", async ({
+  page,
+}, testInfo) => {
+  await page.goto("/");
+  const actor = await fixtureAgent(page, "Group interaction");
+  const peer = await fixtureAgent(page, "Group peer");
+  const group = await newGroup(page, `HITL history ${crypto.randomUUID().slice(0, 6)}`, [
+    actor.id,
+    peer.id,
+  ]);
+  await post(page, "/v1/runs", {
+    agent_id: actor.id,
+    thread_id: group.id,
+    text: "fixture product options mentions",
+  });
+  await chooseGroup(page, group.name);
+  const card = page.getByRole("region", { name: /^Kamu\s*, which city should I use\?$/ });
+  await expect(card).toBeVisible();
+  await expect(card.locator('[data-inline-reference="user"]')).toHaveText("Kamu");
+  await expect(card).not.toContainText("ngertiin://");
+  const row = page.locator(".conversation-message").filter({ has: card });
+  const avatar = row.locator(".group-message-avatar .ngertiin-avatar > svg");
+  await expect(avatar).toBeVisible();
+  await expect(
+    page.locator(".conversation-column").getByText("Waiting for your reply…", { exact: true }),
+  ).toHaveCount(0);
+  await page.getByRole("radio", { name: "Makassar", exact: true }).check();
+  await page.getByRole("button", { name: "Continue", exact: true }).click();
+  await expect(card).toHaveAttribute("data-interaction-state", "settled");
+  await expect(
+    card.locator("button, input, textarea, footer, .conversation-interaction-body"),
+  ).toHaveCount(0);
+  await page.reload();
+  await card.scrollIntoViewIfNeeded();
+  await expect(card).toHaveAttribute("data-interaction-state", "settled");
+  await expect(avatar).toBeVisible();
+  await post(page, "/v1/runs", {
+    agent_id: actor.id,
+    thread_id: group.id,
+    text: "fixture product approval",
+  });
+  const approval = page.getByRole("region", { name: "Publish this exact checklist?", exact: true });
+  await approval.scrollIntoViewIfNeeded();
+  await expect(
+    page
+      .locator(".conversation-message")
+      .filter({ has: approval })
+      .locator(".ngertiin-avatar > svg"),
+  ).toBeVisible();
+  await approval.getByRole("button", { name: "Tolak", exact: true }).click();
+  await expect(approval).toHaveAttribute("data-interaction-state", "settled");
+  await expect(approval).toHaveText("Publish this exact checklist?");
+  await expect(approval.locator("button, footer, .conversation-interaction-body")).toHaveCount(0);
+  await page.reload();
+  await approval.scrollIntoViewIfNeeded();
+  await expect(approval).toHaveAttribute("data-interaction-state", "settled");
+  await capture(page, testInfo.outputPath("group-hitl-history.png"));
+});

@@ -1,4 +1,9 @@
-import { AttachmentIcon, PuzzleIcon, UserIcon } from "@hugeicons/core-free-icons";
+import {
+  ArrowUpRight01Icon,
+  AttachmentIcon,
+  PuzzleIcon,
+  UserIcon,
+} from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { avatarColors } from "@ngertiin/avatar/catalog";
 import { defaultAgentAvatar } from "@ngertiin/avatar/config";
@@ -23,6 +28,7 @@ import {
 import { request } from "@/lib/api-client";
 import type { Agent, ConversationPart, Skills, Snapshot } from "@/types/workspace";
 import "./inline-references.css";
+import { FileTypeIcon } from "./file-type-icon";
 import { AgentAvatar } from "./identity";
 
 const emptyAgents: Agent[] = [];
@@ -196,7 +202,8 @@ export function InlineReferenceChip({
           className="size-[18px]"
         />
       )}
-      {reference.kind !== "agent" && (
+      {reference.kind === "file" && <FileTypeIcon name={label} />}
+      {reference.kind !== "agent" && reference.kind !== "file" && (
         <HugeiconsIcon
           icon={referenceIcons[reference.kind]}
           size={13}
@@ -205,6 +212,9 @@ export function InlineReferenceChip({
         />
       )}
       <span>{label}</span>
+      {reference.kind === "file" && onOpenFile && (
+        <HugeiconsIcon icon={ArrowUpRight01Icon} size={12} aria-hidden="true" />
+      )}
     </>
   );
   const props = {

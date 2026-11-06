@@ -148,6 +148,9 @@ test("blocked preparation explains readiness and exposes an exact-input retry", 
   await expect(page.locator("[data-agent-activity] [data-activity-text]")).toHaveText(
     "I couldn’t get started.",
   );
+  const activity = page.locator("[data-agent-activity] .message-action-anchor");
+  if (test.info().project.name === "mobile") await activity.tap();
+  else await activity.hover();
   await expect(page.getByRole("button", { name: "Try again", exact: true })).toBeVisible();
   await expect(page.locator(".message-diagnostic")).toContainText("Choose an available model");
 });

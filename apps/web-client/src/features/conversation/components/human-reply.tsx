@@ -1,129 +1,68 @@
-import {
-  BubbleChatIcon,
-  Cancel01Icon,
-  Loading03Icon,
-  Tick02Icon,
-} from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import type { ReferenceAgent } from "@/features/conversation/lib/inline-references";
-import { durableCommand, pendingText } from "@/lib/api-client";
+import { ApiError, durableCommand } from "@/lib/api-client";
 import type { HumanRequest } from "@/types/work";
-import { InlineReferenceChip } from "./inline-references";
+import { HumanReplyCard } from "./human-reply-card";
 
+/** Text-only requests stay in the normal conversation; only structured choices draw a card. */
 export function HumanReply({
   request,
   author,
-  agent,
+  question,
   refresh,
 }: {
   request: HumanRequest;
   author: string;
-  agent?: ReferenceAgent;
+  question?: string;
   refresh: () => Promise<unknown>;
 }) {
+  const [selected, setSelected] = useState<string[]>([]);
   const [text, setText] = useState("");
-  const [pending, setPending] = useState(() => pendingText(`human:${request.id}`));
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const [uncertain, setUncertain] = useState(
+    () => localStorage.getItem(`ngertiin:pending:human:${request.id}`) !== null,
+  );
   useEffect(() => {
     if (request.state !== "pending")
       localStorage.removeItem(`ngertiin:pending:human:${request.id}`);
   }, [request.id, request.state]);
-  if (request.state !== "pending")
-    return (
-      <p className="flex w-full max-w-[560px] items-center gap-1.5 text-[13px] leading-[18px] text-muted-foreground">
-        {request.state === "answered" ? (
-          <HugeiconsIcon
-            icon={Tick02Icon}
-            size={13}
-            className="shrink-0 text-success-foreground"
-            aria-hidden="true"
-          />
-        ) : (
-          <HugeiconsIcon icon={Cancel01Icon} size={13} className="shrink-0" aria-hidden="true" />
-        )}
-        {request.state === "answered"
-          ? "Jawaban tersimpan untuk permintaan ini."
-          : "Permintaan sudah ditutup."}
-      </p>
-    );
+  if (request.purpose !== "approval" && !request.options) return null;
+  async function submit(decision: "approve" | "reject" | null = null) {
+    if (busy) return;
+    setBusy(true);
+    setError("");
+    try {
+      await durableCommand(`human:${request.id}`, `/v1/human-requests/${request.id}/reply`, {
+        expected_revision: request.revision,
+        selected_ids: selected,
+        text: text.trim(),
+        decision,
+      });
+      setUncertain(false);
+      await refresh();
+    } catch (failure) {
+      setUncertain(
+        !(failure instanceof ApiError) ||
+          !["INVALID_REQUEST", "SCOPE_DENIED", "UNAUTHORIZED", "NOT_FOUND"].includes(failure.code),
+      );
+      setError(failure instanceof Error ? failure.message : "Submission is not confirmed.");
+    } finally {
+      setBusy(false);
+    }
+  }
   return (
-    <form
-      className="mt-2 w-full max-w-[560px] space-y-3 rounded-[20px] bg-card px-4 pb-3.5 pt-3 ring-[0.5px] ring-foreground/10"
-      onSubmit={async (e) => {
-        e.preventDefault();
-        if (busy || !(pending ?? text).trim()) return;
-        setBusy(true);
-        setError("");
-        try {
-          await durableCommand(`human:${request.id}`, `/v1/human-requests/${request.id}/reply`, {
-            expected_revision: request.revision,
-            text: pending ?? text,
-          });
-          await refresh();
-        } catch (e) {
-          setPending(pendingText(`human:${request.id}`));
-          setError(e instanceof Error ? e.message : "Jawaban belum terkonfirmasi.");
-        } finally {
-          setBusy(false);
-        }
-      }}
-    >
-      <p className="flex items-center gap-1.5 text-[13px] leading-[18px] text-muted-foreground">
-        {!agent && (
-          <HugeiconsIcon icon={BubbleChatIcon} size={14} strokeWidth={1.5} aria-hidden="true" />
-        )}
-        {agent ? (
-          <InlineReferenceChip
-            actor={agent}
-            reference={{ kind: "agent", id: agent.id, label: `@${author}` }}
-          />
-        ) : (
-          author
-        )}{" "}
-        ·{" "}
-        {request.purpose === "review"
-          ? "Menunggu review kamu"
-          : request.purpose === "approval"
-            ? "Menunggu keputusan untuk permintaan ini"
-            : "Menunggu jawaban kamu"}
-      </p>
-      <Textarea
-        aria-label={`Jawaban untuk ${author}`}
-        value={pending ?? text}
-        readOnly={pending !== null}
-        onChange={(e) => setText(e.target.value)}
-        placeholder="Jawaban untuk pertanyaan ini…"
-        disabled={busy}
-        rows={2}
-        className="min-h-16 rounded-[16px] border-0 bg-foreground/[0.045] px-3 py-2 text-[14px] leading-5 ring-[0.5px] ring-foreground/[0.14] focus-visible:ring-1 focus-visible:ring-foreground/30 dark:bg-foreground/[0.045]"
-      />
-      {pending !== null && (
-        <p className="text-caption text-muted-foreground">
-          Pengiriman belum terkonfirmasi. Periksa jawaban tersimpan ini sebelum mengubah atau
-          mengirim jawaban lain.
-        </p>
-      )}
-      {error && (
-        <p role="alert" className="text-sm text-destructive">
-          {error}
-        </p>
-      )}
-      <div className="flex justify-end">
-        <Button
-          size="sm"
-          className="min-h-9 rounded-full px-4 text-[14px] touch:min-h-11"
-          disabled={busy || !(pending ?? text).trim()}
-        >
-          {busy && (
-            <HugeiconsIcon icon={Loading03Icon} size={15} className="motion-safe:animate-spin" />
-          )}
-          {busy ? "Mengirim jawaban…" : pending !== null ? "Periksa jawaban" : "Kirim jawaban"}
-        </Button>
-      </div>
-    </form>
+    <HumanReplyCard
+      request={request}
+      author={author}
+      question={question}
+      selected={selected}
+      text={text}
+      busy={busy}
+      uncertain={uncertain}
+      error={error}
+      setSelected={setSelected}
+      setText={setText}
+      submit={submit}
+    />
   );
 }

@@ -9,5 +9,6 @@ Product scope and delivery order are maintained in [PRODUCT.md](../../PRODUCT.md
 - [OpenMausBot source and design study](openmausbot-2026-11-01/README.md): source excerpts, tokens, licenses and provenance used by the web client.
 - [Application authentication options](app-auth-library-options-2026-11-02.md): a deferred login/session proposal; it does not describe the current development bearer-token boundary.
 - [AI application-generation fact check](ai-app-generation-age-fact-check-2026-11-04.md): a dated research note, separate from the implementation roadmap.
+- [Proactive agents and self-improvement](proactive-learning-competitors-2026-11-07.md): pinned Hermes Agent, OpenClaw, Openbot and Nanobot source mechanisms, current Ngertiin seams, and a proposed learning/evaluation process.
 
 Superseded learning-product, V1, Hermes-runtime and rejected desktop-alternative guides have been removed. Raw research evidence and attribution remain available under their recorded paths; see [historical evidence and recovery](../development/history.md).

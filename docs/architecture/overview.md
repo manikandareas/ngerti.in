@@ -17,6 +17,10 @@
 
 The active workspaces are `apps/server`, `apps/web-client`, `apps/desktop`, and `packages/avatar`. Backend composition, scheduler and dispatcher run under one Bun application authority backed by owner-bound SQLite. Native operations run outside short database transactions. There is no parallel Hermes scheduler or second application model loop.
 
+The separately planned [desktop-rs client](desktop-rs-plan-2026-11-07.md) targets GPUI presentation parity through NMA-066–071, all Backlog. Its proposed `desktop`, `client` and `avatar` crates separate GPUI UI/host integration, backend consumption and renderer-independent avatar logic. No desktop-rs workspace is implemented yet. The current Tauri application remains active, and a future native client consumes the existing API without becoming another domain lifecycle authority.
+
+Desktop-rs owns native Rust/GPUI application presentation. Its browser adapter is limited to static HTML document content and scoped Computer viewing; native PDF rendering and GPUI controls remain outside that adapter. The existing React bundle is not the desktop-rs shell. The plan's [rendering ownership contract](desktop-rs-plan-2026-11-07.md#rendering-ownership-contract) defines the source/runtime checks required for acceptance.
+
 ## Harnesses, billing and tools
 
 Only Codex/ChatGPT through App Server and Muse Code through the official SDK/MSP are required. Minimum/tested versions, capability states and credential ownership are defined per adapter, not inferred from a CLI existing on another host. Process-wide account/model configuration must not change another agent silently.

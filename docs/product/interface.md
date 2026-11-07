@@ -2,6 +2,10 @@
 
 The primary interface is one responsive conversation workspace. The accepted November 1 layout is implemented with later Detail, Library and Computer navigation refinements. Earlier Agent/Anggota, File, Goals and Routine tabs describe contextual content ownership; current labels and placement follow the implementation below.
 
+The user-requested [desktop-rs plan](../architecture/desktop-rs-plan-2026-11-07.md) treats this current interface, later amendments and native Tauri host behavior as the parity reference. It introduces no new product navigation. NMA-066–071 remain planned work, with fresh visual/interaction evidence required before a native parity claim.
+
+For desktop-rs these application surfaces are native Rust/GPUI. Only static HTML document content and the existing ticket-scoped Computer viewer may use embedded browser content; their surrounding workspace/header/composer remain native. PDF uses a native adapter with GPUI controls and selectable-text interaction. See the plan's [rendering ownership contract](../architecture/desktop-rs-plan-2026-11-07.md#rendering-ownership-contract).
+
 ## Navigation and content
 
 | Surface | Behavior |

@@ -69,7 +69,7 @@ All 83 decision identities are assigned or explicitly parked. Shared-machine and
 | X03 | Banyak host dan akses harness laptop dari VPS | Tunda | — | — | Diparkir sesuai matriks |
 | X04 | Downloader / manajer model lokal | Tunda | — | — | Diparkir sesuai matriks |
 | X05 | Routing lanjutan, fallback, credential pool, Mixture of Agents | Tunda | — | — | Diparkir sesuai matriks |
-| X06 | Native clients | General release deferred; macOS ARM64 development exception implemented | [Tauri host](../architecture/tauri-development.md) | Shared web client | [NMA-064](NMA-064.md) remains open for fresh-device distribution |
+| X06 | Native clients | General release deferred; Tauri development implemented; desktop-rs parity planned | [Tauri host](../architecture/tauri-development.md) remains active | [NMA-066](NMA-066.md)–[NMA-071](NMA-071.md): separate Desktop Rust plan, all Backlog | [NMA-064](NMA-064.md) remains open for fresh-device distribution; other-platform/native-mobile release is not promoted |
 | X07 | WhatsApp / Telegram / Slack / Discord / email sebagai kanal chat | Tunda | — | — | Diparkir sesuai matriks |
 | X08 | Kolaborasi banyak manusia, organisasi, dan RBAC tim | Tunda | — | — | Diparkir sesuai matriks |
 | X09 | Hosting website, deploy, dan marketplace berbayar | Tunda | — | — | Diparkir sesuai matriks |

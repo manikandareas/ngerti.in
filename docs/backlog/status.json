@@ -210,6 +210,76 @@
     ]
   },
   {
+    "ticket": "NMA-066",
+    "title": "Desktop Rust foundation, reference baseline and reusable components",
+    "plan": "Desktop Rust",
+    "status": "Backlog",
+    "order": 16.1,
+    "layer": "Desktop / UI foundation",
+    "depends_on": [
+      "NMA-060",
+      "NMA-061",
+      "NMA-062"
+    ]
+  },
+  {
+    "ticket": "NMA-067",
+    "title": "Rust avatar, composer and rich-content components",
+    "plan": "Desktop Rust",
+    "status": "Backlog",
+    "order": 16.2,
+    "layer": "Desktop / UI components",
+    "depends_on": [
+      "NMA-066"
+    ]
+  },
+  {
+    "ticket": "NMA-068",
+    "title": "API-backed workspace and conversation parity",
+    "plan": "Desktop Rust",
+    "status": "Backlog",
+    "order": 16.3,
+    "layer": "Desktop / Conversation",
+    "depends_on": [
+      "NMA-060",
+      "NMA-065",
+      "NMA-067"
+    ]
+  },
+  {
+    "ticket": "NMA-069",
+    "title": "Context panels, Settings and Focus workflows",
+    "plan": "Desktop Rust",
+    "status": "Backlog",
+    "order": 16.4,
+    "layer": "Desktop / Contextual work",
+    "depends_on": [
+      "NMA-068"
+    ]
+  },
+  {
+    "ticket": "NMA-070",
+    "title": "Computer, native host and lifecycle parity",
+    "plan": "Desktop Rust",
+    "status": "Backlog",
+    "order": 16.5,
+    "layer": "Desktop / Native integration",
+    "depends_on": [
+      "NMA-069"
+    ]
+  },
+  {
+    "ticket": "NMA-071",
+    "title": "Desktop parity acceptance and development bundle",
+    "plan": "Desktop Rust",
+    "status": "Backlog",
+    "order": 16.6,
+    "layer": "Desktop / Verification",
+    "depends_on": [
+      "NMA-070"
+    ]
+  },
+  {
     "ticket": "NMA-063",
     "title": "Acceptance UI dan alur produk wajib harness-first",
     "plan": "Harness-first",

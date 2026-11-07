@@ -4,6 +4,8 @@ This backlog is the authority for milestone scope, acceptance, dependencies and 
 
 Status was reconciled on 2026-11-06 from the available decision and milestone records. Sixteen active milestones are Done; NMA-063/NMA-064 remain Backlog. NMA-051 is a separate deferred reference, not an active prerequisite. Recorded Done covers its captured scope only. Later Cua, semantic-routing, Tauri and conversation refinements retain their dedicated evidence; they do not complete product-wide acceptance or fresh-device distribution.
 
+On 2026-11-07 the user requested a new `apps/desktop-rs` GPUI client plan after observation. The six [Desktop Rust milestones below](#desktop-rust-parity-plan) are all Backlog. The active Tauri host remains implemented; planning does not establish a native rewrite, parity acceptance or a host replacement.
+
 The [2026-11-07 sidebar loading refinement](../verification/sidebar-loading-2026-11-07/README.md) adds focused desktop/mobile evidence under NMA-061. Milestone statuses and dependencies are unchanged.
 
 The [2026-11-07 conversation chronology refinement](../verification/conversation-chronology-2026-11-07/README.md) adds centered day groups and consistent message/card clocks, with Goal/Routine event bars remaining without clocks. It retains NMA-061's status and the open product/distribution gates.
@@ -34,6 +36,23 @@ The [2026-11-07 Working files/source viewer amendment](../verification/working-f
 | 16 | [NMA-062 · UI grup, goals/Routine, workspace dan browser VNC](NMA-062.md) | Done | UI | [NMA-060](NMA-060.md), [NMA-061](NMA-061.md) |
 | 17 | [NMA-063 · Acceptance UI dan alur produk wajib harness-first](NMA-063.md) | Backlog | UI | [NMA-061](NMA-061.md), [NMA-062](NMA-062.md) |
 | 18 | [NMA-064 · Instalasi lokal dan distribusi setelah produk siap](NMA-064.md) | Backlog | Distribusi | [NMA-063](NMA-063.md) |
+
+## Desktop Rust parity plan
+
+The [observation, architecture and parity contract](../architecture/desktop-rs-plan-2026-11-07.md) maps the current host/client and retained evidence to six ordered implementation slices. Orders 16.1–16.6 insert this separate plan after the NMA-061/062 reference; existing NMA-063/064 dependencies are unchanged. Initial verification targets the current macOS ARM64 development host. Other platforms, fresh-device installation and active-host replacement retain their separate decisions/gates.
+
+| Order | Milestone | Status | Layer | Depends on |
+| --- | --- | --- | --- | --- |
+| 16.1 | [NMA-066 · Desktop Rust foundation, reference baseline and reusable components](NMA-066.md) | Backlog | Desktop / UI foundation | [NMA-060](NMA-060.md), [NMA-061](NMA-061.md), [NMA-062](NMA-062.md) |
+| 16.2 | [NMA-067 · Rust avatar, composer and rich-content components](NMA-067.md) | Backlog | Desktop / UI components | [NMA-066](NMA-066.md) |
+| 16.3 | [NMA-068 · API-backed workspace and conversation parity](NMA-068.md) | Backlog | Desktop / Conversation | [NMA-060](NMA-060.md), [NMA-065](NMA-065.md), [NMA-067](NMA-067.md) |
+| 16.4 | [NMA-069 · Context panels, Settings and Focus workflows](NMA-069.md) | Backlog | Desktop / Contextual work | [NMA-068](NMA-068.md) |
+| 16.5 | [NMA-070 · Computer, native host and lifecycle parity](NMA-070.md) | Backlog | Desktop / Native integration | [NMA-069](NMA-069.md) |
+| 16.6 | [NMA-071 · Desktop parity acceptance and development bundle](NMA-071.md) | Backlog | Desktop / Verification | [NMA-070](NMA-070.md) |
+
+The intended sequence is foundation/gallery and high-risk renderer proof → full avatar/composer/content components → actual API conversation → contextual work/settings/files → Computer/native lifecycle → integrated parity and local development bundle. Every slice has its own acceptance; verification is not postponed to the final milestone.
+
+Each milestone has six ordered internal subtasks with deliverables/evidence; no additional milestone IDs are introduced. The [native rendering contract](../architecture/desktop-rs-plan-2026-11-07.md#rendering-ownership-contract) requires Rust/GPUI application UI, including native PDF controls/rendering. WebViews are limited to HTML document content and the scoped Computer viewer; forwarding the existing React client does not satisfy the plan.
 
 ## Next gates
 

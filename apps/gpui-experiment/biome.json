@@ -1,0 +1,8 @@
+{
+  "root": true,
+  "formatter": { "enabled": true, "indentStyle": "space", "lineWidth": 100 },
+  "linter": { "enabled": false },
+  "assist": { "enabled": false },
+  "css": { "parser": { "tailwindDirectives": true } },
+  "files": { "includes": ["scripts/**/*.ts", "reference/**", "package.json", "biome.json"] }
+}

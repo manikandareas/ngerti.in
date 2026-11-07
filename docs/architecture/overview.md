@@ -12,6 +12,7 @@
 | Backend API | Authenticated command/query/event projections, resource authorization, product-tool gateway and file/viewer transport. |
 | Web client | Conversation workspace and authoritative state/event rendering. |
 | Tauri host | macOS ARM64 development WebView, same-origin gateway and local backend supervision; application lifecycle remains in the backend. |
+| GPUI experiment | Separate native visual/interactivity prototype with fixture state and optional read-only Computer viewing; no domain lifecycle or active-client replacement authority. |
 | Cua machine | Shared Linux browser, desktop, terminal processes and working files. |
 
 The active workspaces are `apps/server`, `apps/web-client`, `apps/desktop`, and `packages/avatar`. Backend composition, scheduler and dispatcher run under one Bun application authority backed by owner-bound SQLite. Native operations run outside short database transactions. There is no parallel Hermes scheduler or second application model loop.

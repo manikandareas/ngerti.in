@@ -1,0 +1,8 @@
+/* Fixed reference viewport matches the experiment's initial native content bounds. */
+.ref-shell {
+  width: 1280px;
+  height: 820px;
+}
+.ref-bubble {
+  max-width: min(560px, 80%);
+}

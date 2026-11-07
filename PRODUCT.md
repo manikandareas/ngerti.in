@@ -31,7 +31,7 @@ The [83-row decision register](docs/product/feature-decisions.md) retains every 
 
 Deferred work includes additional runtimes, full web login/pairing, local model endpoints/managers, agent import/export, marketplace, voice, external messaging channels, multiple humans/RBAC, remote/multi-host enrollment and platform hosting/billing services. Basic resource authorization and secret protection remain required independently of deferred account login.
 
-The Tauri macOS ARM64 host is an implemented development application and the sole desktop implementation. General native-client distribution, other platforms, fresh-device installation and production readiness remain separate. This development exception supersedes the earlier blanket deferral of native application experiments; it does not complete NMA-064.
+The Tauri macOS ARM64 host is the active implemented development desktop application. A separately authorized GPUI visual/interactivity experiment lives in `apps/gpui-experiment`; it has fixture-only conversation state and no application lifecycle authority. It does not replace Tauri or commit the product to a native UI migration. General native-client distribution, other platforms, fresh-device installation and production readiness remain separate. This development exception supersedes the earlier blanket deferral of native application experiments; it does not complete NMA-064.
 
 ## Delivery and data
 

@@ -24,6 +24,7 @@ The handoff reconciles eleven decision documents and nineteen milestone records,
 
 - [Shared-machine architecture](architecture/shared-machine-cua-plan-2026-11-04.md), [setup/native verification](verification/shared-machine/README.md), and [task-window cleanup](verification/shared-machine/cleanup-2026-11-04.md).
 - [Tauri development/packaging/lifecycle](architecture/tauri-development.md), [design rationale](architecture/tauri-desktop-design-2026-11-04.md), and [native verification](verification/tauri-development/README.md).
+- [Separate GPUI visual experiment](../apps/gpui-experiment/README.md) and [retained native evidence](verification/gpui-experiment-2026-11-07/README.md): fixture UI and read-only Computer viewing; no active-host migration or distribution acceptance.
 - [Conversation/Computer plan](architecture/conversation-interactions-and-computer-plan-2026-11-06.md), [implementation evidence](verification/conversation-implementation-2026-11-06/README.md), and [later refinements](verification/conversation-followup-2026-11-06/report.html).
 - [Focus content viewer implementation](verification/conversation-content-viewer-2026-11-07/README.md).
 - [Working files tree, local file icons and source viewer](verification/working-files-tree-2026-11-07/README.md).

@@ -1,0 +1,10 @@
+{
+  "name": "@ngertiin/gpui-experiment",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "prepare": "bun -e 'import {prepare} from \"./scripts/toolchain.ts\"; await prepare()'",
+    "dev": "bun scripts/run.ts",
+    "build": "bun scripts/package.ts"
+  }
+}

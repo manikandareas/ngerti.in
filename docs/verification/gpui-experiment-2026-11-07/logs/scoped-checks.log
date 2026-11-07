@@ -1,0 +1,3 @@
+46 local Markdown/HTML link targets checked. Missing: 0.
+git diff --check exit code: 0
+Source manifest JSON: parsed.

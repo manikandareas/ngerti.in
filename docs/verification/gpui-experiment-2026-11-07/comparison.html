@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ngertiin · GPUI experiment comparison</title>
+<style>
+  :root { color-scheme: light; font-family: system-ui, sans-serif; color: #242424; background: #f4f3f0; }
+  body { margin: 0; padding: clamp(20px, 4vw, 56px); }
+  main { max-width: 1700px; margin: auto; }
+  h1 { font-size: clamp(26px, 3vw, 42px); letter-spacing: -.04em; margin: 8px 0 12px; }
+  h2 { margin-top: 40px; font-size: 21px; }
+  p { max-width: 920px; line-height: 1.6; }
+  a { color: #495484; }
+  .eyebrow { color: #666; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; }
+  .pair, .gallery { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+  figure { margin: 0; min-width: 0; }
+  img { width: 100%; display: block; border: 1px solid #dad9d5; border-radius: 10px; box-sizing: border-box; }
+  figcaption { padding: 10px 0 16px; line-height: 1.5; color: #616161; font-size: 13px; }
+  figcaption strong { display: block; color: #242424; font-size: 14px; }
+  .controls { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin: 18px 0; }
+  input { width: 220px; accent-color: #73668d; }
+  .overlay { position: relative; max-width: 1280px; }
+  .overlay > img { border-radius: 0; }
+  .overlay .native { position: absolute; inset: 0; opacity: .5; }
+  .notes { background: #eae8e2; border-radius: 10px; padding: 12px 20px; margin-top: 20px; }
+  .gallery img { aspect-ratio: 1.5; object-fit: contain; background: #e9e8e5; }
+  @media(max-width: 900px) { .pair, .gallery { grid-template-columns: 1fr; } }
+</style>
+<main>
+  <div class="eyebrow">Local experiment · macOS ARM64 · 7 Nov 2026</div>
+  <h1>Web reference and native GPUI</h1>
+  <p>A separate Rust app recreates representative Ngertiin components. The web reference imports existing client components into a fixture shell. Both captures below use the same rich-answer content at 1280×820 logical pixels. <strong>Complete 1:1 parity is not established.</strong></p>
+  <p><a href="README.md">Evidence and limitations</a> · <a href="../../../apps/gpui-experiment/README.md">Run the app</a> · <a href="source-manifest.json">Source manifest</a></p>
+  <div class="pair">
+    <figure><a href="screenshots/web-rich-content.png"><img src="screenshots/web-rich-content.png" alt="Web reference rich answer at 1280 by 820"></a><figcaption><strong>Current web components in the comparison fixture</strong>Client CSS, Markdown renderer, Lexical composer and procedural avatar.</figcaption></figure>
+    <figure><a href="screenshots/native-rich-content.png"><img src="screenshots/native-rich-content.png" alt="Native GPUI rich answer at 1280 by 820"></a><figcaption><strong>Native GPUI reconstruction</strong>GPUI layout and TextView, native composer, bundled fonts/icons and cached avatar images.</figcaption></figure>
+  </div>
+  <div class="notes"><p>The shell dimensions and palette are close. Table borders and header emphasis, code colors/padding, bubble height, text metrics and avatar details differ. These captures are qualitative evidence; no fidelity percentage or speed claim is derived from them.</p></div>
+  <h2>Compare the same viewport</h2>
+  <div class="controls"><label for="opacity">Native layer opacity</label><input id="opacity" type="range" min="0" max="100" value="50"><output id="value" for="opacity">50%</output></div>
+  <div class="overlay"><img src="screenshots/web-rich-content.png" alt="Web reference base"><img class="native" id="native" src="screenshots/native-rich-content.png" alt="Native GPUI overlay"></div>
+  <h2>Observed native scenes</h2>
+  <div class="gallery">
+    <figure><a href="screenshots/native-detail-dark.jpg"><img loading="lazy" src="screenshots/native-detail-dark.jpg" alt="Dark conversation and Detail panel"></a><figcaption><strong>Dark workspace and Detail</strong>Fixture state; no backend event integration.</figcaption></figure>
+    <figure><a href="screenshots/native-composer-tokens.jpg"><img loading="lazy" src="screenshots/native-composer-tokens.jpg" alt="Mention and file chips in native composer"></a><figcaption><strong>Native composer tokens</strong>Fixture mention/file references; real uploads remain separate.</figcaption></figure>
+    <figure><a href="screenshots/native-avatar-thinking.jpg"><img loading="lazy" src="screenshots/native-avatar-thinking.jpg" alt="Three cached avatars and expression controls"></a><figcaption><strong>Avatar expressions</strong>Client-derived cached images with simple native motion; full procedural port remains open.</figcaption></figure>
+    <figure><a href="screenshots/native-source-dark.jpg"><img loading="lazy" src="screenshots/native-source-dark.jpg" alt="Syntax highlighted Rust source"></a><figcaption><strong>Source viewer</strong>Native editor configured read-only; detailed editing/search acceptance remains open.</figcaption></figure>
+    <figure><a href="screenshots/native-html-preview.jpg"><img loading="lazy" src="screenshots/native-html-preview.jpg" alt="HTML report in embedded browser"></a><figcaption><strong>HTML report</strong>Real embedded browser content inside the GPUI shell.</figcaption></figure>
+    <figure><a href="screenshots/native-computer-live-readonly.jpg"><img loading="lazy" src="screenshots/native-computer-live-readonly.jpg" alt="Connected read-only Linux desktop in the native experiment"></a><figcaption><strong>Actual Computer viewer</strong>Connected retained machine, observation only; the short-lived helper has been stopped.</figcaption></figure>
+    <figure><a href="screenshots/native-computer-overlay.jpg"><img loading="lazy" src="screenshots/native-computer-overlay.jpg" alt="Native dialog above the live desktop WebView"></a><figcaption><strong>Native dialog above browser pixels</strong>Observed on GPUI Fast and macOS. Other backend/platform combinations are untested.</figcaption></figure>
+  </div>
+</main>
+<script>
+  const slider = document.getElementById('opacity');
+  slider.addEventListener('input', () => {
+    document.getElementById('native').style.opacity = slider.value / 100;
+    document.getElementById('value').value = `${slider.value}%`;
+  });
+</script>
+</html>

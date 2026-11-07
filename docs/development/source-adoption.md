@@ -22,6 +22,14 @@ Cua SDK 0.10.1, the pinned Linux image with observed spacesd 0.8.0, and bundled 
 
 Composio is the selected app-connection integration. `unique-names-generator` is the implemented naming library; the server manifest and NMA-065 evidence supply its exact pin and owner-unique collision behavior. Tauri is the sole development desktop host; its [guide](../architecture/tauri-development.md), Rust/npm lockfiles and native evidence own platform and packaging claims.
 
+## Working files tree and file icons — 2026-11-07
+
+The contextual Working files tree consumes `@headless-tree/core` and `@headless-tree/react`, both pinned to **1.8.0**. The adopted ESM package modules are `dist/index.mjs` and their published `dist/index.d.mts` declarations from [Headless Tree](https://www.npmjs.com/package/@headless-tree/core/v/1.8.0). Ngertiin uses only the synchronous loader, tree/selection state and keyboard features; a session-owned local store supplies lazy machine reads, append pagination, retry, refresh and mobile restoration. No upstream drag/drop, rename or application shell is adopted. Upgrades must repeat expansion, keyboard, per-folder pagination/retry and desktop/mobile Focus Back tests.
+
+`material-icon-theme` is pinned to **5.40.0** as a build-only dependency. Its published `dist/module/index.cjs` generator and `icons/*.svg` from [Material Icon Theme](https://www.npmjs.com/package/material-icon-theme/v/5.40.0) supply filename/extension/language/folder associations. The Vite plugin selects the neutral icon pack, generates compact local JSON and emits original SVGs plus the upstream LICENSE under `/file-icons/material-5.40.0/`. The browser resolver applies filename/parent/compound-extension precedence and light-theme overrides, with existing Hugeicons as unavailable-asset fallbacks. Package integrity is pinned in `bun.lock`; no generator, extension runtime or CDN is shipped to the browser. Upgrades must verify special filenames, compound extensions, light/dark variants, generic fallbacks, local asset reads and bundle changes.
+
+The source viewer reuses the existing Shiki **4.5.0** integration, JavaScript regular-expression engine and bounded token cache. Its UI is locally authored; the tree and icon dependencies do not replace Openbot as the application's flow reference. Exact validation sources, outputs and limitations are retained in the [amendment evidence](../verification/working-files-tree-2026-11-07/README.md).
+
 ## Evidence levels and upgrade procedure
 
 Distinguish decisions, source observed, contract/fixture tests, native/live operation, API readiness, UI verification and distribution. A source benchmark or supported interface alone does not prove Ngertiin behavior. Login, discovery, inference and useful product-tool execution remain separate observations.

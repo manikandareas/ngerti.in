@@ -1,8 +1,9 @@
-import { Cancel01Icon } from "@hugeicons/core-free-icons";
+import { Cancel01Icon, Folder01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { useEffect, useRef, useState } from "react";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import type { Artifact } from "@/types/work";
 import type { Agent, Snapshot, Thread } from "@/types/workspace";
 import { savedFileTarget, useContentViewer } from "../lib/content-viewer";
@@ -16,10 +17,15 @@ import { MachineSection } from "./machine-section";
 import { PanelHeaderSlot } from "./panel-primitives";
 import { Responsibilities } from "./responsibilities";
 
+const WorkingFiles = lazy(() =>
+  import("./working-files").then((module) => ({ default: module.WorkingFiles })),
+);
+
 export type PanelLocation = {
   tab: "detail" | "library" | "computer";
   id: string | null;
   page?: "apps" | "goals" | "routine";
+  workingFiles?: boolean;
 };
 export function ContextPanel({
   snapshot,
@@ -49,6 +55,7 @@ export function ContextPanel({
   const [headerSlot, setHeaderSlot] = useState<HTMLDivElement | null>(null);
   const agent = snapshot.agents[0];
   const appsOpen = location.page === "apps";
+  const filesOpen = location.workingFiles === true;
   const responsibility =
     location.page === "goals" || location.page === "routine" ? location.page : null;
   const selectedDetail =
@@ -58,18 +65,23 @@ export function ContextPanel({
       : !responsibility &&
         snapshot.thread.type === "group" &&
         snapshot.agents.some((item) => item.id === location.id));
-  const nested = (location.tab === "detail" && appsOpen) || selectedDetail;
+  const nested = filesOpen || (location.tab === "detail" && appsOpen) || selectedDetail;
   const container = useRef<HTMLDivElement>(null);
   const opener = useRef<string | null>(null);
+  const returningFromFiles = useRef(false);
   // biome-ignore lint/correctness/useExhaustiveDependencies: nested navigation restores focus to the originating menu.
   useEffect(() => {
-    if (nested) container.current?.querySelector<HTMLButtonElement>("[data-panel-back]")?.focus();
+    if (!filesOpen && returningFromFiles.current)
+      container.current?.querySelector<HTMLButtonElement>("[data-working-files-open]")?.focus();
+    else if (nested)
+      container.current?.querySelector<HTMLButtonElement>("[data-panel-back]")?.focus();
     else if (opener.current) {
       Array.from(container.current?.querySelectorAll<HTMLButtonElement>("[data-panel-nav]") ?? [])
         .find((button) => button.dataset.panelNav === opener.current)
         ?.focus();
     }
-  }, [nested, location.page, location.id, headerSlot]);
+    returningFromFiles.current = filesOpen;
+  }, [nested, filesOpen, location.page, location.id, headerSlot]);
   const viewer = useContentViewer();
   const openFile = (id: string) => {
     const artifact = snapshot.artifacts.find((item) => item.id === id);
@@ -86,6 +98,7 @@ export function ContextPanel({
   const openDetail = () => {
     locate({ tab: "detail", id: null });
   };
+  const closeFiles = () => locate({ ...location, workingFiles: false });
   const groupPanel = snapshot.thread.type === "group" && (
     <GroupPanel
       key={location.id ?? "members"}
@@ -109,6 +122,12 @@ export function ContextPanel({
         onKeyDown={(event) => {
           if (event.key !== "Escape" || event.defaultPrevented || !nested) return;
           if (event.target instanceof Node && !event.currentTarget.contains(event.target)) return;
+          if (filesOpen) {
+            closeFiles();
+            event.preventDefault();
+            event.stopPropagation();
+            return;
+          }
           locate({
             tab: location.tab,
             id: null,
@@ -123,9 +142,28 @@ export function ContextPanel({
         }}
         className="context-panel gap-2 pb-5"
         id="conversation-details"
+        data-working-files={filesOpen}
       >
         <header className="details-toolbar flex min-h-14 shrink-0 items-center gap-2.5 px-3 py-3">
           <div ref={setHeaderSlot} className="flex min-w-0 flex-1 items-center gap-2.5" />
+          {!filesOpen && (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  size="icon-sm"
+                  variant="ghost"
+                  data-working-files-open=""
+                  aria-label="Working files"
+                  onClick={() => locate({ ...location, workingFiles: true })}
+                >
+                  <HugeiconsIcon icon={Folder01Icon} size={18} strokeWidth={1.5} />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="bottom" sideOffset={6}>
+                Working files
+              </TooltipContent>
+            </Tooltip>
+          )}
           <Button
             size="icon-sm"
             variant="ghost"
@@ -137,6 +175,27 @@ export function ContextPanel({
             <HugeiconsIcon icon={Cancel01Icon} size={18} strokeWidth={1.5} />
           </Button>
         </header>
+        {filesOpen && viewer && (
+          <Suspense
+            fallback={
+              <p role="status" className="px-4 py-6 text-sm text-muted-foreground">
+                Loading working files…
+              </p>
+            }
+          >
+            <WorkingFiles
+              browser={viewer.fileBrowser}
+              onBack={closeFiles}
+              back={
+                location.tab === "library"
+                  ? "Library"
+                  : location.tab === "computer"
+                    ? "Computer"
+                    : "Details"
+              }
+            />
+          </Suspense>
+        )}
         <div hidden={nested}>
           <div className="context-hero mt-3.5 flex flex-col items-center px-5 text-center">
             {snapshot.thread.type === "group" ? (
@@ -176,39 +235,41 @@ export function ContextPanel({
             <TabsTrigger value="computer">Computer</TabsTrigger>
           </TabsList>
         </div>
-        <TabsContent value="detail">
-          {appsOpen ? (
-            <AppConnections snapshot={snapshot} onBack={openDetail} />
-          ) : snapshot.thread.type === "group" && location.id && !responsibility ? (
-            groupPanel
-          ) : (
-            <>
-              <DetailOverview
-                snapshot={snapshot}
-                open={(page, id) => locate({ tab: "detail", page, id })}
-              />
-              {groupPanel}
-            </>
-          )}
-        </TabsContent>
-        <TabsContent value="library">
-          <div hidden={selectedDetail}>
-            <LibraryMemory snapshot={snapshot} />
-          </div>
-          <FilesPanel
-            snapshot={snapshot}
-            threads={threads}
-            agents={agents}
-            selected={location.id}
-            select={(id) => locate({ tab: "library", id })}
-            refresh={refresh}
-            attach={attach}
-          />
-        </TabsContent>
-        <TabsContent value="computer">
-          <MachineSection agents={snapshot.agents} cursor={snapshot.cursor} />
-        </TabsContent>
-        {responsibility && location.id && (
+        <PanelHeaderSlot.Provider value={filesOpen ? null : headerSlot}>
+          <TabsContent value="detail" hidden={filesOpen || undefined}>
+            {appsOpen ? (
+              <AppConnections snapshot={snapshot} onBack={openDetail} />
+            ) : snapshot.thread.type === "group" && location.id && !responsibility ? (
+              groupPanel
+            ) : (
+              <>
+                <DetailOverview
+                  snapshot={snapshot}
+                  open={(page, id) => locate({ tab: "detail", page, id })}
+                />
+                {groupPanel}
+              </>
+            )}
+          </TabsContent>
+          <TabsContent value="library" hidden={filesOpen || undefined}>
+            <div hidden={selectedDetail}>
+              <LibraryMemory snapshot={snapshot} />
+            </div>
+            <FilesPanel
+              snapshot={snapshot}
+              threads={threads}
+              agents={agents}
+              selected={location.id}
+              select={(id) => locate({ tab: "library", id })}
+              refresh={refresh}
+              attach={attach}
+            />
+          </TabsContent>
+          <TabsContent value="computer" hidden={filesOpen || undefined}>
+            {!filesOpen && <MachineSection agents={snapshot.agents} cursor={snapshot.cursor} />}
+          </TabsContent>
+        </PanelHeaderSlot.Provider>
+        {!filesOpen && responsibility && location.id && (
           <Responsibilities
             key={location.id}
             kind={responsibility}

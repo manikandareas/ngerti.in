@@ -415,8 +415,8 @@ test("Focus viewer opens files directly, centers titles and renders static HTML 
   await expect(preview).toBeVisible();
   await preview.getByRole("button", { name: "Kembali", exact: true }).click();
   preview = await open("example.go");
-  await expect(preview.locator("pre")).toContainText('fmt.Println("Line 89")');
-  await preview.locator(".content-viewer-page").evaluate((element) => {
+  await expect(preview.locator(".source-code-lines")).toContainText('fmt.Println("Line 89")');
+  await preview.locator(".source-code-scroll").evaluate((element) => {
     element.scrollTop = 200;
   });
   await expect
@@ -424,7 +424,7 @@ test("Focus viewer opens files directly, centers titles and renders static HTML 
       preview.evaluate((element) => {
         const header = element.querySelector<HTMLElement>(".content-viewer-header");
         const page = element.querySelector<HTMLElement>(".content-viewer-page:not([hidden])");
-        const code = page?.querySelector("pre");
+        const code = page?.querySelector(".source-code-lines");
         const back = header?.querySelector("button");
         const title = header?.querySelector("h2");
         if (!header || !page || !code || !back || !title) return false;

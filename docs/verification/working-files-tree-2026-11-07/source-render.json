@@ -1,0 +1,16 @@
+[
+  {
+    "open_ms": 346,
+    "rendered_lines": 69,
+    "original_lines": 8001,
+    "preview_limit_bytes": 128000,
+    "viewport": "desktop"
+  },
+  {
+    "open_ms": 239,
+    "rendered_lines": 63,
+    "original_lines": 8001,
+    "preview_limit_bytes": 128000,
+    "viewport": "mobile"
+  }
+]

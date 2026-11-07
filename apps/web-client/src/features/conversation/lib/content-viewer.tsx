@@ -1,9 +1,18 @@
-import { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { artifactUrl } from "@/lib/workspace-files";
 import type { Artifact } from "@/types/work";
 import type { Snapshot } from "@/types/workspace";
 import { type ComposerAttachment, uploadedAttachment } from "./attachment-references";
 import { readFilePreview } from "./file-preview";
+import { WorkingFilesBrowser } from "./working-files-browser";
 
 export type ViewerFile = { name: string; url: string; mediaType?: string };
 export type ViewerTarget = {
@@ -71,7 +80,8 @@ export function workingFileTarget(file: ViewerFile): ViewerTarget {
 export function useContentViewerController(scope: string | null, showInfo?: (id: string) => void) {
   const [state, setState] = useState<ViewerState>({ scope, entries: [], context: null });
   const [hosts, setHosts] = useState<Record<string, HTMLElement | null>>({});
-  const [browser, setBrowser] = useState({ scope, path: "", after: "" });
+  const fileBrowser = useMemo(() => new WorkingFilesBrowser(scope), [scope]);
+  useEffect(() => () => fileBrowser.dispose(), [fileBrowser]);
   const reads = useRef(new Set<AbortController>());
   const retained = useRef<Entry[]>([]);
   const entries = state.scope === scope ? state.entries : [];
@@ -92,7 +102,6 @@ export function useContentViewerController(scope: string | null, showInfo?: (id:
   useEffect(() => {
     setState({ scope, entries: [], context: null });
     setHosts({});
-    setBrowser({ scope, path: "", after: "" });
     const pending = reads.current;
     return () => {
       for (const read of pending) read.abort();
@@ -156,8 +165,7 @@ export function useContentViewerController(scope: string | null, showInfo?: (id:
     clear,
     attachment,
     showInfo,
-    fileBrowser: browser.scope === scope ? browser : { scope, path: "", after: "" },
-    browseFiles: (location: { path: string; after: string }) => setBrowser({ scope, ...location }),
+    fileBrowser,
     removeContext: () => setState((previous) => ({ ...previous, context: null })),
   };
 }

@@ -2,6 +2,8 @@
 
 Current machine amendment: working files and attachment copies live on the owner-wide shared Cua machine; saved-artifact bytes remain immutable and metadata stays scoped. Host-only private working-root assumptions below apply to the original contract. Use [the current architecture](overview.md) and [shared-machine evidence](../verification/shared-machine/README.md) for current file/process behavior.
 
+The 2026-11-07 Working files tree and read-only source viewer use the existing `GET /v1/machine/files` and `GET /v1/machine/file` routes. Folder pages append within the UI; this presentation amendment adds no backend route or contract change. See [current interface behavior](../product/interface.md#working-files).
+
 NMA-054 extends the existing application authority with real workspace resources and immutable artifact bytes. Application schemas are **1.5.0**; broker schemas are **1.4.0**. [Conversation controls and recovery](conversation-control-api.md) remain the lifecycle foundation. This paragraph records the original milestone. NMA-060 and NMA-061/062 are subsequently Done for their captured scope; NMA-063 product-wide acceptance and NMA-064 installation remain Backlog.
 
 The paragraph above records the original foundation capture. Contract **1.21.0** added submit-time attachments and document tools. **1.23.0** adds shared group workspaces and group attachment submission/recovery. NMA-060's earlier engine/API gate closure remains separate from this amendment's verification and from distribution or production acceptance.

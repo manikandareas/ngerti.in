@@ -102,11 +102,15 @@ export function PanelPageHeader({
   back = "Details",
   onBack,
   intro,
+  action,
+  focusBack,
 }: {
   title: ReactNode;
   back?: string;
   onBack: () => void;
   intro?: ReactNode;
+  action?: ReactNode;
+  focusBack?: boolean;
 }) {
   const slot = useContext(PanelHeaderSlot);
   return (
@@ -116,6 +120,7 @@ export function PanelPageHeader({
           <>
             <Button
               type="button"
+              autoFocus={focusBack}
               size="icon"
               variant="secondary"
               onClick={onBack}
@@ -133,6 +138,7 @@ export function PanelPageHeader({
             <h3 className="min-w-0 flex-1 truncate text-[18px] font-medium text-foreground">
               {title}
             </h3>
+            {action}
           </>,
           slot,
         )}

@@ -10,6 +10,8 @@ The [2026-11-07 conversation chronology refinement](../verification/conversation
 
 The [2026-11-07 Focus content viewer amendment](NMA-062.md#focus-content-viewer-amendment--2026-11-07) implements the selected conversation file/table composition, with later PDF preview and conversation-style header refinements under the same milestone. Its focused verification and limitations are retained separately; milestone statuses and open product/distribution gates are unchanged.
 
+The [2026-11-07 Working files/source viewer amendment](../verification/working-files-tree-2026-11-07/README.md) separates shared machine browsing from Library and adds a lazy file tree, local format icons and a read-only source view. Its focused desktop/mobile and native read-only evidence preserves the open product/distribution gates.
+
 ## Active milestones
 
 | Order | Milestone | Status | Layer | Depends on |

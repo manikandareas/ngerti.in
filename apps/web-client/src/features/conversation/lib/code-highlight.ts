@@ -1,6 +1,6 @@
 // OpenMausBot 0.1.137 CodeBlock grammar/theme loading, rendered as escaped React text tokens.
 import { type CSSProperties, createElement, type ReactNode } from "react";
-import type { HighlighterCore } from "shiki/core";
+import type { HighlighterCore, ThemedToken } from "shiki/core";
 
 const LIGHT_THEME = "github-light-default";
 const DARK_THEME = "github-dark-default";
@@ -119,13 +119,13 @@ function loadGrammar(highlighter: HighlighterCore, file: GrammarFile): Promise<v
   return next;
 }
 
-const cache = new Map<string, { lines: ReactNode[][]; size: number }>();
+const cache = new Map<string, { tokens: ThemedToken[][]; lines?: ReactNode[][]; size: number }>();
 export const HIGHLIGHT_MAX_CHARS = 100_000;
-export async function highlightSnippet(code: string, lang: string): Promise<ReactNode[][] | null> {
+export async function highlightTokens(code: string, lang: string): Promise<ThemedToken[][] | null> {
   if (code.length > HIGHLIGHT_MAX_CHARS) return null;
   const key = `${lang}:${code}`;
   const cached = cache.get(key);
-  if (cached) return cached.lines;
+  if (cached) return cached.tokens;
   const highlighter = await getHighlighter();
   const requested = lang.trim().toLowerCase();
   const plain = PLAIN_LANGS.has(requested);
@@ -137,6 +137,25 @@ export async function highlightSnippet(code: string, lang: string): Promise<Reac
     themes: { light: LIGHT_THEME, dark: DARK_THEME },
     defaultColor: false,
   }).tokens;
+  const size = key.length + JSON.stringify(tokens).length;
+  if (size <= 4 * 1024 * 1024) {
+    cache.set(key, { tokens, size });
+    let total = [...cache.values()].reduce((sum, item) => sum + item.size, 0);
+    for (const [oldest, item] of cache) {
+      if (cache.size <= 200 && total <= 4 * 1024 * 1024) break;
+      cache.delete(oldest);
+      total -= item.size;
+    }
+  }
+  return tokens;
+}
+
+export async function highlightSnippet(code: string, lang: string): Promise<ReactNode[][] | null> {
+  const key = `${lang}:${code}`;
+  const cached = cache.get(key);
+  if (cached?.lines) return cached.lines;
+  const tokens = await highlightTokens(code, lang);
+  if (!tokens) return null;
   const lines = tokens.map((line) =>
     line.map((token, index) =>
       createElement(
@@ -150,15 +169,7 @@ export async function highlightSnippet(code: string, lang: string): Promise<Reac
       ),
     ),
   );
-  const size = key.length + JSON.stringify(tokens).length;
-  if (size <= 4 * 1024 * 1024) {
-    cache.set(key, { lines, size });
-    let total = [...cache.values()].reduce((sum, item) => sum + item.size, 0);
-    for (const [oldest, item] of cache) {
-      if (cache.size <= 200 && total <= 4 * 1024 * 1024) break;
-      cache.delete(oldest);
-      total -= item.size;
-    }
-  }
+  const entry = cache.get(key);
+  if (entry) entry.lines = lines;
   return lines;
 }

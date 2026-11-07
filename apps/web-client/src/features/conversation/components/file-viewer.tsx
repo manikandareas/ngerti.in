@@ -1,6 +1,6 @@
 import { Download04Icon, Loading03Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { type ComponentType, type ReactNode, useEffect, useState } from "react";
+import { type ComponentType, lazy, type ReactNode, Suspense, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -17,9 +17,11 @@ import {
   tableDelimiter,
 } from "@/features/conversation/lib/table-file";
 import type { ViewerFile } from "../lib/content-viewer";
+import { fileLanguage, isTextFile } from "../lib/file-format";
 import { MarkdownDocument } from "./answer";
-import { AnswerCode } from "./answer-code";
 import { RichTable } from "./rich-table";
+
+const SourceCodeViewer = lazy(() => import("./source-code-viewer"));
 
 export type FileView = ViewerFile;
 type LoadedContent = {
@@ -33,24 +35,6 @@ type LoadedContent = {
   pdf?: { bytes: Uint8Array; View: ComponentType<{ bytes: Uint8Array }> };
   truncated?: boolean;
   error?: string;
-};
-const codeLanguages: Record<string, string> = {
-  json: "json",
-  ts: "typescript",
-  tsx: "tsx",
-  js: "javascript",
-  py: "python",
-  html: "html",
-  css: "css",
-  yaml: "yaml",
-  yml: "yaml",
-  jsx: "jsx",
-  mjs: "javascript",
-  cjs: "javascript",
-  sql: "sql",
-  sh: "bash",
-  xml: "xml",
-  toml: "toml",
 };
 export function FileContent({ file, headerInset = 0 }: { file: FileView; headerInset?: number }) {
   const [content, setContent] = useState<LoadedContent | null>(null);
@@ -72,9 +56,7 @@ export function FileContent({ file, headerInset = 0 }: { file: FileView; headerI
         const raster =
           /^(image\/(png|jpeg|webp))$/.test(file.mediaType ?? "") ||
           /\.(png|jpe?g|webp)$/i.test(file.name);
-        const text =
-          file.mediaType?.startsWith("text/") ||
-          /\.(txt|md|json|csv|tsv|log|ts|tsx|js|py|html?|css|yaml|yml)$/i.test(file.name);
+        const text = isTextFile(file.name, mediaType);
         if (abort.signal.aborted) return;
         if (pdf) {
           const preview = await readFilePreview(response, 16 * 1024 * 1024, abort.signal);
@@ -98,7 +80,7 @@ export function FileContent({ file, headerInset = 0 }: { file: FileView; headerI
           if (abort.signal.aborted) return;
           objectUrl = URL.createObjectURL(blob);
           setContent({ url: file.url, image: objectUrl });
-        } else if (text) {
+        } else {
           const delimiter = tableDelimiter(file.name);
           const preview = await readFilePreview(response, FILE_PREVIEW_MAX_BYTES, abort.signal);
           if (
@@ -110,9 +92,20 @@ export function FileContent({ file, headerInset = 0 }: { file: FileView; headerI
             );
           let value: string;
           try {
-            value = new TextDecoder("utf-8", { fatal: !!delimiter }).decode(preview.bytes);
+            value = new TextDecoder("utf-8", { fatal: true }).decode(preview.bytes, {
+              stream: preview.truncated,
+            });
+            // biome-ignore lint/suspicious/noControlCharactersInRegex: Reject binary controls before previewing an unknown format as text.
+            if (/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/.test(value))
+              throw new Error("Binary content.");
           } catch {
-            throw new Error("Tabel bukan teks UTF-8 yang valid. Unduh file untuk membukanya.");
+            if (text)
+              throw new Error("File bukan teks UTF-8 yang valid. Unduh file untuk membukanya.");
+            setContent({
+              url: file.url,
+              text: "Pratinjau belum tersedia untuk format ini. Unduh file untuk membukanya.",
+            });
+            return;
           }
           if (abort.signal.aborted) return;
           const extension = file.name.split(".").at(-1)?.toLowerCase() ?? "";
@@ -132,16 +125,11 @@ export function FileContent({ file, headerInset = 0 }: { file: FileView; headerI
             setContent({
               url: file.url,
               text: value,
-              language: codeLanguages[extension],
+              language:
+                fileLanguage(file.name) ?? (mediaType === "application/json" ? "json" : "text"),
               markdown: extension === "md",
               truncated: preview.truncated,
             });
-        } else {
-          void response.body?.cancel().catch(() => {});
-          setContent({
-            url: file.url,
-            text: "Pratinjau belum tersedia untuk format ini. Unduh file untuk membukanya.",
-          });
         }
       })
       .catch((error) => {
@@ -192,7 +180,23 @@ export function FileContent({ file, headerInset = 0 }: { file: FileView; headerI
         />
       );
     if (view?.markdown) return <MarkdownDocument text={view.text ?? ""} />;
-    if (view?.language) return <AnswerCode code={view.text ?? ""} lang={view.language} />;
+    if (view?.language)
+      return (
+        <Suspense
+          fallback={
+            <p role="status" className="px-5 py-24 text-sm text-muted-foreground">
+              Opening source code…
+            </p>
+          }
+        >
+          <SourceCodeViewer
+            code={view.text ?? ""}
+            language={view.language}
+            name={file.name}
+            truncated={view.truncated}
+          />
+        </Suspense>
+      );
     if (view?.text !== undefined)
       return (
         <pre className="overflow-x-auto whitespace-pre-wrap break-words rounded-xl bg-foreground/[0.045] px-4 py-3 font-mono text-[13px] leading-relaxed">
@@ -211,10 +215,10 @@ export function FileContent({ file, headerInset = 0 }: { file: FileView; headerI
   }
   return (
     <div
-      className={`file-content ${view?.html !== undefined ? "file-content-html" : ""} ${view?.pdf ? "file-content-pdf" : ""}`}
+      className={`file-content ${view?.html !== undefined ? "file-content-html" : ""} ${view?.pdf ? "file-content-pdf" : ""} ${view?.language && !view.markdown ? "file-content-code" : ""}`}
     >
       {renderBody()}
-      {view?.truncated && (
+      {view?.truncated && (view.markdown || !view.language) && (
         <p role="status" className="text-[12px] text-muted-foreground">
           Pratinjau dibatasi 128 KB. Unduh untuk membaca seluruh file.
         </p>

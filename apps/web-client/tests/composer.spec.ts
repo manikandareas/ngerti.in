@@ -659,8 +659,9 @@ test("Focus working files retain their folder, retry reads and upload context on
   });
   await page.getByRole("button", { name: `Detail ${agent.name}`, exact: true }).click();
   await page.getByRole("tab", { name: "Library", exact: true }).click();
-  await page.getByRole("button", { name: "reports", exact: true }).click();
-  const fileButton = page.getByRole("button", { name: "working-note.txt", exact: true });
+  await page.getByRole("button", { name: "Working files", exact: true }).click();
+  await page.getByRole("treeitem", { name: "reports", exact: true }).click();
+  const fileButton = page.getByRole("treeitem", { name: "working-note.txt", exact: true });
   await fileButton.click();
   const viewer = page.locator("[data-content-viewer]");
   await expect(viewer.getByRole("alert")).toBeVisible();

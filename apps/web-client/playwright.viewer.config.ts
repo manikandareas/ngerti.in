@@ -10,8 +10,14 @@ const env = {
 };
 export default defineConfig({
   testDir: "./tests",
-  testMatch: ["work.spec.ts", "composer.spec.ts", "rich-answer.spec.ts", "pdf-viewer.spec.ts"],
-  grep: /Focus|rich reply|contextual goals|removing a selected file|image chips/,
+  testMatch: [
+    "work.spec.ts",
+    "composer.spec.ts",
+    "rich-answer.spec.ts",
+    "pdf-viewer.spec.ts",
+    "working-files.spec.ts",
+  ],
+  grep: /Focus|Working files|Source viewer|rich reply|contextual goals|removing a selected file|image chips/,
   outputDir: "../../.dev/content-viewer-playwright",
   workers: 1,
   retries: 0,

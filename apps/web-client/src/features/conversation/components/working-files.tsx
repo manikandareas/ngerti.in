@@ -1,127 +1,161 @@
-import {
-  ArrowLeft01Icon,
-  Download04Icon,
-  File02Icon,
-  Folder01Icon,
-  RefreshIcon,
-} from "@hugeicons/core-free-icons";
+import { hotkeysCoreFeature, selectionFeature, syncDataLoaderFeature } from "@headless-tree/core";
+import { useTree } from "@headless-tree/react";
+import { ArrowRight01Icon, RefreshIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useSyncExternalStore } from "react";
 import { Button } from "@/components/ui/button";
-import { useApiResource } from "@/hooks/use-api-resource";
-import type { MachineFiles } from "@/types/machine";
+import { cn } from "@/lib/utils";
 import { useContentViewer, workingFileTarget } from "../lib/content-viewer";
-import { PanelCard, PanelEmpty } from "./panel-primitives";
+import {
+  FILE_TREE_ROOT,
+  type FileTreeNode,
+  type WorkingFilesBrowser,
+} from "../lib/working-files-browser";
+import { FileTypeIcon } from "./file-type-icon";
+import { PanelPageHeader } from "./panel-primitives";
+import "./working-files.css";
 
-export function WorkingFiles({ cursor }: { cursor: number }) {
-  const [local, setLocal] = useState({ path: "", after: "" });
+export function WorkingFiles({
+  browser,
+  onBack,
+  back,
+}: {
+  browser: WorkingFilesBrowser;
+  onBack: () => void;
+  back: string;
+}) {
+  const state = useSyncExternalStore(browser.subscribe, browser.getSnapshot);
   const viewer = useContentViewer();
-  const { path, after } = viewer?.fileBrowser ?? local;
-  const navigate = viewer?.browseFiles ?? setLocal;
-  const listing = useApiResource<MachineFiles>(
-    `/v1/machine/files?${new URLSearchParams({ path, after, limit: "100" })}`,
-    cursor,
-  );
-  function folder(next: string) {
-    navigate({ path: next, after: "" });
-  }
+  const viewport = useRef<HTMLDivElement>(null);
+  const restored = useRef(false);
+  const initialScroll = useRef(browser.scrollTop);
+  const tree = useTree<FileTreeNode>({
+    rootItemId: FILE_TREE_ROOT,
+    state: state.tree,
+    setExpandedItems: (value) => browser.setTree("expandedItems", value),
+    setSelectedItems: (value) => browser.setTree("selectedItems", value),
+    setFocusedItem: (value) => browser.setTree("focusedItem", value),
+    getItemName: (item) => item.getItemData().name,
+    isItemFolder: (item) => item.getItemData().type === "directory",
+    dataLoader: { getItem: browser.getNode, getChildren: browser.getChildren },
+    onPrimaryAction: (item) => {
+      const node = item.getItemData();
+      if (node.status === "error") void browser.load(node.parent ?? "", "refresh");
+      else if (node.status === "more") void browser.load(node.parent ?? "", "more");
+      else if (node.type === "file") {
+        if (viewport.current) browser.scrollTop = viewport.current.scrollTop;
+        const url = `/v1/machine/file?${new URLSearchParams({ path: node.path })}`;
+        viewer?.open(workingFileTarget({ name: node.name, url }), item.getElement() ?? undefined);
+      }
+    },
+    features: [syncDataLoaderFeature, hotkeysCoreFeature, selectionFeature],
+  });
+  useEffect(() => {
+    void browser.load("");
+  }, [browser]);
+  // biome-ignore lint/correctness/useExhaustiveDependencies: The synchronous tree loader must rebuild after external folder pages change.
+  useLayoutEffect(() => {
+    tree.rebuildTree();
+  }, [state.folders, tree]);
+  const items = tree.getItems();
+  useLayoutEffect(() => {
+    if (
+      !restored.current &&
+      viewport.current &&
+      items.length &&
+      state.folders[""]?.entries.length
+    ) {
+      viewport.current.scrollTop = initialScroll.current;
+      restored.current = true;
+    }
+  }, [items.length, state.folders]);
+  const loading = Object.values(state.folders).some((folder) => folder.loading);
   return (
-    <>
-      <PanelCard
-        label={<span className="text-[16px] font-semibold text-foreground">Working files</span>}
+    <section className="working-files-page" aria-label="Working files browser">
+      <PanelPageHeader
+        title="Working files"
+        back={back}
+        onBack={onBack}
+        focusBack
         action={
           <Button
             variant="ghost"
             size="icon-sm"
             aria-label="Refresh working files"
-            onClick={listing.retry}
+            title="Refresh working files"
+            disabled={loading}
+            onClick={() => void browser.refresh()}
           >
-            <HugeiconsIcon icon={RefreshIcon} size={14} />
+            <HugeiconsIcon icon={RefreshIcon} size={16} />
           </Button>
         }
+      />
+      <p className="working-files-description">Shared with all your agents on this machine.</p>
+      <div
+        ref={viewport}
+        className="working-files-scroll"
+        onScroll={(event) => {
+          if (
+            restored.current &&
+            event.currentTarget.clientHeight > 0 &&
+            event.currentTarget.getClientRects().length
+          )
+            browser.scrollTop = event.currentTarget.scrollTop;
+        }}
       >
-        <div className="flex min-h-11 items-center gap-2 px-3.5 py-2 text-[13px]">
-          {(path || after) && (
-            <Button
-              variant="ghost"
-              size="icon-sm"
-              aria-label={after ? "First page" : "Parent folder"}
-              onClick={() =>
-                after
-                  ? navigate({ path, after: "" })
-                  : folder(path.split("/").slice(0, -1).join("/"))
-              }
-            >
-              <HugeiconsIcon icon={ArrowLeft01Icon} size={14} />
-            </Button>
-          )}
-          <span className="min-w-0 truncate" title={path || "Shared machine"}>
-            {path || "Shared machine"}
-          </span>
-        </div>
-        {listing.error ? (
-          <PanelEmpty>
-            <span role="alert">
-              Working files are unavailable. Reconnect the machine and refresh.
-            </span>
-          </PanelEmpty>
-        ) : !listing.data ? (
-          <PanelEmpty>Loading working files…</PanelEmpty>
-        ) : !listing.data.entries.length ? (
-          <PanelEmpty>
-            This folder is empty. Files saved by your agents will appear here.
-          </PanelEmpty>
-        ) : (
-          listing.data.entries.map((entry) => {
-            const url = `/v1/machine/file?${new URLSearchParams({ path: entry.path })}`;
+        <div {...tree.getContainerProps("Working files")} aria-busy={loading}>
+          {items.map((item) => {
+            const node = item.getItemData();
+            const status = node.status;
+            const disabled =
+              status === "loading" || status === "empty" || node.type === "unsupported";
             return (
-              <div key={entry.path} className="flex min-h-[46px] items-center px-3.5 py-2">
-                <button
-                  type="button"
-                  data-viewer-file={entry.path}
-                  className="flex min-w-0 flex-1 items-center gap-2.5 py-1 text-left hover:text-primary"
-                  onClick={() =>
-                    entry.type === "directory"
-                      ? folder(entry.path)
-                      : viewer?.open(workingFileTarget({ name: entry.name, url }))
-                  }
-                  disabled={!["directory", "file"].includes(entry.type)}
-                >
-                  <HugeiconsIcon
-                    icon={entry.type === "directory" ? Folder01Icon : File02Icon}
-                    size={16}
-                    strokeWidth={1.5}
-                    className="shrink-0 text-muted-foreground"
-                  />
-                  <span className="truncate text-[14px]">{entry.name}</span>
-                </button>
-                {entry.type === "file" && (
-                  <Button variant="ghost" size="icon-sm" asChild>
-                    <a href={url} download={entry.name} aria-label={`Download ${entry.name}`}>
-                      <HugeiconsIcon icon={Download04Icon} size={14} />
-                    </a>
-                  </Button>
+              <button
+                key={item.getKey()}
+                type="button"
+                {...item.getProps()}
+                data-viewer-file={node.type === "file" ? node.path : undefined}
+                data-file-path={node.path}
+                data-file-status={status}
+                aria-disabled={disabled || undefined}
+                title={status ? undefined : node.path}
+                className={cn(
+                  "file-tree-row",
+                  status && "file-tree-status",
+                  status === "error" && "text-destructive",
                 )}
-              </div>
+                style={{ paddingInlineStart: `${10 + item.getItemMeta().level * 16}px` }}
+              >
+                {status ? (
+                  <span
+                    className={cn("min-w-0", status === "loading" && "motion-safe:animate-pulse")}
+                  >
+                    {node.name}
+                  </span>
+                ) : (
+                  <>
+                    <span className="file-tree-chevron" aria-hidden="true">
+                      {item.isFolder() && (
+                        <HugeiconsIcon
+                          icon={ArrowRight01Icon}
+                          size={14}
+                          className={item.isExpanded() ? "rotate-90" : ""}
+                        />
+                      )}
+                    </span>
+                    <FileTypeIcon
+                      name={node.path}
+                      folder={item.isFolder()}
+                      expanded={item.isExpanded()}
+                    />
+                    <span className="min-w-0 truncate">{node.name}</span>
+                  </>
+                )}
+              </button>
             );
-          })
-        )}
-        {listing.data?.next_after && (
-          <div className="p-2">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => navigate({ path, after: listing.data?.next_after ?? "" })}
-            >
-              Next files
-            </Button>
-          </div>
-        )}
-      </PanelCard>
-      <p className="px-1 text-[13px] leading-relaxed text-muted-foreground">
-        These live files and attachment copies are shared with all your agents. Published files
-        above remain saved copies.
-      </p>
-    </>
+          })}
+        </div>
+      </div>
+    </section>
   );
 }

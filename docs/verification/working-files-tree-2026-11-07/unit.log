@@ -1,0 +1,24 @@
+bun test v1.3.10 (30e609e0)
+
+verification/working-files.test.ts:
+(pass) file classification recognizes extensionless names and preserves the actual read path [5.52ms]
+(pass) file icons prefer exact names, parent names and compound extensions with theme overrides [1.34ms]
+(pass) source search finds literal case-insensitive matches independently of syntax tokens [2.76ms]
+(pass) folder pages append, refresh rereads the loaded prefix and failed refresh retains entries [9.88ms]
+(pass) disposing the conversation aborts in-flight directory reads without publishing late data [2.90ms]
+(pass) refresh clears focus and selection for files removed from the machine [4.15ms]
+(pass) directory names that match JavaScript object properties remain normal file paths [1.38ms]
+
+verification/markdown-render.test.tsx:
+(pass) cached Markdown keeps plain formatting, links and GFM tables [41.69ms]
+(pass) reference detection preserves aliases, raw file IDs and explicit file links [10.91ms]
+
+verification/file-preview.test.ts:
+(pass) large previews bound retained bytes and cancel the unread original [2.97ms]
+(pass) an exact-limit preview remains complete and UTF-8 bytes are preserved [1.89ms]
+(pass) cancelled scope does not publish a preview [0.63ms]
+
+ 12 pass
+ 0 fail
+ 58 expect() calls
+Ran 12 tests across 3 files. [1.64s]

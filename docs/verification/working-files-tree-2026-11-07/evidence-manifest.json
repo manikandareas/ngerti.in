@@ -1,0 +1,147 @@
+{
+  "scope": "Retained verification artifacts; authored README and this manifest are excluded to avoid self-reference.",
+  "artifacts": [
+    {
+      "path": "baseline-bundle.json",
+      "sha256": "40da96c765369a6aa3c53f6070d34395a01e28e462a9abc94798cfb38a6081c1",
+      "captured_whitespace_lines": []
+    },
+    {
+      "path": "browser-report.json",
+      "sha256": "93bffde0a783a404ee442babf04b4ea471d4ddcdcc747f7f111488d64db11dd4",
+      "captured_whitespace_lines": []
+    },
+    {
+      "path": "browser.log",
+      "sha256": "ce7dd0e7640623c131f18e257fc7a77d6236775717d2fe1ef61e3aab8caa6a9e",
+      "captured_whitespace_lines": []
+    },
+    {
+      "path": "build.log",
+      "sha256": "46d6597aaef4fa2efd9618da7431028bd3b95d40209c7e7a0c8af7b906e14922",
+      "captured_whitespace_lines": [
+        1620
+      ]
+    },
+    {
+      "path": "bundle.json",
+      "sha256": "2c74b2d88d56ed435ab046ac01e3600f8c88d6c803c83b3556306bb0032bc99e",
+      "captured_whitespace_lines": []
+    },
+    {
+      "path": "diff-check.log",
+      "sha256": "8cee52c6d9d6596483a320a0a4b225192d1c58809e4e29fc5bd06467994703f8",
+      "captured_whitespace_lines": []
+    },
+    {
+      "path": "docs.log",
+      "sha256": "4130e415df9b5d9383afa4053309ac0163f414d82be58f896aec60805827ae95",
+      "captured_whitespace_lines": []
+    },
+    {
+      "path": "initial-browser.log",
+      "sha256": "409112f61c9e83d4440e884d9286eba680074a4846b6617d5fe6d4692c33c77d",
+      "captured_whitespace_lines": [
+        27,
+        61,
+        96,
+        97
+      ]
+    },
+    {
+      "path": "initial-viewer-regression.log",
+      "sha256": "df7c21dba91416d45543210d978e6f80f082aa44d785173339ca3f0426dda55e",
+      "captured_whitespace_lines": [
+        51,
+        88,
+        126,
+        127
+      ]
+    },
+    {
+      "path": "lint.log",
+      "sha256": "aa504147eb4cf6e064159d12920795f2d1c995820cb353ae246cdbd08764f56a",
+      "captured_whitespace_lines": []
+    },
+    {
+      "path": "native-read.json",
+      "sha256": "f41ef96c2e648d5d1a31ba1bb81d16ba77312f5b94198c98251e049f924278d2",
+      "captured_whitespace_lines": []
+    },
+    {
+      "path": "native-read.ts",
+      "sha256": "ad48adc4fb5a496d5d711599e945fe57f3fd951f9a0b64e04e05c8185996636c",
+      "captured_whitespace_lines": []
+    },
+    {
+      "path": "screenshots/source-dark-desktop.png",
+      "sha256": "bcccb31bb95c4489f447319b3ee546bbe5652c7b882332d166130614ab9c1f9e",
+      "captured_whitespace_lines": []
+    },
+    {
+      "path": "screenshots/source-dark-mobile.png",
+      "sha256": "008f999054db935e226cf1ad062a3d7830cbe199a992669eb5b09509e510e832",
+      "captured_whitespace_lines": []
+    },
+    {
+      "path": "screenshots/source-find-wrap-desktop.png",
+      "sha256": "07733a2da381dd0f22ffe4c837374cacfa07e8f856d5f09a8abaed6d6a6f0c44",
+      "captured_whitespace_lines": []
+    },
+    {
+      "path": "screenshots/source-find-wrap-mobile.png",
+      "sha256": "5283eb6d4659b1be9f49898ffa7291ae01d01114871b04a492a2c435e533d8c8",
+      "captured_whitespace_lines": []
+    },
+    {
+      "path": "screenshots/source-light-desktop.png",
+      "sha256": "910a937254478dc66cbf169f28fa04e4452a27922e495c3b9776ef374e082091",
+      "captured_whitespace_lines": []
+    },
+    {
+      "path": "screenshots/source-light-mobile.png",
+      "sha256": "60a48f2eda38eadac3ce97562bb7566c3e42ff1a2e7e63db0c0093827de2db9e",
+      "captured_whitespace_lines": []
+    },
+    {
+      "path": "screenshots/tree-dark-desktop.png",
+      "sha256": "e77de8976de591a091a67c4b68b960033486d374671db389212f93e31230d668",
+      "captured_whitespace_lines": []
+    },
+    {
+      "path": "screenshots/tree-dark-mobile.png",
+      "sha256": "1c58f8d4110c40ee08d1ad8d472141cc6f07fa6790933631b7831acd1d4abfaf",
+      "captured_whitespace_lines": []
+    },
+    {
+      "path": "screenshots/tree-light-desktop.png",
+      "sha256": "2c76c7007872848064f5f1803dd54a90d566ee18557a089fac07479b8ecd3140",
+      "captured_whitespace_lines": []
+    },
+    {
+      "path": "screenshots/tree-light-mobile.png",
+      "sha256": "be22da4644b053b1e218c9533d455eee311eb43d6527162e1a421377330cb35a",
+      "captured_whitespace_lines": []
+    },
+    {
+      "path": "source-manifest.json",
+      "sha256": "450884a8429869f1abb5297601487a9b2cfe598968a02e997f7db30ee8326022",
+      "captured_whitespace_lines": []
+    },
+    {
+      "path": "source-render.json",
+      "sha256": "ebf4acba9b462f6ee7d30fcdfb5f10f110e3e3d1f2ebcdcb3f9384ee94b0be28",
+      "captured_whitespace_lines": []
+    },
+    {
+      "path": "typecheck.log",
+      "sha256": "98ae1f57bd1b2899b7205cb5ce3a75a863489600a6539d608774dd930a859535",
+      "captured_whitespace_lines": []
+    },
+    {
+      "path": "unit.log",
+      "sha256": "72a3d6a332a9f95c45aecee440ad1c8436bd272f7739919d78171dcdab38ecba",
+      "captured_whitespace_lines": []
+    }
+  ]
+}

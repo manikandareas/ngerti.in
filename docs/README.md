@@ -26,6 +26,7 @@ The handoff reconciles eleven decision documents and nineteen milestone records,
 - [Tauri development/packaging/lifecycle](architecture/tauri-development.md), [design rationale](architecture/tauri-desktop-design-2026-11-04.md), and [native verification](verification/tauri-development/README.md).
 - [Conversation/Computer plan](architecture/conversation-interactions-and-computer-plan-2026-11-06.md), [implementation evidence](verification/conversation-implementation-2026-11-06/README.md), and [later refinements](verification/conversation-followup-2026-11-06/report.html).
 - [Focus content viewer implementation](verification/conversation-content-viewer-2026-11-07/README.md).
+- [Working files tree, local file icons and source viewer](verification/working-files-tree-2026-11-07/README.md).
 - [Research index](research/README.md), [initial NMA-060 API gate](verification/nma-060/final-cohort/README.md), [NMA-061 UI](verification/nma-061/README.md), and [NMA-062 UI](verification/nma-062/README.md).
 
 Sixteen active milestones are Done for their recorded scope. NMA-063 product-wide acceptance and NMA-064 distribution remain Backlog. Native/provider, billing, API, browser/UI and installation claims have separate evidence. Retained historical captures are evidence, not workflow instructions or a blanket production-readiness claim.

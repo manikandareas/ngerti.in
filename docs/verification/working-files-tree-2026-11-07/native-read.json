@@ -1,0 +1,12 @@
+{
+  "state": "passed",
+  "root_entries_in_page": 11,
+  "child_listing": "passed",
+  "existing_fixture_read": {
+    "state": "passed",
+    "path": "projects/desktop-check.txt",
+    "bytes": 29,
+    "sha256": "bb175a39ef9671005d0b096dd9dd0339fa016e2ead425e0aac71eae0bb93eea0"
+  },
+  "scope": "Existing Cua machine list/stat/read transport only; no UI, input lease, provider inference or machine mutations."
+}

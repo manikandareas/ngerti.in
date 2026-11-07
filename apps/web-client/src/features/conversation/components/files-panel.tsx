@@ -1,9 +1,4 @@
-import {
-  ArrowRight01Icon,
-  Download04Icon,
-  File02Icon,
-  Share08Icon,
-} from "@hugeicons/core-free-icons";
+import { ArrowRight01Icon, Download04Icon, Share08Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -13,8 +8,8 @@ import { artifactUrl } from "@/lib/workspace-files";
 import type { Artifact, Workspace } from "@/types/work";
 import type { Agent, Snapshot, Thread } from "@/types/workspace";
 import { savedFileTarget, useContentViewer } from "../lib/content-viewer";
+import { FileTypeIcon } from "./file-type-icon";
 import { PanelCard, PanelEmpty, PanelNavRow, PanelPageHeader } from "./panel-primitives";
-import { WorkingFiles } from "./working-files";
 
 export function FilesPanel({
   snapshot,
@@ -117,7 +112,7 @@ export function FilesPanel({
           </PanelCard>
           <div className="flex flex-wrap gap-2">
             <Button size="sm" data-viewer-file={artifact.id} onClick={() => open(artifact)}>
-              <HugeiconsIcon icon={File02Icon} size={14} strokeWidth={1.5} />
+              <FileTypeIcon name={artifact.name} mediaType={artifact.media_type} />
               Open {artifact.name}
             </Button>
             {active.some((w) => w.id === artifact.workspace_id) && (
@@ -222,17 +217,17 @@ export function FilesPanel({
                 data-viewer-file={item.id}
                 title={item.name}
                 aria-label={`File ${item.name}`}
-                icon={File02Icon}
                 hint={`${snapshot.agents.find((agent) => agent.id === (item.created_by_agent_id ?? item.agent_id))?.name ?? (item.agent_id === null ? "Group" : "Agent")}`}
                 onClick={() => open(item)}
-              />
+              >
+                <FileTypeIcon name={item.name} mediaType={item.media_type} className="mx-1" />
+              </PanelNavRow>
             ))
           ) : (
             <PanelEmpty>Files created by your agent will appear here.</PanelEmpty>
           )}
         </PanelCard>
       )}
-      {!artifact && <WorkingFiles cursor={snapshot.cursor} />}
     </div>
   );
 }

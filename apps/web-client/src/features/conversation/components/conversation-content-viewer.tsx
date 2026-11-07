@@ -2,7 +2,6 @@ import {
   ArrowLeft01Icon,
   Cancel01Icon,
   Download04Icon,
-  File02Icon,
   MoreHorizontalIcon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
@@ -15,6 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import type { ContentViewer, ViewerTarget } from "../lib/content-viewer";
+import { FileTypeIcon } from "./file-type-icon";
 import { FileContent } from "./file-viewer";
 import "./conversation-content-viewer.css";
 
@@ -135,7 +135,11 @@ export function ViewerComposerContext({
   if (!viewer.context) return null;
   return (
     <div className="viewer-composer-context" data-viewer-context>
-      <HugeiconsIcon icon={File02Icon} size={14} className="shrink-0 text-muted-foreground" />
+      <FileTypeIcon
+        name={viewer.context.name}
+        mediaType={viewer.context.file?.mediaType}
+        className="size-3.5"
+      />
       <span className="min-w-0 truncate" title={viewer.context.name}>
         {viewer.context.name}
       </span>

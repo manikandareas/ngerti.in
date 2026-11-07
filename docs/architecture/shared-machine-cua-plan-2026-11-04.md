@@ -138,7 +138,7 @@ Add a singleton machine API surface for status/capabilities, operation receipts,
 
 Preserve Details / Library / Computer navigation. Computer shows the same machine ID/status/display in every DM/group, the current controller, pending access and human takeover/handback. Remove per-member browser provisioning from this surface. The shared browser profile is visible as an application inside that desktop.
 
-Library gains live Working files backed by the machine root, visibly shared. Retain conversation attachments, published outputs, immutable downloads and provenance as application-scoped records. Refresh lists on relevant operations and bounded polling/focus; do not require a new global file-watching system for this first delivery. Update prompts and copy so a machine file path and a published downloadable artifact have distinct meanings.
+The initial delivery placed live Working files in Library. The [2026-11-07 interface amendment](../product/interface.md#working-files) moves this machine-root browser to a dedicated contextual file tree opened beside Close; shared-machine scope remains explicit. Retain conversation attachments, published outputs, immutable downloads and provenance as application-scoped records. Refresh lists on relevant operations and bounded polling/focus; do not require a new global file-watching system for this first delivery. Update prompts and copy so a machine file path and a published downloadable artifact have distinct meanings.
 
 ## Delivery sequence and acceptance
 

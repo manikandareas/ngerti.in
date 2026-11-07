@@ -83,15 +83,19 @@ test("shared desktop supports native viewing, takeover, handback and working fil
   await expect
     .poll(async () => (await (await page.request.get("/v1/machine")).json()).lease.holder)
     .toBe("none");
-  await page.getByRole("tab", { name: "Library", exact: true }).click();
+  await page.getByRole("button", { name: "Working files", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Working files", exact: true })).toBeVisible();
-  await page.getByRole("button", { name: "projects", exact: true }).click();
-  await page.getByRole("button", { name: "desktop-check.txt", exact: true }).click();
-  await expect(
-    page.getByRole("dialog").getByText("Shared desktop working file.", { exact: true }),
-  ).toBeVisible();
-  await page.getByRole("dialog").getByRole("button", { name: "Close", exact: true }).click();
-  await page.getByRole("button", { name: "Parent folder", exact: true }).click();
+  await page.getByRole("treeitem", { name: "projects", exact: true }).click();
+  await page.getByRole("treeitem", { name: "desktop-check.txt", exact: true }).click();
+  const fileViewer = page.locator("[data-content-viewer]");
+  await expect(fileViewer).toContainText("Shared desktop working file.");
+  await fileViewer.getByRole("button", { name: "Kembali", exact: true }).click();
+  await page.getByRole("treeitem", { name: "projects", exact: true }).click();
+  await expect(page.getByRole("treeitem", { name: "projects", exact: true })).toHaveAttribute(
+    "aria-expanded",
+    "false",
+  );
+  await page.getByRole("button", { name: "Back to Computer", exact: true }).click();
   const status = await (await page.request.get("/v1/machine")).json();
   expect(status.state).toBe("ready");
   expect(errors).toEqual([]);

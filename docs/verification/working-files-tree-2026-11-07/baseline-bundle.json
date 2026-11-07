@@ -1,0 +1,25 @@
+{
+  "head": "df25ed932b08b8819453f843f7bda5da24ede644",
+  "js_total_bytes": 5793381,
+  "js_total_gzip_bytes": 1280646,
+  "chunks": [
+    {
+      "name": "work-activity-BkA3BGbZ.js",
+      "bytes": 514843,
+      "gzip_bytes": 161033,
+      "sha256": "69a30eaf3086601ffc2c86d87db45da581a6cb490801b03d7563c90ab790a1a1"
+    },
+    {
+      "name": "index-CJEAbyv7.js",
+      "bytes": 384960,
+      "gzip_bytes": 122363,
+      "sha256": "82c5e57faf9c291dfca0267fa3c6d188dd47ea138ec2bdf30f0baefb615eb4ca"
+    },
+    {
+      "name": "workspace-layout-CLeXulFU.js",
+      "bytes": 185643,
+      "gzip_bytes": 56281,
+      "sha256": "6d5880968f98d87667a69879dc50b6e121b200f9e160a6a176c3146cd3877a26"
+    }
+  ]
+}

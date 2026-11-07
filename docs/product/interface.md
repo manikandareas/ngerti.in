@@ -9,13 +9,22 @@ The primary interface is one responsive conversation workspace. The accepted Nov
 | Left sidebar | Agent/group list is also the chat list. Select an item to open its conversation. The + menu offers Create agent and Create group. |
 | Conversation | Messages, streamed answers, agent activity, authored mentions, sources, attachment/result actions and actionable human questions. |
 | Detail | Selected agent/group profile, members/shared directions, contextual Goals and Routine. Advanced memory, skills and instructions stay within contextual navigation. |
-| Library | Saved artifacts and Working files for the same shared Linux machine used by browser/terminal/desktop. Saved metadata retains conversation scope. |
+| Library | Scoped saved artifacts, file information/sharing and contextual memory/skills. |
+| Working files | Dedicated page opened by the folder action beside the contextual panel's Close, available from Details, Library and Computer. Its file tree browses the shared Linux working root used by agents. |
 | Computer | The retained Cua desktop; view-only and human takeover observe/control the same machine as agents. |
 | Settings | General harness/provider/default and app settings open in place with URL-backed navigation. Model selection remains in its canonical picker; avoid duplicate controls. |
 
 Clicking the conversation header name/avatar opens contextual detail. Goal/file actions open their relevant details/viewers. Panels can close; on mobile use a sheet/full-screen view with a clear return to chat. There are no mandatory global Agents, Workspace, Goals or Routine pages and no duplicated agent list. Keep tabs/lists legible, with progressive disclosure instead of stacks of cards or badges.
 
 On initial sidebar opening, show row-shaped skeletons until agent/thread/preview/activity data and the visible rows' avatars are ready. Reveal names, previews and portraits together without an artificial minimum delay. Group rows wait for both displayed member portraits. Offscreen rows remain deferred and show their own skeleton until ready when scrolled into view. A failed texture settles to the shaded avatar fallback; normal live refreshes preserve the visible list. See [sidebar loading verification](../verification/sidebar-loading-2026-11-07/README.md).
+
+## Working files
+
+The 2026-11-07 decision separates live machine files from Library. The folder action opens Working files within the same contextual panel; its header contains Back, the title, Refresh and Close. The profile hero and tabs are hidden on this page. Back restores the previous tab/detail; Close closes the panel. The description makes owner-wide shared-machine visibility explicit.
+
+Folders expand inline with chevrons and indentation. Load children only on expansion; append additional pages inside their folder. Loading, empty, per-folder failure/retry and refresh retain usable keyboard navigation. Refresh rereads the already loaded prefix while preserving expanded folders and available entries. Clicking a file opens Focus; Back restores the tree's expansion, selection, scroll and file focus, including after the mobile sheet unmounts. Tree state is session-only and scoped to the active conversation controller; changing conversation clears its viewer/context and retires pending directory reads.
+
+Local Material Icon Theme assets identify exact filenames, compound extensions, supported language IDs and expanded/collapsed folders, with light-theme overrides and generic fallbacks. Tree, Library, attachment and viewer-context file icons share the same resolver. Navigation controls keep Hugeicons and Ngertiin's existing theme tokens. The manifest is generated during development/build; no icon generator or external icon CDN runs in the browser.
 
 ## Create agent
 
@@ -58,6 +67,10 @@ The same composer floats below the viewer with a removable file/table context ch
 HTML renders directly without Preview/Source tabs or an HTML Document label. It uses an empty iframe sandbox and a restrictive document CSP for static content; scripts, external resources, forms and external navigation are disabled. The original HTML source is downloaded from the header menu. Text previews remain bounded to 128 KB; truncated tables/HTML offer download rather than partial rendering. Image previews and outgoing context copies are bounded to 16 MB.
 
 PDF files render directly in the same viewer using a lazy loaded PDF.js renderer rather than a browser PDF plugin. Page navigation, selectable text, 50–200% zoom and fit-to-width remain available above the document; zoom preserves the reading position. The existing composer and original-file download remain available. PDF previews are limited to 16 MiB and 500 pages, with clear retry/download states for unreadable, protected or oversized files. Only nearby pages keep canvas/text layers mounted, with a four-million-pixel canvas budget per page. This display support is separate from the existing backend's PDF text extraction and does not add OCR or an editor. See [PDF verification](../verification/conversation-content-viewer-2026-11-07/pdf-support/README.md).
+
+Source files use a dedicated full-area read-only view with Shiki syntax colors, original indentation, line numbers, literal case-insensitive find/next/previous, copy of the original preview text and optional wrapping. Filename detection includes JavaScript/TypeScript variants, Go, Dockerfile/Containerfile, Makefile and the already bundled source/config grammars. Valid UTF-8 content in unknown formats falls back to plain text; binary formats retain the download fallback. Original-file downloads preserve unchanged bytes. This provides syntax highlighting and reading tools, not language-server diagnostics, completion or an editor.
+
+Source viewing is lazy loaded. The shared JavaScript-engine highlighter loads grammars on demand and keeps a bounded cache. Text reads retain the existing 128,000-byte preview limit; highlighting stops above 100,000 characters and preserves readable plain source. More than 500 source lines use the existing TanStack virtualizer, including find navigation and wrapping. The header overlay and contextual composer remain available. Implementation and verification are recorded with the [Working files/source viewer amendment](../verification/working-files-tree-2026-11-07/README.md).
 
 File editing remains a conversational request using the agent's existing working-file/terminal capabilities and publication of a new immutable artifact. Interactive app previews, browser-history restoration of an open viewer and native installation acceptance remain separate scope. See [focused implementation evidence](../verification/conversation-content-viewer-2026-11-07/README.md).
 

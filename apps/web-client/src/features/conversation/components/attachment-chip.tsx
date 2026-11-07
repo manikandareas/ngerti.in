@@ -5,6 +5,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import type { ComposerAttachment } from "@/features/conversation/lib/attachment-references";
 import { artifactUrl } from "@/lib/workspace-files";
+import { useContentViewer } from "../lib/content-viewer";
 import { FileTypeIcon } from "./file-type-icon";
 
 function attachmentStatus(file: ComposerAttachment) {
@@ -60,6 +61,7 @@ export function AttachmentChip({
   retry?: () => void;
 }) {
   const [open, setOpen] = useState(false);
+  const viewer = useContentViewer();
   const working = file.state === "uploading" || file.documentState === "preparing";
   return (
     <span
@@ -78,6 +80,30 @@ export function AttachmentChip({
                 className="attachment-chip-preview"
                 aria-label={`Pratinjau ${file.name}`}
                 onMouseDown={(event) => event.preventDefault()}
+                onClick={(event) => {
+                  if (!viewer || (!file.artifact && !file.file)) return;
+                  event.preventDefault();
+                  const url = file.artifact
+                    ? artifactUrl(file.artifact)
+                    : file.file
+                      ? URL.createObjectURL(file.file)
+                      : null;
+                  if (!url) return;
+                  viewer.open(
+                    {
+                      id: file.id,
+                      name: file.name,
+                      file: { name: file.name, url, mediaType: file.mediaType },
+                      release: file.artifact ? undefined : () => URL.revokeObjectURL(url),
+                      info:
+                        file.artifact && viewer.showInfo
+                          ? () => viewer.showInfo?.(file.id)
+                          : undefined,
+                      resolve: async () => file,
+                    },
+                    event.currentTarget,
+                  );
+                }}
               >
                 <FileTypeIcon name={file.name} mediaType={file.mediaType} />
                 <span dir="auto" className="truncate">

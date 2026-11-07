@@ -213,13 +213,23 @@ export function useComposerAttachments(options: Options) {
     current.input.current?.insertAttachments([entry]);
     current.attached();
   }
-  function message(text: string) {
+  function message(text: string, context?: ComposerAttachment) {
+    const current = referenced(text);
+    if (context && !current.some((file) => file.id === context.id)) {
+      if (current.length >= 20) throw new Error("A message can include up to 20 files.");
+      if (
+        context.mediaType.startsWith("image/") &&
+        current.filter((file) => file.mediaType.startsWith("image/")).length >= 4
+      )
+        throw new Error("A message can include up to 4 images.");
+      text = `${text}\n\n${attachmentReference(context.id, context.name)}`;
+    }
     const ids = new Set<string>();
     const sources: { id: string; file: File }[] = [];
     const body = attachmentParts(text)
       .map((part) => {
         if ("text" in part) return part.text;
-        const file = lookup(part.id);
+        const file = part.id === context?.id ? context : lookup(part.id);
         if (!file || (!file.artifact && !file.file))
           throw new Error("Lampiran belum tersedia. Pilih ulang file tersebut.");
         const problem = issue(file.mediaType);

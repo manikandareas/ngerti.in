@@ -1,0 +1,364 @@
+$ bun --filter @ngertiin/web-client build
+@ngertiin/web-client build: vite v8.3.5 building client environment for production...
+@ngertiin/web-client build: transforming...
+@ngertiin/web-client build: ✓ 8588 modules transformed.
+@ngertiin/web-client build: rendering chunks...
+@ngertiin/web-client build: computing gzip size...
+@ngertiin/web-client build: dist/pdfjs/cmaps/CNS2-V.bcmap                                       0.09 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/Roman.bcmap                                        0.09 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/Katakana.bcmap                                     0.10 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/ETenms-B5-H.bcmap                                  0.10 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/UniJIS-UCS2-HW-H.bcmap                             0.11 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/Hiragana.bcmap                                     0.12 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/Hankaku.bcmap                                      0.13 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/B5-V.bcmap                                         0.14 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/CNS1-V.bcmap                                       0.14 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/B5pc-V.bcmap                                       0.14 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/HKdla-B5-V.bcmap                                   0.14 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/HKdlb-B5-V.bcmap                                   0.14 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/HKgccs-B5-V.bcmap                                  0.14 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/HKm314-B5-V.bcmap                                  0.14 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/HKm471-B5-V.bcmap                                  0.14 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/UniCNS-UCS2-V.bcmap                                0.15 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/UniCNS-UTF16-V.bcmap                               0.15 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/UniCNS-UTF8-V.bcmap                                0.15 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/ETHK-B5-V.bcmap                                    0.15 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/ETen-B5-V.bcmap                                    0.15 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/HKscs-B5-V.bcmap                                   0.15 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/KSC-V.bcmap                                        0.16 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/UniCNS-UTF32-V.bcmap                               0.16 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/KSC-EUC-V.bcmap                                    0.16 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/UniKS-UTF16-V.bcmap                                0.16 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/KSC-Johab-V.bcmap                                  0.16 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/KSCms-UHC-V.bcmap                                  0.16 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/KSCpc-EUC-V.bcmap                                  0.16 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/V.bcmap                                            0.16 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/UniKS-UTF32-V.bcmap                                0.16 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/78-V.bcmap                                         0.16 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/KSCms-UHC-HW-V.bcmap                               0.16 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/UniKS-UTF8-V.bcmap                                 0.16 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/EUC-V.bcmap                                        0.17 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/RKSJ-V.bcmap                                       0.17 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/ETenms-B5-V.bcmap                                  0.17 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/78-EUC-V.bcmap                                     0.17 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/78-RKSJ-V.bcmap                                    0.17 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/GB-V.bcmap                                         0.17 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/GBT-V.bcmap                                        0.17 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/UniGB-UTF16-V.bcmap                                0.17 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/UniKS-UCS2-V.bcmap                                 0.17 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/GB-EUC-V.bcmap                                     0.17 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/WP-Symbol.bcmap                                    0.17 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/GBK-EUC-V.bcmap                                    0.18 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/GBT-EUC-V.bcmap                                    0.18 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/GBKp-EUC-V.bcmap                                   0.18 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/GBpc-EUC-V.bcmap                                   0.18 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/UniGB-UTF8-V.bcmap                                 0.18 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/GBTpc-EUC-V.bcmap                                  0.18 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/UniGB-UTF32-V.bcmap                                0.18 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/UniGB-UCS2-V.bcmap                                 0.19 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/Ext-V.bcmap                                        0.21 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/Adobe-GB1-0.bcmap                                  0.21 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/Ext-RKSJ-V.bcmap                                   0.21 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/GBK2K-V.bcmap                                      0.21 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/Adobe-Japan1-0.bcmap                               0.22 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/Adobe-Japan1-1.bcmap                               0.22 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/Adobe-Japan1-2.bcmap                               0.23 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/Adobe-Korea1-0.bcmap                               0.24 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/Adobe-Japan1-3.bcmap                               0.24 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/Adobe-GB1-1.bcmap                                  0.25 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/NWP-V.bcmap                                        0.25 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/90pv-RKSJ-V.bcmap                                  0.26 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/Add-V.bcmap                                        0.28 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/Add-RKSJ-V.bcmap                                   0.28 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/78ms-RKSJ-V.bcmap                                  0.29 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/90ms-RKSJ-V.bcmap                                  0.29 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/90msp-RKSJ-V.bcmap                                 0.29 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/Adobe-CNS1-0.bcmap                                 0.31 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/Adobe-Japan1-4.bcmap                               0.33 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/Adobe-CNS1-1.bcmap                                 0.37 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/Adobe-CNS1-2.bcmap                                 0.37 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/Adobe-Korea1-1.bcmap                               0.38 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/Adobe-Korea1-2.bcmap                               0.39 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/Adobe-CNS1-3.bcmap                                 0.40 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/Adobe-CNS1-4.bcmap                                 0.40 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/Adobe-CNS1-5.bcmap                                 0.40 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/Adobe-CNS1-6.bcmap                                 0.40 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/Adobe-Japan1-5.bcmap                               0.43 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/Adobe-GB1-2.bcmap                                  0.46 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/Adobe-GB1-3.bcmap                                  0.47 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/Adobe-Japan1-6.bcmap                               0.48 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/CNS2-H.bcmap                                       0.50 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/GB-H.bcmap                                         0.52 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/RKSJ-H.bcmap                                       0.53 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/GB-EUC-H.bcmap                                     0.54 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/H.bcmap                                            0.55 kB
+@ngertiin/web-client build: dist/pdfjs/wasm/LICENSE_PDFJS_JBIG2                                 0.55 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/GBpc-EUC-H.bcmap                                   0.55 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/EUC-H.bcmap                                        0.57 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/Adobe-GB1-4.bcmap                                  0.60 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/Adobe-GB1-5.bcmap                                  0.62 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/UniJIS-UTF16-V.bcmap                               0.64 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/UniJIS2004-UTF16-V.bcmap                           0.64 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/UniJIS-UCS2-V.bcmap                                0.66 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/UniJIS-UTF32-V.bcmap                               0.67 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/UniJIS-UTF8-V.bcmap                                0.67 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/UniJIS-UCS2-HW-V.bcmap                             0.68 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/UniJIS2004-UTF32-V.bcmap                           0.68 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/UniJIS2004-UTF8-V.bcmap                            0.68 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/UniJISX0213-UTF32-V.bcmap                          0.68 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/UniJISX02132004-UTF32-V.bcmap                      0.68 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/UniJISPro-UCS2-V.bcmap                             0.68 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/UniJISPro-UCS2-HW-V.bcmap                          0.70 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/CNS1-H.bcmap                                       0.70 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/90msp-RKSJ-H.bcmap                                 0.71 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/90ms-RKSJ-H.bcmap                                  0.72 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/UniJISPro-UTF8-V.bcmap                             0.72 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/83pv-RKSJ-H.bcmap                                  0.90 kB
+@ngertiin/web-client build: dist/index.html                                                     0.96 kB │ gzip:   0.43 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/90pv-RKSJ-H.bcmap                                  0.98 kB
+@ngertiin/web-client build: dist/pdfjs/wasm/LICENSE_PDFJS_QCMS                                  1.03 kB
+@ngertiin/web-client build: dist/pdfjs/wasm/LICENSE_PDFJS_QUICKJS                               1.07 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/B5-H.bcmap                                         1.08 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/B5pc-H.bcmap                                       1.09 kB
+@ngertiin/web-client build: dist/pdfjs/wasm/LICENSE_QCMS                                        1.12 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/ETen-B5-H.bcmap                                    1.12 kB
+@ngertiin/web-client build: dist/pdfjs/wasm/LICENSE_QUICKJS                                     1.13 kB
+@ngertiin/web-client build: dist/pdfjs/wasm/LICENSE_PDFJS_OPENJPEG                              1.28 kB
+@ngertiin/web-client build: dist/pdfjs/standard_fonts/LICENSE_FOXIT                             1.55 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/HKm314-B5-H.bcmap                                  1.77 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/CNS-EUC-H.bcmap                                    1.78 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/KSC-H.bcmap                                        1.83 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/KSC-EUC-H.bcmap                                    1.84 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/CNS-EUC-V.bcmap                                    1.92 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/KSCpc-EUC-H.bcmap                                  2.02 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/LICENSE                                            2.08 kB
+@ngertiin/web-client build: dist/pdfjs/wasm/LICENSE_OPENJPEG                                    2.11 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/HKm471-B5-H.bcmap                                  2.17 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/HKgccs-B5-H.bcmap                                  2.29 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/78-H.bcmap                                         2.37 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/78-RKSJ-H.bcmap                                    2.39 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/78-EUC-H.bcmap                                     2.40 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/Add-RKSJ-H.bcmap                                   2.41 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/HKdlb-B5-H.bcmap                                   2.41 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/Add-H.bcmap                                        2.41 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/Ext-H.bcmap                                        2.53 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/Ext-RKSJ-H.bcmap                                   2.54 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/78ms-RKSJ-H.bcmap                                  2.65 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/HKdla-B5-H.bcmap                                   2.65 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/NWP-H.bcmap                                        2.76 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/KSCms-UHC-H.bcmap                                  2.78 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/KSCms-UHC-HW-H.bcmap                               2.78 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/ETHK-B5-H.bcmap                                    4.42 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/HKscs-B5-H.bcmap                                   4.43 kB
+@ngertiin/web-client build: dist/assets/geist-mono-symbols2-wght-normal-CO5SzqOn.woff2          5.81 kB
+@ngertiin/web-client build: dist/assets/geist-mono-cyrillic-ext-wght-normal-X_5orZeX.woff2      6.17 kB
+@ngertiin/web-client build: dist/pdfjs/wasm/quickjs-eval.js                                     6.23 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/GBT-H.bcmap                                        7.26 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/GBT-EUC-H.bcmap                                    7.29 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/GBTpc-EUC-H.bcmap                                  7.29 kB
+@ngertiin/web-client build: dist/assets/geist-cyrillic-ext-wght-normal-DjL33-gN.woff2           7.42 kB
+@ngertiin/web-client build: dist/assets/geist-mono-vietnamese-wght-normal-DadHysG0.woff2        7.69 kB
+@ngertiin/web-client build: dist/assets/geist-vietnamese-wght-normal-6IgcOCM7.woff2             8.00 kB
+@ngertiin/web-client build: dist/pdfjs/wasm/LICENSE_JBIG2                                      12.86 kB
+@ngertiin/web-client build: dist/assets/geist-mono-cyrillic-wght-normal-DiZS0aHC.woff2         12.94 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/GBKp-EUC-H.bcmap                                  14.68 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/GBK-EUC-H.bcmap                                   14.69 kB
+@ngertiin/web-client build: dist/assets/geist-mono-latin-ext-wght-normal-Bwz-egvJ.woff2        14.69 kB
+@ngertiin/web-client build: dist/assets/geist-cyrillic-wght-normal-BEAKL7Jp.woff2              15.08 kB
+@ngertiin/web-client build: dist/assets/geist-latin-ext-wght-normal-DC-KSUi6.woff2             16.51 kB
+@ngertiin/web-client build: dist/pdfjs/standard_fonts/FoxitSymbol.pfb                          16.72 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/KSC-Johab-H.bcmap                                 16.79 kB
+@ngertiin/web-client build: dist/pdfjs/standard_fonts/FoxitFixed.pfb                           17.59 kB
+@ngertiin/web-client build: dist/pdfjs/standard_fonts/FoxitFixedBold.pfb                       18.05 kB
+@ngertiin/web-client build: dist/pdfjs/standard_fonts/FoxitFixedItalic.pfb                     18.74 kB
+@ngertiin/web-client build: dist/pdfjs/standard_fonts/FoxitFixedBoldItalic.pfb                 19.15 kB
+@ngertiin/web-client build: dist/pdfjs/standard_fonts/FoxitSerifBold.pfb                       19.39 kB
+@ngertiin/web-client build: dist/pdfjs/standard_fonts/FoxitSerif.pfb                           19.46 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/GBK2K-H.bcmap                                     19.66 kB
+@ngertiin/web-client build: dist/pdfjs/standard_fonts/FoxitSerifBoldItalic.pfb                 20.73 kB
+@ngertiin/web-client build: dist/pdfjs/standard_fonts/FoxitSerifItalic.pfb                     21.22 kB
+@ngertiin/web-client build: dist/pdfjs/standard_fonts/LICENSE_LIBERATION                       22.15 kB
+@ngertiin/web-client build: dist/assets/geist-mono-latin-wght-normal-XN7g48iV.woff2            23.12 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/Adobe-Korea1-UCS2.bcmap                           23.29 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/UniJIS-UCS2-H.bcmap                               25.43 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/UniKS-UCS2-H.bcmap                                25.78 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/UniKS-UTF16-H.bcmap                               26.32 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/UniKS-UTF32-H.bcmap                               26.45 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/UniKS-UTF8-H.bcmap                                27.79 kB
+@ngertiin/web-client build: dist/assets/geist-latin-wght-normal-BgDaEnEv.woff2                 29.40 kB
+@ngertiin/web-client build: dist/pdfjs/standard_fonts/FoxitDingbats.pfb                        29.51 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/Adobe-GB1-UCS2.bcmap                              33.97 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/UniJIS-UTF16-H.bcmap                              39.44 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/UniJIS2004-UTF16-H.bcmap                          39.53 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/UniJISX0213-UTF32-H.bcmap                         40.51 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/UniJIS-UTF32-H.bcmap                              40.53 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/UniJISX02132004-UTF32-H.bcmap                     40.60 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/UniJIS2004-UTF32-H.bcmap                          40.63 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/Adobe-Japan1-UCS2.bcmap                           40.95 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/Adobe-CNS1-UCS2.bcmap                             41.19 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/UniJIS-UTF8-H.bcmap                               41.69 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/UniJIS2004-UTF8-H.bcmap                           41.77 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/UniGB-UCS2-H.bcmap                                43.36 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/UniGB-UTF16-H.bcmap                               44.08 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/UniGB-UTF32-H.bcmap                               45.73 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/UniGB-UTF8-H.bcmap                                46.83 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/UniCNS-UCS2-H.bcmap                               48.28 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/UniCNS-UTF16-H.bcmap                              50.41 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/UniCNS-UTF32-H.bcmap                              52.67 kB
+@ngertiin/web-client build: dist/pdfjs/cmaps/UniCNS-UTF8-H.bcmap                               53.62 kB
+@ngertiin/web-client build: dist/pdfjs/wasm/qcms_bg.wasm                                       96.58 kB │ gzip:  36.09 kB
+@ngertiin/web-client build: dist/pdfjs/wasm/jbig2.wasm                                        103.67 kB │ gzip:  41.64 kB
+@ngertiin/web-client build: dist/pdfjs/wasm/jbig2_nowasm_fallback.js                          132.43 kB
+@ngertiin/web-client build: dist/pdfjs/standard_fonts/LiberationSans-BoldItalic.ttf           135.12 kB
+@ngertiin/web-client build: dist/pdfjs/standard_fonts/LiberationSans-Bold.ttf                 137.05 kB
+@ngertiin/web-client build: dist/pdfjs/standard_fonts/LiberationSans-Regular.ttf              139.51 kB
+@ngertiin/web-client build: dist/pdfjs/standard_fonts/LiberationSans-Italic.ttf               162.03 kB
+@ngertiin/web-client build: dist/pdfjs/wasm/openjpeg.wasm                                     220.81 kB │ gzip:  71.92 kB
+@ngertiin/web-client build: dist/pdfjs/wasm/openjpeg_nowasm_fallback.js                       338.45 kB
+@ngertiin/web-client build: dist/pdfjs/wasm/quickjs-eval.wasm                                 469.10 kB │ gzip: 220.69 kB
+@ngertiin/web-client build: dist/assets/pdf.worker.min-CIqJB0yW.mjs                         1,271.91 kB
+@ngertiin/web-client build: dist/assets/api-client-D0kGTlOp.css                                 0.29 kB │ gzip:   0.19 kB
+@ngertiin/web-client build: dist/assets/pdf-content-PvL7ZT4c.css                                2.52 kB │ gzip:   0.97 kB
+@ngertiin/web-client build: dist/assets/workspace-layout-BlDmFCNQ.css                           2.89 kB │ gzip:   1.01 kB
+@ngertiin/web-client build: dist/assets/attachment-chip-NuYZJiey.css                            3.26 kB │ gzip:   1.09 kB
+@ngertiin/web-client build: dist/assets/color-studio-B3BfdVsx.css                               5.48 kB │ gzip:   1.63 kB
+@ngertiin/web-client build: dist/assets/assistant-studio-C89XhYbl.css                           5.92 kB │ gzip:   1.66 kB
+@ngertiin/web-client build: dist/assets/settings-dialog-C7RUae7i.css                           11.96 kB │ gzip:   2.49 kB
+@ngertiin/web-client build: dist/assets/work-activity-3L_G9v_W.css                             12.02 kB │ gzip:   2.83 kB
+@ngertiin/web-client build: dist/assets/avatar-studio-BkV9_k8g.css                             12.17 kB │ gzip:   2.86 kB
+@ngertiin/web-client build: dist/assets/index-C3eFq2fu.css                                    258.90 kB │ gzip:  40.37 kB
+@ngertiin/web-client build: dist/assets/c-Cz4nF6n_.js                                           0.04 kB │ gzip:   0.06 kB
+@ngertiin/web-client build: dist/assets/cpp-DzjeI0uH.js                                         0.04 kB │ gzip:   0.06 kB
+@ngertiin/web-client build: dist/assets/css-DgaLhXQH.js                                         0.04 kB │ gzip:   0.06 kB
+@ngertiin/web-client build: dist/assets/jsx-C4yDKi0A.js                                         0.04 kB │ gzip:   0.06 kB
+@ngertiin/web-client build: dist/assets/lua-fPRBWD-V.js                                         0.04 kB │ gzip:   0.06 kB
+@ngertiin/web-client build: dist/assets/sql-CfM2IJm3.js                                         0.04 kB │ gzip:   0.06 kB
+@ngertiin/web-client build: dist/assets/tsx-CGosfAUg.js                                         0.04 kB │ gzip:   0.06 kB
+@ngertiin/web-client build: dist/assets/xml-DuKfbPI6.js                                         0.04 kB │ gzip:   0.06 kB
+@ngertiin/web-client build: dist/assets/html-BWDvXlHg.js                                        0.04 kB │ gzip:   0.06 kB
+@ngertiin/web-client build: dist/assets/java-_ATy9zCa.js                                        0.04 kB │ gzip:   0.06 kB
+@ngertiin/web-client build: dist/assets/json-C3WlssX3.js                                        0.04 kB │ gzip:   0.06 kB
+@ngertiin/web-client build: dist/assets/yaml-DDA_XMNu.js                                        0.04 kB │ gzip:   0.06 kB
+@ngertiin/web-client build: dist/assets/graphql-BHtseKAV.js                                     0.04 kB │ gzip:   0.06 kB
+@ngertiin/web-client build: dist/assets/javascript-CpIGwZ_Y.js                                  0.05 kB │ gzip:   0.07 kB
+@ngertiin/web-client build: dist/assets/typescript-Bb1J8qyy.js                                  0.05 kB │ gzip:   0.07 kB
+@ngertiin/web-client build: dist/assets/bash-CVTB3cr6.js                                        0.05 kB │ gzip:   0.07 kB
+@ngertiin/web-client build: dist/assets/Tick02Icon-BZZvPScA.js                                  0.15 kB │ gzip:   0.14 kB
+@ngertiin/web-client build: dist/assets/dist-D8Wfxh48.js                                        0.15 kB │ gzip:   0.15 kB
+@ngertiin/web-client build: dist/assets/shared-ByFwMwH2.js                                      0.17 kB │ gzip:   0.16 kB
+@ngertiin/web-client build: dist/assets/ArrowDown01Icon-DDfnNeUj.js                             0.19 kB │ gzip:   0.15 kB
+@ngertiin/web-client build: dist/assets/ArrowRight01Icon-CpyfVR64.js                            0.19 kB │ gzip:   0.15 kB
+@ngertiin/web-client build: dist/assets/ArrowLeft01Icon-BJdQ1Oac.js                             0.19 kB │ gzip:   0.16 kB
+@ngertiin/web-client build: dist/assets/ArrowUp01Icon-DCpTLFPv.js                               0.21 kB │ gzip:   0.16 kB
+@ngertiin/web-client build: dist/assets/skeleton-TVN8HzRg.js                                    0.27 kB │ gzip:   0.22 kB
+@ngertiin/web-client build: dist/assets/Add01Icon-Cukx9Onc.js                                   0.29 kB │ gzip:   0.16 kB
+@ngertiin/web-client build: dist/assets/spinner-ByGDue8_.js                                     0.33 kB │ gzip:   0.25 kB
+@ngertiin/web-client build: dist/assets/use-mobile-DZ8Nv_dd.js                                  0.34 kB │ gzip:   0.25 kB
+@ngertiin/web-client build: dist/assets/Search01Icon-uevAzKav.js                                0.36 kB │ gzip:   0.18 kB
+@ngertiin/web-client build: dist/assets/collapsible-ClKM2JNH.js                                 0.36 kB │ gzip:   0.20 kB
+@ngertiin/web-client build: dist/assets/dist-CigTHNat.js                                        0.38 kB │ gzip:   0.28 kB
+@ngertiin/web-client build: dist/assets/textarea-C6b4pbsn.js                                    0.70 kB │ gzip:   0.41 kB
+@ngertiin/web-client build: dist/assets/SparklesIcon-DTZnteLJ.js                                0.76 kB │ gzip:   0.35 kB
+@ngertiin/web-client build: dist/assets/Sun03Icon-B9BIpmGE.js                                   0.83 kB │ gzip:   0.40 kB
+@ngertiin/web-client build: dist/assets/Download04Icon-C2-aGxK5.js                              0.88 kB │ gzip:   0.42 kB
+@ngertiin/web-client build: dist/assets/separator-CcnTlWbI.js                                   0.90 kB │ gzip:   0.50 kB
+@ngertiin/web-client build: dist/assets/alert-CjtkK7Ct.js                                       1.54 kB │ gzip:   0.64 kB
+@ngertiin/web-client build: dist/assets/dockerfile-IyjqRm3v.js                                  1.73 kB │ gzip:   0.59 kB
+@ngertiin/web-client build: dist/assets/message-BZIv7b_s.js                                     1.82 kB │ gzip:   0.66 kB
+@ngertiin/web-client build: dist/assets/dist-D4KpNbzh.js                                        2.42 kB │ gzip:   1.06 kB
+@ngertiin/web-client build: dist/assets/avatar-BUSMvwrl.js                                      2.45 kB │ gzip:   1.13 kB
+@ngertiin/web-client build: dist/assets/item-BlsTtFWZ.js                                        2.51 kB │ gzip:   0.94 kB
+@ngertiin/web-client build: dist/assets/diff-woXpYk--.js                                        2.56 kB │ gzip:   0.68 kB
+@ngertiin/web-client build: dist/assets/actions-VYAroylt.js                                     2.76 kB │ gzip:   1.12 kB
+@ngertiin/web-client build: dist/assets/json-B88Oqtu5.js                                        2.81 kB │ gzip:   0.76 kB
+@ngertiin/web-client build: dist/assets/input-group-CHq7EpRM.js                                 3.07 kB │ gzip:   1.16 kB
+@ngertiin/web-client build: dist/assets/jsonc-CYpm1nAK.js                                       3.10 kB │ gzip:   0.78 kB
+@ngertiin/web-client build: dist/assets/sheet-CipNY8RE.js                                       3.21 kB │ gzip:   1.00 kB
+@ngertiin/web-client build: dist/assets/json5-BR5RXkoi.js                                       3.24 kB │ gzip:   0.82 kB
+@ngertiin/web-client build: dist/assets/dist-DMp0Mi9m.js                                        3.37 kB │ gzip:   1.47 kB
+@ngertiin/web-client build: dist/assets/bubble-BJSLnoBY.js                                      3.63 kB │ gzip:   1.07 kB
+@ngertiin/web-client build: dist/assets/react-dom-yzlDZCE2.js                                   3.86 kB │ gzip:   1.40 kB
+@ngertiin/web-client build: dist/assets/switch-OVqGO1TT.js                                      5.01 kB │ gzip:   1.99 kB
+@ngertiin/web-client build: dist/assets/alert-dialog-BHaqohGJ.js                                5.01 kB │ gzip:   1.54 kB
+@ngertiin/web-client build: dist/assets/feedback-3yXPvPBE.js                                    5.29 kB │ gzip:   1.87 kB
+@ngertiin/web-client build: dist/assets/xml-WY0zc4PG.js                                         5.38 kB │ gzip:   1.20 kB
+@ngertiin/web-client build: dist/assets/popover-D9FcFc4m.js                                     6.26 kB │ gzip:   2.36 kB
+@ngertiin/web-client build: dist/assets/toml-CcmNWLt0.js                                        6.41 kB │ gzip:   1.28 kB
+@ngertiin/web-client build: dist/assets/card-TCSHzvRI.js                                        6.51 kB │ gzip:   2.19 kB
+@ngertiin/web-client build: dist/assets/proto-DB4EqR-F.js                                       6.54 kB │ gzip:   1.41 kB
+@ngertiin/web-client build: dist/assets/r-C5FwQflr.js                                           6.72 kB │ gzip:   1.83 kB
+@ngertiin/web-client build: dist/assets/dropdown-menu-DRi9BPHH.js                               6.74 kB │ gzip:   2.22 kB
+@ngertiin/web-client build: dist/assets/color-studio-E718-BVk.js                                6.87 kB │ gzip:   2.73 kB
+@ngertiin/web-client build: dist/assets/badge-C93x_cqU.js                                       7.09 kB │ gzip:   2.43 kB
+@ngertiin/web-client build: dist/assets/theme-switcher-B7290ZkV.js                              7.16 kB │ gzip:   2.46 kB
+@ngertiin/web-client build: dist/assets/dialog-BtFtRgDu.js                                      7.76 kB │ gzip:   2.73 kB
+@ngertiin/web-client build: dist/assets/progress-SIV0m2BD.js                                    8.37 kB │ gzip:   3.05 kB
+@ngertiin/web-client build: dist/assets/dart-CHZY9Xhz.js                                        8.60 kB │ gzip:   1.99 kB
+@ngertiin/web-client build: dist/assets/kotlin-DhhofPvG.js                                      8.77 kB │ gzip:   2.12 kB
+@ngertiin/web-client build: dist/assets/makefile-Dixweg8N.js                                    8.95 kB │ gzip:   1.76 kB
+@ngertiin/web-client build: dist/assets/sass-DXrisJhu.js                                        9.28 kB │ gzip:   2.48 kB
+@ngertiin/web-client build: dist/assets/HugeiconsIcon-W4-erZsd.js                               9.75 kB │ gzip:   3.80 kB
+@ngertiin/web-client build: dist/assets/dist-BqTs4SA-.js                                        9.82 kB │ gzip:   3.65 kB
+@ngertiin/web-client build: dist/assets/home-0I9ZPg9R.js                                       10.36 kB │ gzip:   2.95 kB
+@ngertiin/web-client build: dist/assets/yaml-DijMHRDA.js                                       10.49 kB │ gzip:   2.26 kB
+@ngertiin/web-client build: dist/assets/wasm-ByWQv1Qj.js                                       12.00 kB │ gzip:   2.17 kB
+@ngertiin/web-client build: dist/assets/fish-BJitypiv.js                                       13.03 kB │ gzip:   1.73 kB
+@ngertiin/web-client build: dist/assets/Cancel01Icon-_VG665vM.js                               13.42 kB │ gzip:   5.19 kB
+@ngertiin/web-client build: dist/assets/github-light-default-BXViO-2h.js                       14.15 kB │ gzip:   3.02 kB
+@ngertiin/web-client build: dist/assets/github-dark-default-DXG-b-1a.js                        14.43 kB │ gzip:   3.12 kB
+@ngertiin/web-client build: dist/assets/scroll-area-DjVgDNX-.js                                14.62 kB │ gzip:   4.51 kB
+@ngertiin/web-client build: dist/assets/input-xW-Qvuv3.js                                      15.14 kB │ gzip:   5.50 kB
+@ngertiin/web-client build: dist/assets/rust-DpiIf5JO.js                                       15.16 kB │ gzip:   2.72 kB
+@ngertiin/web-client build: dist/assets/overlays-CO7_gjYg.js                                   15.42 kB │ gzip:   4.72 kB
+@ngertiin/web-client build: dist/assets/lua-DjuecEsk.js                                        15.53 kB │ gzip:   3.15 kB
+@ngertiin/web-client build: dist/assets/graphql-f69H1Mm0.js                                    18.00 kB │ gzip:   2.49 kB
+@ngertiin/web-client build: dist/assets/avatar-studio-CEfliJuV.js                              19.58 kB │ gzip:   6.86 kB
+@ngertiin/web-client build: dist/assets/powershell-QtSnmXcu.js                                 20.14 kB │ gzip:   4.05 kB
+@ngertiin/web-client build: dist/assets/design-system-Ci4pzKpk.js                              22.47 kB │ gzip:   7.76 kB
+@ngertiin/web-client build: dist/assets/sql-CNu3Or2W.js                                        23.65 kB │ gzip:   7.51 kB
+@ngertiin/web-client build: dist/assets/api-client-BbKcuZp7.js                                 25.66 kB │ gzip:  10.66 kB
+@ngertiin/web-client build: dist/assets/attachment-chip-BdMyPftz.js                            26.65 kB │ gzip:  10.51 kB
+@ngertiin/web-client build: dist/assets/java-BtIQNnN0.js                                       27.20 kB │ gzip:   4.25 kB
+@ngertiin/web-client build: dist/assets/scss-8bKmll0B.js                                       27.20 kB │ gzip:   4.18 kB
+@ngertiin/web-client build: dist/assets/assistant-studio-BgSZNHEG.js                           27.59 kB │ gzip:  10.08 kB
+@ngertiin/web-client build: dist/assets/settings-dialog-Cx1moo8i.js                            29.41 kB │ gzip:   9.25 kB
+@ngertiin/web-client build: dist/assets/dist-B-AMOXYS.js                                       29.89 kB │ gzip:  12.42 kB
+@ngertiin/web-client build: dist/assets/drawer-DYCXy0-8.js                                     31.57 kB │ gzip:   9.30 kB
+@ngertiin/web-client build: dist/assets/select-B6K78n3n.js                                     35.50 kB │ gzip:  10.47 kB
+@ngertiin/web-client build: dist/assets/shellscript-CqHdAlCp.js                                41.46 kB │ gzip:   6.07 kB
+@ngertiin/web-client build: dist/assets/go-rLFTqkRN.js                                         46.81 kB │ gzip:   5.14 kB
+@ngertiin/web-client build: dist/assets/navigation-CglP0l-H.js                                 52.61 kB │ gzip:  15.41 kB
+@ngertiin/web-client build: dist/assets/css-BGIxQoYs.js                                        53.35 kB │ gzip:  12.47 kB
+@ngertiin/web-client build: dist/assets/ruby-DVcErFQW.js                                       54.76 kB │ gzip:   7.10 kB
+@ngertiin/web-client build: dist/assets/conversation-BYjAQBVI.js                               55.92 kB │ gzip:  16.49 kB
+@ngertiin/web-client build: dist/assets/html-BMn1ogTm.js                                       57.24 kB │ gzip:  11.74 kB
+@ngertiin/web-client build: dist/assets/engine-javascript-Ceng43A0.js                          57.70 kB │ gzip:  20.24 kB
+@ngertiin/web-client build: dist/assets/markdown-BYOwaDjH.js                                   59.32 kB │ gzip:   5.66 kB
+@ngertiin/web-client build: dist/assets/python-gzcpVVnB.js                                     69.94 kB │ gzip:   9.09 kB
+@ngertiin/web-client build: dist/assets/c-SSSlmE39.js                                          72.10 kB │ gzip:  10.49 kB
+@ngertiin/web-client build: dist/assets/core-DE3HhlkW.js                                       85.72 kB │ gzip:  27.39 kB
+@ngertiin/web-client build: dist/assets/swift-CyEgAFGc.js                                      87.22 kB │ gzip:  14.79 kB
+@ngertiin/web-client build: dist/assets/csharp-dmMxLVLW.js                                     91.43 kB │ gzip:  10.79 kB
+@ngertiin/web-client build: dist/assets/less-DVTAwKKz.js                                       97.62 kB │ gzip:  14.84 kB
+@ngertiin/web-client build: dist/assets/php-CUj1wjLQ.js                                       113.12 kB │ gzip:  28.84 kB
+@ngertiin/web-client build: dist/assets/mdx-DQZ5AkYe.js                                       136.10 kB │ gzip:  23.54 kB
+@ngertiin/web-client build: dist/assets/html-preview-DzXfOz3e.js                              157.97 kB │ gzip:  42.11 kB
+@ngertiin/web-client build: dist/assets/javascript-BzbQS41l.js                                174.81 kB │ gzip:  16.62 kB
+@ngertiin/web-client build: dist/assets/tsx-BOvsFOI6.js                                       175.52 kB │ gzip:  16.61 kB
+@ngertiin/web-client build: dist/assets/jsx-D3KKoC5L.js                                       177.77 kB │ gzip:  16.70 kB
+@ngertiin/web-client build: dist/assets/typescript-j_1H8WHN.js                                181.06 kB │ gzip:  16.23 kB
+@ngertiin/web-client build: dist/assets/workspace-layout-DOlzd6m0.js                          185.65 kB │ gzip:  57.00 kB
+@ngertiin/web-client build: dist/assets/forms-DQSPTsvi.js                                     214.73 kB │ gzip:  69.30 kB
+@ngertiin/web-client build: dist/assets/index-Bd5Z6MO1.js                                     384.96 kB │ gzip: 123.93 kB
+@ngertiin/web-client build: dist/assets/display-Bwbmrs5v.js                                   412.75 kB │ gzip: 125.85 kB
+@ngertiin/web-client build: dist/assets/pdf-content-CugzPaWW.js                               450.48 kB │ gzip: 135.81 kB
+@ngertiin/web-client build: dist/assets/work-activity-BmTf9RQU.js                             514.83 kB │ gzip: 163.07 kB
+@ngertiin/web-client build: dist/assets/cpp-Cts1PyIS.js                                       796.95 kB │ gzip:  60.65 kB
+@ngertiin/web-client build: 
+@ngertiin/web-client build: [plugin builtin:vite-reporter] 
+@ngertiin/web-client build: (!) Some chunks are larger than 500 kB after minification. Consider:
+@ngertiin/web-client build: - Using dynamic import() to code-split the application
+@ngertiin/web-client build: - Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+@ngertiin/web-client build: - Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+@ngertiin/web-client build: ✓ built in 2.63s
+@ngertiin/web-client build: Exited with code 0

@@ -10,20 +10,20 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useApiResource } from "@/hooks/use-api-resource";
 import type { MachineFiles } from "@/types/machine";
-import { type FileView, FileViewer } from "./file-viewer";
+import { useContentViewer, workingFileTarget } from "../lib/content-viewer";
 import { PanelCard, PanelEmpty } from "./panel-primitives";
 
 export function WorkingFiles({ cursor }: { cursor: number }) {
-  const [path, setPath] = useState("");
-  const [after, setAfter] = useState("");
-  const [preview, setPreview] = useState<FileView | null>(null);
+  const [local, setLocal] = useState({ path: "", after: "" });
+  const viewer = useContentViewer();
+  const { path, after } = viewer?.fileBrowser ?? local;
+  const navigate = viewer?.browseFiles ?? setLocal;
   const listing = useApiResource<MachineFiles>(
     `/v1/machine/files?${new URLSearchParams({ path, after, limit: "100" })}`,
     cursor,
   );
   function folder(next: string) {
-    setPath(next);
-    setAfter("");
+    navigate({ path: next, after: "" });
   }
   return (
     <>
@@ -47,7 +47,9 @@ export function WorkingFiles({ cursor }: { cursor: number }) {
               size="icon-sm"
               aria-label={after ? "First page" : "Parent folder"}
               onClick={() =>
-                after ? setAfter("") : folder(path.split("/").slice(0, -1).join("/"))
+                after
+                  ? navigate({ path, after: "" })
+                  : folder(path.split("/").slice(0, -1).join("/"))
               }
             >
               <HugeiconsIcon icon={ArrowLeft01Icon} size={14} />
@@ -76,11 +78,12 @@ export function WorkingFiles({ cursor }: { cursor: number }) {
               <div key={entry.path} className="flex min-h-[46px] items-center px-3.5 py-2">
                 <button
                   type="button"
+                  data-viewer-file={entry.path}
                   className="flex min-w-0 flex-1 items-center gap-2.5 py-1 text-left hover:text-primary"
                   onClick={() =>
                     entry.type === "directory"
                       ? folder(entry.path)
-                      : setPreview({ name: entry.name, url })
+                      : viewer?.open(workingFileTarget({ name: entry.name, url }))
                   }
                   disabled={!["directory", "file"].includes(entry.type)}
                 >
@@ -108,7 +111,7 @@ export function WorkingFiles({ cursor }: { cursor: number }) {
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => setAfter(listing.data?.next_after ?? "")}
+              onClick={() => navigate({ path, after: listing.data?.next_after ?? "" })}
             >
               Next files
             </Button>
@@ -119,7 +122,6 @@ export function WorkingFiles({ cursor }: { cursor: number }) {
         These live files and attachment copies are shared with all your agents. Published files
         above remain saved copies.
       </p>
-      <FileViewer file={preview} close={() => setPreview(null)} />
     </>
   );
 }

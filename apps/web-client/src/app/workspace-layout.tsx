@@ -58,6 +58,10 @@ import {
 import { ComposerStopPicker } from "@/features/conversation/components/composer-stop-picker";
 import { ComputerActivity } from "@/features/conversation/components/computer-activity";
 import { ContextPanel, type PanelLocation } from "@/features/conversation/components/context-panel";
+import {
+  ConversationContentViewer,
+  ViewerComposerContext,
+} from "@/features/conversation/components/conversation-content-viewer";
 import { ConversationDate } from "@/features/conversation/components/conversation-date";
 import {
   ConversationActionsSkeleton,
@@ -83,6 +87,10 @@ import { WorkActivity } from "@/features/conversation/components/work-activity";
 import { WorkspaceProviders } from "@/features/conversation/components/workspace-providers";
 import { attachmentParts } from "@/features/conversation/lib/attachment-references";
 import { useComposerRequests } from "@/features/conversation/lib/composer-requests";
+import {
+  savedFileTarget,
+  useContentViewerController,
+} from "@/features/conversation/lib/content-viewer";
 import {
   conversationActivity,
   waitingForUser,
@@ -177,8 +185,15 @@ export default function Workspace() {
   const [createMenu, setCreateMenu] = useState(false);
   const [createGroupOpen, setCreateGroupOpen] = useState(false);
   const [location, locate] = useState<PanelLocation>({ tab: "detail", id: null });
+  const viewer = useContentViewerController(threadId, (id) => {
+    locate({ tab: "library", id });
+    setDetails(true);
+  });
+  const viewing = viewer.entries.length > 0;
   const currentThread = useRef(threadId);
   currentThread.current = threadId;
+  const resourceSnapshot = useRef(snapshot);
+  resourceSnapshot.current = snapshot;
   const [editing, setEditing] = useState<MessageEntity | null>(null);
   const [editText, setEditText] = useState("");
   const [older, setOlder] = useState<MessageEntity[]>([]);
@@ -300,6 +315,7 @@ export default function Workspace() {
     pendingComposerFocus.current = true;
     focusComposerAfterNavigation.current = navigation && narrowNavigation;
     currentThread.current = id;
+    viewer.clear();
     select(id);
     setOlder([]);
     setOlderParts([]);
@@ -370,9 +386,16 @@ export default function Workspace() {
       return;
     const text = pending ?? draft;
     void act(async () => {
+      const context = pending
+        ? undefined
+        : await viewer.attachment().catch((error) => {
+            if (currentThread.current !== threadId) return undefined;
+            throw error;
+          });
+      if (currentThread.current !== threadId) return;
       const content = pending
         ? { text, artifact_ids: [], sources: [] }
-        : composerFiles.message(text);
+        : composerFiles.message(text, context);
       if (submission.failure) throw new Error(submission.failure);
       if (submission.pending || content.artifact_ids.length) {
         const operation =
@@ -396,6 +419,7 @@ export default function Workspace() {
         } catch (error) {
           if (error instanceof RejectedSubmission && currentThread.current === threadId) {
             composerFiles.restore(error.operation);
+            viewer.removeContext();
             setDraft(error.operation.body.text);
           }
           throw error;
@@ -414,8 +438,11 @@ export default function Workspace() {
               },
         );
       if (currentThread.current !== threadId) return;
+      viewer.clear();
+      setDetails(false);
       setDraft("");
       void conversationScroll.current?.scrollToBottom({ animation: "instant" });
+      requestAnimationFrame(() => composerInput.current?.focus());
     });
   }
 
@@ -521,13 +548,28 @@ export default function Workspace() {
   }
   const openResource = useCallback(
     (kind: "agent" | "files" | "goals" | "routine", id: string) => {
-      if (kind === "files") locate({ tab: "library", id });
-      else if (kind === "agent")
-        locate({ tab: "detail", id: snapshot?.thread.type === "group" ? id : null });
+      const current = resourceSnapshot.current;
+      if (kind === "files") {
+        const artifact = current?.artifacts.find((item) => item.id === id);
+        if (!artifact || !current) return;
+        try {
+          viewer.open({
+            ...savedFileTarget(artifact, current),
+            info: () => {
+              locate({ tab: "library", id });
+              setDetails(true);
+            },
+          });
+        } catch (error) {
+          setError(error instanceof Error ? error.message : "File is unavailable.");
+        }
+        return;
+      } else if (kind === "agent")
+        locate({ tab: "detail", id: current?.thread.type === "group" ? id : null });
       else locate({ tab: "detail", page: kind, id });
       setDetails(true);
     },
-    [snapshot?.thread.type],
+    [viewer.open, setError],
   );
   async function source(id?: string) {
     setDetails(false);
@@ -838,6 +880,7 @@ export default function Workspace() {
       />
     );
   }
+
   function joins(upper: MessageEntity | undefined, lower: MessageEntity | undefined) {
     if (
       !upper ||
@@ -861,6 +904,7 @@ export default function Workspace() {
   }
   return (
     <WorkspaceProviders
+      viewer={viewer}
       input={composerRequests.registry}
       snapshot={snapshot}
       parts={parts}
@@ -928,9 +972,23 @@ export default function Workspace() {
           ref={setConversationSurface}
           className="workspace-main rounded-[16px] flex flex-1 flex-col min-w-0 min-h-0 overflow-hidden bg-background"
           aria-label="Percakapan aktif"
-          data-details={details && !mobile}
+          data-details={details && !mobile && !viewing}
+          data-viewer={viewing}
+          onKeyDown={(event) => {
+            if (viewing && event.key === "Escape" && !event.defaultPrevented) {
+              if (
+                event.target instanceof Element &&
+                event.target.closest('[role="menu"], [role="listbox"]')
+              )
+                return;
+              event.preventDefault();
+              viewer.back();
+            }
+          }}
         >
+          <ConversationContentViewer viewer={viewer} />
           <header
+            inert={viewing}
             aria-busy={!snapshot && !error}
             className={`workspace-chat-header [grid-template-columns:minmax(0,_1fr)_auto_minmax(0,_1fr)] gap-2.5 [padding:10px_20px] grid items-center shrink-0 ${!snapshot && error ? "[&_[data-slot=skeleton]]:animate-none" : ""}`}
           >
@@ -1055,6 +1113,7 @@ export default function Workspace() {
                 key={threadId}
                 contextRef={conversationScroll}
                 className="conversation-viewport min-h-0"
+                inert={viewing}
               >
                 <ConversationContent
                   scrollClassName="conversation-scroll"
@@ -1341,6 +1400,9 @@ export default function Workspace() {
                 }}
                 className="composer-dock [max-width:calc(var(--chat-column-max)_+_40px)] [margin:auto] [padding:12px_20px_16px] w-full shrink-0"
               >
+                {!reply && !editing && (
+                  <ViewerComposerContext viewer={viewer} disabled={busy || pending !== null} />
+                )}
                 {connection?.login !== "authenticated" && (
                   <Button
                     variant="ghost"
@@ -1597,13 +1659,22 @@ export default function Workspace() {
           <aside
             className="workspace-details w-80 [border-left:1px_solid_var(--border-subtle)] [border-radius:0_16px_16px_0] shrink-0 min-h-0 overflow-y-auto bg-background"
             aria-label="Detail percakapan"
+            hidden={viewing}
           >
             {panel}
           </aside>
         )}
-        <Sheet open={details && mobile && !isSettings} onOpenChange={setDetails}>
+        <Sheet
+          open={details && mobile && !isSettings && !viewing}
+          onOpenChange={(open) => {
+            if (!viewing) setDetails(open);
+          }}
+        >
           <SheetContent
             showCloseButton={false}
+            onCloseAutoFocus={(event) => {
+              if (viewing) event.preventDefault();
+            }}
             className="context-sheet gap-0 w-full data-[side=right]:w-full data-[side=right]:sm:max-w-none overflow-y-auto border-0 bg-background p-0"
             onEscapeKeyDown={(event) => {
               const back = Array.from(

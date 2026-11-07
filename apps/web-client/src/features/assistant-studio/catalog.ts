@@ -136,7 +136,7 @@ export const studioSections: StudioSection[] = [
     label: "File & lampiran",
     placement: "Dalam atau di bawah pesan assistant",
     description:
-      "File dapat muncul sebagai chip inline atau tombol lampiran. Klik contoh untuk membuka FileViewer yang juga dipakai percakapan.",
+      "File dapat muncul sebagai chip inline atau tombol lampiran. Contoh studio membuka pratinjau mandiri; percakapan memakai viewer Focus.",
     source: "Answer · InlineReferenceChip · FileActionChip · FileViewer",
     states: states([
       ["inline", "Chip file", "Referensi file di dalam jawaban membuka pratinjau."],

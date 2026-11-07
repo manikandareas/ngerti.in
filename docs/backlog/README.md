@@ -8,6 +8,8 @@ The [2026-11-07 sidebar loading refinement](../verification/sidebar-loading-2026
 
 The [2026-11-07 conversation chronology refinement](../verification/conversation-chronology-2026-11-07/README.md) adds centered day groups and consistent message/card clocks, with Goal/Routine event bars remaining without clocks. It retains NMA-061's status and the open product/distribution gates.
 
+The [2026-11-07 Focus content viewer amendment](NMA-062.md#focus-content-viewer-amendment--2026-11-07) implements the selected conversation file/table composition, with later PDF preview and conversation-style header refinements under the same milestone. Its focused verification and limitations are retained separately; milestone statuses and open product/distribution gates are unchanged.
+
 ## Active milestones
 
 | Order | Milestone | Status | Layer | Depends on |

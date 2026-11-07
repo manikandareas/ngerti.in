@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { Artifact } from "@/types/work";
 import type { Agent, Snapshot, Thread } from "@/types/workspace";
+import { savedFileTarget, useContentViewer } from "../lib/content-viewer";
 import { AppConnections } from "./app-connections";
 import { DetailOverview } from "./detail-overview";
 import { FilesPanel } from "./files-panel";
@@ -69,7 +70,19 @@ export function ContextPanel({
         ?.focus();
     }
   }, [nested, location.page, location.id, headerSlot]);
-  const openFile = (id: string) => locate({ tab: "library", id });
+  const viewer = useContentViewer();
+  const openFile = (id: string) => {
+    const artifact = snapshot.artifacts.find((item) => item.id === id);
+    if (!artifact) return;
+    try {
+      viewer?.open({
+        ...savedFileTarget(artifact, snapshot),
+        info: () => locate({ tab: "library", id }),
+      });
+    } catch {
+      locate({ tab: "library", id });
+    }
+  };
   const openDetail = () => {
     locate({ tab: "detail", id: null });
   };

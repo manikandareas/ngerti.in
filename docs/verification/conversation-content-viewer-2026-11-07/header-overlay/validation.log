@@ -1,0 +1,18 @@
+[WebServer] $ vite preview --host "127.0.0.1" --port "4333" --strictPort
+[WebServer] (node:3220) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 6 tests using 1 worker
+
+(node:3254) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [desktop] › tests/pdf-viewer.spec.ts:49:1 › Focus PDF renders selectable pages, navigates, zooms and downloads original bytes (4.4s)
+  ✓  2 [desktop] › tests/rich-answer.spec.ts:27:3 › rich reply matches source blocks, table/code interactions and safe rendering (dark) (4.8s)
+  ✓  3 [desktop] › tests/work.spec.ts:284:1 › Focus viewer opens files directly, centers titles and renders static HTML without executing it (6.0s)
+(node:4759) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  4 [mobile] › tests/pdf-viewer.spec.ts:49:1 › Focus PDF renders selectable pages, navigates, zooms and downloads original bytes (3.6s)
+  ✓  5 [mobile] › tests/rich-answer.spec.ts:27:3 › rich reply matches source blocks, table/code interactions and safe rendering (dark) (3.0s)
+  ✓  6 [mobile] › tests/work.spec.ts:284:1 › Focus viewer opens files directly, centers titles and renders static HTML without executing it (8.4s)
+
+  6 passed (34.1s)

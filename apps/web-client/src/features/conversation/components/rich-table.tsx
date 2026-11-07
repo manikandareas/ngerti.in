@@ -30,6 +30,7 @@ import {
 } from "@/features/conversation/lib/rich-content-actions";
 import { type TableSort, tableCsv, tableRowOrder } from "@/features/conversation/lib/table-data";
 import { cn } from "@/lib/utils";
+import { useContentViewer } from "../lib/content-viewer";
 
 function TableDialog({
   title,
@@ -96,6 +97,10 @@ export function RichTable({
   const [sort, setSort] = useState<TableSort>(null);
   const [wrap, setWrap] = useState(true);
   const [open, setOpen] = useState(false);
+  const viewer = useContentViewer();
+  const viewerId = useId();
+  const viewerHost = viewer?.hosts[viewerId];
+  const inViewer = viewer?.entries.some((entry) => entry.id === viewerId) ?? false;
   const trigger = useRef<HTMLButtonElement | null>(null);
   const values = useMemo(() => rows.map((row) => row.map((cell) => cell.text)), [rows]);
   const order = useMemo(
@@ -107,6 +112,8 @@ export function RichTable({
       columns.map((column) => column.text),
       order.map((index) => values[index] ?? []),
     );
+  const currentCsv = useRef(csv);
+  currentCsv.current = csv;
   const { state: copied, copy } = useContentCopy(csv, 2500);
   function download() {
     const filename = `${
@@ -115,7 +122,7 @@ export function RichTable({
         .replace(/[\\/:*?"<>|]/g, "_")
         .slice(0, 150) || "table"
     }.csv`;
-    downloadContent(filename, ["\uFEFF", csv()], "text/csv;charset=utf-8");
+    downloadContent(filename, ["\uFEFF", currentCsv.current()], "text/csv;charset=utf-8");
   }
   function sortBy(column: number) {
     setSort(
@@ -210,7 +217,28 @@ export function RichTable({
           title="Perbesar tabel"
           onClick={(event) => {
             trigger.current = event.currentTarget;
-            setOpen(true);
+            if (viewer)
+              viewer.open({
+                id: viewerId,
+                name,
+                download,
+                resolve: async () => {
+                  const file = new File(
+                    ["\uFEFF", currentCsv.current()],
+                    `${name.replace(/\.(csv|tsv)$/i, "")}.csv`,
+                    { type: "text/csv" },
+                  );
+                  return {
+                    id: crypto.randomUUID(),
+                    name: file.name,
+                    mediaType: file.type,
+                    size: file.size,
+                    state: "local",
+                    file,
+                  };
+                },
+              });
+            else setOpen(true);
           }}
         >
           <HugeiconsIcon icon={ArrowExpand01Icon} size={14} aria-hidden="true" />
@@ -237,7 +265,7 @@ export function RichTable({
   if (expanded) return <div className="chat-table">{expandedView}</div>;
   return (
     <>
-      <div hidden={open} className="chat-table">
+      <div hidden={open} inert={inViewer} className="chat-table">
         <div
           data-table-card
           className="group/table relative w-full overflow-hidden rounded-[20px] bg-composer text-foreground shadow-[0_0_0_0.5px_var(--composer-ring),0_2px_8px_rgb(28_28_28/0.035)] touch:pt-11"
@@ -256,6 +284,7 @@ export function RichTable({
           {status()}
         </div>
       </div>
+      {viewerHost && inViewer && createPortal(expandedView, viewerHost)}
       {open && (
         <TableDialog title={name} returnFocus={trigger.current} onClose={() => setOpen(false)}>
           {expandedView}

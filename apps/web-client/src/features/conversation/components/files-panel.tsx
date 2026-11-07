@@ -12,7 +12,7 @@ import { command, request } from "@/lib/api-client";
 import { artifactUrl } from "@/lib/workspace-files";
 import type { Artifact, Workspace } from "@/types/work";
 import type { Agent, Snapshot, Thread } from "@/types/workspace";
-import { type FileView, FileViewer } from "./file-viewer";
+import { savedFileTarget, useContentViewer } from "../lib/content-viewer";
 import { PanelCard, PanelEmpty, PanelNavRow, PanelPageHeader } from "./panel-primitives";
 import { WorkingFiles } from "./working-files";
 
@@ -41,7 +41,7 @@ export function FilesPanel({
   );
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
-  const [preview, setPreview] = useState<FileView | null>(null);
+  const viewer = useContentViewer();
   const [destinations, setDestinations] = useState<Workspace[] | null>(null);
   const [destination, setDestination] = useState("");
   const [shared, setShared] = useState("");
@@ -62,7 +62,7 @@ export function FilesPanel({
   }
   function open(item: Artifact) {
     if (item.workspace_id && active.some((w) => w.id === item.workspace_id))
-      setPreview({ name: item.name, url: artifactUrl(item), mediaType: item.media_type });
+      viewer?.open({ ...savedFileTarget(item, snapshot), info: () => select(item.id) });
     else
       setError(
         "The source folder is no longer connected. Check access or share the file to an active folder.",
@@ -116,7 +116,7 @@ export function FilesPanel({
             </dl>
           </PanelCard>
           <div className="flex flex-wrap gap-2">
-            <Button size="sm" onClick={() => open(artifact)}>
+            <Button size="sm" data-viewer-file={artifact.id} onClick={() => open(artifact)}>
               <HugeiconsIcon icon={File02Icon} size={14} strokeWidth={1.5} />
               Open {artifact.name}
             </Button>
@@ -219,11 +219,12 @@ export function FilesPanel({
             outputs.map((item) => (
               <PanelNavRow
                 key={item.id}
+                data-viewer-file={item.id}
                 title={item.name}
                 aria-label={`File ${item.name}`}
                 icon={File02Icon}
                 hint={`${snapshot.agents.find((agent) => agent.id === (item.created_by_agent_id ?? item.agent_id))?.name ?? (item.agent_id === null ? "Group" : "Agent")}`}
-                onClick={() => select(item.id)}
+                onClick={() => open(item)}
               />
             ))
           ) : (
@@ -232,7 +233,6 @@ export function FilesPanel({
         </PanelCard>
       )}
       {!artifact && <WorkingFiles cursor={snapshot.cursor} />}
-      <FileViewer file={preview} close={() => setPreview(null)} />
     </div>
   );
 }

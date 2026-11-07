@@ -4,6 +4,8 @@ The decision column preserves the user-selected Required/Optional/Deferred scope
 
 Amendments applied: shared Cua machine replaces browser-use/VNC; semantic Jev selection routes group members; Goals require durable responsibility; the Tauri macOS ARM64 host is an implemented development exception to deferred general native-client distribution. The accepted engine/API billing scope uses Codex subscription and explicitly selected Muse API key; Muse subscription remains unverified.
 
+The 2026-11-07 content-viewer decision selects Focus: direct conversation file/table viewing, centered filenames, a floating contextual composer, direct static HTML rendering and source download through the actions menu. The subsequent PDF amendment adds direct paged preview, selectable text and zoom within the same viewer; the filename header remains borderless. Existing file/terminal capabilities perform edits; saved artifacts remain immutable. See [the interface decision](interface.md#conversation-content-viewer).
+
 Current UI labels are Detail, Library and Computer. Earlier File/Agent panel wording below describes responsibilities now reached through those surfaces; see [the current interface](interface.md). The ordinary composer queues during an active run; contextual steer and the explicit cancellation endpoint have separate receipt semantics. The explanatory C07 flow never authorizes deterministic natural-language cancellation classification.
 
 ## Matriks fitur produk

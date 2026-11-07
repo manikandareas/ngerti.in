@@ -1,4 +1,5 @@
 import { expect, type Page, test } from "@playwright/test";
+import { pdfFixture } from "./fixtures/pdf.js";
 
 async function post(page: Page, path: string, data: unknown) {
   const response = await page.request.post(path, {
@@ -320,16 +321,21 @@ test("removing a selected file never uploads it and status stays behind its icon
   await expect(
     composer.getByRole("button", { name: "Status wrong-file.txt", exact: true }),
   ).toHaveCount(0);
-  if (info.project.name === "mobile") await status.tap();
-  else await status.hover();
-  const details = page.locator(
-    info.project.name === "mobile"
-      ? '[data-slot="popover-content"]'
-      : '[data-slot="tooltip-content"]',
-  );
-  await expect(details.getByText("wrong-file.txt", { exact: true })).toBeVisible();
-  await expect(details).toContainText("TXT · 16 B");
-  expect((await details.boundingBox())?.width).toBeLessThanOrEqual(256);
+  if (info.project.name === "mobile") {
+    await status.tap();
+    const viewer = page.locator("[data-content-viewer]");
+    await expect(
+      viewer.getByRole("heading", { name: "wrong-file.txt", exact: true }),
+    ).toBeVisible();
+    await expect(viewer).toContainText("Fixture document");
+    await viewer.getByRole("button", { name: "Kembali", exact: true }).click();
+  } else {
+    await status.hover();
+    const details = page.locator('[data-slot="tooltip-content"]');
+    await expect(details.getByText("wrong-file.txt", { exact: true })).toBeVisible();
+    await expect(details).toContainText("TXT · 16 B");
+    expect((await details.boundingBox())?.width).toBeLessThanOrEqual(256);
+  }
   await expect(page.getByText("Belum dikirim.", { exact: true })).toHaveCount(0);
   await page
     .locator('[data-slot="popover-content"], [data-slot="tooltip-content"]')
@@ -369,18 +375,19 @@ test("image chips preview through shadcn overlays and remove, undo and paste as 
   const chip = composer.locator("[data-attachment-chip]");
   await expect(chip).toHaveAttribute("data-upload-state", "local");
   const preview = composer.getByRole("button", { name: "Pratinjau visual-input.png", exact: true });
-  if (info.project.name === "mobile") await preview.tap();
-  else await preview.hover();
-  const overlay = page.locator(
-    info.project.name === "mobile"
-      ? '[data-slot="popover-content"]'
-      : '[data-slot="tooltip-content"]',
-  );
-  await expect(
-    overlay.getByRole("img", { name: "Pratinjau visual-input.png", exact: true }),
-  ).toBeVisible();
-  await expect(overlay).toContainText("visual-input.png");
-  expect((await overlay.boundingBox())?.width).toBeLessThanOrEqual(256);
+  if (info.project.name === "mobile") {
+    await preview.tap();
+    const viewer = page.locator("[data-content-viewer]");
+    await expect(viewer.getByRole("img", { name: "visual-input.png", exact: true })).toBeVisible();
+  } else {
+    await preview.hover();
+    const overlay = page.locator('[data-slot="tooltip-content"]');
+    await expect(
+      overlay.getByRole("img", { name: "Pratinjau visual-input.png", exact: true }),
+    ).toBeVisible();
+    await expect(overlay).toContainText("visual-input.png");
+    expect((await overlay.boundingBox())?.width).toBeLessThanOrEqual(256);
+  }
   await page.screenshot({ path: info.outputPath("inline-image-preview.png") });
   await page.keyboard.press("Escape");
   await chip.hover();
@@ -483,4 +490,243 @@ test("pending sends restore inline file references and replay the exact message 
   const snapshot = await (await page.request.get(`/v1/threads/${thread.id}/snapshot`)).json();
   expect(snapshot.runs).toHaveLength(2);
   expect(snapshot.artifacts).toHaveLength(1);
+});
+
+test("Focus feedback retains the draft, references real file bytes and returns to the same chat", async ({
+  page,
+}, info) => {
+  const { agent, thread, composer } = await setup(page);
+  const workspace = await post(page, "/v1/workspaces", {
+    thread_id: thread.id,
+    agent_id: agent.id,
+  });
+  const name = "Sales dashboard with a long filename for centered mobile headers.html";
+  const text =
+    "<!doctype html><style>body{font:16px system-ui;padding:24px;background:#f8f7f4}h1{font-size:32px}</style><h1>October sales</h1><p>Revenue grew by 18%.</p>";
+  const artifact = await post(page, `/v1/workspaces/${workspace.id}/uploads`, {
+    name,
+    media_type: "text/html",
+    content_base64: Buffer.from(text).toString("base64"),
+  });
+  await page.route(`**/v1/threads/${thread.id}/snapshot`, async (route) => {
+    const response = await route.fetch();
+    const snapshot = await response.json();
+    snapshot.artifacts.forEach((file: { origin: string }) => {
+      file.origin = "native_output";
+    });
+    await route.fulfill({ response, json: snapshot });
+  });
+  await page.reload();
+  await composer.fill("Change the heading to October summary.");
+  await page.getByRole("button", { name: `Detail ${agent.name}`, exact: true }).click();
+  await page.getByRole("tab", { name: "Library", exact: true }).click();
+  const fileButton = page.getByRole("button", { name: `File ${name}`, exact: true });
+  await fileButton.click();
+  const viewer = page.locator("[data-content-viewer]");
+  await expect(
+    viewer.frameLocator("iframe").getByRole("heading", { name: "October sales" }),
+  ).toBeVisible();
+  await expect(composer).toHaveText("Change the heading to October summary.");
+  await expect(page.getByRole("textbox", { name: "Pesan", exact: true })).toHaveCount(1);
+  const centered = await viewer.locator(".content-viewer-header").evaluate((element) => {
+    const a = element.getBoundingClientRect();
+    const b = element.querySelector("h2")?.getBoundingClientRect();
+    return b ? Math.abs((a.left + a.right - b.left - b.right) / 2) : 999;
+  });
+  expect(centered).toBeLessThan(1);
+  await viewer.getByRole("button", { name: "Kembali", exact: true }).click();
+  await expect(fileButton).toBeVisible();
+  await expect(fileButton).toBeFocused();
+  await fileButton.click();
+  await expect(composer).toHaveText("Change the heading to October summary.");
+  await page.screenshot({ path: info.outputPath("focus-context.png") });
+  const sent = page.waitForRequest(
+    (request) => request.url().endsWith("/v1/runs") && request.method() === "POST",
+  );
+  await page.getByRole("button", { name: "Kirim", exact: true }).click();
+  const body = (await sent).postDataJSON();
+  expect(body.thread_id).toBe(thread.id);
+  expect(body.artifact_ids).toEqual([artifact.id]);
+  expect(body.text).toContain(`ngertiin://file/${artifact.id}`);
+  await expect(viewer).toHaveCount(0);
+  await expect(composer).toHaveText("");
+  const snapshot = await (await page.request.get(`/v1/threads/${thread.id}/snapshot`)).json();
+  expect(
+    snapshot.messages.find((message: { text: string }) => message.text === body.text).artifact_ids,
+  ).toEqual([artifact.id]);
+  await page
+    .getByRole("button", { name: `Pratinjau ${name}`, exact: true })
+    .first()
+    .click();
+  await expect(viewer).toBeVisible();
+  await page.getByRole("button", { name: "Lepas konteks file", exact: true }).click();
+  await expect(page.locator("[data-viewer-context]")).toHaveCount(0);
+  await composer.fill("A separate question.");
+  const ordinary = page.waitForRequest(
+    (request) => request.url().endsWith("/v1/runs") && request.method() === "POST",
+  );
+  await page.getByRole("button", { name: "Kirim", exact: true }).click();
+  expect((await ordinary).postDataJSON().artifact_ids).toEqual([]);
+  await expect(viewer).toHaveCount(0);
+  await expect(composer).toHaveText("");
+  await expect(composer).toBeEditable();
+  await page.unrouteAll({ behavior: "wait" });
+});
+
+test("Focus table feedback sends the filtered CSV and keeps one attachment after a rejected send", async ({
+  page,
+}) => {
+  const { thread, composer } = await setup(page);
+  await page.route(`**/v1/threads/${thread.id}/snapshot`, async (route) => {
+    const response = await route.fetch();
+    const snapshot = await response.json();
+    snapshot.messages.forEach((message: { author: string; text: string }) => {
+      if (message.author === "agent")
+        message.text = "| Item | Revenue |\n|---|---:|\n| Alpha | 20 |\n| Beta | 30 |";
+    });
+    await route.fulfill({ response, json: snapshot });
+  });
+  await page.reload();
+  await page.getByRole("button", { name: "Perbesar tabel", exact: true }).first().click();
+  const viewer = page.locator("[data-content-viewer]");
+  await viewer.getByRole("textbox", { name: "Cari dalam tabel", exact: true }).fill("Beta");
+  await expect(viewer.getByRole("table").locator("tbody tr")).toHaveCount(1);
+  await composer.fill("Explain this row.");
+  let rejected = false;
+  await page.route("**/v1/runs", async (route) => {
+    if (!rejected && route.request().method() === "POST") {
+      rejected = true;
+      await route.fulfill({
+        status: 422,
+        json: { error: { code: "INVALID_REQUEST", message: "Fixture rejection." } },
+      });
+    } else await route.continue();
+  });
+  await page.getByRole("button", { name: "Kirim", exact: true }).click();
+  await expect(page.locator(".workspace-error")).toBeVisible();
+  await expect(composer.locator("[data-attachment-chip]")).toHaveCount(1);
+  await expect(page.locator("[data-viewer-context]")).toHaveCount(0);
+  await expect(composer).toBeEditable();
+  const sent = page.waitForRequest(
+    (request) => request.url().endsWith("/v1/runs") && request.method() === "POST",
+  );
+  await page.getByRole("button", { name: "Kirim", exact: true }).click();
+  const body = (await sent).postDataJSON();
+  expect(body.artifact_ids).toHaveLength(1);
+  await expect(viewer).toHaveCount(0);
+  const snapshot = await (await page.request.get(`/v1/threads/${thread.id}/snapshot`)).json();
+  const file = snapshot.artifacts.find(
+    (artifact: { id: string }) => artifact.id === body.artifact_ids[0],
+  );
+  const response = await page.request.get(
+    `/v1/artifacts/${file.id}/content?workspace_id=${file.workspace_id}`,
+  );
+  const csv = await response.text();
+  expect(csv).toContain("Beta,30");
+  expect(csv).not.toContain("Alpha");
+  await expect(composer).toBeEditable();
+  await page.unrouteAll({ behavior: "wait" });
+});
+
+test("Focus working files retain their folder, retry reads and upload context only on Send", async ({
+  page,
+}) => {
+  const { agent, thread, composer } = await setup(page);
+  let reads = 0;
+  let uploads = 0;
+  page.on("request", (request) => {
+    if (request.url().endsWith("/v1/message-uploads")) uploads++;
+  });
+  // The machine transport is a fixture; admission, staging and stored content use the real API.
+  await page.route("**/v1/machine/files?**", async (route) => {
+    const nested = new URL(route.request().url()).searchParams.get("path") === "reports";
+    await route.fulfill({
+      json: {
+        entries: nested
+          ? [{ name: "working-note.txt", path: "reports/working-note.txt", type: "file" }]
+          : [{ name: "reports", path: "reports", type: "directory" }],
+        next_after: null,
+      },
+    });
+  });
+  await page.route("**/v1/machine/file?**", async (route) => {
+    reads++;
+    await route.fulfill(
+      reads === 1
+        ? { status: 403, body: "Unavailable" }
+        : { contentType: "text/plain", body: "A current working-file snapshot." },
+    );
+  });
+  await page.getByRole("button", { name: `Detail ${agent.name}`, exact: true }).click();
+  await page.getByRole("tab", { name: "Library", exact: true }).click();
+  await page.getByRole("button", { name: "reports", exact: true }).click();
+  const fileButton = page.getByRole("button", { name: "working-note.txt", exact: true });
+  await fileButton.click();
+  const viewer = page.locator("[data-content-viewer]");
+  await expect(viewer.getByRole("alert")).toBeVisible();
+  await viewer.getByRole("button", { name: "Coba buka lagi", exact: true }).click();
+  await expect(viewer).toContainText("A current working-file snapshot.");
+  expect(uploads).toBe(0);
+  await viewer.getByRole("button", { name: "Kembali", exact: true }).click();
+  await expect(fileButton).toBeVisible();
+  await fileButton.click();
+  await composer.fill("Review this working file.");
+  await page.getByRole("button", { name: "Kirim", exact: true }).click();
+  await expect(composer).toHaveText("");
+  await expect(composer).toBeEditable();
+  expect(uploads).toBe(1);
+  const snapshot = await (await page.request.get(`/v1/threads/${thread.id}/snapshot`)).json();
+  const artifact = snapshot.artifacts.find(
+    (file: { name: string }) => file.name === "working-note.txt",
+  );
+  const response = await page.request.get(
+    `/v1/artifacts/${artifact.id}/content?workspace_id=${artifact.workspace_id}`,
+  );
+  expect(await response.text()).toBe("A current working-file snapshot.");
+  await page.unrouteAll({ behavior: "wait" });
+});
+
+test("Focus PDF attachment previews locally and sends one original PDF through the existing admission", async ({
+  page,
+}, info) => {
+  const { thread, composer } = await setup(page);
+  const bytes = pdfFixture();
+  let uploads = 0;
+  page.on("request", (request) => {
+    if (request.url().endsWith("/v1/message-uploads")) uploads++;
+  });
+  await composer.fill("Summarize this PDF.");
+  await page
+    .getByLabel("Lampirkan file ke pesan", { exact: true })
+    .setInputFiles({ name: "report.pdf", mimeType: "application/pdf", buffer: bytes });
+  await composer.getByRole("button", { name: "Pratinjau report.pdf", exact: true }).click();
+  const viewer = page.locator("[data-content-viewer]");
+  await expect(viewer.locator('[data-pdf-page="1"] canvas')).toHaveAttribute(
+    "data-pdf-rendered",
+    "true",
+  );
+  await expect(page.locator("[data-viewer-context]")).toContainText("report.pdf");
+  expect(uploads).toBe(0);
+  await expect(composer).toContainText("Summarize this PDF.");
+  await page.screenshot({ path: info.outputPath("pdf-composer-context.png") });
+  const sending = page.waitForRequest(
+    (request) => request.url().endsWith("/v1/runs") && request.method() === "POST",
+  );
+  await page.getByRole("button", { name: "Kirim", exact: true }).click();
+  const body = (await sending).postDataJSON();
+  expect(body.thread_id).toBe(thread.id);
+  expect(body.artifact_ids).toHaveLength(1);
+  await expect(viewer).toHaveCount(0);
+  await expect(composer).toHaveText("");
+  await expect(composer).toBeEditable();
+  expect(uploads).toBe(1);
+  const snapshot = await (await page.request.get(`/v1/threads/${thread.id}/snapshot`)).json();
+  const artifact = snapshot.artifacts.find(
+    (file: { id: string }) => file.id === body.artifact_ids[0],
+  );
+  expect(artifact.media_type).toBe("application/pdf");
+  const response = await page.request.get(
+    `/v1/artifacts/${artifact.id}/content?workspace_id=${artifact.workspace_id}`,
+  );
+  expect(await response.body()).toEqual(bytes);
 });

@@ -1,4 +1,5 @@
 import { createHash } from "node:crypto";
+import { readFile } from "node:fs/promises";
 import { expect, type Page, test } from "@playwright/test";
 
 async function post(page: Page, path: string, data: unknown) {
@@ -268,19 +269,19 @@ test("contextual goals, Routine and files use real scoped state and keep stop re
   await page.getByRole("button", { name: `Detail ${a.agent.name}`, exact: true }).click();
   await page.getByRole("tab", { name: "Library", exact: true }).click();
   await page.getByRole("button", { name: "File research.txt", exact: true }).click();
-  await page.getByRole("button", { name: "Open research.txt", exact: true }).click();
   await expect(page.getByText("Verifiable research result.", { exact: true })).toBeVisible();
   const download = page.waitForEvent("download");
-  await page.getByRole("link", { name: "Unduh file", exact: true }).click();
+  await page.getByRole("button", { name: "Aksi file", exact: true }).click();
+  await page.getByRole("menuitem", { name: "Unduh file", exact: true }).click();
   expect((await download).suggestedFilename()).toBe("research.txt");
-  await page.getByRole("button", { name: "Close", exact: true }).last().click();
+  await page.getByRole("button", { name: "Kembali", exact: true }).click();
   expect(
     await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth),
   ).toBeTruthy();
   await capture(page, testInfo.outputPath(`${testInfo.project.name}-files.png`));
 });
 
-test("file previews reuse source tables, code and markdown without executing file HTML", async ({
+test("Focus viewer opens files directly, centers titles and renders static HTML without executing it", async ({
   page,
 }, testInfo) => {
   test.setTimeout(60000);
@@ -298,7 +299,7 @@ test("file previews reuse source tables, code and markdown without executing fil
     {
       name: "preview.html",
       media_type: "text/html",
-      text: '<!doctype html><script>window.__previewExecuted=1</script><img src="https://example.invalid/preview-network" onerror="window.__previewExecuted=2">',
+      text: '<!doctype html><html lang="id"><head><title>Sales</title></head><body style="background:#123456;color:white"><h1>Sales dashboard</h1><a href="https://example.invalid/preview-navigation">External</a><script>window.__previewExecuted=1</script><img src="https://example.invalid/preview-network" onerror="window.__previewExecuted=2"></body></html>',
     },
     {
       name: "notes.md",
@@ -307,6 +308,11 @@ test("file previews reuse source tables, code and markdown without executing fil
     },
     { name: "ragged.csv", media_type: "text/csv", text: "ID,Value\n001\n" },
     { name: "large.csv", media_type: "text/csv", text: `ID,Value\n001,${"x".repeat(128000)}` },
+    {
+      name: "example.go",
+      media_type: "text/plain",
+      text: Array.from({ length: 90 }, (_, index) => `fmt.Println("Line ${index}")`).join("\n"),
+    },
   ];
   for (const file of samples)
     await post(page, `/v1/workspaces/${workspace.id}/uploads`, {
@@ -316,8 +322,9 @@ test("file previews reuse source tables, code and markdown without executing fil
     });
   await projectOutputs(page, a.thread.id);
   const external: string[] = [];
-  page.on("request", (request) => {
-    if (request.url().includes("example.invalid/preview-network")) external.push(request.url());
+  await page.route("https://example.invalid/**", async (route) => {
+    external.push(route.request().url());
+    await route.abort();
   });
   await chooseAgent(page, a.agent.name);
   await page.getByRole("button", { name: `Detail ${a.agent.name}`, exact: true }).click();
@@ -327,8 +334,7 @@ test("file previews reuse source tables, code and markdown without executing fil
     const back = page.locator("#conversation-details [data-panel-back]");
     if (await back.count()) await back.click();
     await page.getByRole("button", { name: `File ${name}`, exact: true }).click();
-    await page.getByRole("button", { name: `Open ${name}`, exact: true }).click();
-    return page.getByRole("dialog", { name, exact: true });
+    return page.getByRole("region", { name: `Viewer ${name}`, exact: true });
   }
   let preview = await open("records.csv");
   await expect(preview.getByRole("cell", { name: "001", exact: true })).toBeVisible();
@@ -342,29 +348,107 @@ test("file previews reuse source tables, code and markdown without executing fil
   );
   await expect(preview.getByRole("button", { name: "Perbesar tabel", exact: true })).toHaveCount(0);
   await capture(page, testInfo.outputPath("file-table.png"));
-  await preview.getByRole("button", { name: "Close", exact: true }).click();
+  await preview.getByRole("button", { name: "Kembali", exact: true }).click();
   preview = await open("preview.html");
-  await expect(preview.locator("[data-code-block]")).toContainText("window.__previewExecuted=1");
-  await expect(preview.getByRole("button", { name: "Salin kode", exact: true })).toHaveCount(1);
-  await capture(page, testInfo.outputPath("file-code.png"));
-  await preview.getByRole("button", { name: "Close", exact: true }).click();
+  await expect(preview.locator("iframe")).toHaveAttribute("sandbox", "");
+  expect(
+    await preview.evaluate((element) => {
+      const header = element.querySelector(".content-viewer-header")?.getBoundingClientRect();
+      const frame = element.querySelector("iframe")?.getBoundingClientRect();
+      return header && frame ? Math.abs(header.top - frame.top) < 1 : false;
+    }),
+  ).toBeTruthy();
+  expect(
+    await preview
+      .frameLocator("iframe")
+      .getByRole("heading", { name: "Sales dashboard" })
+      .evaluate((element) => element.getBoundingClientRect().top),
+  ).toBeGreaterThanOrEqual(60);
+  await expect(preview.frameLocator("iframe").locator("html")).toHaveAttribute("lang", "id");
+  await expect(preview.frameLocator("iframe").locator("body")).toHaveCSS(
+    "background-color",
+    "rgb(18, 52, 86)",
+  );
+  await expect(
+    preview.frameLocator("iframe").getByRole("heading", { name: "Sales dashboard" }),
+  ).toBeVisible();
+  await expect(
+    preview.frameLocator("iframe").getByText("External", { exact: true }),
+  ).not.toHaveAttribute("href");
+  await expect(preview.locator("[data-code-block], [role=tablist]")).toHaveCount(0);
+  const centered = await preview.locator(".content-viewer-header").evaluate((header) => {
+    const a = header.getBoundingClientRect();
+    const b = header.querySelector("h2")?.getBoundingClientRect();
+    return b ? Math.abs((a.left + a.right - b.left - b.right) / 2) : 999;
+  });
+  expect(centered).toBeLessThan(1);
+  await expect(page.getByRole("textbox", { name: "Pesan", exact: true })).toBeVisible();
+  await expect(page.locator("[data-viewer-context]")).toContainText("preview.html");
+  await preview.getByRole("button", { name: "Aksi file", exact: true }).click();
+  const sourceDownload = page.waitForEvent("download");
+  await page.getByRole("menuitem", { name: "Unduh file", exact: true }).click();
+  const source = await sourceDownload;
+  expect(source.suggestedFilename()).toBe("preview.html");
+  expect(await readFile((await source.path()) ?? "", "utf8")).toBe(samples[1].text);
+  await expect(page.getByRole("menuitem", { name: "Unduh file", exact: true })).toBeHidden();
+  await capture(page, testInfo.outputPath("focus-html.png"));
+  await preview.getByRole("button", { name: "Kembali", exact: true }).click();
   preview = await open("notes.md");
   await expect(preview.getByRole("heading", { name: "Preview notes", exact: true })).toBeVisible();
   await expect(preview.locator("strong")).toHaveText("A useful result");
   await expect(preview.locator(".chat-agent-bubble")).toHaveCount(0);
+  await preview.getByRole("button", { name: "Perbesar tabel", exact: true }).click();
+  const tableViewer = page.getByRole("region", { name: "Viewer Tabel", exact: true });
+  await expect(tableViewer.getByRole("cell", { name: "preserved", exact: true })).toBeVisible();
+  await tableViewer.getByRole("button", { name: "Kembali", exact: true }).click();
+  await expect(preview.getByRole("heading", { name: "Preview notes", exact: true })).toBeVisible();
   await capture(page, testInfo.outputPath("file-markdown.png"));
-  await preview.getByRole("button", { name: "Close", exact: true }).click();
+  await preview.getByRole("button", { name: "Kembali", exact: true }).click();
   preview = await open("ragged.csv");
   await expect(preview.getByRole("alert")).toContainText("Tabel tidak valid");
-  await preview.getByRole("button", { name: "Close", exact: true }).click();
+  await preview.getByRole("button", { name: "Kembali", exact: true }).click();
   preview = await open("large.csv");
   await expect(preview.getByRole("alert")).toContainText("batas pratinjau 128 KB");
-  await expect(preview.getByRole("link", { name: "Unduh file", exact: true })).toBeVisible();
+  await preview.getByRole("button", { name: "Aksi file", exact: true }).click();
+  await expect(page.getByRole("menuitem", { name: "Unduh file", exact: true })).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(preview).toBeVisible();
+  await preview.getByRole("button", { name: "Kembali", exact: true }).click();
+  preview = await open("example.go");
+  await expect(preview.locator("pre")).toContainText('fmt.Println("Line 89")');
+  await preview.locator(".content-viewer-page").evaluate((element) => {
+    element.scrollTop = 200;
+  });
+  await expect
+    .poll(() =>
+      preview.evaluate((element) => {
+        const header = element.querySelector<HTMLElement>(".content-viewer-header");
+        const page = element.querySelector<HTMLElement>(".content-viewer-page:not([hidden])");
+        const code = page?.querySelector("pre");
+        const back = header?.querySelector("button");
+        const title = header?.querySelector("h2");
+        if (!header || !page || !code || !back || !title) return false;
+        const h = header.getBoundingClientRect();
+        const p = page.getBoundingClientRect();
+        const b = back.getBoundingClientRect();
+        const t = title.getBoundingClientRect();
+        const hit = document.elementFromPoint((b.right + t.left) / 2, h.top + h.height / 2);
+        return (
+          Math.abs(p.top - h.top) < 1 &&
+          code.getBoundingClientRect().top < h.bottom &&
+          getComputedStyle(header).backgroundColor === "rgba(0, 0, 0, 0)" &&
+          !!hit?.closest(".file-content")
+        );
+      }),
+    )
+    .toBeTruthy();
+  await capture(page, testInfo.outputPath("floating-header-code.png"));
   expect(await page.evaluate(() => Object.hasOwn(window, "__previewExecuted"))).toBeFalsy();
   expect(external).toEqual([]);
   expect(
     await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth),
   ).toBeTruthy();
+  await page.unrouteAll({ behavior: "wait" });
 });
 
 test("group creation recovers a lost acknowledgement, routes messages and keeps member DM resources private", async ({

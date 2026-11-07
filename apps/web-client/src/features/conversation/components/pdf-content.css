@@ -1,0 +1,146 @@
+.file-content-pdf {
+  padding: 0;
+}
+.pdf-content {
+  min-width: 0;
+}
+.pdf-toolbar {
+  position: sticky;
+  top: var(--viewer-header-height, 0px);
+  left: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 52px;
+  padding: 6px 16px;
+  background: var(--background);
+}
+.pdf-controls {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 12px;
+}
+.pdf-controls form {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+.pdf-controls input {
+  width: 44px;
+  padding: 5px 3px;
+  border-radius: 6px;
+  background: var(--composer);
+  color: var(--foreground);
+  text-align: center;
+  appearance: textfield;
+}
+.pdf-controls input::-webkit-inner-spin-button {
+  appearance: none;
+}
+.pdf-zoom {
+  min-width: 42px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+.pdf-pages {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 12px 16px 24px;
+}
+.pdf-page {
+  margin: 0;
+  position: relative;
+  flex-shrink: 0;
+  overflow: hidden;
+  background: white;
+  color: #1c1c1c;
+  color-scheme: light;
+  box-shadow: 0 1px 8px #00000014;
+  scroll-margin-top: 64px;
+}
+.pdf-page canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.pdf-document-status {
+  display: flex;
+  min-height: 200px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 24px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--muted-foreground);
+}
+.pdf-page-status {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  font-size: 12px;
+  text-align: center;
+}
+.pdf-page-status button {
+  margin-top: 12px;
+  pointer-events: auto;
+}
+
+/* Adapted from pdfjs-dist 6.5.438 web/pdf_viewer.css, TextLayer (Mozilla, Apache-2.0). */
+.pdf-text-layer {
+  position: absolute;
+  inset: 0;
+  overflow: clip;
+  text-align: initial;
+  line-height: 1;
+  letter-spacing: normal;
+  word-spacing: normal;
+  text-size-adjust: none;
+  forced-color-adjust: none;
+  transform-origin: 0 0;
+  --min-font-size: 1;
+  --text-scale-factor: calc(var(--total-scale-factor) * var(--min-font-size));
+  --min-font-size-inv: calc(1 / var(--min-font-size));
+}
+.pdf-text-layer :is(span, br) {
+  position: absolute;
+  color: transparent;
+  white-space: pre;
+  cursor: text;
+  transform-origin: 0 0;
+  user-select: text;
+}
+.pdf-text-layer > :not(.markedContent),
+.pdf-text-layer .markedContent span:not(.markedContent) {
+  z-index: 1;
+  --font-height: 0;
+  font-size: calc(var(--text-scale-factor) * var(--font-height));
+  --scale-x: 1;
+  --rotate: 0deg;
+  transform: rotate(var(--rotate)) scaleX(var(--scale-x)) scale(var(--min-font-size-inv));
+}
+.pdf-text-layer .markedContent {
+  display: contents;
+}
+.pdf-text-layer ::selection {
+  color: transparent;
+  background: #2f80ed55;
+}
+@media (max-width: 767px) {
+  .pdf-toolbar {
+    padding-inline: 8px;
+    gap: 4px;
+  }
+  .pdf-controls button {
+    min-width: 36px;
+    min-height: 40px;
+  }
+}

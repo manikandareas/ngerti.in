@@ -1,0 +1,148 @@
+.conversation-content-viewer {
+  --viewer-header-height: 60px;
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--background);
+}
+.content-viewer-header {
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: 3;
+  pointer-events: none;
+  background: transparent;
+  display: grid;
+  grid-template-columns: 39px minmax(0, 1fr) 39px;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+  min-height: 60px;
+  padding: 10px 20px;
+}
+.content-viewer-header .viewer-header-surface {
+  pointer-events: auto;
+  height: 39px;
+  border: 0;
+  border-radius: 999px;
+  color: var(--foreground);
+  background: color-mix(in srgb, var(--background), var(--foreground) 5%);
+  box-shadow:
+    0 0 0 0.5px color-mix(in srgb, var(--foreground) 6%, transparent),
+    var(--shadow-float);
+}
+.viewer-header-title {
+  justify-self: center;
+  max-width: 100%;
+  padding: 9.5px 16px;
+  line-height: 20px;
+}
+.viewer-header-action {
+  position: relative;
+  width: 39px;
+  padding: 0;
+  transition:
+    background-color 150ms ease-out,
+    box-shadow 150ms ease-out;
+}
+.content-viewer-header .viewer-header-action:is(:hover, [aria-expanded="true"]) {
+  background: color-mix(in srgb, var(--background), var(--foreground) 9%);
+}
+.content-viewer-header .viewer-header-action:active {
+  background: color-mix(in srgb, var(--background), var(--foreground) 12%);
+}
+.viewer-header-action:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 3px;
+}
+.content-viewer-page {
+  position: absolute;
+  inset: 0;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding-top: var(--viewer-header-height);
+  padding-bottom: var(--conversation-bottom, 160px);
+  scroll-padding-top: var(--viewer-header-height);
+  scroll-padding-bottom: var(--conversation-bottom, 160px);
+}
+.content-viewer-page[hidden] {
+  display: none;
+}
+.content-viewer-page:has(> .file-content-html) {
+  padding-top: 0;
+}
+.file-content {
+  min-width: 0;
+  padding: 28px clamp(16px, 4vw, 64px);
+}
+.file-content-html {
+  height: 100%;
+  padding: 0;
+}
+.content-viewer-html {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+  border: 0;
+  background: white;
+  color-scheme: light;
+}
+.content-viewer-table {
+  padding: 24px;
+}
+.workspace-main[data-viewer="true"] > .workspace-chat-header,
+.workspace-main[data-viewer="true"] > .conversation-viewport {
+  visibility: hidden;
+}
+.workspace-main[data-viewer="true"] > .composer-dock {
+  z-index: 3;
+}
+.workspace-main[data-viewer="true"] > .workspace-error {
+  position: absolute;
+  top: 68px;
+  inset-inline: 16px;
+  z-index: 4;
+}
+.workspace-details[hidden] {
+  display: none;
+}
+.viewer-composer-context {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  max-width: 100%;
+  margin-bottom: 8px;
+  padding: 5px 6px 5px 12px;
+  border-radius: 12px;
+  background: var(--composer);
+  box-shadow: 0 0 0 0.5px var(--composer-ring);
+  font-size: 12px;
+}
+@media (max-width: 767px) {
+  .content-viewer-header {
+    padding-inline: 12px;
+    min-height: 60px;
+  }
+  .content-viewer-table {
+    padding: 16px;
+  }
+}
+@media (pointer: coarse) {
+  .viewer-header-action::before {
+    content: "";
+    position: absolute;
+    inset: -3px;
+    border-radius: inherit;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .viewer-header-action {
+    transition: none;
+  }
+}

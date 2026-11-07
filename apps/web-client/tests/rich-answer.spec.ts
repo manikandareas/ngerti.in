@@ -129,7 +129,7 @@ for (const theme of ["light", "dark"] as const) {
     expect(csv).toContain('"\'=SUM(1,2)"');
     const expand = card.getByRole("button", { name: "Perbesar tabel", exact: true });
     await expand.click();
-    const dialog = page.getByRole("dialog", { name: "Tabel", exact: true });
+    const dialog = page.getByRole("region", { name: "Viewer Tabel", exact: true });
     await expect(dialog).toBeVisible();
     await dialog.getByRole("button", { name: "Salin tabel", exact: true }).click();
     await expect(dialog.locator("footer")).toContainText("Tabel disalin.");

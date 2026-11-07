@@ -4,6 +4,7 @@ import { fileURLToPath, URL } from "node:url";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig, type Plugin, type ProxyOptions } from "vite";
+import { pdfAssets } from "./build/pdf-assets.js";
 
 // Development-only, loopback bridge. Installation credentials never enter the browser bundle.
 const target = process.env.NGERTIIN_API_URL ?? "http://127.0.0.1:8000";
@@ -52,7 +53,7 @@ const guard: import("vite").Connect.NextHandleFunction = (request, response, nex
 };
 
 export default defineConfig({
-  plugins: [localApiGuard, react(), tailwindcss()],
+  plugins: [localApiGuard, pdfAssets(), react(), tailwindcss()],
   server: { proxy: { "/v1": apiProxy, "/health": apiProxy } },
   preview: { proxy: { "/v1": apiProxy, "/health": apiProxy } },
   resolve: {

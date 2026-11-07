@@ -1,0 +1,7 @@
+$ bun --filter @ngertiin/web-client build
+@ngertiin/web-client build: src/features/conversation/components/work-activity.tsx(79,43): error TS2339: Property 'created_at' does not exist on type '{ id: string; revision: number; state: string; message_id: string; selected_agent_id: string | null; error_code: string | null; clarification?: string | null | undefined; execution?: { ...; } | undefined; }'.
+@ngertiin/web-client build: src/features/conversation/components/work-activity.tsx(111,42): error TS2339: Property 'created_at' does not exist on type '{ id: string; revision: number; state: string; message_id: string; selected_agent_id: string | null; error_code: string | null; clarification?: string | null | undefined; execution?: { ...; } | undefined; }'.
+@ngertiin/web-client build: src/features/conversation/lib/conversation-rows.ts(84,9): error TS2322: Type 'ConversationEntry' is not assignable to type '{ type: "message"; part: ConversationPart; message: Message; }'.
+@ngertiin/web-client build:   Type '{ type: "activity"; parts: ConversationPart[]; }' is missing the following properties from type '{ type: "message"; part: ConversationPart; message: Message; }': part, message
+@ngertiin/web-client build: Exited with code 1
+error: script "build:web-client" exited with code 1

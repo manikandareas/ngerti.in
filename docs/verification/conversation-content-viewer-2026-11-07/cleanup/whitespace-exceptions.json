@@ -1,0 +1,15 @@
+{
+  "note": "Only these immutable, hash-verified raw captures are excluded from blank-at-eol checking.",
+  "paths": [
+    "docs/verification/conversation-content-viewer-2026-11-07/cleanup/pre-teardown-fix-context.md",
+    "docs/verification/conversation-content-viewer-2026-11-07/cleanup/pre-teardown-fix.log",
+    "docs/verification/conversation-content-viewer-2026-11-07/cleanup/staged-build.log",
+    "docs/verification/conversation-content-viewer-2026-11-07/cleanup/validation.log",
+    "docs/verification/conversation-content-viewer-2026-11-07/header-overlay/build.log",
+    "docs/verification/conversation-content-viewer-2026-11-07/header-style/build.log",
+    "docs/verification/conversation-content-viewer-2026-11-07/pdf-support/startup-timeout.md",
+    "docs/verification/conversation-content-viewer-2026-11-07/pdf-support/validation.log",
+    "docs/verification/conversation-content-viewer-2026-11-07/validation.log",
+    "docs/verification/conversation-viewer-prototype-2026-11-07/isolated-build.log"
+  ]
+}

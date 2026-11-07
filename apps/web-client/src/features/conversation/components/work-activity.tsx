@@ -5,6 +5,7 @@ import type { Message, Run, Snapshot } from "@/types/workspace";
 import { ActivityStatus } from "./activity-status";
 import { AgentAvatar } from "./identity";
 import { MessageActions } from "./message-actions";
+import { MessageTime } from "./message-time";
 
 const routingLabels: Record<string, string> = {
   preparing: "Getting ready…",
@@ -14,12 +15,14 @@ const routingLabels: Record<string, string> = {
 
 export function WorkActivity({
   message,
+  at = message.created_at,
   snapshot,
   retryRoute,
   retryPreparation,
   busy,
 }: {
   message: Message;
+  at?: string;
   run?: Run;
   snapshot: Snapshot;
   retryRoute: (route: Snapshot["routes"][number]) => void;
@@ -75,6 +78,7 @@ export function WorkActivity({
                     label={routingLabels[stage] ?? routingLabel(route.id)}
                     loading={stage !== "blocked"}
                   />
+                  <MessageTime at={at} />
                 </BubbleContent>
               </Bubble>
             </MessageActions>
@@ -89,6 +93,7 @@ export function WorkActivity({
           {route.state === "unknown" || stage === "reconcile"
             ? "I couldn’t confirm who should reply."
             : route.clarification || activityGuidance(route.error_code ?? "ROUTING_UNAVAILABLE")}
+          <MessageTime at={at} />
         </p>
       )}
       {route?.state === "rejected" && (
@@ -106,6 +111,7 @@ export function WorkActivity({
                 <BubbleContent>
                   {route.clarification ||
                     activityGuidance(route.error_code ?? "ROUTING_UNAVAILABLE")}
+                  <MessageTime at={at} />
                 </BubbleContent>
               </Bubble>
             </MessageActions>

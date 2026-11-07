@@ -2,7 +2,7 @@
   width: min(100%, 460px);
   min-width: 0;
   padding: 17px 18px 15px;
-  border-radius: 14px;
+  border-radius: 16px;
   background: var(--popover);
   color: var(--foreground);
   box-shadow: 0 2px 8px var(--elevation-shadow);
@@ -288,7 +288,7 @@
     min-height: 44px;
   }
   .interaction-action {
-    min-height: 38px;
+    min-height: 44px;
     font-size: 13px;
     padding-inline: 12px;
   }

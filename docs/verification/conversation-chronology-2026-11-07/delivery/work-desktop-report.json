@@ -1,0 +1,430 @@
+{
+  "config": {
+    "argv": [
+      "/opt/homebrew/Cellar/node/25.9.0_2/bin/node",
+      "/private/var/folders/j1/p1582yhj20z58phnf_zrzy7w0000gn/T/ngertiin-chronology-delivery-89sr1g8r/snapshot/apps/web-client/node_modules/.bin/playwright",
+      "test",
+      "--config",
+      "playwright.work.config.ts",
+      "work.spec.ts",
+      "--project",
+      "desktop",
+      "--grep",
+      "native acknowledgements|unsafe Markdown|group writers|unconfirmed option|native text-only|approval is inline|retry is available|group interaction history"
+    ],
+    "configFile": "/private/var/folders/j1/p1582yhj20z58phnf_zrzy7w0000gn/T/ngertiin-chronology-delivery-89sr1g8r/snapshot/apps/web-client/playwright.work.config.ts",
+    "rootDir": "/private/var/folders/j1/p1582yhj20z58phnf_zrzy7w0000gn/T/ngertiin-chronology-delivery-89sr1g8r/snapshot/apps/web-client/tests",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/private/var/folders/j1/p1582yhj20z58phnf_zrzy7w0000gn/T/ngertiin-chronology-delivery-89sr1g8r/snapshot/.dev/nma062-playwright",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "desktop",
+        "name": "desktop",
+        "testDir": "/private/var/folders/j1/p1582yhj20z58phnf_zrzy7w0000gn/T/ngertiin-chronology-delivery-89sr1g8r/snapshot/apps/web-client/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "work.spec.ts",
+          "composer.spec.ts",
+          "group-attachments.spec.ts",
+          "group-responsibilities.spec.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/private/var/folders/j1/p1582yhj20z58phnf_zrzy7w0000gn/T/ngertiin-chronology-delivery-89sr1g8r/snapshot/.dev/nma062-playwright",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "mobile",
+        "name": "mobile",
+        "testDir": "/private/var/folders/j1/p1582yhj20z58phnf_zrzy7w0000gn/T/ngertiin-chronology-delivery-89sr1g8r/snapshot/apps/web-client/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "work.spec.ts",
+          "composer.spec.ts",
+          "group-attachments.spec.ts",
+          "group-responsibilities.spec.ts"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "filteredProjects": [
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "/private/var/folders/j1/p1582yhj20z58phnf_zrzy7w0000gn/T/ngertiin-chronology-delivery-89sr1g8r/snapshot/.dev/nma062-playwright",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "name": "desktop",
+        "testDir": "/private/var/folders/j1/p1582yhj20z58phnf_zrzy7w0000gn/T/ngertiin-chronology-delivery-89sr1g8r/snapshot/apps/web-client/tests",
+        "snapshotDir": "/private/var/folders/j1/p1582yhj20z58phnf_zrzy7w0000gn/T/ngertiin-chronology-delivery-89sr1g8r/snapshot/apps/web-client/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "work.spec.ts",
+          "composer.spec.ts",
+          "group-attachments.spec.ts",
+          "group-responsibilities.spec.ts"
+        ],
+        "timeout": 30000,
+        "use": {
+          "baseURL": "http://127.0.0.1:4381",
+          "screenshot": "only-on-failure",
+          "trace": "retain-on-failure",
+          "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.8078.4 Safari/537.36",
+          "viewport": {
+            "width": 1440,
+            "height": 1000
+          },
+          "screen": {
+            "width": 1920,
+            "height": 1080
+          },
+          "deviceScaleFactor": 1,
+          "isMobile": false,
+          "hasTouch": false,
+          "defaultBrowserType": "chromium"
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": "desktop"
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results/work-report.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "default",
+    "updateSourceMethod": "patch",
+    "version": "1.64.1",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "work.spec.ts",
+      "file": "work.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "native acknowledgements survive lost HTTP replies, completion, reload and connection revocation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 8231,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-07T07:36:44.767Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "be04682d07593334d24e-3b4df97b7cd61227de25",
+          "file": "work.spec.ts",
+          "line": 709,
+          "column": 1
+        },
+        {
+          "title": "unsafe Markdown cuts and changed prefixes keep complete content beside a labeled native-history fallback",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4633,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-07T07:36:53.404Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "be04682d07593334d24e-290ddbd026b0c0c8d816",
+          "file": "work.spec.ts",
+          "line": 911,
+          "column": 1
+        },
+        {
+          "title": "group writers serialize native questions and free text uses one answer representation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4578,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-07T07:36:58.052Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "be04682d07593334d24e-b4d39f35230bcdacbacc",
+          "file": "work.spec.ts",
+          "line": 1144,
+          "column": 1
+        },
+        {
+          "title": "an unconfirmed option reply reuses the same decision across reload",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3703,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-07T07:37:02.646Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "be04682d07593334d24e-6ac6fd92aace4032c01c",
+          "file": "work.spec.ts",
+          "line": 1199,
+          "column": 1
+        },
+        {
+          "title": "a native text-only question uses the ordinary composer and preserves its answer representation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2006,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-07T07:37:06.359Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "be04682d07593334d24e-a571e3210c49db9f8a6b",
+          "file": "work.spec.ts",
+          "line": 1559,
+          "column": 1
+        },
+        {
+          "title": "approval is inline and retains only its question after a typed owner decision",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3470,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-07T07:37:08.375Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "be04682d07593334d24e-aabf45b58d91aca1c633",
+          "file": "work.spec.ts",
+          "line": 1674,
+          "column": 1
+        },
+        {
+          "title": "retry is available only for a failed assistant response and preserves the authored input",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2841,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-07T07:37:11.854Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "be04682d07593334d24e-eaddb174894e3917b19d",
+          "file": "work.spec.ts",
+          "line": 1714,
+          "column": 1
+        },
+        {
+          "title": "group interaction history keeps rendered mentions and an adjacent avatar after replies and reload",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 14449,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-07T07:37:14.705Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "be04682d07593334d24e-c2e41481f78052a82dc7",
+          "file": "work.spec.ts",
+          "line": 1746,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-07T07:36:42.437Z",
+    "duration": 47049.727,
+    "expected": 8,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

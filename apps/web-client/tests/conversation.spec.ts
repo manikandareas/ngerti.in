@@ -802,7 +802,9 @@ for (const mode of ["dm", "group"] as const) {
     await expect(page.getByRole("button", { name: "Detail Tobi", exact: true })).toBeVisible();
     await sidebar(page);
     await page.evaluate(() => (window as ScrollRecordingWindow).recordConversationScroll());
-    await page.locator(`[data-thread-id="${f.thread.id}"]`).click();
+    const target = page.locator(`[data-thread-id="${f.thread.id}"]`);
+    await target.evaluate((element) => element.scrollIntoView({ block: "nearest" }));
+    await target.click();
     await expectRecordedScrollAtBottom(page);
     await expect(page.getByRole("textbox", { name: "Pesan", exact: true })).toBeFocused();
   });

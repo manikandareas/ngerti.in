@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { HumanReplyCard } from "@/features/conversation/components/human-reply-card";
 import { useComposerRequest } from "@/features/conversation/lib/composer-requests";
 import type { HumanRequest } from "@/types/work";
-import { tobi } from "./fixtures";
+import { sampleTime, tobi } from "./fixtures";
 import { AssistantRow, type OpenSample, SampleAnswer, UserReply } from "./preview-primitives";
 
 /** Preview latency only; no application command or provider request is sent. */
@@ -76,8 +76,12 @@ export function ProductInputPreview({
           : options
             ? "Checklist impor sebaiknya Ringkas atau Rinci?"
             : "Apa yang perlu dijelaskan untuk staf operasional?";
-  const request: Pick<HumanRequest, "id" | "state" | "purpose" | "options" | "action"> = {
+  const request: Pick<
+    HumanRequest,
+    "id" | "created_at" | "state" | "purpose" | "options" | "action"
+  > = {
     id: "studio-question",
+    created_at: sampleTime,
     purpose,
     options,
     state: phase === "answered" ? "answered" : phase === "closed" ? "cancelled" : "pending",

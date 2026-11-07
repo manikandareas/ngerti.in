@@ -58,16 +58,17 @@ import {
 import { ComposerStopPicker } from "@/features/conversation/components/composer-stop-picker";
 import { ComputerActivity } from "@/features/conversation/components/computer-activity";
 import { ContextPanel, type PanelLocation } from "@/features/conversation/components/context-panel";
+import { ConversationDate } from "@/features/conversation/components/conversation-date";
 import {
   ConversationActionsSkeleton,
   ConversationIdentitySkeleton,
   ConversationLoading,
 } from "@/features/conversation/components/conversation-loading";
 import { CreateGroup } from "@/features/conversation/components/create-group";
-import { FileActionChip } from "@/features/conversation/components/file-action-chip";
 import { HumanReply } from "@/features/conversation/components/human-reply";
 import { AgentAvatar, agentStyle } from "@/features/conversation/components/identity";
 import { MessageActions } from "@/features/conversation/components/message-actions";
+import { MessageAttachments } from "@/features/conversation/components/message-attachments";
 import { MessageTime } from "@/features/conversation/components/message-time";
 import { ModelPicker } from "@/features/conversation/components/model-picker";
 import { NativeInteractions } from "@/features/conversation/components/native-interactions";
@@ -76,7 +77,6 @@ import {
   type QueuedMessage,
   QueuedMessages,
 } from "@/features/conversation/components/queued-messages";
-import { ResearchSources } from "@/features/conversation/components/research-sources";
 import { TimelineActivity } from "@/features/conversation/components/timeline-activity";
 import { UserMessageText } from "@/features/conversation/components/user-message-text";
 import { WorkActivity } from "@/features/conversation/components/work-activity";
@@ -88,6 +88,7 @@ import {
   waitingForUser,
 } from "@/features/conversation/lib/conversation-activity";
 import { conversationEntries } from "@/features/conversation/lib/conversation-parts";
+import { conversationRows } from "@/features/conversation/lib/conversation-rows";
 import { referenceTarget } from "@/features/conversation/lib/inline-references";
 import {
   prepareSubmission,
@@ -602,69 +603,69 @@ export default function Workspace() {
     () => conversationActivity(snapshot, entries),
     [snapshot, entries],
   );
-  function activityAfter(entryId: string) {
+  function runActivity(run: Run, at: string) {
     if (!snapshot) return null;
-    return activityByEntry.get(entryId)?.map((run) => {
-      const actor = snapshot.agents.find((agent) => agent.id === run.agent_id);
-      if (!actor) return null;
-      const target = snapshot.agents.find(
-        (agent) => agent.id === run.active_tools?.at(-1)?.target_agent_id,
-      );
-      if (run.computer_activity && !["failed", "unknown"].includes(run.status))
-        return (
-          <AssistantMessage
-            key={run.id}
-            agent={actor}
-            group={snapshot.thread.type === "group"}
-            open={() => openResource("agent", actor.id)}
-          >
-            <ComputerActivity
-              run={run}
-              agent={actor}
-              open={() => {
-                locate({ tab: "computer", id: null });
-                setDetails(true);
-              }}
-            />
-          </AssistantMessage>
-        );
+    const actor = snapshot.agents.find((agent) => agent.id === run.agent_id);
+    if (!actor) return null;
+    const target = snapshot.agents.find(
+      (agent) => agent.id === run.active_tools?.at(-1)?.target_agent_id,
+    );
+    if (run.computer_activity && !["failed", "unknown"].includes(run.status))
       return (
-        <AgentActivityBubble
+        <AssistantMessage
           key={run.id}
           agent={actor}
-          run={run}
-          online={workspace.online}
-          waitingForUser={waitingForUser(run, snapshot)}
-          targetName={target?.name}
-          showName={snapshot.thread.type === "group"}
-          busy={busy}
-          openAgent={() => openResource("agent", actor.id)}
-          openSettings={() => openSettings()}
-          retryResponse={
-            run.retry_allowed
-              ? () =>
-                  void act(async () => {
-                    await queueCommand(`response-retry:${run.id}`, `/v1/runs/${run.id}/retry`, {
-                      expected_revision: run.revision,
-                    });
-                  })
-              : undefined
-          }
-          retryPreparation={() =>
-            void act(async () => {
-              await queueCommand(`preparation:${run.id}`, `/v1/runs/${run.id}/retry-preparation`, {
-                expected_revision: run.revision,
-              });
-            })
-          }
-          reconcile={() =>
-            void act(async () => {
-              await request(`/v1/runs/${run.id}/reconcile`, {});
-            })
-          }
-        />
+          group={snapshot.thread.type === "group"}
+          open={() => openResource("agent", actor.id)}
+        >
+          <ComputerActivity
+            run={run}
+            at={at}
+            agent={actor}
+            open={() => {
+              locate({ tab: "computer", id: null });
+              setDetails(true);
+            }}
+          />
+        </AssistantMessage>
       );
-    });
+    return (
+      <AgentActivityBubble
+        key={run.id}
+        agent={actor}
+        run={run}
+        at={at}
+        online={workspace.online}
+        waitingForUser={waitingForUser(run, snapshot)}
+        targetName={target?.name}
+        showName={snapshot.thread.type === "group"}
+        busy={busy}
+        openAgent={() => openResource("agent", actor.id)}
+        openSettings={() => openSettings()}
+        retryResponse={
+          run.retry_allowed
+            ? () =>
+                void act(async () => {
+                  await queueCommand(`response-retry:${run.id}`, `/v1/runs/${run.id}/retry`, {
+                    expected_revision: run.revision,
+                  });
+                })
+            : undefined
+        }
+        retryPreparation={() =>
+          void act(async () => {
+            await queueCommand(`preparation:${run.id}`, `/v1/runs/${run.id}/retry-preparation`, {
+              expected_revision: run.revision,
+            });
+          })
+        }
+        reconcile={() =>
+          void act(async () => {
+            await request(`/v1/runs/${run.id}/reconcile`, {});
+          })
+        }
+      />
+    );
   }
   const published = new Set(parts.flatMap((part) => (part.message_id ? [part.message_id] : [])));
   const queued = messages
@@ -742,6 +743,12 @@ export default function Workspace() {
     entry.type === "message" ? [entry.message] : [],
   );
   const nativeTranscript = useNativeTranscript(visibleMessages, snapshot?.runs ?? []);
+  const rows = conversationRows(entries, {
+    native: nativeTranscript,
+    activity: activityByEntry,
+    requests: snapshot?.human_requests,
+    runs: snapshot?.runs,
+  });
   function canObserveNative(run: Run) {
     const connection = connections.find(
       (connection) =>
@@ -756,7 +763,7 @@ export default function Workspace() {
       connection.capabilities.permission_requests === "supported"
     );
   }
-  function nativeFragment(fragment: NativeTranscriptFragment, attributed = true) {
+  function nativeFragment(fragment: NativeTranscriptFragment) {
     const author = snapshot?.agents.find((agent) => agent.id === fragment.run.agent_id);
     return (
       <div key={fragment.key} data-native-fragment={fragment.key} className="w-full py-1">
@@ -767,7 +774,6 @@ export default function Workspace() {
           author={author?.name ?? "Agent"}
           agent={author}
           observePending={false}
-          attributed={attributed}
           openAgent={author ? () => openResource("agent", author.id) : undefined}
           canRespond={canObserveNative(fragment.run)}
           recordIds={fragment.recordIds}
@@ -783,7 +789,8 @@ export default function Workspace() {
     )?.actors[0];
     return historical ? { ...historical, system_role: current?.system_role } : current;
   }
-  function answer(message: MessageEntity) {
+  function answer(message: MessageEntity, text: string, at: string, last: boolean) {
+    if (!text.trim()) return null;
     const related = snapshot?.runs.find((run) => run.id === message.run_id);
     if (
       related?.retried_by_run_id ||
@@ -815,68 +822,20 @@ export default function Workspace() {
             open: author ? () => openResource("agent", author.id) : undefined,
           }
         : undefined;
-    const anchors = nativeTranscript.anchors.get(message.id) ?? [];
-    if (!anchors.length)
-      return (
-        <Answer
-          retry={retry}
-          busy={busy}
-          sources={snapshot?.runs.find((run) => run.id === message.run_id)?.sources}
-          agentId={author?.id}
-          sentAt={message.created_at}
-          sender={sender}
-          streaming={streaming}
-          text={message.text}
-          openResource={openResource}
-          snapshot={snapshot ?? undefined}
-        />
-      );
-    let start = 0;
-    const answerParts = anchors.map(({ offset, fragments }) => {
-      const text = message.text.slice(start, offset);
-      start = offset;
-      return (
-        <Fragment key={offset}>
-          {text && (
-            <Answer
-              retry={retry}
-              busy={busy}
-              showSources={false}
-              sources={snapshot?.runs.find((run) => run.id === message.run_id)?.sources}
-              agentId={author?.id}
-              sentAt={message.created_at}
-              sender={sender}
-              text={text}
-              openResource={openResource}
-              snapshot={snapshot ?? undefined}
-            />
-          )}
-          {fragments.map((fragment) => nativeFragment(fragment, false))}
-        </Fragment>
-      );
-    });
     return (
-      <>
-        {answerParts}
-        {start < message.text.length && (
-          <Answer
-            retry={retry}
-            busy={busy}
-            showSources={false}
-            sources={snapshot?.runs.find((run) => run.id === message.run_id)?.sources}
-            agentId={author?.id}
-            sentAt={message.created_at}
-            sender={sender}
-            streaming={streaming}
-            text={message.text.slice(start)}
-            openResource={openResource}
-            snapshot={snapshot ?? undefined}
-          />
-        )}
-        <ResearchSources
-          sources={snapshot?.runs.find((run) => run.id === message.run_id)?.sources ?? []}
-        />
-      </>
+      <Answer
+        retry={retry}
+        busy={busy}
+        sources={snapshot?.runs.find((run) => run.id === message.run_id)?.sources}
+        agentId={author?.id}
+        sentAt={at}
+        sender={sender}
+        streaming={streaming && last}
+        showSources={last}
+        text={text}
+        openResource={openResource}
+        snapshot={snapshot ?? undefined}
+      />
     );
   }
   function joins(upper: MessageEntity | undefined, lower: MessageEntity | undefined) {
@@ -1131,24 +1090,43 @@ export default function Workspace() {
                       <p>{agent?.soul || "Apa yang ingin kamu kerjakan bersama?"}</p>
                     </div>
                   )}
-                  {entries.map((entry, index) => {
-                    if (entry.type === "activity")
+                  {rows.map((row, index) => {
+                    const date = row.startsDay ? <ConversationDate at={row.at} /> : null;
+                    if (row.type === "activity")
                       return (
-                        <Fragment key={entry.parts[0].id}>
-                          <TimelineActivity parts={entry.parts} open={openResource} />
-                          {activityAfter(entry.parts[0].id)}
+                        <Fragment key={row.key}>
+                          {date}
+                          <TimelineActivity parts={row.parts} open={openResource} />
                         </Fragment>
                       );
+                    if (row.type === "run")
+                      return (
+                        <Fragment key={row.key}>
+                          {date}
+                          {runActivity(row.run, row.at)}
+                        </Fragment>
+                      );
+                    if (row.type === "native")
+                      return (
+                        <Fragment key={row.key}>
+                          {date}
+                          <div data-native-history-fallback={row.fallback || undefined}>
+                            {row.fallback && (
+                              <p className="text-[12px] text-muted-foreground">
+                                Riwayat input ·{" "}
+                                {snapshot.agents.find(
+                                  (agent) => agent.id === row.fragment.run.agent_id,
+                                )?.name ?? "Agent"}
+                              </p>
+                            )}
+                            {nativeFragment(row.fragment)}
+                          </div>
+                        </Fragment>
+                      );
+                    const { entry } = row;
                     const { message } = entry;
-                    if (
-                      message.author === "agent" &&
-                      snapshot.runs.some(
-                        (run) => run.id === message.run_id && run.retried_by_run_id,
-                      )
-                    )
-                      return null;
-                    const previous = entries[index - 1];
-                    const next = entries[index + 1];
+                    const previous = rows[index - 1];
+                    const next = rows[index + 1];
                     const run = snapshot.runs.findLast(
                       (run) => run.input_message_id === message.id,
                     );
@@ -1163,21 +1141,29 @@ export default function Workspace() {
                         : [],
                     );
                     return (
-                      <Fragment key={message.id}>
+                      <Fragment key={row.key}>
+                        {date}
                         <Message
-                          data-timeline-part={entry.part.id}
+                          data-timeline-part={row.first ? entry.part.id : undefined}
                           data-part-sequence={entry.part.sequence}
-                          id={`message-${message.id}`}
+                          id={row.first ? `message-${message.id}` : undefined}
                           align={message.author === "user" ? "end" : "start"}
                           className="conversation-message"
                           data-join-above={
-                            joins(
-                              previous?.type === "message" ? previous.message : undefined,
-                              message,
-                            ) || undefined
+                            (!row.startsDay &&
+                              joins(
+                                previous?.type === "message" ? previous.entry.message : undefined,
+                                message,
+                              )) ||
+                            undefined
                           }
                           data-join-below={
-                            joins(message, next?.type === "message" ? next.message : undefined) ||
+                            (next &&
+                              !next.startsDay &&
+                              joins(
+                                message,
+                                next.type === "message" ? next.entry.message : undefined,
+                              )) ||
                             undefined
                           }
                         >
@@ -1228,40 +1214,45 @@ export default function Workspace() {
                                         }
                                       />
                                     </div>
-                                    <MessageTime at={entry.part.created_at} />
+                                    <MessageTime at={row.at} />
                                   </BubbleContent>
                                 </Bubble>
                               </MessageActions>
                             ) : (
-                              answer(message)
+                              answer(message, row.text, row.at, row.last)
                             )}
-                            {message.artifact_ids
-                              ?.filter((id) => !inlineAttachmentIds.has(id))
-                              .map((id) => (
-                                <FileActionChip
-                                  key={id}
-                                  name={
-                                    snapshot.artifacts.find((file) => file.id === id)?.name ??
-                                    "Buka lampiran"
-                                  }
-                                  mediaType={
-                                    snapshot.artifacts.find((file) => file.id === id)?.media_type
-                                  }
-                                  open={() => openResource("files", id)}
-                                />
-                              ))}
-                            {snapshot.human_requests
-                              .filter((r) => r.message_id === message.id)
-                              .map((r) => (
-                                <HumanReply
-                                  key={r.id}
-                                  request={r}
-                                  question={message.text}
-                                  author={author?.name ?? "Agent"}
-                                  refresh={refresh}
-                                />
-                              ))}
-                            {run?.status === "queued" &&
+                            {row.last && (
+                              <MessageAttachments
+                                ids={message.artifact_ids.filter(
+                                  (id) => !inlineAttachmentIds.has(id),
+                                )}
+                                files={snapshot.artifacts}
+                                at={row.at}
+                                standalone={
+                                  !row.text.trim() &&
+                                  message.author !== "user" &&
+                                  !snapshot.human_requests.some(
+                                    (request) => request.message_id === message.id,
+                                  )
+                                }
+                                author={author?.name ?? "Agent"}
+                                open={(id) => openResource("files", id)}
+                              />
+                            )}
+                            {row.last &&
+                              snapshot.human_requests
+                                .filter((r) => r.message_id === message.id)
+                                .map((r) => (
+                                  <HumanReply
+                                    key={r.id}
+                                    request={r}
+                                    question={message.text}
+                                    author={author?.name ?? "Agent"}
+                                    refresh={refresh}
+                                  />
+                                ))}
+                            {row.last &&
+                              run?.status === "queued" &&
                               (!run.preparation || run.preparation.state === "ready") && (
                                 <div className="message-run-state text-caption text-muted-foreground">
                                   {runStatusLabel(run)}
@@ -1269,37 +1260,33 @@ export default function Workspace() {
                               )}
                           </MessageContent>
                         </Message>
-                        <WorkActivity
-                          message={message}
-                          run={run}
-                          snapshot={snapshot}
-                          retryPreparation={(runId, revision) =>
-                            void act(async () => {
-                              await queueCommand(
-                                `router-preparation:${runId}`,
-                                `/v1/runs/${runId}/retry-preparation`,
-                                { expected_revision: revision },
-                              );
-                            })
-                          }
-                          retryRoute={(route) =>
-                            void act(async () => {
-                              await queueCommand(
-                                `route:${route.id}`,
-                                `/v1/groups/${snapshot.thread.id}/routes/${route.id}/retry`,
-                                { expected_revision: route.revision },
-                              );
-                            })
-                          }
-                          busy={busy}
-                        />
-                        {message.author === "user" &&
-                          nativeTranscript.anchors
-                            .get(message.id)
-                            ?.flatMap(({ fragments }) =>
-                              fragments.map((fragment) => nativeFragment(fragment)),
-                            )}
-                        {activityAfter(entry.part.id)}
+                        {row.last && (
+                          <WorkActivity
+                            message={message}
+                            at={row.at}
+                            run={run}
+                            snapshot={snapshot}
+                            retryPreparation={(runId, revision) =>
+                              void act(async () => {
+                                await queueCommand(
+                                  `router-preparation:${runId}`,
+                                  `/v1/runs/${runId}/retry-preparation`,
+                                  { expected_revision: revision },
+                                );
+                              })
+                            }
+                            retryRoute={(route) =>
+                              void act(async () => {
+                                await queueCommand(
+                                  `route:${route.id}`,
+                                  `/v1/groups/${snapshot.thread.id}/routes/${route.id}/retry`,
+                                  { expected_revision: route.revision },
+                                );
+                              })
+                            }
+                            busy={busy}
+                          />
+                        )}
                       </Fragment>
                     );
                   })}
@@ -1308,16 +1295,6 @@ export default function Workspace() {
                       {controlText[control.state] ?? "Memeriksa arahan"}
                       {control.error_code ? ` · ${repairMessage(control.error_code)}` : ""}
                     </p>
-                  ))}
-                  {nativeTranscript.fallback.map((fragment) => (
-                    <div key={fragment.key} data-native-history-fallback className="space-y-2">
-                      <p className="text-[12px] text-muted-foreground">
-                        Riwayat input ·{" "}
-                        {snapshot.agents.find((agent) => agent.id === fragment.run.agent_id)
-                          ?.name ?? "Agent"}
-                      </p>
-                      {nativeFragment(fragment)}
-                    </div>
                   ))}
                   {activeRuns.filter(canObserveNative).map((run) => (
                     <NativeInteractions

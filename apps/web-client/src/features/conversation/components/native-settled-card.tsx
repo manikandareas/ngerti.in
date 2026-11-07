@@ -2,7 +2,9 @@ import { Cancel01Icon, Clock01Icon, Loading03Icon, StopIcon } from "@hugeicons/c
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useId, useState } from "react";
 import type { NativeInteraction } from "@/types/native-interactions";
+import { AssistantMessageAuthor } from "./assistant-message";
 import { InteractionCard } from "./interaction-card";
+import { MessageTime } from "./message-time";
 
 const quietButton =
   "inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap rounded-full px-2 text-[12px] leading-5 text-muted-foreground transition-colors hover:bg-foreground/[0.06] hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-40 touch:h-9";
@@ -61,11 +63,22 @@ export function NativeSettledCard({
   // Retain the question after acknowledgment, without an answer receipt or controls.
   if (submission?.state === "submitted")
     return record.type === "approval" ? (
-      <InteractionCard title="Izinkan tindakan ini?" author={author} settled />
+      <InteractionCard
+        title="Izinkan tindakan ini?"
+        author={author}
+        at={record.observed_at}
+        settled
+      />
     ) : (
       <div className="space-y-3">
         {record.request.questions.map((question) => (
-          <InteractionCard key={question.id} title={question.question} author={author} settled />
+          <InteractionCard
+            key={question.id}
+            title={question.question}
+            author={author}
+            at={record.observed_at}
+            settled
+          />
         ))}
       </div>
     );
@@ -121,8 +134,9 @@ export function NativeSettledCard({
       data-native-interaction={record.id}
       data-native-state={status}
       data-ask-card="settled"
-      className="min-w-0 w-full max-w-[560px] border-0 p-0 text-left text-[13px] leading-[18px] text-muted-foreground"
+      className="min-w-0 w-fit max-w-[min(100%,460px)] rounded-2xl border-0 bg-card px-3 py-2 text-left text-[13px] leading-[18px] text-muted-foreground"
     >
+      <AssistantMessageAuthor name={author} />
       <div className="flex min-w-0 items-center gap-1.5">
         <span aria-hidden="true" className="flex size-4 shrink-0 items-center justify-center">
           {icon}
@@ -150,7 +164,7 @@ export function NativeSettledCard({
       {open && (
         <div
           id={detailId}
-          className="ms-[22px] mt-1.5 space-y-2 rounded-xl bg-foreground/[0.045] px-3 py-2 text-[13px] leading-5 text-foreground/70"
+          className="ms-[22px] mt-2 space-y-2 border-t border-border pt-2 text-[13px] leading-5 text-foreground/70"
         >
           {record.type === "user_input" ? (
             record.request.questions.map((question) => (
@@ -193,6 +207,7 @@ export function NativeSettledCard({
           {uncertain && !canObserve && <p>Riwayat dapat diperiksa tanpa membuka sesi native.</p>}
         </div>
       )}
+      <MessageTime at={record.observed_at} />
     </fieldset>
   );
 }

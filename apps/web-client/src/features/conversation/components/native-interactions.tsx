@@ -364,6 +364,10 @@ export function NativeInteractions({
               key={input.userInputId}
               input={input}
               author={author}
+              at={
+                byIdentity.get(identity("user_input", input.userInputId, null))?.observed_at ??
+                run.created_at
+              }
               busy={busy}
               answer={answer}
             />,
@@ -376,6 +380,7 @@ export function NativeInteractions({
             key={input.userInputId}
             input={input}
             author={author}
+            at={byIdentity.get(key)?.observed_at ?? run.created_at}
             busy={busy}
             canRespond={canAnswer(key)}
             scopeId={threadId}
@@ -392,6 +397,15 @@ export function NativeInteractions({
             key={`${approval.approvalId}:${approval.currentRequirementId.sourceIndex}`}
             approval={approval}
             author={author}
+            at={
+              byIdentity.get(
+                identity(
+                  "approval",
+                  approval.approvalId,
+                  approval.currentRequirementId.sourceIndex,
+                ),
+              )?.observed_at ?? run.created_at
+            }
             busy={busy}
             answer={answer}
           />,

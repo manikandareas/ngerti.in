@@ -1,4 +1,5 @@
 import type { ConversationPart, Message } from "@/types/workspace";
+import { conversationDay } from "./conversation-time";
 
 export type ConversationEntry =
   | { type: "message"; part: ConversationPart; message: Message }
@@ -25,6 +26,7 @@ export function conversationEntries(parts: ConversationPart[], messages: Message
       if (
         last?.type === "activity" &&
         last.parts[0].kind === part.kind &&
+        conversationDay(last.parts[0].created_at) === conversationDay(part.created_at) &&
         !part.kind.startsWith("routine_") &&
         !["handoff_requested", "handoff_failed", "goal_blocked"].includes(part.kind)
       )

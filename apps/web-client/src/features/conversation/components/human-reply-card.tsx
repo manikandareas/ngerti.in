@@ -18,7 +18,7 @@ export function HumanReplyCard({
   setText,
   submit,
 }: {
-  request: Pick<HumanRequest, "id" | "state" | "purpose" | "options" | "action">;
+  request: Pick<HumanRequest, "id" | "created_at" | "state" | "purpose" | "options" | "action">;
   author: string;
   question?: string;
   selected: string[];
@@ -34,13 +34,15 @@ export function HumanReplyCard({
   if (request.purpose !== "approval" && !request.options) return null;
   const title =
     question || (request.purpose === "approval" ? "Setujui permintaan ini?" : "Pilih jawaban");
-  if (request.state !== "pending") return <InteractionCard title={title} author={author} settled />;
+  if (request.state !== "pending")
+    return <InteractionCard title={title} author={author} at={request.created_at} settled />;
   const options = request.options;
   const count = selected.length + (customSelected && text.trim() ? 1 : 0);
   return (
     <InteractionCard
       title={title}
       author={author}
+      at={request.created_at}
       busy={busy}
       footer={
         <div className="interaction-actions">
@@ -88,7 +90,7 @@ export function HumanReplyCard({
               }
               onClick={() => void submit()}
             >
-              Continue
+              Lanjut
             </button>
           )}
         </div>

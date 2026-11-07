@@ -1,0 +1,157 @@
+$ bun --filter @ngertiin/web-client build
+@ngertiin/web-client build: vite v8.3.5 building client environment for production...
+@ngertiin/web-client build: transforming...
+@ngertiin/web-client build: ✓ 8561 modules transformed.
+@ngertiin/web-client build: rendering chunks...
+@ngertiin/web-client build: computing gzip size...
+@ngertiin/web-client build: dist/index.html                                                   0.81 kB │ gzip:   0.41 kB
+@ngertiin/web-client build: dist/assets/geist-mono-symbols2-wght-normal-CO5SzqOn.woff2        5.81 kB
+@ngertiin/web-client build: dist/assets/geist-mono-cyrillic-ext-wght-normal-X_5orZeX.woff2    6.17 kB
+@ngertiin/web-client build: dist/assets/geist-cyrillic-ext-wght-normal-DjL33-gN.woff2         7.42 kB
+@ngertiin/web-client build: dist/assets/geist-mono-vietnamese-wght-normal-DadHysG0.woff2      7.69 kB
+@ngertiin/web-client build: dist/assets/geist-vietnamese-wght-normal-6IgcOCM7.woff2           8.00 kB
+@ngertiin/web-client build: dist/assets/geist-mono-cyrillic-wght-normal-DiZS0aHC.woff2       12.94 kB
+@ngertiin/web-client build: dist/assets/geist-mono-latin-ext-wght-normal-Bwz-egvJ.woff2      14.69 kB
+@ngertiin/web-client build: dist/assets/geist-cyrillic-wght-normal-BEAKL7Jp.woff2            15.08 kB
+@ngertiin/web-client build: dist/assets/geist-latin-ext-wght-normal-DC-KSUi6.woff2           16.51 kB
+@ngertiin/web-client build: dist/assets/geist-mono-latin-wght-normal-XN7g48iV.woff2          23.12 kB
+@ngertiin/web-client build: dist/assets/geist-latin-wght-normal-BgDaEnEv.woff2               29.40 kB
+@ngertiin/web-client build: dist/assets/api-client-D0kGTlOp.css                               0.29 kB │ gzip:   0.19 kB
+@ngertiin/web-client build: dist/assets/attachment-chip-NuYZJiey.css                          3.26 kB │ gzip:   1.09 kB
+@ngertiin/web-client build: dist/assets/color-studio-B3BfdVsx.css                             5.48 kB │ gzip:   1.63 kB
+@ngertiin/web-client build: dist/assets/assistant-studio-C89XhYbl.css                         5.92 kB │ gzip:   1.66 kB
+@ngertiin/web-client build: dist/assets/settings-dialog-C7RUae7i.css                         11.96 kB │ gzip:   2.49 kB
+@ngertiin/web-client build: dist/assets/work-activity-CT8Hu9Rp.css                           12.11 kB │ gzip:   2.87 kB
+@ngertiin/web-client build: dist/assets/avatar-studio-BkV9_k8g.css                           12.17 kB │ gzip:   2.86 kB
+@ngertiin/web-client build: dist/assets/index-Dtrc6-3B.css                                  258.95 kB │ gzip:  40.37 kB
+@ngertiin/web-client build: dist/assets/c-Cz4nF6n_.js                                         0.04 kB │ gzip:   0.06 kB
+@ngertiin/web-client build: dist/assets/cpp-DzjeI0uH.js                                       0.04 kB │ gzip:   0.06 kB
+@ngertiin/web-client build: dist/assets/css-DgaLhXQH.js                                       0.04 kB │ gzip:   0.06 kB
+@ngertiin/web-client build: dist/assets/jsx-C4yDKi0A.js                                       0.04 kB │ gzip:   0.06 kB
+@ngertiin/web-client build: dist/assets/lua-fPRBWD-V.js                                       0.04 kB │ gzip:   0.06 kB
+@ngertiin/web-client build: dist/assets/sql-CfM2IJm3.js                                       0.04 kB │ gzip:   0.06 kB
+@ngertiin/web-client build: dist/assets/tsx-CGosfAUg.js                                       0.04 kB │ gzip:   0.06 kB
+@ngertiin/web-client build: dist/assets/xml-DuKfbPI6.js                                       0.04 kB │ gzip:   0.06 kB
+@ngertiin/web-client build: dist/assets/html-BWDvXlHg.js                                      0.04 kB │ gzip:   0.06 kB
+@ngertiin/web-client build: dist/assets/java-_ATy9zCa.js                                      0.04 kB │ gzip:   0.06 kB
+@ngertiin/web-client build: dist/assets/json-C3WlssX3.js                                      0.04 kB │ gzip:   0.06 kB
+@ngertiin/web-client build: dist/assets/yaml-DDA_XMNu.js                                      0.04 kB │ gzip:   0.06 kB
+@ngertiin/web-client build: dist/assets/graphql-BHtseKAV.js                                   0.04 kB │ gzip:   0.06 kB
+@ngertiin/web-client build: dist/assets/javascript-CpIGwZ_Y.js                                0.05 kB │ gzip:   0.07 kB
+@ngertiin/web-client build: dist/assets/typescript-Bb1J8qyy.js                                0.05 kB │ gzip:   0.07 kB
+@ngertiin/web-client build: dist/assets/bash-CVTB3cr6.js                                      0.05 kB │ gzip:   0.07 kB
+@ngertiin/web-client build: dist/assets/Tick02Icon-BZZvPScA.js                                0.15 kB │ gzip:   0.14 kB
+@ngertiin/web-client build: dist/assets/dist-D8Wfxh48.js                                      0.15 kB │ gzip:   0.15 kB
+@ngertiin/web-client build: dist/assets/shared-8p594ul_.js                                    0.17 kB │ gzip:   0.16 kB
+@ngertiin/web-client build: dist/assets/ArrowDown01Icon-DDfnNeUj.js                           0.19 kB │ gzip:   0.15 kB
+@ngertiin/web-client build: dist/assets/ArrowRight01Icon-CpyfVR64.js                          0.19 kB │ gzip:   0.15 kB
+@ngertiin/web-client build: dist/assets/ArrowLeft01Icon-BJdQ1Oac.js                           0.19 kB │ gzip:   0.16 kB
+@ngertiin/web-client build: dist/assets/ArrowUp01Icon-DCpTLFPv.js                             0.21 kB │ gzip:   0.16 kB
+@ngertiin/web-client build: dist/assets/skeleton-B1YL9DtQ.js                                  0.27 kB │ gzip:   0.21 kB
+@ngertiin/web-client build: dist/assets/Add01Icon-Cukx9Onc.js                                 0.29 kB │ gzip:   0.16 kB
+@ngertiin/web-client build: dist/assets/spinner-pi3QMIjj.js                                   0.33 kB │ gzip:   0.25 kB
+@ngertiin/web-client build: dist/assets/use-mobile-Dfp6UBwH.js                                0.34 kB │ gzip:   0.25 kB
+@ngertiin/web-client build: dist/assets/Search01Icon-uevAzKav.js                              0.36 kB │ gzip:   0.18 kB
+@ngertiin/web-client build: dist/assets/collapsible-nt1zptFq.js                               0.36 kB │ gzip:   0.21 kB
+@ngertiin/web-client build: dist/assets/dist-COSZx6L0.js                                      0.38 kB │ gzip:   0.28 kB
+@ngertiin/web-client build: dist/assets/textarea-XY40PxSi.js                                  0.70 kB │ gzip:   0.40 kB
+@ngertiin/web-client build: dist/assets/SparklesIcon-DTZnteLJ.js                              0.76 kB │ gzip:   0.35 kB
+@ngertiin/web-client build: dist/assets/Sun03Icon-B9BIpmGE.js                                 0.83 kB │ gzip:   0.40 kB
+@ngertiin/web-client build: dist/assets/separator-CXWdjLym.js                                 0.87 kB │ gzip:   0.49 kB
+@ngertiin/web-client build: dist/assets/Download04Icon-C2-aGxK5.js                            0.88 kB │ gzip:   0.42 kB
+@ngertiin/web-client build: dist/assets/alert-DcQbRIBV.js                                     1.54 kB │ gzip:   0.64 kB
+@ngertiin/web-client build: dist/assets/dockerfile-IyjqRm3v.js                                1.73 kB │ gzip:   0.59 kB
+@ngertiin/web-client build: dist/assets/message-Cjou-ft8.js                                   1.82 kB │ gzip:   0.66 kB
+@ngertiin/web-client build: dist/assets/dist-J7r6qqsc.js                                      2.39 kB │ gzip:   1.04 kB
+@ngertiin/web-client build: dist/assets/avatar-oyylf6Z6.js                                    2.41 kB │ gzip:   1.12 kB
+@ngertiin/web-client build: dist/assets/item-B1Yum72y.js                                      2.51 kB │ gzip:   0.94 kB
+@ngertiin/web-client build: dist/assets/diff-woXpYk--.js                                      2.56 kB │ gzip:   0.68 kB
+@ngertiin/web-client build: dist/assets/actions-B2XsqLNY.js                                   2.76 kB │ gzip:   1.12 kB
+@ngertiin/web-client build: dist/assets/json-B88Oqtu5.js                                      2.81 kB │ gzip:   0.76 kB
+@ngertiin/web-client build: dist/assets/input-group-B2fTErZ7.js                               3.07 kB │ gzip:   1.16 kB
+@ngertiin/web-client build: dist/assets/jsonc-CYpm1nAK.js                                     3.10 kB │ gzip:   0.78 kB
+@ngertiin/web-client build: dist/assets/sheet-B16TLioG.js                                     3.21 kB │ gzip:   1.00 kB
+@ngertiin/web-client build: dist/assets/json5-BR5RXkoi.js                                     3.24 kB │ gzip:   0.82 kB
+@ngertiin/web-client build: dist/assets/bubble-2gECodrS.js                                    3.63 kB │ gzip:   1.07 kB
+@ngertiin/web-client build: dist/assets/switch-Cd5PxXnF.js                                    4.97 kB │ gzip:   1.98 kB
+@ngertiin/web-client build: dist/assets/alert-dialog-CIwAeQqO.js                              4.98 kB │ gzip:   1.52 kB
+@ngertiin/web-client build: dist/assets/feedback-C9nVStCn.js                                  5.29 kB │ gzip:   1.86 kB
+@ngertiin/web-client build: dist/assets/xml-WY0zc4PG.js                                       5.38 kB │ gzip:   1.20 kB
+@ngertiin/web-client build: dist/assets/popover-CawcPT9G.js                                   6.22 kB │ gzip:   2.35 kB
+@ngertiin/web-client build: dist/assets/toml-CcmNWLt0.js                                      6.41 kB │ gzip:   1.28 kB
+@ngertiin/web-client build: dist/assets/card-lZSDE_AR.js                                      6.51 kB │ gzip:   2.19 kB
+@ngertiin/web-client build: dist/assets/proto-DB4EqR-F.js                                     6.54 kB │ gzip:   1.41 kB
+@ngertiin/web-client build: dist/assets/dropdown-menu-BKhsrfTN.js                             6.71 kB │ gzip:   2.21 kB
+@ngertiin/web-client build: dist/assets/r-C5FwQflr.js                                         6.72 kB │ gzip:   1.83 kB
+@ngertiin/web-client build: dist/assets/color-studio-CSTKkLMj.js                              6.87 kB │ gzip:   2.73 kB
+@ngertiin/web-client build: dist/assets/badge-Bf8tRE6H.js                                     7.05 kB │ gzip:   2.42 kB
+@ngertiin/web-client build: dist/assets/theme-switcher-D9LHu9xB.js                            7.13 kB │ gzip:   2.44 kB
+@ngertiin/web-client build: dist/assets/dialog-hcI10oSy.js                                    7.73 kB │ gzip:   2.72 kB
+@ngertiin/web-client build: dist/assets/progress-CupKxtTj.js                                  8.34 kB │ gzip:   3.05 kB
+@ngertiin/web-client build: dist/assets/dart-CHZY9Xhz.js                                      8.60 kB │ gzip:   1.99 kB
+@ngertiin/web-client build: dist/assets/kotlin-DhhofPvG.js                                    8.77 kB │ gzip:   2.12 kB
+@ngertiin/web-client build: dist/assets/makefile-Dixweg8N.js                                  8.95 kB │ gzip:   1.76 kB
+@ngertiin/web-client build: dist/assets/sass-DXrisJhu.js                                      9.28 kB │ gzip:   2.48 kB
+@ngertiin/web-client build: dist/assets/dist-DF0bb3lR.js                                      9.78 kB │ gzip:   3.63 kB
+@ngertiin/web-client build: dist/assets/home-DE4BuAlR.js                                     10.36 kB │ gzip:   2.95 kB
+@ngertiin/web-client build: dist/assets/yaml-DijMHRDA.js                                     10.49 kB │ gzip:   2.26 kB
+@ngertiin/web-client build: dist/assets/wasm-ByWQv1Qj.js                                     12.00 kB │ gzip:   2.17 kB
+@ngertiin/web-client build: dist/assets/fish-BJitypiv.js                                     13.03 kB │ gzip:   1.73 kB
+@ngertiin/web-client build: dist/assets/Cancel01Icon-BucA_TcT.js                             13.42 kB │ gzip:   5.19 kB
+@ngertiin/web-client build: dist/assets/HugeiconsIcon-AOMf_ZpP.js                            13.55 kB │ gzip:   4.88 kB
+@ngertiin/web-client build: dist/assets/github-light-default-BXViO-2h.js                     14.15 kB │ gzip:   3.02 kB
+@ngertiin/web-client build: dist/assets/github-dark-default-DXG-b-1a.js                      14.43 kB │ gzip:   3.12 kB
+@ngertiin/web-client build: dist/assets/scroll-area-Cka9sNzK.js                              14.58 kB │ gzip:   4.49 kB
+@ngertiin/web-client build: dist/assets/input-DGpOoDDH.js                                    15.10 kB │ gzip:   5.50 kB
+@ngertiin/web-client build: dist/assets/rust-DpiIf5JO.js                                     15.16 kB │ gzip:   2.72 kB
+@ngertiin/web-client build: dist/assets/overlays-Dc830NQB.js                                 15.38 kB │ gzip:   4.70 kB
+@ngertiin/web-client build: dist/assets/lua-DjuecEsk.js                                      15.53 kB │ gzip:   3.15 kB
+@ngertiin/web-client build: dist/assets/graphql-f69H1Mm0.js                                  18.00 kB │ gzip:   2.49 kB
+@ngertiin/web-client build: dist/assets/avatar-studio-yArVbnzs.js                            19.58 kB │ gzip:   6.87 kB
+@ngertiin/web-client build: dist/assets/powershell-QtSnmXcu.js                               20.14 kB │ gzip:   4.05 kB
+@ngertiin/web-client build: dist/assets/design-system-CQ7UYKjN.js                            22.38 kB │ gzip:   7.72 kB
+@ngertiin/web-client build: dist/assets/attachment-chip-D7nc-oxj.js                          22.55 kB │ gzip:   9.06 kB
+@ngertiin/web-client build: dist/assets/sql-CNu3Or2W.js                                      23.65 kB │ gzip:   7.51 kB
+@ngertiin/web-client build: dist/assets/api-client-D6mRF2Fw.js                               25.66 kB │ gzip:  10.67 kB
+@ngertiin/web-client build: dist/assets/java-BtIQNnN0.js                                     27.20 kB │ gzip:   4.25 kB
+@ngertiin/web-client build: dist/assets/scss-8bKmll0B.js                                     27.20 kB │ gzip:   4.18 kB
+@ngertiin/web-client build: dist/assets/assistant-studio-DiT_Es-h.js                         27.58 kB │ gzip:  10.08 kB
+@ngertiin/web-client build: dist/assets/settings-dialog-CdXmkfZp.js                          29.41 kB │ gzip:   9.24 kB
+@ngertiin/web-client build: dist/assets/drawer-BNgSUIKL.js                                   31.57 kB │ gzip:   9.29 kB
+@ngertiin/web-client build: dist/assets/dist-wAcuN_sr.js                                     33.17 kB │ gzip:  13.63 kB
+@ngertiin/web-client build: dist/assets/select-C2qSEF27.js                                   35.44 kB │ gzip:  10.43 kB
+@ngertiin/web-client build: dist/assets/shellscript-CqHdAlCp.js                              41.46 kB │ gzip:   6.07 kB
+@ngertiin/web-client build: dist/assets/go-rLFTqkRN.js                                       46.81 kB │ gzip:   5.14 kB
+@ngertiin/web-client build: dist/assets/navigation-DPI-Ln-y.js                               52.54 kB │ gzip:  15.38 kB
+@ngertiin/web-client build: dist/assets/css-BGIxQoYs.js                                      53.35 kB │ gzip:  12.47 kB
+@ngertiin/web-client build: dist/assets/ruby-DVcErFQW.js                                     54.76 kB │ gzip:   7.10 kB
+@ngertiin/web-client build: dist/assets/conversation-DT8_ZTUg.js                             55.91 kB │ gzip:  16.48 kB
+@ngertiin/web-client build: dist/assets/html-BMn1ogTm.js                                     57.24 kB │ gzip:  11.74 kB
+@ngertiin/web-client build: dist/assets/engine-javascript-Ceng43A0.js                        57.70 kB │ gzip:  20.24 kB
+@ngertiin/web-client build: dist/assets/markdown-BYOwaDjH.js                                 59.32 kB │ gzip:   5.66 kB
+@ngertiin/web-client build: dist/assets/python-gzcpVVnB.js                                   69.94 kB │ gzip:   9.09 kB
+@ngertiin/web-client build: dist/assets/c-SSSlmE39.js                                        72.10 kB │ gzip:  10.49 kB
+@ngertiin/web-client build: dist/assets/core-n8tCXV5H.js                                     85.72 kB │ gzip:  27.41 kB
+@ngertiin/web-client build: dist/assets/swift-CyEgAFGc.js                                    87.22 kB │ gzip:  14.79 kB
+@ngertiin/web-client build: dist/assets/csharp-dmMxLVLW.js                                   91.43 kB │ gzip:  10.79 kB
+@ngertiin/web-client build: dist/assets/less-DVTAwKKz.js                                     97.62 kB │ gzip:  14.84 kB
+@ngertiin/web-client build: dist/assets/php-CUj1wjLQ.js                                     113.12 kB │ gzip:  28.84 kB
+@ngertiin/web-client build: dist/assets/mdx-DQZ5AkYe.js                                     136.10 kB │ gzip:  23.54 kB
+@ngertiin/web-client build: dist/assets/javascript-BzbQS41l.js                              174.81 kB │ gzip:  16.62 kB
+@ngertiin/web-client build: dist/assets/tsx-BOvsFOI6.js                                     175.52 kB │ gzip:  16.61 kB
+@ngertiin/web-client build: dist/assets/jsx-D3KKoC5L.js                                     177.77 kB │ gzip:  16.70 kB
+@ngertiin/web-client build: dist/assets/typescript-j_1H8WHN.js                              181.06 kB │ gzip:  16.23 kB
+@ngertiin/web-client build: dist/assets/workspace-layout-D5y4tc9n.js                        181.83 kB │ gzip:  55.88 kB
+@ngertiin/web-client build: dist/assets/forms-D3LJ_qtB.js                                   214.66 kB │ gzip:  69.26 kB
+@ngertiin/web-client build: dist/assets/index-mLsQYrhP.js                                   384.76 kB │ gzip: 123.85 kB
+@ngertiin/web-client build: dist/assets/display-Bt3iG31v.js                                 412.68 kB │ gzip: 125.83 kB
+@ngertiin/web-client build: dist/assets/work-activity-BEdWEt8M.js                           514.31 kB │ gzip: 162.95 kB
+@ngertiin/web-client build: dist/assets/cpp-Cts1PyIS.js                                     796.95 kB │ gzip:  60.65 kB
+@ngertiin/web-client build: 
+@ngertiin/web-client build: [plugin builtin:vite-reporter] 
+@ngertiin/web-client build: (!) Some chunks are larger than 500 kB after minification. Consider:
+@ngertiin/web-client build: - Using dynamic import() to code-split the application
+@ngertiin/web-client build: - Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+@ngertiin/web-client build: - Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+@ngertiin/web-client build: ✓ built in 1.21s
+@ngertiin/web-client build: Exited with code 0

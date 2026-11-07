@@ -93,11 +93,13 @@ async function menu(page: Page) {
 async function chooseAgent(page: Page, name: string) {
   const open = page.getByRole("button", { name: "Buka percakapan", exact: true });
   if (await open.isVisible()) await open.click();
-  await page
+  const row = page
     .getByRole("navigation", { name: "Percakapan", exact: true })
-    .getByRole("button")
-    .filter({ has: page.getByText(name, { exact: true }) })
-    .click();
+    .locator("[data-thread-id]")
+    .filter({ has: page.getByText(name, { exact: true }) });
+  // Offscreen portraits intentionally remain deferred until the list is scrolled.
+  await row.evaluate((element) => element.scrollIntoView({ block: "nearest" }));
+  await row.click();
   await expect(page.getByRole("button", { name: `Detail ${name}`, exact: true })).toBeVisible();
 }
 async function revokeFixtureApps(page: Page, toolkit: string) {
@@ -1136,14 +1138,7 @@ async function fixtureAgent(page: Page, prefix: string) {
   });
 }
 async function chooseGroup(page: Page, name: string) {
-  const open = page.getByRole("button", { name: "Buka percakapan", exact: true });
-  if (await open.isVisible()) await open.click();
-  await page
-    .getByRole("navigation", { name: "Percakapan", exact: true })
-    .getByRole("button")
-    .filter({ has: page.getByText(name, { exact: true }) })
-    .click();
-  await expect(page.getByRole("button", { name: `Detail ${name}`, exact: true })).toBeVisible();
+  await chooseAgent(page, name);
 }
 
 test("group writers serialize native questions and free text uses one answer representation", async ({
@@ -1221,7 +1216,7 @@ test("an unconfirmed option reply reuses the same decision across reload", async
   await option.check();
   await capture(page, testInfo.outputPath("product-question-selected.png"));
   await page.route("**/v1/human-requests/*/reply", (route) => route.abort("failed"));
-  await page.getByRole("button", { name: "Continue", exact: true }).click();
+  await page.getByRole("button", { name: "Lanjut", exact: true }).click();
   await expect(page.getByRole("button", { name: "Periksa status", exact: true })).toBeVisible();
   await page.unroute("**/v1/human-requests/*/reply");
   await page.reload();
@@ -1692,16 +1687,22 @@ test("approval is inline and retains only its question after a typed owner decis
   await expect(page.getByRole("button", { name: "Tolak", exact: true })).toBeVisible();
   await page.getByRole("button", { name: "Setujui", exact: true }).scrollIntoViewIfNeeded();
   await capture(page, testInfo.outputPath("product-approval-pending.png"));
+  const clock = await page
+    .locator(".conversation-interaction .message-time")
+    .getAttribute("datetime");
+  expect(clock).not.toBeNull();
   await page.getByRole("button", { name: "Setujui", exact: true }).click();
   await expect(page.getByRole("button", { name: "Setujui", exact: true })).toHaveCount(0);
   await expect(
     page.getByText("Jawaban tersimpan untuk permintaan ini.", { exact: true }),
   ).toHaveCount(0);
   const settled = page.locator('.conversation-interaction[data-interaction-state="settled"]');
-  await expect(settled).toHaveText("Publish this exact checklist?");
+  await expect(settled.getByRole("heading")).toHaveText("Publish this exact checklist?");
+  await expect(settled.locator(".message-time")).toHaveAttribute("datetime", clock as string);
   await expect(settled.locator("button, footer, .conversation-interaction-body")).toHaveCount(0);
   await page.reload();
-  await expect(settled).toHaveText("Publish this exact checklist?");
+  await expect(settled.getByRole("heading")).toHaveText("Publish this exact checklist?");
+  await expect(settled.locator(".message-time")).toHaveAttribute("datetime", clock as string);
   await expect(
     page.locator(".conversation-message .group-message-avatar, .agent-activity-avatar"),
   ).toHaveCount(0);
@@ -1769,7 +1770,7 @@ test("group interaction history keeps rendered mentions and an adjacent avatar a
     page.locator(".conversation-column").getByText("Waiting for your reply…", { exact: true }),
   ).toHaveCount(0);
   await page.getByRole("radio", { name: "Makassar", exact: true }).check();
-  await page.getByRole("button", { name: "Continue", exact: true }).click();
+  await page.getByRole("button", { name: "Lanjut", exact: true }).click();
   await expect(card).toHaveAttribute("data-interaction-state", "settled");
   await expect(
     card.locator("button, input, textarea, footer, .conversation-interaction-body"),
@@ -1785,6 +1786,8 @@ test("group interaction history keeps rendered mentions and an adjacent avatar a
   });
   const approval = page.getByRole("region", { name: "Publish this exact checklist?", exact: true });
   await approval.scrollIntoViewIfNeeded();
+  const approvalAt = await approval.locator(".message-time").getAttribute("datetime");
+  expect(approvalAt).not.toBeNull();
   await expect(
     page
       .locator(".conversation-message")
@@ -1793,10 +1796,13 @@ test("group interaction history keeps rendered mentions and an adjacent avatar a
   ).toBeVisible();
   await approval.getByRole("button", { name: "Tolak", exact: true }).click();
   await expect(approval).toHaveAttribute("data-interaction-state", "settled");
-  await expect(approval).toHaveText("Publish this exact checklist?");
+  await expect(approval.getByRole("heading")).toHaveText("Publish this exact checklist?");
+  await expect(approval.locator(".group-bubble-author")).toHaveText(actor.name);
+  await expect(approval.locator(".message-time")).toHaveAttribute("datetime", approvalAt as string);
   await expect(approval.locator("button, footer, .conversation-interaction-body")).toHaveCount(0);
   await page.reload();
   await approval.scrollIntoViewIfNeeded();
   await expect(approval).toHaveAttribute("data-interaction-state", "settled");
+  await expect(approval.locator(".message-time")).toHaveAttribute("datetime", approvalAt as string);
   await capture(page, testInfo.outputPath("group-hitl-history.png"));
 });

@@ -45,6 +45,7 @@ function Milestone({
     >
       <ConversationEvent
         kind={kind}
+        at={kind === "handoff" ? part.created_at : undefined}
         icon={
           <HugeiconsIcon
             icon={kind === "goal" ? Target02Icon : kind === "routine" ? Clock01Icon : UserGroupIcon}

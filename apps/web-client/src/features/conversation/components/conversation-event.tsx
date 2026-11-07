@@ -1,6 +1,7 @@
 import { ArrowUpRight01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import type { ReactNode } from "react";
+import { MessageTime } from "./message-time";
 
 export function ConversationEvent({
   kind,
@@ -10,6 +11,7 @@ export function ConversationEvent({
   description,
   onClick,
   accessibleName,
+  at,
 }: {
   kind: "goal" | "routine" | "handoff";
   icon: ReactNode;
@@ -18,6 +20,7 @@ export function ConversationEvent({
   description?: string | null;
   onClick?: () => void;
   accessibleName?: string;
+  at?: string;
 }) {
   const content = (
     <>
@@ -72,6 +75,7 @@ export function ConversationEvent({
           {description}
         </p>
       )}
+      <MessageTime at={at} className="text-center" />
     </div>
   );
 }

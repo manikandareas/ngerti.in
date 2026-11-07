@@ -5,11 +5,13 @@ import { InteractionCard } from "./interaction-card";
 export function NativeApprovalCard({
   approval,
   author,
+  at,
   busy,
   answer,
 }: {
   approval: NativeApproval;
   author: string;
+  at?: string;
   busy: boolean;
   answer: (value: NativeInteractionAnswer) => Promise<unknown>;
 }) {
@@ -29,6 +31,7 @@ export function NativeApprovalCard({
     <InteractionCard
       title="Izinkan tindakan ini?"
       author={author}
+      at={at}
       busy={busy}
       footer={
         <div className="interaction-actions">

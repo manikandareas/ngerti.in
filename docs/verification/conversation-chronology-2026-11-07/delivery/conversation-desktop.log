@@ -1,0 +1,21 @@
+[WebServer] $ vite preview --host "127.0.0.1" --port "4371" --strictPort
+[WebServer] (node:27684) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 11 tests using 1 worker
+
+(node:27762) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [desktop] › tests/conversation-chronology.spec.ts:157:3 › light calendar groups survive overlapping history and keep overnight queue publication clocks (1.9s)
+  ✓   2 [desktop] › tests/conversation-chronology.spec.ts:157:3 › dark calendar groups survive overlapping history and keep overnight queue publication clocks (1.7s)
+  ✓   3 [desktop] › tests/conversation-chronology.spec.ts:218:1 › group approval and finished Computer retain clocks while Goal/Routine bars remain timeless (1.5s)
+  ✓   4 [desktop] › tests/conversation-chronology.spec.ts:310:1 › a verified native question crossing midnight splits dates without splitting Markdown or losing text (1.1s)
+  ✓   5 [desktop] › tests/conversation-chronology.spec.ts:393:1 › file-only assistant replies retain their clock and attribution without an empty text bubble (1.4s)
+  ✓   6 [desktop] › tests/conversation.spec.ts:36:1 › switching conversations keeps exactly one attachment button and editor (2.6s)
+  ✓   7 [desktop] › tests/conversation.spec.ts:160:1 › queued inputs enter the transcript after the preceding answer, including late answers and reload (7.2s)
+  ✓   8 [desktop] › tests/conversation.spec.ts:773:3 › dm opens at the latest message on its first visible frame (4.6s)
+  ✓   9 [desktop] › tests/conversation.spec.ts:773:3 › group opens at the latest message on its first visible frame (3.9s)
+  ✓  10 [desktop] › tests/rich-answer.spec.ts:27:3 › rich reply matches source blocks, table/code interactions and safe rendering (light) (4.7s)
+  ✓  11 [desktop] › tests/rich-answer.spec.ts:27:3 › rich reply matches source blocks, table/code interactions and safe rendering (dark) (4.8s)
+
+  11 passed (40.1s)

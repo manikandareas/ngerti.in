@@ -1,0 +1,106 @@
+[
+  {
+    "cohort": "conversation",
+    "project": "desktop",
+    "exit_code": 0,
+    "stats": {
+      "startTime": "2026-11-07T07:09:42.858Z",
+      "duration": 76712.084,
+      "expected": 11,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "command": [
+      "bunx",
+      "playwright",
+      "test",
+      "--config",
+      "playwright.conversation.config.ts",
+      "conversation-chronology.spec.ts",
+      "conversation.spec.ts",
+      "rich-answer.spec.ts",
+      "--grep",
+      "calendar groups|group approval and finished|verified native question|file-only assistant|opens at the latest|switching conversations|queued inputs enter|rich reply matches",
+      "--project",
+      "desktop"
+    ]
+  },
+  {
+    "cohort": "conversation",
+    "project": "mobile",
+    "exit_code": 0,
+    "stats": {
+      "startTime": "2026-11-07T07:11:00.306Z",
+      "duration": 63455.121,
+      "expected": 11,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "command": [
+      "bunx",
+      "playwright",
+      "test",
+      "--config",
+      "playwright.conversation.config.ts",
+      "conversation-chronology.spec.ts",
+      "conversation.spec.ts",
+      "rich-answer.spec.ts",
+      "--grep",
+      "calendar groups|group approval and finished|verified native question|file-only assistant|opens at the latest|switching conversations|queued inputs enter|rich reply matches",
+      "--project",
+      "mobile"
+    ]
+  },
+  {
+    "cohort": "work",
+    "project": "desktop",
+    "exit_code": 0,
+    "stats": {
+      "startTime": "2026-11-07T07:12:04.319Z",
+      "duration": 36145.034,
+      "expected": 8,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "command": [
+      "bunx",
+      "playwright",
+      "test",
+      "--config",
+      "playwright.work.config.ts",
+      "work.spec.ts",
+      "--grep",
+      "native acknowledgements|unsafe Markdown|group writers|unconfirmed option|native text-only|approval is inline|retry is available|group interaction history",
+      "--project",
+      "desktop"
+    ]
+  },
+  {
+    "cohort": "work",
+    "project": "mobile",
+    "exit_code": 0,
+    "stats": {
+      "startTime": "2026-11-07T07:12:41.000Z",
+      "duration": 38219.504,
+      "expected": 8,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "command": [
+      "bunx",
+      "playwright",
+      "test",
+      "--config",
+      "playwright.work.config.ts",
+      "work.spec.ts",
+      "--grep",
+      "native acknowledgements|unsafe Markdown|group writers|unconfirmed option|native text-only|approval is inline|retry is available|group interaction history",
+      "--project",
+      "mobile"
+    ]
+  }
+]

@@ -6,6 +6,8 @@ Status was reconciled on 2026-11-06 from the available decision and milestone re
 
 The [2026-11-07 sidebar loading refinement](../verification/sidebar-loading-2026-11-07/README.md) adds focused desktop/mobile evidence under NMA-061. Milestone statuses and dependencies are unchanged.
 
+The [2026-11-07 conversation chronology refinement](../verification/conversation-chronology-2026-11-07/README.md) adds centered day groups and consistent message/card clocks, with Goal/Routine event bars remaining without clocks. It retains NMA-061's status and the open product/distribution gates.
+
 ## Active milestones
 
 | Order | Milestone | Status | Layer | Depends on |

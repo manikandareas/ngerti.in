@@ -9,10 +9,12 @@ import type { Agent, Run } from "@/types/workspace";
 import { ActivityStatus } from "./activity-status";
 import { AgentAvatar } from "./identity";
 import { MessageActions } from "./message-actions";
+import { MessageTime } from "./message-time";
 
 export function AgentActivityBubble({
   agent,
   run,
+  at = run.created_at,
   online,
   waitingForUser,
   targetName,
@@ -26,6 +28,7 @@ export function AgentActivityBubble({
 }: {
   agent: Agent;
   run: Run;
+  at?: string;
   online: boolean;
   waitingForUser: boolean;
   targetName?: string;
@@ -110,6 +113,7 @@ export function AgentActivityBubble({
                   Open settings
                 </Button>
               )}
+              <MessageTime at={at} />
             </BubbleContent>
           </Bubble>
         </MessageActions>

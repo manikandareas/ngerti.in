@@ -36,6 +36,8 @@ Human questions/review/approval bind to the correct work and revision. Relevant 
 
 Public history keeps useful answers, results, review findings and human questions. Normal handoff instructions, native prompts, shell commands and raw tool output stay private. Activity remains agent-attributed, transient and friendly; waiting/failure/input states stay actionable. Streaming polish preserves final/history content and reduced-motion behavior.
 
+Visible history is grouped by the viewing device's calendar day, with a centered date separator and shared clocks on messages and assistant-side cards. Goal/Routine event bars belong to the same day groups but have no clock. Publication ordering, interaction boundaries and historical request/activity timestamps remain authoritative; see [date and clock behavior](interface.md#conversation-dates-and-clocks).
+
 Private DM history/memory and saved-artifact metadata remain separate from group context. Shared-machine working files and attachment copies are intentionally shared, as described in the architecture. Scope, current membership, grants and capabilities are checked before dispatch and publication. Harness skills remain separate from app-owned packages; memory correction/deletion preserves identity/revision semantics.
 
 [Local milestones](../backlog/README.md) retain acceptance and dependencies for NMA-052/053/054/055/056/061/062/065. Their completion does not close NMA-063 product-wide acceptance or NMA-064 distribution.

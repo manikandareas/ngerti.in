@@ -522,7 +522,7 @@ test("the web studio uses product interactions and consistent Computer cards wit
     exact: true,
   });
   await expect(radio).toBeVisible();
-  const submit = page.getByRole("button", { name: "Continue", exact: true });
+  const submit = page.getByRole("button", { name: "Lanjut", exact: true });
   await expect(submit).toBeDisabled();
   await radio.check();
   await expect(submit).toBeEnabled();
@@ -581,7 +581,7 @@ test("editable alternatives behave as options and approval details remain readab
   await page.goto("/assistant-studio?section=input&state=custom&mode=dm");
   const custom = page.getByRole("radio", { name: "Jawaban lain", exact: true });
   const input = page.getByRole("textbox", { name: "Isi jawaban lain", exact: true });
-  const submit = page.getByRole("button", { name: "Continue", exact: true });
+  const submit = page.getByRole("button", { name: "Lanjut", exact: true });
   await custom.check();
   await expect(custom).toBeChecked();
   await expect(submit).toBeDisabled();

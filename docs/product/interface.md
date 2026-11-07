@@ -41,6 +41,14 @@ Questions and approvals follow the shared conversation interaction model. Natura
 
 Computer progresses from preparation to an active preview and a compact finished state; the preview follows authoritative machine/run activity. Viewing is separate from acquiring control. Transient viewer loss can reattach without silently obtaining a new input lease. Human handback revokes interactive access and reconciles in-flight state.
 
+## Conversation dates and clocks
+
+The November 7 refinement groups visible conversation items by calendar day, with an absolute date centered between subtle rules before each day's first item. The date label and all clocks use the viewing device's same time zone. Loading earlier pages merges adjacent days without duplicate separators; sender joins and milestone batches stop at day boundaries. Hidden administrative handoffs and replaced retry attempts do not produce empty date groups.
+
+User and assistant bubbles, structured questions, approvals, retained interaction states, Computer cards and agent activity show a compact clock using the shared message-time presenter. Goal and Routine event bars remain without a clock, while belonging to their date group. Group cards retain the adjacent agent avatar and visible author; DM rows omit the avatar.
+
+Publication sequence remains authoritative. Message clocks use their retained timeline publication time, so a queued input appears on the day it actually enters the conversation. Product cards retain the request's creation time; native cards retain first-observed time; Computer retains its activity start time through completion. State updates, repeat observations and reload do not replace these clocks with the current time. A continued text fragment uses the preceding retained interaction boundary when the API retains a single answer across that boundary; this is not a per-token native delivery timestamp. No backend contract or timestamp migration is introduced. See [focused verification and boundaries](../verification/conversation-chronology-2026-11-07/README.md).
+
 ## State and acceptance
 
 | Condition | Required outcome |

@@ -387,6 +387,35 @@ button.group-bubble-author:focus-visible {
   white-space: nowrap;
   direction: ltr;
 }
+.conversation-date {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding-block: 8px;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 18px;
+}
+.conversation-date::before,
+.conversation-date::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+.conversation-date > time {
+  flex-shrink: 0;
+}
+.interaction-time,
+.computer-time {
+  margin-top: 8px;
+}
+[data-conversation-event] .message-time {
+  text-align: center;
+}
 .chat-user-bubble .message-time {
   color: inherit;
 }

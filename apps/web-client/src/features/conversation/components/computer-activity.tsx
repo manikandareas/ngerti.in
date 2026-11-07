@@ -6,10 +6,12 @@ import { useApiResource } from "@/hooks/use-api-resource";
 import type { Machine } from "@/types/machine";
 import type { Agent, Run } from "@/types/workspace";
 import { MachineScreen } from "./machine-viewer";
+import { MessageTime } from "./message-time";
 
 /** One card shell for preparing, active and completed Computer activity. */
 function ComputerActivityCard({
   runId,
+  at,
   name,
   label,
   state,
@@ -17,6 +19,7 @@ function ComputerActivityCard({
   children,
 }: {
   runId: string;
+  at: string;
   name: string;
   label: string;
   state: "connecting" | "active" | "completed";
@@ -47,16 +50,19 @@ function ComputerActivityCard({
           Open Computer
         </Button>
       )}
+      <MessageTime at={at} className="computer-time" />
     </section>
   );
 }
 export function ComputerActivity({
   run,
   agent,
+  at = run.computer_activity?.started_at ?? run.created_at,
   open,
 }: {
   run: Run;
   agent: Agent;
+  at?: string;
   open: () => void;
 }) {
   const active = ["dispatching", "running", "cancel_requested"].includes(run.status);
@@ -68,6 +74,7 @@ export function ComputerActivity({
     return (
       <ComputerActivityCard
         runId={run.id}
+        at={at}
         name={agent.name}
         state="completed"
         label={label}
@@ -79,15 +86,26 @@ export function ComputerActivity({
     return (
       <ComputerActivityCard
         runId={run.id}
+        at={at}
         name={agent.name}
         state="connecting"
         label="Connecting computer…"
         open={open}
       />
     );
-  return <ActiveComputer run={run} agent={agent} open={open} />;
+  return <ActiveComputer run={run} agent={agent} at={at} open={open} />;
 }
-function ActiveComputer({ run, agent, open }: { run: Run; agent: Agent; open: () => void }) {
+function ActiveComputer({
+  run,
+  agent,
+  at,
+  open,
+}: {
+  run: Run;
+  agent: Agent;
+  at: string;
+  open: () => void;
+}) {
   const [tick, setTick] = useState(0);
   useEffect(() => {
     const timer = setInterval(() => setTick((n) => n + 1), 3000);
@@ -114,6 +132,7 @@ function ActiveComputer({ run, agent, open }: { run: Run; agent: Agent; open: ()
   return (
     <ComputerActivityCard
       runId={run.id}
+      at={at}
       name={agent.name}
       state={ready ? "active" : "connecting"}
       label={label}

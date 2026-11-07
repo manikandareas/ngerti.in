@@ -4,6 +4,8 @@ This backlog is the authority for milestone scope, acceptance, dependencies and 
 
 Status was reconciled on 2026-11-06 from the available decision and milestone records. Sixteen active milestones are Done; NMA-063/NMA-064 remain Backlog. NMA-051 is a separate deferred reference, not an active prerequisite. Recorded Done covers its captured scope only. Later Cua, semantic-routing, Tauri and conversation refinements retain their dedicated evidence; they do not complete product-wide acceptance or fresh-device distribution.
 
+The [2026-11-07 sidebar loading refinement](../verification/sidebar-loading-2026-11-07/README.md) adds focused desktop/mobile evidence under NMA-061. Milestone statuses and dependencies are unchanged.
+
 ## Active milestones
 
 | Order | Milestone | Status | Layer | Depends on |

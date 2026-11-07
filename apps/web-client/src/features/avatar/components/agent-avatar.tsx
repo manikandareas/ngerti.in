@@ -15,6 +15,7 @@ export interface AgentAvatarProps {
   label?: string;
   className?: string;
   deferred?: boolean;
+  onReady?: () => void;
   ref?: React.Ref<AvatarController | null>;
 }
 
@@ -29,12 +30,13 @@ export function AgentAvatar({
   label,
   className = "",
   deferred = false,
+  onReady,
   ref,
 }: AgentAvatarProps) {
   const host = useRef<HTMLSpanElement>(null);
   const controller = useRef<AvatarController | null>(null);
   const [visible, setVisible] = useState(!deferred);
-  const initial = useRef({ config, state, loading });
+  const initial = useRef({ config, state, loading, onReady });
   useImperativeHandle(
     ref,
     () => ({
@@ -48,16 +50,22 @@ export function AgentAvatar({
     [],
   );
 
-  initial.current = { config, state, loading };
+  initial.current = { config, state, loading, onReady };
   useEffect(() => {
     if (!deferred) {
       setVisible(true);
       return;
     }
     if (!host.current) return;
-    const observer = new IntersectionObserver(([entry]) => setVisible(entry.isIntersecting), {
-      rootMargin: "80px",
-    });
+    // Defer the first mount only; the shared clock suspends offscreen animation.
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        setVisible(true);
+        observer.disconnect();
+      },
+      { rootMargin: "80px" },
+    );
     observer.observe(host.current);
     return () => observer.disconnect();
   }, [deferred]);
@@ -79,6 +87,7 @@ export function AgentAvatar({
       animated,
       followPointer,
       shadow,
+      onReady: () => initial.current.onReady?.(),
     });
     controller.current = instance;
     return () => {

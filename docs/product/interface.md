@@ -15,6 +15,8 @@ The primary interface is one responsive conversation workspace. The accepted Nov
 
 Clicking the conversation header name/avatar opens contextual detail. Goal/file actions open their relevant details/viewers. Panels can close; on mobile use a sheet/full-screen view with a clear return to chat. There are no mandatory global Agents, Workspace, Goals or Routine pages and no duplicated agent list. Keep tabs/lists legible, with progressive disclosure instead of stacks of cards or badges.
 
+On initial sidebar opening, show row-shaped skeletons until agent/thread/preview/activity data and the visible rows' avatars are ready. Reveal names, previews and portraits together without an artificial minimum delay. Group rows wait for both displayed member portraits. Offscreen rows remain deferred and show their own skeleton until ready when scrolled into view. A failed texture settles to the shaded avatar fallback; normal live refreshes preserve the visible list. See [sidebar loading verification](../verification/sidebar-loading-2026-11-07/README.md).
+
 ## Create agent
 
 + → Create agent → create an owner-unique library-generated name and DM → open that conversation → publish one automatic human-owner opener → the agent helps and updates its profile through scoped tools when useful.

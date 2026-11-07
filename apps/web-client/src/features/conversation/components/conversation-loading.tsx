@@ -21,19 +21,25 @@ export function ConversationActionsSkeleton() {
   );
 }
 
+export function ConversationRowSkeleton({ width = "w-24" }: { width?: string }) {
+  return (
+    <div className="my-0.5 flex min-h-[60px] items-center gap-3 px-2 py-2">
+      <Skeleton className="size-11 shrink-0 rounded-full" />
+      <div className="min-w-0 flex-1 space-y-2">
+        <Skeleton className={`h-3.5 max-w-full ${width}`} />
+        <Skeleton className="h-3 w-4/5" />
+      </div>
+    </div>
+  );
+}
+
 export function ConversationListSkeleton() {
   return (
     <div role="status" aria-label="Memuat percakapan">
       <span className="sr-only">Memuat percakapan…</span>
       <div aria-hidden="true">
         {["w-20", "w-28", "w-24", "w-16"].map((width) => (
-          <div key={width} className="my-0.5 flex min-h-[60px] items-center gap-3 px-2 py-2">
-            <Skeleton className="size-11 shrink-0 rounded-full" />
-            <div className="min-w-0 flex-1 space-y-2">
-              <Skeleton className={`h-3.5 max-w-full ${width}`} />
-              <Skeleton className="h-3 w-4/5" />
-            </div>
-          </div>
+          <ConversationRowSkeleton key={width} width={width} />
         ))}
       </div>
     </div>

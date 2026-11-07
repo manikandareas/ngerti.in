@@ -468,9 +468,9 @@ export default function Workspace() {
   }
   const nav = (
     <ConversationNavigation
-      loading={threads.length === 0 && !error}
+      loading={!workspace.navigationReady && !error}
       agents={agents}
-      threads={threads}
+      threads={workspace.navigationReady ? threads : []}
       activities={workspace.activity.items}
       previews={workspace.previews.items}
       closeNavigation={mobile ? () => setNavigation(false) : undefined}

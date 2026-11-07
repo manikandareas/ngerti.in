@@ -28,6 +28,7 @@ export function useWorkspace(composer: HTMLElement | null) {
   const [error, setError] = useState("");
   const [online, setOnline] = useState(false);
   const [ready, setReady] = useState(false);
+  const [navigationReady, setNavigationReady] = useState(false);
   const [attempt, setAttempt] = useState(0);
   const epoch = useRef(0);
   const selectedThread = useRef(threadId);
@@ -57,7 +58,7 @@ export function useWorkspace(composer: HTMLElement | null) {
     const current = () => generation === epoch.current && selected === selectedThread.current;
     // Apply independent projections as they arrive. A failed read still fails the batch,
     // so event replay never acknowledges it as fully reconciled.
-    const results = await Promise.allSettled([
+    const navigationRead = Promise.all([
       full
         ? load<Agent[]>("/v1/entities/agent", (value) =>
             setAgents((previous) => value.reduce(mergeEntity, previous)),
@@ -72,11 +73,6 @@ export function useWorkspace(composer: HTMLElement | null) {
             ),
           )
         : undefined,
-      full
-        ? load<Connection[]>("/v1/entities/connection", (value) =>
-            setConnections((previous) => value.reduce(mergeEntity, previous)),
-          )
-        : undefined,
       full || projections.has("activity")
         ? load<AgentActivities>("/v1/agents/activity", (value) =>
             setActivity((previous) => (value.cursor >= previous.cursor ? value : previous)),
@@ -85,6 +81,16 @@ export function useWorkspace(composer: HTMLElement | null) {
       full || projections.has("previews")
         ? load<ConversationPreviews>("/v1/conversations/previews", (value) =>
             setPreviews((previous) => (value.cursor >= previous.cursor ? value : previous)),
+          )
+        : undefined,
+    ]).then(() => {
+      if (full && !signal?.aborted) setNavigationReady(true);
+    });
+    const results = await Promise.allSettled([
+      navigationRead,
+      full
+        ? load<Connection[]>("/v1/entities/connection", (value) =>
+            setConnections((previous) => value.reduce(mergeEntity, previous)),
           )
         : undefined,
       selected && (full || projections.has("conversation"))
@@ -252,6 +258,7 @@ export function useWorkspace(composer: HTMLElement | null) {
   };
   return {
     agents,
+    navigationReady,
     activity,
     previews,
     threads,

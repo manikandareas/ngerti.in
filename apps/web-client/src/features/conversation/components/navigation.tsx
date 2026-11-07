@@ -11,11 +11,9 @@ import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { AgentAvatar } from "@/features/conversation/components/identity";
 import { NavigationSearch } from "@/features/conversation/components/navigation-search";
-import { conversationSubtitle } from "@/features/conversation/lib/conversation-subtitle";
-import { cn } from "@/lib/utils";
 import type { Agent, AgentActivity, ConversationPreview, Thread } from "@/types/workspace";
+import { ConversationList } from "./conversation-list";
 import { ConversationListSkeleton } from "./conversation-loading";
 
 export function ConversationNavigation({
@@ -141,53 +139,17 @@ export function ConversationNavigation({
             Tidak ada agent atau grup yang cocok.
           </p>
         )}
-        {filteredThreads.map((thread) => {
-          const member = agentsById.get(thread.member_agent_ids[0]);
-          const name = thread.name ?? member?.name ?? "Percakapan";
-          const subtitle = conversationSubtitle(
-            thread,
-            agentsById,
-            activitiesByThread.get(thread.id) ?? [],
-            previewsByThread.get(thread.id),
-          );
-          return (
-            <Button
-              variant="ghost"
-              type="button"
-              key={thread.id}
-              data-thread-id={thread.id}
-              aria-current={thread.id === threadId ? "page" : undefined}
-              onClick={() => choose(thread.id)}
-              className={cn(
-                "contact-row gap-3 min-h-[60px] my-0.5 px-2 py-2 rounded-[10px] text-left transition-colors duration-150 flex items-center w-full h-auto whitespace-normal",
-                thread.id === threadId && "contact-row-active",
-              )}
-            >
-              <AgentAvatar
-                agent={member}
-                animated
-                followPointer={false}
-                deferred
-                showLoadingActivity
-                threadId={thread.id}
-                name={name}
-                group={thread.type === "group"}
-                largeGroup
-                className="size-11"
-                members={agents.filter((agent) => thread.member_agent_ids.includes(agent.id))}
-              />
-              <span className="min-w-0 flex-1">
-                <span className="block truncate text-[14px] font-medium leading-5">{name}</span>
-                <span
-                  title={subtitle}
-                  className="contact-description mt-0.5 block truncate text-[13px] leading-[18px] text-muted-foreground"
-                >
-                  {subtitle}
-                </span>
-              </span>
-            </Button>
-          );
-        })}
+        {!loading && filteredThreads.length > 0 && (
+          <ConversationList
+            agents={agents}
+            threads={filteredThreads}
+            agentsById={agentsById}
+            activitiesByThread={activitiesByThread}
+            previewsByThread={previewsByThread}
+            threadId={threadId}
+            choose={choose}
+          />
+        )}
       </nav>
       <div className="navigation-footer pt-4 pb-1 flex flex-col">
         <div className="flex items-center gap-2">

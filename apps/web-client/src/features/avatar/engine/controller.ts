@@ -32,6 +32,7 @@ export function mountAvatar(
     animated?: boolean;
     followPointer?: boolean;
     shadow?: boolean;
+    onReady?: () => void;
   } = {},
 ): AvatarController {
   let config = readConfig(input);
@@ -69,12 +70,16 @@ export function mountAvatar(
     if (textureKey !== furTextureKey(config)) {
       textureKey = furTextureKey(config);
       textureHref = "";
+      host.dataset.avatarReady = "false";
       const requestedKey = textureKey;
       const pixels = width * (window.devicePixelRatio || 1);
       // Sidebar, header and detail portraits share a Retina-ready texture for the same identity.
       const textureSize = Math.min(768, Math.max(256, 2 ** Math.ceil(Math.log2(pixels || 64))));
       void loadFurTexture(config, textureSize)
-        .then((href) => {
+        .then(async (href) => {
+          const decoded = new Image();
+          decoded.src = href;
+          await decoded.decode();
           if (disposed || textureKey !== requestedKey) return;
           textureHref = href;
           const surface = host.querySelector("[data-avatar-surface]");
@@ -83,9 +88,14 @@ export function mountAvatar(
           image.setAttribute("width", "200");
           image.setAttribute("height", "200");
           surface?.replaceChildren(image);
+          host.dataset.avatarReady = "true";
+          options.onReady?.();
         })
         .catch(() => {
           // Keep the lightweight shaded fallback usable if image decoding fails.
+          if (disposed || textureKey !== requestedKey) return;
+          host.dataset.avatarReady = "true";
+          options.onReady?.();
         });
     }
     host.innerHTML = renderAvatarSvg(loading ? { ...config, face: loadingFace } : config, {
@@ -239,6 +249,7 @@ export function mountAvatar(
       delete host.dataset.avatarLoading;
       delete host.dataset.avatarState;
       delete host.dataset.avatarAction;
+      delete host.dataset.avatarReady;
     },
   };
 }

@@ -51,6 +51,7 @@ export function AgentAvatar({
   showLoadingActivity = true,
   deferred = false,
   isLoading = false,
+  onReady,
 }: {
   agent?: ReferenceAgent;
   name?: string;
@@ -67,6 +68,7 @@ export function AgentAvatar({
   showLoadingActivity?: boolean;
   deferred?: boolean;
   isLoading?: boolean;
+  onReady?: () => void;
 }) {
   const view = useAvatarActivity(agent?.id, threadId);
   const { version, seed, shape, color, face } = agent?.avatar_config ?? {};
@@ -77,6 +79,16 @@ export function AgentAvatar({
     [agent?.id, agent?.system_role, version, seed, shape, color, face],
   );
   const controller = useRef<AvatarController | null>(null);
+  const memberKeys = JSON.stringify(
+    members?.slice(0, 2).map((member) => [member.id, member.avatar_config]),
+  );
+  const readyMembers = useMemo(
+    () => ({ identity: memberKeys, ids: new Set<string>() }),
+    [memberKeys],
+  );
+  useEffect(() => {
+    if (group && !members?.length) onReady?.();
+  }, [group, members?.length, onReady]);
   const runId = view.activity?.run_id;
   const status = view.activity?.status;
   const waiting = view.activity?.waiting_for_user;
@@ -125,6 +137,14 @@ export function AgentAvatar({
                 deferred={deferred}
                 showActivityLabel={showActivityLabel}
                 showLoadingActivity={showLoadingActivity}
+                onReady={
+                  onReady
+                    ? () => {
+                        readyMembers.ids.add(member.id);
+                        if (readyMembers.ids.size === Math.min(members.length, 2)) onReady();
+                      }
+                    : undefined
+                }
                 className={largeGroup ? "size-8" : "size-[58%]"}
               />
             ))}
@@ -151,6 +171,7 @@ export function AgentAvatar({
           animated={animated}
           deferred={deferred}
           followPointer={followPointer}
+          onReady={onReady}
         />
       )}
     </Host>

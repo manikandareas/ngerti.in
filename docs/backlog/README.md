@@ -4,7 +4,7 @@ This backlog is the authority for milestone scope, acceptance, dependencies and 
 
 Status was reconciled on 2026-11-06 from the available decision and milestone records. Sixteen active milestones are Done; NMA-063/NMA-064 remain Backlog. NMA-051 is a separate deferred reference, not an active prerequisite. Recorded Done covers its captured scope only. Later Cua, semantic-routing, Tauri and conversation refinements retain their dedicated evidence; they do not complete product-wide acceptance or fresh-device distribution.
 
-On 2026-11-07 the user requested a new `apps/desktop-rs` GPUI client plan after observation. The six [Desktop Rust milestones below](#desktop-rust-parity-plan) are all Backlog. The active Tauri host remains implemented; planning does not establish a native rewrite, parity acceptance or a host replacement.
+On 2026-11-07 the user requested a new `apps/desktop-rs` GPUI client plan after observation. The six [Desktop Rust milestones below](#desktop-rust-parity-plan) have NMA-066 In Progress and NMA-067–071 Backlog. The [native foundation evidence](../verification/nma-066/README.md) records implemented modules, executed proofs and remaining gaps. Tauri remains active; the foundation does not establish parity acceptance or a host replacement.
 
 The [2026-11-07 sidebar loading refinement](../verification/sidebar-loading-2026-11-07/README.md) adds focused desktop/mobile evidence under NMA-061. Milestone statuses and dependencies are unchanged.
 
@@ -43,7 +43,7 @@ The [observation, architecture and parity contract](../architecture/desktop-rs-p
 
 | Order | Milestone | Status | Layer | Depends on |
 | --- | --- | --- | --- | --- |
-| 16.1 | [NMA-066 · Desktop Rust foundation, reference baseline and reusable components](NMA-066.md) | Backlog | Desktop / UI foundation | [NMA-060](NMA-060.md), [NMA-061](NMA-061.md), [NMA-062](NMA-062.md) |
+| 16.1 | [NMA-066 · Desktop Rust foundation, reference baseline and reusable components](NMA-066.md) | In Progress | Desktop / UI foundation | [NMA-060](NMA-060.md), [NMA-061](NMA-061.md), [NMA-062](NMA-062.md) |
 | 16.2 | [NMA-067 · Rust avatar, composer and rich-content components](NMA-067.md) | Backlog | Desktop / UI components | [NMA-066](NMA-066.md) |
 | 16.3 | [NMA-068 · API-backed workspace and conversation parity](NMA-068.md) | Backlog | Desktop / Conversation | [NMA-060](NMA-060.md), [NMA-065](NMA-065.md), [NMA-067](NMA-067.md) |
 | 16.4 | [NMA-069 · Context panels, Settings and Focus workflows](NMA-069.md) | Backlog | Desktop / Contextual work | [NMA-068](NMA-068.md) |

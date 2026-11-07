@@ -1,0 +1,12 @@
+{
+  "name": "@ngertiin/desktop-rs",
+  "private": true,
+  "scripts": {
+    "dev": "bun scripts/cargo.ts run -p ngertiin-desktop -j 2",
+    "gallery": "bun scripts/cargo.ts run -p ngertiin-desktop --example gallery -j 2",
+    "build": "bun scripts/cargo.ts build --workspace -j 2",
+    "format": "bun scripts/cargo.ts fmt",
+    "check": "bun scripts/check-boundaries.ts && bun scripts/cargo.ts fmt -- --check && bun scripts/cargo.ts clippy --workspace --all-targets -- -D warnings && bun scripts/cargo.ts test --workspace",
+    "bundle:dev": "bun scripts/bundle.ts"
+  }
+}

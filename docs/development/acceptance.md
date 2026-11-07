@@ -4,7 +4,7 @@ A document, source module or green fixture is not completed product acceptance. 
 
 ## Evidence to record
 
-The [Desktop Rust plan](../architecture/desktop-rs-plan-2026-11-07.md) adds NMA-066–071 as a separate native parity sequence, all currently Backlog. Each slice verifies its own components/workflows; NMA-071 consolidates native parity and a local macOS ARM64 development bundle. It does not replace NMA-063 product-wide real-API acceptance or NMA-064 fresh-device installation. The active Tauri host remains the reference until a later explicit replacement decision.
+The [Desktop Rust plan](../architecture/desktop-rs-plan-2026-11-07.md) adds NMA-066–071 as a separate native parity sequence, with NMA-066 In Progress and NMA-067–071 Backlog. [Foundation evidence](../verification/nma-066/README.md) must close its required baseline/control/renderer gaps before acceptance. Each slice verifies its own components/workflows; NMA-071 consolidates native parity and a local macOS ARM64 development bundle. It does not replace NMA-063 product-wide real-API acceptance or NMA-064 fresh-device installation. The active Tauri host remains the reference until a later explicit replacement decision.
 
 Native parity also requires a [rendering ownership audit](../architecture/desktop-rs-plan-2026-11-07.md#rendering-ownership-contract): the main UI, composer, avatar, panels, Settings, files and PDF controls/rendering must use Rust/GPUI/native adapters. Only HTML document content and scoped Computer viewing may instantiate WebViews. A web-client wrapper can match a screenshot while failing this architecture criterion; inspect the actual source, bundle and running native interaction path.
 

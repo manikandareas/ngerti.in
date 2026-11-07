@@ -1,0 +1,3 @@
+# Preserve the original PDF fixture and raw verification output bytes.
+apps/desktop-rs/assets/probe.pdf binary
+docs/verification/nma-066/rust-check.log whitespace=-blank-at-eof

@@ -213,7 +213,7 @@
     "ticket": "NMA-066",
     "title": "Desktop Rust foundation, reference baseline and reusable components",
     "plan": "Desktop Rust",
-    "status": "Backlog",
+    "status": "In Progress",
     "order": 16.1,
     "layer": "Desktop / UI foundation",
     "depends_on": [

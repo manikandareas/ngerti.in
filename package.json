@@ -31,7 +31,10 @@
     "package:desktop": "bun --filter @ngertiin/desktop package",
     "test:desktop": "bun --filter @ngertiin/desktop test",
     "typecheck:desktop": "bun --filter @ngertiin/desktop typecheck",
-    "lint:desktop": "bun --filter @ngertiin/desktop lint"
+    "lint:desktop": "bun --filter @ngertiin/desktop lint",
+    "dev:desktop-rs": "bun --cwd apps/desktop-rs dev",
+    "gallery:desktop-rs": "bun --cwd apps/desktop-rs gallery",
+    "check:desktop-rs": "bun --cwd apps/desktop-rs check"
   },
   "engines": {
     "node": ">=22.12"

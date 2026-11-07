@@ -3,6 +3,8 @@
   "files": {
     "includes": [
       "apps/web-client/**",
+      "apps/desktop-rs/scripts/**",
+      "apps/desktop-rs/package.json",
       "!apps/web-client/dist",
       "!apps/web-client/node_modules"
     ]

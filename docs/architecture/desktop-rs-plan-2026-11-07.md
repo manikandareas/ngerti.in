@@ -1,6 +1,6 @@
 # Desktop Rust: observation and ordered parity plan
 
-Date: 2026-11-07. Status: planning only. Target: `apps/desktop-rs`, a GPUI desktop client following the current Tauri application's product behavior and visual design as closely as possible. The user requested a small, ordered local backlog after observation. Six milestones, [NMA-066](../backlog/NMA-066.md) through [NMA-071](../backlog/NMA-071.md), define that work. No desktop-rs implementation or replacement of the active host is claimed.
+Date: 2026-11-07. Status: NMA-066 implementation In Progress; NMA-067–071 Backlog. Target: `apps/desktop-rs`, a GPUI desktop client following the current Tauri application's product behavior and visual design as closely as possible. The user requested a small, ordered local backlog after observation. Six milestones, [NMA-066](../backlog/NMA-066.md) through [NMA-071](../backlog/NMA-071.md), define that work. The [native foundation](../../apps/desktop-rs/README.md) now exists under the separately requested NMA-066 implementation. [Executed evidence and remaining gaps](../verification/nma-066/README.md) govern its acceptance; no active-host replacement or parity acceptance is claimed.
 
 The user subsequently confirmed that the main UI must be implemented natively in Rust + GPUI, rather than forwarding the existing web-client through a WebView. The rendering ownership contract below applies to all six milestones.
 
@@ -116,7 +116,7 @@ The production client must not load or bundle `apps/web-client/dist`, start a Re
 | 5 | [NMA-070 · Computer, native host and lifecycle parity](../backlog/NMA-070.md) | Live Computer/control and host behavior, including process ownership and visibility cleanup. |
 | 6 | [NMA-071 · Desktop parity acceptance and development bundle](../backlog/NMA-071.md) | Integrated native evidence, resolved material differences and a verified local development bundle. |
 
-All six are **Backlog**, not started or Done. Orders 16.1–16.6 place this separate `Desktop Rust` plan after the current NMA-061/062 reference. Existing NMA-063/064 dependencies and statuses are unchanged. Each milestone contains internal work units and its own verification; the last milestone consolidates evidence rather than discovering basic feasibility for the first time.
+**NMA-066 is In Progress**; NMA-067–071 remain **Backlog**. The independent workspace, gallery and read-only probes do not close the required foundation acceptance gaps. Orders 16.1–16.6 place this separate `Desktop Rust` plan after the current NMA-061/062 reference. Existing NMA-063/064 dependencies and statuses are unchanged. Each milestone contains internal work units and its own verification; the last milestone consolidates evidence rather than discovering basic feasibility for the first time.
 
 Each milestone also contains ordered subtasks with a concrete deliverable and evidence requirement. These are internal work items, not additional backlog milestones. Complete the listed dependencies and acceptance before advancing; an unchecked task or an unexecuted capability probe remains visible.
 

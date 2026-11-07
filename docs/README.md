@@ -6,7 +6,7 @@ This repository is the authority for product decisions, local backlog, implement
 
 - [All 83 feature decisions](product/feature-decisions.md), [agents/conversations/groups](product/conversations.md), [Goals and Routine](product/goals-routine.md), and [current interface](product/interface.md).
 - [Local backlog and delivery status](backlog/README.md), [feature ownership](backlog/feature-coverage.md), and [acceptance/readiness gates](development/acceptance.md).
-- [Desktop Rust observation and parity plan](architecture/desktop-rs-plan-2026-11-07.md): six ordered GPUI milestones, NMA-066–071, targeting `apps/desktop-rs`; all Backlog.
+- [Desktop Rust observation and parity plan](architecture/desktop-rs-plan-2026-11-07.md): six ordered GPUI milestones targeting `apps/desktop-rs`; NMA-066 is In Progress, NMA-067–071 remain Backlog. See the [native foundation](../apps/desktop-rs/README.md) and [executed evidence](verification/nma-066/README.md).
 - [Conversation content viewer prototype](product/conversation-viewer-prototype-2026-11-07.md): archived comparison of three layouts; Focus is implemented in the conversation.
 - [Source adoption and upgrades](development/source-adoption.md), [decision handoff provenance](development/decision-record.json), and [historical evidence/Git recovery](development/history.md).
 
@@ -31,6 +31,6 @@ The handoff reconciled eleven decision documents and nineteen milestone records,
 - [Working files tree, local file icons and source viewer](verification/working-files-tree-2026-11-07/README.md).
 - [Research index](research/README.md), [initial NMA-060 API gate](verification/nma-060/final-cohort/README.md), [NMA-061 UI](verification/nma-061/README.md), and [NMA-062 UI](verification/nma-062/README.md).
 
-Sixteen active milestones are Done for their recorded scope. NMA-063 product-wide acceptance and NMA-064 distribution remain Backlog, as do all six Desktop Rust milestones. Native/provider, billing, API, browser/UI and installation claims have separate evidence. Retained historical captures are evidence, not workflow instructions or a blanket production-readiness claim.
+Sixteen active milestones are Done for their recorded scope. NMA-063 product-wide acceptance and NMA-064 distribution remain Backlog. Desktop Rust has NMA-066 In Progress and NMA-067–071 Backlog. Native/provider, billing, API, browser/UI and installation claims have separate evidence. Retained historical captures are evidence, not workflow instructions or a blanket production-readiness claim.
 
 Run `make docs-check` or `bun run docs:check` to validate local links and backlog consistency. Only byte-identical registered historical captures may resolve missing targets in pinned Git trees. Current guides resolve against the working tree.

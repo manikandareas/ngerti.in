@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "status": "Defined before performance comparison; measurements unexecuted",
+  "environment": {
+    "same_reference_host_required": true,
+    "viewport": [1280, 900],
+    "device_scale": 2,
+    "target_refresh_hz": 60,
+    "theme": "light",
+    "locale": "en-US",
+    "time_zone": "Asia/Makassar",
+    "fixture_clock": "2026-11-07T04:00:00Z",
+    "provider_inference": false
+  },
+  "metrics": ["time_to_visible_content_ms", "frame_time_p50_ms", "frame_time_p95_ms", "frame_time_p99_ms", "missed_frame_percent", "cpu_percent", "rss_bytes", "hidden_window_cpu_percent"],
+  "budgets": {
+    "kind": "Engineering targets; no measured performance claim",
+    "first_visible_conversation_p95_ms": 1500,
+    "frame_time_p95_ms": 16.67,
+    "missed_frame_percent": 1,
+    "hidden_window_cpu_percent": 1,
+    "rss_ratio_to_matched_tauri_baseline_max": 1.1
+  },
+  "sampling": {"cold_launches": 20, "warm_launches": 20, "sustained_seconds": 120, "hidden_seconds": 60},
+  "workloads": [
+    {"id": "first-conversation", "messages": 100, "visible_avatars": 1, "history_position": "bottom"},
+    {"id": "stream-follow", "messages": 1000, "characters_per_second": 30, "follow": true},
+    {"id": "stream-read-history", "messages": 10000, "characters_per_second": 30, "follow": false},
+    {"id": "large-tree", "entries": 10000, "folder_page_size": 200, "expanded_folders": 20},
+    {"id": "source", "utf8_bytes": 2097152, "lines": 100000, "wrap": false, "find": true},
+    {"id": "pdf", "pages": 200, "page_points": [612, 792], "selectable_text": true, "zoom_levels": [0.5, 1, 1.5, 2]},
+    {"id": "avatars", "visible_counts": [1, 10, 30], "states": ["idle", "thinking", "working"], "hidden_pause": true},
+    {"id": "virtual-table", "rows": 10000, "columns": 20, "selection": "across cells and rows"}
+  ],
+  "tauri_measurements": null,
+  "desktop_rs_measurements": null,
+  "comparison_allowed": false
+}

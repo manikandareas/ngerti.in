@@ -1,0 +1,10 @@
+{
+  "report.pdf": "pdf.svg",
+  "workspace.ts": "typescript.svg",
+  "main.go": "go.svg",
+  "Dockerfile": "docker.svg",
+  "data.json": "json.svg",
+  "report.csv": "table.svg",
+  "README.md": "readme.svg",
+  "package.json": "nodejs.svg"
+}

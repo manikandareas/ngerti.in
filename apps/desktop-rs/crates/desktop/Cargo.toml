@@ -1,0 +1,27 @@
+[package]
+name = "ngertiin-desktop"
+version.workspace = true
+edition.workspace = true
+publish.workspace = true
+
+[dependencies]
+anyhow.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+ngertiin-client = { path = "../client" }
+ngertiin-avatar = { path = "../avatar" }
+gpui-kit = { version = "=0.9.0", features = ["gpui-fast", "syntect"] }
+gpui-webview = { version = "=0.9.0", features = ["gpui-fast"] }
+wry = { version = "=0.53.3", package = "lb-wry" }
+uuid = { version = "1", features = ["serde"] }
+resvg = "=0.46.0"
+
+[target.'cfg(target_os = "macos")'.dependencies]
+objc2 = "=0.6.4"
+objc2-app-kit = "=0.3.2"
+objc2-foundation = "=0.3.2"
+objc2-pdf-kit = "=0.3.2"
+
+[[example]]
+name = "gallery"
+path = "examples/gallery.rs"

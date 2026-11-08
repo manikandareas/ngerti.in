@@ -450,7 +450,7 @@ impl Workspace {
                             TextViewMotion::default()
                         })
                         .on_link_click(|url, _, _, cx| {
-                            if url.starts_with("https://") || url.starts_with("http://") {
+                            if crate::host::is_external_url(url.as_ref()) {
                                 cx.open_url(url);
                             }
                         }),

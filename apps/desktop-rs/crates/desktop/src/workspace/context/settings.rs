@@ -554,10 +554,7 @@ impl Workspace {
     }
     fn open_authorization_url(&mut self, url: &str, cx: &mut Context<Self>) {
         // External authorization is an OS browser handoff, never a shell or an embedded app page.
-        if url.starts_with("https://")
-            && !url.contains(['\n', '\r', '\0'])
-            && !url.split('/').nth(2).unwrap_or("").contains('@')
-        {
+        if crate::host::is_external_url(url) {
             cx.open_url(url);
         } else {
             self.error =

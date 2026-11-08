@@ -225,13 +225,32 @@ impl Render for Workspace {
             .on_action(cx.listener(|this, _: &ToggleDetails, window, cx| {
                 this.toggle_context(Panel::Detail, window, cx)
             }))
+            .on_action(cx.listener(|this,_:&crate::host::lifecycle::Reload,window,cx| {
+                this.computer.update(cx,|computer,cx|computer.suspend(true,cx));
+                this.computer.update(cx,|computer,cx|computer.suspend(false,cx));
+                this.reconnect(window,cx);
+            }))
+            .on_action(cx.listener(|this,_:&crate::host::lifecycle::Diagnostics,window,cx| {
+                use gpui_kit::component::WindowExt;
+                this.computer.update(cx,|computer,cx|computer.suspend(true,cx));
+                let computer=this.computer.downgrade();
+                window.open_dialog(cx,move |dialog,_,_| {
+                    let computer=computer.clone();
+                    dialog.title("Desktop diagnostics")
+                        .child("Native Reload reconciles authoritative workspace state and preserves drafts. Computer media and static documents have isolated WebViews. Desktop logs are stored in this native profile as desktop-rs.log.")
+                        .on_close(move |_,_,cx| { let _=computer.update(cx,|computer,cx|computer.suspend(false,cx)); })
+                });
+            }))
             .on_mouse_move(cx.listener(|this, event: &MouseMoveEvent, window, cx| {
                 this.animator.update(cx, |animator, cx| {
                     animator.look_at(Some(event.position), window, cx)
                 })
             }))
             .on_key_down(cx.listener(|this, event: &KeyDownEvent, window, cx| {
-                if event.keystroke.key == "escape" && (this.panel.is_some() || this.is_viewing()) {
+                if event.keystroke.key == "escape" && this.computer.read(cx).open {
+                    this.computer.update(cx,|computer,cx|computer.close(window,cx));
+                    cx.stop_propagation();
+                } else if event.keystroke.key == "escape" && (this.panel.is_some() || this.is_viewing()) {
                     this.context_back(window, cx);
                     cx.stop_propagation();
                 }
@@ -247,6 +266,12 @@ impl Render for Workspace {
                     .h_full()
                     .flex_shrink_0()
                     .child(self.panel(cx)),
+            );
+        }
+        if self.computer.read(cx).open {
+            root = root.child(
+                self.computer
+                    .update(cx, |computer, cx| computer.overlay(cx)),
             );
         }
         if settings {
@@ -273,13 +298,24 @@ impl Workspace {
         if self.busy {
             return;
         }
-        match crate::host::api_client(){
-            Ok(Some((client,_)))=>match (ApiWorker::new(client.clone()),ApiWorker::new(client)){
-                (Ok(reads),Ok(writes))=>{self.read_task=None;self.scope+=1;self.reads=Some(reads);self.writes=Some(writes);self.checked=false;self.bound=false;self.refresh(true,window,cx);},
-                _=>self.error="The local connection could not start. Relaunch Ngertiin.".into(),
+        match crate::host::api_client() {
+            Ok(Some((client, _))) => match (ApiWorker::new(client.clone()), ApiWorker::new(client))
+            {
+                (Ok(reads), Ok(writes)) => {
+                    self.read_task = None;
+                    self.scope += 1;
+                    self.reads = Some(reads);
+                    self.writes = Some(writes);
+                    self.feed = None;
+                    self.feed_task = None;
+                    self.checked = false;
+                    self.bound = false;
+                    self.refresh(true, window, cx);
+                }
+                _ => self.error = "The local connection could not start. Relaunch Ngertiin.".into(),
             },
-            Ok(None)=>self.error="Backend lokal belum berjalan. Buka desktop Tauri atau jalankan backend Ngertiin, lalu coba lagi.".into(),
-            Err(error)=>self.error=error.to_string(),
+            Ok(None) => self.error = crate::host::status_message(),
+            Err(error) => self.error = error.to_string(),
         }
         cx.notify();
     }

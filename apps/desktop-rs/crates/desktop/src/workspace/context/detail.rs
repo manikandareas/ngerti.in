@@ -42,11 +42,7 @@ impl Workspace {
                     .child(caption("This is a group profile. Direct-message history, memory, and files stay private.",p)).into_any_element()
             }
             _ if self.panel == Some(Panel::Library) => self.library_view(cx),
-            _ if self.panel == Some(Panel::Computer) => caption(
-                "Computer preview is part of the native host integration milestone.",
-                Palette::new(self.store.dark()),
-            )
-            .into_any_element(),
+            _ if self.panel == Some(Panel::Computer) => self.computer.clone().into_any_element(),
             _ => self.detail_overview(cx),
         }
     }

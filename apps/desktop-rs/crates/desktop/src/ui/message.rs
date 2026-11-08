@@ -205,7 +205,7 @@ impl Message {
             let open = on_open.clone();
             bubble = bubble.child(TextView::new(body).selectable(true).on_link_click(
                 move |url, _, window, cx| {
-                    if url.starts_with("https://") || url.starts_with("http://") {
+                    if crate::host::is_external_url(url.as_ref()) {
                         cx.open_url(url.as_str());
                     } else if url.starts_with("ngertiin://") {
                         open(MessageIntent::Reference(url.to_string()), window, cx);
@@ -236,7 +236,7 @@ impl Message {
                 .rounded_full()
                 .bg(p.color("secondary"))
                 .on_click(move |_, window, cx| {
-                    if target.starts_with("https://") || target.starts_with("http://") {
+                    if crate::host::is_external_url(&target) {
                         cx.open_url(&target);
                     } else {
                         open(MessageIntent::Reference(target.clone()), window, cx);

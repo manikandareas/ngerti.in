@@ -305,6 +305,8 @@ impl Workspace {
                     .bind(self.reads.as_ref().unwrap().origin(), owner)?;
                 self.bound = true;
             }
+            self.computer
+                .update(cx, |computer, cx| computer.set_agents(&agents, cx));
             self.agents = agents;
             self.threads = threads
                 .into_iter()

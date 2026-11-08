@@ -3,6 +3,7 @@
 mod chrome;
 mod commands;
 mod composer_view;
+mod computer;
 mod context;
 mod interactions;
 mod navigation;
@@ -46,6 +47,7 @@ actions!(
     ]
 );
 pub(crate) struct Workspace {
+    computer: Entity<computer::Computer>,
     store: Store,
     context_work: context::ContextWork,
     reads: Option<ApiWorker>,
@@ -123,7 +125,7 @@ impl Workspace {
                 }
             }
             Ok(None) => {
-                error="Select a local backend using the private attachment.json configuration, then relaunch.".into();
+                error = crate::host::status_message();
                 (None, None)
             }
             Err(e) => {
@@ -146,7 +148,41 @@ impl Workspace {
         let search = cx.new(|cx| InputState::new(window, cx).placeholder("Who’s on your mind?"));
         let group_name = cx.new(|cx| InputState::new(window, cx).placeholder("Group name"));
         let composer = cx.new(|cx| Composer::new(vec![], window, cx));
+        let computer = cx.new(|cx| computer::Computer::new(window, cx));
+        let sleep_weak = cx.entity().downgrade();
+        let wake_weak = sleep_weak.clone();
         let subscriptions = vec![
+            cx.on_system_sleep(move |cx| {
+                let _ = sleep_weak.update(cx, |this, cx| {
+                    this.was_active = false;
+                    if let Some(feed) = &this.feed {
+                        feed.set_visible(false);
+                    }
+                    this.computer
+                        .update(cx, |computer, cx| computer.suspend(true, cx));
+                });
+            }),
+            cx.on_system_wake(move |cx| {
+                let _ = wake_weak.update(cx, |this, cx| {
+                    this.was_active = false;
+                    this.computer
+                        .update(cx, |computer, cx| computer.suspend(false, cx));
+                    cx.notify();
+                });
+            }),
+            cx.observe(&computer, |_, _, cx| cx.notify()),
+            cx.observe_window_bounds(window, |_, window, _| {
+                crate::host::lifecycle::save_bounds(window)
+            }),
+            cx.observe_window_visibility(window, |this, _, window, cx| {
+                let visible = window.is_visible();
+                crate::host::views::visibility(visible);
+                this.computer
+                    .update(cx, |computer, cx| computer.suspend(!visible, cx));
+                if let Some(feed) = &this.feed {
+                    feed.set_visible(visible);
+                }
+            }),
             cx.observe_window_appearance(window, |this, window, cx| {
                 if this.store.appearance() == "system" {
                     let dark = matches!(
@@ -192,7 +228,13 @@ impl Workspace {
                 cx.notify();
             });
         });
+        window.on_window_should_close(cx, |_, cx| {
+            crate::host::views::visibility(false);
+            cx.hide();
+            false
+        });
         let mut this = Self {
+            computer,
             context_work: context::ContextWork::new(cx),
             store,
             reads,
@@ -264,6 +306,19 @@ impl Workspace {
                 if view
                     .update_in(cx, |this, window, cx| {
                         let active = window.is_window_active() && window.is_visible();
+                        let computer_present =
+                            this.panel == Some(Panel::Computer) && !this.is_viewing();
+                        let computer_suspended = !window.is_visible()
+                            || window.has_active_dialog(cx)
+                            || window.has_active_sheet(cx);
+                        this.computer.update(cx, |computer, cx| {
+                            computer.present(computer_present, cx);
+                            computer.suspend(computer_suspended, cx);
+                        });
+                        if this.reads.is_none() && this.ticks.is_multiple_of(3) {
+                            this.reconnect(window, cx);
+                        }
+
                         let resumed = active && !this.was_active;
                         this.was_active = active;
                         if let Some(feed) = &this.feed {
@@ -338,6 +393,8 @@ impl Workspace {
             self.error = e.to_string();
             return;
         }
+        self.computer
+            .update(cx, |computer, cx| computer.present(false, cx));
         self.read_task = None;
         self.context_work = context::ContextWork::new(cx);
         self.scope += 1;

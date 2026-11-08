@@ -326,6 +326,8 @@ impl Workspace {
         window: &mut Window,
         cx: &mut Context<Self>,
     ) {
+        self.computer
+            .update(cx, |computer, cx| computer.present(false, cx));
         if self.panel == Some(Panel::Settings) {
             self.panel = self.context_work.settings_return.take();
         } else {

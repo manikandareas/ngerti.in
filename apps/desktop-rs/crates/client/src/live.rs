@@ -174,7 +174,7 @@ impl ApiClient {
         Ok(())
     }
     pub fn get(&self, path: &str) -> Result<Value, ClientError> {
-        self.request(path, None, None)
+        self.request(path, None, None, "GET")
     }
     /// Original content from an exported byte route. Credentials never leave
     /// the selected loopback origin; redirects and oversized bodies fail closed.
@@ -234,13 +234,17 @@ impl ApiClient {
         Ok(bytes)
     }
     pub fn post(&self, path: &str, body: &Value, key: Option<Uuid>) -> Result<Value, ClientError> {
-        self.request(path, Some(body), key)
+        self.request(path, Some(body), key, "POST")
+    }
+    pub fn delete(&self, path: &str) -> Result<Value, ClientError> {
+        self.request(path, None, None, "DELETE")
     }
     fn request(
         &self,
         path: &str,
         body: Option<&Value>,
         key: Option<Uuid>,
+        method: &str,
     ) -> Result<Value, ClientError> {
         if self
             .retired
@@ -249,7 +253,6 @@ impl ApiClient {
         {
             return Err(ClientError::Unavailable);
         }
-        let method = if body.is_some() { "POST" } else { "GET" };
         // Only exported relative routes are eligible; never forward a credential to a redirect/URL.
         let route = CONTRACT["http"]
             .as_array()
@@ -292,11 +295,8 @@ impl ApiClient {
             .transport
             .client
             .request(
-                if body.is_some() {
-                    reqwest::Method::POST
-                } else {
-                    reqwest::Method::GET
-                },
+                reqwest::Method::from_bytes(method.as_bytes())
+                    .map_err(|_| ClientError::InvalidConnection)?,
                 url,
             )
             .bearer_auth(&self.transport.bearer)

@@ -8,6 +8,9 @@ impl Workspace {
         window: &mut Window,
         cx: &mut Context<Self>,
     ) {
+        self.computer.update(cx, |computer, cx| {
+            computer.present(panel == Panel::Computer, cx)
+        });
         self.panel = Some(panel);
         self.context_work.location = Location::Overview;
         self.context_work.history.clear();

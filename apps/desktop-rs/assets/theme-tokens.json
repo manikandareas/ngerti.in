@@ -98,7 +98,8 @@
     "bubble-teal": "#00846e",
     "bubble-purple": "#8057c8",
     "bubble-orange": "#af6100",
-    "bubble-silver": "#70757c"
+    "bubble-silver": "#70757c",
+    "computer-background": "#000000"
   },
   "dark": {
     "background": "#121212",
@@ -199,6 +200,7 @@
     "bubble-teal": "#00846e",
     "bubble-purple": "#8057c8",
     "bubble-orange": "#af6100",
-    "bubble-silver": "#70757c"
+    "bubble-silver": "#70757c",
+    "computer-background": "#000000"
   }
 }

@@ -1,6 +1,6 @@
 # Ngertiin native desktop foundation
 
-An independent Cargo workspace for [NMA-066](../../docs/backlog/NMA-066.md) and [NMA-067](../../docs/backlog/NMA-067.md), both Done under the [2026-11-08 owner decision](../../docs/development/nma-066-067-closure-2026-11-08.md). It opens a native component gallery with avatar/composer/message/rich-content/document components and optional read-only API attachment. Remaining technical verification is non-blocking; [foundation evidence](../../docs/verification/nma-066/README.md) retains actual outcomes and limitations. Tauri remains the active product client; integrated desktop parity has its own later gate.
+An independent Cargo workspace for [NMA-066](../../docs/backlog/NMA-066.md) and [NMA-067](../../docs/backlog/NMA-067.md), both Done under the [2026-11-08 owner decision](../../docs/development/nma-066-067-closure-2026-11-08.md). The default entry point opens the API workspace implemented for [NMA-068](../../docs/backlog/NMA-068.md); the explicit gallery retains avatar/composer/message/rich-content/document components and optional read-only snapshot attachment. NMA-068 is Done; its focused native/API delivery evidence is retained. Remaining technical verification is non-blocking; [foundation evidence](../../docs/verification/nma-066/README.md) retains actual outcomes and limitations. Tauri remains the active product client; integrated desktop parity has its own later gate.
 
 ## Run and verify
 
@@ -14,7 +14,7 @@ bun --cwd apps/desktop-rs build
 bun --cwd apps/desktop-rs bundle:dev
 ```
 
-The app and `gallery` example share the same composition entry point. `Cmd+D` switches theme; `Cmd+Q` quits. The generated unsigned development bundle is `dist/Ngertiin Rust Development.app`. Native PDFKit integration currently targets macOS only. Other-platform builds, signing and fresh-device installation are separate work.
+The app opens the workspace; the `gallery` example explicitly opens the component gallery. `NGERTIIN_RS_GALLERY=1` also selects the gallery. `Cmd+D` switches theme; `Cmd+Q` quits. The generated unsigned development bundle is `dist/Ngertiin Rust Development.app`. Native PDFKit integration currently targets macOS only. Other-platform builds, signing and fresh-device installation are separate work.
 
 The default Cargo output is `.dev/desktop-rs-target` at the repository root. `NGERTIIN_RS_TARGET_DIR` may select an existing compilation cache; it changes neither runtime profiles nor backend state. During the recorded verification, `.dev/gpui-experiment-target` was reused to avoid rebuilding the same pinned native dependencies.
 
@@ -22,7 +22,7 @@ The default Cargo output is `.dev/desktop-rs-target` at the repository root. `NG
 
 `desktop` composes `bootstrap`, `shell`, `features`, stateless `ui`, `host`, `platform` and `storage` modules. Feature Entities own input, selection, tasks and subscriptions. Controls accept explicit presentation inputs and return normal builders/callback surfaces, so the caller can apply a final style override. `client` and `avatar` have no GPUI or platform dependency. `scripts/check-boundaries.ts` verifies the entire transitive dependency direction and confines WebView construction to `platform/embedded.rs`.
 
-`client` exposes only contract and existing-thread snapshot reads. It has no mutation, inference, event checkpoint or backend-spawn interface. One OS worker with an 8 MiB stack serializes reads with one queued slot. Retired receivers cancel queued work; active reads finish within the transport bounds and discard retired replies. This avoids recursive schema compilation on AppKit's small dispatch stacks. Snapshot bodies are bounded at 16 MiB; redirects/proxies are disabled and installation credentials stay in native transport state.
+`client` exposes version-checked API reads/commands, ordered event projections and bounded SSE wakeups. Workspace reads and writes use separate bounded workers with 16 MiB stacks; retiring a scope stops queued reads and the next dependent read after an active bounded request. The original gallery snapshot worker retains its 8 MiB stack and one queued slot. Neither client starts a backend or owns its model loop. This avoids recursive schema compilation on AppKit's small dispatch stacks. Snapshot bodies are bounded at 16 MiB; redirects/proxies are disabled and installation credentials stay in native transport state.
 
 `avatar` ports the versioned recipes, original catalog/geometry/seeded material, expression/action/loading/motion and transparent exports. The desktop adapter shares one native clock and bounded cached compositor with independent eye layers. Exported web portraits are not runtime state assets. See the NMA-067 components below for the executed evidence and retained limitations.
 
@@ -56,13 +56,13 @@ Upgrades must repeat cold snapshot decoding from a small-stack caller, malformed
 
 The **Avatar** scene offers fixed frames and 1/10/30 continuous portraits using the independent Rust engine, one native visibility-aware clock, pointer gaze, independent eyes/blink, loading/actions and reduced motion. Material/texture preparation runs on a bounded worker; replaced GPU images are explicitly retired. The component benchmark records actual image deliveries alongside GPUI draw/work/missed-refresh metrics; redraw callbacks alone do not establish animation cadence.
 
-**Composer** implements atomic agent/user/file/skill tokens, validated metadata clipboard, Unicode/grapheme edits, bounded undo/redo and suggestions. It emits typed submission/file intents without network policy. **Messages** supplies native DM/group/user/assistant attribution, file-only rows, safe activity, clocks/day markers and revision-bound question/approval/retry controls. Durable operations and real API submission remain NMA-068.
+**Composer** implements atomic agent/user/file/skill tokens, validated metadata clipboard, Unicode/grapheme edits, bounded undo/redo and suggestions. It emits typed submission/file intents without network policy. **Messages** supplies native DM/group/user/assistant attribution, file-only rows, safe activity, clocks/day markers and revision-bound question/approval/retry controls. NMA-068 binds these components to durable operations and the real API.
 
 **Content** has a read-only virtual source editor with precomputed Syntect highlights in the original syntax palette, literal find/wrap/line numbers; a variable-height virtual table with stable sorting/filtering/range copy and an expanded native dialog; native selectable Markdown/GFM; and bounded native image decoding/fit/zoom/copy. Original download bytes are distinct from rendered/copy formats. Limits remain 128,000-byte text preview, 100,000 highlighted UTF-16 units, virtual source above 500 lines, PDF 16 MiB/500 pages and five bounded nearby PDF rasters. Unsupported/incomplete documents retain actionable download states.
 
 **Native PDF** uses Quartz page rasters and PDFKit text with GPUI continuous pages, selection, paging, fit/50–200% zoom, reading anchors, error/retry and original downloads. **Static HTML** mounts only a sanitized document body in the isolated adapter; GPUI owns surrounding controls and overlays. Shell/composer/messages/Markdown/source/table/image/PDF never load React, Lexical, PDF.js or the TypeScript avatar runtime.
 
-[Component verification](../../docs/verification/nma-067/README.md) records actual native interactions, eight original-download hash checks, source vectors and failures/corrections. The owner accepts the implemented components with remaining CJK, exhaustive visual/control and performance checks non-blocking under the recorded decision. NMA-066/NMA-067 are Done; NMA-068–071 remain Backlog.
+[Component verification](../../docs/verification/nma-067/README.md) records actual native interactions, eight original-download hash checks, source vectors and failures/corrections. The owner accepts the implemented components with remaining CJK, exhaustive visual/control and performance checks non-blocking under the recorded decision. NMA-066/NMA-067 are Done; NMA-068 is Done; NMA-069–071 remain Backlog.
 
 A Rust executable generates transparent SVG/PNG from either a new seed or a stored recipe, without TypeScript or a browser:
 
@@ -72,3 +72,13 @@ bun apps/desktop-rs/scripts/cargo.ts run -p ngertiin-avatar --example export -- 
 ```
 
 The output prefix's parent directory must exist. Exports include the resulting recipe JSON; requested PNG sizes are bounded to 32–2048 pixels. PNG rasterization applies the pinned resvg 0.46.0 displacement workaround; standalone SVG retains the original filter. `scripts/avatar-reference.ts` refreshes development-only source vectors explicitly; ordinary checks consume the frozen vectors and never invoke the TypeScript renderer. NMA-067 is Done for the accepted component scope; unexecuted native checks keep their actual status in the evidence report.
+
+## NMA-068 workspace attachment and recovery
+
+Use the same explicit loopback origin and private installation-token file as the read-only attachment. `NGERTIIN_RS_THREAD_ID` or `attachment.json`'s `thread_id` is optional for the workspace: persisted selection or the existing Tobi DM is used when it is absent. No backend is spawned. The full contract must equal the pinned 1.31.0 definitions before writes are enabled.
+
+Native state lives under `~/Library/Application Support/Ngertiin Rust Development/workspace`, separate from Tauri and gallery evidence. It contains private preferences/plain drafts, staged original bytes and the exact pending-operation journal; an exclusive profile lock prevents simultaneous writers. Once bound, a profile accepts a changed loopback port for the same owner and refuses another owner. Selection and recipient/model/billing state do not silently switch on retry. A lost acknowledgement is recovered by retrying the retained operation; native answer replies instead require authoritative status reconciliation. Projection checkpoints are memory-only, so reopening reads a new atomic snapshot and does not submit inference.
+
+The focused state checks and remaining native/API acceptance are recorded in [NMA-068 evidence](../../docs/verification/nma-068/README.md). Full contextual Settings/Library/Focus and live Computer/native lifecycle remain NMA-069/NMA-070.
+
+The workspace automatically attaches to the backend already supervised by the configured Tauri installation. Start Tauri first, then open `dist/Ngertiin Rust Development.app`; Rust does not spawn a second backend. Explicit private `attachment.json` configuration takes precedence. `NGERTIIN_RS_PROFILE=<name>` selects an isolated native profile under `profiles/` using a validated name, useful for disposable recovery work. Reconnect rediscovers the retained installation after a changed backend port.

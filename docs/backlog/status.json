@@ -237,7 +237,7 @@
     "ticket": "NMA-068",
     "title": "API-backed workspace and conversation parity",
     "plan": "Desktop Rust",
-    "status": "Backlog",
+    "status": "Done",
     "order": 16.3,
     "layer": "Desktop / Conversation",
     "depends_on": [

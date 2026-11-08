@@ -138,14 +138,17 @@ impl AvatarAnimator {
                 if reduced && !avatar.dirty && avatar.last_reduced == reduced {
                     return None;
                 }
-                let gaze = self.pointer.filter(|_| !reduced).map(|pointer| {
-                    let bounds = avatar.bounds.get();
-                    let reach = (f32::from(bounds.size.width) * 2.).max(160.);
-                    (
-                        f64::from((pointer.x - bounds.center().x) / px(reach)),
-                        f64::from((pointer.y - bounds.center().y) / px(reach)),
-                    )
-                });
+                let gaze = self
+                    .pointer
+                    .filter(|_| !reduced && avatar.follow_pointer)
+                    .map(|pointer| {
+                        let bounds = avatar.bounds.get();
+                        let reach = (f32::from(bounds.size.width) * 2.).max(160.);
+                        (
+                            f64::from((pointer.x - bounds.center().x) / px(reach)),
+                            f64::from((pointer.y - bounds.center().y) / px(reach)),
+                        )
+                    });
                 avatar.motion.look_at(gaze);
                 avatar.last_reduced = reduced;
                 avatar.dirty = false;
@@ -237,6 +240,7 @@ pub struct AvatarPortrait {
     pub state: State,
     pub reduced: bool,
     pub size: f32,
+    pub follow_pointer: bool,
     animator: Entity<AvatarAnimator>,
     motion: MotionClock,
     image: Option<Arc<RenderImage>>,
@@ -250,6 +254,9 @@ impl AvatarPortrait {
     pub fn is_ready(&self) -> bool {
         self.image.is_some() && !self.failed
     }
+    pub fn is_settled(&self) -> bool {
+        self.image.is_some() || self.failed
+    }
     pub fn create(
         animator: &Entity<AvatarAnimator>,
         config: AvatarConfig,
@@ -261,6 +268,7 @@ impl AvatarPortrait {
             state: State::Idle,
             reduced: false,
             size,
+            follow_pointer: true,
             animator: animator.clone(),
             motion: MotionClock::default(),
             image: None,

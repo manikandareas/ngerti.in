@@ -90,7 +90,15 @@
     "identity-purple": "#8d69ce",
     "identity-teal": "#01a492",
     "identity-orange": "#e78531",
-    "identity-silver": "#a8adb4"
+    "identity-silver": "#a8adb4",
+    "header-surface": "color-mix(in srgb, var(--background), var(--foreground) 5%)",
+    "composer-outline": "color-mix(in srgb, var(--background), var(--foreground) 10%)",
+    "bubble-pink": "#d03b73",
+    "bubble-blue": "#0076d4",
+    "bubble-teal": "#00846e",
+    "bubble-purple": "#8057c8",
+    "bubble-orange": "#af6100",
+    "bubble-silver": "#70757c"
   },
   "dark": {
     "background": "#121212",
@@ -183,6 +191,14 @@
     "identity-purple": "#8d69ce",
     "identity-teal": "#01a492",
     "identity-orange": "#e78531",
-    "identity-silver": "#a8adb4"
+    "identity-silver": "#a8adb4",
+    "header-surface": "color-mix(in srgb, var(--background), var(--foreground) 5%)",
+    "composer-outline": "color-mix(in srgb, var(--background), var(--foreground) 10%)",
+    "bubble-pink": "#d03b73",
+    "bubble-blue": "#0076d4",
+    "bubble-teal": "#00846e",
+    "bubble-purple": "#8057c8",
+    "bubble-orange": "#af6100",
+    "bubble-silver": "#70757c"
   }
 }

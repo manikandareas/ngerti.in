@@ -57,6 +57,7 @@ impl ComposerLab {
         let composer = cx.new(|cx| Composer::new(references(), window, cx));
         let subscription = cx.subscribe(&composer, |this, _, event: &ComposerEvent, cx| {
             this.status = match event {
+                ComposerEvent::Changed(_) => return,
                 ComposerEvent::Submit(draft) => {
                     this.submissions += 1;
                     format!(

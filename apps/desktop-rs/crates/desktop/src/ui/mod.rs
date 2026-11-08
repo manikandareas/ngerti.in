@@ -11,3 +11,4 @@ pub mod source;
 pub mod table;
 pub mod tabs;
 pub mod theme;
+pub mod workspace;

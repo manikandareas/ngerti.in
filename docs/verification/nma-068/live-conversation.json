@@ -1,0 +1,142 @@
+{
+  "contract": "1.31.0",
+  "thread_id": "3f2d6bad-b8e4-4ebf-b864-272bcd568d00",
+  "messages": [
+    {
+      "id": "912da8a4-0efd-400e-ada5-3aa3b9085a16",
+      "owner_id": "bebbefa0-15e0-4cf5-89f1-71febaa2e6ca",
+      "revision": 1,
+      "created_at": "2026-11-08T07:46:51.270Z",
+      "updated_at": "2026-11-08T07:46:51.270Z",
+      "kind": "message",
+      "thread_id": "3f2d6bad-b8e4-4ebf-b864-272bcd568d00",
+      "author": "user",
+      "author_agent_id": null,
+      "routine_id": null,
+      "run_id": "10d4a158-9198-4be0-98f3-8274522709e8",
+      "purpose": "conversation",
+      "source_run_id": null,
+      "creation_operation_id": null,
+      "text": "Native NMA-068 acceptance check. Ask me exactly one multiple-choice question using ngertiin.ask_user: title 'Native parity check', choices 'Ready' and 'Review', allow another answer. Wait for my answer. After I answer, reply in one short sentence. Do not create Goals or Routines, change files, or contact anyone.",
+      "state": "complete",
+      "artifact_ids": []
+    },
+    {
+      "id": "a04adb0b-1d53-4050-8b38-73777d5d82ec",
+      "owner_id": "bebbefa0-15e0-4cf5-89f1-71febaa2e6ca",
+      "revision": 1,
+      "created_at": "2026-11-08T07:47:05.636Z",
+      "updated_at": "2026-11-08T07:47:05.636Z",
+      "kind": "message",
+      "thread_id": "3f2d6bad-b8e4-4ebf-b864-272bcd568d00",
+      "author": "agent",
+      "author_agent_id": "e8a77db4-503d-47cf-83e3-bc2d182c7565",
+      "routine_id": null,
+      "run_id": null,
+      "purpose": "human_request",
+      "source_run_id": "10d4a158-9198-4be0-98f3-8274522709e8",
+      "creation_operation_id": null,
+      "text": "Native parity check",
+      "state": "complete",
+      "artifact_ids": []
+    },
+    {
+      "id": "321b1c40-5542-49c0-aa4f-1257b64e2c78",
+      "owner_id": "bebbefa0-15e0-4cf5-89f1-71febaa2e6ca",
+      "revision": 1,
+      "created_at": "2026-11-08T07:47:52.145Z",
+      "updated_at": "2026-11-08T07:47:52.145Z",
+      "kind": "message",
+      "thread_id": "3f2d6bad-b8e4-4ebf-b864-272bcd568d00",
+      "author": "user",
+      "author_agent_id": null,
+      "routine_id": null,
+      "run_id": null,
+      "purpose": "human_reply",
+      "source_run_id": null,
+      "creation_operation_id": null,
+      "text": "Ready",
+      "state": "complete",
+      "artifact_ids": []
+    },
+    {
+      "id": "bc1c1a84-58c2-49df-8c86-4c83d96d1b2a",
+      "owner_id": "bebbefa0-15e0-4cf5-89f1-71febaa2e6ca",
+      "revision": 1,
+      "created_at": "2026-11-08T07:47:56.530Z",
+      "updated_at": "2026-11-08T07:47:56.530Z",
+      "kind": "message",
+      "thread_id": "3f2d6bad-b8e4-4ebf-b864-272bcd568d00",
+      "author": "agent",
+      "author_agent_id": "e8a77db4-503d-47cf-83e3-bc2d182c7565",
+      "routine_id": null,
+      "run_id": "f9b2376c-6c03-4096-b654-6c65374f6663",
+      "purpose": "conversation",
+      "source_run_id": null,
+      "creation_operation_id": null,
+      "text": "Your “Ready” response has been received.",
+      "state": "complete",
+      "artifact_ids": []
+    }
+  ],
+  "runs": [
+    {
+      "id": "10d4a158-9198-4be0-98f3-8274522709e8",
+      "created_at": "2026-11-08T07:46:51.280Z",
+      "updated_at": "2026-11-08T07:47:07.484Z",
+      "input_message_id": "912da8a4-0efd-400e-ada5-3aa3b9085a16",
+      "status": "succeeded",
+      "native_run_id": "01a1ba1f-e8fc-7f41-a9c4-a916db046b61",
+      "native_interactions": []
+    },
+    {
+      "id": "f9b2376c-6c03-4096-b654-6c65374f6663",
+      "created_at": "2026-11-08T07:47:52.150Z",
+      "updated_at": "2026-11-08T07:47:56.531Z",
+      "input_message_id": "b953b317-00d3-4608-8c60-68372ea2a320",
+      "status": "succeeded",
+      "native_run_id": "01a1ba20-c8e5-7080-a603-4ea25749df9f",
+      "native_interactions": []
+    }
+  ],
+  "requests": [
+    {
+      "id": "3684078e-78c4-41a9-a913-84c92daca090",
+      "owner_id": "bebbefa0-15e0-4cf5-89f1-71febaa2e6ca",
+      "revision": 3,
+      "created_at": "2026-11-08T07:47:05.636Z",
+      "updated_at": "2026-11-08T07:47:52.151Z",
+      "thread_id": "3f2d6bad-b8e4-4ebf-b864-272bcd568d00",
+      "agent_id": "e8a77db4-503d-47cf-83e3-bc2d182c7565",
+      "task_id": null,
+      "source_run_id": "10d4a158-9198-4be0-98f3-8274522709e8",
+      "purpose": "input",
+      "message_id": "a04adb0b-1d53-4050-8b38-73777d5d82ec",
+      "state": "answered",
+      "response_message_id": "321b1c40-5542-49c0-aa4f-1257b64e2c78",
+      "continuation_run_id": "f9b2376c-6c03-4096-b654-6c65374f6663",
+      "options": {
+        "choices": [
+          {
+            "id": "ready",
+            "label": "Ready"
+          },
+          {
+            "id": "review",
+            "label": "Review"
+          }
+        ],
+        "min": 1,
+        "max": 1,
+        "allow_custom": true
+      },
+      "action": null,
+      "action_fingerprint": null,
+      "decision": null,
+      "decision_evidence": null,
+      "decision_source": "owner",
+      "effect_command_id": null,
+      "kind": "human_request"
+    }
+  ]
+}

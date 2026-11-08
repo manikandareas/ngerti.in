@@ -6,10 +6,11 @@ use uuid::Uuid;
 const RESPONSE_LIMIT: u64 = 16 * 1024 * 1024;
 
 /// Credentials are native transport state, never part of a URL, WebView or Debug output.
+#[derive(Clone)]
 pub struct ReadOnlyClient {
-    client: Client,
-    origin: Url,
-    bearer: String,
+    pub(crate) client: Client,
+    pub(crate) origin: Url,
+    pub(crate) bearer: String,
 }
 impl ReadOnlyClient {
     pub fn new(origin: &str, bearer: String) -> Result<Self, ClientError> {

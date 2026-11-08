@@ -26,6 +26,8 @@ pub struct InteractionView {
     custom: Option<Entity<TextareaState>>,
     subscription: Option<Subscription>,
     error: Option<String>,
+    compact_history: bool,
+    expanded: bool,
 }
 impl EventEmitter<AnswerIntent> for InteractionView {}
 impl InteractionView {
@@ -38,7 +40,13 @@ impl InteractionView {
             custom: None,
             subscription: None,
             error: None,
+            compact_history: false,
+            expanded: false,
         }
+    }
+    pub fn compact_history(mut self) -> Self {
+        self.compact_history = true;
+        self
     }
     pub fn reset(&mut self, window: &mut Window, cx: &mut Context<Self>) {
         self.value.state = InteractionState::Current;
@@ -214,8 +222,38 @@ impl InteractionView {
 }
 impl Render for InteractionView {
     fn render(&mut self, window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
-        self.prepare_input(window, cx);
         let p = Palette::new(cx.theme().mode.is_dark());
+        if self.compact_history
+            && !self.expanded
+            && matches!(
+                self.value.state,
+                InteractionState::Resolved(_) | InteractionState::Submitted(_)
+            )
+        {
+            return button("resolved-question", "", ButtonKind::Ghost, p, cx)
+                .accessibility_label(self.value.question.clone())
+                .child(
+                    div()
+                        .w_full()
+                        .text_left()
+                        .text_size(super::theme::ui(15.))
+                        .child(self.value.question.clone()),
+                )
+                .w_full()
+                .max_w(super::theme::ui(460.))
+                .h_auto()
+                .p(super::theme::ui(18.))
+                .rounded(super::theme::ui_px(14., cx))
+                .bg(p.color("card"))
+                .justify_start()
+                .text_size(super::theme::ui(15.))
+                .on_click(cx.listener(|this, _, _, cx| {
+                    this.expanded = true;
+                    cx.notify();
+                }))
+                .into_any_element();
+        }
+        self.prepare_input(window, cx);
         let available = self.available();
         let settled = match &self.value.state {
             InteractionState::Submitted(answer) | InteractionState::Resolved(answer) => {
@@ -232,6 +270,9 @@ impl Render for InteractionView {
                     .font_weight(FontWeight::MEDIUM)
                     .child(self.value.question.clone()),
             );
+        if self.compact_history {
+            view = view.max_w(super::theme::ui(460.)).bg(p.color("card"));
+        }
         if self.value.multiple
             && let Some(maximum) = self.value.rules.maximum
         {
@@ -502,5 +543,6 @@ impl Render for InteractionView {
             );
         }
         view.child(super::message::clock(&self.time, p))
+            .into_any_element()
     }
 }

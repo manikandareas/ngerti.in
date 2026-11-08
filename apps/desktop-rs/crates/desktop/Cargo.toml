@@ -8,6 +8,7 @@ publish.workspace = true
 anyhow.workspace = true
 serde.workspace = true
 serde_json.workspace = true
+sha2 = "=0.10.9"
 ngertiin-client = { path = "../client" }
 ngertiin-avatar = { path = "../avatar" }
 gpui-kit = { version = "=0.9.0", features = ["gpui-fast", "syntect", "profiler"] }

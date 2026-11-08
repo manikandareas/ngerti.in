@@ -51,7 +51,7 @@ pub fn button(
         p.color(background)
     };
     Button::new(id)
-        .label(label.clone())
+        .when(!label.is_empty(), |button| button.label(label.clone()))
         .accessibility_label(label)
         .custom(
             ButtonCustomVariant::new(cx)

@@ -1,5 +1,5 @@
 use gpui_kit::{
-    component::{Theme, ThemeMode},
+    component::{ActiveTheme, Theme, ThemeMode},
     *,
 };
 use serde_json::Value;
@@ -99,7 +99,8 @@ pub fn apply(dark: bool, window: Option<&mut Window>, cx: &mut App) {
         );
         theme.font_family = "Geist".into();
         theme.mono_font_family = "Geist Mono".into();
-        theme.font_size = px(14.);
+        // The reference CSS root is 16px; application body text is 14px.
+        theme.font_size = px(16.);
         theme.colors.background = p.color("background");
         theme.colors.foreground = p.color("foreground");
         theme.colors.primary = p.color("primary");
@@ -139,4 +140,30 @@ pub fn apply(dark: bool, window: Option<&mut Window>, cx: &mut App) {
         theme.colors.scrollbar_thumb = p.color("scrollbar");
         theme.colors.scrollbar_thumb_hover = p.color("scrollbar-hover");
     });
+}
+
+/// Reference design units resolve against the same 16px root as Tauri. Keeping
+/// this conversion in the product theme preserves proportional native zoom.
+pub fn ui(units: f32) -> Rems {
+    rems(units / 16.)
+}
+
+pub fn agent_bubble(agent: &serde_json::Value, p: Palette) -> Hsla {
+    let tone = if agent["system_role"] == "tobi" {
+        "silver"
+    } else {
+        let hash = agent["id"]
+            .as_str()
+            .unwrap_or("")
+            .bytes()
+            .map(usize::from)
+            .sum::<usize>();
+        ["pink", "blue", "teal", "purple", "orange"][hash % 5]
+    };
+    p.color(&format!("bubble-{tone}"))
+}
+
+/// GPUI Button 0.9 requires resolved pixel radii; use the product root scale.
+pub fn ui_px(units: f32, cx: &App) -> Pixels {
+    ui(units).to_pixels(cx.theme().font_size)
 }

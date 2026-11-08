@@ -1,0 +1,13 @@
+{
+  "before": {
+    "agent": 3,
+    "run": 170,
+    "message": 346
+  },
+  "after_native_dm_group_history_reopen": {
+    "agent": 3,
+    "run": 170,
+    "message": 346
+  },
+  "note": "Read-only native viewing and all recovery mutations before this point used a separate disposable owner. No inference was requested in the retained installation."
+}

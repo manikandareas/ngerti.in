@@ -6,7 +6,7 @@ use crate::{
 use gpui_kit::prelude::FluentBuilder;
 use gpui_kit::{
     component::{
-        ActiveTheme,
+        ActiveTheme, Sizable,
         input::{
             Copy, Cut, Enter, InlineToken, InputContent, InputEvent, Paste, Redo, Textarea,
             TextareaState, Undo,
@@ -20,6 +20,7 @@ use std::collections::{BTreeMap, BTreeSet};
 pub enum ComposerEvent {
     Submit(Draft),
     Files(Vec<ClipboardEntry>),
+    Changed(Draft),
 }
 pub struct Composer {
     pub input: Entity<TextareaState>,
@@ -30,6 +31,8 @@ pub struct Composer {
     selection: usize,
     error: Option<String>,
     dismissed: bool,
+    embedded: bool,
+    readonly: bool,
 }
 impl EventEmitter<ComposerEvent> for Composer {}
 impl Composer {
@@ -37,7 +40,7 @@ impl Composer {
         let input = cx.new(|cx| {
             TextareaState::new(window, cx)
                 .placeholder("Message…")
-                .auto_grow(2, 8)
+                .auto_grow(1, 7)
                 .submit_on_enter(true)
         });
         let subscription =
@@ -56,9 +59,10 @@ impl Composer {
                     this.error = None;
                     this.selection = 0;
                     this.dismissed = false;
+                    cx.emit(ComposerEvent::Changed(this.snapshot(cx).draft));
                     cx.notify();
                 }
-                InputEvent::PressEnter { shift: false, .. } => {
+                InputEvent::PressEnter { shift: false, .. } if !this.readonly => {
                     cx.emit(ComposerEvent::Submit(this.snapshot(cx).draft))
                 }
                 _ => {
@@ -74,7 +78,22 @@ impl Composer {
             selection: 0,
             error: None,
             dismissed: false,
+            embedded: false,
+            readonly: false,
         }
+    }
+    pub fn readonly(&mut self, readonly: bool, cx: &mut Context<Self>) {
+        if self.readonly != readonly {
+            self.readonly = readonly;
+            cx.notify();
+        }
+    }
+    pub fn embedded(&mut self, placeholder: String, window: &mut Window, cx: &mut Context<Self>) {
+        self.embedded = true;
+        self.input.update(cx, |input, cx| {
+            input.set_placeholder(placeholder, window, cx)
+        });
+        cx.notify();
     }
     pub fn snapshot(&self, cx: &App) -> Snapshot {
         let input = self.input.read(cx);
@@ -103,6 +122,21 @@ impl Composer {
             selection: input.selected_range(),
             reversed: input.is_selection_reversed(),
         }
+    }
+    pub fn set_catalog(&mut self, references: Vec<Reference>, cx: &mut Context<Self>) {
+        self.catalog = references.iter().map(Reference::url).collect();
+        let retained: BTreeSet<_> = self
+            .snapshot(cx)
+            .draft
+            .tokens
+            .iter()
+            .map(|t| t.reference.url())
+            .collect();
+        self.references.retain(|url, _| retained.contains(url));
+        for reference in references {
+            self.references.insert(reference.url(), reference);
+        }
+        cx.notify();
     }
     fn composing(&self, window: &mut Window, cx: &mut App) -> bool {
         self.input.update(cx, |input, cx| {
@@ -138,6 +172,7 @@ impl Composer {
             );
             input.focus(window, cx);
         });
+        cx.emit(ComposerEvent::Changed(snapshot.draft));
         cx.notify();
         Ok(())
     }
@@ -159,6 +194,9 @@ impl Composer {
         window: &mut Window,
         cx: &mut Context<Self>,
     ) {
+        if self.readonly {
+            return;
+        }
         let current = self.snapshot(cx);
         self.history
             .selection(current.selection.clone(), current.reversed);
@@ -191,6 +229,9 @@ impl Composer {
         }
     }
     fn copy(&mut self, cut: bool, window: &mut Window, cx: &mut Context<Self>) -> bool {
+        if cut && self.readonly {
+            return true;
+        }
         if self.composing(window, cx) {
             return false;
         }
@@ -212,6 +253,9 @@ impl Composer {
         true
     }
     fn paste(&mut self, window: &mut Window, cx: &mut Context<Self>) -> bool {
+        if self.readonly {
+            return true;
+        }
         if self.composing(window, cx) {
             return false;
         }
@@ -244,6 +288,9 @@ impl Composer {
         true
     }
     fn travel(&mut self, redo: bool, window: &mut Window, cx: &mut Context<Self>) -> bool {
+        if self.readonly {
+            return true;
+        }
         if self.composing(window, cx) {
             return false;
         }
@@ -260,7 +307,7 @@ impl Composer {
         true
     }
     fn suggestions(&self, cx: &App) -> Option<(std::ops::Range<usize>, Vec<Reference>)> {
-        if self.dismissed {
+        if self.dismissed || self.readonly {
             return None;
         }
         let input = self.input.read(cx);
@@ -343,10 +390,12 @@ impl Render for Composer {
                     cx.stop_propagation();
                 }
             }))
-            .on_drop(cx.listener(|_, paths: &ExternalPaths, _, cx| {
-                cx.emit(ComposerEvent::Files(vec![ClipboardEntry::ExternalPaths(
-                    paths.clone(),
-                )]))
+            .on_drop(cx.listener(|this, paths: &ExternalPaths, _, cx| {
+                if !this.readonly {
+                    cx.emit(ComposerEvent::Files(vec![ClipboardEntry::ExternalPaths(
+                        paths.clone(),
+                    )]))
+                }
             }))
             .capture_key_down(cx.listener(|this, event: &KeyDownEvent, window, cx| {
                 let s = this.snapshot(cx);
@@ -365,7 +414,18 @@ impl Render for Composer {
                     cx.notify();
                 }
             }))
-            .child(Textarea::new(&self.input).aria_label("Message with references"));
+            .child(
+                Textarea::new(&self.input)
+                    .when(self.embedded, |input| input.small())
+                    .readonly(self.readonly)
+                    .appearance(!self.embedded)
+                    .bordered(!self.embedded)
+                    .px(crate::ui::theme::ui(2.))
+                    .py(crate::ui::theme::ui(2.))
+                    .text_size(crate::ui::theme::ui(14.))
+                    .line_height(crate::ui::theme::ui(20.))
+                    .aria_label("Message with references"),
+            );
         if let Some((_, items)) = suggestions {
             let mut menu = div()
                 .id("composer-suggestions")

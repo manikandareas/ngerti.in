@@ -3,7 +3,7 @@ use serde_json::Value;
 use std::{fmt, sync::LazyLock};
 use uuid::Uuid;
 
-static CONTRACT: LazyLock<Value> = LazyLock::new(|| {
+pub(crate) static CONTRACT: LazyLock<Value> = LazyLock::new(|| {
     serde_json::from_str(include_str!("../../../../../docs/contracts/1.31.0.json"))
         .expect("The retained API contract must be valid JSON")
 });
@@ -24,9 +24,13 @@ pub enum ClientError {
     InvalidConnection,
     WrongThread,
     Busy,
+    Rejected { code: String, message: String },
 }
 impl fmt::Display for ClientError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        if let Self::Rejected { message, .. } = self {
+            return f.write_str(message);
+        }
         f.write_str(match self {
             Self::Unavailable => "Backend unavailable. Start or select a compatible local backend, then retry.",
             Self::Unauthorized => "Backend authentication failed. Check the private attachment credential, then retry.",
@@ -38,6 +42,7 @@ impl fmt::Display for ClientError {
             Self::InvalidConnection => "Select an explicit loopback HTTP origin and a valid installation credential.",
             Self::WrongThread => "The snapshot belongs to a different thread. Reattach to the intended conversation.",
             Self::Busy => "A snapshot read is already pending. Wait for it to finish, then retry.",
+            Self::Rejected { .. } => unreachable!(),
         })
     }
 }

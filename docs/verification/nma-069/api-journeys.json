@@ -1,0 +1,30 @@
+{
+  "captured_at": "2026-11-08T09:24:52.402Z",
+  "cases": [
+    {
+      "name": "DM memory stays private to its exact conversation",
+      "passed": true
+    },
+    {
+      "name": "original downloads retain every published hash",
+      "passed": true
+    },
+    {
+      "name": "sharing creates an explicit copy with identical bytes",
+      "passed": true
+    },
+    {
+      "name": "skill publication and assignment revisions stay separate; rollback and disable retain history",
+      "passed": true
+    },
+    {
+      "name": "Goal and Routine controls return authoritative state without model execution",
+      "passed": true
+    }
+  ],
+  "passed": 5,
+  "total": 5,
+  "executor_count": 0,
+  "scheduler_started": false,
+  "external_authorization_attempts": 0
+}

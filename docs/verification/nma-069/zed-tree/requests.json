@@ -1,0 +1,217 @@
+{
+  "fixture": "real domain API with scripted machine file responses; no actual Cua machine",
+  "counts": {
+    "agent": 2,
+    "thread": 2,
+    "message": 2,
+    "artifact": 5,
+    "run": 1
+  },
+  "request_count": 29,
+  "requests": [
+    {
+      "method": "GET",
+      "path": "/v1/machine/files",
+      "status": 200,
+      "key": null,
+      "body": null
+    },
+    {
+      "method": "GET",
+      "path": "/v1/machine/files",
+      "status": 200,
+      "key": null,
+      "body": null
+    },
+    {
+      "method": "GET",
+      "path": "/v1/machine/files",
+      "status": 200,
+      "key": null,
+      "body": null
+    },
+    {
+      "method": "GET",
+      "path": "/v1/machine/files",
+      "status": 200,
+      "key": null,
+      "body": null
+    },
+    {
+      "method": "GET",
+      "path": "/v1/machine/files",
+      "status": 200,
+      "key": null,
+      "body": null
+    },
+    {
+      "method": "GET",
+      "path": "/v1/machine/files",
+      "status": 200,
+      "key": null,
+      "body": null
+    },
+    {
+      "method": "GET",
+      "path": "/v1/machine/files",
+      "status": 200,
+      "key": null,
+      "body": null
+    },
+    {
+      "method": "GET",
+      "path": "/v1/machine/file",
+      "status": 200,
+      "key": null,
+      "body": null
+    },
+    {
+      "method": "GET",
+      "path": "/v1/machine/files",
+      "status": 503,
+      "key": null,
+      "body": null
+    },
+    {
+      "method": "GET",
+      "path": "/v1/machine/files",
+      "status": 200,
+      "key": null,
+      "body": null
+    },
+    {
+      "method": "GET",
+      "path": "/v1/machine/files",
+      "status": 200,
+      "key": null,
+      "body": null
+    },
+    {
+      "method": "GET",
+      "path": "/v1/machine/files",
+      "status": 200,
+      "key": null,
+      "body": null
+    },
+    {
+      "method": "GET",
+      "path": "/v1/machine/files",
+      "status": 200,
+      "key": null,
+      "body": null
+    },
+    {
+      "method": "GET",
+      "path": "/v1/machine/file",
+      "status": 200,
+      "key": null,
+      "body": null
+    },
+    {
+      "method": "GET",
+      "path": "/v1/machine/files",
+      "status": 200,
+      "key": null,
+      "body": null
+    },
+    {
+      "method": "GET",
+      "path": "/v1/machine/files",
+      "status": 200,
+      "key": null,
+      "body": null
+    },
+    {
+      "method": "GET",
+      "path": "/v1/machine/files",
+      "status": 200,
+      "key": null,
+      "body": null
+    },
+    {
+      "method": "GET",
+      "path": "/v1/machine/file",
+      "status": 200,
+      "key": null,
+      "body": null
+    },
+    {
+      "method": "GET",
+      "path": "/v1/machine/files",
+      "status": 200,
+      "key": null,
+      "body": null
+    },
+    {
+      "method": "GET",
+      "path": "/v1/machine/files",
+      "status": 200,
+      "key": null,
+      "body": null
+    },
+    {
+      "method": "GET",
+      "path": "/v1/machine/files",
+      "status": 200,
+      "key": null,
+      "body": null
+    },
+    {
+      "method": "GET",
+      "path": "/v1/machine/files",
+      "status": 200,
+      "key": null,
+      "body": null
+    },
+    {
+      "method": "GET",
+      "path": "/v1/machine/files",
+      "status": 200,
+      "key": null,
+      "body": null
+    },
+    {
+      "method": "GET",
+      "path": "/v1/machine/files",
+      "status": 200,
+      "key": null,
+      "body": null
+    },
+    {
+      "method": "GET",
+      "path": "/v1/machine/files",
+      "status": 200,
+      "key": null,
+      "body": null
+    },
+    {
+      "method": "GET",
+      "path": "/v1/machine/files",
+      "status": 200,
+      "key": null,
+      "body": null
+    },
+    {
+      "method": "GET",
+      "path": "/v1/machine/files",
+      "status": 200,
+      "key": null,
+      "body": null
+    },
+    {
+      "method": "GET",
+      "path": "/v1/machine/files",
+      "status": 200,
+      "key": null,
+      "body": null
+    },
+    {
+      "method": "GET",
+      "path": "/v1/machine/files",
+      "status": 200,
+      "key": null,
+      "body": null
+    }
+  ],
+  "source": "apps/desktop-rs/verification/nma-069/tree-proof.ts"
+}

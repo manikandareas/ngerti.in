@@ -250,7 +250,7 @@
     "ticket": "NMA-069",
     "title": "Context panels, Settings and Focus workflows",
     "plan": "Desktop Rust",
-    "status": "Backlog",
+    "status": "Done",
     "order": 16.4,
     "layer": "Desktop / Contextual work",
     "depends_on": [

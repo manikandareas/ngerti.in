@@ -1,0 +1,35 @@
+{
+  "method": "Rust token text and delimiter tree comparison with optional trailing commas and punctuation whitespace jointness normalized; no identifiers or literal values changed",
+  "files": [
+    {
+      "file": "apps/desktop-rs/crates/desktop/src/workspace/context/apps.rs",
+      "before_source_sha256": "83dd32312813c1afa4f3c7bca7e867b2c3c0a5cd4056df25d662fb085633529e",
+      "after_source_sha256": "f6a127d50d55f71cf3215a0c963afe4d22bc2ebd027358e851885663c6316baa",
+      "normalized_tokens_sha256": "5337c97fe192d4531e0496ccf4653987aa2924761fdfaa3d5b1b1115df75b8f7"
+    },
+    {
+      "file": "apps/desktop-rs/crates/desktop/src/workspace/context/library.rs",
+      "before_source_sha256": "a684d657bcee654e5cd199a6a679aaffd6062e448e67350fab89ea27131b9610",
+      "after_source_sha256": "781162badec8ad872bd6fe9f310556c4c39255c03fe6fd5ca82bfa5285584335",
+      "normalized_tokens_sha256": "e7ccf3798b6c945309e7b2829ad1dc229ccd98a67e1a89767c78e112c1b3553e"
+    },
+    {
+      "file": "apps/desktop-rs/crates/desktop/src/workspace/context/skills.rs",
+      "before_source_sha256": "0105a789326860321ed3e249f29d36a2400d24cef2756fb187e70af7e0878329",
+      "after_source_sha256": "101ad0b226b058eba08eb3209cc76fc038393e127452dcd52b3dcdf2bd1f08b1",
+      "normalized_tokens_sha256": "46b374639064837c4450aedd520e6cfe8ccf734a2dab13e0a1262b44f1071d82"
+    },
+    {
+      "file": "apps/desktop-rs/crates/desktop/src/workspace/context/detail.rs",
+      "before_source_sha256": "a48a4e72ab8be24cac2b6535374e90d2d8c0586b9da9b98a3cb63955755a0c20",
+      "after_source_sha256": "bf57ad88dc42a08946202a2d69b733526c367a5ca92fcec045de0d973fab7c2c",
+      "normalized_tokens_sha256": "a5214773df191cd6e9d82053b65787c722081474ae5a4fd72528bd2d7e369c38"
+    },
+    {
+      "file": "apps/desktop-rs/crates/desktop/src/workspace/context/settings.rs",
+      "before_source_sha256": "4d14c5185862291c3383d0ff46c5c918dd5b3608a6bdd1705f4917c4278d718d",
+      "after_source_sha256": "04129ee37d9be27c65de0f6c4a337a5cf6ef57695848212b43697fad0692287f",
+      "normalized_tokens_sha256": "84163284db9ef10072c873e515c5fcfb978fa9f53c401971dfa73ca3250d414b"
+    }
+  ]
+}

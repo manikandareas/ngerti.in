@@ -1,0 +1,60 @@
+Window: "Ngertiin Rust Development", App: Ngertiin Rust Tree Proof.
+0 standard window Ngertiin Rust Development, Secondary Actions: Raise
+	1 container
+		2 button Search conversations
+		3 button Buat baru
+		4 list Percakapan
+			5 button Tobi Prepared the contextual report. | Name | Value | | --- | ---: | | Alpha | 42 | | Beta | 7 |
+			6 button Tobi Belum ada pesan
+		7 button Pengaturan
+		8 button Hubungkan aplikasi
+		9 button Maximize table
+		10 button Detail Tobi
+		11 button Pilih model, Help: native-context-proof · subscription
+		12 button Browser agent
+		13 button Tambah lampiran
+		14 text entry area (settable) Message with references, Placeholder: Pesan untuk Tobi…
+		15 button (disabled) Kirim
+		16 button Back
+		17 button Refresh working files
+		18 button Tutup detail
+		19 outline Working files
+			20 row (selectable) project-593.md, Secondary Actions: Pick
+			21 row (selectable) project-594.md, Secondary Actions: Pick
+			22 row (selectable) project-595.md, Secondary Actions: Pick
+			23 row (selectable) project-596.md, Secondary Actions: Pick
+			24 row (selectable) project-597.md, Secondary Actions: Pick
+			25 row (selectable) project-598.md, Secondary Actions: Pick
+			26 row (selectable) project-599.md, Secondary Actions: Pick
+			27 row (selectable) project-600.md, Secondary Actions: Pick
+			28 row (selectable) src, Secondary Actions: Pick
+			29 row (selectable) api, Secondary Actions: Pick
+			30 row (selectable) components, Secondary Actions: Pick
+			31 row (selectable) Avatar.tsx, Secondary Actions: Pick
+			32 row (selectable) Button.tsx, Secondary Actions: Pick
+			33 row (selectable) Composer.tsx, Secondary Actions: Pick
+			34 row (selectable) Dialog.tsx, Secondary Actions: Pick
+			35 row (selectable) FileTree.tsx, Secondary Actions: Pick
+			36 row (selectable) Input.tsx, Secondary Actions: Pick
+			37 row (selectable) Library.tsx, Secondary Actions: Pick
+			38 row (selectable) Panel.tsx, Secondary Actions: Pick
+			39 row (selectable) Settings.tsx, Secondary Actions: Pick
+			40 row (selectable) Table.tsx, Secondary Actions: Pick
+			41 row (selectable) Tabs.tsx, Secondary Actions: Pick
+			42 row (selectable) Viewer.tsx, Secondary Actions: Pick
+			43 row (selectable) main.rs, Secondary Actions: Pick
+			44 row (selectable) theme.rs, Secondary Actions: Pick
+			45 row (selectable) unavailable-folder, Secondary Actions: Pick
+			46 row (selectable) recovered.md, Secondary Actions: Pick
+			47 row (selectable) .env.example, Secondary Actions: Pick
+			48 row (selectable) a-long-filename-that-must-truncate-without-moving-the-file-icon.ts, Secondary Actions: Pick
+			49 row (selectable) Cargo.toml, Secondary Actions: Pick
+			50 row (selected) README.md, Secondary Actions: Pick
+	51 close button
+	52 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	53 minimize button
+	54 text Ngertiin Rust Development
+55 menu bar
+	56 Ngertiin Rust Tree Proof
+
+The focused UI element is 0 standard window Ngertiin Rust Development, Secondary Actions: Raise

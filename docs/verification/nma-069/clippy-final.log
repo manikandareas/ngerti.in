@@ -1,0 +1,5 @@
+    Blocking waiting for file lock on build directory
+    Checking ngertiin-client v0.1.0 (/Users/vitoandareasmanik/Development/project/ngertiin/apps/desktop-rs/crates/client)
+    Checking ngertiin-avatar v0.1.0 (/Users/vitoandareasmanik/Development/project/ngertiin/apps/desktop-rs/crates/avatar)
+    Checking ngertiin-desktop v0.1.0 (/Users/vitoandareasmanik/Development/project/ngertiin/apps/desktop-rs/crates/desktop)
+    Finished `dev` profile [unoptimized] target(s) in 1m 04s

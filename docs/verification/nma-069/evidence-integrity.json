@@ -1,0 +1,203 @@
+{
+  "scope": "Retained NMA-069 evidence bytes; authored Markdown and this manifest are excluded",
+  "files": {
+    "api-journeys.json": {
+      "sha256": "05fb4d17923177ec095a3c9d37fe14c30aaf299068e29d2b6b361c5e72334c92",
+      "bytes": 764
+    },
+    "biome-final.log": {
+      "sha256": "5b7ddf307cfbdc66638fd86875c61dd9cdbbf294be200ef2b26b99c1625b5971",
+      "bytes": 43
+    },
+    "build-manifest.json": {
+      "sha256": "cbd9fd6e7d084744937782f4c741ccb00452fb4c25bdd876ecd8d2ca45194a6c",
+      "bytes": 161337
+    },
+    "bundle-final.log": {
+      "sha256": "7c4957474b917f43f0cee6ccf6829cc1ee835eaa629dc543c649380a276df06c",
+      "bytes": 500
+    },
+    "captures/native-goal-paused.png": {
+      "sha256": "27fa1bbaf8499061e1d6b54315651cc61a1d846a1dc2ac5f06678cf227cd80b7",
+      "bytes": 256204
+    },
+    "captures/native-html.png": {
+      "sha256": "3fbcfd453a1205dc2d093b1635896c2da25dcfc039fa833a82cddc5013fac089",
+      "bytes": 152017
+    },
+    "captures/native-pdf-controls.png": {
+      "sha256": "5800fb8b39f1695591525856daf883dcf48570316edbedde0aee4bd1721ed16e",
+      "bytes": 189386
+    },
+    "captures/native-rejected-feedback.png": {
+      "sha256": "0d8501313695c292c92444072fe03837786c39e341fabb58c08b251a812ac01e",
+      "bytes": 181479
+    },
+    "cleanup-biome.log": {
+      "sha256": "8c714fb827709beb64246ce06980b352e98f7e34425817832d5efd17171c5770",
+      "bytes": 43
+    },
+    "cleanup-build-manifest.json": {
+      "sha256": "5c0e5f263b29118a8a3f5f5051208750d890d6c7bb8fd50849f2a9a791aafb04",
+      "bytes": 161468
+    },
+    "cleanup-bundle.log": {
+      "sha256": "ad9308a5eaa3708414ce33c0877d803e7bb606436c2b8952fb375a776ece96ae",
+      "bytes": 290
+    },
+    "cleanup-check.log": {
+      "sha256": "4a4134797ca700f25b6b31f67a9c9c62acca28163e9a227d780a198d0c87b1dd",
+      "bytes": 7182
+    },
+    "cleanup-docs.log": {
+      "sha256": "5efb0b5810fe668cd10d1d0a8a485523c4cf8240d0adf089291545eebac215bf",
+      "bytes": 736
+    },
+    "cleanup-files.json": {
+      "sha256": "8d1e85bdcd5553dce36cfc0b3d46ab8a2ba40443781d8df1e485983fbc2ee448",
+      "bytes": 2068
+    },
+    "cleanup-tokens.json": {
+      "sha256": "472a64712a759f997c88333de04d743952ec3898d2fcbfa8375e485c4f922cfe",
+      "bytes": 2147
+    },
+    "clippy-final.log": {
+      "sha256": "6050d2b5400ea5b20c8aea30ea954a72f05eaa699a2caf752ad66f476378e486",
+      "bytes": 483
+    },
+    "delivery-build-manifest.json": {
+      "sha256": "8098cb429180f0ad4c070b006b58f39d0fd95edcf4de6d2cdc384155109683cc",
+      "bytes": 161337
+    },
+    "desktop-check.log": {
+      "sha256": "488b86b3f2f7c15b3987d6af8a01ba71aaf7e3d77e88a77becc8ec0a74100c4d",
+      "bytes": 7127
+    },
+    "docs-check.log": {
+      "sha256": "5efb0b5810fe668cd10d1d0a8a485523c4cf8240d0adf089291545eebac215bf",
+      "bytes": 736
+    },
+    "native-compact-folder-error.png": {
+      "sha256": "776a5f6d33c625c10e1cdc76632ee9890c435b3fa82e268057cb89f8920acc39",
+      "bytes": 73776
+    },
+    "native-compact-library.png": {
+      "sha256": "f558c7405051bc791837323f037e68260463ecd99c79be00a453ff65de7d54b7",
+      "bytes": 84896
+    },
+    "native-download.json": {
+      "sha256": "62b339c6a605a1fd0636beebf5233e66de674761609c78098a0382cd3bffdafb",
+      "bytes": 259
+    },
+    "native-final-receipts.json": {
+      "sha256": "17f76e6ca6a2100eefff264cfd57d351ae79d2cbae25ab460dad578c013558b6",
+      "bytes": 6976
+    },
+    "native-focus-multiline.png": {
+      "sha256": "4565dc9fba21555cbb0bb12c377b5449e7eec170b9e584b165bd8fa27530977f",
+      "bytes": 196035
+    },
+    "native-group-member.png": {
+      "sha256": "e70328cac54261a923d73b12d4adbf773b2980ca6ad68fb9dc7cba85db0ed7e5",
+      "bytes": 147485
+    },
+    "native-local-pdf.png": {
+      "sha256": "ddcf949a2c3ac8b058f6d25a4a646b31e95d4e3fb30e150f9fbbd5b01856237c",
+      "bytes": 208213
+    },
+    "native-receipts.json": {
+      "sha256": "571e0533cb11d390c53781517a9489b1b29015955e63d9ee7342d77ab2a5d266",
+      "bytes": 62450
+    },
+    "native-settings-dark.png": {
+      "sha256": "cc4486df4ec0b9f6fe11806fc328648959c7d57fdaa5478035b686f05b1c28de",
+      "bytes": 252675
+    },
+    "native-settings-light.png": {
+      "sha256": "149a02585cae8a52ee0fbb556a7ddde2a3a149c8f2d861b110efe356e45d8a9f",
+      "bytes": 177624
+    },
+    "reference-manifest.json": {
+      "sha256": "752d898c5761d8cf304d510694a549d47f4f8052098f899300e9184b93a84e0e",
+      "bytes": 1913
+    },
+    "zed-tree/after-dark.png": {
+      "sha256": "f802d25b5d7e2887e29912b9f414a92df7dde787cec4b383ee7e8b9e94bbb301",
+      "bytes": 314078
+    },
+    "zed-tree/after-light.png": {
+      "sha256": "c6bbb552d388cdf99cdb5aceb16d54d2a0e7754eb61db256dfc6289b1b39e94f",
+      "bytes": 285010
+    },
+    "zed-tree/before-build-manifest.json": {
+      "sha256": "8098cb429180f0ad4c070b006b58f39d0fd95edcf4de6d2cdc384155109683cc",
+      "bytes": 161337
+    },
+    "zed-tree/before.png": {
+      "sha256": "078b220dba5b94aa7a5e7ef594bfed7b2d40d8e592244661addf0a7bff7c95c8",
+      "bytes": 286515
+    },
+    "zed-tree/biome.log": {
+      "sha256": "c934667c162b0fd7cc34eed91b536e95bdeb0a4491bab965b65e9aa46274996f",
+      "bytes": 43
+    },
+    "zed-tree/build-manifest.json": {
+      "sha256": "12ebfc3699d8848eeb61dc49dc2d0b83e11e8736b56ded93b3d08376569cde0b",
+      "bytes": 161468
+    },
+    "zed-tree/bundle.log": {
+      "sha256": "25f9d1a87a8b75af9fc1df920d9ea956e8a5ef208a6cfb7fb657a978273b3669",
+      "bytes": 446
+    },
+    "zed-tree/clippy.log": {
+      "sha256": "c6de702589b350a5569c51f95ff379a0f647b4e619d7fdd67ca0fe3367d1b23d",
+      "bytes": 239
+    },
+    "zed-tree/docs-check.log": {
+      "sha256": "5efb0b5810fe668cd10d1d0a8a485523c4cf8240d0adf089291545eebac215bf",
+      "bytes": 736
+    },
+    "zed-tree/folder-retry.png": {
+      "sha256": "598017e4be8ca210969119e533e4f36a7ba3bd39a4eee6cc2d12ae78a4e9a6d1",
+      "bytes": 308636
+    },
+    "zed-tree/geometry.json": {
+      "sha256": "120def11c3c17dbcad002c1f7c97bbaa5c196f56666e66c511b0c39638d6be6c",
+      "bytes": 895
+    },
+    "zed-tree/requests.json": {
+      "sha256": "050c183187cc022319291f0ff287eb1f9a9a58079a7e5d0c7417f41ef9b2891e",
+      "bytes": 4073
+    },
+    "zed-tree/tests.log": {
+      "sha256": "d30d8c0719e47faffabc91fc700b85dd4ce5b35e6eb995729e33885dad81ae2b",
+      "bytes": 1077
+    },
+    "zed-tree/virtualized-600.png": {
+      "sha256": "6c6b8a7e6b7b61ea17715724258f7e54857c4acc3f7babbe1735416bf187a184",
+      "bytes": 323632
+    },
+    "zed-tree/virtualized-600.txt": {
+      "sha256": "d84291112d4c493b58332503f50716fbabcedc0fb32e68697fea1c6c7fa708ae",
+      "bytes": 3045
+    },
+    "zed-tree/virtualized-end.png": {
+      "sha256": "92b5b9f1929d3b377ba9a2452515e7bd301849ce9816a8dcdca8d926c42374ec",
+      "bytes": 319316
+    }
+  },
+  "whitespace_exceptions": {
+    "cleanup-check.log": {
+      "rule": "blank-at-eof",
+      "reason": "Unmodified captured Cargo test output ends with an extra blank line"
+    },
+    "desktop-check.log": {
+      "rule": "blank-at-eof",
+      "reason": "Unmodified captured Cargo test output ends with an extra blank line"
+    },
+    "zed-tree/tests.log": {
+      "rule": "blank-at-eof",
+      "reason": "Unmodified captured Cargo test output ends with an extra blank line"
+    }
+  }
+}

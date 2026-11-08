@@ -62,7 +62,7 @@ The **Avatar** scene offers fixed frames and 1/10/30 continuous portraits using 
 
 **Native PDF** uses Quartz page rasters and PDFKit text with GPUI continuous pages, selection, paging, fit/50–200% zoom, reading anchors, error/retry and original downloads. **Static HTML** mounts only a sanitized document body in the isolated adapter; GPUI owns surrounding controls and overlays. Shell/composer/messages/Markdown/source/table/image/PDF never load React, Lexical, PDF.js or the TypeScript avatar runtime.
 
-[Component verification](../../docs/verification/nma-067/README.md) records actual native interactions, eight original-download hash checks, source vectors and failures/corrections. The owner accepts the implemented components with remaining CJK, exhaustive visual/control and performance checks non-blocking under the recorded decision. NMA-066/NMA-067 are Done; NMA-068 is Done; NMA-069–071 remain Backlog.
+[Component verification](../../docs/verification/nma-067/README.md) records actual native interactions, eight original-download hash checks, source vectors and failures/corrections. The owner accepts the implemented components with remaining CJK, exhaustive visual/control and performance checks non-blocking under the recorded decision. NMA-066/NMA-067 are Done; NMA-068 is Done; NMA-069 is Done for contextual workflows; NMA-070–071 remain Backlog.
 
 A Rust executable generates transparent SVG/PNG from either a new seed or a stored recipe, without TypeScript or a browser:
 
@@ -73,12 +73,20 @@ bun apps/desktop-rs/scripts/cargo.ts run -p ngertiin-avatar --example export -- 
 
 The output prefix's parent directory must exist. Exports include the resulting recipe JSON; requested PNG sizes are bounded to 32–2048 pixels. PNG rasterization applies the pinned resvg 0.46.0 displacement workaround; standalone SVG retains the original filter. `scripts/avatar-reference.ts` refreshes development-only source vectors explicitly; ordinary checks consume the frozen vectors and never invoke the TypeScript renderer. NMA-067 is Done for the accepted component scope; unexecuted native checks keep their actual status in the evidence report.
 
+## NMA-069 contextual work
+
+Detail, scoped group/member profiles, Goals/Routine, saved results, memory, inherited/app-owned skills, provider configuration and Composio connection/grant forms use native GPUI controls. Settings retains General/Providers/About and selected provider in place; System/Light/Dark is stored independently from the effective appearance. Provider login, catalog discovery, inference and effective billing remain separate backend observations.
+
+Working files uses lazy per-folder reads, append pagination, retry/refresh, retained tree/scroll/focus state and the complete pinned Material Icon Theme assets. Its [Zed-inspired native refinement](../../docs/verification/nma-069/zed-tree/README.md) adds flat aligned rows, branch guides, folder-first grouping and a retained virtual list. Focus composes the existing native Markdown/source/table/image/PDF adapters, native header/menu/download/context chip/composer and isolated static HTML body. Working files and table snapshots become uploads only on Send; a durable retry retains the same copy identity. Local/sent attachment previews use the same viewer.
+
+[NMA-069 evidence](../../docs/verification/nma-069/README.md) records native journeys, exact builds, the five-case real-domain API probe and external outcomes not exercised. No provider inference or live Composio authorization is inferred from the fixture. NMA-070/NMA-071 retain Computer/host and full integrated parity acceptance.
+
 ## NMA-068 workspace attachment and recovery
 
 Use the same explicit loopback origin and private installation-token file as the read-only attachment. `NGERTIIN_RS_THREAD_ID` or `attachment.json`'s `thread_id` is optional for the workspace: persisted selection or the existing Tobi DM is used when it is absent. No backend is spawned. The full contract must equal the pinned 1.31.0 definitions before writes are enabled.
 
 Native state lives under `~/Library/Application Support/Ngertiin Rust Development/workspace`, separate from Tauri and gallery evidence. It contains private preferences/plain drafts, staged original bytes and the exact pending-operation journal; an exclusive profile lock prevents simultaneous writers. Once bound, a profile accepts a changed loopback port for the same owner and refuses another owner. Selection and recipient/model/billing state do not silently switch on retry. A lost acknowledgement is recovered by retrying the retained operation; native answer replies instead require authoritative status reconciliation. Projection checkpoints are memory-only, so reopening reads a new atomic snapshot and does not submit inference.
 
-The focused state checks and remaining native/API acceptance are recorded in [NMA-068 evidence](../../docs/verification/nma-068/README.md). Full contextual Settings/Library/Focus and live Computer/native lifecycle remain NMA-069/NMA-070.
+The focused state checks and remaining native/API acceptance are recorded in [NMA-068 evidence](../../docs/verification/nma-068/README.md). Contextual Settings/Library/Focus is implemented in NMA-069; live Computer/native lifecycle remains NMA-070.
 
 The workspace automatically attaches to the backend already supervised by the configured Tauri installation. Start Tauri first, then open `dist/Ngertiin Rust Development.app`; Rust does not spawn a second backend. Explicit private `attachment.json` configuration takes precedence. `NGERTIIN_RS_PROFILE=<name>` selects an isolated native profile under `profiles/` using a validated name, useful for disposable recovery work. Reconnect rediscovers the retained installation after a changed backend port.

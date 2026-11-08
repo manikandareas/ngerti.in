@@ -1,0 +1,84 @@
+{
+  "method": "reversible move of task-owned proof artifacts to a private macOS Trash directory",
+  "items": [
+    {
+      "category": "fixture",
+      "name": "nma069-domain-final",
+      "allocated_bytes": 12288,
+      "action": "moved_to_trash"
+    },
+    {
+      "category": "fixture",
+      "name": "nma069-journey",
+      "allocated_bytes": 12288,
+      "action": "moved_to_trash"
+    },
+    {
+      "category": "fixture",
+      "name": "nma069-journey-v2",
+      "allocated_bytes": 12288,
+      "action": "moved_to_trash"
+    },
+    {
+      "category": "fixture",
+      "name": "nma069-zed-tree",
+      "allocated_bytes": 12288,
+      "action": "moved_to_trash"
+    },
+    {
+      "category": "source-cache",
+      "name": "zed-tree-reference",
+      "allocated_bytes": 2109440,
+      "action": "moved_to_trash"
+    },
+    {
+      "category": "cleanup-scratch",
+      "name": "nma069-cleanup",
+      "allocated_bytes": 1093632,
+      "action": "moved_to_trash"
+    },
+    {
+      "category": "proof-app",
+      "name": "Ngertiin Rust Context Proof.app",
+      "allocated_bytes": 82849792,
+      "action": "moved_to_trash"
+    },
+    {
+      "category": "proof-app",
+      "name": "Ngertiin Rust Tree Proof.app",
+      "allocated_bytes": 82915328,
+      "action": "moved_to_trash"
+    },
+    {
+      "category": "proof-profile",
+      "name": "nma069-context-proof",
+      "allocated_bytes": 8192,
+      "action": "moved_to_trash"
+    },
+    {
+      "category": "proof-profile",
+      "name": "nma069-context-proof-v2",
+      "allocated_bytes": 36864,
+      "action": "moved_to_trash"
+    },
+    {
+      "category": "proof-profile",
+      "name": "nma069-zed-tree",
+      "allocated_bytes": 8192,
+      "action": "moved_to_trash"
+    },
+    {
+      "category": "test-download",
+      "name": "nma069-original-7cb41.pdf",
+      "allocated_bytes": 4096,
+      "action": "moved_to_trash"
+    }
+  ],
+  "preserved": [
+    "development bundle",
+    "Cargo build cache",
+    "retained verification evidence",
+    "default user profiles",
+    "Snapshot Proof app"
+  ]
+}

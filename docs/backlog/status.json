@@ -261,7 +261,7 @@
     "ticket": "NMA-070",
     "title": "Computer, native host and lifecycle parity",
     "plan": "Desktop Rust",
-    "status": "Backlog",
+    "status": "Done",
     "order": 16.5,
     "layer": "Desktop / Native integration",
     "depends_on": [

@@ -1,0 +1,103 @@
+{
+  "captured_at": "2026-11-08T11:12:59.342Z",
+  "backend_pid": 51336,
+  "backend_instance": "2eb5d445-156d-4236-89aa-bf3e232e15b6",
+  "contract_version": "1.31.0",
+  "counts": {
+    "run": 174,
+    "message": 355,
+    "goal": 9,
+    "routine": 7
+  },
+  "machine": {
+    "id": "bebbefa0-15e0-4cf5-89f1-71febaa2e6ca",
+    "owner_id": "bebbefa0-15e0-4cf5-89f1-71febaa2e6ca",
+    "revision": 115,
+    "created_at": "2026-11-04T07:47:09.676Z",
+    "updated_at": "2026-11-08T11:01:52.739Z",
+    "kind": "machine",
+    "machine_key": "7238d007-f098-499a-8e91-97c7aa61d45b",
+    "generation": 1,
+    "state": "ready",
+    "root": "/home/cua/workspace",
+    "service_version": "0.8.0",
+    "driver_version": "1",
+    "features": [
+      "a11y",
+      "audio.desktop",
+      "audio.opus",
+      "audio.per_app",
+      "audio.uplink",
+      "background_input",
+      "clipboard.files",
+      "clipboard.image",
+      "clipboard.text",
+      "desktop_stream",
+      "driver",
+      "files.multipart",
+      "fs.run_as",
+      "fs.xattr",
+      "fs_watch",
+      "h264_sw",
+      "hotspot",
+      "launch_app",
+      "presence",
+      "presence.cursor_shape",
+      "process.exec_ledger",
+      "process.run_as",
+      "pty",
+      "quic_media",
+      "relay_attach",
+      "teleport.chrome",
+      "teleport.claude-code",
+      "teleport.discord",
+      "teleport.firefox",
+      "teleport.notion",
+      "teleport.slack",
+      "teleport.steam",
+      "teleport.unity-hub",
+      "teleport.vscode",
+      "teleport.whatsapp",
+      "teleport.wipe",
+      "tunnel.forward",
+      "window_stream",
+      "windows"
+    ],
+    "lease": {
+      "holder": "none",
+      "agent_id": null,
+      "run_id": null,
+      "revision": 24,
+      "state": "active",
+      "expires_at": null
+    }
+  },
+  "native": {
+    "machine_id": "bebbefa0-15e0-4cf5-89f1-71febaa2e6ca",
+    "lease": {
+      "holder": "none",
+      "agent_id": null,
+      "run_id": null,
+      "revision": 24,
+      "state": "active",
+      "expires_at": null
+    },
+    "compact": {
+      "interactive": false,
+      "control_revision": 24,
+      "frames_decoded": 26,
+      "status": "streaming",
+      "age_ms": 1658
+    },
+    "expanded": {
+      "interactive": false,
+      "control_revision": 24,
+      "frames_decoded": 25,
+      "status": "streaming",
+      "age_ms": 987
+    },
+    "epoch": 1,
+    "error": ""
+  },
+  "binary_sha256": "055631806390d953800996429a88b7efc23d2f4602b12b08edb1d4b1c12115c6"
+}

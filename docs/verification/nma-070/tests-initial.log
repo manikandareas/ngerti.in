@@ -1,0 +1,139 @@
+    Blocking waiting for file lock on build directory
+   Compiling futures-executor v0.3.34
+   Compiling futures v0.3.34
+   Compiling gpui-pre-scheduler v0.3.11
+   Compiling gpui-pre-http-client v0.3.11
+   Compiling ngertiin-client v0.1.0 (/Users/vitoandareasmanik/Development/project/ngertiin/apps/desktop-rs/crates/client)
+   Compiling gpui-fast v0.1.13
+   Compiling gpui-pre v0.3.11
+   Compiling gpui-pre-apple v0.3.11
+   Compiling gpui-pre-macos v0.3.11
+   Compiling gpui-pre-platform v0.3.11
+   Compiling gpui-fast-apple v0.1.13
+   Compiling gpui-kit-assets v0.9.0
+   Compiling gpui-base v0.9.0
+   Compiling gpui-fast-macos v0.1.13
+   Compiling gpui-fast-platform v0.1.13
+   Compiling gpui-component v0.9.0
+   Compiling gpui-kit v0.9.0
+   Compiling gpui-webview v0.9.0
+   Compiling ngertiin-desktop v0.1.0 (/Users/vitoandareasmanik/Development/project/ngertiin/apps/desktop-rs/crates/desktop)
+    Finished `test` profile [unoptimized] target(s) in 8m 39s
+     Running unittests src/lib.rs (/Users/vitoandareasmanik/Development/project/ngertiin/.dev/desktop-rs-target/debug/deps/ngertiin_avatar-54db00a74886cb6d)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/reference.rs (/Users/vitoandareasmanik/Development/project/ngertiin/.dev/desktop-rs-target/debug/deps/reference-8083d47c94ee9b80)
+
+running 8 tests
+test clock_suspends_and_resumes_with_bounded_smoothing_and_reduced_motion ... ok
+test states_actions_blinks_and_loading_match_fixed_web_timestamps ... ok
+test parse_version_unicode_length_and_legacy_colors_match_web ... ok
+test export_keeps_original_filters_has_no_user_markup_and_rejects_mismatched_material ... ok
+test material_cache_is_bounded_shared_across_faces_and_validates_every_hit ... ok
+test pinned_raster_adapter_restores_five_unit_displacement_without_changing_exports ... ok
+test all_recipes_random_identity_and_every_fiber_match_web_oracle ... ok
+test original_svg_and_rust_export_have_matching_transparent_pixels_with_eye_shadows ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.58s
+
+     Running unittests src/lib.rs (/Users/vitoandareasmanik/Development/project/ngertiin/.dev/desktop-rs-target/debug/deps/ngertiin_client-c847afc76f90fdc2)
+
+running 3 tests
+test sse::tests::every_utf8_and_crlf_boundary_waits_for_a_complete_frame ... ok
+test projection::tests::revisions_overlap_deletion_and_scope_keep_one_authoritative_message ... ok
+test live::tests::every_exported_route_compiles_with_native_regex_semantics ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 12.01s
+
+     Running tests/read_only.rs (/Users/vitoandareasmanik/Development/project/ngertiin/.dev/desktop-rs-target/debug/deps/read_only-a688a4a8a3dd3ca5)
+
+running 12 tests
+test origin_and_credential_boundaries_are_explicit ... ok
+test redirects_are_not_followed_with_installation_credentials ... ok
+test incompatible_contract_never_requests_a_snapshot ... ok
+test oversized_response_is_rejected_before_decoding ... ok
+test original_content_is_byte_identical_and_redirects_are_not_followed ... ok
+test unavailable_connection_is_actionable ... ok
+test authentication_and_http_errors_do_not_read_snapshot ... ok
+test same_version_changed_schema_is_rejected ... ok
+test malformed_and_shape_errors_are_distinct ... ok
+test pinned_contract_and_current_fixture_decode ... ok
+test wrong_thread_is_rejected ... ok
+test only_two_gets_open_an_existing_thread ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.27s
+
+     Running tests/worker.rs (/Users/vitoandareasmanik/Development/project/ngertiin/.dev/desktop-rs-target/debug/deps/worker-223321e7d91bd19f)
+
+running 1 test
+test cold_snapshot_decoding_from_a_small_stack_caller ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.03s
+
+     Running unittests src/lib.rs (/Users/vitoandareasmanik/Development/project/ngertiin/.dev/desktop-rs-target/debug/deps/ngertiin_desktop-c6924d96e787c518)
+
+running 32 tests
+test models::composer::tests::atomic_copy_cut_paste_and_history_keep_metadata ... ok
+test models::composer::tests::graphemes_and_invalid_clipboard_are_never_split_or_trusted ... ok
+test host::log::tests::redacts_backend_credentials_without_losing_status ... ok
+test models::composer::tests::history_retires_old_drafts_within_its_byte_budget ... ok
+test host::tests::private_configuration_and_single_instance_are_fenced ... ok
+test host::tests::incompatible_live_authority_is_refused_without_spawning_or_stopping_it ... ok
+test models::html::tests::no_truncated_or_oversized_document_is_partially_rendered ... ok
+test models::html::tests::scripts_resources_forms_and_navigation_have_no_privileged_path ... ok
+test models::message::tests::publication_calendar_matches_the_current_client_vectors ... ok
+test models::message::tests::publication_clocks_and_interactions_are_stable_and_revision_bound ... ok
+test models::content::tests::csv_quotes_sort_filter_selection_and_original_are_preserved ... ok
+test platform::files::tests::original_downloads_preserve_bytes_and_never_overwrite_a_collision ... ok
+test host::tests::shutdown_during_startup_leaves_no_backend_behind ... ok
+test platform::pdf_worker::tests::page_rasters_stay_bounded_and_rotated_coordinates_round_trip ... ok
+CoreGraphics PDF has logged an error. Set environment variable "CG_PDF_VERBOSE" to learn more.
+test platform::pdf_worker::tests::rejected_pdf_inputs_stay_actionable_and_large_documents_are_bounded ... ok
+test platform::pdf_worker::tests::texture_bands_preserve_all_pixels_and_neighbor_samples ... ok
+test platform::pdf_worker::tests::native_pdf_worker_reads_fixture_and_bounds_page_memory ... ok
+test storage::journal::tests::certain_rejection_keeps_files_but_next_intent_has_new_upload_identity ... ok
+test storage::journal::tests::restart_retains_exact_input_bytes_and_recovers_acknowledged_cleanup ... ok
+test ui::image_view::tests::native_image_preparation_preserves_original_and_rejects_invalid ... ok
+test ui::table::tests::column_window_preserves_space_and_covers_viewport ... ok
+test workspace::context::files::tests::format_precedence_matches_reference ... ok
+test workspace::context::state::tests::folder_pages_append_without_duplicate_entries_and_keep_other_folders ... ok
+test workspace::context::state::tests::folder_status_follows_its_descendants_before_the_next_sibling ... ok
+test workspace::context::state::tests::keyboard_skips_status_rows_and_preserves_expanded_parents ... ok
+test models::content::tests::source_and_table_behavior_matches_current_client_vectors ... ok
+test models::content::tests::source_limits_language_unicode_find_and_virtualization ... ok
+test host::tests::managed_recovery_external_ownership_and_concurrent_start_are_preserved ... ok
+test models::syntax::tests::supported_source_grammars_prepare_ordered_unicode_safe_runs ... ok
+test host::views::tests::cleanup_preserves_a_newer_human_lease ... ok
+test host::views::tests::cleanup_releases_only_the_exact_issued_human_revision ... ok
+test ui::avatar::tests::cached_compositor_tracks_original_geometry_eyes_and_motion has been running for over 60 seconds
+test ui::avatar::tests::cached_compositor_tracks_original_geometry_eyes_and_motion ... ok
+
+test result: ok. 32 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 108.08s
+
+     Running unittests src/main.rs (/Users/vitoandareasmanik/Development/project/ngertiin/.dev/desktop-rs-target/debug/deps/ngertiin_desktop-0d6651b50d252c77)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests ngertiin_avatar
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests ngertiin_client
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests ngertiin_desktop
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

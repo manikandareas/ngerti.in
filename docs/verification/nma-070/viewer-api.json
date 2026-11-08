@@ -1,0 +1,21 @@
+{
+  "captured_at": "2026-11-08T10:52:54.276Z",
+  "contract_version": "1.31.0",
+  "machine_id": "bebbefa0-15e0-4cf5-89f1-71febaa2e6ca",
+  "executed": 8,
+  "passed": 8,
+  "foreground_input": 0,
+  "results": {
+    "ticket": {
+      "id_sha256": "19186188de43612332a6a27bd67989c0f685ce0284b48e239ccb087d7acce9ed",
+      "readonly": true,
+      "html_status": 200,
+      "renewed_status": 200,
+      "revoked_status": 200,
+      "retired_html_status": 401,
+      "retired_renewal_status": 401,
+      "unauthenticated_machine_status": 401,
+      "installation_token_in_html": false
+    }
+  }
+}

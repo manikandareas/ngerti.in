@@ -4,7 +4,7 @@ This backlog is the authority for milestone scope, acceptance, dependencies and 
 
 Status was initially reconciled on 2026-11-06 and updated on 2026-11-08 for owner acceptance of NMA-066/NMA-067. Sixteen active milestones and four Desktop Rust milestones are Done; NMA-063/NMA-064 remain Backlog. NMA-051 is a separate deferred reference, not an active prerequisite. Recorded Done covers its accepted scope only. Later Cua, semantic-routing, Tauri and conversation refinements retain their dedicated evidence; they do not complete product-wide acceptance or fresh-device distribution.
 
-The six [Desktop Rust milestones below](#desktop-rust-parity-plan) have NMA-066–069 **Done** and NMA-070–071 Backlog. The [2026-11-08 owner decision](../development/nma-066-067-closure-2026-11-08.md) accepts the implemented foundation and native avatar, composer and rich-content components, with remaining technical verification non-blocking. [Foundation](../verification/nma-066/README.md) and [component evidence](../verification/nma-067/README.md) retain actual executed results, failures and optional unexecuted checks. Tauri remains active; integrated parity and host replacement retain their separate decisions/gates.
+The six [Desktop Rust milestones below](#desktop-rust-parity-plan) have NMA-066–070 **Done** and NMA-071 **Backlog**. The [2026-11-08 owner decision](../development/nma-066-067-closure-2026-11-08.md) accepts the implemented foundation and native avatar, composer and rich-content components, with remaining technical verification non-blocking. [Foundation](../verification/nma-066/README.md) and [component evidence](../verification/nma-067/README.md) retain actual executed results, failures and optional unexecuted checks. Tauri remains active; integrated parity and host replacement retain their separate decisions/gates.
 
 The [2026-11-07 sidebar loading refinement](../verification/sidebar-loading-2026-11-07/README.md) adds focused desktop/mobile evidence under NMA-061. Milestone statuses and dependencies are unchanged.
 
@@ -47,7 +47,7 @@ The [observation, architecture and parity contract](../architecture/desktop-rs-p
 | 16.2 | [NMA-067 · Rust avatar, composer and rich-content components](NMA-067.md) | Done | Desktop / UI components | [NMA-066](NMA-066.md) |
 | 16.3 | [NMA-068 · API-backed workspace and conversation parity](NMA-068.md) | Done | Desktop / Conversation | [NMA-060](NMA-060.md), [NMA-065](NMA-065.md), [NMA-067](NMA-067.md) |
 | 16.4 | [NMA-069 · Context panels, Settings and Focus workflows](NMA-069.md) | Done | Desktop / Contextual work | [NMA-068](NMA-068.md) |
-| 16.5 | [NMA-070 · Computer, native host and lifecycle parity](NMA-070.md) | Backlog | Desktop / Native integration | [NMA-069](NMA-069.md) |
+| 16.5 | [NMA-070 · Computer, native host and lifecycle parity](NMA-070.md) | Done | Desktop / Native integration | [NMA-069](NMA-069.md) |
 | 16.6 | [NMA-071 · Desktop parity acceptance and development bundle](NMA-071.md) | Backlog | Desktop / Verification | [NMA-070](NMA-070.md) |
 
 The intended sequence is foundation/gallery and high-risk renderer paths → full avatar/composer/content components → actual API conversation → contextual work/settings/files → Computer/native lifecycle → integrated parity and local development bundle. The first two slices are accepted under the recorded owner decision; their remaining technical checks are optional. Later slices retain their own acceptance, without silently inheriting those checks as mandatory work.

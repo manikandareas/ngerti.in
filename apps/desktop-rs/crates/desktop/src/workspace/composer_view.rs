@@ -1,7 +1,7 @@
 use super::*;
 use crate::ui::{
     controls::{ButtonKind, ProductButtonStyle, button, caption},
-    theme::{Palette, agent_bubble, ui, ui_px},
+    theme::{Palette, agent_bubble, ui},
     workspace::{action, action_tinted},
 };
 use ngertiin_client::{rows, text};
@@ -30,6 +30,12 @@ impl Workspace {
                 .unwrap_or(p.color("user-bubble"))
         };
         let mut content = div().flex().flex_col().gap(ui(8.));
+        if let Some(notice) = self.context_notice() {
+            content = content.child(notice);
+        }
+        if let Some(chip) = self.context_chip(cx) {
+            content = content.child(div().flex().items_start().child(chip));
+        }
         if let (Some(thread), Some(agent)) = (self.selected, self.recipient) {
             let name = self
                 .agents
@@ -108,26 +114,64 @@ impl Workspace {
             );
         }
         if let Some(thread) = self.selected {
+            let mut attachments = div().flex().flex_wrap().gap(ui(8.));
             for file in &files {
                 let id = file.id;
-                content = content.child(
-                    button(
-                        SharedString::from(format!("remove-file:{id}")),
-                        format!("{} ×", file.name),
-                        ButtonKind::Ghost,
-                        p,
-                        cx,
-                    )
-                    .bg(p.color("secondary"))
-                    .rounded(ui_px(10., cx))
-                    .disabled_state(pending.is_some() || self.busy, p)
-                    .on_click(cx.listener(move |this, _, _, cx| {
-                        if let Err(error) = this.store.remove_file(thread, id) {
-                            this.error = error.to_string();
-                        }
-                        cx.notify();
-                    })),
+                if self.is_context_file(id) {
+                    continue;
+                }
+                let name = file.name.clone();
+                let preview = button(
+                    SharedString::from(format!("preview-file:{id}")),
+                    "",
+                    ButtonKind::Ghost,
+                    p,
+                    cx,
+                )
+                .accessibility_label(file.name.clone())
+                .h(ui(32.))
+                .gap(ui(8.))
+                .child(context::file_icon(
+                    &file.name,
+                    false,
+                    false,
+                    self.store.dark(),
+                ))
+                .child(div().min_w_0().truncate().child(file.name.clone()))
+                .max_w(ui(260.))
+                .on_click(cx.listener(move |this, _, window, cx| {
+                    this.open_local_file(id, name.clone(), window, cx)
+                }));
+                let remove = action(
+                    SharedString::from(format!("remove-file:{id}")),
+                    format!("Remove {}", file.name),
+                    "Cancel01Icon",
+                    p,
+                    cx,
+                )
+                .size(ui(24.))
+                .rounded_full()
+                .disabled_state(pending.is_some() || self.busy, p)
+                .on_click(cx.listener(move |this, _, _, cx| {
+                    if let Err(error) = this.store.remove_file(thread, id) {
+                        this.error = error.to_string();
+                    }
+                    cx.notify();
+                }));
+                attachments = attachments.child(
+                    div()
+                        .flex()
+                        .items_center()
+                        .max_w_full()
+                        .pr(ui(4.))
+                        .rounded(ui(12.))
+                        .bg(p.color("composer"))
+                        .child(preview)
+                        .child(remove),
                 );
+            }
+            if !files.is_empty() {
+                content = content.child(attachments);
             }
         }
         if pending.is_some() {

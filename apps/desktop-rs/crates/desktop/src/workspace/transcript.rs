@@ -438,6 +438,10 @@ impl Workspace {
                 bubble = bubble.child(
                     TextView::new(&body)
                         .selectable(true)
+                        .table_actions({
+                            let weak = cx.entity().downgrade();
+                            move |table, _, cx| Self::table_actions(table, weak.clone(), cx)
+                        })
                         .text_size(ui(15.))
                         .line_height(ui(24.))
                         .motion(if partial {
@@ -457,6 +461,7 @@ impl Workspace {
                 {
                     let artifact_id = text(artifact, "id").to_owned();
                     let name = text(artifact, "name").to_owned();
+                    let artifact = artifact.clone();
                     bubble = bubble.child(
                         button(
                             SharedString::from(format!("file:{artifact_id}")),
@@ -465,10 +470,11 @@ impl Workspace {
                             p,
                             cx,
                         )
-                        .on_click(cx.listener(move |this, _, _, cx| {
-                            this.panel = Some(Panel::Library);
-                            cx.notify();
-                        })),
+                        .on_click(cx.listener(
+                            move |this, _, window, cx| {
+                                this.open_artifact(artifact.clone(), window, cx)
+                            },
+                        )),
                     );
                 }
                 if let Ok(time) = PublicationTime::local(&at) {

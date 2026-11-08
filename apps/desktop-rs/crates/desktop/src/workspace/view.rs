@@ -11,7 +11,7 @@ impl Render for Workspace {
         let width = f32::from(window.viewport_size().width) / f32::from(window.rem_size()) * 16.;
         let settings = self.panel == Some(Panel::Settings);
         let mobile = width < 768.;
-        let inspector = self.panel.is_some() && !settings;
+        let inspector = self.panel.is_some() && !settings && !self.is_viewing();
         let show_sidebar = self.sidebar && !mobile && !(inspector && width < 1280.);
         let mut main = div()
             .id("native-conversation-workspace")
@@ -23,8 +23,19 @@ impl Render for Workspace {
             .rounded(ui(16.))
             .bg(p.color("background"))
             .overflow_hidden();
-        if settings || inspector && mobile {
-            main = main.child(self.panel(cx));
+        if self.is_viewing() && !settings {
+            main = main.child(self.focus_view(window, cx));
+        } else if inspector && mobile {
+            use gpui_kit::base::FocusTrapElement;
+            main = main.child(
+                div()
+                    .id("compact-context-sheet")
+                    .role(Role::Dialog)
+                    .aria_label("Conversation details")
+                    .size_full()
+                    .focus_trap("context-sheet-focus", &self.context_focus())
+                    .child(self.panel(cx)),
+            );
         } else {
             let weak = cx.entity().downgrade();
             let scroll = MessageScroller::new(
@@ -186,6 +197,7 @@ impl Render for Workspace {
         }
         let mut root = div()
             .id("native-workspace-frame")
+            .relative()
             .key_context("NativeWorkspace")
             .size_full()
             .flex()
@@ -204,20 +216,14 @@ impl Render for Workspace {
             .on_action(
                 cx.listener(|this, _: &CreateGroup, window, cx| this.open_group_dialog(window, cx)),
             )
-            .on_action(cx.listener(|this, _: &OpenSettings, _, cx| {
-                this.panel = Some(Panel::Settings);
-                cx.notify();
-            }))
+            .on_action(
+                cx.listener(|this, _: &OpenSettings, window, cx| this.open_settings(window, cx)),
+            )
             .on_action(
                 cx.listener(|this, _: &ToggleSidebar, window, cx| this.open_navigation(window, cx)),
             )
-            .on_action(cx.listener(|this, _: &ToggleDetails, _, cx| {
-                this.panel = if this.panel.is_some() {
-                    None
-                } else {
-                    Some(Panel::Detail)
-                };
-                cx.notify();
+            .on_action(cx.listener(|this, _: &ToggleDetails, window, cx| {
+                this.toggle_context(Panel::Detail, window, cx)
             }))
             .on_mouse_move(cx.listener(|this, event: &MouseMoveEvent, window, cx| {
                 this.animator.update(cx, |animator, cx| {
@@ -225,14 +231,9 @@ impl Render for Workspace {
                 })
             }))
             .on_key_down(cx.listener(|this, event: &KeyDownEvent, window, cx| {
-                if event.keystroke.key == "escape" && this.panel.is_some() {
-                    this.panel = None;
-                    this.composer
-                        .read(cx)
-                        .input
-                        .clone()
-                        .update(cx, |input, cx| input.focus(window, cx));
-                    cx.notify();
+                if event.keystroke.key == "escape" && (this.panel.is_some() || this.is_viewing()) {
+                    this.context_back(window, cx);
+                    cx.stop_propagation();
                 }
             }));
         if show_sidebar {
@@ -247,6 +248,9 @@ impl Render for Workspace {
                     .flex_shrink_0()
                     .child(self.panel(cx)),
             );
+        }
+        if settings {
+            root = root.child(self.settings_overlay(cx));
         }
         root
     }

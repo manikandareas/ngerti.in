@@ -122,6 +122,16 @@ impl Conversation {
             .collect()
     }
 }
+fn upsert(values: &mut Vec<Value>, value: Value) {
+    if let Some(old) = values.iter_mut().find(|old| old["id"] == value["id"]) {
+        if old["revision"].as_u64() < value["revision"].as_u64() {
+            *old = value;
+        }
+    } else {
+        values.push(value);
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -152,14 +162,5 @@ mod tests {
             let before=projection.cursor();let invalid=event(cursor+6,&message);let other=event(cursor+5,&message);
             assert!(projection.apply(EventPage{events:vec![invalid,other],next_cursor:cursor+6}).is_err());assert_eq!(projection.cursor(),before);
         }).unwrap().join().unwrap();
-    }
-}
-fn upsert(values: &mut Vec<Value>, value: Value) {
-    if let Some(old) = values.iter_mut().find(|old| old["id"] == value["id"]) {
-        if old["revision"].as_u64() < value["revision"].as_u64() {
-            *old = value;
-        }
-    } else {
-        values.push(value);
     }
 }

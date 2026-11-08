@@ -34,7 +34,7 @@ impl fmt::Display for ClientError {
         f.write_str(match self {
             Self::Unavailable => "Backend unavailable. Start or select a compatible local backend, then retry.",
             Self::Unauthorized => "Backend authentication failed. Check the private attachment credential, then retry.",
-            Self::Http(_) => "The backend rejected this read. Check backend diagnostics, then retry.",
+            Self::Http(_) => "The backend request failed. Try the same request again.",
             Self::Malformed => "The backend returned malformed JSON. Check the backend version, then retry.",
             Self::TooLarge => "The response exceeds the 16 MiB preview limit. Open a smaller snapshot.",
             Self::VersionMismatch => "Backend contract version differs from 1.31.0. Select a compatible backend.",

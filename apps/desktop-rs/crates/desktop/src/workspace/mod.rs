@@ -3,6 +3,7 @@
 mod chrome;
 mod commands;
 mod composer_view;
+mod context;
 mod interactions;
 mod navigation;
 mod panels;
@@ -46,6 +47,7 @@ actions!(
 );
 pub(crate) struct Workspace {
     store: Store,
+    context_work: context::ContextWork,
     reads: Option<ApiWorker>,
     writes: Option<ApiWorker>,
     bound: bool,
@@ -133,11 +135,29 @@ impl Workspace {
             KeyBinding::new("cmd-b", ToggleSidebar, Some("NativeWorkspace")),
             KeyBinding::new("cmd-i", ToggleDetails, Some("NativeWorkspace")),
         ]);
+        if store.appearance() == "system" {
+            let dark = matches!(
+                window.appearance(),
+                WindowAppearance::Dark | WindowAppearance::VibrantDark
+            );
+            let _ = store.set_appearance("system", dark);
+        }
         crate::ui::theme::apply(store.dark(), None, cx);
         let search = cx.new(|cx| InputState::new(window, cx).placeholder("Who’s on your mind?"));
         let group_name = cx.new(|cx| InputState::new(window, cx).placeholder("Group name"));
         let composer = cx.new(|cx| Composer::new(vec![], window, cx));
         let subscriptions = vec![
+            cx.observe_window_appearance(window, |this, window, cx| {
+                if this.store.appearance() == "system" {
+                    let dark = matches!(
+                        window.appearance(),
+                        WindowAppearance::Dark | WindowAppearance::VibrantDark
+                    );
+                    let _ = this.store.set_appearance("system", dark);
+                    crate::ui::theme::apply(dark, None, cx);
+                    cx.notify();
+                }
+            }),
             cx.subscribe_in(
                 &composer,
                 window,
@@ -173,6 +193,7 @@ impl Workspace {
             });
         });
         let mut this = Self {
+            context_work: context::ContextWork::new(cx),
             store,
             reads,
             writes,
@@ -318,6 +339,7 @@ impl Workspace {
             return;
         }
         self.read_task = None;
+        self.context_work = context::ContextWork::new(cx);
         self.scope += 1;
         self.selected = Some(id);
         self.recipient = self.store.recipient(id);

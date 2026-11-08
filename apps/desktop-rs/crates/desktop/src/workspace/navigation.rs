@@ -263,9 +263,8 @@ impl Workspace {
                     .size(ui(36.))
                     .rounded_full()
                     .bg(p.color("card"))
-                    .on_click(cx.listener(|this, _, _, cx| {
-                        this.panel = Some(Panel::Settings);
-                        cx.notify();
+                    .on_click(cx.listener(|this, _, window, cx| {
+                        this.open_settings(window, cx);
                     })),
             )
             .child(
@@ -279,9 +278,8 @@ impl Workspace {
                     .text_size(ui(13.))
                     .child(glyph("Plug01Icon", 16., p))
                     .child("Hubungkan aplikasi")
-                    .on_click(cx.listener(|this, _, _, cx| {
-                        this.panel = Some(Panel::Settings);
-                        cx.notify();
+                    .on_click(cx.listener(|this, _, window, cx| {
+                        this.open_settings(window, cx);
                     })),
             );
         div()

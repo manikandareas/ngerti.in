@@ -61,14 +61,9 @@ impl Workspace {
             .font_weight(FontWeight::MEDIUM)
             .child(self.thread_portrait(thread, "header", cx))
             .child(div().min_w_0().truncate().child(label))
-            .on_click(cx.listener(|this, _, _, cx| {
-                this.panel = if this.panel.is_some() {
-                    None
-                } else {
-                    Some(Panel::Detail)
-                };
-                cx.notify();
-            }));
+            .on_click(
+                cx.listener(|this, _, window, cx| this.toggle_context(Panel::Detail, window, cx)),
+            );
         let mut right = div().flex().items_center().justify_end().gap(ui(12.));
         if thread["type"] == "dm"
             && let Some(agent) = self.selected_agent()
@@ -146,6 +141,12 @@ impl Workspace {
             .into_any_element()
     }
     pub(super) fn model_options(&self, cx: &mut Context<Self>) -> AnyElement {
+        let Some(agent) = self.selected_agent() else {
+            return div().into_any_element();
+        };
+        self.model_options_for(agent, cx)
+    }
+    pub(super) fn model_options_for(&self, agent: &Value, cx: &mut Context<Self>) -> AnyElement {
         let p = Palette::new(self.store.dark());
         let mut menu = div()
             .id("model-options")
@@ -155,7 +156,7 @@ impl Workspace {
             .flex()
             .flex_col()
             .gap(ui(4.));
-        if let Some(agent) = self.selected_agent() {
+        {
             for connection in self
                 .connections
                 .iter()
@@ -191,7 +192,62 @@ impl Workspace {
                 }
             }
         }
+        if let Some(connection) = self
+            .connections
+            .iter()
+            .find(|c| c["id"] == agent["connection_id"])
+            && let Some(model) = rows(connection, "models")
+                .iter()
+                .find(|m| m["id"] == agent["model_id"])
+        {
+            menu = menu.child(
+                div()
+                    .px(ui(8.))
+                    .py(ui(6.))
+                    .text_size(ui(12.))
+                    .child("Reasoning"),
+            );
+            for reasoning in rows(model, "reasoning") {
+                let reasoning = reasoning.clone();
+                let agent = agent.clone();
+                let label = reasoning.as_str().unwrap_or("Default harness").to_owned();
+                menu=menu.child(button(SharedString::from(format!("reasoning:{label}")),label,ButtonKind::Ghost,p,cx).w_full().justify_start().on_click(cx.listener(move|this,_,window,cx|{
+                    let id=text(&agent,"id");this.models_open=false;
+                    this.dispatch(format!("reasoning:{id}"),Operation::command(format!("/v1/agents/{id}/configuration"),json!({"expected_revision":agent["revision"],"changes":{"reasoning":reasoning}}),this.selected),window,cx);
+                })));
+            }
+        }
         menu.into_any_element()
+    }
+    pub(super) fn contained_model_picker(
+        &self,
+        agent: &Value,
+        cx: &mut Context<Self>,
+    ) -> AnyElement {
+        let p = Palette::new(self.store.dark());
+        let weak = cx.entity().downgrade();
+        let agent = agent.clone();
+        Popover::new("context-model-picker")
+            .open(self.models_open)
+            .trigger(button(
+                "context-model-trigger",
+                format!(
+                    "Model · {}",
+                    agent["model_id"].as_str().unwrap_or("Choose model")
+                ),
+                ButtonKind::Outline,
+                p,
+                cx,
+            ))
+            .on_open_change(cx.listener(|this, open, _, cx| {
+                this.models_open = *open;
+                cx.notify();
+            }))
+            .content(move |_, _, cx| {
+                weak.update(cx, |this, cx| this.model_options_for(&agent, cx))
+                    .unwrap_or_else(|_| div().into_any_element())
+            })
+            .into_any_element()
     }
     pub(super) fn open_group_dialog(&mut self, window: &mut Window, cx: &mut Context<Self>) {
         let weak = cx.entity().downgrade();

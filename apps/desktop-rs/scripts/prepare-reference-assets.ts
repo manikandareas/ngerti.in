@@ -43,6 +43,8 @@ const manifest = JSON.parse(await readFile(resolve(webRoot, manifestPath), "utf8
 await mkdir(formatRoot, { recursive: true });
 await cp(resolve(webRoot, manifestPath), resolve(formatRoot, "manifest.json"));
 await cp(resolve(webRoot, "file-icons/material-5.40.0/LICENSE"), resolve(formatRoot, "LICENSE"));
+for (const filename of new Set(Object.values(manifest.icons) as string[]))
+  await cp(resolve(webRoot, "file-icons/material-5.40.0", filename), resolve(formatRoot, filename));
 const examples: Record<string, string> = {};
 for (const name of [
   "report.pdf",

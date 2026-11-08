@@ -54,6 +54,10 @@ pub struct RichTable {
     _subscription: Subscription,
 }
 impl RichTable {
+    /// Current filtered/sorted rows for an explicit submit-time table snapshot.
+    pub fn csv_snapshot(&self) -> String {
+        self.document.csv(&self.order)
+    }
     pub fn new(document: Arc<TableDocument>, window: &mut Window, cx: &mut Context<Self>) -> Self {
         let query = cx.new(|cx| InputState::new(window, cx).placeholder("Filter rows…"));
         let count = document.rows.len();

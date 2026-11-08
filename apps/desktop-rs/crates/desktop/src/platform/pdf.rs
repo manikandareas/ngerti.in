@@ -1,8 +1,19 @@
 //! Continuous GPUI PDF viewport. Quartz owns bounded raster work; PDFKit owns
 //! native text interpretation/selection. No WebView or browser PDF renderer.
 use super::pdf_worker::{PageRaster, PageSize, PdfWorker};
-use crate::ui::{controls::*, theme::Palette};
-use gpui_kit::{component::ActiveTheme, *};
+use crate::ui::{
+    controls::*,
+    theme::{Palette, ui},
+    workspace::action,
+};
+use gpui_kit::{
+    component::{
+        ActiveTheme,
+        input::{Input, InputEvent, InputState},
+    },
+    prelude::FluentBuilder,
+    *,
+};
 use objc2::{AnyThread, rc::Retained};
 use objc2_foundation::{NSData, NSPoint, NSRange};
 use objc2_pdf_kit::{PDFDocument, PDFSelection};
@@ -36,9 +47,31 @@ pub struct NativePdf {
     error: Option<String>,
     download_status: String,
     _visibility: Subscription,
+    product_controls: bool,
+    product_zoom: f64,
+    page_input: Entity<InputState>,
+    _page_subscription: Subscription,
 }
 impl NativePdf {
     pub fn new(path: &Path, window: &mut Window, cx: &mut Context<Self>) -> Self {
+        let page_input = cx.new(|cx| InputState::new(window, cx).default_value("1"));
+        let page_subscription = cx.subscribe_in(
+            &page_input,
+            window,
+            |this, _, event: &InputEvent, window, cx| {
+                if matches!(event, InputEvent::PressEnter { .. })
+                    && let Ok(page) = this.page_input.read(cx).value().parse::<usize>()
+                    && !this.pages.is_empty()
+                {
+                    this.list.scroll_to(ListOffset {
+                        item_ix: page.saturating_sub(1).min(this.pages.len() - 1),
+                        offset_in_item: px(0.),
+                    });
+                    this.sync_page_input(window, cx);
+                    cx.notify();
+                }
+            },
+        );
         let mut this = Self {
             path: path.into(),
             document: None,
@@ -61,9 +94,123 @@ impl NativePdf {
             error: None,
             download_status: String::new(),
             _visibility: cx.observe_window_visibility(window, |_, _, _, cx| cx.notify()),
+            product_controls: false,
+            product_zoom: 1.,
+            page_input,
+            _page_subscription: page_subscription,
         };
+        let weak = cx.entity().downgrade();
+        this.list.set_scroll_handler(move |event, window, _cx| {
+            let page = event.visible_range.start + 1;
+            let weak = weak.clone();
+            window.on_next_frame(move |window, cx| {
+                let _ = weak.update(cx, |this, cx| {
+                    if !this.page_input.read(cx).focus_handle(cx).is_focused(window) {
+                        let value = page.to_string();
+                        if this.page_input.read(cx).value().as_ref() != value {
+                            this.page_input
+                                .update(cx, |input, cx| input.set_value(value, window, cx));
+                        }
+                    }
+                    cx.notify();
+                });
+            });
+        });
         this.load(window, cx);
         this
+    }
+    pub fn workspace_controls(mut self) -> Self {
+        self.product_controls = true;
+        self
+    }
+    fn sync_page_input(&mut self, window: &mut Window, cx: &mut Context<Self>) {
+        let value = (self.list.logical_scroll_top().item_ix + 1).to_string();
+        self.page_input
+            .update(cx, |input, cx| input.set_value(value, window, cx));
+    }
+    fn controls(&self, cx: &mut Context<Self>) -> AnyElement {
+        let p = Palette::new(cx.theme().mode.is_dark());
+        let page = self.list.logical_scroll_top().item_ix + 1;
+        let count = self.pages.len();
+        div()
+            .h(ui(52.))
+            .flex_shrink_0()
+            .px(ui(16.))
+            .flex()
+            .items_center()
+            .justify_between()
+            .child(
+                div()
+                    .flex()
+                    .items_center()
+                    .gap(ui(2.))
+                    .child(
+                        action(
+                            "pdf-previous",
+                            "Previous PDF page",
+                            "ArrowLeft01Icon",
+                            p,
+                            cx,
+                        )
+                        .disabled_state(page <= 1, p)
+                        .on_click(cx.listener(|this, _, window, cx| {
+                            this.page(false, cx);
+                            this.sync_page_input(window, cx);
+                        })),
+                    )
+                    .child(
+                        Input::new(&self.page_input)
+                            .aria_label("PDF page")
+                            .w(ui(44.))
+                            .h(ui(28.)),
+                    )
+                    .child(caption(format!("/ {count}"), p))
+                    .child(
+                        action("pdf-next", "Next PDF page", "ArrowRight01Icon", p, cx)
+                            .disabled_state(page >= count, p)
+                            .on_click(cx.listener(|this, _, window, cx| {
+                                this.page(true, cx);
+                                this.sync_page_input(window, cx);
+                            })),
+                    ),
+            )
+            .child(
+                div()
+                    .flex()
+                    .items_center()
+                    .gap(ui(2.))
+                    .child(
+                        button("pdf-zoom-out", "−", ButtonKind::Ghost, p, cx)
+                            .disabled_state(self.product_zoom <= 0.5, p)
+                            .on_click(cx.listener(|this, _, window, cx| {
+                                let next = (this.product_zoom - 0.25).max(0.5);
+                                this.zoom(next / this.product_zoom, window, cx);
+                                this.product_zoom = next;
+                                cx.notify();
+                            })),
+                    )
+                    .child(caption(format!("{:.0}%", self.product_zoom * 100.), p))
+                    .child(
+                        button("pdf-zoom-in", "+", ButtonKind::Ghost, p, cx)
+                            .disabled_state(self.product_zoom >= 2., p)
+                            .on_click(cx.listener(|this, _, window, cx| {
+                                let next = (this.product_zoom + 0.25).min(2.);
+                                this.zoom(next / this.product_zoom, window, cx);
+                                this.product_zoom = next;
+                                cx.notify();
+                            })),
+                    )
+                    .child(
+                        action("pdf-fit", "Fit PDF width", "ArrowExpand01Icon", p, cx).on_click(
+                            cx.listener(|this, _, window, cx| {
+                                this.fit(window, cx);
+                                this.product_zoom = 1.;
+                                cx.notify();
+                            }),
+                        ),
+                    ),
+            )
+            .into_any_element()
     }
     fn load(&mut self, window: &mut Window, cx: &mut Context<Self>) {
         self.retire_pages(window, cx);
@@ -561,35 +708,38 @@ impl Render for NativePdf {
                     cx.notify();
                 }
             }))
-            .child(
-                row()
-                    .child(
-                        button(
-                            "pdf-download-original",
-                            "Download original PDF",
-                            ButtonKind::Default,
-                            p,
-                            cx,
+            .when(self.product_controls, |view| view.child(self.controls(cx)))
+            .when(!self.product_controls, |view| {
+                view.child(
+                    row()
+                        .child(
+                            button(
+                                "pdf-download-original",
+                                "Download original PDF",
+                                ButtonKind::Default,
+                                p,
+                                cx,
+                            )
+                            .on_click(cx.listener(|this, _, window, cx| this.download(window, cx))),
                         )
-                        .on_click(cx.listener(|this, _, window, cx| this.download(window, cx))),
-                    )
-                    .child(caption(format!("{cached_pixels} cached pixels"), p))
-                    .child(caption(self.download_status.clone(), p)),
-            )
-            .child(caption(
-                format!(
-                    "Page {} / {} · {} · {} cached canvases",
-                    self.list.logical_scroll_top().item_ix + 1,
-                    self.pages.len(),
-                    if self.fit {
-                        "Fit width".into()
-                    } else {
-                        format!("{:.0}%", self.zoom * 100.)
-                    },
-                    self.cache.len()
-                ),
-                p,
-            ))
+                        .child(caption(format!("{cached_pixels} cached pixels"), p))
+                        .child(caption(self.download_status.clone(), p)),
+                )
+                .child(caption(
+                    format!(
+                        "Page {} / {} · {} · {} cached canvases",
+                        self.list.logical_scroll_top().item_ix + 1,
+                        self.pages.len(),
+                        if self.fit {
+                            "Fit width".into()
+                        } else {
+                            format!("{:.0}%", self.zoom * 100.)
+                        },
+                        self.cache.len()
+                    ),
+                    p,
+                ))
+            })
             .child(
                 div().flex_1().min_h_0().relative().child(content).child(
                     canvas(

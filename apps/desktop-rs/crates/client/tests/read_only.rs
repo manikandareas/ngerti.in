@@ -10,6 +10,38 @@ use std::{
 const CONTRACT: &[u8] = include_bytes!("../../../../../docs/contracts/1.31.0.json");
 const SNAPSHOT: &[u8] = include_bytes!("../../../verification/snapshot.json");
 
+#[test]
+fn original_content_is_byte_identical_and_redirects_are_not_followed() {
+    let original: Vec<u8> = (0..=255).cycle().take(4096).collect();
+    let (origin, requests, handle) = server(vec![
+        (
+            200,
+            original.clone(),
+            "Content-Type: application/octet-stream\r\n",
+        ),
+        (302, vec![], "Location: https://example.com/\r\n"),
+    ]);
+    let client = ngertiin_client::ApiClient::new(&origin, "fixture-token".into()).unwrap();
+    assert_eq!(
+        client.bytes("/v1/machine/file?path=report.csv").unwrap(),
+        original
+    );
+    assert_eq!(
+        client.bytes("/v1/machine/file?path=redirect").unwrap_err(),
+        ClientError::Http(302)
+    );
+    handle.join().unwrap();
+    assert_eq!(requests.lock().unwrap().len(), 2);
+    assert_eq!(
+        client.bytes("https://example.com/private").unwrap_err(),
+        ClientError::InvalidConnection
+    );
+    assert_eq!(
+        client.bytes("/v1/entities/agent").unwrap_err(),
+        ClientError::InvalidConnection
+    );
+}
+
 fn server(
     responses: Vec<(u16, Vec<u8>, &'static str)>,
 ) -> (String, Arc<Mutex<Vec<String>>>, thread::JoinHandle<()>) {

@@ -100,6 +100,7 @@ struct Preferences {
     owner: String,
     selected: Option<Uuid>,
     dark: bool,
+    appearance: Option<String>,
     drafts: BTreeMap<Uuid, String>,
     files: BTreeMap<Uuid, Vec<StagedFile>>,
     recipients: BTreeMap<Uuid, Uuid>,
@@ -236,6 +237,22 @@ impl Store {
     }
     pub fn theme(&mut self, dark: bool) -> anyhow::Result<()> {
         self.preferences.dark = dark;
+        self.preferences.appearance = Some(if dark { "dark" } else { "light" }.into());
+        self.save_preferences()
+    }
+    pub fn appearance(&self) -> &str {
+        self.preferences
+            .appearance
+            .as_deref()
+            .unwrap_or(if self.dark() { "dark" } else { "light" })
+    }
+    pub fn set_appearance(&mut self, appearance: &str, dark: bool) -> anyhow::Result<()> {
+        ensure!(
+            matches!(appearance, "system" | "light" | "dark"),
+            "Choose a valid appearance."
+        );
+        self.preferences.appearance = Some(appearance.into());
+        self.preferences.dark = dark;
         self.save_preferences()
     }
     pub fn draft(&self, id: Uuid) -> String {
@@ -363,21 +380,7 @@ impl Store {
                     op.uploads.clear();
                     op.cleanup_complete = op.authored.is_none();
                 }
-                Err(ClientError::Rejected { code, .. })
-                    if matches!(
-                        code.as_str(),
-                        "INVALID_REQUEST"
-                            | "UNAUTHORIZED"
-                            | "SCOPE_DENIED"
-                            | "NOT_FOUND"
-                            | "CONFLICT"
-                            | "IDEMPOTENCY_CONFLICT"
-                            | "CAPABILITY_UNKNOWN"
-                            | "CAPABILITY_UNSUPPORTED"
-                    ) =>
-                {
-                    op.state = OperationState::Rejected
-                }
+                Err(ClientError::Rejected { .. }) => op.state = OperationState::Rejected,
                 Err(_) => op.state = OperationState::Unknown,
             }
         }

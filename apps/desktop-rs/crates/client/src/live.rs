@@ -176,6 +176,63 @@ impl ApiClient {
     pub fn get(&self, path: &str) -> Result<Value, ClientError> {
         self.request(path, None, None)
     }
+    /// Original content from an exported byte route. Credentials never leave
+    /// the selected loopback origin; redirects and oversized bodies fail closed.
+    pub fn bytes(&self, path: &str) -> Result<Vec<u8>, ClientError> {
+        if self
+            .retired
+            .as_ref()
+            .is_some_and(|flag| flag.load(Ordering::Acquire))
+        {
+            return Err(ClientError::Unavailable);
+        }
+        let actual = path.split('?').next().unwrap_or("");
+        let allowed = actual == "/v1/machine/file"
+            || ["/v1/artifacts/:id/content", "/v1/workspaces/:id/file"]
+                .iter()
+                .any(|pattern| {
+                    pattern.split('/').count() == actual.split('/').count()
+                        && pattern
+                            .split('/')
+                            .zip(actual.split('/'))
+                            .all(|(a, b)| a == b || a.starts_with(':') && !b.is_empty())
+                });
+        if !allowed {
+            return Err(ClientError::InvalidConnection);
+        }
+        let url = self
+            .transport
+            .origin
+            .join(path)
+            .map_err(|_| ClientError::InvalidConnection)?;
+        if url.origin() != self.transport.origin.origin() {
+            return Err(ClientError::InvalidConnection);
+        }
+        let response = self
+            .transport
+            .client
+            .get(url)
+            .bearer_auth(&self.transport.bearer)
+            .timeout(Duration::from_secs(30))
+            .send()
+            .map_err(|_| ClientError::Unavailable)?;
+        let status = response.status().as_u16();
+        if !(200..300).contains(&status) {
+            return Err(ClientError::Http(status));
+        }
+        if response.content_length().is_some_and(|n| n > LIMIT) {
+            return Err(ClientError::TooLarge);
+        }
+        let mut bytes = Vec::new();
+        response
+            .take(LIMIT + 1)
+            .read_to_end(&mut bytes)
+            .map_err(|_| ClientError::Unavailable)?;
+        if bytes.len() as u64 > LIMIT {
+            return Err(ClientError::TooLarge);
+        }
+        Ok(bytes)
+    }
     pub fn post(&self, path: &str, body: &Value, key: Option<Uuid>) -> Result<Value, ClientError> {
         self.request(path, Some(body), key)
     }

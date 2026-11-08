@@ -42,6 +42,7 @@ impl Workspace {
         self.busy = true;
         self.lock_composer(cx);
         self.error.clear();
+        self.clear_context_error();
         let scope = self.scope;
         self.command_task = Some(cx.spawn_in(window, async move |view, cx| {
             let result = receiver.await.unwrap_or(Err(ClientError::Unavailable));
@@ -82,6 +83,10 @@ impl Workspace {
                         self.restore_draft(window, cx);
                     }
                 }
+                if slot.starts_with("message:") && self.scope == scope {
+                    self.accepted_focus(window, cx);
+                }
+                self.context_command_confirmed(operation, &result, window, cx);
                 let path = operation.request.path.as_str();
                 if path.starts_with("/v1/messages/")
                     && path.ends_with("/edit")
@@ -103,7 +108,10 @@ impl Workspace {
                     }
                 }
             }
-            Err(error) => self.error = error.to_string(),
+            Err(error) => {
+                self.error = error.to_string();
+                self.context_failure(error.to_string());
+            }
         }
         self.lock_composer(cx);
         self.read_task = None;
@@ -155,7 +163,7 @@ impl Workspace {
             if !group && agent.is_none() {
                 return;
             }
-            self.store.submission(thread, agent, group, draft.text)
+            self.contextual_submission(thread, agent, group, draft.text, cx)
         };
         match operation {
             Ok(op) => self.dispatch(slot, op, window, cx),
@@ -385,7 +393,7 @@ impl Workspace {
         cx.notify();
     }
 }
-fn media_type(name: &str) -> String {
+pub(super) fn media_type(name: &str) -> String {
     match name
         .rsplit('.')
         .next()

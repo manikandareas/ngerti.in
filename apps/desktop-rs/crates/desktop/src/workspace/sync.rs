@@ -371,6 +371,7 @@ impl Workspace {
             self.sync_interactions(window, cx);
             self.rebuild_transcript(cx);
             self.prepare_portraits(cx);
+            self.refresh_context_resources(cx);
             let name = self
                 .selected_agent()
                 .map(|agent| text(agent, "name").to_owned())

@@ -213,7 +213,7 @@
     "ticket": "NMA-066",
     "title": "Desktop Rust foundation, reference baseline and reusable components",
     "plan": "Desktop Rust",
-    "status": "In Progress",
+    "status": "Done",
     "order": 16.1,
     "layer": "Desktop / UI foundation",
     "depends_on": [
@@ -226,7 +226,7 @@
     "ticket": "NMA-067",
     "title": "Rust avatar, composer and rich-content components",
     "plan": "Desktop Rust",
-    "status": "Backlog",
+    "status": "Done",
     "order": 16.2,
     "layer": "Desktop / UI components",
     "depends_on": [

@@ -1,18 +1,23 @@
-//! The only WebView construction seam. Only a trusted static proof is mounted here.
-//! Arbitrary document sanitization and live ticket sessions belong to later milestones.
+//! The only WebView construction seam: isolated static document content.
+//! No native IPC, scripts, credentials, navigation, downloads or persistent store.
 use gpui_kit::*;
 use gpui_webview::WebView;
 
-pub fn html_probe(window: &mut Window, cx: &mut App) -> wry::Result<WebView> {
-    WebView::build(wry::WebViewBuilder::new()
-        .with_devtools(false)
-        .with_navigation_handler(|url| url == "about:blank")
-        .with_html(concat!(
-            "<!doctype html><meta charset='utf-8'>",
-            "<meta http-equiv='Content-Security-Policy' content=\"default-src 'none'; style-src 'unsafe-inline'; form-action 'none'; base-uri 'none'; script-src 'none'; navigate-to 'none'\">",
-            "<style>body{font:18px system-ui;background:#f5f5f5;color:#1c1c1c;padding:40px}h1{font-size:30px}a{color:#0b5cb8}</style>",
-            "<h1>Static HTML document</h1><p>Select this document text. Open the native overlay above it.</p>",
-            "<p><a href='https://example.com'>Blocked external navigation</a></p>",
-            "<script>document.body.textContent='SCRIPT EXECUTED: FAIL'</script>"
-        )), window, cx)
+pub fn static_document(
+    prepared_html: crate::models::html::PreparedHtml,
+    window: &mut Window,
+    cx: &mut App,
+) -> wry::Result<WebView> {
+    WebView::build(
+        wry::WebViewBuilder::new()
+            .with_devtools(false)
+            .with_incognito(true)
+            .with_javascript_disabled()
+            .with_navigation_handler(|url| url == "about:blank" || url.starts_with("about:blank#"))
+            .with_new_window_req_handler(|_, _| wry::NewWindowResponse::Deny)
+            .with_download_started_handler(|_, _| false)
+            .with_html(prepared_html.into_string()),
+        window,
+        cx,
+    )
 }

@@ -13,7 +13,13 @@ pub enum Tone {
     Danger,
 }
 
-pub fn badge(text: impl Into<SharedString>, tone: Tone, p: Palette) -> Div {
+pub fn badge(
+    id: &'static str,
+    text: impl Into<SharedString>,
+    tone: Tone,
+    p: Palette,
+) -> Stateful<Div> {
+    let text = text.into();
     let (background, foreground) = match tone {
         Tone::Neutral => ("secondary", "foreground"),
         Tone::Success => ("success", "success-foreground"),
@@ -21,13 +27,16 @@ pub fn badge(text: impl Into<SharedString>, tone: Tone, p: Palette) -> Div {
         Tone::Danger => ("danger-soft", "destructive"),
     };
     div()
+        .id(id)
+        .role(Role::Label)
+        .aria_label(text.clone())
         .px_2()
         .py_1()
         .rounded_full()
         .text_size(px(12.))
         .bg(p.color(background))
         .text_color(p.color(foreground))
-        .child(text.into())
+        .child(text)
 }
 
 pub struct RowProps {
@@ -58,10 +67,12 @@ pub fn field(
     p: Palette,
 ) -> Stateful<Div> {
     let label = label.into();
+    let hint = hint.into();
     div()
         .id(id)
         .role(Role::Group)
         .aria_label(label.clone())
+        .aria_description(hint.clone())
         .flex()
         .flex_col()
         .gap_2()
@@ -82,8 +93,17 @@ pub fn skeleton(id: &'static str, p: Palette) -> Stateful<Div> {
         .rounded(px(8.))
         .bg(p.color("muted"))
 }
-pub fn bubble(text: impl Into<SharedString>, emphasized: bool, p: Palette) -> Div {
+pub fn bubble(
+    id: &'static str,
+    text: impl Into<SharedString>,
+    emphasized: bool,
+    p: Palette,
+) -> Stateful<Div> {
+    let text = text.into();
     div()
+        .id(id)
+        .role(Role::Paragraph)
+        .aria_label(text.clone())
         .max_w(px(560.))
         .px_4()
         .py_3()
@@ -94,5 +114,30 @@ pub fn bubble(text: impl Into<SharedString>, emphasized: bool, p: Palette) -> Di
         } else {
             "foreground"
         }))
-        .child(text.into())
+        .child(text)
+}
+
+/// The input owns editing/focus/disabled behavior; this group composes adornments.
+pub fn input_group(
+    id: &'static str,
+    label: impl Into<SharedString>,
+    input: impl IntoElement,
+    leading: Option<AnyElement>,
+    trailing: Option<AnyElement>,
+    p: Palette,
+) -> Stateful<Div> {
+    div()
+        .id(id)
+        .role(Role::Group)
+        .aria_label(label)
+        .flex()
+        .items_center()
+        .gap_2()
+        .px_3()
+        .py_1()
+        .rounded(px(8.))
+        .bg(p.color("control"))
+        .children(leading)
+        .child(div().flex_1().min_w_0().child(input))
+        .children(trailing)
 }

@@ -1,38 +1,146 @@
 {
   "version": 1,
-  "status": "Defined before performance comparison; measurements unexecuted",
+  "status": "NMA-066/NMA-067 Done by owner acceptance on 2026-11-08. All 18 avatar comparison samples and native source/column-window table frame cohorts pass their recorded budgets. Revised PDF native checks and full Tauri launch/content cohorts remain unexecuted and non-blocking for closure.",
   "environment": {
     "same_reference_host_required": true,
-    "viewport": [1280, 900],
+    "viewport": [
+      1280,
+      900
+    ],
     "device_scale": 2,
     "target_refresh_hz": 60,
     "theme": "light",
     "locale": "en-US",
     "time_zone": "Asia/Makassar",
     "fixture_clock": "2026-11-07T04:00:00Z",
-    "provider_inference": false
+    "provider_inference": false,
+    "observed_comparison_viewport": [
+      1280,
+      901
+    ],
+    "viewport_note": "Original target retained above; native GPUI and corrected WKWebView component fixtures both observe 1280\u00d7901 at scale 2."
   },
-  "metrics": ["time_to_visible_content_ms", "frame_time_p50_ms", "frame_time_p95_ms", "frame_time_p99_ms", "missed_frame_percent", "cpu_percent", "rss_bytes", "hidden_window_cpu_percent"],
+  "metrics": [
+    "time_to_visible_content_ms",
+    "frame_time_p50_ms",
+    "frame_time_p95_ms",
+    "frame_time_p99_ms",
+    "missed_frame_percent",
+    "cpu_percent",
+    "rss_bytes",
+    "hidden_window_cpu_percent"
+  ],
   "budgets": {
-    "kind": "Engineering targets; no measured performance claim",
+    "kind": "Engineering acceptance targets; interpret only the explicitly retained per-workload evidence.",
     "first_visible_conversation_p95_ms": 1500,
     "frame_time_p95_ms": 16.67,
     "missed_frame_percent": 1,
     "hidden_window_cpu_percent": 1,
     "rss_ratio_to_matched_tauri_baseline_max": 1.1
   },
-  "sampling": {"cold_launches": 20, "warm_launches": 20, "sustained_seconds": 120, "hidden_seconds": 60},
+  "sampling": {
+    "cold_launches": 20,
+    "warm_launches": 20,
+    "sustained_seconds": 120,
+    "hidden_seconds": 60
+  },
   "workloads": [
-    {"id": "first-conversation", "messages": 100, "visible_avatars": 1, "history_position": "bottom"},
-    {"id": "stream-follow", "messages": 1000, "characters_per_second": 30, "follow": true},
-    {"id": "stream-read-history", "messages": 10000, "characters_per_second": 30, "follow": false},
-    {"id": "large-tree", "entries": 10000, "folder_page_size": 200, "expanded_folders": 20},
-    {"id": "source", "utf8_bytes": 2097152, "lines": 100000, "wrap": false, "find": true},
-    {"id": "pdf", "pages": 200, "page_points": [612, 792], "selectable_text": true, "zoom_levels": [0.5, 1, 1.5, 2]},
-    {"id": "avatars", "visible_counts": [1, 10, 30], "states": ["idle", "thinking", "working"], "hidden_pause": true},
-    {"id": "virtual-table", "rows": 10000, "columns": 20, "selection": "across cells and rows"}
+    {
+      "id": "first-conversation",
+      "messages": 100,
+      "visible_avatars": 1,
+      "history_position": "bottom"
+    },
+    {
+      "id": "stream-follow",
+      "messages": 1000,
+      "characters_per_second": 30,
+      "follow": true
+    },
+    {
+      "id": "stream-read-history",
+      "messages": 10000,
+      "characters_per_second": 30,
+      "follow": false
+    },
+    {
+      "id": "large-tree",
+      "entries": 10000,
+      "folder_page_size": 200,
+      "expanded_folders": 20
+    },
+    {
+      "id": "source",
+      "utf8_bytes": 2097152,
+      "lines": 100000,
+      "wrap": false,
+      "find": true
+    },
+    {
+      "id": "pdf",
+      "pages": 200,
+      "page_points": [
+        612,
+        792
+      ],
+      "selectable_text": true,
+      "zoom_levels": [
+        0.5,
+        1,
+        1.5,
+        2
+      ]
+    },
+    {
+      "id": "avatars",
+      "visible_counts": [
+        1,
+        10,
+        30
+      ],
+      "states": [
+        "idle",
+        "thinking",
+        "working"
+      ],
+      "hidden_pause": true
+    },
+    {
+      "id": "virtual-table",
+      "rows": 10000,
+      "columns": 20,
+      "selection": "across cells and rows"
+    }
   ],
   "tauri_measurements": null,
   "desktop_rs_measurements": null,
-  "comparison_allowed": false
+  "comparison_allowed": false,
+  "measurement_boundaries": {
+    "first_conversation": "Tauri authored fixture baseline only in NMA-066; integrated native conversation belongs to NMA-068. Cold means fresh WKWebView data store, not purged OS caches.",
+    "stream_history_tree": "Defined baseline workloads; native integration belongs to NMA-068/069, not inferred from component results.",
+    "frames": "GPUI draw/work, browser rAF and delivered image intervals remain distinct."
+  },
+  "per_workload_comparison_allowed": {
+    "avatars": true,
+    "content": false,
+    "first_conversation": false,
+    "integrated_application": false
+  },
+  "retained_evidence": {
+    "avatar_comparison": "docs/verification/nma-067/components/measurements.json",
+    "avatar_budgets": "docs/verification/nma-067/components/avatar-budget-result.json",
+    "content_cohorts": "docs/verification/nma-067/components/content/cohorts.json",
+    "launch_observations": "docs/verification/nma-066/tauri-launch-observations.json",
+    "launch_note": "Two capture-only observations; these do not count toward the original 20 cold/20 warm target. The incomplete cohort is non-blocking under owner acceptance."
+  },
+  "owner_acceptance": {
+    "date": "2026-11-08",
+    "milestones": [
+      "NMA-066",
+      "NMA-067"
+    ],
+    "status": "Done",
+    "decision": "docs/development/nma-066-067-closure-2026-11-08.md",
+    "remaining_technical_verification": "Optional; waived as a milestone closure blocker. Actual test results and comparison boundaries remain unchanged."
+  }
 }

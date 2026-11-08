@@ -1,0 +1,613 @@
+{
+  "version": 2,
+  "generated_at_utc": "2026-11-08T02:54:50.095897+00:00",
+  "records": [
+    {
+      "host": "native",
+      "avatars": 1,
+      "state": "idle",
+      "source": "docs/verification/nma-067/components/native/1-idle.json",
+      "viewport": [
+        1280.0,
+        901.0
+      ],
+      "device_scale": 2.0,
+      "sample_seconds": 120.03784975,
+      "visible_sample_seconds": 120.03784975,
+      "visibility_uninterrupted": true,
+      "valid_visible_sample": true,
+      "texture_ready_count": 1,
+      "actual_image_updates": 3601,
+      "actual_image_interval_p95_ms": 36.367833999996435,
+      "process": {
+        "pids": "32070",
+        "sample_count": 119,
+        "visible_sample_seconds": 119.071482,
+        "cpu_percent": 33.030579060064106,
+        "cpu_p95_percent": 37.65243041484087,
+        "rss_peak_bytes": 95322112,
+        "missing_pid_samples": 0,
+        "coverage_percent": 99.19494746697592
+      },
+      "framework_draw_p95_ms": 6.328319,
+      "framework_work_p95_ms": 6.655999,
+      "missed_refresh_percent": 0.0
+    },
+    {
+      "host": "native",
+      "avatars": 1,
+      "state": "thinking",
+      "source": "docs/verification/nma-067/components/native/1-thinking.json",
+      "viewport": [
+        1280.0,
+        901.0
+      ],
+      "device_scale": 2.0,
+      "sample_seconds": 120.256974166,
+      "visible_sample_seconds": 120.256974166,
+      "visibility_uninterrupted": true,
+      "valid_visible_sample": true,
+      "texture_ready_count": 1,
+      "actual_image_updates": 6968,
+      "actual_image_interval_p95_ms": 20.294415999956072,
+      "process": {
+        "pids": "32070",
+        "sample_count": 119,
+        "visible_sample_seconds": 119.090053,
+        "cpu_percent": 62.39815847592242,
+        "cpu_p95_percent": 72.33158383379211,
+        "rss_peak_bytes": 73252864,
+        "missing_pid_samples": 0,
+        "coverage_percent": 99.02964366591394
+      },
+      "framework_draw_p95_ms": 6.377471,
+      "framework_work_p95_ms": 6.676479,
+      "missed_refresh_percent": 0.01434308663224326
+    },
+    {
+      "host": "native",
+      "avatars": 1,
+      "state": "working",
+      "source": "docs/verification/nma-067/components/native/1-working.json",
+      "viewport": [
+        1280.0,
+        901.0
+      ],
+      "device_scale": 2.0,
+      "sample_seconds": 120.014524542,
+      "visible_sample_seconds": 120.014524542,
+      "visibility_uninterrupted": true,
+      "valid_visible_sample": true,
+      "texture_ready_count": 1,
+      "actual_image_updates": 7196,
+      "actual_image_interval_p95_ms": 19.372625000018573,
+      "process": {
+        "pids": "32070",
+        "sample_count": 119,
+        "visible_sample_seconds": 119.102247,
+        "cpu_percent": 65.34721381033224,
+        "cpu_p95_percent": 74.07151357730845,
+        "rss_peak_bytes": 65404928,
+        "missing_pid_samples": 0,
+        "coverage_percent": 99.23986072062408
+      },
+      "framework_draw_p95_ms": 6.451199,
+      "framework_work_p95_ms": 6.754303,
+      "missed_refresh_percent": 0.0
+    },
+    {
+      "host": "native",
+      "avatars": 10,
+      "state": "idle",
+      "source": "docs/verification/nma-067/components/native/10-idle.json",
+      "viewport": [
+        1280.0,
+        901.0
+      ],
+      "device_scale": 2.0,
+      "sample_seconds": 120.206809,
+      "visible_sample_seconds": 120.206809,
+      "visibility_uninterrupted": true,
+      "valid_visible_sample": true,
+      "texture_ready_count": 10,
+      "actual_image_updates": 7205,
+      "actual_image_interval_p95_ms": 18.93541699996959,
+      "process": {
+        "pids": "32070",
+        "sample_count": 119,
+        "visible_sample_seconds": 119.13807299999999,
+        "cpu_percent": 71.80743975941259,
+        "cpu_p95_percent": 76.24879685340169,
+        "rss_peak_bytes": 81788928,
+        "missing_pid_samples": 0,
+        "coverage_percent": 99.1109189164151
+      },
+      "framework_draw_p95_ms": 8.314879,
+      "framework_work_p95_ms": 8.691711,
+      "missed_refresh_percent": 0.0
+    },
+    {
+      "host": "native",
+      "avatars": 10,
+      "state": "thinking",
+      "source": "docs/verification/nma-067/components/native/10-thinking.json",
+      "viewport": [
+        1280.0,
+        901.0
+      ],
+      "device_scale": 2.0,
+      "sample_seconds": 120.036937916,
+      "visible_sample_seconds": 120.036937916,
+      "visibility_uninterrupted": true,
+      "valid_visible_sample": true,
+      "texture_ready_count": 10,
+      "actual_image_updates": 7202,
+      "actual_image_interval_p95_ms": 18.94779200002006,
+      "process": {
+        "pids": "32070",
+        "sample_count": 119,
+        "visible_sample_seconds": 119.147419,
+        "cpu_percent": 44.91914340167116,
+        "cpu_p95_percent": 46.449205323279116,
+        "rss_peak_bytes": 67026944,
+        "missing_pid_samples": 0,
+        "coverage_percent": 99.25896233989035
+      },
+      "framework_draw_p95_ms": 5.345279,
+      "framework_work_p95_ms": 5.615615,
+      "missed_refresh_percent": 0.0
+    },
+    {
+      "host": "native",
+      "avatars": 10,
+      "state": "working",
+      "source": "docs/verification/nma-067/components/native/10-working.json",
+      "viewport": [
+        1280.0,
+        901.0
+      ],
+      "device_scale": 2.0,
+      "sample_seconds": 120.030200917,
+      "visible_sample_seconds": 120.030200917,
+      "visibility_uninterrupted": true,
+      "valid_visible_sample": true,
+      "texture_ready_count": 10,
+      "actual_image_updates": 7201,
+      "actual_image_interval_p95_ms": 18.96054200001629,
+      "process": {
+        "pids": "32070",
+        "sample_count": 119,
+        "visible_sample_seconds": 119.14155000000001,
+        "cpu_percent": 45.03047005851446,
+        "cpu_p95_percent": 46.56434399755606,
+        "rss_peak_bytes": 56819712,
+        "missing_pid_samples": 0,
+        "coverage_percent": 99.25964389777661
+      },
+      "framework_draw_p95_ms": 5.365759,
+      "framework_work_p95_ms": 5.631999,
+      "missed_refresh_percent": 0.0
+    },
+    {
+      "host": "native",
+      "avatars": 30,
+      "state": "idle",
+      "source": "docs/verification/nma-067/components/native/30-idle.json",
+      "viewport": [
+        1280.0,
+        901.0
+      ],
+      "device_scale": 2.0,
+      "sample_seconds": 120.019169833,
+      "visible_sample_seconds": 120.019169833,
+      "visibility_uninterrupted": true,
+      "valid_visible_sample": true,
+      "texture_ready_count": 30,
+      "actual_image_updates": 7201,
+      "actual_image_interval_p95_ms": 20.081165999876305,
+      "process": {
+        "pids": "32070",
+        "sample_count": 119,
+        "visible_sample_seconds": 119.456886,
+        "cpu_percent": 53.19910984453416,
+        "cpu_p95_percent": 54.80841035056897,
+        "rss_peak_bytes": 85524480,
+        "missing_pid_samples": 0,
+        "coverage_percent": 99.53150498059402
+      },
+      "framework_draw_p95_ms": 6.012927,
+      "framework_work_p95_ms": 6.463487,
+      "missed_refresh_percent": 0.0
+    },
+    {
+      "host": "native",
+      "avatars": 30,
+      "state": "thinking",
+      "source": "docs/verification/nma-067/components/native/30-thinking.json",
+      "viewport": [
+        1280.0,
+        901.0
+      ],
+      "device_scale": 2.0,
+      "sample_seconds": 120.054174916,
+      "visible_sample_seconds": 120.054174916,
+      "visibility_uninterrupted": true,
+      "valid_visible_sample": true,
+      "texture_ready_count": 30,
+      "actual_image_updates": 4032,
+      "actual_image_interval_p95_ms": 36.65000000002294,
+      "process": {
+        "pids": "32070",
+        "sample_count": 119,
+        "visible_sample_seconds": 119.258204,
+        "cpu_percent": 67.48382694074454,
+        "cpu_p95_percent": 73.24665812122338,
+        "rss_peak_bytes": 77742080,
+        "missing_pid_samples": 0,
+        "coverage_percent": 99.33699022415762
+      },
+      "framework_draw_p95_ms": 13.533183,
+      "framework_work_p95_ms": 14.139391,
+      "missed_refresh_percent": 0.3213049925852694
+    },
+    {
+      "host": "native",
+      "avatars": 30,
+      "state": "working",
+      "source": "docs/verification/nma-067/components/native/30-working.json",
+      "viewport": [
+        1280.0,
+        901.0
+      ],
+      "device_scale": 2.0,
+      "sample_seconds": 120.075056875,
+      "visible_sample_seconds": 120.075056875,
+      "visibility_uninterrupted": true,
+      "valid_visible_sample": true,
+      "texture_ready_count": 30,
+      "actual_image_updates": 3601,
+      "actual_image_interval_p95_ms": 36.87375000002646,
+      "process": {
+        "pids": "32070",
+        "sample_count": 119,
+        "visible_sample_seconds": 119.15443499999999,
+        "cpu_percent": 68.33148929790147,
+        "cpu_p95_percent": 71.34017472398085,
+        "rss_peak_bytes": 66273280,
+        "missing_pid_samples": 0,
+        "coverage_percent": 99.23329465839156
+      },
+      "framework_draw_p95_ms": 13.860863,
+      "framework_work_p95_ms": 14.508031,
+      "missed_refresh_percent": 0.22160664819944598
+    },
+    {
+      "host": "tauri",
+      "avatars": 1,
+      "state": "idle",
+      "source": "docs/verification/nma-067/components/tauri/1-idle.json",
+      "viewport": [
+        1280,
+        901
+      ],
+      "device_scale": 2,
+      "sample_seconds": 120.023,
+      "visible_sample_seconds": 120.023,
+      "visibility_uninterrupted": true,
+      "valid_visible_sample": true,
+      "texture_ready_count": 1,
+      "actual_image_updates": 6862,
+      "actual_image_interval_p95_ms": 18.000000000000682,
+      "process": {
+        "pids": "64132,64433,64434,64435",
+        "sample_count": 118,
+        "visible_sample_seconds": 119.422846,
+        "cpu_percent": 33.251594087784504,
+        "cpu_p95_percent": 35.29069237397535,
+        "rss_peak_bytes": 129286144,
+        "missing_pid_samples": 0,
+        "coverage_percent": 99.49996750622799
+      },
+      "raf_interval_p95_ms": 18
+    },
+    {
+      "host": "tauri",
+      "avatars": 1,
+      "state": "thinking",
+      "source": "docs/verification/nma-067/components/tauri/1-thinking.json",
+      "viewport": [
+        1280,
+        901
+      ],
+      "device_scale": 2,
+      "sample_seconds": 120.012,
+      "visible_sample_seconds": 120.012,
+      "visibility_uninterrupted": true,
+      "valid_visible_sample": true,
+      "texture_ready_count": 1,
+      "actual_image_updates": 7189,
+      "actual_image_interval_p95_ms": 18.000000000000682,
+      "process": {
+        "pids": "64132,64433,64434,64435",
+        "sample_count": 117,
+        "visible_sample_seconds": 118.43985200000002,
+        "cpu_percent": 34.312775061556145,
+        "cpu_p95_percent": 35.30041634879941,
+        "rss_peak_bytes": 141557760,
+        "missing_pid_samples": 0,
+        "coverage_percent": 98.69000766590008
+      },
+      "raf_interval_p95_ms": 18
+    },
+    {
+      "host": "tauri",
+      "avatars": 1,
+      "state": "working",
+      "source": "docs/verification/nma-067/components/tauri/1-working.json",
+      "viewport": [
+        1280,
+        901
+      ],
+      "device_scale": 2,
+      "sample_seconds": 120.017,
+      "visible_sample_seconds": 120.017,
+      "visibility_uninterrupted": true,
+      "valid_visible_sample": true,
+      "texture_ready_count": 1,
+      "actual_image_updates": 7198,
+      "actual_image_interval_p95_ms": 18.000000000000682,
+      "process": {
+        "pids": "64132,64433,64434,64435",
+        "sample_count": 117,
+        "visible_sample_seconds": 118.48662800000001,
+        "cpu_percent": 34.14731323099178,
+        "cpu_p95_percent": 36.02305475504367,
+        "rss_peak_bytes": 95879168,
+        "missing_pid_samples": 0,
+        "coverage_percent": 98.72487064332554
+      },
+      "raf_interval_p95_ms": 18
+    },
+    {
+      "host": "tauri",
+      "avatars": 10,
+      "state": "idle",
+      "source": "docs/verification/nma-067/components/tauri/10-idle.json",
+      "viewport": [
+        1280,
+        901
+      ],
+      "device_scale": 2,
+      "sample_seconds": 120.004,
+      "visible_sample_seconds": 120.004,
+      "visibility_uninterrupted": true,
+      "valid_visible_sample": true,
+      "texture_ready_count": 10,
+      "actual_image_updates": 7162,
+      "actual_image_interval_p95_ms": 18.000000000057526,
+      "process": {
+        "pids": "64132,64433,64434,64435",
+        "sample_count": 117,
+        "visible_sample_seconds": 118.89895500000002,
+        "cpu_percent": 39.470489879410636,
+        "cpu_p95_percent": 42.016067725993096,
+        "rss_peak_bytes": 258031616,
+        "missing_pid_samples": 0,
+        "coverage_percent": 99.07915986133797
+      },
+      "raf_interval_p95_ms": 18
+    },
+    {
+      "host": "tauri",
+      "avatars": 10,
+      "state": "thinking",
+      "source": "docs/verification/nma-067/components/tauri/10-thinking.json",
+      "viewport": [
+        1280,
+        901
+      ],
+      "device_scale": 2,
+      "sample_seconds": 2213.382,
+      "visible_sample_seconds": 120.01000000000018,
+      "visibility_uninterrupted": false,
+      "valid_visible_sample": true,
+      "texture_ready_count": 10,
+      "actual_image_updates": 7152,
+      "actual_image_interval_p95_ms": 17.000000000280124,
+      "process": {
+        "pids": "64132,64433,64434,64435",
+        "sample_count": 117,
+        "visible_sample_seconds": 117.8470300000001,
+        "cpu_percent": 70.26057423763662,
+        "cpu_p95_percent": 78.22644992728095,
+        "rss_peak_bytes": 198213632,
+        "missing_pid_samples": 0,
+        "coverage_percent": 98.1976751937338
+      },
+      "raf_interval_p95_ms": 17
+    },
+    {
+      "host": "tauri",
+      "avatars": 10,
+      "state": "working",
+      "source": "docs/verification/nma-067/components/tauri/10-working.json",
+      "viewport": [
+        1280,
+        901
+      ],
+      "device_scale": 2,
+      "sample_seconds": 120.017,
+      "visible_sample_seconds": 120.017,
+      "visibility_uninterrupted": true,
+      "valid_visible_sample": true,
+      "texture_ready_count": 10,
+      "actual_image_updates": 7198,
+      "actual_image_interval_p95_ms": 17.000000000464865,
+      "process": {
+        "pids": "64132,64433,64434,64435",
+        "sample_count": 117,
+        "visible_sample_seconds": 118.857055,
+        "cpu_percent": 66.89548214029027,
+        "cpu_p95_percent": 74.26937502320682,
+        "rss_peak_bytes": 114081792,
+        "missing_pid_samples": 0,
+        "coverage_percent": 99.03351608522127
+      },
+      "raf_interval_p95_ms": 17
+    },
+    {
+      "host": "tauri",
+      "avatars": 30,
+      "state": "idle",
+      "source": "docs/verification/nma-067/components/tauri/30-idle.json",
+      "viewport": [
+        1280,
+        901
+      ],
+      "device_scale": 2,
+      "sample_seconds": 120.017,
+      "visible_sample_seconds": 120.017,
+      "visibility_uninterrupted": true,
+      "valid_visible_sample": true,
+      "texture_ready_count": 30,
+      "actual_image_updates": 7193,
+      "actual_image_interval_p95_ms": 17.000000000464865,
+      "process": {
+        "pids": "64132,64433,64434,64435",
+        "sample_count": 117,
+        "visible_sample_seconds": 118.83200699999999,
+        "cpu_percent": 57.41719063955562,
+        "cpu_p95_percent": 77.35392284661908,
+        "rss_peak_bytes": 255852544,
+        "missing_pid_samples": 0,
+        "coverage_percent": 99.01264570852463
+      },
+      "raf_interval_p95_ms": 17
+    },
+    {
+      "host": "tauri",
+      "avatars": 30,
+      "state": "thinking",
+      "source": "docs/verification/nma-067/components/tauri/30-thinking.json",
+      "viewport": [
+        1280,
+        901
+      ],
+      "device_scale": 2,
+      "sample_seconds": 120.005,
+      "visible_sample_seconds": 120.005,
+      "visibility_uninterrupted": true,
+      "valid_visible_sample": true,
+      "texture_ready_count": 30,
+      "actual_image_updates": 5369,
+      "actual_image_interval_p95_ms": 27.000000000001023,
+      "process": {
+        "pids": "64132,64433,64434,64435",
+        "sample_count": 117,
+        "visible_sample_seconds": 119.151213,
+        "cpu_percent": 130.83374988385555,
+        "cpu_p95_percent": 133.9311027124363,
+        "rss_peak_bytes": 244957184,
+        "missing_pid_samples": 0,
+        "coverage_percent": 99.28854047748011
+      },
+      "raf_interval_p95_ms": 27
+    },
+    {
+      "host": "tauri",
+      "avatars": 30,
+      "state": "working",
+      "source": "docs/verification/nma-067/components/tauri/30-working.json",
+      "viewport": [
+        1280,
+        901
+      ],
+      "device_scale": 2,
+      "sample_seconds": 120.02,
+      "visible_sample_seconds": 120.02,
+      "visibility_uninterrupted": true,
+      "valid_visible_sample": true,
+      "texture_ready_count": 30,
+      "actual_image_updates": 5330,
+      "actual_image_interval_p95_ms": 27.000000000001023,
+      "process": {
+        "pids": "64132,64433,64434,64435",
+        "sample_count": 116,
+        "visible_sample_seconds": 118.512598,
+        "cpu_percent": 132.5850607038418,
+        "cpu_p95_percent": 135.62670293356314,
+        "rss_peak_bytes": 149012480,
+        "missing_pid_samples": 0,
+        "coverage_percent": 98.7440409931678
+      },
+      "raf_interval_p95_ms": 27
+    }
+  ],
+  "comparisons": [
+    {
+      "avatars": 1,
+      "state": "idle",
+      "both_recorded": true,
+      "same_viewport_scale": true,
+      "rss_ratio": 0.7372956532758839
+    },
+    {
+      "avatars": 1,
+      "state": "thinking",
+      "both_recorded": true,
+      "same_viewport_scale": true,
+      "rss_ratio": 0.5174768518518519
+    },
+    {
+      "avatars": 1,
+      "state": "working",
+      "both_recorded": true,
+      "same_viewport_scale": true,
+      "rss_ratio": 0.6821599453178401
+    },
+    {
+      "avatars": 10,
+      "state": "idle",
+      "both_recorded": true,
+      "same_viewport_scale": true,
+      "rss_ratio": 0.31697250619086925
+    },
+    {
+      "avatars": 10,
+      "state": "thinking",
+      "both_recorded": true,
+      "same_viewport_scale": true,
+      "rss_ratio": 0.3381550669532154
+    },
+    {
+      "avatars": 10,
+      "state": "working",
+      "both_recorded": true,
+      "same_viewport_scale": true,
+      "rss_ratio": 0.4980611805256355
+    },
+    {
+      "avatars": 30,
+      "state": "idle",
+      "both_recorded": true,
+      "same_viewport_scale": true,
+      "rss_ratio": 0.33427254098360654
+    },
+    {
+      "avatars": 30,
+      "state": "thinking",
+      "both_recorded": true,
+      "same_viewport_scale": true,
+      "rss_ratio": 0.3173700755802287
+    },
+    {
+      "avatars": 30,
+      "state": "working",
+      "both_recorded": true,
+      "same_viewport_scale": true,
+      "rss_ratio": 0.4447498625618472
+    }
+  ],
+  "complete": true,
+  "caveat": "GPUI draw/work, browser rAF and actual content-change intervals are distinct. CPU/RSS exclude known hidden intervals and use explicitly recorded PIDs only; source, PID coverage and visibility still require review."
+}

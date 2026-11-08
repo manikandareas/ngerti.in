@@ -6,7 +6,8 @@ use gpui_kit::component::Disableable;
 use gpui_kit::component::button::DropdownButton;
 use gpui_kit::{
     component::{
-        checkbox::Checkbox, input::Input, radio::RadioGroup, slider::Slider, switch::Switch,
+        WindowExt, checkbox::Checkbox, input::Input, radio::RadioGroup, slider::Slider,
+        switch::Switch,
     },
     *,
 };
@@ -39,6 +40,9 @@ impl Gallery {
                                         cx.notify();
                                     })),
                             )
+                            .child(button("button-outline", "Outline", ButtonKind::Outline, p, cx))
+                            .child(button("button-secondary", "Secondary", ButtonKind::Secondary, p, cx))
+                            .child(button("button-link", "Text action", ButtonKind::Link, p, cx))
                             .child(button("button-ghost", "Ghost", ButtonKind::Ghost, p, cx))
                             .child(button("button-danger", "Delete", ButtonKind::Danger, p, cx))
                             .child(
@@ -54,7 +58,7 @@ impl Gallery {
                             )
                             .child(
                                 button("button-disabled", "Disabled", ButtonKind::Primary, p, cx)
-                                    .disabled(true),
+                                    .disabled_state(true, p),
                             )
                             .child(
                                 button("button-loading", "Loading", ButtonKind::Default, p, cx)
@@ -69,7 +73,24 @@ impl Gallery {
             .child(
                 card(p)
                     .child(title("Fields and choices"))
-                    .child(Input::new(&self.input).aria_label("Search agents"))
+                    .child(crate::ui::compound::field(
+                        "search-field",
+                        "Search agents",
+                        "Find an agent by name.",
+                        crate::ui::compound::input_group(
+                            "search-input-group", "Agent search",
+                            Input::new(&self.input).aria_label("Search agents"),
+                            Some(icon("search", p).into_any_element()),
+                            Some(caption("Name", p).into_any_element()), p,
+                        ),
+                        p,
+                    ))
+                    .child(crate::ui::field::disabled_field(
+                        "unavailable-field", "Unavailable field",
+                        self.disabled_input.read(cx).value().to_string(), Role::TextInput,
+                        Input::new(&self.disabled_input).disabled(true)
+                            .role(gpui_kit::component::RoleOverride::Presentational),
+                    ))
                     .child(
                         row()
                             .child(
@@ -94,7 +115,8 @@ impl Gallery {
                                 Checkbox::new("disabled-choice")
                                     .label("Unavailable")
                                     .disabled(true),
-                            ),
+                            )
+                            .child(Switch::new("disabled-preview").label("Unavailable preview").disabled(true)),
                     )
                     .child(
                         RadioGroup::new("appearance-choice")
@@ -119,6 +141,34 @@ impl Gallery {
                             .child(
                                 button("open-dialog", "Open dialog", ButtonKind::Default, p, cx)
                                     .on_click(|_, window, cx| Gallery::overlay(window, cx)),
+                            )
+                            .child(
+                                button("open-sheet", "Open sheet", ButtonKind::Default, p, cx)
+                                    .on_click(|_, window, cx| {
+                                        window.open_sheet(cx, |sheet, _, _| {
+                                            sheet.title(accessible_text("native-sheet-title", "Conversation details", Role::Heading)).size(px(400.))
+                                                .child(accessible_text("native-sheet-description", "Native side sheet with keyboard dismissal and focus return.", Role::Paragraph))
+                                        });
+                                    }),
+                            )
+                            .child(
+                                button("open-drawer", "Open drawer", ButtonKind::Default, p, cx)
+                                    .on_click(|_, window, cx| {
+                                        window.open_sheet_at(gpui_kit::component::Placement::Bottom, cx, |sheet, _, _| {
+                                            sheet.title(accessible_text("native-drawer-title", "Compact details", Role::Heading)).size(px(300.))
+                                                .child(accessible_text("native-drawer-description", "Native bottom drawer for compact windows.", Role::Paragraph))
+                                        });
+                                    }),
+                            )
+                            .child(
+                                button("open-alert", "Open confirmation", ButtonKind::Default, p, cx)
+                                    .on_click(|_, window, cx| {
+                                        window.open_alert_dialog(cx, |alert, _, _| {
+                                            alert.title(accessible_text("native-confirmation-title", "Local confirmation", Role::Heading))
+                                                .description(accessible_text("native-confirmation-description", "This gallery confirmation changes no application data.", Role::Paragraph))
+                                                .show_cancel(true)
+                                        });
+                                    }),
                             )
                             .child(
                                 DropdownButton::new("gallery-menu")
@@ -173,7 +223,7 @@ impl Gallery {
                 "Could not load files",
                 "Check the backend connection, then retry.",
                 p,
-            ))
+            ).role(Role::Alert))
             .child(self.compound_controls(p, cx))
             .into_any_element()
     }

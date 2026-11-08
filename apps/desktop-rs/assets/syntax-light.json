@@ -1,0 +1,81 @@
+{
+  "name": "github-light-default",
+  "appearance": "light",
+  "style": {
+    "editor.background": "#ffffff",
+    "editor.foreground": "#1f2328",
+    "editor.line_number": "#8c959f",
+    "editor.active_line_number": "#1f2328",
+    "syntax": {
+      "attribute": {
+        "color": "#0550ae"
+      },
+      "boolean": {
+        "color": "#0550ae"
+      },
+      "comment": {
+        "color": "#6e7781"
+      },
+      "comment_doc": {
+        "color": "#6e7781"
+      },
+      "constant": {
+        "color": "#0550ae"
+      },
+      "constructor": {
+        "color": "#8250df"
+      },
+      "function": {
+        "color": "#8250df"
+      },
+      "keyword": {
+        "color": "#cf222e"
+      },
+      "number": {
+        "color": "#0550ae"
+      },
+      "operator": {
+        "color": "#cf222e"
+      },
+      "property": {
+        "color": "#0550ae"
+      },
+      "punctuation": {
+        "color": "#1f2328"
+      },
+      "punctuation.bracket": {
+        "color": "#1f2328"
+      },
+      "punctuation.delimiter": {
+        "color": "#1f2328"
+      },
+      "string": {
+        "color": "#0a3069"
+      },
+      "string.escape": {
+        "color": "#cf222e"
+      },
+      "string.regex": {
+        "color": "#0a3069"
+      },
+      "tag": {
+        "color": "#116329"
+      },
+      "type": {
+        "color": "#953800"
+      },
+      "variable": {
+        "color": "#1f2328"
+      },
+      "preproc": {
+        "color": "#cf222e"
+      },
+      "label": {
+        "color": "#953800"
+      },
+      "embedded": {
+        "color": "#1f2328"
+      }
+    }
+  }
+}

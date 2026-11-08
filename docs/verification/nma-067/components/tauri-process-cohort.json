@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "pids": [
+    64132,
+    64433,
+    64434,
+    64435
+  ],
+  "pid_selection": "Difference from pre-launch process inventory; root plus new WebKit GPU/network/content. Existing 22809/31905/31906 excluded.",
+  "viewport": [
+    1280,
+    901
+  ],
+  "device_scale": 2,
+  "workload_version": 3,
+  "segments": [
+    "tauri-matrix-process-segment1.json",
+    "tauri-matrix-process-continuation.json"
+  ],
+  "note": "The sampler restart gap occurred while the window was minimized; visible CPU/RSS coverage is verified per workload."
+}

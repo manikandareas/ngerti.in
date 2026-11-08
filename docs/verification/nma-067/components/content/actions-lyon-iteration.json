@@ -1,0 +1,35 @@
+[
+  {
+    "host": "native",
+    "workload": "table-10000-by-20",
+    "at_utc": "2026-11-08T03:55:23.351Z",
+    "action": "Start final-build 120-visible-second table sample",
+    "pid": 36834
+  },
+  {
+    "host": "native",
+    "workload": "table-10000-by-20",
+    "at_utc": "2026-11-08T03:55:32.939Z",
+    "action": "Scroll vertically down four units",
+    "result": "Column 1 retained"
+  },
+  {
+    "host": "native",
+    "workload": "table-10000-by-20",
+    "at_utc": "2026-11-08T03:55:45.292Z",
+    "action": "Filter Row 9999",
+    "result": "Matching final row present"
+  },
+  {
+    "host": "native",
+    "workload": "table-10000-by-20",
+    "at_utc": "2026-11-08T03:55:48.774Z",
+    "action": "Clear filter; cycle sort three times; toggle wrap off/on"
+  },
+  {
+    "host": "native",
+    "workload": "table-10000-by-20",
+    "at_utc": "2026-11-08T03:56:48.448Z",
+    "action": "Horizontal wheel right/left four units; vertical down/up five units"
+  }
+]

@@ -1,0 +1,212 @@
+Window: "Ngertiin", App: Ngertiin Tauri Reference.
+0 standard window Ngertiin, Secondary Actions: Raise
+	1 scroll area
+		2 HTML content Description: Ngertiin · Web Client, URL: 127.0.0.1:60665/
+			3 container
+				4 link Ngertiin, Value: 127.0.0.1:60665/
+				5 button Search conversations
+				6 pop up button Buat baru
+				7 container Percakapan
+					8 container
+						9 button Researcher Belum ada pesan
+						10 button Tobi Kamu: Reference request 99: review the native desktop component.
+				11 button Pengaturan
+				12 button Hubungkan aplikasi
+			13 container Percakapan aktif
+				14 container
+					15 button (collapsed) Detail Tobi, Secondary Actions: Expand
+					16 pop up button Pilih model, Help: ChatGPT · ChatGPT · Subscription · Perlu login
+					17 button Browser agent
+				18 container (showing 207-307 of 307 items)
+					19 text Reference answer 84.  The result is ready.
+					20 content list
+						21 container Keep the original file.
+							22 list marker •
+							23 text Keep the original file.
+						24 container Preserve the conversation context.
+							25 list marker •
+							26 text Preserve the conversation context.
+					27 button Salin kode
+					28 pop up button Opsi kode
+					29 container
+						30 text export const ready = true ;
+					31 container Sabtu, 07 November 2026 pukul 00.17
+						32 text 00.17
+					33 container Aksi pesan
+						34 button Salin pesan
+					35 text Kamu Reference request 85: review the native desktop component.
+					36 container Sabtu, 07 November 2026 pukul 00.17
+						37 text 00.17
+					38 container Aksi pesan
+						39 button Salin pesan
+					40 text Tobi Reference answer 86.  The result is ready.
+					41 content list
+						42 container Keep the original file.
+							43 list marker •
+							44 text Keep the original file.
+						45 container Preserve the conversation context.
+							46 list marker •
+							47 text Preserve the conversation context.
+					48 button Salin kode
+					49 pop up button Opsi kode
+					50 container
+						51 text export const ready = true ;
+					52 container Sabtu, 07 November 2026 pukul 00.18
+						53 text 00.18
+					54 container Aksi pesan
+						55 button Salin pesan
+					56 text Kamu Reference request 87: review the native desktop component.
+					57 container Sabtu, 07 November 2026 pukul 00.18
+						58 text 00.18
+					59 container Aksi pesan
+						60 button Salin pesan
+					61 text Tobi Reference answer 88.  The result is ready.
+					62 content list
+						63 container Keep the original file.
+							64 list marker •
+							65 text Keep the original file.
+						66 container Preserve the conversation context.
+							67 list marker •
+							68 text Preserve the conversation context.
+					69 button Salin kode
+					70 pop up button Opsi kode
+					71 container
+						72 text export const ready = true ;
+					73 container Sabtu, 07 November 2026 pukul 00.19
+						74 text 00.19
+					75 container Aksi pesan
+						76 button Salin pesan
+					77 text Kamu Reference request 89: review the native desktop component.
+					78 container Sabtu, 07 November 2026 pukul 00.19
+						79 text 00.19
+					80 container Aksi pesan
+						81 button Salin pesan
+					82 text Tobi Reference answer 90.  The result is ready.
+					83 content list
+						84 container Keep the original file.
+							85 list marker •
+							86 text Keep the original file.
+						87 container Preserve the conversation context.
+							88 list marker •
+							89 text Preserve the conversation context.
+					90 button Salin kode
+					91 pop up button Opsi kode
+					92 container
+						93 text export const ready = true ;
+					94 container Sabtu, 07 November 2026 pukul 00.20
+						95 text 00.20
+					96 container Aksi pesan
+						97 button Salin pesan
+					98 text Kamu Reference request 91: review the native desktop component.
+					99 container Sabtu, 07 November 2026 pukul 00.20
+						100 text 00.20
+					101 container Aksi pesan
+						102 button Salin pesan
+					103 text Tobi Reference answer 92.  The result is ready.
+					104 content list
+						105 container Keep the original file.
+							106 list marker •
+							107 text Keep the original file.
+						108 container Preserve the conversation context.
+							109 list marker •
+							110 text Preserve the conversation context.
+					111 button Salin kode
+					112 pop up button Opsi kode
+					113 container
+						114 text export const ready = true ;
+					115 container Sabtu, 07 November 2026 pukul 00.21
+						116 text 00.21
+					117 container Aksi pesan
+						118 button Salin pesan
+					119 text Kamu Reference request 93: review the native desktop component.
+					120 container Sabtu, 07 November 2026 pukul 00.21
+						121 text 00.21
+					122 container Aksi pesan
+						123 button Salin pesan
+					124 text Tobi Reference answer 94.  The result is ready.
+					125 content list
+						126 container Keep the original file.
+							127 list marker •
+							128 text Keep the original file.
+						129 container Preserve the conversation context.
+							130 list marker •
+							131 text Preserve the conversation context.
+					132 button Salin kode
+					133 pop up button Opsi kode
+					134 container
+						135 text export const ready = true ;
+					136 container Sabtu, 07 November 2026 pukul 00.22
+						137 text 00.22
+					138 container Aksi pesan
+						139 button Salin pesan
+					140 text Kamu Reference request 95: review the native desktop component.
+					141 container Sabtu, 07 November 2026 pukul 00.22
+						142 text 00.22
+					143 container Aksi pesan
+						144 button Salin pesan
+					145 text Tobi Reference answer 96.  The result is ready.
+					146 content list
+						147 container Keep the original file.
+							148 list marker •
+							149 text Keep the original file.
+						150 container Preserve the conversation context.
+							151 list marker •
+							152 text Preserve the conversation context.
+					153 button Salin kode
+					154 pop up button Opsi kode
+					155 container
+						156 text export const ready = true ;
+					157 container Sabtu, 07 November 2026 pukul 00.23
+						158 text 00.23
+					159 container Aksi pesan
+						160 button Salin pesan
+					161 text Kamu Reference request 97: review the native desktop component.
+					162 container Sabtu, 07 November 2026 pukul 00.23
+						163 text 00.23
+					164 container Aksi pesan
+						165 button Salin pesan
+					166 text Tobi Reference answer 98.  The result is ready.
+					167 content list
+						168 container Keep the original file.
+							169 list marker •
+							170 text Keep the original file.
+						171 container Preserve the conversation context.
+							172 list marker •
+							173 text Preserve the conversation context.
+					174 button Salin kode
+					175 pop up button Opsi kode
+					176 container
+						177 text export const ready = true ;
+					178 container Sabtu, 07 November 2026 pukul 00.24
+						179 text 00.24
+					180 container Aksi pesan
+						181 button Salin pesan
+					182 button reference.pdf
+					183 button reference.ts
+					184 button avatar.png
+					185 button large.ts
+					186 button table.csv
+					187 text Kamu Reference request 99: review the native desktop component.
+					188 container Sabtu, 07 November 2026 pukul 00.24
+						189 text 00.24
+					190 container Aksi pesan
+						191 button Salin pesan
+				192 button Siapkan koneksi agar Tobi bisa mulai bekerja →
+				193 container
+					194 file upload button Lampirkan file ke pesan
+					195 button Tambah lampiran, Help: Working copies of attachments are shared on your agents’ machine.
+					196 text entry area (settable) Pesan, Placeholder: Pesan untuk Tobi…, Value: 
+
+					197 button (disabled) Kirim, Help: Kirim pesan
+			198 container Notifications alt+T
+			199 button Measure content · 120 visible seconds
+			200 container (settable) Typeahead menu
+	201 close button
+	202 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	203 minimize button
+	204 text Ngertiin
+205 menu bar
+	206 Ngertiin Tauri
+	207 Edit
+	208 View
+	209 Development

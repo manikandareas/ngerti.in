@@ -18,10 +18,10 @@ impl Gallery {
             .child(
                 row()
                     .children([
-                        badge("Default", Tone::Neutral, p),
-                        badge("Complete", Tone::Success, p),
-                        badge("Waiting", Tone::Warning, p),
-                        badge("Failed", Tone::Danger, p),
+                        badge("badge-default", "Default", Tone::Neutral, p),
+                        badge("badge-complete", "Complete", Tone::Success, p),
+                        badge("badge-waiting", "Waiting", Tone::Warning, p),
+                        badge("badge-failed", "Failed", Tone::Danger, p),
                     ])
                     .child(Spinner::new()),
             )
@@ -43,13 +43,30 @@ impl Gallery {
                     cx.notify();
                 })),
             )
+            .child(list_row(
+                RowProps {
+                    id: "unavailable-row",
+                    label: "Unavailable details".into(),
+                    hint: "Disabled item".into(),
+                    selected: false,
+                    disabled: true,
+                },
+                p,
+                cx,
+            ))
             .child(skeleton("skeleton-row", p))
             .child(bubble(
+                "bubble-default",
                 "A reusable message surface with caller-owned content.",
                 false,
                 p,
             ))
-            .child(bubble("A second presentation variant.", true, p))
+            .child(bubble(
+                "bubble-emphasized",
+                "A second presentation variant.",
+                true,
+                p,
+            ))
             .child(
                 Popover::new("example-popover")
                     .trigger(
@@ -64,8 +81,19 @@ impl Gallery {
                     )
                     .content(move |_, _, _| {
                         card(p)
-                            .child("Contextual information")
-                            .child(caption("Escape returns to the trigger.", p))
+                            .child(accessible_text(
+                                "popover-title",
+                                "Contextual information",
+                                Role::Heading,
+                            ))
+                            .child(
+                                accessible_text(
+                                    "popover-description",
+                                    "Escape returns to the trigger.",
+                                    Role::Paragraph,
+                                )
+                                .text_color(p.color("muted-foreground")),
+                            )
                     }),
             )
             .child(

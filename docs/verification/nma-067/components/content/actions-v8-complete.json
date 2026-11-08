@@ -1,0 +1,51 @@
+[
+  {
+    "host": "native",
+    "workload": "pdf-current-fixture",
+    "at_utc": "2026-11-08T04:19:27.314Z",
+    "action": "Start complete ready/warmed PDF workload",
+    "pid": 78700
+  },
+  {
+    "host": "native",
+    "workload": "pdf-current-fixture",
+    "at_utc": "2026-11-08T04:19:27.884Z",
+    "action": "Zoom 50%"
+  },
+  {
+    "host": "native",
+    "workload": "pdf-current-fixture",
+    "at_utc": "2026-11-08T04:19:28.447Z",
+    "action": "Zoom 100%"
+  },
+  {
+    "host": "native",
+    "workload": "pdf-current-fixture",
+    "at_utc": "2026-11-08T04:19:29.006Z",
+    "action": "Zoom 150%"
+  },
+  {
+    "host": "native",
+    "workload": "pdf-current-fixture",
+    "at_utc": "2026-11-08T04:19:29.549Z",
+    "action": "Zoom 200%"
+  },
+  {
+    "host": "native",
+    "workload": "pdf-current-fixture",
+    "at_utc": "2026-11-08T04:19:30.097Z",
+    "action": "Zoom Fit width"
+  },
+  {
+    "host": "native",
+    "workload": "pdf-current-fixture",
+    "at_utc": "2026-11-08T04:19:32.016Z",
+    "action": "Next/previous page and continuous down/up five units"
+  },
+  {
+    "host": "native",
+    "workload": "pdf-current-fixture",
+    "at_utc": "2026-11-08T04:21:14.021Z",
+    "action": "Repeat continuous down seven/up five units"
+  }
+]

@@ -1,0 +1,570 @@
+{
+  "version": 1,
+  "file_tables": [
+    {
+      "text": "",
+      "delimiter": ",",
+      "accepted": true,
+      "table": {
+        "headers": [],
+        "rows": []
+      }
+    },
+    {
+      "text": "\n",
+      "delimiter": ",",
+      "accepted": true,
+      "table": {
+        "headers": [],
+        "rows": []
+      }
+    },
+    {
+      "text": "a,b\n1,2\n",
+      "delimiter": ",",
+      "accepted": true,
+      "table": {
+        "headers": [
+          "a",
+          "b"
+        ],
+        "rows": [
+          [
+            "1",
+            "2"
+          ]
+        ]
+      }
+    },
+    {
+      "text": "\na,b\n\n1,2\n",
+      "delimiter": ",",
+      "accepted": true,
+      "table": {
+        "headers": [
+          "a",
+          "b"
+        ],
+        "rows": [
+          [
+            "1",
+            "2"
+          ]
+        ]
+      }
+    },
+    {
+      "text": "a,b\n1",
+      "delimiter": ",",
+      "accepted": false
+    },
+    {
+      "text": "a\n1,2",
+      "delimiter": ",",
+      "accepted": false
+    },
+    {
+      "text": "a,b\n\"one,two\",\"three\nfour\"",
+      "delimiter": ",",
+      "accepted": true,
+      "table": {
+        "headers": [
+          "a",
+          "b"
+        ],
+        "rows": [
+          [
+            "one,two",
+            "three\nfour"
+          ]
+        ]
+      }
+    },
+    {
+      "text": "a,b\n\"unclosed",
+      "delimiter": ",",
+      "accepted": false
+    },
+    {
+      "text": "a,b\n\"two\"\"words\",ok",
+      "delimiter": ",",
+      "accepted": true,
+      "table": {
+        "headers": [
+          "a",
+          "b"
+        ],
+        "rows": [
+          [
+            "two\"words",
+            "ok"
+          ]
+        ]
+      }
+    },
+    {
+      "text": "﻿a\tb\r\n1\t2\r\n",
+      "delimiter": "\t",
+      "accepted": true,
+      "table": {
+        "headers": [
+          "a",
+          "b"
+        ],
+        "rows": [
+          [
+            "1",
+            "2"
+          ]
+        ]
+      }
+    },
+    {
+      "text": "a,b\n,",
+      "delimiter": ",",
+      "accepted": true,
+      "table": {
+        "headers": [
+          "a",
+          "b"
+        ],
+        "rows": [
+          [
+            "",
+            ""
+          ]
+        ]
+      }
+    },
+    {
+      "text": "a\n\"\"",
+      "delimiter": ",",
+      "accepted": true,
+      "table": {
+        "headers": [
+          "a"
+        ],
+        "rows": []
+      }
+    },
+    {
+      "text": "x,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y,y",
+      "delimiter": ",",
+      "accepted": false
+    }
+  ],
+  "locale": "en-US",
+  "file_cases": [
+    {
+      "name": "sample.js",
+      "language": "javascript"
+    },
+    {
+      "name": "sample.mjs",
+      "language": "javascript"
+    },
+    {
+      "name": "sample.cjs",
+      "language": "javascript"
+    },
+    {
+      "name": "sample.jsx",
+      "language": "jsx"
+    },
+    {
+      "name": "sample.ts",
+      "language": "typescript"
+    },
+    {
+      "name": "sample.mts",
+      "language": "typescript"
+    },
+    {
+      "name": "sample.cts",
+      "language": "typescript"
+    },
+    {
+      "name": "sample.tsx",
+      "language": "tsx"
+    },
+    {
+      "name": "sample.json",
+      "language": "json"
+    },
+    {
+      "name": "sample.jsonc",
+      "language": "jsonc"
+    },
+    {
+      "name": "sample.json5",
+      "language": "json5"
+    },
+    {
+      "name": "sample.go",
+      "language": "go"
+    },
+    {
+      "name": "sample.py",
+      "language": "python"
+    },
+    {
+      "name": "sample.rb",
+      "language": "ruby"
+    },
+    {
+      "name": "sample.rs",
+      "language": "rust"
+    },
+    {
+      "name": "sample.php",
+      "language": "php"
+    },
+    {
+      "name": "sample.java",
+      "language": "java"
+    },
+    {
+      "name": "sample.kt",
+      "language": "kotlin"
+    },
+    {
+      "name": "sample.kts",
+      "language": "kotlin"
+    },
+    {
+      "name": "sample.swift",
+      "language": "swift"
+    },
+    {
+      "name": "sample.dart",
+      "language": "dart"
+    },
+    {
+      "name": "sample.r",
+      "language": "r"
+    },
+    {
+      "name": "sample.lua",
+      "language": "lua"
+    },
+    {
+      "name": "sample.c",
+      "language": "c"
+    },
+    {
+      "name": "sample.h",
+      "language": "c"
+    },
+    {
+      "name": "sample.cpp",
+      "language": "cpp"
+    },
+    {
+      "name": "sample.cc",
+      "language": "cpp"
+    },
+    {
+      "name": "sample.cxx",
+      "language": "cpp"
+    },
+    {
+      "name": "sample.hpp",
+      "language": "cpp"
+    },
+    {
+      "name": "sample.cs",
+      "language": "csharp"
+    },
+    {
+      "name": "sample.sh",
+      "language": "bash"
+    },
+    {
+      "name": "sample.bash",
+      "language": "bash"
+    },
+    {
+      "name": "sample.zsh",
+      "language": "bash"
+    },
+    {
+      "name": "sample.fish",
+      "language": "fish"
+    },
+    {
+      "name": "sample.ps1",
+      "language": "powershell"
+    },
+    {
+      "name": "sample.html",
+      "language": "html"
+    },
+    {
+      "name": "sample.htm",
+      "language": "html"
+    },
+    {
+      "name": "sample.css",
+      "language": "css"
+    },
+    {
+      "name": "sample.scss",
+      "language": "scss"
+    },
+    {
+      "name": "sample.sass",
+      "language": "sass"
+    },
+    {
+      "name": "sample.less",
+      "language": "less"
+    },
+    {
+      "name": "sample.yaml",
+      "language": "yaml"
+    },
+    {
+      "name": "sample.yml",
+      "language": "yaml"
+    },
+    {
+      "name": "sample.toml",
+      "language": "toml"
+    },
+    {
+      "name": "sample.xml",
+      "language": "xml"
+    },
+    {
+      "name": "sample.svg",
+      "language": "xml"
+    },
+    {
+      "name": "sample.md",
+      "language": "markdown"
+    },
+    {
+      "name": "sample.mdx",
+      "language": "mdx"
+    },
+    {
+      "name": "sample.sql",
+      "language": "sql"
+    },
+    {
+      "name": "sample.graphql",
+      "language": "graphql"
+    },
+    {
+      "name": "sample.gql",
+      "language": "graphql"
+    },
+    {
+      "name": "sample.proto",
+      "language": "proto"
+    },
+    {
+      "name": "sample.diff",
+      "language": "diff"
+    },
+    {
+      "name": "sample.patch",
+      "language": "diff"
+    },
+    {
+      "name": "sample.dockerfile",
+      "language": "dockerfile"
+    },
+    {
+      "name": "Dockerfile",
+      "language": "dockerfile"
+    },
+    {
+      "name": "CONTAINERFILE.dev",
+      "language": "dockerfile"
+    },
+    {
+      "name": "Makefile",
+      "language": "makefile"
+    },
+    {
+      "name": "Makefile.release",
+      "language": "makefile"
+    },
+    {
+      "name": "GNUMAKEFILE.local",
+      "language": "makefile"
+    },
+    {
+      "name": "build.mk",
+      "language": "makefile"
+    },
+    {
+      "name": ".bashrc",
+      "language": "bash"
+    },
+    {
+      "name": ".bash_profile",
+      "language": "bash"
+    },
+    {
+      "name": ".zshrc",
+      "language": "bash"
+    },
+    {
+      "name": ".zprofile",
+      "language": "bash"
+    },
+    {
+      "name": ".env",
+      "language": "bash"
+    },
+    {
+      "name": ".env.local",
+      "language": "bash"
+    },
+    {
+      "name": "unknown.txt",
+      "language": "text"
+    }
+  ],
+  "table": {
+    "headers": [
+      "Name",
+      "Amount"
+    ],
+    "rows": [
+      [
+        "Alpha",
+        "0"
+      ],
+      [
+        "a2",
+        "1"
+      ],
+      [
+        "a10",
+        "2"
+      ],
+      [
+        "éclair",
+        "3"
+      ],
+      [
+        "Eclair",
+        "4"
+      ],
+      [
+        "foo20",
+        "5"
+      ],
+      [
+        "foo3",
+        "6"
+      ],
+      [
+        "9223372036854775808",
+        "7"
+      ],
+      [
+        "9223372036854775807",
+        "8"
+      ],
+      [
+        "",
+        "9"
+      ],
+      [
+        "  ",
+        "10"
+      ],
+      [
+        "-2",
+        "11"
+      ],
+      [
+        "+3",
+        "12"
+      ],
+      [
+        "1e400",
+        "13"
+      ],
+      [
+        "1e-2",
+        "14"
+      ],
+      [
+        "banana",
+        "15"
+      ]
+    ],
+    "minimums": [
+      90,
+      45
+    ],
+    "csv": "Name,Amount\r\nAlpha,0\r\na2,1\r\na10,2\r\néclair,3\r\nEclair,4\r\nfoo20,5\r\nfoo3,6\r\n9223372036854775808,7\r\n9223372036854775807,8\r\n,9\r\n\"  \",10\r\n'-2,11\r\n'+3,12\r\n1e400,13\r\n1e-2,14\r\nbanana,15",
+    "orders": [
+      {
+        "descending": false,
+        "order": [
+          11,
+          14,
+          12,
+          13,
+          8,
+          7,
+          1,
+          2,
+          0,
+          15,
+          3,
+          4,
+          6,
+          5,
+          9,
+          10
+        ]
+      },
+      {
+        "descending": true,
+        "order": [
+          5,
+          6,
+          3,
+          4,
+          15,
+          0,
+          2,
+          1,
+          7,
+          8,
+          13,
+          12,
+          14,
+          11,
+          9,
+          10
+        ]
+      }
+    ],
+    "numbers": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      true,
+      true,
+      false,
+      false,
+      true,
+      true,
+      true,
+      true,
+      false
+    ]
+  }
+}

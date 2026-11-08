@@ -36,8 +36,15 @@ for (const name of ["ngertiin-client", "ngertiin-avatar"]) {
   };
   visit(entry.id);
 }
+const colors = JSON.parse(await readFile(resolve(directory, "assets/theme-tokens.json"), "utf8"));
 for await (const file of new Bun.Glob("crates/**/*.rs").scan({ cwd: directory })) {
   const source = await readFile(resolve(directory, file), "utf8");
+  for (const match of source.matchAll(/\b(?:p|palette)\.color\("([^"]+)"\)/g))
+    for (const mode of ["light", "dark"])
+      assert(
+        typeof colors[mode][match[1]] === "string",
+        `Unknown ${mode} palette token ${match[1]} in ${file}`,
+      );
   assert(
     !/apps\/web-client\/dist|ReactDOM|createRoot|pdfjs/.test(source),
     `Browser application/PDF shell in ${file}`,

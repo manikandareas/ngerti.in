@@ -20,3 +20,52 @@ incremental = false
 opt-level = "s"
 lto = "thin"
 strip = true
+
+# Keep native rendering representative during development. The default debug
+# scalar raster pipeline otherwise takes >100 ms for a 256px cached portrait.
+[profile.dev.package.tiny-skia]
+opt-level = 3
+
+[profile.dev.package.tiny-skia-path]
+opt-level = 3
+
+[profile.dev.package.resvg]
+opt-level = 3
+
+[profile.dev.package.ngertiin-desktop]
+opt-level = 2
+
+[profile.dev.package.ngertiin-avatar]
+opt-level = 2
+
+# Native source/table/PDF interaction budgets include framework layout and
+# drawing. Keep the pinned rendering stack optimized in development as well.
+[profile.dev.package.gpui-fast]
+opt-level = 2
+
+[profile.dev.package.gpui-base]
+opt-level = 2
+
+[profile.dev.package.gpui-component]
+opt-level = 2
+
+[profile.dev.package.taffy]
+opt-level = 2
+
+# Active table profiling also exercises the native accessibility projection.
+[profile.dev.package.accesskit_consumer]
+opt-level = 2
+
+[profile.dev.package.accesskit_macos]
+opt-level = 2
+
+# Active native drawing samples also enter Lyon's vector tessellation path.
+[profile.dev.package.lyon_tessellation]
+opt-level = 2
+
+# PDF profiling reaches Metal atlas uploads in the native Apple backend.
+[profile.dev.package.gpui-fast-apple]
+opt-level = 2
+
+[profile.dev.package.gpui-fast-macos]
+opt-level = 2

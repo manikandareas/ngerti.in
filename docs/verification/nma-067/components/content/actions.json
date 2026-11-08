@@ -1,0 +1,101 @@
+{
+  "version": 1,
+  "actions": [
+    {
+      "host": "native",
+      "workload": "source-2mib-100000-lines-bounded-preview",
+      "at_utc": "2026-11-08T02:55:25.083Z",
+      "action": "Start 120 visible-second measurement"
+    },
+    {
+      "host": "native",
+      "workload": "source-2mib-100000-lines-bounded-preview",
+      "at_utc": "2026-11-08T02:55:29.764Z",
+      "action": "Scroll 3 pages down, find 000799, next match"
+    },
+    {
+      "host": "native",
+      "workload": "source-2mib-100000-lines-bounded-preview",
+      "at_utc": "2026-11-08T02:55:53.718Z",
+      "action": "Toggle wrap on and off, toggle line numbers off and on, scroll two pages down",
+      "result": "Blocked before input; refreshed native state"
+    },
+    {
+      "host": "native",
+      "workload": "source-2mib-100000-lines-bounded-preview",
+      "at_utc": "2026-11-08T02:56:03.386Z",
+      "action": "Wrap toggled on/off; line numbers toggled off/on; scrolled two pages down",
+      "result": "executed"
+    },
+    {
+      "host": "native",
+      "workload": "source-2mib-100000-lines-bounded-preview",
+      "at_utc": "2026-11-08T02:56:20.412Z",
+      "action": "Scroll two pages up and reveal previous find match",
+      "result": "executed"
+    },
+    {
+      "host": "native",
+      "workload": "source-2mib-100000-lines-bounded-preview",
+      "at_utc": "2026-11-08T02:57:33.040Z",
+      "action": "Late sample scroll three pages down, one page up",
+      "result": "executed"
+    },
+    {
+      "host": "native",
+      "workload": "table-10000-by-20",
+      "at_utc": "2026-11-08T02:57:46.936Z",
+      "action": "Start 120 visible-second measurement; scroll three pages down",
+      "result": "executed"
+    },
+    {
+      "host": "native",
+      "workload": "table-10000-by-20",
+      "at_utc": "2026-11-08T02:58:02.432Z",
+      "action": "Restore leftmost columns; scroll three pages down at visible table coordinate",
+      "result": "executed"
+    },
+    {
+      "host": "native",
+      "workload": "table-10000-by-20",
+      "at_utc": "2026-11-08T02:58:40.166Z",
+      "action": "Keyboard Left restores first columns; filter Row 9999",
+      "result": "executed"
+    },
+    {
+      "host": "native",
+      "workload": "table-10000-by-20",
+      "at_utc": "2026-11-08T02:58:51.978Z",
+      "action": "Clear filter; sort first column ascending/descending/clear; toggle wrap off/on; scroll up",
+      "result": "executed"
+    },
+    {
+      "host": "native",
+      "workload": "table-10000-by-20",
+      "at_utc": "2026-11-08T02:59:31.512Z",
+      "action": "Late sample vertical scroll down five page units and up two",
+      "result": "executed"
+    },
+    {
+      "host": "native",
+      "workload": "pdf-current-fixture",
+      "at_utc": "2026-11-08T03:00:20.674Z",
+      "action": "Start 120 visible-second measurement on long.pdf 200 pages; set 50%; scroll down three page units",
+      "result": "executed"
+    },
+    {
+      "host": "native",
+      "workload": "pdf-current-fixture",
+      "at_utc": "2026-11-08T03:01:13.905Z",
+      "action": "Set 100%, next page, set 150%, scroll down two units",
+      "result": "executed"
+    },
+    {
+      "host": "native",
+      "workload": "pdf-current-fixture",
+      "at_utc": "2026-11-08T03:01:39.084Z",
+      "action": "Set 200%, restore fit width, scroll up two units",
+      "result": "executed"
+    }
+  ]
+}

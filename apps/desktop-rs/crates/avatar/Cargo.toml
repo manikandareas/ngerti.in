@@ -6,3 +6,8 @@ publish.workspace = true
 
 [dependencies]
 serde.workspace = true
+
+[dev-dependencies]
+serde_json.workspace = true
+sha2 = "0.10"
+resvg = "=0.46.0"

@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "pid": 82197,
+  "avatars": 30,
+  "state": "Working",
+  "window_visible": true,
+  "offscreen": true,
+  "elapsed_seconds": 114.620479542,
+  "sample_seconds": 70.626610042,
+  "cpu_percent": 0.01415896925262668,
+  "image_deliveries": 0,
+  "raw": "native-offscreen-30-working.json",
+  "process_raw": "native-offscreen-process.json",
+  "passed": true
+}

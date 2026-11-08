@@ -1,0 +1,79 @@
+{
+  "version": 1,
+  "checked_at_utc": "2026-11-08T02:19:11.017Z",
+  "checks": [
+    {
+      "fixture": "large.ts",
+      "bytes": 2097152,
+      "sha256": "debfa50080cb478ee73e8fc31394f06e019971af56547048fb0322be98ae7629",
+      "matching_exports": [
+        "e64b7491-4649-41c0-9d7c-4977d81cdb7b-large.ts"
+      ],
+      "passed": true
+    },
+    {
+      "fixture": "source.ts",
+      "bytes": 46212,
+      "sha256": "e6e6559c69128b829b6e014d4f3a09a8df2c7205eed10202b3c0236977e76a9d",
+      "matching_exports": [
+        "e6b34041-6dc9-4f78-8fa9-06c9787f3dab-source.ts"
+      ],
+      "passed": true
+    },
+    {
+      "fixture": "table.csv",
+      "bytes": 3887990,
+      "sha256": "28fb7e734c9867964160442ed042ea5fa17425a23010f79f9a7adc1174db7eae",
+      "matching_exports": [
+        "ee68734d-c60e-4a70-834c-e6464a792132-table.csv"
+      ],
+      "passed": true
+    },
+    {
+      "fixture": "document.md",
+      "bytes": 340,
+      "sha256": "c65ff3a8e877c30ad7b158a502be48154faa6103d5de6155e52ccb950f671302",
+      "matching_exports": [
+        "e6157bbc-7f4d-4475-9ff6-7b42dac3efec-document.md"
+      ],
+      "passed": true
+    },
+    {
+      "fixture": "image.png",
+      "bytes": 414971,
+      "sha256": "6cbaec6c9d30c2acc0eeaac9cf352044ad5016dc9dbe605e8f9b47b0468ab2d7",
+      "matching_exports": [
+        "89249d59-a68c-486e-969d-8a37b1658fe6-image.png"
+      ],
+      "passed": true
+    },
+    {
+      "fixture": "document.html",
+      "bytes": 1210,
+      "sha256": "b1ba6f64f8b8806b03a330dc7c1cd78334f797dcaa755fcced30a0929546b5a8",
+      "matching_exports": [
+        "238aea9d-614a-4766-999b-fa1f97b90cf9-document.html"
+      ],
+      "passed": true
+    },
+    {
+      "fixture": "long.pdf",
+      "bytes": 87818,
+      "sha256": "181ed67513433af8ef657a83991c1fc2a5a9e245565dc5d191c312e22f898793",
+      "matching_exports": [
+        "5e26d6c7-4053-45f2-8f7c-285403304e67.pdf"
+      ],
+      "passed": true
+    },
+    {
+      "fixture": "protected.pdf",
+      "bytes": 29856,
+      "sha256": "d69e08b8a4be0ddeb6c31eb34ffbbf4c3859ccb9fc46e5784e49c5231fb92f66",
+      "matching_exports": [
+        "73e48d49-b12a-4f58-9533-e9d622e52efb.pdf"
+      ],
+      "passed": true
+    }
+  ],
+  "passed": true
+}

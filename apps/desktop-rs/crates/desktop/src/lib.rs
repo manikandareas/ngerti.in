@@ -1,6 +1,7 @@
 mod bootstrap;
 mod features;
 mod host;
+pub mod models;
 mod platform;
 mod shell;
 mod storage;

@@ -1,0 +1,66 @@
+Window: "Ngertiin Rust Development", App: Ngertiin Rust Development.
+0 standard window Ngertiin Rust Development, Secondary Actions: Raise
+	1 container
+		2 button Dark
+		3 tab group
+			4 tab (settable, boolean) Controls, Value: on
+			5 tab (settable, boolean) Composer, Value: off
+			6 tab (settable, boolean) Messages, Value: off
+			7 tab (settable, boolean) Content, Value: off
+			8 tab (settable, boolean) Editor probe, Value: off
+			9 tab (settable, boolean) Avatar, Value: off
+			10 tab (settable, boolean) Material probe, Value: off
+			11 tab (settable, boolean) Source and table, Value: off
+			12 tab (settable, boolean) Native PDF, Value: off
+			13 tab (settable, boolean) Static HTML, Value: off
+			14 tab (settable, boolean) Read-only snapshot, Value: off
+		15 button Default
+		16 button Primary
+		17 button Outline
+		18 button Secondary
+		19 button Text action
+		20 button Ghost
+		21 button Delete
+		22 button Rounded override
+		23 button (disabled) Disabled
+		24 button Loading
+		25 container Search agents, Help: Find an agent by name.
+			26 container Agent search
+				27 text field (settable) Search agents
+		28 checkbox (settable, boolean) Remember choice, Value: on
+		29 switch (settable, boolean) Enable preview, Value: off
+		30 checkbox (disabled, settable, boolean) Unavailable, Value: off
+		31 radio button (selected, settable, boolean) System
+		32 radio button (selectable, settable, boolean) Light, Secondary Actions: Pick
+		33 radio button (selectable, settable, boolean) Dark, Secondary Actions: Pick
+		34 slider (settable, float) Preview size, Value: 45
+		35 button Open dialog
+		36 button Open sheet
+		37 button Open drawer
+		38 button Open confirmation
+		39 button Appearance
+		40 button Appearance menu
+		41 container Loading, Help: Reading the current conversation…
+		42 container No saved files, Help: Files saved in this conversation appear here.
+		43 container Could not load files, Help: Check the backend connection, then retry.
+		44 text Default
+		45 text Complete
+		46 text Waiting
+		47 text Failed
+		48 button Conversation details
+		49 container Loading content
+		50 container A reusable message surface with caller-owned content.
+		51 container A second presentation variant.
+		52 button Open popover, Help: Show contextual information
+		53 dialog
+			54 Heading Native focus proof
+			55 container This dialog must cover the child content and return focus after Escape.
+			56 button Close
+	57 close button
+	58 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	59 minimize button
+	60 text Ngertiin Rust Development
+61 menu bar
+	62 Ngertiin Rust Development
+
+The focused UI element is 0 standard window Ngertiin Rust Development, Secondary Actions: Raise

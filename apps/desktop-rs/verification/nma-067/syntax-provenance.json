@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "reference": "apps/web-client/src/features/conversation/lib/code-highlight.ts",
+  "sources": [
+    {
+      "theme": "github-light-default",
+      "module": "node_modules/.bun/shiki@4.5.0/node_modules/shiki/dist/themes/github-light-default.mjs",
+      "sha256": "a1b863b1ab478606809e063089bf7ee46ceccad226fe119873c3a824d1c9bbd2"
+    },
+    {
+      "theme": "github-dark-default",
+      "module": "node_modules/.bun/shiki@4.5.0/node_modules/shiki/dist/themes/github-dark-default.mjs",
+      "sha256": "011e9237cf9268b09d7975b13e71882be824920a5a4a547cbb46043d07a5594e"
+    }
+  ],
+  "mapping": {
+    "attribute": "entity.other.attribute-name",
+    "boolean": "constant.language.boolean",
+    "comment": "comment",
+    "comment_doc": "comment",
+    "constant": "constant",
+    "constructor": "entity.name.function",
+    "function": "entity.name.function",
+    "keyword": "keyword",
+    "number": "constant.numeric",
+    "operator": "keyword.operator",
+    "property": "meta.property-name",
+    "punctuation": "variable.other",
+    "punctuation.bracket": "variable.other",
+    "punctuation.delimiter": "variable.other",
+    "string": "string",
+    "string.escape": "constant.character.escape",
+    "string.regex": "string.regexp",
+    "tag": "entity.name.tag",
+    "type": "entity.name.type",
+    "variable": "variable.other",
+    "preproc": "keyword",
+    "label": "entity.name",
+    "embedded": "variable.other"
+  }
+}

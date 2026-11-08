@@ -1,0 +1,78 @@
+{
+  "version": 1,
+  "kind": "headless cached CPU composition; not native draw or presentation",
+  "cases": [
+    {
+      "avatars": 1,
+      "state": "Idle",
+      "samples": 240,
+      "p50_ms": 0.8285830000000001,
+      "p95_ms": 0.9512499999999999,
+      "p99_ms": 0.9741249999999999
+    },
+    {
+      "avatars": 1,
+      "state": "Thinking",
+      "samples": 240,
+      "p50_ms": 0.802292,
+      "p95_ms": 0.8947080000000001,
+      "p99_ms": 0.9749580000000001
+    },
+    {
+      "avatars": 1,
+      "state": "Working",
+      "samples": 240,
+      "p50_ms": 0.840625,
+      "p95_ms": 0.955583,
+      "p99_ms": 0.981958
+    },
+    {
+      "avatars": 10,
+      "state": "Idle",
+      "samples": 240,
+      "p50_ms": 0.5848329999999999,
+      "p95_ms": 0.646541,
+      "p99_ms": 0.650708
+    },
+    {
+      "avatars": 10,
+      "state": "Thinking",
+      "samples": 240,
+      "p50_ms": 0.596542,
+      "p95_ms": 0.650583,
+      "p99_ms": 0.684
+    },
+    {
+      "avatars": 10,
+      "state": "Working",
+      "samples": 240,
+      "p50_ms": 0.637,
+      "p95_ms": 0.684666,
+      "p99_ms": 0.690959
+    },
+    {
+      "avatars": 30,
+      "state": "Idle",
+      "samples": 240,
+      "p50_ms": 1.877042,
+      "p95_ms": 2.207292,
+      "p99_ms": 2.353417
+    },
+    {
+      "avatars": 30,
+      "state": "Thinking",
+      "samples": 240,
+      "p50_ms": 1.760708,
+      "p95_ms": 2.077958,
+      "p99_ms": 2.11175
+    },
+    {
+      "avatars": 30,
+      "state": "Working",
+      "samples": 240,
+      "p50_ms": 1.9117089999999999,
+      "p95_ms": 2.054,
+      "p99_ms": 2.087625
+    }
+  ]
+}

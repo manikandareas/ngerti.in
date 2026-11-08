@@ -1,0 +1,72 @@
+[
+  {
+    "host": "native",
+    "workload": "source-2mib-100000-lines-bounded-preview",
+    "at_utc": "2026-11-08T03:20:49.407Z",
+    "action": "Start optimized-framework sample; scroll down; find 000799; next match",
+    "result": "executed"
+  },
+  {
+    "host": "native",
+    "workload": "source-2mib-100000-lines-bounded-preview",
+    "at_utc": "2026-11-08T03:21:32.757Z",
+    "action": "Wrap on/off; line numbers off/on; scroll down/up",
+    "result": "executed"
+  },
+  {
+    "host": "native",
+    "workload": "source-2mib-100000-lines-bounded-preview",
+    "at_utc": "2026-11-08T03:22:08.608Z",
+    "action": "Late previous-match reveal and scroll down/up",
+    "result": "executed"
+  },
+  {
+    "host": "native",
+    "workload": "table-10000-by-20",
+    "at_utc": "2026-11-08T03:23:12.655Z",
+    "action": "Start optimized-framework 10000×20 table sample; scroll down",
+    "result": "executed"
+  },
+  {
+    "host": "native",
+    "workload": "table-10000-by-20",
+    "at_utc": "2026-11-08T03:24:47.870Z",
+    "action": "Restore first columns with keyboard; filter Row 9999",
+    "result": "executed; vertical-wheel axis fallback reproduced before fix"
+  },
+  {
+    "host": "native",
+    "workload": "table-10000-by-20",
+    "at_utc": "2026-11-08T03:24:55.496Z",
+    "action": "Clear filter, cycle first-column sort, wrap off/on, scroll up",
+    "result": "executed"
+  },
+  {
+    "host": "native",
+    "workload": "table-10000-by-20",
+    "at_utc": "2026-11-08T03:36:43.434Z",
+    "action": "Start final sample after axis/accessibility fix; scroll vertically down three units",
+    "result": "executed"
+  },
+  {
+    "host": "native",
+    "workload": "table-10000-by-20",
+    "at_utc": "2026-11-08T03:37:49.914Z",
+    "action": "Filter Row 9999 after vertical scroll with first column preserved",
+    "result": "executed"
+  },
+  {
+    "host": "native",
+    "workload": "table-10000-by-20",
+    "at_utc": "2026-11-08T03:38:01.286Z",
+    "action": "Clear filter; cycle first-column sort; toggle wrap off/on; vertical scroll down/up",
+    "result": "executed"
+  },
+  {
+    "host": "native",
+    "workload": "table-10000-by-20",
+    "at_utc": "2026-11-08T03:38:24.235Z",
+    "action": "Horizontal wheel right and left independently of vertical scroll",
+    "result": "executed"
+  }
+]

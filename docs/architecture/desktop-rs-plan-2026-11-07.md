@@ -1,6 +1,6 @@
 # Desktop Rust: observation and ordered parity plan
 
-Date: 2026-11-07. Status: NMA-066 implementation In Progress; NMA-067–071 Backlog. Target: `apps/desktop-rs`, a GPUI desktop client following the current Tauri application's product behavior and visual design as closely as possible. The user requested a small, ordered local backlog after observation. Six milestones, [NMA-066](../backlog/NMA-066.md) through [NMA-071](../backlog/NMA-071.md), define that work. The [native foundation](../../apps/desktop-rs/README.md) now exists under the separately requested NMA-066 implementation. [Executed evidence and remaining gaps](../verification/nma-066/README.md) govern its acceptance; no active-host replacement or parity acceptance is claimed.
+Date: 2026-11-07; acceptance updated 2026-11-08. Status: NMA-066/NMA-067 **Done**; NMA-068–071 Backlog. Target: `apps/desktop-rs`, a GPUI desktop client following the current Tauri application's product behavior and visual design as closely as possible. Six milestones, [NMA-066](../backlog/NMA-066.md) through [NMA-071](../backlog/NMA-071.md), define that work. The [native workspace](../../apps/desktop-rs/README.md) implements the foundation, Rust avatar engine and native composer, message, rich-content, continuous PDF and isolated HTML components. The [2026-11-08 owner decision](../development/nma-066-067-closure-2026-11-08.md) accepts these two implemented slices and makes remaining technical verification non-blocking. [Foundation](../verification/nma-066/README.md) and [component evidence](../verification/nma-067/README.md) retain actual results and limitations. Integrated parity and active-host replacement remain separate.
 
 The user subsequently confirmed that the main UI must be implemented natively in Rust + GPUI, rather than forwarding the existing web-client through a WebView. The rendering ownership contract below applies to all six milestones.
 
@@ -116,11 +116,13 @@ The production client must not load or bundle `apps/web-client/dist`, start a Re
 | 5 | [NMA-070 · Computer, native host and lifecycle parity](../backlog/NMA-070.md) | Live Computer/control and host behavior, including process ownership and visibility cleanup. |
 | 6 | [NMA-071 · Desktop parity acceptance and development bundle](../backlog/NMA-071.md) | Integrated native evidence, resolved material differences and a verified local development bundle. |
 
-**NMA-066 is In Progress**; NMA-067–071 remain **Backlog**. The independent workspace, gallery and read-only probes do not close the required foundation acceptance gaps. Orders 16.1–16.6 place this separate `Desktop Rust` plan after the current NMA-061/062 reference. Existing NMA-063/064 dependencies and statuses are unchanged. Each milestone contains internal work units and its own verification; the last milestone consolidates evidence rather than discovering basic feasibility for the first time.
+**NMA-066/NMA-067 are Done** under the [owner acceptance decision](../development/nma-066-067-closure-2026-11-08.md); NMA-068–071 remain **Backlog**. The implemented foundation and reusable components are accepted for handoff, with remaining technical checks optional and actual outcomes preserved. Orders 16.1–16.6 place this separate `Desktop Rust` plan after the current NMA-061/062 reference. Existing NMA-063/064 dependencies and statuses are unchanged. Later milestones retain their own workflow and integrated-parity acceptance; optional checks are not silently transferred to them.
 
-Each milestone also contains ordered subtasks with a concrete deliverable and evidence requirement. These are internal work items, not additional backlog milestones. Complete the listed dependencies and acceptance before advancing; an unchecked task or an unexecuted capability probe remains visible.
+Each milestone also contains ordered subtasks with a concrete deliverable and evidence requirement. These are internal work items, not additional backlog milestones. NMA-066/NMA-067 acceptance follows the explicit owner decision above; their unexecuted or inconclusive checks remain visible as non-blocking observations. Later milestones retain their listed dependencies and acceptance.
 
 ## Parity contract
+
+The 2026-11-08 owner decision makes remaining NMA-066/NMA-067 technical checks optional for closing those slices. The following contract continues to define integrated parity claims; accepting those components does not turn incomplete tests into parity proof.
 
 NMA-066 freezes a versioned surface/state manifest, selected fixtures, dimensions, fonts, zoom, device scale, locale/time zone and source revisions. Later reference changes enter a reviewed baseline delta, not an unannounced moving target.
 

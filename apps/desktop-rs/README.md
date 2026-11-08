@@ -1,6 +1,6 @@
 # Ngertiin native desktop foundation
 
-An independent Cargo workspace for [NMA-066](../../docs/backlog/NMA-066.md). It currently opens a native component gallery and renderer probes, with optional read-only API attachment. The active product client remains Tauri. Required capability gaps and their native evidence are tracked in the [verification report](../../docs/verification/nma-066/README.md); this foundation is not accepted desktop parity.
+An independent Cargo workspace for [NMA-066](../../docs/backlog/NMA-066.md) and [NMA-067](../../docs/backlog/NMA-067.md), both Done under the [2026-11-08 owner decision](../../docs/development/nma-066-067-closure-2026-11-08.md). It opens a native component gallery with avatar/composer/message/rich-content/document components and optional read-only API attachment. Remaining technical verification is non-blocking; [foundation evidence](../../docs/verification/nma-066/README.md) retains actual outcomes and limitations. Tauri remains the active product client; integrated desktop parity has its own later gate.
 
 ## Run and verify
 
@@ -24,7 +24,7 @@ The default Cargo output is `.dev/desktop-rs-target` at the repository root. `NG
 
 `client` exposes only contract and existing-thread snapshot reads. It has no mutation, inference, event checkpoint or backend-spawn interface. One OS worker with an 8 MiB stack serializes reads with one queued slot. Retired receivers cancel queued work; active reads finish within the transport bounds and discard retired replies. This avoids recursive schema compilation on AppKit's small dispatch stacks. Snapshot bodies are bounded at 16 MiB; redirects/proxies are disabled and installation credentials stay in native transport state.
 
-`avatar` contains the matching JavaScript seed/hash primitives and a bounded material-transform proof. Rust generates the fur surface; GPUI draws eyes independently. The full recipe/geometry/expression/motion port remains NMA-067. Exported web portraits are not used by this client.
+`avatar` ports the versioned recipes, original catalog/geometry/seeded material, expression/action/loading/motion and transparent exports. The desktop adapter shares one native clock and bounded cached compositor with independent eye layers. Exported web portraits are not runtime state assets. See the NMA-067 components below for the executed evidence and retained limitations.
 
 ## Read-only attachment
 
@@ -48,6 +48,27 @@ For a disposable real-API fixture, run `bun apps/desktop-rs/scripts/fixture-serv
 
 The [versioned reference manifest](verification/reference-v1/manifest.json) freezes source hashes, current surface/state owners, product-consumed controls and gallery-only controls. `scripts/freeze-reference.ts` explicitly refreshes this baseline; review its diff before accepting a new reference. `prepare-reference-assets.ts` imports original product Hugeicons and representative Material Icon Theme assets from the built current client. Fonts retain their original OFL files. The original icon SVGs, Material associations and licenses remain local; native probe rasters are generated from those originals.
 
-Selected pins are GPUI Kit/WebView **0.9.0**, GPUI Fast **0.1.13**, lb-wry **0.53.3**, resvg **0.46.0**, objc2-pdf-kit **0.3.2**, reqwest **0.12.28** and jsonschema **0.33.0**; `Cargo.lock` owns all checksums/transitive versions. `platform/pdf.rs` adapts GPUI WebView's native composition attachment/geometry/retirement pattern to PDFKit's NSView, without constructing a browser. `platform/embedded.rs` mounts only a fixed static HTML proof with CSP and blocked navigation. Arbitrary HTML sanitization and live Computer sessions remain later work.
+Selected pins are GPUI Kit/WebView **0.9.0**, GPUI Fast **0.1.13**, lb-wry **0.53.3**, resvg **0.46.0**, objc2-pdf-kit **0.3.2**, reqwest **0.12.28** and jsonschema **0.33.0**; `Cargo.lock` owns all checksums/transitive versions. `platform/pdf.rs` now owns a continuous GPUI viewport with a Quartz raster worker and PDFKit text selection. Its original AppKit-view spike is retained in foundation evidence. `platform/embedded.rs` accepts only typed sanitized static HTML with restrictive CSP/disabled JavaScript and blocked navigation. Live Computer sessions remain NMA-070.
 
 Upgrades must repeat cold snapshot decoding from a small-stack caller, malformed/version/shape/HTTP/redirect cases, native input/token/clipboard/IME, focus and keyboard names, image resampling/independent eyes, PDF layout/selection/zoom, child-view geometry/retirement and native overlays. The [source-adoption guide](../../docs/development/source-adoption.md) and verification report distinguish selected candidates from fully proved capabilities.
+
+## NMA-067 components
+
+The **Avatar** scene offers fixed frames and 1/10/30 continuous portraits using the independent Rust engine, one native visibility-aware clock, pointer gaze, independent eyes/blink, loading/actions and reduced motion. Material/texture preparation runs on a bounded worker; replaced GPU images are explicitly retired. The component benchmark records actual image deliveries alongside GPUI draw/work/missed-refresh metrics; redraw callbacks alone do not establish animation cadence.
+
+**Composer** implements atomic agent/user/file/skill tokens, validated metadata clipboard, Unicode/grapheme edits, bounded undo/redo and suggestions. It emits typed submission/file intents without network policy. **Messages** supplies native DM/group/user/assistant attribution, file-only rows, safe activity, clocks/day markers and revision-bound question/approval/retry controls. Durable operations and real API submission remain NMA-068.
+
+**Content** has a read-only virtual source editor with precomputed Syntect highlights in the original syntax palette, literal find/wrap/line numbers; a variable-height virtual table with stable sorting/filtering/range copy and an expanded native dialog; native selectable Markdown/GFM; and bounded native image decoding/fit/zoom/copy. Original download bytes are distinct from rendered/copy formats. Limits remain 128,000-byte text preview, 100,000 highlighted UTF-16 units, virtual source above 500 lines, PDF 16 MiB/500 pages and five bounded nearby PDF rasters. Unsupported/incomplete documents retain actionable download states.
+
+**Native PDF** uses Quartz page rasters and PDFKit text with GPUI continuous pages, selection, paging, fit/50–200% zoom, reading anchors, error/retry and original downloads. **Static HTML** mounts only a sanitized document body in the isolated adapter; GPUI owns surrounding controls and overlays. Shell/composer/messages/Markdown/source/table/image/PDF never load React, Lexical, PDF.js or the TypeScript avatar runtime.
+
+[Component verification](../../docs/verification/nma-067/README.md) records actual native interactions, eight original-download hash checks, source vectors and failures/corrections. The owner accepts the implemented components with remaining CJK, exhaustive visual/control and performance checks non-blocking under the recorded decision. NMA-066/NMA-067 are Done; NMA-068–071 remain Backlog.
+
+A Rust executable generates transparent SVG/PNG from either a new seed or a stored recipe, without TypeScript or a browser:
+
+```sh
+# Run from the repository root; exporter arguments are relative to apps/desktop-rs.
+bun apps/desktop-rs/scripts/cargo.ts run -p ngertiin-avatar --example export -- verification/nma-067/new-seed-request.json ../../.dev/avatar-export
+```
+
+The output prefix's parent directory must exist. Exports include the resulting recipe JSON; requested PNG sizes are bounded to 32–2048 pixels. PNG rasterization applies the pinned resvg 0.46.0 displacement workaround; standalone SVG retains the original filter. `scripts/avatar-reference.ts` refreshes development-only source vectors explicitly; ordinary checks consume the frozen vectors and never invoke the TypeScript renderer. NMA-067 is Done for the accepted component scope; unexecuted native checks keep their actual status in the evidence report.

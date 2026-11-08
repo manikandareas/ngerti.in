@@ -1,12 +1,19 @@
 use std::path::{Path, PathBuf};
+pub(crate) mod avatar;
+pub(crate) mod composer;
 mod compounds;
+pub(crate) mod content;
 mod controls;
+pub(crate) mod measurement;
+pub(crate) mod messages;
 mod probes;
 mod snapshot;
 
 pub struct ProbeAssets {
     pub avatar: [PathBuf; 2],
     pub pdf: PathBuf,
+    pub html: crate::models::html::PreparedHtml,
+    pub pdf_cases: Vec<(String, PathBuf)>,
     pub format_icons: Vec<(String, PathBuf)>,
 }
 impl ProbeAssets {
@@ -52,7 +59,39 @@ impl ProbeAssets {
             pixmap.save_png(&path)?;
             format_icons.push((name, path));
         }
+        let mut pdf_cases = vec![(
+            "Two pages".into(),
+            crate::platform::assets::root().join("probe.pdf"),
+        )];
+        for (name, bytes) in [
+            (
+                "200 pages",
+                include_bytes!("../../../../verification/nma-067/pdf/long.pdf").as_slice(),
+            ),
+            (
+                "Protected",
+                include_bytes!("../../../../verification/nma-067/pdf/protected.pdf").as_slice(),
+            ),
+            (
+                "501 pages",
+                include_bytes!("../../../../verification/nma-067/pdf/page-limit.pdf").as_slice(),
+            ),
+            ("Malformed", b"not a PDF".as_slice()),
+        ] {
+            let path = directory.join(format!("{name}.pdf"));
+            std::fs::write(&path, bytes)?;
+            pdf_cases.push((name.into(), path));
+        }
+        let oversized = directory.join("oversized.pdf");
+        std::fs::File::create(&oversized)?.set_len(16 * 1024 * 1024 + 1)?;
+        pdf_cases.push(("Oversized".into(), oversized));
         Ok(Self {
+            pdf_cases,
+            html: crate::models::html::prepare(
+                include_bytes!("../../../../assets/static-document.html"),
+                false,
+                60,
+            )?,
             avatar,
             pdf: crate::platform::assets::root().join("probe.pdf"),
             format_icons,

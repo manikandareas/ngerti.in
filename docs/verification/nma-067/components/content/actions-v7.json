@@ -1,0 +1,48 @@
+[
+  {
+    "host": "native",
+    "workload": "table-10000-by-20",
+    "at_utc": "2026-11-08T04:06:45.273Z",
+    "action": "Start ready/warmed virtual-column table sample",
+    "pid": 63862
+  },
+  {
+    "host": "native",
+    "workload": "table-10000-by-20",
+    "at_utc": "2026-11-08T04:06:46.452Z",
+    "action": "Scroll down four units; filter final row",
+    "result": "Row 9999 present"
+  },
+  {
+    "host": "native",
+    "workload": "table-10000-by-20",
+    "at_utc": "2026-11-08T04:07:04.387Z",
+    "action": "Verify wrapped filtered row; clear filter; cycle sort; wrap off/on; vertical down/up five units"
+  },
+  {
+    "host": "native",
+    "workload": "table-10000-by-20",
+    "at_utc": "2026-11-08T04:08:54.477Z",
+    "action": "Repeat vertical down/up four units"
+  },
+  {
+    "host": "native",
+    "workload": "pdf-current-fixture",
+    "at_utc": "2026-11-08T04:09:39.292Z",
+    "action": "Start ready 200-page PDF sample",
+    "ready_utc": "2026-11-08T04:09:13.391Z",
+    "pid": 63862
+  },
+  {
+    "host": "native",
+    "workload": "pdf-current-fixture",
+    "at_utc": "2026-11-08T04:09:41.832Z",
+    "action": "Scroll down five units; next/previous page; 50% and 100% zoom"
+  },
+  {
+    "host": "native",
+    "workload": "pdf-current-fixture",
+    "at_utc": "2026-11-08T04:10:48.777Z",
+    "action": "150%/200% zoom; restore fit; continuous down seven/up five units; inspect reading position"
+  }
+]

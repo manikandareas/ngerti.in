@@ -10,18 +10,40 @@ serde.workspace = true
 serde_json.workspace = true
 ngertiin-client = { path = "../client" }
 ngertiin-avatar = { path = "../avatar" }
-gpui-kit = { version = "=0.9.0", features = ["gpui-fast", "syntect"] }
+gpui-kit = { version = "=0.9.0", features = ["gpui-fast", "syntect", "profiler"] }
 gpui-webview = { version = "=0.9.0", features = ["gpui-fast"] }
 wry = { version = "=0.53.3", package = "lb-wry" }
 uuid = { version = "1", features = ["serde"] }
 resvg = "=0.46.0"
+base64 = "=0.22.1"
+image = { version = "=0.25.10", default-features = false }
+futures-channel = "=0.3.34"
+unicode-segmentation = "=1.13.3"
+percent-encoding = "=2.3.2"
+regex = "=1.13.1"
+chrono = "=0.4.45"
+futures-util = "=0.3.34"
+html5ever = "=0.27.0"
+markup5ever_rcdom = "=0.3.0"
+syntect = { version = "=5.3.0", default-features = false, features = ["parsing", "regex-fancy"] }
+two-face = { version = "=0.4.5", default-features = false, features = ["syntect-fancy"] }
 
 [target.'cfg(target_os = "macos")'.dependencies]
 objc2 = "=0.6.4"
 objc2-app-kit = "=0.3.2"
 objc2-foundation = "=0.3.2"
 objc2-pdf-kit = "=0.3.2"
+block2 = "=0.6.2"
+objc2-core-graphics = "=0.3.2"
+objc2-core-foundation = "=0.3.2"
+
+[dev-dependencies]
+futures-executor = "=0.3.34"
 
 [[example]]
 name = "gallery"
 path = "examples/gallery.rs"
+
+[[example]]
+name = "avatar-compositor"
+path = "examples/avatar-compositor.rs"

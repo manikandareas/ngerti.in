@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "boundary": "Binary exec to visible authored conversation text, after fonts and two browser frames. Excludes LaunchServices/shell/Python startup. Cold means a fresh WKWebView store, not purged OS file caches.",
+  "observations": [
+    {
+      "kind": "first-visible-conversation",
+      "at_epoch_ms": 1794107265636,
+      "navigation_ms": 1996,
+      "viewport": [
+        1280,
+        901
+      ],
+      "scale": 2,
+      "messages": 50,
+      "hidden": false,
+      "theme": "dark",
+      "locale": "en-GB",
+      "mode": "capture",
+      "index": 0,
+      "pid": 63101,
+      "exec_to_visible_ms": 5659.60400390625
+    },
+    {
+      "kind": "first-visible-conversation",
+      "at_epoch_ms": 1794107863358,
+      "navigation_ms": 1790,
+      "viewport": [
+        1440,
+        931
+      ],
+      "scale": 2,
+      "messages": 50,
+      "hidden": false,
+      "theme": "dark",
+      "locale": "en-GB",
+      "mode": "capture",
+      "index": 1,
+      "purpose": "large viewport fresh launch",
+      "pid": 83336,
+      "exec_to_visible_ms": 3544.096923828125
+    }
+  ]
+}

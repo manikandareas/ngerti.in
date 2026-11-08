@@ -1,0 +1,91 @@
+{
+  "date": "2026-11-07",
+  "os": "26.3",
+  "architecture": "arm64",
+  "hardware_model": "MacBookAir10,1",
+  "memory_bytes": 8589934592,
+  "rust": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+  "cargo": "cargo 1.99.1 (5f94df478 2026-08-27)",
+  "bun": "1.3.10",
+  "native_requested_window": [
+    1280,
+    900
+  ],
+  "native_scale": "2x reference host; retained full-window image dimensions are authoritative",
+  "clock_ms": 0,
+  "images": {
+    "native-avatar-after-fix.jpg": {
+      "width": 2560,
+      "height": 1866,
+      "format": "JPEG",
+      "sha256": "3b09c53a9b83ff1fbce325c5bcf3679edf5544ae7eb291f4ee02cacce1e4df3f"
+    },
+    "native-avatar-light.jpg": {
+      "width": 2560,
+      "height": 1866,
+      "format": "JPEG",
+      "sha256": "a904d3b7d585d21c1b5799b630c1959c257f873931582318233720e984f65951"
+    },
+    "native-avatar-loading-light.jpg": {
+      "width": 2560,
+      "height": 1866,
+      "format": "JPEG",
+      "sha256": "f0175e7668ad909393777058b9f0ed2419d7765b1ffa83d6fd2fe2d863ab7932"
+    },
+    "native-avatar-oval-after-fix.jpg": {
+      "width": 2560,
+      "height": 1866,
+      "format": "JPEG",
+      "sha256": "caa47feb879d82038bda38ccf75a308a5b0240148bb481c931e77ba9438d0d35"
+    },
+    "native-avatar-reduced-motion.jpg": {
+      "width": 2560,
+      "height": 1866,
+      "format": "JPEG",
+      "sha256": "c8d5b45cfa6dff2e93e9e3c700d9afebddb0c3212439ace7eeba830d9bac33ec"
+    },
+    "renderer-comparison-after-fix.jpg": {
+      "width": 1670,
+      "height": 877,
+      "format": "JPEG",
+      "sha256": "2762ce8951470721bb71f4809b157c6110ce90a2207786baaf4dc47748984ad0"
+    },
+    "renderer-comparison.jpg": {
+      "width": 1670,
+      "height": 877,
+      "format": "JPEG",
+      "sha256": "ef7ac5efd44e545d4170850f39ba71ab250abcdd2e1469c6bd41dd90ef49607f"
+    },
+    "rust-tobi-before-displacement-fix.png": {
+      "width": 768,
+      "height": 768,
+      "format": "PNG",
+      "sha256": "bbdd89a5f24daec2d02de16f6e6b10e22c270f943d6014eba410a36481783bd1"
+    },
+    "rust-tobi.png": {
+      "width": 768,
+      "height": 768,
+      "format": "PNG",
+      "sha256": "572723de9e1f32104bda95634e9fd3c63265fee34f89d9c1ec269e71ebcdc25e"
+    }
+  },
+  "performance_comparison_executed": false,
+  "backend_attachment": false,
+  "component_handoff_accepted": false,
+  "capture_disposition": {
+    "native-avatar-light.jpg": "Pre-displacement-correction iteration, Tobi at four sizes in light theme.",
+    "native-avatar-loading-light.jpg": "Pre-correction iteration, listening/loading at 0ms; ring presentation only.",
+    "native-avatar-after-fix.jpg": "Corrected Tobi, four display sizes, light theme, 0ms.",
+    "native-avatar-oval-after-fix.jpg": "Corrected oval recipe at four sizes in light theme.",
+    "native-avatar-reduced-motion.jpg": "Corrected Tobi after the gallery reduced-motion control settled; host setting integration not tested.",
+    "renderer-comparison.jpg": "Browser original SVG versus uncorrected resvg PNG. Visual mismatch retained.",
+    "renderer-comparison-after-fix.jpg": "Same browser comparison after pin-specific raster correction. One case, no numerical cross-renderer threshold."
+  },
+  "native_final_binary_checks": {
+    "launch": true,
+    "fixed_time_frame": true,
+    "scene_retire_and_reenter": true,
+    "gpu_memory_instrumentation": false,
+    "application_left_open_on_avatar_gallery": true
+  }
+}

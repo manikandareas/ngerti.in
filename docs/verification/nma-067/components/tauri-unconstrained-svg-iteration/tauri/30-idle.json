@@ -1,0 +1,24 @@
+{
+  "version": 2,
+  "started_utc": "2026-11-07T17:45:29.672Z",
+  "ended_utc": "2026-11-07T17:47:30.682Z",
+  "elapsed_seconds": 121.003,
+  "visible_sample_seconds": 120.998,
+  "visibility_changes": [
+    [
+      0,
+      true
+    ]
+  ],
+  "texture_ready_count": 30,
+  "avatars": 30,
+  "state": "idle",
+  "viewport": [
+    1280,
+    901
+  ],
+  "device_scale": 2,
+  "frames_ms": [],
+  "image_deliveries_ms": [],
+  "source": "Current original mountAvatar through native Tauri WKWebView"
+}

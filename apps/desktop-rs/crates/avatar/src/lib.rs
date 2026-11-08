@@ -1,25 +1,19 @@
-//! Renderer-independent seeds and a bounded texture-transform proof.
-//! The complete recipe/geometry/motion port belongs to NMA-067.
+//! Renderer-independent avatar identity, material and motion.
+//! Adapted from packages/avatar and the web avatar engine; see NMA-067 provenance.
+mod catalog;
+mod config;
+mod material;
+mod motion;
+mod render;
 
-/// Matches packages/avatar seedHash, including Unicode code points and u32 wrapping.
-pub fn seed_hash(seed: &str) -> u32 {
-    seed.chars().fold(2_166_136_261, |hash, ch| {
-        (hash ^ ch as u32).wrapping_mul(16_777_619)
-    })
-}
-
-pub struct SeedRandom(u32);
-impl SeedRandom {
-    pub fn new(seed: &str) -> Self {
-        Self(seed_hash(seed))
-    }
-    pub fn sample(&mut self) -> f64 {
-        self.0 = self.0.wrapping_add(0x6d2b79f5);
-        let mut n = (self.0 ^ (self.0 >> 15)).wrapping_mul(1 | self.0);
-        n ^= n.wrapping_add((n ^ (n >> 7)).wrapping_mul(61 | n));
-        f64::from(n ^ (n >> 14)) / 4_294_967_296.
-    }
-}
+pub use catalog::*;
+pub use config::*;
+pub use material::{Fiber, Identity, Material, MaterialCache};
+pub use motion::*;
+pub use render::{
+    EyeGlyph, RenderOptions, eye_glyph, eye_svg, loading_layer_svg, render_avatar_svg,
+    render_avatar_with_texture_svg, render_surface_svg, svg_for_resvg_0_46,
+};
 
 /// Standalone fur surface, transformed independently from the native eye layer.
 /// This circle proof intentionally does not pretend to implement all product recipes.
@@ -38,25 +32,4 @@ pub fn texture_svg(seed: &str, angle: f32) -> String {
     }
     result.push_str("</g></g></svg>");
     result
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-    #[test]
-    fn seed_matches_javascript_vectors() {
-        assert_eq!(seed_hash("tobi-circle"), 3_331_797_016);
-        assert_eq!(seed_hash(""), 2_166_136_261);
-        assert_eq!(seed_hash("🌿a"), 1_458_192_701);
-        let mut random = SeedRandom::new("tobi-circle");
-        assert_eq!(random.sample(), 0.9050258086062968);
-        assert_eq!(random.sample(), 0.12857843260280788);
-    }
-    #[test]
-    fn texture_is_deterministic_and_surface_only() {
-        assert_eq!(texture_svg("tobi", 0.), texture_svg("tobi", 0.));
-        assert_ne!(texture_svg("tobi", 0.), texture_svg("tobi", 22.5));
-        assert_ne!(texture_svg("tobi", 0.), texture_svg("kira", 0.));
-        assert!(!texture_svg("tobi", 0.).contains("<image"));
-    }
 }

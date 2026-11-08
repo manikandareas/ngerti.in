@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "workload": "table-10000-by-20",
+  "valid": true,
+  "started_utc": "2026-11-08T03:36:43.392890+00:00",
+  "ended_utc": "2026-11-08T03:38:44.018989+00:00",
+  "elapsed_seconds": 120.6256185,
+  "visible_seconds": 120.625619458,
+  "visibility_changes": [
+    [
+      0.0,
+      true
+    ]
+  ],
+  "viewport": [
+    1280.0,
+    901.0
+  ],
+  "device_scale": 2.0,
+  "frames": [
+    {
+      "refresh_ms": 16.666667,
+      "drawn": 134,
+      "missed_refreshes": 14,
+      "draw_p50_ms": 12.124159,
+      "draw_p95_ms": 17.235967,
+      "draw_p99_ms": 18.694143,
+      "work_p95_ms": 17.301503
+    }
+  ],
+  "boundary": "Native gallery content; real input/redraws only, no synthetic animation. Explicit process sampling and action record are separate."
+}

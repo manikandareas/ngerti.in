@@ -1,0 +1,45 @@
+{
+  "version": 2,
+  "visibility_truncated": false,
+  "texture_ready_count": 30,
+  "visibility_changes": [
+    [
+      607205.796042,
+      true
+    ]
+  ],
+  "started_utc": "2026-11-08T02:20:57.139546+00:00",
+  "ended_utc": "2026-11-08T02:22:51.755313+00:00",
+  "elapsed_seconds": 114.620479542,
+  "avatars": 30,
+  "state": "Working",
+  "reduced": false,
+  "loading": false,
+  "offscreen": true,
+  "viewport": [
+    1280.0,
+    901.0
+  ],
+  "device_scale": 2.0,
+  "frames": [
+    {
+      "refresh_ms": 16.666667,
+      "drawn": 1,
+      "on_time": 0,
+      "late": 1,
+      "missed_refreshes": 1,
+      "unmeasured": 0,
+      "draw_p50_ms": 22.249471,
+      "draw_p95_ms": 22.249471,
+      "work_p95_ms": 22.315007
+    }
+  ],
+  "present_intervals": {
+    "count": 1,
+    "p50_ms": 5905.580031,
+    "p95_ms": 5905.580031,
+    "p99_ms": 5905.580031
+  },
+  "compositor_samples": [],
+  "image_deliveries_ms": []
+}

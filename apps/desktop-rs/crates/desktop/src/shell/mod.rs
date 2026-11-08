@@ -7,6 +7,7 @@ use crate::{
     },
 };
 use gpui_kit::component::tab::{Tab, TabBar};
+use gpui_kit::prelude::FluentBuilder as _;
 use gpui_kit::{
     component::{
         WindowExt,
@@ -23,17 +24,25 @@ actions!(desktop_rs, [Quit, ToggleTheme]);
 pub(crate) enum Scene {
     Controls,
     Composer,
+    EditorProbe,
+    Messages,
+    Content,
     Avatar,
+    Material,
     Source,
     Pdf,
     Html,
     Snapshot,
 }
 impl Scene {
-    pub const ALL: [(Scene, &'static str); 7] = [
+    pub const ALL: [(Scene, &'static str); 11] = [
         (Self::Controls, "Controls"),
         (Self::Composer, "Composer"),
+        (Self::Messages, "Messages"),
+        (Self::Content, "Content"),
+        (Self::EditorProbe, "Editor probe"),
         (Self::Avatar, "Avatar"),
+        (Self::Material, "Material probe"),
         (Self::Source, "Source and table"),
         (Self::Pdf, "Native PDF"),
         (Self::Html, "Static HTML"),
@@ -43,19 +52,28 @@ impl Scene {
 
 pub struct Gallery {
     pub(crate) dark: bool,
+    animator: Entity<crate::ui::avatar_view::AvatarAnimator>,
     pub(crate) scene: Scene,
     pub(crate) assets: ProbeAssets,
     pub(crate) checked: bool,
     pub(crate) enabled: bool,
     pub(crate) radio: Option<usize>,
     pub(crate) input: Entity<InputState>,
+    pub(crate) disabled_input: Entity<InputState>,
+    scene_focus: Vec<FocusHandle>,
     pub(crate) composer: Entity<TextareaState>,
+    composer_component: Entity<crate::features::composer::ComposerLab>,
+    messages_component: Entity<crate::features::messages::MessageGallery>,
+    pub(crate) content_component: Option<Entity<crate::features::content::ContentGallery>>,
+    pub(crate) measurement: Option<crate::features::measurement::ContentMeasurement>,
+    pub(crate) measurement_task: Option<Task<()>>,
     pub(crate) editor: Entity<EditorState>,
     pub(crate) slider: Entity<SliderState>,
     pub(crate) saved: Option<gpui_kit::component::input::InputContent>,
     pub(crate) html: Option<Entity<WebView>>,
     pub(crate) pdf: Option<Entity<NativePdf>>,
     pub(crate) rotated: bool,
+    pub(crate) avatar_component: Entity<crate::features::avatar::AvatarGallery>,
     pub(crate) status: String,
     pub(crate) snapshot: Result<Option<ngertiin_client::Snapshot>, String>,
     snapshot_task: Option<Task<()>>,
@@ -72,6 +90,8 @@ impl Gallery {
             });
         });
         let input = cx.new(|cx| InputState::new(window, cx).placeholder("Search agents"));
+        let disabled_input =
+            cx.new(|cx| InputState::new(window, cx).default_value("Unavailable field"));
         let composer = cx.new(|cx| {
             TextareaState::new(window, cx)
                 .placeholder("Message Tobi…")
@@ -83,7 +103,9 @@ impl Gallery {
                 .default_value(include_str!("../platform/embedded.rs"))
         });
         let slider = cx.new(|_| SliderState::new().min(0.).max(100.).default_value(45.));
+        let animator = cx.new(|cx| crate::ui::avatar_view::AvatarAnimator::new(window, cx));
         let mut this = Self {
+            animator: animator.clone(),
             dark: false,
             scene: Scene::Controls,
             assets,
@@ -91,13 +113,23 @@ impl Gallery {
             enabled: false,
             radio: Some(0),
             input,
+            disabled_input,
+            scene_focus: Scene::ALL.iter().map(|_| cx.focus_handle()).collect(),
             composer,
+            composer_component: cx
+                .new(|cx| crate::features::composer::ComposerLab::new(window, cx)),
+            messages_component: cx
+                .new(|cx| crate::features::messages::MessageGallery::new(animator.clone(), cx)),
+            content_component: None,
+            measurement: None,
+            measurement_task: None,
             editor,
             slider,
             saved: None,
             html: None,
             pdf: None,
             rotated: false,
+            avatar_component: cx.new(|_| crate::features::avatar::AvatarGallery::new(animator)),
             status: crate::storage::description().into(),
             snapshot: Ok(None),
             snapshot_task: None,
@@ -140,27 +172,55 @@ impl Gallery {
         cx.notify();
     }
     pub(crate) fn switch(&mut self, scene: Scene, window: &mut Window, cx: &mut Context<Self>) {
+        if self.measurement.is_some() {
+            self.status =
+                "Content measurement in progress. Wait for the visible sample to finish.".into();
+            cx.notify();
+            return;
+        }
+        if self.scene == Scene::Avatar && self.avatar_component.read(cx).is_benchmarking() {
+            self.status =
+                "Benchmark in progress. Use Stop benchmark matrix before changing scenes.".into();
+            cx.notify();
+            return;
+        }
+        if self.scene == Scene::Messages {
+            self.messages_component
+                .update(cx, |messages, cx| messages.retire(window, cx));
+        }
+        if self.scene == Scene::Avatar {
+            self.avatar_component
+                .update(cx, |avatar, cx| avatar.retire(window, cx));
+        }
         if let Some(html) = self.html.take() {
             html.update(cx, |view, _| view.hide());
         }
         if let Some(pdf) = self.pdf.take() {
-            pdf.read(cx).hide();
+            pdf.update(cx, |pdf, cx| pdf.hide(window, cx));
         }
         self.scene = scene;
         match scene {
-            Scene::Html => match embedded::html_probe(window, cx) {
+            Scene::Avatar => self
+                .avatar_component
+                .update(cx, |avatar, cx| avatar.refresh(cx)),
+            Scene::Html => match embedded::static_document(self.assets.html.clone(), window, cx) {
                 Ok(view) => self.html = Some(cx.new(|_| view)),
                 Err(_) => {
                     self.status =
                         "Static HTML renderer unavailable. Select another scene and retry.".into()
                 }
             },
+            Scene::Content => {
+                if self.content_component.is_none() {
+                    let image = self.assets.avatar[0].clone();
+                    self.content_component = Some(cx.new(|cx| {
+                        crate::features::content::ContentGallery::new(image, window, cx)
+                    }));
+                }
+            }
             Scene::Pdf => {
                 let path = self.assets.pdf.clone();
-                match NativePdf::new(&path, window, cx) {
-                    Ok(value) => self.pdf = Some(cx.new(|_| value)),
-                    Err(error) => self.status = error.to_string(),
-                }
+                self.pdf = Some(cx.new(|cx| NativePdf::new(&path, window, cx)));
             }
             _ => {}
         }
@@ -169,8 +229,16 @@ impl Gallery {
     pub(crate) fn overlay(window: &mut Window, cx: &mut App) {
         window.open_dialog(cx, |dialog, _, _| {
             dialog
-                .title("Native focus proof")
-                .child("This dialog must cover the child content and return focus after Escape.")
+                .title(accessible_text(
+                    "native-dialog-title",
+                    "Native focus proof",
+                    Role::Heading,
+                ))
+                .child(accessible_text(
+                    "native-dialog-description",
+                    "This dialog must cover the child content and return focus after Escape.",
+                    Role::Paragraph,
+                ))
         });
     }
 }
@@ -179,8 +247,16 @@ impl Render for Gallery {
         let p = Palette::new(self.dark);
         let content = match self.scene {
             Scene::Controls => self.controls(p, cx),
-            Scene::Composer => self.composer_probe(p, cx),
-            Scene::Avatar => self.avatar_probe(p, cx),
+            Scene::Composer => self.composer_component.clone().into_any_element(),
+            Scene::EditorProbe => self.composer_probe(p, cx),
+            Scene::Messages => self.messages_component.clone().into_any_element(),
+            Scene::Content => self
+                .content_component
+                .clone()
+                .expect("Initialized content")
+                .into_any_element(),
+            Scene::Avatar => self.avatar_component.clone().into_any_element(),
+            Scene::Material => self.avatar_probe(p, cx),
             Scene::Source => self.source_probe(p, cx),
             Scene::Pdf => self.pdf_probe(p, cx),
             Scene::Html => self.html_probe(p, cx),
@@ -188,6 +264,17 @@ impl Render for Gallery {
         };
         let _ = window;
         div()
+            .id("native-gallery")
+            .on_mouse_move(cx.listener(|this, event: &MouseMoveEvent, window, cx| {
+                this.animator
+                    .update(cx, |a, cx| a.look_at(Some(event.position), window, cx))
+            }))
+            .on_hover(cx.listener(|this, hovered: &bool, window, cx| {
+                if !hovered {
+                    this.animator
+                        .update(cx, |a, cx| a.look_at(None, window, cx));
+                }
+            }))
             .flex()
             .flex_col()
             .size_full()
@@ -235,12 +322,56 @@ impl Render for Gallery {
                             .position(|(scene, _)| *scene == self.scene)
                             .unwrap_or(0),
                     )
-                    .children(Scene::ALL.map(|(_, label)| Tab::new().label(label)))
+                    .children(
+                        Scene::ALL
+                            .iter()
+                            .enumerate()
+                            .map(|(index, (scene, label))| {
+                                Tab::new()
+                                    .label(*label)
+                                    .track_focus(
+                                        &self.scene_focus[index]
+                                            .clone()
+                                            .tab_stop(*scene == self.scene),
+                                    )
+                                    .focus_visible(|style| {
+                                        style.border_color(p.color("ring")).border_2()
+                                    })
+                                    .on_key_down(cx.listener(
+                                        move |this, event: &KeyDownEvent, window, cx| {
+                                            let Some(next) = crate::ui::tabs::navigation_target(
+                                                index,
+                                                Scene::ALL.len(),
+                                                event.keystroke.key.as_str(),
+                                            ) else {
+                                                return;
+                                            };
+                                            window.prevent_default();
+                                            cx.stop_propagation();
+                                            this.switch(Scene::ALL[next].0, window, cx);
+                                            this.scene_focus[next].focus(window, cx);
+                                        },
+                                    ))
+                            }),
+                    )
                     .on_click(cx.listener(|this, index: &usize, window, cx| {
                         this.switch(Scene::ALL[*index].0, window, cx)
                     })),
             )
             .child(div().flex_1().min_h_0().p_6().child(content))
+            .when(matches!(self.scene, Scene::Content | Scene::Pdf), |view| {
+                view.child(
+                    button(
+                        "measure-content",
+                        "Measure content · 120 visible seconds",
+                        ButtonKind::Default,
+                        p,
+                        cx,
+                    )
+                    .disabled_state(self.measurement.is_some(), p)
+                    .on_click(cx.listener(|this, _, window, cx| this.measure_content(window, cx))),
+                )
+            })
             .child(caption(self.status.clone(), p).px_6().py_3())
     }
 }

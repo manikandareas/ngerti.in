@@ -9,6 +9,7 @@ pub fn run() -> anyhow::Result<()> {
         .with_assets(assets::Assets)
         .run(move |cx| {
             init(cx);
+            crate::platform::motion::bind(cx);
             for name in ["Geist", "GeistMono"] {
                 cx.text_system()
                     .add_fonts(vec![Cow::Owned(

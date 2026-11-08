@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "native:source-2mib-100000-lines-bounded-preview": {
+    "pid": 87398,
+    "process_record": "native-process-87398.json",
+    "build_manifest": "native-optimized-framework-build-manifest.json",
+    "note": "Source passed after GPUI layout optimization; subsequent table-axis/accessibility-adapter changes do not change the source component."
+  },
+  "native:table-10000-by-20": {
+    "pid": 63862,
+    "process_record": "native-process-63862.json",
+    "build_manifest": "native-column-window-build-manifest.json",
+    "note": "Optimized pinned framework/accessibility/tessellation, keyboard tab adapter and native table column window; content ready before measurement."
+  },
+  "native:pdf-current-fixture": {
+    "pid": 78700,
+    "process_record": "native-process-78700.json",
+    "build_manifest": "native-platform-build-manifest.json",
+    "note": "The same 4-million-pixel page raster cap; pinned native Apple rendering backend also optimized. Content ready before measurement."
+  }
+}

@@ -1,3 +1,11 @@
 # Preserve the original PDF fixture and raw verification output bytes.
 apps/desktop-rs/assets/probe.pdf binary
 docs/verification/nma-066/rust-check.log whitespace=-blank-at-eof
+# Keep PDF cross-reference offsets and immutable capture/log bytes unchanged.
+apps/desktop-rs/verification/nma-067/pdf/*.pdf binary
+docs/verification/nma-066/reference-v3-conversation-dark.ax.txt whitespace=-blank-at-eol
+docs/verification/nma-066/reference-v3-focus-pdf-dark.ax.txt whitespace=-blank-at-eol
+docs/verification/nma-066/reference-v3-working-files-dark.ax.txt whitespace=-blank-at-eol
+docs/verification/nma-066/tauri-web-rebuild.log whitespace=-blank-at-eol
+docs/verification/nma-067/components/rust-check.log whitespace=-blank-at-eof
+docs/verification/nma-067/components/commit-check.log whitespace=-blank-at-eof

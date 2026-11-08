@@ -1,0 +1,159 @@
+Window: "Ngertiin", App: Ngertiin Tauri Reference.
+0 standard window Ngertiin, Secondary Actions: Raise
+	1 scroll area
+		2 HTML content Description: Ngertiin · Web Client, URL: 127.0.0.1:60665/
+			3 container
+				4 link Ngertiin, Value: 127.0.0.1:60665/
+				5 button Search conversations
+				6 pop up button Buat baru
+				7 container Percakapan
+					8 container
+						9 button Researcher Belum ada pesan
+						10 button Tobi Kamu: Reference request 99: review the native desktop component.
+				11 button Pengaturan
+				12 button Hubungkan aplikasi
+			13 container Percakapan aktif
+				14 container Viewer reference.pdf (showing 0-100 of 202 items)
+					15 container
+						16 button Kembali
+						17 heading reference.pdf, Value: 2
+							18 text reference.pdf
+						19 pop up button Aksi file
+					20 toolbar Kontrol PDF
+						21 button (disabled) Halaman sebelumnya
+						22 container
+							23 number field (settable) Halaman PDF, Value: 1
+								24 stepper 0
+									25 unknown
+									26 unknown
+							27 text /  200
+						28 button Halaman berikutnya
+						29 button Perkecil PDF
+						30 container Zoom PDF
+							31 text 100 %
+						32 button Perbesar PDF
+						33 button Sesuaikan lebar
+					34 container Halaman 1
+						35 image Halaman 1
+						36 container
+							37 text Selectable page 1 Native PDF workload.
+					38 container Halaman 2
+					39 container Halaman 3
+					40 container Halaman 4
+					41 container Halaman 5
+					42 container Halaman 6
+					43 container Halaman 7
+					44 container Halaman 8
+					45 container Halaman 9
+					46 container Halaman 10
+					47 container Halaman 11
+					48 container Halaman 12
+					49 container Halaman 13
+					50 container Halaman 14
+					51 container Halaman 15
+					52 container Halaman 16
+					53 container Halaman 17
+					54 container Halaman 18
+					55 container Halaman 19
+					56 container Halaman 20
+					57 container Halaman 21
+					58 container Halaman 22
+					59 container Halaman 23
+					60 container Halaman 24
+					61 container Halaman 25
+					62 container Halaman 26
+					63 container Halaman 27
+					64 container Halaman 28
+					65 container Halaman 29
+					66 container Halaman 30
+					67 container Halaman 31
+					68 container Halaman 32
+					69 container Halaman 33
+					70 container Halaman 34
+					71 container Halaman 35
+					72 container Halaman 36
+					73 container Halaman 37
+					74 container Halaman 38
+					75 container Halaman 39
+					76 container Halaman 40
+					77 container Halaman 41
+					78 container Halaman 42
+					79 container Halaman 43
+					80 container Halaman 44
+					81 container Halaman 45
+					82 container Halaman 46
+					83 container Halaman 47
+					84 container Halaman 48
+					85 container Halaman 49
+					86 container Halaman 50
+					87 container Halaman 51
+					88 container Halaman 52
+					89 container Halaman 53
+					90 container Halaman 54
+					91 container Halaman 55
+					92 container Halaman 56
+					93 container Halaman 57
+					94 container Halaman 58
+					95 container Halaman 59
+					96 container Halaman 60
+					97 container Halaman 61
+					98 container Halaman 62
+					99 container Halaman 63
+					100 container Halaman 64
+					101 container Halaman 65
+					102 container Halaman 66
+					103 container Halaman 67
+					104 container Halaman 68
+					105 container Halaman 69
+					106 container Halaman 70
+					107 container Halaman 71
+					108 container Halaman 72
+					109 container Halaman 73
+					110 container Halaman 74
+					111 container Halaman 75
+					112 container Halaman 76
+					113 container Halaman 77
+					114 container Halaman 78
+					115 container Halaman 79
+					116 container Halaman 80
+					117 container Halaman 81
+					118 container Halaman 82
+					119 container Halaman 83
+					120 container Halaman 84
+					121 container Halaman 85
+					122 container Halaman 86
+					123 container Halaman 87
+					124 container Halaman 88
+					125 container Halaman 89
+					126 container Halaman 90
+					127 container Halaman 91
+					128 container Halaman 92
+					129 container Halaman 93
+					130 container Halaman 94
+					131 container Halaman 95
+					132 container Halaman 96
+					133 container Halaman 97
+					134 container Halaman 98
+				135 text reference.pdf
+				136 button Lepas konteks file
+				137 button Siapkan koneksi agar Tobi bisa mulai bekerja →
+				138 container
+					139 file upload button Lampirkan file ke pesan
+					140 button Tambah lampiran, Help: Working copies of attachments are shared on your agents’ machine.
+					141 text entry area (settable) Pesan, Placeholder: Pesan untuk Tobi…, Value: 
+
+					142 button (disabled) Kirim, Help: Kirim pesan
+			143 container Notifications alt+T
+			144 button Measure content · 120 visible seconds
+			145 container (settable) Typeahead menu
+	146 close button
+	147 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	148 minimize button
+	149 text Ngertiin
+150 menu bar
+	151 Ngertiin Tauri
+	152 Edit
+	153 View
+	154 Development
+
+The focused UI element is 16 button Kembali

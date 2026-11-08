@@ -1,0 +1,216 @@
+{
+  "version": 1,
+  "boundary": "Native fixed-time presentation; compare with the 360-frame compositor/original-SVG test and frozen original vectors. Captures alone do not establish browser pixel equality.",
+  "records": [
+    {
+      "case": "shape-face-0",
+      "time_ms": 0,
+      "theme": "dark",
+      "shape": "Circle",
+      "face": "Calm",
+      "face_index": 2,
+      "sha256": "bdd3bdd31983739cff0b7d4c3b5c511d29ac552da2711eb71b19566c1d880584"
+    },
+    {
+      "case": "shape-face-1",
+      "time_ms": 0,
+      "theme": "dark",
+      "shape": "Oval",
+      "face_index": 3,
+      "face": "Excited",
+      "sha256": "6b7d7ae0be357478f4e7fc55ca5e28d70e82190b3cb8f8cd4975a66485910807"
+    },
+    {
+      "case": "shape-face-2",
+      "time_ms": 0,
+      "theme": "dark",
+      "shape_index": 2,
+      "face_index": 4,
+      "shape": "Squircle",
+      "face": "Shy",
+      "sha256": "85b0033e049defe892984addd0a182faeab88f2ae9da7c02131bb413c920dd45"
+    },
+    {
+      "case": "shape-face-3",
+      "time_ms": 0,
+      "theme": "dark",
+      "shape_index": 3,
+      "face_index": 5,
+      "shape": "Capsule",
+      "face": "Surprised",
+      "sha256": "07a16742bcb4b488c20b35e7eb4befd43fa97ff087c33b7dfe6c0360637b0ceb"
+    },
+    {
+      "case": "shape-face-4",
+      "time_ms": 0,
+      "theme": "dark",
+      "shape_index": 4,
+      "face_index": 6,
+      "shape": "Triangle",
+      "face": "Sleepy",
+      "sha256": "ecef1834d74f0dbfb660d1c1ae2dff75d58b54c9e8a6434a2f051d5e8b32c769"
+    },
+    {
+      "case": "shape-face-5",
+      "time_ms": 0,
+      "theme": "dark",
+      "shape_index": 5,
+      "face_index": 7,
+      "shape": "Diamond",
+      "face": "Focused",
+      "sha256": "9690b1caa54c251c1327abc65aafa9a4d832f4d12a0c2f39b310b6dff8d214d4"
+    },
+    {
+      "case": "shape-face-6",
+      "time_ms": 0,
+      "theme": "dark",
+      "shape_index": 6,
+      "face_index": 0,
+      "shape": "Pentagon",
+      "face": "Happy",
+      "sha256": "aa41cd4c69d767d4a43b1daf99194cb0cfa63fff175e2ea0f99776a1c90233e9"
+    },
+    {
+      "case": "shape-face-7",
+      "time_ms": 0,
+      "theme": "dark",
+      "shape_index": 7,
+      "face_index": 1,
+      "shape": "Hexagon",
+      "face": "Curious",
+      "sha256": "6b645683e571122ba4cbebc3b57547b223ed3c2b350e7216b2a6a690997566f2"
+    },
+    {
+      "case": "state-1",
+      "time_ms": 167,
+      "theme": "dark",
+      "state_index": 1,
+      "state": "Listening",
+      "sha256": "64ca8d8e04c079934f1fedbc817fb4c7f0fb84918f6637476b8e936832ca8813"
+    },
+    {
+      "case": "state-2",
+      "time_ms": 167,
+      "theme": "dark",
+      "state_index": 2,
+      "state": "Thinking",
+      "sha256": "362e34b29dad13ce2e86dfbe94c948310ebc4f8be9c686a9b6e3b850e4890514"
+    },
+    {
+      "case": "state-3",
+      "time_ms": 167,
+      "theme": "dark",
+      "state_index": 3,
+      "state": "Working",
+      "sha256": "9ca529b09a4b2060e6d60783f06e666a804020adbcd6d28f64a8f525a2970edc"
+    },
+    {
+      "case": "state-4",
+      "time_ms": 167,
+      "theme": "dark",
+      "state_index": 4,
+      "state": "Celebrating",
+      "sha256": "f4144a643541581b4255e25ecc30d9795ad956f15d49079f3aeedafc07777d9a"
+    },
+    {
+      "case": "state-5",
+      "time_ms": 167,
+      "theme": "dark",
+      "state_index": 5,
+      "state": "Sleeping",
+      "sha256": "33116cf44e4f3c9035cd6012fa01ea41112a6a2d4cc0043b7373eb29978edddf"
+    },
+    {
+      "case": "state-6",
+      "time_ms": 167,
+      "theme": "dark",
+      "state_index": 6,
+      "state": "Error",
+      "sha256": "bfef1a2114446ec906d8504bb43f6addb7b4051967888514839ce5a2c39e12ac"
+    },
+    {
+      "case": "action-0",
+      "time_ms": 0,
+      "action_progress": 0.5,
+      "theme": "dark",
+      "action_index": 0,
+      "action": "Boop",
+      "sha256": "324fad66a891c28283566ad20e1802986d7521d7d3ad70c68e182812d5fe5809"
+    },
+    {
+      "case": "action-1",
+      "time_ms": 0,
+      "action_progress": 0.5,
+      "theme": "dark",
+      "action_index": 1,
+      "action": "Wave",
+      "sha256": "f7464f2675057e69e9223618288e20630d4f76d95048c2d3e4993cbf5402e9fc"
+    },
+    {
+      "case": "action-2",
+      "time_ms": 0,
+      "action_progress": 0.5,
+      "theme": "dark",
+      "action_index": 2,
+      "action": "Hop",
+      "sha256": "34333f5a94812c852d62037a7b2cfa882b4a17554d5e682e63e5100d8aa50ec8"
+    },
+    {
+      "case": "action-3",
+      "time_ms": 0,
+      "action_progress": 0.5,
+      "theme": "dark",
+      "action_index": 3,
+      "action": "Wiggle",
+      "sha256": "0859c24810f82fd28d563722f9897b1425f26e7961d7443fce8c3edf075cd851"
+    },
+    {
+      "case": "action-4",
+      "time_ms": 0,
+      "action_progress": 0.5,
+      "theme": "dark",
+      "action_index": 4,
+      "action": "Spin",
+      "sha256": "c31911fbe2ea6f6f1f3f497aa4f82e9d20ed0586f96b5b9a9880aaaa8258c211"
+    },
+    {
+      "case": "action-5",
+      "time_ms": 0,
+      "action_progress": 0.5,
+      "theme": "dark",
+      "action_index": 5,
+      "action": "Wink",
+      "sha256": "b5122fb26e15879772f93ded863c6a1fa6f7ee0d2940f867e292bcb57a6b457a"
+    },
+    {
+      "case": "loading-dark",
+      "time_ms": 167,
+      "theme": "dark",
+      "loading": true,
+      "reduced": false,
+      "sha256": "7d326d9ec34676e5afd15fcb85d6dbd50f175627427f7d16a7b1220e6f089bf4"
+    },
+    {
+      "case": "loading-reduced-light",
+      "time_ms": 167,
+      "theme": "light",
+      "loading": true,
+      "reduced": true,
+      "sha256": "45db53f8bf941357298fbb3416631f463e93bd274827d19897222316a7bbccb9"
+    }
+  ],
+  "native_pid": 36834,
+  "build_manifest": "native-build-manifest.json",
+  "viewport": [
+    1280,
+    901
+  ],
+  "device_scale": 2,
+  "logical_display_sizes": [
+    32,
+    64,
+    128,
+    256
+  ],
+  "capture_count": 22
+}

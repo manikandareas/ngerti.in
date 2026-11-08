@@ -1,0 +1,6 @@
+//! Presentation data and editing policy, independent of submission and transport.
+pub mod composer;
+pub mod content;
+pub mod html;
+pub mod message;
+pub mod syntax;

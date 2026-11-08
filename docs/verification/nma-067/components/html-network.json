@@ -1,0 +1,8 @@
+{
+  "started": "2026-11-07T14:44:45.987Z",
+  "ended": "2026-11-07T14:57:37.221Z",
+  "bind": "127.0.0.1:41168",
+  "requests": [],
+  "denominator": "script, CSS import, image, iframe, external link, form submission",
+  "passed": true
+}

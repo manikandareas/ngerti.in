@@ -1881,7 +1881,7 @@ test("group interaction history keeps rendered mentions and an adjacent avatar a
   await approval.getByRole("button", { name: "Tolak", exact: true }).click();
   await expect(approval).toHaveAttribute("data-interaction-state", "settled");
   await expect(approval.getByRole("heading")).toHaveText("Publish this exact checklist?");
-  await expect(approval.locator(".group-bubble-author")).toHaveText(actor.name);
+  await expect(approval.locator(".group-bubble-author")).toHaveCount(0);
   await expect(approval.locator(".message-time")).toHaveAttribute("datetime", approvalAt as string);
   await expect(approval.locator("button, footer, .conversation-interaction-body")).toHaveCount(0);
   await page.reload();

@@ -8,7 +8,6 @@ import type {
   NativeQuestion as Question,
 } from "@/types/native-interactions";
 import { useComposerRequest, useComposerScope } from "../lib/composer-requests";
-import { AssistantMessageAuthor } from "./assistant-message";
 import { CustomQuestionOption } from "./custom-question-option";
 import { InteractionCard } from "./interaction-card";
 import { MessageTime } from "./message-time";
@@ -99,7 +98,6 @@ export function NativeQuestion({
     return (
       <Bubble variant="secondary" className="chat-agent-bubble">
         <BubbleContent className="chat-bubble-content text-[15px] leading-[22px]">
-          <AssistantMessageAuthor name={author} />
           <p>{question.question}</p>
           <MessageTime at={at} />
         </BubbleContent>

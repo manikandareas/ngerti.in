@@ -42,11 +42,7 @@ export function SampleAnswer({
       text={text}
       streaming={streaming}
       sentAt={sampleTime}
-      sender={
-        group
-          ? { name: tobi.name, style: agentStyle(tobi), open: () => open("agent", tobi.id) }
-          : undefined
-      }
+      sender={group ? { style: agentStyle(tobi) } : undefined}
       snapshot={sampleSnapshot()}
       openResource={open}
     />

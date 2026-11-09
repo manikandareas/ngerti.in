@@ -282,7 +282,7 @@ test("group approval and finished Computer retain clocks while Goal/Routine bars
   await page.goto("/");
   const card = page.getByRole("region", { name: "Approve this summary?", exact: true });
   await expect(card.locator(".message-time")).toHaveAttribute("datetime", request.created_at);
-  await expect(card.locator(".group-bubble-author")).toHaveText("Tobi");
+  await expect(card.locator(".group-bubble-author")).toHaveCount(0);
   const computer = page.locator('[data-computer-activity="computer-run"]');
   await expect(computer.locator(".message-time")).toHaveAttribute("datetime", at(2, "00:02"));
   await expect(computer.locator("iframe")).toHaveCount(0);
@@ -416,7 +416,7 @@ test("file-only assistant replies retain their clock and attribution without an 
       "datetime",
       file.part.created_at,
     );
-    await expect(attachment.locator(".group-bubble-author")).toHaveCount(group ? 1 : 0);
+    await expect(attachment.locator(".group-bubble-author")).toHaveCount(0);
     await expect(page.locator(".chat-agent-bubble")).toHaveCount(0);
     await expect(page.locator("[data-conversation-date]")).toHaveText(["2 November 2026"]);
     await page.screenshot({ path: info.outputPath(`file-only-${group ? "group" : "dm"}.png`) });

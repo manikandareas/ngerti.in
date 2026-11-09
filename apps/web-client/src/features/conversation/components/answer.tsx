@@ -16,7 +16,6 @@ import { AnswerCode } from "@/features/conversation/components/answer-code";
 import { MarkdownTable, plainMarkdown } from "@/features/conversation/components/markdown-table";
 import { MessageTime } from "@/features/conversation/components/message-time";
 import { parseFenceInfo } from "@/features/conversation/lib/code-snippet";
-import { splitReplyBlocks } from "@/features/conversation/lib/formatted-reply";
 import { referenceFromUrl } from "@/features/conversation/lib/inline-references";
 import {
   type MarkdownReferenceOptions,
@@ -230,20 +229,12 @@ export const Answer = memo(function Answer({
   retry?: () => void;
   busy?: boolean;
   sentAt?: string;
-  sender?: { name: string; style: CSSProperties; open?: () => void };
+  sender?: { style: CSSProperties };
 } & AnswerScope) {
   const text = useStreamingText(incomingText, streaming);
   const scope = useMemo(
     () => ({ openResource, snapshot, agentId, sources }),
     [openResource, snapshot, agentId, sources],
-  );
-  const blocks = useMemo(
-    () =>
-      splitReplyBlocks(text).map((block, position) => ({
-        ...block,
-        id: `${block.kind}-${position}`,
-      })),
-    [text],
   );
   return (
     <AnswerContext.Provider value={scope}>
@@ -251,51 +242,19 @@ export const Answer = memo(function Answer({
         data-reply-blocks
         className="assistant-answer flex w-full max-w-full flex-col items-start gap-1"
       >
-        {sender ? (
-          <MessageActions text={incomingText} retry={retry} busy={busy}>
-            <Bubble
-              variant="secondary"
-              data-chat-bubble="group"
-              className="chat-agent-bubble group-agent-bubble"
-              style={sender.style}
-            >
-              <BubbleContent className="chat-bubble-content text-[15px] leading-[22px]">
-                {sender.open ? (
-                  <button type="button" className="group-bubble-author" onClick={sender.open}>
-                    {sender.name}
-                  </button>
-                ) : (
-                  <span className="group-bubble-author">{sender.name}</span>
-                )}
-                <MarkdownBody text={text} />
-                <MessageTime at={sentAt} className="group-bubble-time" />
-              </BubbleContent>
-            </Bubble>
-          </MessageActions>
-        ) : (
-          blocks.map((block) => {
-            const content = <MarkdownBody key={block.id} text={block.text} />;
-            return block.kind === "table" ? (
-              <div
-                key={block.id}
-                data-reply-table
-                className="my-2 w-full max-w-[88%] first:mt-0 last:mb-0"
-              >
-                {content}
-                <MessageTime at={sentAt} />
-              </div>
-            ) : (
-              <MessageActions key={block.id} text={block.text} retry={retry} busy={busy}>
-                <Bubble variant="secondary" data-chat-bubble="simple" className="chat-agent-bubble">
-                  <BubbleContent className="chat-bubble-content text-[15px] leading-[22px]">
-                    {content}
-                    <MessageTime at={sentAt} />
-                  </BubbleContent>
-                </Bubble>
-              </MessageActions>
-            );
-          })
-        )}
+        <MessageActions text={incomingText} retry={retry} busy={busy}>
+          <Bubble
+            variant="secondary"
+            data-chat-bubble={sender ? "group" : "simple"}
+            className={`chat-agent-bubble${sender ? " group-agent-bubble" : ""}`}
+            style={sender?.style}
+          >
+            <BubbleContent className="chat-bubble-content text-[15px] leading-[22px]">
+              <MarkdownBody text={text} />
+              <MessageTime at={sentAt} className={sender ? "group-bubble-time" : undefined} />
+            </BubbleContent>
+          </Bubble>
+        </MessageActions>
         {sources && showSources && <ResearchSources sources={sources} />}
       </div>
     </AnswerContext.Provider>

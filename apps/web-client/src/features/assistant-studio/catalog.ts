@@ -210,7 +210,7 @@ export const studioSections: StudioSection[] = [
     label: "Isi jawaban",
     placement: "Sisi assistant · DM dan grup",
     description:
-      "Markdown, blok kode, tabel, tautan, dan streaming. Tabel pada DM dapat tampil di luar bubble; pada grup tetap berada di jawaban agent.",
+      "Markdown, blok kode, tabel, tautan, dan streaming tetap berada dalam bubble jawaban yang sama pada DM maupun grup.",
     source: "Answer · AnswerCode · MarkdownTable · useStreamingText",
     states: states([
       ["plain", "Teks biasa", "Jawaban singkat dengan waktu pengiriman."],

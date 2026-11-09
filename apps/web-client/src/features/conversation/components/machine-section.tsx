@@ -96,15 +96,15 @@ export function MachineSection({ agents, cursor }: { agents: Agent[]; cursor: nu
         aria-label="View desktop"
         disabled={machine?.state !== "ready"}
         onClick={() => setOpen(true)}
-        className="flex w-full flex-col items-center justify-center gap-3 rounded-xl bg-composer ring-1 ring-inset ring-foreground/[0.06] hover:bg-foreground/[0.045] focus-visible:outline-2 focus-visible:outline-ring disabled:cursor-default"
+        className="flex h-9 w-full items-center justify-center gap-2 rounded-control bg-composer px-3 ring-1 ring-inset ring-foreground/[0.06] hover:bg-control-hover focus-visible:outline-2 focus-visible:outline-ring disabled:cursor-default"
       >
         <HugeiconsIcon
           icon={ComputerIcon}
-          size={30}
+          size={18}
           strokeWidth={1.25}
           className="text-muted-foreground"
         />
-        <span className="text-sm font-medium">
+        <span className="text-[13px] font-medium">
           {machine?.state === "ready"
             ? "Open shared desktop"
             : machine?.state === "unconfigured"

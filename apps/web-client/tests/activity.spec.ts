@@ -208,7 +208,7 @@ test("group activity belongs to each working agent and hands off without idle me
   const f = await activityFixture(page, true);
   await expect(page.locator("[data-agent-activity]")).toHaveCount(2);
   await expect(f.bubble()).toHaveAttribute("data-activity-agent", f.actor.id);
-  await expect(f.bubble().locator(".agent-activity-name")).toHaveText(f.actor.name);
+  await expect(f.bubble().locator(".agent-activity-name")).toHaveCount(0);
   await expect(f.bubble(f.second.run.id)).toHaveAttribute("data-activity-agent", f.peer.id);
   await expect(f.bubble(f.second.run.id).locator("[data-activity-text]")).toHaveText(
     "Reading your file…",

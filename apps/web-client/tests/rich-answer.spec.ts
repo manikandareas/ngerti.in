@@ -24,7 +24,7 @@ const richText = [
 ].join("\n\n");
 
 for (const theme of ["light", "dark"] as const) {
-  test(`rich reply matches source blocks, table/code interactions and safe rendering (${theme})`, async ({
+  test(`rich reply keeps one bubble with table/code interactions and safe rendering (${theme})`, async ({
     page,
   }, info) => {
     await page.emulateMedia({ colorScheme: theme });
@@ -58,8 +58,8 @@ for (const theme of ["light", "dark"] as const) {
     const answer = page.locator(".assistant-answer").first();
     await expect(
       answer.locator(":scope > .message-action-anchor > .chat-agent-bubble"),
-    ).toHaveCount(2);
-    await expect(answer.locator(":scope > [data-reply-table]")).toHaveCount(1);
+    ).toHaveCount(1);
+    await expect(answer.locator(".chat-agent-bubble [data-table-card]")).toHaveCount(1);
     await expect(answer.locator("[data-code-block]")).toHaveCount(2);
     await expect(answer.locator("script,img")).toHaveCount(0);
     await expect(answer.locator('a[href^="javascript:"]')).toHaveCount(0);
@@ -81,7 +81,7 @@ for (const theme of ["light", "dark"] as const) {
       );
       const header = card?.querySelector("th");
       return {
-        width: element.getBoundingClientRect().width,
+        width: bubble?.getBoundingClientRect().width ?? 0,
         card: card?.getBoundingClientRect().width ?? 0,
         radius: card && getComputedStyle(card).borderRadius,
         font: header && getComputedStyle(header).fontSize,
@@ -89,8 +89,8 @@ for (const theme of ["light", "dark"] as const) {
         bubbleLineHeight: bubble && getComputedStyle(bubble).lineHeight,
       };
     });
-    expect(metrics.card).toBeGreaterThan(metrics.width * 0.87);
-    expect(metrics.card).toBeLessThanOrEqual(metrics.width * 0.88 + 1);
+    expect(metrics.card).toBeGreaterThan(0);
+    expect(metrics.card).toBeLessThanOrEqual(metrics.width + 1);
     expect(metrics.radius).toBe("20px");
     expect(metrics.font).toBe("14px");
     expect(metrics.headerPadding).toBe("10px 16px");
@@ -209,4 +209,92 @@ test("long reply tables virtualize, scroll to the last row and filter without dr
   expect(
     await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth),
   ).toBeTruthy();
+});
+
+for (const columns of [1, 2]) {
+  test(`short ${columns}-column tables keep a readable minimum width inside the reply`, async ({
+    page,
+  }) => {
+    const text =
+      columns === 1 ? "| Item |\n| --- |\n| A |" : "| Item | Value |\n| --- | ---: |\n| A | 1 |";
+    await page.route("**/v1/threads/*/snapshot", async (route) => {
+      const response = await route.fetch();
+      const snapshot = await response.json();
+      await route.fulfill({
+        response,
+        json: {
+          ...snapshot,
+          messages: snapshot.messages.map((message: { author: string }) =>
+            message.author === "agent" ? { ...message, text } : message,
+          ),
+        },
+      });
+    });
+    await page.goto("/");
+    const bubble = page.locator(".chat-agent-bubble").first();
+    const card = bubble.locator("[data-table-card]");
+    await expect(card).toBeVisible();
+    const widths = await bubble.evaluate((element) => {
+      const content = element.querySelector<HTMLElement>("[data-slot=bubble-content]");
+      const table = content?.querySelector<HTMLElement>("[data-table-card]");
+      if (!content || !table) throw new Error("The reply bubble must contain its table.");
+      const style = getComputedStyle(content);
+      return {
+        available:
+          content.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight),
+        table: table.getBoundingClientRect().width,
+      };
+    });
+    expect(widths.table).toBeGreaterThanOrEqual(Math.min(384, widths.available) - 1);
+    expect(widths.table).toBeLessThanOrEqual(widths.available + 1);
+    if ((page.viewportSize()?.width ?? 0) >= 768) expect(widths.table).toBeGreaterThanOrEqual(383);
+  });
+}
+
+test("conversation and composer follow the header width on wide windows", async ({ page }) => {
+  await page.setViewportSize({ width: 1920, height: 1080 });
+  await page.route("**/v1/threads/*/snapshot", async (route) => {
+    const response = await route.fetch();
+    const snapshot = await response.json();
+    await route.fulfill({
+      response,
+      json: {
+        ...snapshot,
+        messages: snapshot.messages.map((message: { author: string }) =>
+          message.author === "agent"
+            ? {
+                ...message,
+                text: "A long reply should use the available conversation width. ".repeat(60),
+              }
+            : message,
+        ),
+      },
+    });
+  });
+  await page.goto("/");
+  await expect(page.getByRole("button", { name: "Detail Tobi", exact: true })).toBeVisible();
+  const widths = await page.evaluate(() => {
+    const header = document.querySelector(".workspace-chat-header")?.getBoundingClientRect();
+    const conversation = document.querySelector(".conversation-column")?.getBoundingClientRect();
+    const composer = document.querySelector(".composer-dock")?.getBoundingClientRect();
+    if (!header || !conversation || !composer) {
+      throw new Error("The workspace must render its header, conversation and composer.");
+    }
+    return {
+      header: header.width,
+      conversation: conversation.width,
+      composer: composer.width,
+      headerLeft: header.left,
+      conversationLeft: conversation.left,
+      composerLeft: composer.left,
+    };
+  });
+  expect(widths.header).toBeGreaterThan(1500);
+  expect((await page.locator(".chat-agent-bubble").first().boundingBox())?.width).toBeGreaterThan(
+    700,
+  );
+  expect(Math.abs(widths.conversation - widths.header)).toBeLessThan(1);
+  expect(Math.abs(widths.composer - widths.header)).toBeLessThan(1);
+  expect(Math.abs(widths.conversationLeft - widths.headerLeft)).toBeLessThan(1);
+  expect(Math.abs(widths.composerLeft - widths.headerLeft)).toBeLessThan(1);
 });

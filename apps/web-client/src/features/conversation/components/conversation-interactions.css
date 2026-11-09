@@ -190,18 +190,30 @@
   flex-direction: column;
   align-items: flex-start;
   width: fit-content;
-  max-width: min(var(--chat-bubble-max), 80%, calc(100% - 82px));
+  max-width: min(80%, calc(100% - 82px));
   min-width: 36px;
+}
+.message-action-anchor:has([data-table-card]) {
+  min-width: min(25.5rem, 80%, calc(100% - 82px));
+}
+.message-action-anchor:has([data-table-card]) > .chat-agent-bubble,
+.message-action-anchor:has([data-table-card]) > .chat-agent-bubble > [data-slot="bubble-content"] {
+  width: 100%;
 }
 .message-action-anchor[data-user="true"] {
   align-self: flex-end;
   align-items: flex-end;
 }
-.message-action-anchor > :where(.chat-user-bubble, .chat-agent-bubble) {
+.message-action-anchor > :is(.chat-user-bubble, .chat-agent-bubble) {
   max-width: 100%;
 }
 .group-message-avatar + [data-slot="message-content"] .message-action-anchor {
-  max-width: min(var(--chat-bubble-max), calc(100% - 66px));
+  max-width: calc(100% - 66px);
+}
+.group-message-avatar
+  + [data-slot="message-content"]
+  .message-action-anchor:has([data-table-card]) {
+  min-width: min(25.5rem, calc(100% - 66px));
 }
 .message-hover-actions {
   position: absolute;
@@ -255,8 +267,11 @@
 }
 @media (max-width: 767.98px), (hover: none) {
   .message-action-anchor {
-    max-width: min(var(--chat-bubble-max), calc(100% - 36px));
+    max-width: calc(100% - 36px);
     margin-bottom: 28px;
+  }
+  .message-action-anchor:has([data-table-card]) {
+    min-width: min(25.5rem, calc(100% - 36px));
   }
   .message-hover-actions {
     inset-inline-start: 0;

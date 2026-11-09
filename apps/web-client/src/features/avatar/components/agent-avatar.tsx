@@ -57,12 +57,11 @@ export function AgentAvatar({
       return;
     }
     if (!host.current) return;
-    // Defer the first mount only; the shared clock suspends offscreen animation.
+    // Deferred roster entries release their SVG when they leave the viewport.
+    // Keep the host dimensions so scrolling cannot change the list geometry.
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (!entry.isIntersecting) return;
-        setVisible(true);
-        observer.disconnect();
+        setVisible(entry.isIntersecting);
       },
       { rootMargin: "80px" },
     );

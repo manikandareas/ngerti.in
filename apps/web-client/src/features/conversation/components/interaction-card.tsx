@@ -1,5 +1,4 @@
 import { type ReactNode, useId } from "react";
-import { AssistantMessageAuthor } from "./assistant-message";
 import { InlineReferenceText } from "./inline-references";
 import { MessageTime } from "./message-time";
 import "./conversation-interactions.css";
@@ -31,7 +30,6 @@ export function InteractionCard({
       aria-busy={busy}
       data-interaction-state={settled ? "settled" : "pending"}
     >
-      <AssistantMessageAuthor name={author} />
       <h3 id={titleId}>
         <InlineReferenceText text={title} />
       </h3>

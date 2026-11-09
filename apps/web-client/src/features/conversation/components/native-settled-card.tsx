@@ -2,7 +2,6 @@ import { Cancel01Icon, Clock01Icon, Loading03Icon, StopIcon } from "@hugeicons/c
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useId, useState } from "react";
 import type { NativeInteraction } from "@/types/native-interactions";
-import { AssistantMessageAuthor } from "./assistant-message";
 import { InteractionCard } from "./interaction-card";
 import { MessageTime } from "./message-time";
 
@@ -136,7 +135,6 @@ export function NativeSettledCard({
       data-ask-card="settled"
       className="min-w-0 w-fit max-w-[min(100%,460px)] rounded-2xl border-0 bg-card px-3 py-2 text-left text-[13px] leading-[18px] text-muted-foreground"
     >
-      <AssistantMessageAuthor name={author} />
       <div className="flex min-w-0 items-center gap-1.5">
         <span aria-hidden="true" className="flex size-4 shrink-0 items-center justify-center">
           {icon}

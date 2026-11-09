@@ -24,15 +24,6 @@
   border-radius: 14px;
   padding: 9px 13px 10px;
 }
-.agent-activity-name {
-  width: fit-content;
-  max-width: 100%;
-  overflow-wrap: anywhere;
-  color: var(--text-secondary);
-  font-size: 12px;
-  font-weight: 500;
-  line-height: 16px;
-}
 .agent-activity-label {
   position: relative;
   display: inline-block;

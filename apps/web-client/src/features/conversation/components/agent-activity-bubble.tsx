@@ -85,15 +85,6 @@ export function AgentActivityBubble({
         >
           <Bubble variant="secondary" className="agent-activity-bubble" data-tone={view.tone}>
             <BubbleContent>
-              {showName && (
-                <button
-                  type="button"
-                  className="agent-activity-name text-left hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                  onClick={openAgent}
-                >
-                  {agent.name}
-                </button>
-              )}
               <ActivityStatus name={agent.name} label={view.label} loading={view.isLoading} />
               {guidance && (
                 <p className="message-diagnostic text-[12px] leading-[18px] text-muted-foreground">

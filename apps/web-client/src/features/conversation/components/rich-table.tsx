@@ -268,7 +268,7 @@ export function RichTable({
       <div hidden={open} inert={inViewer} className="chat-table">
         <div
           data-table-card
-          className="group/table relative w-full overflow-hidden rounded-[20px] bg-composer text-foreground shadow-[0_0_0_0.5px_var(--composer-ring),0_2px_8px_rgb(28_28_28/0.035)] touch:pt-11"
+          className="group/table relative w-full min-w-[min(100%,24rem)] overflow-hidden rounded-[20px] bg-composer text-foreground shadow-[0_0_0_0.5px_var(--composer-ring),0_2px_8px_rgb(28_28_28/0.035)] touch:pt-11"
           dir="ltr"
         >
           <div className="table-plate absolute end-1.5 top-1.5 z-20 flex items-center gap-0.5 rounded-full bg-composer p-0.5 opacity-0 ring-[0.5px] ring-foreground/10 transition-opacity focus-within:opacity-100 group-hover/table:opacity-100 touch:end-1 touch:top-0 touch:bg-transparent touch:p-0 touch:opacity-100 touch:ring-0">

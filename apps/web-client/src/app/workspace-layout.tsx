@@ -859,9 +859,7 @@ export default function Workspace() {
     const sender =
       snapshot?.thread.type === "group" && message.author === "agent"
         ? {
-            name: author?.name ?? "Agent",
             style: agentStyle(author),
-            open: author ? () => openResource("agent", author.id) : undefined,
           }
         : undefined;
     return (
@@ -1090,10 +1088,7 @@ export default function Workspace() {
             </div>
           </header>
           {error && (
-            <Alert
-              variant="destructive"
-              className="workspace-error [width:auto] [max-width:var(--chat-column-max)] [margin:8px_24px]"
-            >
+            <Alert variant="destructive" className="workspace-error [width:auto] [margin:8px_24px]">
               <AlertDescription className="flex flex-wrap items-center gap-2">
                 <span>{error}</span>
                 <Button size="sm" variant="outline" onClick={workspace.retry}>
@@ -1117,7 +1112,7 @@ export default function Workspace() {
               >
                 <ConversationContent
                   scrollClassName="conversation-scroll"
-                  className="conversation-column [max-width:var(--chat-column-max)] [margin-inline:auto] gap-4 w-full"
+                  className="conversation-column gap-4 w-full"
                 >
                   {(historyLoaded ? before : snapshot.timeline.next_before) && (
                     <Button
@@ -1294,7 +1289,6 @@ export default function Workspace() {
                                     (request) => request.message_id === message.id,
                                   )
                                 }
-                                author={author?.name ?? "Agent"}
                                 open={(id) => openResource("files", id)}
                               />
                             )}
@@ -1398,7 +1392,7 @@ export default function Workspace() {
                 onBlurCapture={(event) => {
                   if (!event.currentTarget.contains(event.relatedTarget)) setComposerFocused(false);
                 }}
-                className="composer-dock [max-width:calc(var(--chat-column-max)_+_40px)] [margin:auto] [padding:12px_20px_16px] w-full shrink-0"
+                className="composer-dock [padding:12px_20px_16px] w-full shrink-0"
               >
                 {!reply && !editing && (
                   <ViewerComposerContext viewer={viewer} disabled={busy || pending !== null} />

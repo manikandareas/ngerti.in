@@ -178,7 +178,7 @@ test("stored message times appear for users and agents in both DM and group", as
 });
 
 for (const theme of ["light", "dark"] as const) {
-  test(`group bubble contains author and saved time around rich content (${theme})`, async ({
+  test(`group bubble keeps compact headings and saved time around rich content (${theme})`, async ({
     page,
   }, info) => {
     await page.emulateMedia({ colorScheme: theme });
@@ -210,7 +210,7 @@ for (const theme of ["light", "dark"] as const) {
               run_id: null,
               artifact_ids: [],
               purpose: "conversation",
-              text: "Hasil pekerjaan bersama.\n\n| Langkah | Status |\n| --- | --- |\n| Periksa dokumen | Selesai |\n\n```ts\nconst result = 'ready';\n```",
+              text: "Hasil pekerjaan bersama.\n\n# Heading one\n\n## Heading two\n\n### Heading three\n\n#### Heading four\n\n##### Heading five\n\n###### Heading six\n\n| Langkah | Status |\n| --- | --- |\n| Periksa dokumen | Selesai |\n\n```ts\nconst result = 'ready';\n```",
             },
           ],
         }),
@@ -221,7 +221,26 @@ for (const theme of ["light", "dark"] as const) {
     if (info.project.name === "mobile") await page.setViewportSize({ width: 320, height: 844 });
     const bubble = page.locator(".group-agent-bubble");
     await expect(bubble).toHaveCount(1);
-    await expect(bubble.locator(".group-bubble-author")).toHaveText(agent.name);
+    await expect(bubble.locator(".group-bubble-author")).toHaveCount(0);
+    await expect(bubble.getByRole("heading")).toHaveCount(6);
+    const typography = await bubble.evaluate((element) => {
+      const paragraph = getComputedStyle(element.querySelector(".chat-md > p") as Element);
+      return Array.from(element.querySelectorAll("h1, h2, h3, h4, h5, h6")).map((heading) => {
+        const style = getComputedStyle(heading);
+        return {
+          size: style.fontSize,
+          line: style.lineHeight,
+          paragraphSize: paragraph.fontSize,
+          paragraphLine: paragraph.lineHeight,
+        };
+      });
+    });
+    expect(
+      typography.every(
+        (heading) =>
+          heading.size === heading.paragraphSize && heading.line === heading.paragraphLine,
+      ),
+    ).toBe(true);
     await expect(bubble.getByRole("table", { name: "Tabel", exact: true })).toBeVisible();
     await expect(bubble.locator("[data-code-block]")).toHaveCount(1);
     await expect(bubble.locator("time")).toHaveAttribute("datetime", sentAt);
@@ -237,14 +256,10 @@ for (const theme of ["light", "dark"] as const) {
     await expect(bubble.locator("time")).toHaveText(expectedTime);
     const bounds = await bubble.evaluate((element) => {
       const bubble = element.getBoundingClientRect();
-      const name = element.querySelector(".group-bubble-author")?.getBoundingClientRect();
       const time = element.querySelector("time")?.getBoundingClientRect();
       return {
         contained:
-          !!name &&
           !!time &&
-          name.x >= bubble.x &&
-          name.right <= bubble.right &&
           time.x >= bubble.x &&
           time.right <= bubble.right &&
           time.bottom <= bubble.bottom,
@@ -274,7 +289,7 @@ for (const theme of ["light", "dark"] as const) {
     });
     expect(violations).toEqual([]);
     await page.screenshot({ path: info.outputPath(`group-bubble-${theme}.png`) });
-    await bubble.locator(".group-bubble-author").click();
+    await page.getByRole("button", { name: `Profil ${agent.name}`, exact: true }).click();
     await expect(
       page.getByRole("button", { name: `Sapa ${agent.name}`, exact: true }),
     ).toBeVisible();
@@ -348,7 +363,7 @@ test("saved avatar identity appears outside the left of group replies and surviv
     const bubble = await message.locator(".chat-agent-bubble").boundingBox();
     expect(avatar && bubble && avatar.x + avatar.width <= bubble.x).toBeTruthy();
     const content = message.locator('.group-agent-bubble > [data-slot="bubble-content"]');
-    await expect(content.locator(".group-bubble-author")).toHaveCount(1);
+    await expect(content.locator(".group-bubble-author")).toHaveCount(0);
     await expect(content.locator("time")).toHaveText(/^\d{2}\.\d{2}$/);
     await expect(content.locator("time")).toHaveAttribute(
       "datetime",
@@ -356,7 +371,7 @@ test("saved avatar identity appears outside the left of group replies and surviv
     );
     await expect(message.locator(".message-author")).toHaveCount(0);
   }
-  await expect(page.locator(".group-bubble-author")).toHaveText([tobi.name, peer.name]);
+  await expect(page.locator(".group-bubble-author")).toHaveCount(0);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.screenshot({ path: info.outputPath("group-avatar.png") });
   await portraits.first().click();

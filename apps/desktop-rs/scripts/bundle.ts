@@ -1,6 +1,7 @@
 import { createHash } from "node:crypto";
 import { cp, mkdir, readFile, rename, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
+import { stageBackend } from "./backend-runtime";
 import { directory, run, target } from "./cargo";
 
 if (process.platform !== "darwin" || process.arch !== "arm64") {
@@ -10,6 +11,7 @@ const inputs = [
   "Cargo.toml",
   "Cargo.lock",
   "scripts/bundle.ts",
+  "scripts/backend-runtime.ts",
   "../../docs/contracts/1.31.0.json",
 ];
 for (const pattern of [
@@ -20,6 +22,19 @@ for (const pattern of [
 ])
   for await (const path of new Bun.Glob(pattern).scan({ cwd: directory, onlyFiles: true }))
     inputs.push(path);
+for (const pattern of ["apps/server/src/**/*", "packages/avatar/src/**/*", "infra/machine/**/*"])
+  for await (const path of new Bun.Glob(pattern).scan({
+    cwd: resolve(directory, "../.."),
+    onlyFiles: true,
+  }))
+    if (!path.endsWith(".env")) inputs.push(`../../${path}`);
+for (const path of [
+  "package.json",
+  "bun.lock",
+  "apps/server/package.json",
+  "packages/avatar/package.json",
+])
+  inputs.push(`../../${path}`);
 const hash = (bytes: Uint8Array) => createHash("sha256").update(bytes).digest("hex");
 const before = Object.fromEntries(
   await Promise.all(
@@ -41,6 +56,7 @@ await rename(temporaryExecutable, executable);
 await cp(resolve(directory, "assets"), resolve(bundle, "Contents/Resources/assets"), {
   recursive: true,
 });
+await stageBackend(resolve(bundle, "Contents"));
 await writeFile(
   resolve(bundle, "Contents/Info.plist"),
   `<?xml version="1.0" encoding="UTF-8"?>
@@ -55,6 +71,13 @@ await writeFile(
 <key>LSMinimumSystemVersion</key><string>14.0</string>
 </dict></plist>`,
 );
+for (const [path, expected] of Object.entries(before))
+  if (hash(await readFile(resolve(directory, path))) !== expected)
+    throw new Error(`Build input changed during resource staging: ${path}`);
+const resources: Record<string, string> = {};
+for await (const path of new Bun.Glob("Contents/**/*").scan({ cwd: bundle, onlyFiles: true }))
+  if (!path.endsWith("build-manifest.json"))
+    resources[path] = hash(await readFile(resolve(bundle, path)));
 await writeFile(
   resolve(bundle, "Contents/Resources/build-manifest.json"),
   JSON.stringify(
@@ -65,6 +88,7 @@ await writeFile(
       built_at: new Date().toISOString(),
       inputs: before,
       binary_sha256: hash(await readFile(resolve(bundle, "Contents/MacOS/ngertiin-desktop"))),
+      resources,
     },
     null,
     2,

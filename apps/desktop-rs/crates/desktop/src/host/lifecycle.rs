@@ -73,8 +73,10 @@ pub(crate) fn save_bounds(window: &Window) {
         let g = Geometry {
             x: bounds.origin.x.into(),
             y: bounds.origin.y.into(),
-            width: bounds.size.width.into(),
-            height: bounds.size.height.into(),
+            // WindowOptions takes content size. AppKit's window bounds include
+            // the title bar, so persisting those dimensions grows every relaunch.
+            width: window.viewport_size().width.into(),
+            height: window.viewport_size().height.into(),
         };
         let _ = super::profile::write_private(&home.join("window.json"), &g);
     }

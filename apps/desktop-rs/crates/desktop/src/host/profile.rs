@@ -155,6 +155,24 @@ pub(super) struct RuntimePaths {
 }
 impl RuntimePaths {
     pub fn resolve(profile: &Profile) -> Result<Self> {
+        Self::at(profile, &std::env::current_exe()?)
+    }
+    pub(super) fn at(profile: &Profile, executable: &Path) -> Result<Self> {
+        if let Some(macos) = executable.parent() {
+            let root = macos.join("../Resources/runtime");
+            let bun = macos.join("bun");
+            if macos.join("../Info.plist").is_file() || root.exists() || bun.exists() {
+                if !root.join("apps/server/src/main.ts").is_file() || !bun.is_file() {
+                    bail!(
+                        "The bundled backend is incomplete. Rebuild the development application."
+                    );
+                }
+                return Ok(Self {
+                    root: root.canonicalize()?,
+                    bun,
+                });
+            }
+        }
         if !profile.bun_executable.is_file()
             || !profile
                 .project_root

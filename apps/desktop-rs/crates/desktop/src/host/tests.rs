@@ -232,3 +232,24 @@ async fn backend_authority_lock_survives_missing_discovery_without_a_second_serv
     owned.stop().await;
     assert!(!process_alive(record.pid));
 }
+
+#[test]
+fn bundled_runtime_does_not_require_the_original_checkout() {
+    let fixture = Fixture::new();
+    let contents = fixture.home.join("App.app/Contents");
+    let runtime = contents.join("Resources/runtime/apps/server/src");
+    std::fs::create_dir_all(&runtime).unwrap();
+    std::fs::create_dir_all(contents.join("MacOS")).unwrap();
+    std::fs::write(runtime.join("main.ts"), "// closure fixture").unwrap();
+    std::fs::write(contents.join("MacOS/bun"), "fixture").unwrap();
+    let mut profile = fixture.profile.clone();
+    profile.project_root = fixture.home.join("missing-checkout");
+    profile.bun_executable = fixture.home.join("missing-bun");
+    let paths = RuntimePaths::at(&profile, &contents.join("MacOS/ngertiin-desktop")).unwrap();
+    assert_eq!(
+        paths.root,
+        contents.join("Resources/runtime").canonicalize().unwrap()
+    );
+    assert_eq!(paths.bun, contents.join("MacOS/bun"));
+    assert!(RuntimePaths::at(&profile, &fixture.home.join("debug/native")).is_err());
+}

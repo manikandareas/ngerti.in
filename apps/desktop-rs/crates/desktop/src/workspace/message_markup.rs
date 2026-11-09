@@ -46,6 +46,7 @@ struct References {
 
 pub(super) fn extensions(
     owner: WeakEntity<Workspace>,
+    row_id: String,
     sources: Vec<String>,
     tables: BTreeMap<usize, Entity<RichTable>>,
 ) -> Box<MarkdownExtensions> {
@@ -53,9 +54,97 @@ pub(super) fn extensions(
     Box::new(
         MarkdownExtensions::default()
             .parser_revision(revision)
+            .plugin(CodeBlocks {
+                owner: owner.clone(),
+                row_id,
+            })
             .plugin(References { owner, sources })
             .plugin(Tables(tables)),
     )
+}
+
+// A native wrapper gives each block its own hover boundary. The framework's
+// action hook alone exposes only the toolbar, not the surrounding code area.
+struct CodeBlocks {
+    owner: WeakEntity<Workspace>,
+    row_id: String,
+}
+impl MarkdownPlugin for CodeBlocks {
+    fn name(&self) -> &str {
+        "ngertiin-code"
+    }
+    fn is_block(&self) -> bool {
+        true
+    }
+    fn parse(
+        &self,
+        node: &markdown_ast::Node,
+        context: &MarkdownParseContext<'_>,
+    ) -> Option<MarkdownNode> {
+        let markdown_ast::Node::Code(code) = node else {
+            return None;
+        };
+        let offset = context.offset() + node.position()?.start.offset;
+        // Render a standalone fence so indented/nested source remains code.
+        let fence = "`".repeat(
+            code.value
+                .split('\n')
+                .map(|line| line.chars().take_while(|c| *c == '`').count())
+                .max()
+                .unwrap_or(0)
+                .max(2)
+                + 1,
+        );
+        let source = format!(
+            "{fence}{}\n{}\n{fence}",
+            code.lang.as_deref().unwrap_or_default(),
+            code.value
+        );
+        Some(
+            MarkdownNode::new(self.name(), (offset, source))
+                .text(code.value.clone())
+                .markdown(context.node_source(node).unwrap_or_default().to_owned()),
+        )
+    }
+    fn render(&self, node: &MarkdownNode, _: &mut Window, cx: &mut App) -> impl IntoElement {
+        let (offset, source) = node.data::<(usize, String)>().expect("Parsed code block");
+        let id = format!("code:{}:{offset}", self.row_id);
+        let wrapped = self
+            .owner
+            .read_with(cx, |view, _| view.wrapped_code.contains(&id))
+            .unwrap_or(false);
+        let p = Palette::new(cx.theme().mode.is_dark());
+        let mut code_style = StyleRefinement::default()
+            .py(ui(10.))
+            .px(ui(12.))
+            .border_0()
+            .rounded(ui(8.));
+        code_style.text.white_space = Some(if wrapped {
+            WhiteSpace::Normal
+        } else {
+            WhiteSpace::Nowrap
+        });
+        code_style.overflow.x = Some(Overflow::Scroll);
+        div()
+            .id(SharedString::from(id.clone()))
+            .test_support()
+            .group(SharedString::from(id.clone()))
+            .min_w_0()
+            .max_w_full()
+            .child(
+                gpui_kit::base::text::TextView::markdown("code-content", source.clone())
+                    .min_w_0()
+                    .max_w_full()
+                    .selectable(true)
+                    .style(
+                        gpui_kit::base::text::TextViewStyle::from_theme(
+                            &gpui_kit::base::Theme::global(cx),
+                        )
+                        .with_code_block(code_style),
+                    )
+                    .code_block_actions(code_actions(self.owner.clone(), id, p)),
+            )
+    }
 }
 
 // Streaming can introduce a table or change source-link classification after
@@ -210,26 +299,29 @@ pub(super) fn prepare_tables(
     result
 }
 
-pub(super) fn code_actions(
+fn code_actions(
     owner: WeakEntity<Workspace>,
-    row_id: String,
+    block_id: String,
     p: Palette,
 ) -> impl Fn(&gpui_kit::base::text::CodeBlock, &mut Window, &mut App) -> AnyElement {
     move |code, _, cx| {
-        let group = SharedString::from(format!("message-actions:{row_id}"));
+        let group = SharedString::from(block_id.clone());
         let source = code.code();
-        let copy = crate::ui::workspace::action(
+        let copy = button(
             SharedString::from(format!(
                 "copy-code:{}:{}",
-                row_id,
+                block_id,
                 code.span.map_or(0, |span| span.start)
             )),
-            "Copy code",
-            "Copy01Icon",
+            "",
+            ButtonKind::Ghost,
             p,
             cx,
         )
+        .accessibility_label("Copy code")
         .size(ui(24.))
+        .p_0()
+        .child(glyph("Copy01Icon", 13., p))
         .rounded_full()
         .bg(p.color("popover"))
         .opacity(0.)
@@ -239,15 +331,18 @@ pub(super) fn code_actions(
             cx.write_to_clipboard(ClipboardItem::new_string(source.to_string()))
         });
         let owner = owner.clone();
-        let row_id = row_id.clone();
-        let wrap = crate::ui::workspace::action(
-            SharedString::from(format!("wrap-code:{row_id}")),
-            "Wrap code",
-            "TextWrapIcon",
+        let block_id = block_id.clone();
+        let wrap = button(
+            SharedString::from(format!("wrap-code:{block_id}")),
+            "",
+            ButtonKind::Ghost,
             p,
             cx,
         )
+        .accessibility_label("Wrap code")
         .size(ui(24.))
+        .p_0()
+        .child(glyph("TextWrapIcon", 13., p))
         .rounded_full()
         .bg(p.color("popover"))
         .opacity(0.)
@@ -255,8 +350,8 @@ pub(super) fn code_actions(
         .focus_visible(|style| style.opacity(1.))
         .on_click(move |_, _, cx| {
             let _ = owner.update(cx, |this, cx| {
-                if !this.wrapped_code.remove(&row_id) {
-                    this.wrapped_code.insert(row_id.clone());
+                if !this.wrapped_code.remove(&block_id) {
+                    this.wrapped_code.insert(block_id.clone());
                 }
                 cx.notify();
             });
@@ -464,6 +559,8 @@ impl MarkdownPlugin for References {
         )
         .accessibility_label(format!("Open {label}"))
         .h(ui(21.))
+        .w_auto()
+        .min_w_0()
         .max_w(ui(240.))
         .px(ui(5.))
         .py_0()
@@ -471,8 +568,8 @@ impl MarkdownPlugin for References {
         .bg(p.color("secondary"))
         .text_color(p.color("muted-foreground"))
         .when(file, |chip| {
-            chip.h(ui(26.))
-                .px(ui(9.))
+            chip.h(ui(24.))
+                .px(ui(7.))
                 .rounded_full()
                 .bg(p.color("popover"))
                 .border_1()
@@ -486,10 +583,10 @@ impl MarkdownPlugin for References {
             .items_center()
             .gap(ui(4.))
             .min_w_0()
-            .text_size(ui(13.))
-            .line_height(ui(19.));
+            .text_size(ui(12.))
+            .line_height(ui(18.));
         if file {
-            contents = contents.child(context::file_icon(&label, false, false, p.dark));
+            contents = contents.child(context::file_icon_sized(&label, false, false, p.dark, 14.));
         } else {
             contents = contents.child(glyph(
                 if source { "Globe02Icon" } else { "UserIcon" },

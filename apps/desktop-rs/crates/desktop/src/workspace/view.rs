@@ -62,9 +62,9 @@ impl Render for Workspace {
                     .left_0()
                     .right_0()
                     .bg(linear_gradient(
-                        180.,
-                        linear_color_stop(p.color("background"), 0.45),
-                        linear_color_stop(p.color("background").opacity(0.), 1.),
+                        0.,
+                        linear_color_stop(p.color("background").opacity(0.02), 0.),
+                        linear_color_stop(p.color("background").opacity(0.94), 1.),
                     ))
                     .child(self.header_view(!show_sidebar, cx)),
             );

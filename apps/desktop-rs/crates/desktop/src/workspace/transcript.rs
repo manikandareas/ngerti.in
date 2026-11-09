@@ -555,6 +555,9 @@ impl Workspace {
                     .relative()
                     .flex()
                     .flex_col()
+                    .min_w_0()
+                    .max_w_full()
+                    .whitespace_normal()
                     .gap(ui(0.))
                     .px(ui(12.))
                     .py(ui(7.))
@@ -594,6 +597,8 @@ impl Workspace {
                     });
                 bubble = bubble.child(
                     TextView::new(&body)
+                        .min_w_0()
+                        .max_w_full()
                         .markdown_extensions(markup)
                         .selectable(true)
                         .text_color(p.color(if user {
@@ -637,28 +642,8 @@ impl Workspace {
                                         .py(ui(10.))
                                         .border_0()
                                         .border_color(gpui_kit::transparent_black()),
-                                )
-                                .with_code_block({
-                                    let mut style = StyleRefinement::default()
-                                        .py(ui(10.))
-                                        .px(ui(12.))
-                                        .border_0()
-                                        .rounded(ui(8.));
-                                    style.text.white_space =
-                                        Some(if self.wrapped_code.contains(&id) {
-                                            WhiteSpace::Normal
-                                        } else {
-                                            WhiteSpace::Nowrap
-                                        });
-                                    style.overflow.x = Some(Overflow::Scroll);
-                                    style
-                                }),
+                                ),
                         )
-                        .code_block_actions(super::message_markup::code_actions(
-                            cx.entity().downgrade(),
-                            id.clone(),
-                            p,
-                        ))
                         .text_size(ui(15.))
                         .line_height(ui(22.))
                         .motion(if partial {
@@ -692,19 +677,32 @@ impl Workspace {
                         cx,
                     )
                     .accessibility_label(format!("Open {name}"))
-                    .h(ui(30.))
+                    .h(ui(24.))
+                    .w_auto()
+                    .min_w_0()
                     .max_w_full()
-                    .rounded(super::super::ui::theme::ui_px(15., cx))
+                    .self_start()
+                    .px(ui(7.))
+                    .py_0()
+                    .rounded_full()
                     .bg(p.color("popover"))
                     .child(
                         div()
                             .min_w_0()
                             .flex()
                             .items_center()
-                            .gap(ui(7.))
-                            .child(context::file_icon(&name, false, false, p.dark))
-                            .child(div().min_w_0().truncate().text_size(ui(13.)).child(name))
-                            .child(crate::ui::workspace::glyph("ArrowUpRight01Icon", 12., p)),
+                            .max_w_full()
+                            .gap(ui(4.))
+                            .child(context::file_icon_sized(&name, false, false, p.dark, 14.))
+                            .child(
+                                div()
+                                    .min_w_0()
+                                    .max_w(ui(192.))
+                                    .truncate()
+                                    .text_size(ui(12.))
+                                    .child(name),
+                            )
+                            .child(crate::ui::workspace::glyph("ArrowUpRight01Icon", 10., p)),
                     )
                     .on_click(cx.listener(move |this, _, window, cx| {
                         this.open_artifact(artifact.clone(), window, cx)
@@ -739,8 +737,33 @@ impl Workspace {
                 } else {
                     None
                 };
+                let mut copy = Some(
+                    button(
+                        SharedString::from(format!("copy:{id}")),
+                        "",
+                        ButtonKind::Ghost,
+                        p,
+                        cx,
+                    )
+                    .accessibility_label("Copy message")
+                    .size(ui(24.))
+                    .p_0()
+                    .flex_shrink_0()
+                    .self_center()
+                    .child(crate::ui::workspace::glyph("Copy01Icon", 14., p))
+                    .disabled_state(copy_content.trim().is_empty(), p)
+                    .opacity(0.)
+                    .group_hover(
+                        SharedString::from(format!("message-actions:{id}")),
+                        |style| style.opacity(1.),
+                    )
+                    .focus_visible(|style| style.opacity(1.))
+                    .on_click(move |_, _, cx| {
+                        cx.write_to_clipboard(ClipboardItem::new_string(copy_content.clone()))
+                    })
+                    .into_any_element(),
+                );
                 div()
-                    .group(SharedString::from(format!("message-actions:{id}")))
                     .flex()
                     .w_full()
                     .gap_2()
@@ -775,36 +798,24 @@ impl Workspace {
                     })
                     .child(
                         div()
-                            .max_w(relative(if group && !user { 1. } else { 0.8 }))
+                            .group(SharedString::from(format!("message-actions:{id}")))
+                            .max_w(relative(0.8))
                             .min_w_0()
                             .flex()
-                            .flex_col()
-                            .items_start()
-                            .gap(ui(6.))
-                            .when(has_text || user, |view| view.child(bubble))
-                            .when(!user && tail, |view| view.child(attachments)),
-                    )
-                    .child(
-                        crate::ui::workspace::action(
-                            SharedString::from(format!("copy:{id}")),
-                            "Copy message",
-                            "Copy01Icon",
-                            p,
-                            cx,
-                        )
-                        .size(ui(28.))
-                        .self_center()
-                        .disabled_state(copy_content.trim().is_empty(), p)
-                        .opacity(0.)
-                        .group_hover(
-                            SharedString::from(format!("message-actions:{id}")),
-                            |style| style.opacity(1.),
-                        )
-                        .focus_visible(|style| style.opacity(1.))
-                        .text_color(p.color("muted-foreground"))
-                        .on_click(move |_, _, cx| {
-                            cx.write_to_clipboard(ClipboardItem::new_string(copy_content.clone()))
-                        }),
+                            .gap_2()
+                            .children(if user { copy.take() } else { None })
+                            .child(
+                                div()
+                                    .min_w_0()
+                                    .max_w_full()
+                                    .flex()
+                                    .flex_col()
+                                    .items_start()
+                                    .gap(ui(6.))
+                                    .when(has_text || user, |view| view.child(bubble))
+                                    .when(!user && tail, |view| view.child(attachments)),
+                            )
+                            .children(copy),
                     )
                     .into_any_element()
             }
@@ -1256,6 +1267,7 @@ fn push_message(
             super::message_markup::prepare_tables(old_tables, &display, slice.sources, window, cx);
         let markup = super::message_markup::extensions(
             cx.entity().downgrade(),
+            id.clone(),
             slice.sources.to_vec(),
             tables.clone(),
         );

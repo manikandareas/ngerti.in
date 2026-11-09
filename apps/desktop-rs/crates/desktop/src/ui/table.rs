@@ -92,13 +92,12 @@ impl RichTable {
         }
     }
     fn column_width(&self, index: usize) -> f32 {
-        if let Some(inline) = &self.inline {
-            let unit = inline.font_unit;
+        if self.inline.is_some() {
             let available = (self.available - 2.).max(1.);
             let natural: f32 = self.columns.iter().map(|column| column.width).sum();
             let floor: f32 = self.columns.iter().map(|column| column.minimum).sum();
-            let width = if natural <= available {
-                self.columns[index].width
+            return if natural <= available {
+                self.columns[index].width + (available - natural) / self.columns.len().max(1) as f32
             } else if floor < available {
                 self.columns[index].minimum
                     + (self.columns[index].width - self.columns[index].minimum)
@@ -107,9 +106,6 @@ impl RichTable {
             } else {
                 self.columns[index].minimum
             };
-            return width
-                + ((384. * unit).min(available) - natural).max(0.)
-                    / self.columns.len().max(1) as f32;
         }
         let total: f32 = self.columns.iter().map(|c| c.minimum + 24.).sum();
         if self.wrap && self.order.len() <= 80 && total <= self.available {

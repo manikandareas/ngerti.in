@@ -7,7 +7,7 @@ mod library;
 mod settings;
 mod skills;
 mod state;
-pub(in crate::workspace) use files::file_icon;
+pub(in crate::workspace) use files::{file_icon, file_icon_sized};
 
 use super::*;
 use crate::ui::{

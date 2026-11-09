@@ -331,8 +331,14 @@ fn inline_tables_sort_filter_and_retain_state_across_transcript_updates(cx: &mut
                 window.render_frame(cx);
                 assert_eq!(window.find_all("inline-rich-table").len(), 1);
                 let bounds = window.find("inline-rich-table").bounds();
-                assert!(bounds.size.width >= px(360.));
-                assert!(bounds.size.width < px(400.));
+                let reply_id = text(&view.read(cx).value()["messages"][1], "id").to_owned();
+                let bubble = window
+                    .find(gpui_kit::SharedString::from(format!(
+                        "bubble:message:{reply_id}:0"
+                    )))
+                    .bounds();
+                assert!((bounds.size.width - (bubble.size.width - px(24.))).abs() < px(1.));
+                assert!((bounds.left() - (bubble.left() + px(12.))).abs() < px(1.));
                 let painted = gpui_kit::base::test_support::texts(window);
                 let cells = painted
                     .iter()
@@ -563,6 +569,214 @@ fn streamed_tables_install_the_native_renderer_when_the_header_arrives(cx: &mut 
 }
 
 #[gpui_kit::test]
+fn long_replies_wrap_inside_dm_and_group_bubbles(cx: &mut TestAppContext) {
+    init(cx);
+    for (group, width) in [(false, 720.), (true, 720.), (false, 1280.), (true, 1280.)] {
+        let (handle, reply) = cx.update(|cx| {
+            let mut value = fixture("dm");
+            let reply = format!("message:{}:0", text(&value["messages"][1], "id"));
+            let prose = "A readable research answer should wrap at the message boundary. ".repeat(18);
+            let content = format!("{prose}\n\n1. Keep the evidence next to the answer.\n2. Preserve the complete response.\n\n```text\n{}\n```\n\nFinal paragraph.", "wide-code-".repeat(50));
+            value["messages"][1]["text"] = content.clone().into();
+            value["timeline"]["messages"][1]["text"] = content.into();
+            if group { value["thread"]["type"] = "group".into(); }
+            let (handle, _) = gpui_kit::open_window(WindowOptions {
+                window_bounds: Some(WindowBounds::Windowed(Bounds::new(Default::default(), size(px(width), px(1200.))))),
+                ..Default::default()
+            }, cx, |window, cx| cx.new(|cx| workspace(value, window, cx))).unwrap();
+            (handle, reply)
+        });
+        cx.update_window(handle, |_, window, cx| window.render_frame(cx))
+            .unwrap();
+        cx.run_until_parked();
+        cx.update_window(handle, |_, window, cx| {
+            window.render_frame(cx);
+            let row = window
+                .find(gpui_kit::SharedString::from(reply.clone()))
+                .bounds();
+            let bubble = window
+                .find(gpui_kit::SharedString::from(format!("bubble:{reply}")))
+                .bounds();
+            assert!(
+                bubble.size.width <= row.size.width * 0.8,
+                "{bubble:?} exceeds {row:?}"
+            );
+            assert!(bubble.left() >= row.left());
+            assert!(bubble.right() <= row.right());
+            let painted = gpui_kit::base::test_support::texts(window);
+            let prose = painted
+                .iter()
+                .find(|text| text.text().starts_with("A readable research"))
+                .unwrap();
+            assert!(
+                prose.bounds().size.height > px(22.),
+                "Prose did not wrap: {prose:?}"
+            );
+            assert!(prose.bounds().right() <= bubble.right());
+            assert!(
+                painted
+                    .iter()
+                    .any(|text| text.text().contains("Final paragraph."))
+            );
+        })
+        .unwrap();
+    }
+}
+
+#[gpui_kit::test]
+fn code_actions_follow_only_the_hovered_block_and_copy_its_content(cx: &mut TestAppContext) {
+    init(cx);
+    let first = format!("fmt.Println(\"{}\")", "native code ".repeat(18));
+    let second = "fmt.Println(\"second\")";
+    let content = format!(
+        "First paragraph.\n\n```go\n{first}\n```\n\nBetween blocks.\n\n```go\n{second}\n```\n\nEnd."
+    );
+    let (handle, view, row, blocks) = cx.update(|cx| {
+        let mut value = fixture("dm");
+        let row = format!("message:{}:0", text(&value["messages"][1], "id"));
+        value["messages"][1]["text"] = content.clone().into();
+        value["timeline"]["messages"][1]["text"] = content.clone().into();
+        let blocks = content
+            .match_indices("```go")
+            .map(|(offset, _)| format!("code:{row}:{offset}"))
+            .collect::<Vec<_>>();
+        let (handle, view) = gpui_kit::open_window(
+            WindowOptions {
+                window_bounds: Some(WindowBounds::Windowed(Bounds::new(
+                    Default::default(),
+                    size(px(1000.), px(1100.)),
+                ))),
+                ..Default::default()
+            },
+            cx,
+            |window, cx| cx.new(|cx| workspace(value, window, cx)),
+        )
+        .unwrap();
+        (handle, view, row, blocks)
+    });
+    cx.update_window(handle, |_, window, cx| window.render_frame(cx))
+        .unwrap();
+    cx.run_until_parked();
+    cx.update_window(handle, |_, window, cx| {
+        window.render_frame(cx);
+        let bubble = gpui_kit::SharedString::from(format!("bubble:{row}"));
+        let copies = blocks
+            .iter()
+            .map(|block| gpui_kit::SharedString::from(format!("copy-code:{block}:0")))
+            .collect::<Vec<_>>();
+        window.click_at(bubble, gpui_kit::point(px(16.), px(16.)), cx);
+        assert!(copies.iter().all(|id| !window.find(id.clone()).visible()));
+        window.hover(gpui_kit::SharedString::from(blocks[0].clone()), cx);
+        assert!(window.find(copies[0].clone()).visible());
+        assert!(!window.find(copies[1].clone()).visible());
+        window.click(copies[0].clone(), cx);
+        assert_eq!(
+            cx.read_from_clipboard().unwrap().text().as_deref(),
+            Some(first.as_str())
+        );
+        let first_height = window
+            .find(gpui_kit::SharedString::from(blocks[0].clone()))
+            .bounds()
+            .size
+            .height;
+        let second_height = window
+            .find(gpui_kit::SharedString::from(blocks[1].clone()))
+            .bounds()
+            .size
+            .height;
+        window.click(
+            gpui_kit::SharedString::from(format!("wrap-code:{}", blocks[0])),
+            cx,
+        );
+        assert!(view.read(cx).wrapped_code.contains(&blocks[0]));
+        assert!(!view.read(cx).wrapped_code.contains(&blocks[1]));
+        assert!(
+            window
+                .find(gpui_kit::SharedString::from(blocks[0].clone()))
+                .bounds()
+                .size
+                .height
+                > first_height
+        );
+        assert_eq!(
+            window
+                .find(gpui_kit::SharedString::from(blocks[1].clone()))
+                .bounds()
+                .size
+                .height,
+            second_height
+        );
+        window.hover(gpui_kit::SharedString::from(blocks[1].clone()), cx);
+        assert!(!window.find(copies[0].clone()).visible());
+        assert!(window.find(copies[1].clone()).visible());
+        window.click(copies[1].clone(), cx);
+        assert_eq!(
+            cx.read_from_clipboard().unwrap().text().as_deref(),
+            Some(second)
+        );
+    })
+    .unwrap();
+}
+
+#[gpui_kit::test]
+fn attachment_chips_fit_their_labels_and_message_actions_follow_the_author(
+    cx: &mut TestAppContext,
+) {
+    init(cx);
+    let (handle, user, reply, file) = cx.update(|cx| {
+        let mut value = fixture("dm");
+        let user = format!("message:{}:0", text(&value["messages"][0], "id"));
+        let reply = format!("message:{}:0", text(&value["messages"][1], "id"));
+        let file = text(&value["artifacts"][0], "id").to_owned();
+        value["messages"][0]["artifact_ids"] = serde_json::json!([file]);
+        value["timeline"]["messages"][0]["artifact_ids"] = serde_json::json!([file]);
+        let (handle, _) = gpui_kit::open_window(
+            WindowOptions {
+                window_bounds: Some(WindowBounds::Windowed(Bounds::new(
+                    Default::default(),
+                    size(px(1200.), px(1100.)),
+                ))),
+                ..Default::default()
+            },
+            cx,
+            |window, cx| cx.new(|cx| workspace(value, window, cx)),
+        )
+        .unwrap();
+        (handle, user, reply, file)
+    });
+    cx.update_window(handle, |_, window, cx| window.render_frame(cx))
+        .unwrap();
+    cx.run_until_parked();
+    cx.update_window(handle, |_, window, cx| {
+        window.render_frame(cx);
+        let user_bubble = window
+            .find(gpui_kit::SharedString::from(format!("bubble:{user}")))
+            .bounds();
+        let reply_bubble = window
+            .find(gpui_kit::SharedString::from(format!("bubble:{reply}")))
+            .bounds();
+        let attachment = window
+            .find(gpui_kit::SharedString::from(format!("file:{file}")))
+            .bounds();
+        assert!(
+            attachment.size.width < px(180.),
+            "Short filename should fit its content: {attachment:?}"
+        );
+        assert!(attachment.size.height <= px(24.));
+        assert!(attachment.right() <= user_bubble.right());
+        let user_copy = window
+            .find(gpui_kit::SharedString::from(format!("copy:{user}")))
+            .bounds();
+        let reply_copy = window
+            .find(gpui_kit::SharedString::from(format!("copy:{reply}")))
+            .bounds();
+        assert!(user_copy.right() <= user_bubble.left());
+        assert!(reply_copy.left() >= reply_bubble.right());
+    })
+    .unwrap();
+}
+
+#[gpui_kit::test]
 fn conversation_and_composer_follow_the_header_width_on_wide_windows(cx: &mut TestAppContext) {
     init(cx);
     let (handle, user_id) = cx.update(|cx| {
@@ -609,12 +823,17 @@ fn conversation_and_composer_follow_the_header_width_on_wide_windows(cx: &mut Te
 }
 
 #[gpui_kit::test]
-fn short_one_and_two_column_tables_keep_their_minimum_width_inside_the_bubble(
-    cx: &mut TestAppContext,
-) {
+fn short_one_and_two_column_tables_fill_the_bubble(cx: &mut TestAppContext) {
     init(cx);
-    for columns in [1, 2] {
-        let (handle, _) = cx.update(|cx| {
+    for (columns, width) in [
+        (1, 480.),
+        (2, 480.),
+        (1, 720.),
+        (2, 720.),
+        (1, 1280.),
+        (2, 1280.),
+    ] {
+        let (handle, view) = cx.update(|cx| {
             let mut value = fixture("dm");
             let text = if columns == 1 {
                 "| Item |\n| --- |\n| A |"
@@ -627,7 +846,7 @@ fn short_one_and_two_column_tables_keep_their_minimum_width_inside_the_bubble(
                 WindowOptions {
                     window_bounds: Some(WindowBounds::Windowed(Bounds::new(
                         Default::default(),
-                        size(px(720.), px(900.)),
+                        size(px(width), px(900.)),
                     ))),
                     ..Default::default()
                 },
@@ -644,7 +863,21 @@ fn short_one_and_two_column_tables_keep_their_minimum_width_inside_the_bubble(
         cx.update_window(handle, |_, window, cx| {
             window.render_frame(cx);
             let bounds = window.find("inline-rich-table").bounds();
-            assert!(bounds.size.width >= px(384.));
+            let reply_id = text(&view.read(cx).value()["messages"][1], "id").to_owned();
+            let bubble = window
+                .find(gpui_kit::SharedString::from(format!(
+                    "bubble:message:{reply_id}:0"
+                )))
+                .bounds();
+            assert!(
+                (bounds.size.width - (bubble.size.width - px(24.))).abs() < px(1.),
+                "Table {bounds:?} must fill bubble {bubble:?}"
+            );
+            let last_cell = window.find(("inline-cell", columns - 1_usize)).bounds();
+            assert!(
+                (last_cell.right() - (bounds.right() - px(1.))).abs() < px(1.),
+                "Columns must fill the table: {last_cell:?} versus {bounds:?}"
+            );
             assert!(bounds.right() <= window.viewport_size().width);
         })
         .unwrap();

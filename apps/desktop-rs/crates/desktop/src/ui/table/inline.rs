@@ -231,7 +231,7 @@ impl RichTable {
             .test_support()
             .track_focus(&self.focus)
             .relative()
-            .w(px(width + 2.))
+            .w_full()
             .max_w_full()
             .min_w_0()
             .flex()

@@ -20,7 +20,13 @@ pub(in crate::workspace) fn file_icon(
 ) -> AnyElement {
     file_icon_sized(name, folder, expanded, dark, 18.)
 }
-fn file_icon_sized(name: &str, folder: bool, expanded: bool, dark: bool, size: f32) -> AnyElement {
+pub(in crate::workspace) fn file_icon_sized(
+    name: &str,
+    folder: bool,
+    expanded: bool,
+    dark: bool,
+    size: f32,
+) -> AnyElement {
     let path = icon_path(name, folder, expanded, !dark);
     img(crate::platform::assets::root().join(format!("format-icons/{path}")))
         .size(ui(size))

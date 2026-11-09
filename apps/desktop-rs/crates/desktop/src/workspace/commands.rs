@@ -1,9 +1,54 @@
 use super::*;
 use crate::storage::Operation;
+use gpui_kit::component::ActiveTheme;
 use ngertiin_client::{ClientError, rows, text};
 use serde_json::json;
 
 impl Workspace {
+    pub(super) fn request_stop(&mut self, window: &mut Window, cx: &mut Context<Self>) {
+        let runs: Vec<_> = rows(self.value(), "runs")
+            .iter()
+            .filter(|run| matches!(text(run, "status"), "running" | "dispatching"))
+            .cloned()
+            .collect();
+        if runs.len() == 1 {
+            self.run_command(runs[0].clone(), "cancel", window, cx);
+        } else if runs.len() > 1 {
+            let names = self.agents.clone();
+            let owner = cx.entity().downgrade();
+            window.open_dialog(cx, move |dialog, _, cx| {
+                let p = crate::ui::theme::Palette::new(cx.theme().mode.is_dark());
+                dialog.title("Choose an agent to stop").child(
+                    div()
+                        .flex()
+                        .flex_col()
+                        .gap_2()
+                        .children(runs.iter().map(|run| {
+                            let run = run.clone();
+                            let name = names
+                                .iter()
+                                .find(|agent| agent["id"] == run["agent_id"])
+                                .map(|agent| text(agent, "name"))
+                                .unwrap_or("Agent");
+                            let owner = owner.clone();
+                            crate::ui::controls::button(
+                                SharedString::from(format!("stop-choice:{}", text(&run, "id"))),
+                                format!("Stop {name}"),
+                                crate::ui::controls::ButtonKind::Default,
+                                p,
+                                cx,
+                            )
+                            .on_click(move |_, window, cx| {
+                                window.close_dialog(cx);
+                                let _ = owner.update(cx, |this, cx| {
+                                    this.run_command(run.clone(), "cancel", window, cx)
+                                });
+                            })
+                        })),
+                )
+            });
+        }
+    }
     pub(super) fn dispatch(
         &mut self,
         slot: String,
@@ -120,7 +165,11 @@ impl Workspace {
     }
 
     pub(super) fn send(&mut self, window: &mut Window, cx: &mut Context<Self>) {
-        if self.staging_task.is_some() {
+        if self.staging_task.is_some()
+            || self
+                .composer
+                .update(cx, |composer, cx| composer.is_composing(window, cx))
+        {
             return;
         }
         let Some(thread) = self.selected else {
@@ -142,6 +191,9 @@ impl Workspace {
                 window,
                 cx,
             );
+            return;
+        }
+        if self.answer_from_composer(&draft.text, window, cx) {
             return;
         }
         let slot = format!("message:{thread}");
@@ -272,7 +324,12 @@ impl Workspace {
         window: &mut Window,
         cx: &mut Context<Self>,
     ) {
-        if run["native_run_id"].is_null() {
+        if run["native_run_id"].is_null()
+            || self.composer_response_locked(cx)
+            || self
+                .composer
+                .update(cx, |composer, cx| composer.is_composing(window, cx))
+        {
             return;
         }
         let body = if let Some(queued) = queued {

@@ -4,12 +4,130 @@ use crate::ui::{
     theme::{Palette, agent_bubble, ui},
     workspace::{action, action_tinted},
 };
+use gpui_kit::base::TestSupportExt;
 use ngertiin_client::{rows, text};
 
 impl Workspace {
+    fn queue_view(&self, cx: &mut Context<Self>) -> Option<AnyElement> {
+        let p = Palette::new(self.store.dark());
+        let value = self.value();
+        let queued: Vec<_> = rows(value, "messages")
+            .iter()
+            .filter_map(|message| {
+                if message["author"] != "user"
+                    || message["state"] == "deleted"
+                    || self
+                        .parts
+                        .values()
+                        .any(|part| part["message_id"] == message["id"])
+                {
+                    return None;
+                }
+                rows(value, "runs")
+                    .iter()
+                    .rev()
+                    .find(|run| {
+                        run["input_message_id"] == message["id"] && run["status"] == "queued"
+                    })
+                    .map(|run| (message, run))
+            })
+            .collect();
+        if queued.is_empty() {
+            return None;
+        }
+        let mut tray = div()
+            .id("composer-message-queue")
+            .role(Role::Group)
+            .aria_label(format!("{} queued messages", queued.len()))
+            .flex()
+            .flex_col()
+            .max_h(ui(144.))
+            .overflow_y_scroll()
+            .mx(ui(12.))
+            .px(ui(10.))
+            .py(ui(6.))
+            .rounded_t(ui(16.))
+            .bg(p.color("secondary"));
+        for (message, run) in queued {
+            let edit = (*message).clone();
+            let delete = (*message).clone();
+            let disabled = self.busy || self.editing.is_some();
+            let mut row = div()
+                .flex()
+                .items_center()
+                .gap(ui(8.))
+                .min_h(ui(36.))
+                .child(crate::ui::workspace::glyph("ArrowTurnForwardIcon", 14., p))
+                .child(
+                    div()
+                        .flex_1()
+                        .min_w_0()
+                        .truncate()
+                        .text_size(ui(14.))
+                        .child(text(message, "text").to_owned()),
+                );
+            if let Some(active) = rows(value, "runs")
+                .iter()
+                .find(|active| {
+                    active["agent_id"] == run["agent_id"]
+                        && active["status"] == "running"
+                        && !active["native_run_id"].is_null()
+                })
+                .cloned()
+            {
+                let run = (*run).clone();
+                row = row.child(
+                    action(
+                        SharedString::from(format!("steer:{}", text(message, "id"))),
+                        "Steer queued message",
+                        "ArrowTurnForwardIcon",
+                        p,
+                        cx,
+                    )
+                    .size(ui(28.))
+                    .disabled_state(disabled, p)
+                    .on_click(cx.listener(move |this, _, window, cx| {
+                        this.steer(active.clone(), Some(run.clone()), window, cx)
+                    })),
+                );
+            }
+            row = row
+                .child(
+                    action(
+                        SharedString::from(format!("edit:{}", text(message, "id"))),
+                        "Edit queued message",
+                        "PencilEdit01Icon",
+                        p,
+                        cx,
+                    )
+                    .size(ui(28.))
+                    .disabled_state(disabled, p)
+                    .on_click(
+                        cx.listener(move |this, _, window, cx| this.edit(edit.clone(), window, cx)),
+                    ),
+                )
+                .child(
+                    action(
+                        SharedString::from(format!("delete:{}", text(message, "id"))),
+                        "Delete queued message",
+                        "Delete02Icon",
+                        p,
+                        cx,
+                    )
+                    .size(ui(28.))
+                    .disabled_state(disabled, p)
+                    .on_click(cx.listener(move |this, _, window, cx| {
+                        this.delete(delete.clone(), window, cx)
+                    })),
+                );
+            tray = tray.child(row);
+        }
+        Some(tray.into_any_element())
+    }
     pub(super) fn composer_view(&self, cx: &mut Context<Self>) -> AnyElement {
         let p = Palette::new(self.store.dark());
         let draft = self.composer.read(cx).snapshot(cx).draft.text;
+        let response_locked = self.composer_response_locked(cx);
         let pending = self
             .selected
             .and_then(|thread| self.store.pending(&format!("message:{thread}")));
@@ -69,6 +187,7 @@ impl Workspace {
                 !slot.starts_with("message:")
                     && !slot.starts_with("native:")
                     && !slot.starts_with("human:")
+                    && !self.busy
                     && (operation.thread.is_none() || operation.thread == self.selected)
             })
         {
@@ -174,7 +293,7 @@ impl Workspace {
                 content = content.child(attachments);
             }
         }
-        if pending.is_some() {
+        if pending.is_some() && !self.busy {
             content = content.child(caption(
                 "Pengiriman belum terkonfirmasi. Coba lagi dengan pesan yang sama.",
                 p,
@@ -190,6 +309,7 @@ impl Workspace {
             .bg(p.color("header-surface"))
             .disabled_state(
                 self.busy
+                    || response_locked
                     || pending.is_some()
                     || self.staging_task.is_some()
                     || self.editing.is_some()
@@ -197,7 +317,6 @@ impl Workspace {
                 p,
             )
             .on_click(cx.listener(|this, _, window, cx| this.attach(window, cx)));
-        let run = active.cloned();
         let send = action_tinted(
             "send-message",
             if stop {
@@ -220,6 +339,7 @@ impl Workspace {
         .text_color(p.color("primary-foreground"))
         .disabled_state(
             self.busy
+                || response_locked
                 || self.staging_task.is_some()
                 || self.projection.is_none()
                 || !self.checked
@@ -228,9 +348,7 @@ impl Workspace {
         )
         .on_click(cx.listener(move |this, _, window, cx| {
             if stop {
-                if let Some(run) = &run {
-                    this.run_command(run.clone(), "cancel", window, cx);
-                }
+                this.request_stop(window, cx);
             } else {
                 this.send(window, cx);
             }
@@ -253,7 +371,7 @@ impl Workspace {
                     .size(ui(28.))
                     .rounded_full()
                     .bg(p.color("header-surface"))
-                    .disabled_state(self.busy, p)
+                    .disabled_state(self.busy || response_locked, p)
                     .on_click(cx.listener(move |this, _, window, cx| {
                         this.steer(run.clone(), None, window, cx)
                     })),
@@ -283,6 +401,9 @@ impl Workspace {
                 .child(div().flex_1().min_w_0().child(self.composer.clone()))
                 .child(actions)
         };
+        if let Some(queue) = self.queue_view(cx) {
+            content = content.child(queue);
+        }
         content = content.child(
             shell
                 .p(ui(8.))
@@ -296,7 +417,7 @@ impl Workspace {
             .px(ui(20.))
             .pt(ui(12.))
             .pb(ui(16.))
-            .child(content.w_full().max_w(ui(960.)).mx_auto())
+            .child(content.w_full().id("composer-content").test_support())
             .into_any_element()
     }
 }

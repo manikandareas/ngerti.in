@@ -58,6 +58,8 @@ impl Workspace {
             .aria_label("Conversation details")
             .flex()
             .items_center()
+            .justify_center()
+            .w_full()
             .gap(ui(6.))
             .on_key_down(cx.listener(|this, event: &KeyDownEvent, window, cx| {
                 let selected = match this.panel {
@@ -81,15 +83,26 @@ impl Workspace {
             }));
         for (index, label) in ["Details", "Library", "Computer"].into_iter().enumerate() {
             tabs = tabs.child(
-                button(("context-tab", index), label, ButtonKind::Ghost, p, cx)
+                button(("context-tab", index), "", ButtonKind::Ghost, p, cx)
+                    .accessibility_label(label)
+                    .child(
+                        div()
+                            .w_full()
+                            .text_center()
+                            .text_size(ui(13.))
+                            .line_height(ui(20.))
+                            .child(label),
+                    )
                     .role(Role::Tab)
                     .selected(index == selected)
                     .toggled(index == selected)
                     .tab_index(if index == selected { 0 } else { -1 })
                     .track_focus(&self.context_tab_focus[index])
                     .h(ui(32.))
+                    .flex_1()
+                    .min_w_0()
                     .rounded_full()
-                    .px(ui(12.))
+                    .px(ui(8.))
                     .when(index == selected, |tab| tab.bg(p.color("secondary")))
                     .on_click(cx.listener(move |this, _, window, cx| {
                         this.select_context_tab(

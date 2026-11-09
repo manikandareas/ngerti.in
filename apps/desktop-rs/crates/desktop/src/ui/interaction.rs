@@ -1,8 +1,13 @@
 //! Revision-bound editing and presentation; the caller owns dispatch/reconciliation.
+mod details;
 use crate::{
     models::message::*,
-    ui::{controls::*, theme::Palette},
+    ui::{
+        controls::*,
+        theme::{Palette, ui},
+    },
 };
+use gpui_kit::prelude::FluentBuilder;
 use gpui_kit::{
     component::{
         ActiveTheme, Disableable,
@@ -17,6 +22,7 @@ use gpui_kit::{
 pub enum AnswerIntent {
     Reply(InteractionReply),
     Check { request_id: String, revision: u64 },
+    Previous,
 }
 pub struct InteractionView {
     pub value: Interaction,
@@ -27,7 +33,8 @@ pub struct InteractionView {
     subscription: Option<Subscription>,
     error: Option<String>,
     compact_history: bool,
-    expanded: bool,
+    details: Option<serde_json::Value>,
+    page: Option<(usize, usize)>,
 }
 impl EventEmitter<AnswerIntent> for InteractionView {}
 impl InteractionView {
@@ -41,8 +48,33 @@ impl InteractionView {
             subscription: None,
             error: None,
             compact_history: false,
-            expanded: false,
+            details: None,
+            page: None,
         }
+    }
+    pub fn details(mut self, details: Option<serde_json::Value>) -> Self {
+        self.details = details;
+        self
+    }
+    pub fn page(mut self, page: Option<(usize, usize)>) -> Self {
+        self.page = page;
+        self
+    }
+    pub fn restore_answer(
+        &mut self,
+        answer: &AnswerValue,
+        window: &mut Window,
+        cx: &mut Context<Self>,
+    ) {
+        self.selected = answer.choices.clone();
+        self.custom_selected = answer.text.is_some();
+        self.prepare_input(window, cx);
+        if let Some(input) = &self.custom {
+            input.update(cx, |input, cx| {
+                input.set_value(answer.text.clone().unwrap_or_default(), window, cx)
+            });
+        }
+        cx.notify();
     }
     pub fn compact_history(mut self) -> Self {
         self.compact_history = true;
@@ -219,38 +251,127 @@ impl InteractionView {
             window.focus_prev(cx);
         }
     }
+    fn response_feedback(&self, p: Palette, cx: &mut Context<Self>) -> Option<AnyElement> {
+        if self.value.state == InteractionState::Current {
+            return None;
+        }
+        let status = match &self.value.state {
+            InteractionState::Current => None,
+            InteractionState::Submitting => Some(("Sending response…", false)),
+            InteractionState::Submitted(_) => Some(("Response submitted", false)),
+            InteractionState::Resolved(_) => Some(("Request resolved", false)),
+            InteractionState::Uncertain => Some((
+                "Response not confirmed. Check its status before trying again.",
+                true,
+            )),
+            InteractionState::Checking => Some(("Checking response status…", false)),
+            InteractionState::Failed => Some((
+                "Could not send the response. Your answer is retained; try again.",
+                true,
+            )),
+            InteractionState::Expired => Some(("This request has expired", false)),
+        };
+        let mut view = div().flex().flex_col().gap(ui(6.));
+        if let Some((label, error)) = status {
+            view = view.child(
+                div()
+                    .id("interaction-status")
+                    .role(if error { Role::Alert } else { Role::Status })
+                    .aria_label(label)
+                    .child(caption(label, p)),
+            );
+        }
+        if self.value.state == InteractionState::Uncertain {
+            let request_id = self.value.request_id.clone();
+            let revision = self.value.revision;
+            view = view.child(
+                button(
+                    "interaction-check",
+                    "Check response status",
+                    ButtonKind::Default,
+                    p,
+                    cx,
+                )
+                .on_click(cx.listener(move |this, _, _, cx| {
+                    if this.value.request_id != request_id
+                        || this.value.revision != revision
+                        || this.value.state != InteractionState::Uncertain
+                    {
+                        return;
+                    }
+                    this.value.state = InteractionState::Checking;
+                    cx.emit(AnswerIntent::Check {
+                        request_id: this.value.request_id.clone(),
+                        revision: this.value.revision,
+                    });
+                    cx.notify();
+                })),
+            );
+        }
+        Some(view.into_any_element())
+    }
+    fn question_navigation(&self, p: Palette, cx: &mut Context<Self>) -> Option<Div> {
+        let (index, total) = self.page.filter(|(_, total)| *total > 1)?;
+        Some(
+            div()
+                .flex()
+                .items_center()
+                .gap(ui(8.))
+                .child(
+                    button("question-back", "Back", ButtonKind::Ghost, p, cx)
+                        .disabled_state(index == 0 || !self.available(), p)
+                        .on_click(cx.listener(|_, _, _, cx| cx.emit(AnswerIntent::Previous))),
+                )
+                .child(caption(format!("{} of {total}", index + 1), p)),
+        )
+    }
 }
 impl Render for InteractionView {
     fn render(&mut self, window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
         let p = Palette::new(cx.theme().mode.is_dark());
-        if self.compact_history
-            && !self.expanded
+        let settled_history = self.compact_history
             && matches!(
                 self.value.state,
-                InteractionState::Resolved(_) | InteractionState::Submitted(_)
-            )
-        {
-            return button("resolved-question", "", ButtonKind::Ghost, p, cx)
-                .accessibility_label(self.value.question.clone())
+                InteractionState::Resolved(_)
+                    | InteractionState::Submitted(_)
+                    | InteractionState::Expired
+            );
+        let composer_question =
+            self.compact_history && !self.value.approval && self.value.choices.is_empty();
+        if settled_history || composer_question {
+            let bubble = div()
+                .id("conversation-question")
+                .role(Role::Group)
+                .aria_label(self.value.question.clone())
+                .max_w(ui(460.))
+                .px(ui(12.))
+                .py(ui(7.))
+                .rounded(ui(18.))
+                .bg(p.color("card"))
+                .text_size(ui(15.))
+                .line_height(ui(22.))
+                .child(self.value.question.clone())
                 .child(
                     div()
-                        .w_full()
-                        .text_left()
-                        .text_size(super::theme::ui(15.))
-                        .child(self.value.question.clone()),
+                        .flex()
+                        .justify_end()
+                        .child(super::message::clock(&self.time, p)),
                 )
-                .w_full()
-                .max_w(super::theme::ui(460.))
-                .h_auto()
-                .p(super::theme::ui(18.))
-                .rounded(super::theme::ui_px(14., cx))
-                .bg(p.color("card"))
-                .justify_start()
-                .text_size(super::theme::ui(15.))
-                .on_click(cx.listener(|this, _, _, cx| {
-                    this.expanded = true;
-                    cx.notify();
-                }))
+                .into_any_element();
+            return div()
+                .flex()
+                .flex_col()
+                .items_start()
+                .gap(ui(6.))
+                .child(bubble)
+                .when(composer_question && !settled_history, |view| {
+                    view.children(self.response_feedback(p, cx))
+                })
+                .when(composer_question && self.available(), |view| {
+                    view.when_some(self.question_navigation(p, cx), |view, footer| {
+                        view.child(footer)
+                    })
+                })
                 .into_any_element();
         }
         self.prepare_input(window, cx);
@@ -261,24 +382,85 @@ impl Render for InteractionView {
             }
             _ => None,
         };
-        let mut view = card(p)
+        let mut view = div()
+            .flex()
+            .flex_col()
+            .gap(ui(12.))
+            .px(ui(18.))
+            .pt(ui(17.))
+            .pb(ui(15.))
+            .rounded(ui(16.))
+            .bg(p.color("popover"))
+            .text_size(ui(14.))
+            .line_height(ui(21.))
             .id("native-interaction")
             .role(Role::Group)
             .aria_label(self.value.question.clone())
             .child(
                 div()
+                    .text_size(ui(15.))
+                    .line_height(ui(22.))
                     .font_weight(FontWeight::MEDIUM)
                     .child(self.value.question.clone()),
             );
         if self.compact_history {
-            view = view.max_w(super::theme::ui(460.)).bg(p.color("card"));
+            view = view.w(ui(460.)).max_w_full();
+        }
+        if let Some(details) = &self.details {
+            view = view.child(details::view(details, p));
+        }
+        if self.value.approval {
+            let mut actions = div()
+                .flex()
+                .justify_end()
+                .flex_wrap()
+                .gap(ui(8.))
+                .mt(ui(6.));
+            let mut choices = self.value.choices.clone();
+            let allows = |choice: &Choice| {
+                let label = format!("{} {}", choice.id, choice.label).to_lowercase();
+                label.contains("allow") || label.contains("approve") || label.contains("accept")
+            };
+            choices.sort_by_key(&allows);
+            for choice in choices {
+                let request_id = self.value.request_id.clone();
+                let revision = self.value.revision;
+                let id = choice.id.clone();
+                let kind = if allows(&choice) {
+                    ButtonKind::Primary
+                } else {
+                    ButtonKind::Outline
+                };
+                actions = actions.child(
+                    button(
+                        SharedString::from(format!("approval:{id}")),
+                        choice.label,
+                        kind,
+                        p,
+                        cx,
+                    )
+                    .rounded(super::theme::ui_px(22., cx))
+                    .h(ui(34.))
+                    .px(ui(15.))
+                    .disabled_state(!available, p)
+                    .on_click(cx.listener(move |this, _, _, cx| {
+                        if let Ok(reply) =
+                            this.value
+                                .reply_at(&request_id, revision, vec![id.clone()], None)
+                        {
+                            cx.emit(AnswerIntent::Reply(reply));
+                        }
+                    })),
+                );
+            }
+            view = view.child(actions);
         }
         if self.value.multiple
             && let Some(maximum) = self.value.rules.maximum
         {
             view = view.child(caption(format!("Choose up to {maximum} answers"), p));
         }
-        if !self.value.multiple && !self.value.choices.is_empty() {
+        if !self.value.approval && !self.value.multiple && !self.value.choices.is_empty() {
             let selected = if let Some(answer) = &settled {
                 if answer.text.is_some() {
                     Some(self.value.choices.len())
@@ -330,7 +512,7 @@ impl Render for InteractionView {
                     }
                 })),
             );
-        } else {
+        } else if !self.value.approval {
             let count = self.selected.len()
                 + usize::from(
                     self.custom_selected && self.value.rules.custom == CustomAnswer::Additional,
@@ -402,6 +584,8 @@ impl Render for InteractionView {
                     && !self.custom_selected;
                 let disabled = !available || full;
                 let field = Textarea::new(input)
+                    .appearance(false)
+                    .bordered(false)
                     .aria_label("Other answer")
                     .disabled(disabled);
                 view = if disabled {
@@ -416,13 +600,6 @@ impl Render for InteractionView {
                     view.child(field)
                 };
                 let length = input.read(cx).value().encode_utf16().count();
-                view = view.child(caption(
-                    format!(
-                        "{length} / {} characters",
-                        self.value.rules.text_limit_utf16
-                    ),
-                    p,
-                ));
                 if length > self.value.rules.text_limit_utf16 {
                     view = view.child(
                         caption("Shorten this answer to continue.", p)
@@ -434,7 +611,7 @@ impl Render for InteractionView {
                 }
             }
         }
-        if available {
+        if available && !self.value.approval {
             let request_id = self.value.request_id.clone();
             let revision = self.value.revision;
             let draft = self.draft(cx);
@@ -449,21 +626,24 @@ impl Render for InteractionView {
                     .reply(draft.choices, draft.text.as_deref())
                     .is_ok();
             view = view.child(
-                button(
-                    "interaction-answer",
-                    if self.value.approval {
-                        "Confirm choice"
-                    } else {
-                        "Submit answer"
-                    },
-                    ButtonKind::Primary,
-                    p,
-                    cx,
-                )
-                .disabled_state(!valid, p)
-                .on_click(cx.listener(move |this, _, window, cx| {
-                    this.reply(&request_id, revision, window, cx, false)
-                })),
+                div()
+                    .flex()
+                    .items_center()
+                    .gap(ui(8.))
+                    .when_some(self.question_navigation(p, cx), |view, footer| {
+                        view.child(footer)
+                    })
+                    .child(div().flex_1())
+                    .child(
+                        button("interaction-answer", "Continue", ButtonKind::Primary, p, cx)
+                            .rounded(super::theme::ui_px(22., cx))
+                            .h(ui(34.))
+                            .px(ui(15.))
+                            .disabled_state(!valid, p)
+                            .on_click(cx.listener(move |this, _, window, cx| {
+                                this.reply(&request_id, revision, window, cx, false)
+                            })),
+                    ),
             );
             if self.value.rules.minimum == 0 {
                 let request_id = self.value.request_id.clone();
@@ -481,58 +661,7 @@ impl Render for InteractionView {
                 );
             }
         }
-        let status = match &self.value.state {
-            InteractionState::Current => None,
-            InteractionState::Submitting => Some(("Sending response…", false)),
-            InteractionState::Submitted(_) => Some(("Response submitted", false)),
-            InteractionState::Resolved(_) => Some(("Request resolved", false)),
-            InteractionState::Uncertain => Some((
-                "Response not confirmed. Check its status before trying again.",
-                true,
-            )),
-            InteractionState::Checking => Some(("Checking response status…", false)),
-            InteractionState::Failed => Some((
-                "Could not send the response. Your answer is retained; try again.",
-                true,
-            )),
-            InteractionState::Expired => Some(("This request has expired", false)),
-        };
-        if let Some((label, error)) = status {
-            view = view.child(
-                div()
-                    .id("interaction-status")
-                    .role(if error { Role::Alert } else { Role::Status })
-                    .aria_label(label)
-                    .child(caption(label, p)),
-            );
-        }
-        if self.value.state == InteractionState::Uncertain {
-            let request_id = self.value.request_id.clone();
-            let revision = self.value.revision;
-            view = view.child(
-                button(
-                    "interaction-check",
-                    "Check response status",
-                    ButtonKind::Default,
-                    p,
-                    cx,
-                )
-                .on_click(cx.listener(move |this, _, _, cx| {
-                    if this.value.request_id != request_id
-                        || this.value.revision != revision
-                        || this.value.state != InteractionState::Uncertain
-                    {
-                        return;
-                    }
-                    this.value.state = InteractionState::Checking;
-                    cx.emit(AnswerIntent::Check {
-                        request_id: this.value.request_id.clone(),
-                        revision: this.value.revision,
-                    });
-                    cx.notify();
-                })),
-            );
-        }
+        view = view.children(self.response_feedback(p, cx));
         if let Some(error) = &self.error {
             view = view.child(
                 div()

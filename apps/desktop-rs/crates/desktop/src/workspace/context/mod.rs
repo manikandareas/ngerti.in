@@ -50,6 +50,9 @@ pub(super) struct ContextWork {
     staged_context: Option<(String, Uuid)>,
     secret_operation: Uuid,
     secret_pending: Option<Value>,
+    app_search_task: Option<Task<()>>,
+    app_connected_only: bool,
+    app_effect_expanded: std::collections::BTreeSet<String>,
     grant_agent: String,
     grant_tools: std::collections::BTreeSet<String>,
     resource_cursor: Option<u64>,
@@ -87,6 +90,9 @@ impl ContextWork {
             staged_context: None,
             secret_operation: Uuid::new_v4(),
             secret_pending: None,
+            app_search_task: None,
+            app_connected_only: false,
+            app_effect_expanded: Default::default(),
             grant_agent: String::new(),
             grant_tools: std::collections::BTreeSet::new(),
             resource_cursor: None,
@@ -95,6 +101,64 @@ impl ContextWork {
     }
 }
 impl Workspace {
+    pub(in crate::workspace) fn show_profile(
+        &mut self,
+        window: &mut Window,
+        cx: &mut Context<Self>,
+    ) {
+        if self.panel.is_none() {
+            self.context_work.return_focus = window.focused(cx);
+        }
+        self.panel = Some(Panel::Detail);
+        self.locate_context(Location::Profile, window, cx);
+    }
+    pub(in crate::workspace) fn show_skills(
+        &mut self,
+        window: &mut Window,
+        cx: &mut Context<Self>,
+    ) {
+        if self.panel.is_none() {
+            self.context_work.return_focus = window.focused(cx);
+        }
+        self.panel = Some(Panel::Library);
+        self.locate_context(Location::Skills, window, cx);
+    }
+    pub(in crate::workspace) fn show_goal(
+        &mut self,
+        id: String,
+        window: &mut Window,
+        cx: &mut Context<Self>,
+    ) {
+        if self.panel.is_none() {
+            self.context_work.return_focus = window.focused(cx);
+        }
+        self.panel = Some(Panel::Detail);
+        self.locate_context(Location::Goal(id), window, cx);
+    }
+    pub(in crate::workspace) fn show_routine(
+        &mut self,
+        id: String,
+        window: &mut Window,
+        cx: &mut Context<Self>,
+    ) {
+        if self.panel.is_none() {
+            self.context_work.return_focus = window.focused(cx);
+        }
+        self.panel = Some(Panel::Detail);
+        self.locate_context(Location::Routine(id), window, cx);
+    }
+    pub(in crate::workspace) fn show_member(
+        &mut self,
+        id: String,
+        window: &mut Window,
+        cx: &mut Context<Self>,
+    ) {
+        if self.panel.is_none() {
+            self.context_work.return_focus = window.focused(cx);
+        }
+        self.panel = Some(Panel::Detail);
+        self.locate_context(Location::Member(id), window, cx);
+    }
     pub(in crate::workspace) fn context_failure(&mut self, error: String) {
         self.context_work.operation_error = error;
     }
@@ -127,6 +191,7 @@ impl Workspace {
         }
         if self.context_work.location == Location::Apps {
             self.context_read("apps", "/v1/apps/connections".into(), cx);
+            self.context_read("app-effects", "/v1/entities/app_effect".into(), cx);
         }
     }
     pub(in crate::workspace) fn context_focus(&self) -> FocusHandle {
@@ -231,6 +296,7 @@ impl Workspace {
         if operation.request.path.starts_with("/v1/apps/") {
             self.context_work.form = None;
             self.context_read("apps", "/v1/apps/connections".into(), cx);
+            self.context_read("app-effects", "/v1/entities/app_effect".into(), cx);
         }
         if operation.request.path == "/v1/connections"
             && let Some(id) = result["id"].as_str()

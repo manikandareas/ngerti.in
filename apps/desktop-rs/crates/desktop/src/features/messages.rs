@@ -130,6 +130,7 @@ impl MessageGallery {
         for view in [&question, &approval] {
             subscriptions.push(cx.subscribe(view, |this, view, event: &AnswerIntent, cx| {
                 match event {
+                    AnswerIntent::Previous => { this.status = "Previous question selected in the fixture.".into(); },
                     AnswerIntent::Reply(reply) => {
                         view.update(cx, |view, cx| {
                             if view.value.request_id == reply.request_id && view.value.revision == reply.revision

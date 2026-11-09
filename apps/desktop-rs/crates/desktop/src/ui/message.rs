@@ -1,7 +1,10 @@
 use super::avatar_view::AvatarPortrait;
 use crate::{
     models::message::*,
-    ui::{controls::*, theme::Palette},
+    ui::{
+        controls::*,
+        theme::{Palette, ui},
+    },
 };
 use gpui_kit::component::shimmer::ShimmerText;
 use gpui_kit::{
@@ -16,7 +19,8 @@ pub fn day_marker(date: &str, p: Palette) -> impl IntoElement {
         .w_full()
         .justify_center()
         .items_center()
-        .py_2()
+        .pt(ui(20.))
+        .pb(ui(20.))
         .gap_3()
         .child(div().h(px(1.)).flex_1().bg(p.color("border")))
         .child(caption(date.to_owned(), p))
@@ -67,15 +71,6 @@ impl ActivityRow {
             .pb(px(10.))
             .rounded(px(14.))
             .bg(p.color("card"));
-        if self.group {
-            bubble = bubble.child(
-                div()
-                    .text_size(px(12.))
-                    .line_height(px(16.))
-                    .font_weight(FontWeight::MEDIUM)
-                    .child(self.author.clone()),
-            );
-        }
         bubble = bubble
             .child(
                 div()
@@ -194,13 +189,6 @@ impl Message {
             } else {
                 p.color("card-foreground")
             });
-        if self.group {
-            bubble = bubble.child(
-                div()
-                    .font_weight(FontWeight::MEDIUM)
-                    .child(self.author.clone()),
-            );
-        }
         if let Some(body) = &self.body {
             let open = on_open.clone();
             bubble = bubble.child(TextView::new(body).selectable(true).on_link_click(

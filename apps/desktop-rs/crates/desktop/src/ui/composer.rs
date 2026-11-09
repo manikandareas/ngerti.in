@@ -138,7 +138,7 @@ impl Composer {
         }
         cx.notify();
     }
-    fn composing(&self, window: &mut Window, cx: &mut App) -> bool {
+    pub(crate) fn is_composing(&self, window: &mut Window, cx: &mut App) -> bool {
         self.input.update(cx, |input, cx| {
             input.marked_text_range(window, cx).is_some()
         })
@@ -177,7 +177,7 @@ impl Composer {
         Ok(())
     }
     pub fn restore(&mut self, snapshot: Snapshot, window: &mut Window, cx: &mut Context<Self>) {
-        if self.composing(window, cx) {
+        if self.is_composing(window, cx) {
             self.error = Some("Finish composing text before restoring the draft.".into());
             return;
         }
@@ -218,7 +218,7 @@ impl Composer {
         window: &mut Window,
         cx: &mut Context<Self>,
     ) {
-        if self.composing(window, cx) {
+        if self.is_composing(window, cx) {
             self.error = Some("Finish composing text before inserting a reference.".into());
             cx.notify();
             return;
@@ -232,7 +232,7 @@ impl Composer {
         if cut && self.readonly {
             return true;
         }
-        if self.composing(window, cx) {
+        if self.is_composing(window, cx) {
             return false;
         }
         let snapshot = self.snapshot(cx);
@@ -256,7 +256,7 @@ impl Composer {
         if self.readonly {
             return true;
         }
-        if self.composing(window, cx) {
+        if self.is_composing(window, cx) {
             return false;
         }
         let Some(item) = cx.read_from_clipboard() else {
@@ -291,7 +291,7 @@ impl Composer {
         if self.readonly {
             return true;
         }
-        if self.composing(window, cx) {
+        if self.is_composing(window, cx) {
             return false;
         }
         let s = self.snapshot(cx);
@@ -338,7 +338,7 @@ impl Composer {
         (!candidates.is_empty()).then_some((start..range.start, candidates))
     }
     fn complete(&mut self, window: &mut Window, cx: &mut Context<Self>) -> bool {
-        if self.composing(window, cx) {
+        if self.is_composing(window, cx) {
             return false;
         }
         let Some((range, items)) = self.suggestions(cx) else {
@@ -400,7 +400,7 @@ impl Render for Composer {
             .capture_key_down(cx.listener(|this, event: &KeyDownEvent, window, cx| {
                 let s = this.snapshot(cx);
                 this.history.selection(s.selection, s.reversed);
-                if this.composing(window, cx) {
+                if this.is_composing(window, cx) {
                     return;
                 }
                 if let Some((_, items)) = this.suggestions(cx) {

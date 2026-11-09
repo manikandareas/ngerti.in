@@ -371,7 +371,7 @@ impl Workspace {
         }
         if changed {
             self.sync_interactions(window, cx);
-            self.rebuild_transcript(cx);
+            self.rebuild_transcript(window, cx);
             self.prepare_portraits(cx);
             self.refresh_context_resources(cx);
             let name = self
@@ -455,7 +455,7 @@ impl Workspace {
                             this.parts.insert(text(part, "id").into(), part.clone());
                         }
                         this.sync_interactions(window, cx);
-                        this.rebuild_transcript(cx);
+                        this.rebuild_transcript(window, cx);
                         this.prepare_portraits(cx);
                     }
                     Err(e) => this.error = e.to_string(),

@@ -1,0 +1,351 @@
+{
+  "cursor": 17,
+  "thread": {
+    "type": "dm",
+    "member_agent_ids": [
+      "908024a1-2e2f-4bcf-8096-f11d71d289c2"
+    ],
+    "id": "c3d9ec37-f196-46cc-bd25-2a0f0353d179",
+    "owner_id": "49ca6b11-6b7c-45d2-b3a2-817945cc38bc",
+    "revision": 1,
+    "created_at": "2026-11-08T13:08:00.301Z",
+    "updated_at": "2026-11-08T13:08:00.301Z",
+    "kind": "thread",
+    "purpose": "conversation",
+    "group_thread_id": null,
+    "name": null,
+    "shared_instructions": "",
+    "creation_operation_id": null
+  },
+  "agents": [
+    {
+      "name": "Native question fixture",
+      "handle": "agent_908024a12e2f4bcf8096f11d71d289c2",
+      "avatar": null,
+      "avatar_config": {
+        "version": 1,
+        "seed": "908024a1-2e2f-4bcf-8096-f11d71d289c2",
+        "shape": "circle",
+        "color": "sky",
+        "face": "happy"
+      },
+      "soul": "",
+      "skills": [],
+      "harness": "codex",
+      "connection_id": "d7e97634-262e-4263-b92e-59908c8ea33d",
+      "billing_source": null,
+      "instructions": "",
+      "workspace_id": null,
+      "model_id": "wizard-fixture",
+      "reasoning": null,
+      "id": "908024a1-2e2f-4bcf-8096-f11d71d289c2",
+      "owner_id": "49ca6b11-6b7c-45d2-b3a2-817945cc38bc",
+      "revision": 2,
+      "created_at": "2026-11-08T13:08:00.300Z",
+      "updated_at": "2026-11-08T13:08:00.300Z",
+      "kind": "agent",
+      "grant_revision": 1,
+      "system_role": null,
+      "configuration_access": "self"
+    }
+  ],
+  "bindings": [
+    {
+      "id": "408a2d32-13dc-4635-9cea-f17e94f0d053",
+      "owner_id": "49ca6b11-6b7c-45d2-b3a2-817945cc38bc",
+      "revision": 1,
+      "created_at": "2026-11-08T13:08:00.317Z",
+      "updated_at": "2026-11-08T13:08:00.317Z",
+      "kind": "binding",
+      "thread_id": "c3d9ec37-f196-46cc-bd25-2a0f0353d179",
+      "agent_id": "908024a1-2e2f-4bcf-8096-f11d71d289c2",
+      "connection_id": "d7e97634-262e-4263-b92e-59908c8ea33d",
+      "harness": "codex",
+      "native_session_id": "wizard-fixture-session",
+      "generation": 1,
+      "active": true,
+      "agent_revision": 2,
+      "workspace_id": "1f0d54ab-76f2-4e0c-8ae2-26e9a8bbdd67",
+      "workspace_revision": 1
+    }
+  ],
+  "runs": [
+    {
+      "id": "5c4af913-97f5-468e-97bf-35e46eb43cf3",
+      "owner_id": "49ca6b11-6b7c-45d2-b3a2-817945cc38bc",
+      "revision": 5,
+      "created_at": "2026-11-08T13:08:00.321Z",
+      "updated_at": "2026-11-08T13:08:00.332Z",
+      "kind": "run",
+      "thread_id": "c3d9ec37-f196-46cc-bd25-2a0f0353d179",
+      "agent_id": "908024a1-2e2f-4bcf-8096-f11d71d289c2",
+      "input_message_id": "073c3535-e68c-4d46-8936-f1022ccce91e",
+      "computer_activity": null,
+      "retry_allowed": false,
+      "retry_of_run_id": null,
+      "retried_by_run_id": null,
+      "task_id": null,
+      "thread_revision": null,
+      "goal_id": null,
+      "routine_id": null,
+      "goal_generation": null,
+      "goal_assignment_revision": null,
+      "response_mode": "answer",
+      "tool_errors": [],
+      "routine_generation": null,
+      "publication": "immediate",
+      "pending_answer": null,
+      "status": "running",
+      "timings": {
+        "dispatched_at": "2026-11-08T13:08:00.323Z",
+        "accepted_at": "2026-11-08T13:08:00.324Z",
+        "first_output_at": "2026-11-08T13:08:00.326Z"
+      },
+      "cancellation": "none",
+      "outcome": "none",
+      "delivery": "delivered",
+      "activity": "generating",
+      "active_tools": [],
+      "diagnostic": null,
+      "native_dispatch_id": null,
+      "grant_revision": 1,
+      "dispatch_token": null,
+      "authority_epoch": "946b3804-95e9-4a69-9579-a3be6240d322",
+      "binding_id": "408a2d32-13dc-4635-9cea-f17e94f0d053",
+      "native_run_id": "wizard-native-run",
+      "native_interactions": [
+        {
+          "id": "9e3a2c97-b51e-46d8-83bf-c53934da3fe1",
+          "request_id": "nma071-two-questions",
+          "anchor_message_id": "58efe4d1-8dbc-485a-8a97-6057074cac32",
+          "anchor_text_offset": 39,
+          "anchor_prefix_sha256": "6b52affaa5fdc0d5f6a8458ea1dc318148d5719b6d6c56ed0c218acce1bc8e2d",
+          "observed_at": "2026-11-08T13:08:00.331Z",
+          "last_observed_at": "2026-11-08T13:08:00.331Z",
+          "observed_state": "pending",
+          "submission": null,
+          "type": "user_input",
+          "source_index": null,
+          "request": {
+            "userInputId": "nma071-two-questions",
+            "questions": [
+              {
+                "id": "format",
+                "header": "Format",
+                "question": "Choose the result format.",
+                "options": [
+                  {
+                    "label": "Summary"
+                  },
+                  {
+                    "label": "Checklist"
+                  }
+                ],
+                "selection": {
+                  "mode": "single"
+                }
+              },
+              {
+                "id": "context",
+                "header": "Context",
+                "question": "Add a short note through the composer.",
+                "options": [],
+                "selection": {
+                  "mode": "single"
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "agent_snapshot": {
+        "name": "Native question fixture",
+        "handle": "agent_908024a12e2f4bcf8096f11d71d289c2",
+        "avatar": null,
+        "avatar_config": {
+          "version": 1,
+          "seed": "908024a1-2e2f-4bcf-8096-f11d71d289c2",
+          "shape": "circle",
+          "color": "sky",
+          "face": "happy"
+        },
+        "soul": "",
+        "skills": [],
+        "harness": "codex",
+        "connection_id": "d7e97634-262e-4263-b92e-59908c8ea33d",
+        "billing_source": null,
+        "instructions": "",
+        "workspace_id": null,
+        "model_id": "wizard-fixture",
+        "reasoning": null,
+        "agent_id": "908024a1-2e2f-4bcf-8096-f11d71d289c2",
+        "revision": 2
+      },
+      "workspace_id": "1f0d54ab-76f2-4e0c-8ae2-26e9a8bbdd67",
+      "workspace_revision": 1,
+      "product_tools": [],
+      "attachment_observations": [],
+      "sources": [],
+      "visual_inputs": [],
+      "native_tools": []
+    }
+  ],
+  "controls": [],
+  "messages": [
+    {
+      "id": "073c3535-e68c-4d46-8936-f1022ccce91e",
+      "owner_id": "49ca6b11-6b7c-45d2-b3a2-817945cc38bc",
+      "revision": 1,
+      "created_at": "2026-11-08T13:08:00.320Z",
+      "updated_at": "2026-11-08T13:08:00.320Z",
+      "kind": "message",
+      "thread_id": "c3d9ec37-f196-46cc-bd25-2a0f0353d179",
+      "author": "user",
+      "author_agent_id": null,
+      "routine_id": null,
+      "run_id": "5c4af913-97f5-468e-97bf-35e46eb43cf3",
+      "purpose": "conversation",
+      "source_run_id": null,
+      "creation_operation_id": null,
+      "text": "Inspect a two-step native question.",
+      "state": "complete",
+      "artifact_ids": []
+    },
+    {
+      "id": "58efe4d1-8dbc-485a-8a97-6057074cac32",
+      "owner_id": "49ca6b11-6b7c-45d2-b3a2-817945cc38bc",
+      "revision": 1,
+      "created_at": "2026-11-08T13:08:00.326Z",
+      "updated_at": "2026-11-08T13:08:00.326Z",
+      "kind": "message",
+      "thread_id": "c3d9ec37-f196-46cc-bd25-2a0f0353d179",
+      "author": "agent",
+      "author_agent_id": "908024a1-2e2f-4bcf-8096-f11d71d289c2",
+      "routine_id": null,
+      "run_id": "5c4af913-97f5-468e-97bf-35e46eb43cf3",
+      "purpose": "conversation",
+      "source_run_id": null,
+      "creation_operation_id": null,
+      "text": "I have two questions before continuing.",
+      "state": "complete",
+      "artifact_ids": []
+    }
+  ],
+  "workspaces": [
+    {
+      "id": "1f0d54ab-76f2-4e0c-8ae2-26e9a8bbdd67",
+      "owner_id": "49ca6b11-6b7c-45d2-b3a2-817945cc38bc",
+      "revision": 1,
+      "created_at": "2026-11-08T13:08:00.309Z",
+      "updated_at": "2026-11-08T13:08:00.309Z",
+      "agent_id": "908024a1-2e2f-4bcf-8096-f11d71d289c2",
+      "thread_id": "c3d9ec37-f196-46cc-bd25-2a0f0353d179",
+      "name": "Workspace",
+      "project_path": null,
+      "scope": "agent",
+      "state": "active",
+      "root_device": null,
+      "root_inode": null,
+      "machine_id": "49ca6b11-6b7c-45d2-b3a2-817945cc38bc",
+      "machine_root": "/home/cua/workspace",
+      "kind": "workspace"
+    }
+  ],
+  "artifacts": [],
+  "attachment_documents": [],
+  "routes": [],
+  "tasks": [],
+  "human_requests": [],
+  "goals": [],
+  "routines": [],
+  "occurrences": [],
+  "has_more": false,
+  "next_before": null,
+  "timeline": {
+    "parts": [
+      {
+        "id": "message:073c3535-e68c-4d46-8936-f1022ccce91e",
+        "sequence": 1,
+        "source_cursor": 12,
+        "thread_id": "c3d9ec37-f196-46cc-bd25-2a0f0353d179",
+        "created_at": "2026-11-08T13:08:00.321Z",
+        "kind": "message",
+        "message_id": "073c3535-e68c-4d46-8936-f1022ccce91e",
+        "resource_id": null,
+        "source_message_id": null,
+        "actors": [],
+        "name": "",
+        "summary": null
+      },
+      {
+        "id": "message:58efe4d1-8dbc-485a-8a97-6057074cac32",
+        "sequence": 5,
+        "source_cursor": 16,
+        "thread_id": "c3d9ec37-f196-46cc-bd25-2a0f0353d179",
+        "created_at": "2026-11-08T13:08:00.326Z",
+        "kind": "message",
+        "message_id": "58efe4d1-8dbc-485a-8a97-6057074cac32",
+        "resource_id": null,
+        "source_message_id": null,
+        "actors": [
+          {
+            "id": "908024a1-2e2f-4bcf-8096-f11d71d289c2",
+            "name": "Native question fixture",
+            "handle": "agent_908024a12e2f4bcf8096f11d71d289c2",
+            "avatar_config": {
+              "version": 1,
+              "seed": "908024a1-2e2f-4bcf-8096-f11d71d289c2",
+              "shape": "circle",
+              "color": "sky",
+              "face": "happy"
+            }
+          }
+        ],
+        "name": "",
+        "summary": null
+      }
+    ],
+    "messages": [
+      {
+        "id": "073c3535-e68c-4d46-8936-f1022ccce91e",
+        "owner_id": "49ca6b11-6b7c-45d2-b3a2-817945cc38bc",
+        "revision": 1,
+        "created_at": "2026-11-08T13:08:00.320Z",
+        "updated_at": "2026-11-08T13:08:00.320Z",
+        "kind": "message",
+        "thread_id": "c3d9ec37-f196-46cc-bd25-2a0f0353d179",
+        "author": "user",
+        "author_agent_id": null,
+        "routine_id": null,
+        "run_id": "5c4af913-97f5-468e-97bf-35e46eb43cf3",
+        "purpose": "conversation",
+        "source_run_id": null,
+        "creation_operation_id": null,
+        "text": "Inspect a two-step native question.",
+        "state": "complete",
+        "artifact_ids": []
+      },
+      {
+        "id": "58efe4d1-8dbc-485a-8a97-6057074cac32",
+        "owner_id": "49ca6b11-6b7c-45d2-b3a2-817945cc38bc",
+        "revision": 1,
+        "created_at": "2026-11-08T13:08:00.326Z",
+        "updated_at": "2026-11-08T13:08:00.326Z",
+        "kind": "message",
+        "thread_id": "c3d9ec37-f196-46cc-bd25-2a0f0353d179",
+        "author": "agent",
+        "author_agent_id": "908024a1-2e2f-4bcf-8096-f11d71d289c2",
+        "routine_id": null,
+        "run_id": "5c4af913-97f5-468e-97bf-35e46eb43cf3",
+        "purpose": "conversation",
+        "source_run_id": null,
+        "creation_operation_id": null,
+        "text": "I have two questions before continuing.",
+        "state": "complete",
+        "artifact_ids": []
+      }
+    ],
+    "has_more": false,
+    "next_before": null
+  }
+}

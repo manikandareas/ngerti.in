@@ -43,10 +43,72 @@ fn answer_value(answer: &Value) -> AnswerValue {
         text: answer["freeText"].as_str().map(str::to_owned),
     }
 }
+fn human_reply_matches(request: &Value, snapshot: &Value, body: &Value) -> bool {
+    if request["state"] != "answered" {
+        return false;
+    }
+    let expected = match body["decision"].as_str() {
+        Some("approve") if request["decision"] == "approve" => "Approved.".to_owned(),
+        Some("reject") if request["decision"] == "reject" => "Rejected.".to_owned(),
+        Some(_) => return false,
+        None if request["purpose"] != "approval" => rows(&request["options"], "choices")
+            .iter()
+            .filter(|choice| rows(body, "selected_ids").contains(&choice["id"]))
+            .map(|choice| text(choice, "label"))
+            .chain(
+                body["text"]
+                    .as_str()
+                    .map(str::trim)
+                    .filter(|text| !text.is_empty()),
+            )
+            .collect::<Vec<_>>()
+            .join("\n"),
+        None => return false,
+    };
+    rows(snapshot, "messages").iter().any(|message| {
+        message["id"] == request["response_message_id"]
+            && message["thread_id"] == request["thread_id"]
+            && message["source_run_id"] == request["source_run_id"]
+            && message["purpose"] == "human_reply"
+            && message["author"] == "user"
+            && message["text"] == expected
+    })
+}
+
 impl Workspace {
     pub(super) fn sync_interactions(&mut self, window: &mut Window, cx: &mut Context<Self>) {
         let mut desired = Vec::new();
-        for request in rows(self.value(), "human_requests") {
+        for request in rows(self.value(), "human_requests").to_vec() {
+            let request = &request;
+            let slot = format!("human:{}", text(request, "id"));
+            if !self.busy
+                && request["state"] != "pending"
+                && let Some(operation) = self.store.pending(&slot)
+            {
+                let matches = human_reply_matches(request, self.value(), &operation.request.body);
+                let result = if matches {
+                    Ok(request.clone())
+                } else {
+                    Err(ClientError::Rejected {
+                        code: "CONFLICT".into(),
+                        message: "This request was resolved with a different answer.".into(),
+                    })
+                };
+                match self.store.finish(&slot, operation.request.key, &result) {
+                    Ok(()) => {
+                        if matches {
+                            if let Err(error) = self.store.clear_sent(&operation) {
+                                self.error = error.to_string();
+                            }
+                            if operation.authored.is_some() && operation.thread == self.selected {
+                                self.restore_draft(window, cx);
+                            }
+                        }
+                        self.clear_context_error();
+                    }
+                    Err(error) => self.error = error.to_string(),
+                }
+            }
             let message = rows(self.value(), "messages")
                 .iter()
                 .find(|m| m["id"] == request["message_id"]);
@@ -75,7 +137,18 @@ impl Workspace {
                     .collect()
             };
             let state = if request["state"] == "pending" {
-                InteractionState::Current
+                if let Some(operation) = self
+                    .store
+                    .pending(&format!("human:{}", text(request, "id")))
+                {
+                    if self.busy && operation.state == OperationState::Pending {
+                        InteractionState::Submitting
+                    } else {
+                        InteractionState::Uncertain
+                    }
+                } else {
+                    InteractionState::Current
+                }
             } else if request["state"] == "answered" {
                 InteractionState::Resolved(AnswerValue {
                     choices: request["decision"]
@@ -108,7 +181,11 @@ impl Workspace {
                             && (request["options"].is_null()
                                 || request["options"]["allow_custom"] == true)
                         {
-                            CustomAnswer::Alternative
+                            if request["options"]["max"].as_u64().unwrap_or(1) > 1 {
+                                CustomAnswer::Additional
+                            } else {
+                                CustomAnswer::Alternative
+                            }
                         } else {
                             CustomAnswer::Disabled
                         },
@@ -147,18 +224,50 @@ impl Workspace {
                 let unresolved = self.store.pending(&slot).is_some();
                 if unresolved && matches!(text(submission, "state"), "submitted" | "not_dispatched")
                 {
-                    let key = self.store.pending(&slot).unwrap().request.key;
-                    let result = if submission["state"] == "submitted" {
+                    let operation = self.store.pending(&slot).unwrap();
+                    let result = if submission["state"] == "submitted"
+                        && submission["answer"] == operation.request.body
+                    {
                         Ok(json!({"status":"submitted"}))
                     } else {
                         Err(ClientError::Rejected {
-                            code: "INVALID_REQUEST".into(),
-                            message: "The answer was not dispatched. Review the current request."
+                            code: "CONFLICT".into(),
+                            message: "This answer was not confirmed. Review the current request."
                                 .into(),
                         })
                     };
-                    if let Err(e) = self.store.finish(&slot, key, &result) {
+                    if let Err(e) = self.store.finish(&slot, operation.request.key, &result) {
                         self.error = e.to_string();
+                    } else if result.is_ok() {
+                        if let Err(error) = self.store.clear_sent(&operation) {
+                            self.error = error.to_string();
+                        }
+                        if operation.authored.is_some() && operation.thread == self.selected {
+                            self.restore_draft(window, cx);
+                        }
+                        self.clear_context_error();
+                    }
+                }
+                if record["type"] != "approval" {
+                    if text(submission, "state") == "submitted" || !current && !unresolved {
+                        self.question_steps.remove(&slot);
+                        self.answers
+                            .retain(|key, _| !key.starts_with(&format!("{slot}:")));
+                        if let Err(error) =
+                            self.store.clear_interaction_answers(&format!("{slot}:"))
+                        {
+                            self.error = error.to_string();
+                        }
+                    } else {
+                        let initial = rows(request, "questions")
+                            .iter()
+                            .position(|question| {
+                                !self
+                                    .answers
+                                    .contains_key(&format!("{slot}:{}", text(question, "id")))
+                            })
+                            .unwrap_or(rows(request, "questions").len().saturating_sub(1));
+                        self.question_steps.entry(slot.clone()).or_insert(initial);
                     }
                 }
                 let retained = self.store.operation(&slot);
@@ -193,14 +302,7 @@ impl Workspace {
                             description: choice["rulePreview"].as_str().map(str::to_owned),
                         })
                         .collect();
-                    let question = format!(
-                        "{}\n{}",
-                        request["toolName"].as_str().unwrap_or("Approval requested"),
-                        request["subject"]["command"]
-                            .as_str()
-                            .or_else(|| request["subject"]["path"].as_str())
-                            .unwrap_or("Review this action before choosing.")
-                    );
+                    let question = "Allow this action?".to_owned();
                     let mut state = state;
                     if matches!(
                         state,
@@ -328,7 +430,32 @@ impl Workspace {
             let Ok(time) = PublicationTime::local(&at) else {
                 continue;
             };
-            let view = cx.new(|_| InteractionView::new(value, time).compact_history());
+            let details = match &binding {
+                Binding::Approval { request, .. } => Some(request["rawArgs"].clone()),
+                Binding::Human(request) if request["action"].is_object() => {
+                    Some(request["action"]["arguments"].clone())
+                }
+                _ => None,
+            };
+            let page = match &binding {
+                Binding::Question {
+                    request, question, ..
+                } => rows(request, "questions")
+                    .iter()
+                    .position(|item| item["id"] == *question)
+                    .map(|index| (index, rows(request, "questions").len())),
+                _ => None,
+            };
+            let view = cx.new(|_| {
+                InteractionView::new(value, time)
+                    .details(details)
+                    .page(page)
+                    .compact_history()
+            });
+            if let Some(answer) = self.answers.get(&key) {
+                let answer = answer_value(answer);
+                view.update(cx, |view, cx| view.restore_answer(&answer, window, cx));
+            }
             let id = key.clone();
             let subscription = cx.subscribe_in(
                 &view,
@@ -338,7 +465,8 @@ impl Workspace {
                         this.read_task = None;
                         this.refresh(true, window, cx);
                     }
-                    AnswerIntent::Reply(reply) => this.answer(&id, reply.clone(), window, cx),
+                    AnswerIntent::Reply(reply) => this.answer(&id, reply.clone(), None, window, cx),
+                    AnswerIntent::Previous => this.previous_question(&id, window, cx),
                 },
             );
             self.interaction_views.insert(
@@ -353,18 +481,124 @@ impl Workspace {
             );
         }
     }
+    pub(super) fn interaction_visible(&self, key: &str) -> bool {
+        let Some(bound) = self.interaction_views.get(key) else {
+            return false;
+        };
+        match &bound.binding {
+            Binding::Question {
+                slot,
+                question,
+                request,
+                ..
+            } => self.question_steps.get(slot).is_none_or(|index| {
+                rows(request, "questions")
+                    .get(*index)
+                    .is_some_and(|item| item["id"] == *question)
+            }),
+            _ => true,
+        }
+    }
+    fn previous_question(&mut self, key: &str, window: &mut Window, cx: &mut Context<Self>) {
+        if let Some(BoundInteraction {
+            binding: Binding::Question { slot, .. },
+            ..
+        }) = self.interaction_views.get(key)
+        {
+            let slot = slot.clone();
+            if let Some(index) = self.question_steps.get_mut(&slot) {
+                *index = index.saturating_sub(1);
+            }
+            self.rebuild_transcript(window, cx);
+            self.prepare_portraits(cx);
+            cx.notify();
+        }
+    }
+    pub(super) fn composer_response_locked(&self, cx: &App) -> bool {
+        self.interaction_views.iter().any(|(key, bound)| {
+            let value = &bound.view.read(cx).value;
+            self.interaction_visible(key)
+                && !value.approval
+                && value.choices.is_empty()
+                && matches!(
+                    value.state,
+                    InteractionState::Submitting
+                        | InteractionState::Uncertain
+                        | InteractionState::Checking
+                )
+        })
+    }
+    pub(super) fn answer_from_composer(
+        &mut self,
+        text: &str,
+        window: &mut Window,
+        cx: &mut Context<Self>,
+    ) -> bool {
+        if self.composer_response_locked(cx) {
+            return true;
+        }
+        let target = self
+            .interaction_views
+            .iter()
+            .find(|(key, bound)| {
+                self.interaction_visible(key)
+                    && matches!(bound.binding, Binding::Question { .. } | Binding::Human(_))
+                    && !bound.view.read(cx).value.approval
+                    && bound.view.read(cx).value.choices.is_empty()
+                    && matches!(
+                        bound.view.read(cx).value.state,
+                        InteractionState::Current | InteractionState::Failed
+                    )
+            })
+            .map(|(key, bound)| {
+                (
+                    key.clone(),
+                    bound.view.read(cx).value.request_id.clone(),
+                    bound.view.read(cx).value.revision,
+                )
+            });
+        let Some((key, request_id, revision)) = target else {
+            return false;
+        };
+        if self
+            .selected
+            .is_some_and(|thread| !self.store.files(thread).is_empty())
+        {
+            self.error = "This question accepts text. Remove the attachment to answer it.".into();
+            cx.notify();
+            return true;
+        }
+        self.answer(
+            &key,
+            InteractionReply {
+                request_id,
+                revision,
+                choices: vec![],
+                text: Some(text.into()),
+            },
+            Some(text.into()),
+            window,
+            cx,
+        );
+        true
+    }
     fn answer(
         &mut self,
         key: &str,
         reply: InteractionReply,
+        authored: Option<String>,
         window: &mut Window,
         cx: &mut Context<Self>,
     ) {
+        if self.busy || !self.checked {
+            return;
+        }
         let Some(bound) = self.interaction_views.get(key) else {
             return;
         };
-        if bound
-            .view
+        let binding = bound.binding.clone();
+        let view = bound.view.clone();
+        if view
             .read(cx)
             .value
             .reply_at(
@@ -377,7 +611,7 @@ impl Workspace {
         {
             return;
         }
-        let (slot, mut operation) = match bound.binding.clone() {
+        let (slot, mut operation) = match binding.clone() {
             Binding::Human(request) => {
                 let id = text(&request, "id");
                 (
@@ -413,9 +647,39 @@ impl Workspace {
                     answer["freeText"] = json!(text);
                 }
                 if !reply.choices.is_empty() {
-                    answer["selectedLabels"] = json!(reply.choices);
+                    if view.read(cx).value.multiple {
+                        answer["selectedLabels"] = json!(reply.choices);
+                    } else {
+                        answer["selectedLabel"] = json!(reply.choices[0]);
+                    }
                 }
-                self.answers.insert(format!("{slot}:{question}"), answer);
+                let key = format!("{slot}:{question}");
+                if let Err(error) = self
+                    .store
+                    .save_interaction_answer(key.clone(), answer.clone())
+                {
+                    self.error = error.to_string();
+                    cx.notify();
+                    return;
+                }
+                self.answers.insert(key, answer);
+                let index = rows(&request, "questions")
+                    .iter()
+                    .position(|item| item["id"] == question)
+                    .unwrap_or(0);
+                if index + 1 < rows(&request, "questions").len() {
+                    self.question_steps.insert(slot, index + 1);
+                    if let (Some(authored), Some(thread)) = (&authored, self.selected)
+                        && self.store.draft(thread) == *authored
+                    {
+                        let _ = self.store.save_draft(thread, String::new());
+                        self.restore_draft(window, cx);
+                    }
+                    self.rebuild_transcript(window, cx);
+                    self.prepare_portraits(cx);
+                    cx.notify();
+                    return;
+                }
                 let answers: Option<Vec<_>> = rows(&request, "questions")
                     .iter()
                     .map(|q| {
@@ -438,7 +702,46 @@ impl Workspace {
                 )
             }
         };
-        operation.replayable = matches!(bound.binding, Binding::Human(_));
+        operation.replayable = matches!(binding, Binding::Human(_));
+        operation.authored = authored;
+        view.update(cx, |view, cx| {
+            view.value.state = InteractionState::Submitting;
+            cx.notify();
+        });
         self.dispatch(slot, operation, window, cx);
+    }
+}
+
+#[cfg(test)]
+mod recovery_tests {
+    use super::human_reply_matches;
+    use serde_json::json;
+
+    #[test]
+    fn lost_acknowledgement_requires_the_same_answer_and_exact_message_scope() {
+        let request = json!({"state":"answered","purpose":"input","thread_id":"thread-a","source_run_id":"run-a","response_message_id":"reply","options":{"choices":[{"id":"short","label":"Short answer"}]}});
+        let mut snapshot = json!({"messages":[{"id":"reply","thread_id":"thread-a","source_run_id":"run-a","purpose":"human_reply","author":"user","text":"Short answer"}]});
+        assert!(human_reply_matches(
+            &request,
+            &snapshot,
+            &json!({"selected_ids":["short"]})
+        ));
+        assert!(!human_reply_matches(
+            &request,
+            &snapshot,
+            &json!({"text":"A different answer"})
+        ));
+        snapshot["messages"][0]["thread_id"] = json!("thread-b");
+        assert!(!human_reply_matches(
+            &request,
+            &snapshot,
+            &json!({"selected_ids":["short"]})
+        ));
+        let request = json!({"state":"answered","purpose":"approval","decision":"reject","thread_id":"thread-a","source_run_id":"run-a","response_message_id":"reply"});
+        assert!(!human_reply_matches(
+            &request,
+            &snapshot,
+            &json!({"decision":"approve"})
+        ));
     }
 }

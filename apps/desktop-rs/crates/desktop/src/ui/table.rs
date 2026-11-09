@@ -11,6 +11,8 @@ use gpui_kit::{
     *,
 };
 use std::{collections::HashMap, ops::Range, sync::Arc, time::Duration};
+mod inline;
+pub(crate) use inline::InlineTable;
 
 /// Include one neighboring column so a wheel gesture never exposes a blank edge.
 fn visible_columns(widths: &[f32], offset: f32, viewport: f32) -> Range<usize> {
@@ -52,6 +54,7 @@ pub struct RichTable {
     list: ListState,
     task: Option<Task<()>>,
     _subscription: Subscription,
+    inline: Option<InlineTable>,
 }
 impl RichTable {
     /// Current filtered/sorted rows for an explicit submit-time table snapshot.
@@ -85,9 +88,29 @@ impl RichTable {
             list: ListState::new(count, ListAlignment::Top, px(320.)),
             task: None,
             _subscription: subscription,
+            inline: None,
         }
     }
     fn column_width(&self, index: usize) -> f32 {
+        if let Some(inline) = &self.inline {
+            let unit = inline.font_unit;
+            let available = (self.available - 2.).max(1.);
+            let natural: f32 = self.columns.iter().map(|column| column.width).sum();
+            let floor: f32 = self.columns.iter().map(|column| column.minimum).sum();
+            let width = if natural <= available {
+                self.columns[index].width
+            } else if floor < available {
+                self.columns[index].minimum
+                    + (self.columns[index].width - self.columns[index].minimum)
+                        * (available - floor)
+                        / (natural - floor).max(1.)
+            } else {
+                self.columns[index].minimum
+            };
+            return width
+                + ((384. * unit).min(available) - natural).max(0.)
+                    / self.columns.len().max(1) as f32;
+        }
         let total: f32 = self.columns.iter().map(|c| c.minimum + 24.).sum();
         if self.wrap && self.order.len() <= 80 && total <= self.available {
             self.columns[index].minimum
@@ -151,6 +174,10 @@ impl RichTable {
         let query = self.query.read(cx).value().to_string();
         let document = self.document.clone();
         let sort = self.sort;
+        if document.rows.len() <= 200 {
+            self.install_order(document.order(&query, sort), cx);
+            return;
+        }
         self.task = Some(cx.spawn(async move |view, cx| {
             cx.background_executor()
                 .timer(Duration::from_millis(80))
@@ -160,12 +187,74 @@ impl RichTable {
                 .spawn(async move { document.order(&query, sort) })
                 .await;
             let _ = view.update(cx, |this, cx| {
-                this.order = Arc::new(order);
-                this.selection = None;
-                this.list.reset(this.order.len());
-                cx.notify();
+                this.install_order(order, cx);
             });
         }));
+    }
+    fn install_order(&mut self, order: Vec<usize>, cx: &mut Context<Self>) {
+        self.order = Arc::new(order);
+        self.selection = None;
+        self.list.reset(self.order.len());
+        if let Some(inline) = &self.inline {
+            (inline.changed)(cx);
+        }
+        cx.notify();
+    }
+    fn handle_key(&mut self, event: &KeyDownEvent, window: &mut Window, cx: &mut Context<Self>) {
+        if !self.focus.is_focused(window) {
+            return;
+        }
+        if event.keystroke.modifiers.platform && event.keystroke.key == "c" {
+            self.copy(cx);
+            cx.stop_propagation();
+        } else if event.keystroke.modifiers.platform
+            && event.keystroke.key == "a"
+            && !self.order.is_empty()
+            && !self.document.headers.is_empty()
+        {
+            self.selection = Some((
+                (0, 0),
+                (self.order.len() - 1, self.document.headers.len() - 1),
+            ));
+            cx.stop_propagation();
+            cx.notify();
+        } else {
+            let key = event.keystroke.key.as_str();
+            if matches!(key, "left" | "right") {
+                let mut offset = self.horizontal.offset();
+                offset.x += px(if key == "left" { 80. } else { -80. });
+                self.horizontal.set_offset(offset);
+                cx.stop_propagation();
+                cx.notify();
+            } else if matches!(key, "up" | "down" | "pageup" | "pagedown" | "home" | "end")
+                && !self.order.is_empty()
+            {
+                let index = self
+                    .selection
+                    .map_or(self.list.logical_scroll_top().item_ix, |s| s.1.0);
+                let step = if matches!(key, "pageup" | "pagedown") {
+                    10
+                } else {
+                    1
+                };
+                let target = match key {
+                    "home" => 0,
+                    "end" => self.order.len() - 1,
+                    "up" | "pageup" => index.saturating_sub(step),
+                    _ => (index + step).min(self.order.len() - 1),
+                };
+                let column = self.selection.map_or(0, |s| s.1.1);
+                let anchor = if event.keystroke.modifiers.shift {
+                    self.selection.map_or((index, column), |s| s.0)
+                } else {
+                    (target, column)
+                };
+                self.selection = Some((anchor, (target, column)));
+                self.list.scroll_to_reveal_item(target);
+                cx.stop_propagation();
+                cx.notify();
+            }
+        }
     }
     fn copy(&self, cx: &mut App) {
         let text = if let Some((a, b)) = self.selection {
@@ -277,7 +366,10 @@ impl RichTable {
     }
 }
 impl Render for RichTable {
-    fn render(&mut self, _: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
+    fn render(&mut self, window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
+        if self.inline.is_some() {
+            return self.render_inline(window, cx);
+        }
         let p = Palette::new(cx.theme().mode.is_dark());
         let rows = self.order.len();
         let columns = self.document.headers.len();
@@ -353,6 +445,7 @@ impl Render for RichTable {
         })
         .size_full();
         let view = cx.entity().downgrade();
+        let measured_width = self.available;
         let table_width = (0..columns)
             .map(|i| self.column_width(i))
             .sum::<f32>()
@@ -371,60 +464,7 @@ impl Render for RichTable {
             .size_full()
             .gap_2()
             .capture_key_down(cx.listener(|this, event: &KeyDownEvent, window, cx| {
-                if !this.focus.is_focused(window) {
-                    return;
-                }
-                if event.keystroke.modifiers.platform && event.keystroke.key == "c" {
-                    this.copy(cx);
-                    cx.stop_propagation();
-                } else if event.keystroke.modifiers.platform
-                    && event.keystroke.key == "a"
-                    && !this.order.is_empty()
-                    && !this.document.headers.is_empty()
-                {
-                    this.selection = Some((
-                        (0, 0),
-                        (this.order.len() - 1, this.document.headers.len() - 1),
-                    ));
-                    cx.stop_propagation();
-                    cx.notify();
-                } else {
-                    let key = event.keystroke.key.as_str();
-                    if matches!(key, "left" | "right") {
-                        let mut offset = this.horizontal.offset();
-                        offset.x += px(if key == "left" { 80. } else { -80. });
-                        this.horizontal.set_offset(offset);
-                        cx.stop_propagation();
-                        cx.notify();
-                    } else if matches!(key, "up" | "down" | "pageup" | "pagedown" | "home" | "end")
-                        && !this.order.is_empty()
-                    {
-                        let index = this
-                            .selection
-                            .map_or(this.list.logical_scroll_top().item_ix, |s| s.1.0);
-                        let step = if matches!(key, "pageup" | "pagedown") {
-                            10
-                        } else {
-                            1
-                        };
-                        let target = match key {
-                            "home" => 0,
-                            "end" => this.order.len() - 1,
-                            "up" | "pageup" => index.saturating_sub(step),
-                            _ => (index + step).min(this.order.len() - 1),
-                        };
-                        let column = this.selection.map_or(0, |s| s.1.1);
-                        let anchor = if event.keystroke.modifiers.shift {
-                            this.selection.map_or((index, column), |s| s.0)
-                        } else {
-                            (target, column)
-                        };
-                        this.selection = Some((anchor, (target, column)));
-                        this.list.scroll_to_reveal_item(target);
-                        cx.stop_propagation();
-                        cx.notify();
-                    }
-                }
+                this.handle_key(event, window, cx);
             }))
             .child(
                 row()
@@ -495,10 +535,13 @@ impl Render for RichTable {
             )
             .child(
                 canvas(
-                    move |bounds, window, _| {
+                    move |bounds, _, cx| {
                         let width = f32::from(bounds.size.width);
+                        if (measured_width - width).abs() <= 1. {
+                            return;
+                        }
                         let view = view.clone();
-                        window.on_next_frame(move |_, cx| {
+                        cx.defer(move |cx| {
                             let _ = view.update(cx, |this, cx| {
                                 if (this.available - width).abs() > 1. {
                                     this.available = width;
@@ -515,6 +558,7 @@ impl Render for RichTable {
                 .left_0()
                 .size_full(),
             )
+            .into_any_element()
     }
 }
 

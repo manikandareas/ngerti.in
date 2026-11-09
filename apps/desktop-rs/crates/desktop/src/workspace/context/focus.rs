@@ -66,17 +66,63 @@ impl Workspace {
     pub(in crate::workspace) fn table_actions(
         table: &gpui_kit::component::text::TableData,
         weak: WeakEntity<Self>,
+        group: Option<SharedString>,
         cx: &mut App,
     ) -> AnyElement {
         let p = Palette::new(gpui_kit::component::ActiveTheme::theme(cx).mode.is_dark());
         let table = table.clone();
-        action(
+        let copy_table = table.clone();
+        let copy = action("copy-table", "Copy table", "Copy01Icon", p, cx)
+            .size(ui(26.))
+            .on_click(move |_, _, cx| {
+                let document = TableDocument {
+                    original: String::new(),
+                    headers: copy_table.headers.clone(),
+                    rows: copy_table.rows.clone(),
+                };
+                let order = (0..document.rows.len()).collect::<Vec<_>>();
+                let text = document.csv(&order);
+                cx.write_to_clipboard(ClipboardItem::new_string(text));
+            });
+        let download_table = table.clone();
+        let download_owner = weak.clone();
+        let download = action("download-table", "Download table", "Download04Icon", p, cx)
+            .size(ui(26.))
+            .on_click(move |_, _, cx| {
+                let document = TableDocument {
+                    original: String::new(),
+                    headers: download_table.headers.clone(),
+                    rows: download_table.rows.clone(),
+                };
+                let bytes = document
+                    .csv(&(0..document.rows.len()).collect::<Vec<_>>())
+                    .into_bytes();
+                let directory = dirs::download_dir().unwrap_or_else(std::env::temp_dir);
+                let picker = cx.prompt_for_new_path(&directory, Some("Table.csv"));
+                let owner = download_owner.clone();
+                cx.spawn(async move |cx| {
+                    if let Ok(Ok(Some(path))) = picker.await {
+                        let result = cx
+                            .background_spawn(async move { std::fs::write(path, bytes) })
+                            .await;
+                        let _ = owner.update(cx, |this, cx| {
+                            if let Err(error) = result {
+                                this.error = error.to_string();
+                            }
+                            cx.notify();
+                        });
+                    }
+                })
+                .detach();
+            });
+        let maximize = action(
             "maximize-table",
             "Maximize table",
             "ArrowExpand01Icon",
             p,
             cx,
         )
+        .size(ui(26.))
         .on_click(move |_, window, cx| {
             let _ = weak.update(cx, |this, cx| {
                 let document = TableDocument {
@@ -94,8 +140,26 @@ impl Workspace {
                     cx,
                 );
             });
-        })
-        .into_any_element()
+        });
+        let reveal = |button: gpui_kit::component::button::Button| {
+            button.when_some(group.clone(), |button, group| {
+                button
+                    .rounded_full()
+                    .bg(p.color("popover"))
+                    .opacity(0.)
+                    .group_hover(group, |style| style.opacity(1.))
+                    .focus_visible(|style| style.opacity(1.))
+            })
+        };
+        div()
+            .flex()
+            .items_center()
+            .justify_end()
+            .gap(ui(2.))
+            .child(reveal(copy))
+            .child(reveal(download))
+            .child(reveal(maximize))
+            .into_any_element()
     }
     pub(in crate::workspace) fn open_local_file(
         &mut self,
@@ -287,7 +351,7 @@ impl Workspace {
                 .scrollable(true)
                 .table_actions({
                     let weak = cx.entity().downgrade();
-                    move |table, _, cx| Self::table_actions(table, weak.clone(), cx)
+                    move |table, _, cx| Self::table_actions(table, weak.clone(), None, cx)
                 })
                 .into_any_element(),
             Some(Body::Pdf(v)) => v.clone().into_any_element(),

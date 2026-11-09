@@ -1,5 +1,5 @@
 //! Stateless presentation. Callers own state, callbacks and final style overrides.
-use super::theme::Palette;
+use super::theme::{Palette, ui, ui_px};
 use gpui_kit::prelude::FluentBuilder;
 use gpui_kit::{
     component::button::{Button, ButtonCustomVariant, ButtonVariants},
@@ -35,7 +35,7 @@ pub fn button(
             "primary-hover",
             "primary-pressed",
         ),
-        ButtonKind::Ghost => ("background", "foreground", "menu-hover", "menu-active"),
+        ButtonKind::Ghost => ("background", "foreground", "ghost-hover", "ghost-pressed"),
         ButtonKind::Secondary => ("secondary", "secondary-foreground", "accent", "accent"),
         ButtonKind::Danger => (
             "danger-action",
@@ -51,29 +51,30 @@ pub fn button(
         p.color(background)
     };
     Button::new(id)
-        .when(!label.is_empty(), |button| button.label(label.clone()))
+        .when(!label.is_empty(), |button| {
+            button.child(
+                div()
+                    .min_w_0()
+                    .truncate()
+                    .text_size(ui(13.))
+                    .line_height(ui(18.))
+                    .child(label.clone()),
+            )
+        })
         .accessibility_label(label)
         .custom(
             ButtonCustomVariant::new(cx)
                 .color(surface)
                 .foreground(p.color(foreground))
-                .hover(if matches!(kind, ButtonKind::Danger) {
-                    p.color(hover).opacity(0.9)
-                } else {
-                    p.color(hover)
-                })
-                .active(if matches!(kind, ButtonKind::Danger) {
-                    p.color(pressed).opacity(0.9)
-                } else {
-                    p.color(pressed)
-                }),
+                .hover(p.color(hover))
+                .active(p.color(pressed)),
         )
         // GPUI 0.9 custom variants tint their resting background toward
         // transparency. Product tokens specify the complete solid surface.
         .bg(surface)
-        .rounded(px(8.))
-        .h(px(32.))
-        .text_size(px(13.))
+        .rounded(ui_px(8., cx))
+        .h(ui(32.))
+        .text_size(ui(13.))
         .font_weight(FontWeight::MEDIUM)
         .when(
             matches!(kind, ButtonKind::Default | ButtonKind::Outline),
@@ -99,7 +100,7 @@ impl ProductButtonStyle for Button {
 pub fn icon(name: &str, p: Palette) -> impl IntoElement {
     svg()
         .path(SharedString::from(format!("icons/{name}.svg")))
-        .size(px(18.))
+        .size(ui(18.))
         .text_color(p.color("foreground"))
 }
 
@@ -127,14 +128,14 @@ pub fn row() -> Div {
 }
 pub fn caption(text: impl Into<SharedString>, p: Palette) -> Div {
     div()
-        .text_size(px(12.))
-        .line_height(px(18.))
+        .text_size(ui(12.))
+        .line_height(ui(18.))
         .text_color(p.color("muted-foreground"))
         .child(text.into())
 }
 pub fn title(text: impl Into<SharedString>) -> Div {
     div()
-        .text_size(px(20.))
+        .text_size(ui(20.))
         .font_weight(FontWeight::SEMIBOLD)
         .child(text.into())
 }

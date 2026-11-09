@@ -40,7 +40,9 @@ impl Workspace {
             .activities
             .iter()
             .filter(|item| {
-                rows(thread, "member_agent_ids").contains(&item["agent_id"]) && priority(item) > 0
+                crate::models::activity::in_thread(item, thread, text(item, "agent_id"))
+                    && rows(thread, "member_agent_ids").contains(&item["agent_id"])
+                    && priority(item) > 0
             })
             .max_by_key(|item| priority(item));
         let (label, agent) = if let Some(live) = live {
@@ -264,6 +266,7 @@ impl Workspace {
                     .rounded_full()
                     .bg(p.color("card"))
                     .on_click(cx.listener(|this, _, window, cx| {
+                        window.close_sheet(cx);
                         this.open_settings(window, cx);
                     })),
             )
@@ -272,19 +275,39 @@ impl Workspace {
                     .accessibility_label("Hubungkan aplikasi")
                     .h(ui(36.))
                     .flex_1()
+                    .min_w_0()
                     .rounded_full()
                     .bg(p.color("card"))
                     .gap(ui(8.))
                     .text_size(ui(13.))
-                    .child(glyph("Plug01Icon", 16., p))
-                    .child("Hubungkan aplikasi")
+                    .child(
+                        div()
+                            .w_full()
+                            .min_w_0()
+                            .flex()
+                            .items_center()
+                            .justify_center()
+                            .gap(ui(8.))
+                            .child(glyph("Plug01Icon", 16., p))
+                            .child(
+                                div()
+                                    .min_w_0()
+                                    .truncate()
+                                    .text_size(ui(13.))
+                                    .child("Hubungkan aplikasi"),
+                            ),
+                    )
                     .on_click(cx.listener(|this, _, window, cx| {
-                        this.open_settings(window, cx);
+                        window.close_sheet(cx);
+                        this.open_apps(window, cx);
                     })),
             );
         div()
-            .w(ui(280.))
+            .w_full()
+            .min_w_0()
             .h_full()
+            .min_h_0()
+            .overflow_hidden()
             .flex_shrink_0()
             .p(ui(12.))
             .flex()
@@ -299,7 +322,13 @@ impl Workspace {
         let id = text(thread, "id");
         let group = thread["type"] == "group";
         let nav = role == "nav";
-        let size = if nav { 44. } else { 24. };
+        let size = if nav {
+            44.
+        } else if role == "route" {
+            32.
+        } else {
+            24.
+        };
         let members: Vec<_> = rows(thread, "member_agent_ids")
             .iter()
             .filter_map(Value::as_str)
@@ -400,6 +429,18 @@ impl Workspace {
                     .is_some_and(|selected| selected.to_string() == id)
                 {
                     if index < 2 {
+                        if self
+                            .transcript
+                            .iter()
+                            .any(|row| matches!(row.kind, super::transcript::RowKind::Route(_)))
+                        {
+                            targets.push((
+                                format!("route:{id}:{agent}"),
+                                agent.to_owned(),
+                                22.,
+                                false,
+                            ));
+                        }
                         targets.push((
                             format!("header:{id}:{agent}"),
                             agent.to_owned(),
@@ -425,7 +466,8 @@ impl Workspace {
                         text(message, "author_agent_id")
                     }
                     super::transcript::RowKind::Interaction { agent, .. } => agent,
-                    super::transcript::RowKind::Run(run) => text(run, "agent_id"),
+                    super::transcript::RowKind::Run(run)
+                    | super::transcript::RowKind::Computer(run) => text(run, "agent_id"),
                     _ => continue,
                 };
                 targets.push((
@@ -477,8 +519,15 @@ impl Workspace {
                 self.portrait_observers.insert(key.clone(), observer);
                 self.portraits.insert(key.clone(), (config, portrait));
             }
+            let thread_id = key.split(':').nth(1).unwrap_or_default();
+            let conversation_portrait = !key.starts_with("message:") && !key.starts_with("route:");
             let run = rows(self.value(), "runs").iter().find(|run| {
                 run["agent_id"] == id
+                    && if conversation_portrait {
+                        run["thread_id"] == thread_id
+                    } else {
+                        key == format!("message:run:{}:{id}", text(run, "id"))
+                    }
                     && matches!(
                         text(run, "status"),
                         "running" | "dispatching" | "cancel_requested"
@@ -486,6 +535,8 @@ impl Workspace {
             });
             let live = self.activities.iter().find(|activity| {
                 activity["agent_id"] == id
+                    && conversation_portrait
+                    && activity["thread_id"] == thread_id
                     && (activity["waiting_for_user"] == true
                         || matches!(
                             text(activity, "status"),
@@ -494,17 +545,15 @@ impl Workspace {
             });
             let busy = run.is_some() || live.is_some();
             let waiting = live.is_some_and(|activity| activity["waiting_for_user"] == true)
-                || run.is_some_and(|run| {
-                    rows(run, "native_interactions")
-                        .iter()
-                        .any(|record| record["observed_state"] == "pending")
-                });
+                || run.is_some_and(|run| crate::models::activity::waiting(run, self.value()));
             if fresh || self.avatar_activity.get(&key) != Some(&(busy, waiting)) {
                 if let Some((_, portrait)) = self.portraits.get(&key) {
                     portrait.update(cx, |view, cx| {
                         view.loading(busy && !waiting, cx);
                         view.state(
-                            if busy {
+                            if waiting {
+                                ngertiin_avatar::State::Listening
+                            } else if busy {
                                 ngertiin_avatar::State::Thinking
                             } else {
                                 ngertiin_avatar::State::Idle

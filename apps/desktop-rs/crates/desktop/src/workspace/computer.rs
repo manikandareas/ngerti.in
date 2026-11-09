@@ -47,6 +47,128 @@ pub(super) struct Computer {
     ticks: u64,
 }
 impl Computer {
+    pub(super) fn activity_view(
+        &self,
+        run: &Value,
+        preview: bool,
+        cx: &mut Context<Self>,
+    ) -> AnyElement {
+        let p = Palette::new(cx.theme().mode.is_dark());
+        let active = matches!(
+            text(run, "status"),
+            "running" | "dispatching" | "cancel_requested"
+        );
+        let other = self.machine["lease"]["holder"] == "human"
+            || self.machine["lease"]["holder"] == "agent"
+                && self.machine["lease"]["run_id"] != run["id"];
+        let ready = active
+            && run["computer_activity"]["phase"] == "active"
+            && self.machine["id"] == run["computer_activity"]["machine_id"]
+            && self.machine["generation"] == run["computer_activity"]["generation"]
+            && self.machine["state"] == "ready"
+            && !other;
+        let label = if !active {
+            match text(run, "status") {
+                "cancelled" => "Activity stopped",
+                "failed" => "Activity failed",
+                _ => "Activity finished",
+            }
+        } else if self.machine["lease"]["holder"] == "human" {
+            "You have control"
+        } else if other {
+            "Waiting for computer"
+        } else if ready {
+            "Connected"
+        } else {
+            "Connecting computer…"
+        };
+        let mut card = div()
+            .id(SharedString::from(format!(
+                "computer-activity:{}",
+                text(run, "id")
+            )))
+            .role(Role::Group)
+            .aria_label("Computer activity")
+            .w_full()
+            .max_w(ui(420.))
+            .min_w_0()
+            .p(ui(12.))
+            .rounded(ui(16.))
+            .border_1()
+            .border_color(p.color("border-subtle"))
+            .bg(p.color("composer"))
+            .flex()
+            .flex_col()
+            .gap(ui(12.))
+            .child(
+                div()
+                    .flex()
+                    .items_center()
+                    .gap(ui(12.))
+                    .child(
+                        div()
+                            .size(ui(40.))
+                            .rounded(ui(12.))
+                            .bg(p.color("header-surface"))
+                            .flex()
+                            .items_center()
+                            .justify_center()
+                            .child(glyph("ComputerIcon", 22., p)),
+                    )
+                    .child(
+                        div()
+                            .min_w_0()
+                            .child(
+                                div()
+                                    .text_size(ui(14.))
+                                    .font_weight(FontWeight::MEDIUM)
+                                    .child("Computer"),
+                            )
+                            .child(
+                                div()
+                                    .text_size(ui(13.))
+                                    .text_color(p.color("muted-foreground"))
+                                    .child(label),
+                            ),
+                    ),
+            );
+        if ready {
+            if preview {
+                card = card.child(self.screen(true, cx));
+            }
+            card = card.child(
+                button(
+                    SharedString::from(format!("activity-open:{}", text(run, "id"))),
+                    "Open Computer",
+                    ButtonKind::Secondary,
+                    p,
+                    cx,
+                )
+                .w_full()
+                .rounded(ui(16.).to_pixels(cx.theme().font_size))
+                .on_click(cx.listener(|this, _, window, cx| this.show(window, cx))),
+            );
+        }
+        if let Ok(time) = crate::models::message::PublicationTime::local(
+            run["computer_activity"]["started_at"]
+                .as_str()
+                .unwrap_or(text(run, "created_at")),
+        ) {
+            card = card.child(crate::ui::message::clock(&time, p));
+        }
+        card.into_any_element()
+    }
+    fn show(&mut self, window: &mut Window, cx: &mut Context<Self>) {
+        self.open = true;
+        if let Some(surface) = &self.compact {
+            surface.view.update(cx, |view, _| {
+                let _ = view.set_visible(false);
+            });
+        }
+        self.return_focus = window.focused(cx);
+        self.focus.focus(window, cx);
+        cx.notify();
+    }
     pub fn new(window: &mut Window, cx: &mut Context<Self>) -> Self {
         let mut this = Self {
             worker: None,
@@ -521,12 +643,68 @@ impl Computer {
 impl Render for Computer {
     fn render(&mut self, _: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
         let p = Palette::new(cx.theme().mode.is_dark());
-        div().flex().flex_col().gap(ui(12.)).pt(ui(14.))
-            .when(self.machine["state"]=="ready",|v|v.child(self.screen(true,cx)))
-            .child(button("open-shared-desktop","",ButtonKind::Ghost,p,cx).accessibility_label("View desktop").disabled(self.machine["state"]!="ready").w_full().h_auto().py(ui(22.)).rounded(ui(12.).to_pixels(cx.theme().font_size)).bg(p.color("composer")).child(div().flex().flex_col().items_center().gap(ui(12.)).child(glyph("ComputerIcon",30.,p)).child(if self.machine["state"]=="ready" {"Open shared desktop"} else if self.machine["state"]=="unconfigured" {"Desktop not set up"} else {"Desktop unavailable"})).on_click(cx.listener(|this,_,window,cx| {this.open=true;if let Some(surface)=&this.compact { surface.view.update(cx,|view,_| {let _=view.set_visible(false);}); }this.return_focus=window.focused(cx);this.focus.focus(window,cx);cx.notify();})))
-            .child(div().id("computer-status").role(Role::Status).text_center().text_size(ui(13.)).text_color(p.color("muted-foreground")).child(if self.machine["state"]=="ready" {self.label()} else {"Reconnect the local machine to continue desktop work.".into()}))
+        let ready = self.machine["state"] == "ready";
+        let label = if ready {
+            "Open shared desktop"
+        } else if self.machine["state"] == "unconfigured" {
+            "Desktop not set up"
+        } else {
+            "Desktop unavailable"
+        };
+        let open = button("open-shared-desktop", "", ButtonKind::Ghost, p, cx)
+            .accessibility_label("View desktop")
+            .disabled(!ready)
+            .w_full()
+            .h(ui(36.))
+            .rounded(ui(12.).to_pixels(cx.theme().font_size))
+            .bg(p.color("composer"))
+            .child(
+                div()
+                    .w_full()
+                    .flex()
+                    .items_center()
+                    .justify_center()
+                    .gap(ui(8.))
+                    .text_size(ui(13.))
+                    .child(glyph("ComputerIcon", 18., p))
+                    .child(label),
+            )
+            .on_click(cx.listener(|this, _, window, cx| this.show(window, cx)));
+        div()
+            .flex()
+            .flex_col()
+            .gap(ui(12.))
+            .pt(ui(14.))
+            .when(ready, |view| view.child(self.screen(true, cx)))
+            .child(open)
+            .child(
+                div()
+                    .id("computer-status")
+                    .role(Role::Status)
+                    .text_center()
+                    .text_size(ui(13.))
+                    .text_color(p.color("muted-foreground"))
+                    .child(if ready {
+                        self.label()
+                    } else {
+                        "Reconnect the local machine to continue desktop work.".into()
+                    }),
+            )
             .child(div().text_size(ui(13.)).text_color(p.color("muted-foreground")).child("One desktop for you and all your agents. Browser sessions, working files, and attachment copies on this machine are shared."))
-            .when(!self.error.is_empty(),|v|v.child(div().id("computer-error").role(Role::Alert).text_color(p.color("destructive")).child(self.error.clone())))
-            .when(self.machine["state"]!="ready" || !self.error.is_empty(),|v|v.child(button("reconnect-computer","Reconnect",ButtonKind::Outline,p,cx).on_click(cx.listener(|this,_,_,cx|this.retire(cx)))))
+            .when(!self.error.is_empty(), |view| {
+                view.child(
+                    div()
+                        .id("computer-error")
+                        .role(Role::Alert)
+                        .text_color(p.color("destructive"))
+                        .child(self.error.clone()),
+                )
+            })
+            .when(!ready || !self.error.is_empty(), |view| {
+                view.child(
+                    button("reconnect-computer", "Reconnect", ButtonKind::Outline, p, cx)
+                        .on_click(cx.listener(|this, _, _, cx| this.retire(cx))),
+                )
+            })
     }
 }

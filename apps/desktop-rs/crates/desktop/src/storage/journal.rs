@@ -104,6 +104,7 @@ struct Preferences {
     drafts: BTreeMap<Uuid, String>,
     files: BTreeMap<Uuid, Vec<StagedFile>>,
     recipients: BTreeMap<Uuid, Uuid>,
+    interaction_answers: BTreeMap<String, Value>,
 }
 
 pub(crate) struct Store {
@@ -134,6 +135,23 @@ fn load<T: for<'de> Deserialize<'de> + Default>(path: &Path) -> anyhow::Result<T
 }
 
 impl Store {
+    pub fn interaction_answers(&self) -> BTreeMap<String, Value> {
+        self.preferences.interaction_answers.clone()
+    }
+    pub fn save_interaction_answer(&mut self, key: String, answer: Value) -> anyhow::Result<()> {
+        self.preferences.interaction_answers.insert(key, answer);
+        self.save_preferences()
+    }
+    pub fn clear_interaction_answers(&mut self, prefix: &str) -> anyhow::Result<()> {
+        let count = self.preferences.interaction_answers.len();
+        self.preferences
+            .interaction_answers
+            .retain(|key, _| !key.starts_with(prefix));
+        if count != self.preferences.interaction_answers.len() {
+            self.save_preferences()?;
+        }
+        Ok(())
+    }
     pub fn open(root: PathBuf) -> anyhow::Result<Self> {
         fs::create_dir_all(&root)?;
         fs::set_permissions(&root, fs::Permissions::from_mode(0o700))?;
@@ -564,5 +582,30 @@ mod tests {
         assert_eq!(first.staged_ids, second.staged_ids);
         drop(store);
         fs::remove_dir_all(root).unwrap();
+    }
+}
+
+#[cfg(test)]
+mod interaction_draft_tests {
+    use super::*;
+    #[test]
+    fn partial_question_answers_survive_restart_and_clear_only_their_request() {
+        let root = std::env::temp_dir().join(format!("native-question-draft-{}", Uuid::new_v4()));
+        let mut store = Store::open(root.clone()).unwrap();
+        let answer = serde_json::json!({"questionId":"first","selectedLabels":["Short"],"freeText":"Keep this private draft"});
+        store
+            .save_interaction_answer("native:one:first".into(), answer.clone())
+            .unwrap();
+        store
+            .save_interaction_answer("native:two:first".into(), answer.clone())
+            .unwrap();
+        drop(store);
+        let mut store = Store::open(root.clone()).unwrap();
+        assert_eq!(store.interaction_answers()["native:one:first"], answer);
+        store.clear_interaction_answers("native:one:").unwrap();
+        assert!(!store.interaction_answers().contains_key("native:one:first"));
+        assert!(store.interaction_answers().contains_key("native:two:first"));
+        drop(store);
+        std::fs::remove_dir_all(root).unwrap();
     }
 }

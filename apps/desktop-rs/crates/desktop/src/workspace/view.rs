@@ -3,7 +3,7 @@ use crate::ui::{
     controls::{ButtonKind, button},
     theme::{Palette, ui},
 };
-use gpui_kit::component::{WindowExt, message_scroller::MessageScroller};
+use gpui_kit::component::{ActiveTheme, WindowExt, message_scroller::MessageScroller};
 
 impl Render for Workspace {
     fn render(&mut self, window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
@@ -53,7 +53,7 @@ impl Render for Workspace {
                     .pt(ui(83.))
                     .pb(self.composer_height + window.rem_size() * 1.75),
             )
-            .with_row_style(StyleRefinement::default().pb(ui(16.)))
+            .with_row_style(StyleRefinement::default().px(ui(0.)).pb(ui(16.)))
             .with_jump_button_label("Ke pesan terbaru");
             main = main.child(scroll).child(
                 div()
@@ -256,7 +256,13 @@ impl Render for Workspace {
                 }
             }));
         if show_sidebar {
-            root = root.child(self.sidebar_view(cx));
+            root = root.child(
+                div()
+                    .w(ui(280.))
+                    .h_full()
+                    .flex_shrink_0()
+                    .child(self.sidebar_view(cx)),
+            );
         }
         root = root.child(main);
         if inspector && !mobile {
@@ -286,10 +292,23 @@ impl Workspace {
         window.open_sheet_at(
             gpui_kit::component::Placement::Left,
             cx,
-            move |sheet, _, cx| {
-                sheet.size(ui(280.)).child(
-                    weak.update(cx, |this, cx| this.sidebar_view(cx))
-                        .unwrap_or_else(|_| div().into_any_element()),
+            move |sheet, window, cx| {
+                // Bound the feature body independently of the generic sheet's
+                // scrolling wrapper so long rosters cannot displace its footer.
+                let height = (window.viewport_size().height
+                    - cx.theme().sheet.margin_top
+                    - ui(44.).to_pixels(window.rem_size()))
+                .max(px(0.));
+                sheet.size(ui(280.)).p_0().child(
+                    div()
+                        .w_full()
+                        .h(height)
+                        .max_h(height)
+                        .overflow_hidden()
+                        .child(
+                            weak.update(cx, |this, cx| this.sidebar_view(cx))
+                                .unwrap_or_else(|_| div().into_any_element()),
+                        ),
                 )
             },
         );

@@ -6,6 +6,62 @@ pub const SOURCE_VIRTUAL_LINES: usize = 500;
 pub const PDF_BYTES: u64 = 16 * 1024 * 1024;
 pub const PDF_PAGES: usize = 500;
 
+/// Match the conversation's recorded-source disclosure, preserving URL order.
+pub fn research_sources(sources: &[serde_json::Value]) -> Vec<&serde_json::Value> {
+    let mut result: Vec<&serde_json::Value> = Vec::new();
+    for source in sources {
+        let value = ngertiin_client::text(source, "url");
+        if source_domain(value).is_empty() {
+            continue;
+        }
+        if let Some(index) = result.iter().position(|item| item["url"] == source["url"]) {
+            result[index] = source;
+        } else {
+            result.push(source);
+        }
+    }
+    result
+}
+
+pub fn source_domain(value: &str) -> String {
+    url::Url::parse(value)
+        .ok()
+        .filter(|url| matches!(url.scheme(), "http" | "https"))
+        .and_then(|url| {
+            url.host_str()
+                .map(|host| host.strip_prefix("www.").unwrap_or(host).to_owned())
+        })
+        .unwrap_or_default()
+}
+
+/// Human prose stays literal while native reference tokens retain their meaning.
+pub fn literal_markdown(text: &str) -> String {
+    static REFERENCES: std::sync::LazyLock<regex::Regex> = std::sync::LazyLock::new(|| {
+        regex::Regex::new(r"\[(?:\\.|[^\]\\\n])*\]\(ngertiin://[^)\s]+\)")
+            .expect("Native reference syntax")
+    });
+    let mut output = String::new();
+    let mut start = 0;
+    let escape = |source: &str, output: &mut String| {
+        for character in source.chars() {
+            if character.is_ascii_punctuation() {
+                output.push('\\');
+            }
+            if character == '\n' {
+                output.push_str("  ");
+            }
+            output.push(character);
+        }
+    };
+    for reference in REFERENCES.find_iter(text) {
+        escape(&text[start..reference.start()], &mut output);
+        output.push_str(reference.as_str());
+        start = reference.end();
+    }
+    escape(&text[start..], &mut output);
+    output
+}
+
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum PreviewError {
     TooLarge,
@@ -534,6 +590,21 @@ impl<I: Iterator<Item = char>> Digits for std::iter::Peekable<I> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn recorded_sources_filter_invalid_urls_and_replace_duplicates_in_place() {
+        let sources = serde_json::json!([
+            {"url":"https://www.example.org/one","title":"Old"},
+            {"url":"javascript:alert(1)"},
+            {"url":"https://example.org/two"},
+            {"url":"https://www.example.org/one","title":"Updated"},
+            {"url":"broken"}
+        ]);
+        let filtered = research_sources(sources.as_array().unwrap());
+        assert_eq!(filtered.len(), 2);
+        assert_eq!(filtered[0]["title"], "Updated");
+        assert_eq!(filtered[1]["url"], "https://example.org/two");
+        assert_eq!(source_domain("https://www.example.org/one"), "example.org");
+    }
     #[test]
     fn source_and_table_behavior_matches_current_client_vectors() {
         let reference: serde_json::Value = serde_json::from_str(include_str!(

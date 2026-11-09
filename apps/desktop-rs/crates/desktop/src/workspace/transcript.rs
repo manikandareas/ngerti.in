@@ -1,15 +1,19 @@
 use super::*;
 use crate::{
-    models::message::{ActivityKind, PublicationTime},
+    models::{activity, message::PublicationTime},
     ui::{
         controls::*,
         message::{clock, day_marker},
         theme::{Palette, agent_bubble, ui},
     },
 };
+use gpui_kit::base::{
+    TestSupportExt,
+    text::{TextView, TextViewStyle},
+};
 use gpui_kit::component::{
     shimmer::ShimmerText,
-    text::{TextView, TextViewMotion, TextViewState},
+    text::{TextViewMotion, TextViewState},
 };
 use ngertiin_client::{rows, text};
 use sha2::{Digest, Sha256};
@@ -20,14 +24,20 @@ pub(super) enum RowKind {
         message: Value,
         body: Entity<TextViewState>,
         content: String,
+        markup: Box<gpui_kit::component::text::MarkdownExtensions>,
+        sources: Vec<String>,
+        tables: BTreeMap<usize, Entity<crate::ui::table::RichTable>>,
+        tail: bool,
     },
     Interaction {
         key: String,
         agent: String,
     },
     Run(Value),
+    Computer(Value),
+    Sources(Value),
     Route(Value),
-    Bar(Value),
+    Milestones(Vec<Value>),
 }
 pub(super) struct TranscriptRow {
     pub id: String,
@@ -95,7 +105,45 @@ fn observed_anchor(record: &Value, run: &Value, message: &Value) -> Option<usize
     Some(offset)
 }
 impl Workspace {
-    pub(super) fn rebuild_transcript(&mut self, cx: &mut Context<Self>) {
+    fn grouped_avatar(&self, row: &str, agent: &str, cx: &mut Context<Self>) -> Option<AnyElement> {
+        if self.value()["thread"]["type"] != "group" {
+            return None;
+        }
+        let portrait = self
+            .portraits
+            .get(&format!("message:{row}:{agent}"))?
+            .1
+            .clone();
+        let name = self
+            .agents
+            .iter()
+            .find(|value| value["id"] == agent)
+            .map(|value| text(value, "name"))
+            .unwrap_or("Agent");
+        let target = agent.to_owned();
+        let p = Palette::new(self.store.dark());
+        Some(
+            button(
+                SharedString::from(format!("activity-profile:{row}:{agent}")),
+                "",
+                ButtonKind::Ghost,
+                p,
+                cx,
+            )
+            .accessibility_label(format!("Open {name}’s profile"))
+            .size(ui(32.))
+            .p_0()
+            .rounded_full()
+            .child(portrait)
+            .on_click(
+                cx.listener(move |this, _, window, cx| {
+                    this.show_member(target.clone(), window, cx)
+                }),
+            )
+            .into_any_element(),
+        )
+    }
+    pub(super) fn rebuild_transcript(&mut self, window: &mut Window, cx: &mut Context<Self>) {
         let mut previous: BTreeMap<_, _> = self
             .transcript
             .drain(..)
@@ -113,19 +161,33 @@ impl Workspace {
             .filter(|r| !r["retried_by_run_id"].is_null())
             .map(|r| r["id"].clone())
             .collect();
+        let mut batch_allowed = true;
         for part in parts {
             if part["kind"] == "handoff_requested" {
+                batch_allowed = false;
                 continue;
             }
             if part["kind"] != "message" {
+                if batch_allowed
+                    && let Some(TranscriptRow {
+                        kind: RowKind::Milestones(parts),
+                        ..
+                    }) = result.last_mut()
+                    && super::timeline::batchable(parts, &part)
+                {
+                    parts.push(part);
+                    continue;
+                }
+                batch_allowed = true;
                 result.push(TranscriptRow {
                     id: text(&part, "id").into(),
                     at: text(&part, "created_at").into(),
                     starts_day: false,
-                    kind: RowKind::Bar(part),
+                    kind: RowKind::Milestones(vec![part]),
                 });
                 continue;
             }
+            batch_allowed = false;
             let Some(message) = rows(&value, "messages")
                 .iter()
                 .find(|m| m["id"] == part["message_id"])
@@ -184,30 +246,61 @@ impl Workspace {
                         continue;
                     };
                     for (key, card) in self.interaction_views.iter().filter(|(key, _)| {
-                        *key == &prefix || key.starts_with(&format!("{prefix}:"))
+                        self.interaction_visible(key)
+                            && (*key == &prefix || key.starts_with(&format!("{prefix}:")))
                     }) {
                         anchors.push((
                             offset,
                             key.clone(),
                             card.at.clone(),
                             text(run, "agent_id").to_owned(),
+                            match &card.binding {
+                                super::interactions::Binding::Question {
+                                    request,
+                                    question,
+                                    ..
+                                } => rows(request, "questions")
+                                    .iter()
+                                    .position(|item| item["id"] == *question)
+                                    .unwrap_or(0),
+                                _ => 0,
+                            },
                         ));
                     }
                 }
             }
-            anchors.sort_by(|a, b| a.0.cmp(&b.0).then(a.2.cmp(&b.2)).then(a.1.cmp(&b.1)));
+            anchors.sort_by(|a, b| {
+                a.0.cmp(&b.0)
+                    .then(a.2.cmp(&b.2))
+                    .then(a.4.cmp(&b.4))
+                    .then(a.1.cmp(&b.1))
+            });
+            let sources: Vec<String> = rows(&value, "runs")
+                .iter()
+                .find(|run| run["id"] == message["run_id"])
+                .map(|run| {
+                    rows(run, "sources")
+                        .iter()
+                        .map(|source| text(source, "url").to_owned())
+                        .collect()
+                })
+                .unwrap_or_default();
             let content = text(message, "text");
             let mut start = 0;
             let mut at = text(&part, "created_at").to_owned();
-            for (offset, key, card_at, agent) in anchors {
+            for (offset, key, card_at, agent, _) in anchors {
                 if offset > start {
                     push_message(
                         &mut result,
                         &mut previous,
                         message,
                         &content[start..offset],
-                        start,
-                        &at,
+                        MessageSlice {
+                            start,
+                            at: &at,
+                            sources: &sources,
+                        },
+                        window,
                         cx,
                     );
                 }
@@ -234,14 +327,18 @@ impl Workspace {
                     &mut previous,
                     message,
                     &content[start..],
-                    start,
-                    &at,
+                    MessageSlice {
+                        start,
+                        at: &at,
+                        sources: &sources,
+                    },
+                    window,
                     cx,
                 );
             }
         }
         for (key, card) in &self.interaction_views {
-            if placed.contains(key) {
+            if placed.contains(key) || !self.interaction_visible(key) {
                 continue;
             }
             let agent = match &card.binding {
@@ -266,9 +363,7 @@ impl Workspace {
             });
         }
         for run in rows(&value, "runs") {
-            if matches!(text(run, "status"), "succeeded" | "steered")
-                || !run["retried_by_run_id"].is_null()
-            {
+            if !activity::visible(run, &value) {
                 continue;
             }
             let visible = result.iter().any(|row| match &row.kind {
@@ -303,7 +398,11 @@ impl Workspace {
                         .map(|row| row.at.clone())
                         .unwrap_or_else(|| text(run, "created_at").into()),
                     starts_day: false,
-                    kind: RowKind::Run(run.clone()),
+                    kind: if run["computer_activity"].is_object() {
+                        RowKind::Computer(run.clone())
+                    } else {
+                        RowKind::Run(run.clone())
+                    },
                 },
             );
         }
@@ -321,6 +420,14 @@ impl Workspace {
                     kind: RowKind::Route(route.clone()),
                 },
             );
+        }
+        for run in rows(&value, "runs").iter().filter(|run| {
+            !crate::models::content::research_sources(rows(run, "sources")).is_empty()
+        }) {
+            if let Some(anchor) = result.iter().rposition(|row| matches!(&row.kind,RowKind::Message { message,.. } if message["run_id"] == run["id"] && message["author"] == "agent")) {
+                let at=result[anchor].at.clone();
+                result.insert(anchor+1,TranscriptRow { id:format!("sources:{}",text(run,"id")),at,starts_day:false,kind:RowKind::Sources(run.clone()) });
+            }
         }
         let mut day = String::new();
         for row in &mut result {
@@ -376,45 +483,99 @@ impl Workspace {
         let day = row.starts_day;
         let id = row.id.clone();
         let group = self.value()["thread"]["type"] == "group";
+        let plain = |message: &Value| {
+            rows(message, "artifact_ids").is_empty()
+                && !rows(self.value(), "human_requests")
+                    .iter()
+                    .any(|request| request["message_id"] == message["id"])
+                && !self.native.values().any(|history| {
+                    rows(history, "records")
+                        .iter()
+                        .any(|record| record["anchor_message_id"] == message["id"])
+                })
+                && !rows(self.value(), "runs").iter().any(|run| {
+                    run["input_message_id"] == message["id"]
+                        && (run["status"] != "succeeded"
+                            || !rows(run, "native_tools").is_empty()
+                            || !rows(run, "product_tools").is_empty())
+                })
+        };
+        let joins = |upper: &TranscriptRow, lower: &TranscriptRow| match (&upper.kind, &lower.kind)
+        {
+            (RowKind::Message { message: a, .. }, RowKind::Message { message: b, .. }) => {
+                !lower.starts_day
+                    && a["id"] != b["id"]
+                    && a["author"] == b["author"]
+                    && a["author_agent_id"] == b["author_agent_id"]
+                    && plain(a)
+                    && plain(b)
+            }
+            _ => false,
+        };
+        let join_above = ix
+            .checked_sub(1)
+            .and_then(|index| self.transcript.get(index))
+            .is_some_and(|previous| joins(previous, row));
+        let join_below = self
+            .transcript
+            .get(ix + 1)
+            .is_some_and(|next| joins(row, next));
+        let same_message_above = ix.checked_sub(1).and_then(|index|self.transcript.get(index)).is_some_and(|previous| matches!((&previous.kind,&row.kind),(RowKind::Message {message:a,..},RowKind::Message {message:b,..}) if a["id"] == b["id"]));
         let mut container = div()
             .id(SharedString::from(id.clone()))
             .w_full()
-            .max_w(ui(1000.))
-            .mx_auto()
             .flex()
             .flex_col()
             .px(ui(20.))
-            .gap(ui(0.));
+            .gap(ui(0.))
+            .when(join_above || same_message_above, |view| view.mt(-ui(12.)));
         if day && let Ok(time) = PublicationTime::local(&at) {
             container = container.child(day_marker(&time.day_label, p));
         }
         let content = match &row.kind {
-            RowKind::Message { message, body, .. } => {
+            RowKind::Message {
+                message,
+                body,
+                markup,
+                tail,
+                content,
+                ..
+            } => {
+                let tail = *tail;
                 let message = message.clone();
                 let body = body.clone();
                 let user = message["author"] == "user";
                 let agent = text(&message, "author_agent_id").to_owned();
                 let partial = message["state"] == "partial";
-                let name = if user {
-                    "Kamu".to_owned()
-                } else {
-                    self.agents
-                        .iter()
-                        .find(|a| a["id"] == agent)
-                        .map(|a| text(a, "name").to_owned())
-                        .unwrap_or_else(|| "Agent".into())
-                };
+                let markup = markup.as_ref().clone();
+                let copy_content = content.clone();
                 let mut bubble = div()
+                    .id(SharedString::from(format!("bubble:{id}")))
+                    .test_support()
+                    .relative()
                     .flex()
                     .flex_col()
                     .gap(ui(0.))
-                    .max_w(ui(560.))
                     .px(ui(12.))
                     .py(ui(7.))
                     .rounded(ui(18.))
+                    .when(join_above, |view| {
+                        if user {
+                            view.rounded_tr(ui(6.))
+                        } else {
+                            view.rounded_tl(ui(6.))
+                        }
+                    })
+                    .when(join_below, |view| {
+                        if user {
+                            view.rounded_br(ui(6.))
+                        } else {
+                            view.rounded_bl(ui(6.))
+                        }
+                    })
                     .font_weight(FontWeight::NORMAL)
                     .text_size(ui(15.))
-                    .line_height(ui(24.))
+                    .line_height(ui(22.))
                     .bg(if user {
                         if group {
                             p.color("primary")
@@ -431,122 +592,145 @@ impl Workspace {
                     } else {
                         p.color("foreground")
                     });
-                if group {
-                    bubble =
-                        bubble.child(div().text_sm().font_weight(FontWeight::MEDIUM).child(name));
-                }
                 bubble = bubble.child(
                     TextView::new(&body)
+                        .markdown_extensions(markup)
                         .selectable(true)
-                        .table_actions({
-                            let weak = cx.entity().downgrade();
-                            move |table, _, cx| Self::table_actions(table, weak.clone(), cx)
-                        })
+                        .text_color(p.color(if user {
+                            "primary-foreground"
+                        } else {
+                            "foreground"
+                        }))
+                        .style(
+                            TextViewStyle::from_theme(&gpui_kit::base::Theme::global(cx))
+                                .with_foreground(p.color(if user {
+                                    "primary-foreground"
+                                } else {
+                                    "foreground"
+                                }))
+                                .with_paragraph_gap(ui(10.))
+                                .with_border(p.color("border").opacity(0.4))
+                                .with_heading(|_| {
+                                    StyleRefinement::default()
+                                        .text_size(ui(15.))
+                                        .line_height(ui(22.))
+                                        .font_weight(FontWeight::SEMIBOLD)
+                                        .pt_0()
+                                        .pb(ui(10.))
+                                })
+                                .with_table(
+                                    StyleRefinement::default()
+                                        .w_full()
+                                        .rounded(ui(20.))
+                                        .bg(p.color("popover")),
+                                )
+                                .with_table_head(
+                                    StyleRefinement::default()
+                                        .font_weight(FontWeight::SEMIBOLD)
+                                        .bg(p.color("popover")),
+                                )
+                                .with_table_cell(
+                                    StyleRefinement::default()
+                                        .text_size(ui(14.))
+                                        .line_height(ui(20.))
+                                        .px(ui(16.))
+                                        .py(ui(10.))
+                                        .border_0()
+                                        .border_color(gpui_kit::transparent_black()),
+                                )
+                                .with_code_block({
+                                    let mut style = StyleRefinement::default()
+                                        .py(ui(10.))
+                                        .px(ui(12.))
+                                        .border_0()
+                                        .rounded(ui(8.));
+                                    style.text.white_space =
+                                        Some(if self.wrapped_code.contains(&id) {
+                                            WhiteSpace::Normal
+                                        } else {
+                                            WhiteSpace::Nowrap
+                                        });
+                                    style.overflow.x = Some(Overflow::Scroll);
+                                    style
+                                }),
+                        )
+                        .code_block_actions(super::message_markup::code_actions(
+                            cx.entity().downgrade(),
+                            id.clone(),
+                            p,
+                        ))
                         .text_size(ui(15.))
-                        .line_height(ui(24.))
+                        .line_height(ui(22.))
                         .motion(if partial {
                             TextViewMotion::default().with_stream_fade(Duration::from_millis(80))
                         } else {
                             TextViewMotion::default()
                         })
-                        .on_link_click(|url, _, _, cx| {
-                            if crate::host::is_external_url(url.as_ref()) {
-                                cx.open_url(url);
+                        .on_link_click({
+                            let weak = cx.entity().downgrade();
+                            move |url, _, window, cx| {
+                                let _ = weak.update(cx, |this, cx| {
+                                    this.message_link(url.as_ref(), window, cx)
+                                });
                             }
                         }),
                 );
+                let mut attachments = div().flex().flex_col().items_start().gap(ui(6.));
+                let has_text = !content.trim().is_empty();
                 for artifact in rows(self.value(), "artifacts")
                     .iter()
-                    .filter(|a| rows(&message, "artifact_ids").contains(&a["id"]))
+                    .filter(|a| tail && rows(&message, "artifact_ids").contains(&a["id"]))
                 {
                     let artifact_id = text(artifact, "id").to_owned();
                     let name = text(artifact, "name").to_owned();
                     let artifact = artifact.clone();
-                    bubble = bubble.child(
-                        button(
-                            SharedString::from(format!("file:{artifact_id}")),
-                            name,
-                            ButtonKind::Outline,
-                            p,
-                            cx,
-                        )
-                        .on_click(cx.listener(
-                            move |this, _, window, cx| {
-                                this.open_artifact(artifact.clone(), window, cx)
-                            },
-                        )),
-                    );
+                    let attachment = button(
+                        SharedString::from(format!("file:{artifact_id}")),
+                        "",
+                        ButtonKind::Ghost,
+                        p,
+                        cx,
+                    )
+                    .accessibility_label(format!("Open {name}"))
+                    .h(ui(30.))
+                    .max_w_full()
+                    .rounded(super::super::ui::theme::ui_px(15., cx))
+                    .bg(p.color("popover"))
+                    .child(
+                        div()
+                            .min_w_0()
+                            .flex()
+                            .items_center()
+                            .gap(ui(7.))
+                            .child(context::file_icon(&name, false, false, p.dark))
+                            .child(div().min_w_0().truncate().text_size(ui(13.)).child(name))
+                            .child(crate::ui::workspace::glyph("ArrowUpRight01Icon", 12., p)),
+                    )
+                    .on_click(cx.listener(move |this, _, window, cx| {
+                        this.open_artifact(artifact.clone(), window, cx)
+                    }));
+                    if user {
+                        bubble = bubble.child(attachment);
+                    } else {
+                        attachments = attachments.child(attachment);
+                    }
+                }
+                if text(&message, "text").trim().is_empty() {
+                    bubble = bubble.bg(gpui_kit::rgba(0)).px_0().py_0().max_w_full();
                 }
                 if let Ok(time) = PublicationTime::local(&at) {
-                    bubble = bubble.child(div().flex().justify_end().child(
-                        clock(&time, p).when(user, |clock| {
-                            clock.text_color(p.color("primary-foreground").opacity(0.8))
-                        }),
-                    ));
-                }
-                if let Some(run) = rows(self.value(), "runs")
-                    .iter()
-                    .find(|r| {
-                        r["input_message_id"] == message["id"]
-                            && r["status"] == "queued"
-                            && r["delivery"] == "pending"
-                    })
-                    .cloned()
-                {
-                    let edit = message.clone();
-                    let delete = message.clone();
-                    let mut controls = div()
-                        .flex()
-                        .gap_2()
-                        .child(
-                            button(
-                                SharedString::from(format!("edit:{}", text(&message, "id"))),
-                                "Edit",
-                                ButtonKind::Ghost,
-                                p,
-                                cx,
-                            )
-                            .on_click(cx.listener(
-                                move |this, _, window, cx| this.edit(edit.clone(), window, cx),
-                            )),
-                        )
-                        .child(
-                            button(
-                                SharedString::from(format!("delete:{}", text(&message, "id"))),
-                                "Delete",
-                                ButtonKind::Ghost,
-                                p,
-                                cx,
-                            )
-                            .on_click(cx.listener(
-                                move |this, _, window, cx| this.delete(delete.clone(), window, cx),
-                            )),
-                        );
-                    if let Some(active) = rows(self.value(), "runs")
-                        .iter()
-                        .find(|r| {
-                            r["status"] == "running"
-                                && r["agent_id"] == run["agent_id"]
-                                && !r["native_run_id"].is_null()
-                        })
-                        .cloned()
-                    {
-                        controls = controls.child(
-                            button(
-                                SharedString::from(format!("steer:{}", text(&message, "id"))),
-                                "Use now",
-                                ButtonKind::Ghost,
-                                p,
-                                cx,
-                            )
-                            .on_click(cx.listener(
-                                move |this, _, window, cx| {
-                                    this.steer(active.clone(), Some(run.clone()), window, cx)
-                                },
-                            )),
-                        );
+                    let clock =
+                        div()
+                            .flex()
+                            .justify_end()
+                            .child(clock(&time, p).when(user, |clock| {
+                                clock.text_color(p.color("primary-foreground"))
+                            }));
+                    if has_text || user {
+                        bubble = bubble.child(clock);
+                    } else {
+                        attachments = attachments.child(clock);
                     }
-                    bubble = bubble.child(controls);
                 }
                 let avatar = if group && !user {
                     self.portraits
@@ -556,31 +740,79 @@ impl Workspace {
                     None
                 };
                 div()
+                    .group(SharedString::from(format!("message-actions:{id}")))
                     .flex()
                     .w_full()
                     .gap_2()
                     .when(user, |v| v.justify_end())
-                    .when_some(avatar, |v, a| v.child(a))
-                    .child(div().max_w(relative(0.8)).min_w_0().child(bubble))
+                    .when_some(avatar, |view, portrait| {
+                        let target = agent.clone();
+                        let name = self
+                            .agents
+                            .iter()
+                            .find(|item| item["id"] == target)
+                            .map(|item| text(item, "name"))
+                            .unwrap_or("Agent");
+                        view.child(
+                            button(
+                                SharedString::from(format!("message-profile:{id}")),
+                                "",
+                                ButtonKind::Ghost,
+                                p,
+                                cx,
+                            )
+                            .accessibility_label(format!("Open {name}’s profile"))
+                            .size(ui(32.))
+                            .p_0()
+                            .rounded_full()
+                            .child(portrait)
+                            .on_click(cx.listener(
+                                move |this, _, window, cx| {
+                                    this.show_member(target.clone(), window, cx)
+                                },
+                            )),
+                        )
+                    })
+                    .child(
+                        div()
+                            .max_w(relative(if group && !user { 1. } else { 0.8 }))
+                            .min_w_0()
+                            .flex()
+                            .flex_col()
+                            .items_start()
+                            .gap(ui(6.))
+                            .when(has_text || user, |view| view.child(bubble))
+                            .when(!user && tail, |view| view.child(attachments)),
+                    )
+                    .child(
+                        crate::ui::workspace::action(
+                            SharedString::from(format!("copy:{id}")),
+                            "Copy message",
+                            "Copy01Icon",
+                            p,
+                            cx,
+                        )
+                        .size(ui(28.))
+                        .self_center()
+                        .disabled_state(copy_content.trim().is_empty(), p)
+                        .opacity(0.)
+                        .group_hover(
+                            SharedString::from(format!("message-actions:{id}")),
+                            |style| style.opacity(1.),
+                        )
+                        .focus_visible(|style| style.opacity(1.))
+                        .text_color(p.color("muted-foreground"))
+                        .on_click(move |_, _, cx| {
+                            cx.write_to_clipboard(ClipboardItem::new_string(copy_content.clone()))
+                        }),
+                    )
                     .into_any_element()
             }
             RowKind::Interaction { key, agent } => {
                 let key = key.clone();
                 let agent = agent.clone();
                 let card = self.interaction_views.get(&key).map(|c| c.view.clone());
-                let name = self
-                    .agents
-                    .iter()
-                    .find(|a| a["id"] == agent)
-                    .map(|a| text(a, "name").to_owned())
-                    .unwrap_or_default();
-                let avatar = if group {
-                    self.portraits
-                        .get(&format!("message:{id}:{agent}"))
-                        .map(|(_, a)| a.clone())
-                } else {
-                    None
-                };
+                let avatar = self.grouped_avatar(&id, &agent, cx);
                 div()
                     .flex()
                     .gap_2()
@@ -589,10 +821,10 @@ impl Workspace {
                         div()
                             .flex()
                             .flex_col()
+                            .items_start()
                             .gap_1()
                             .flex_1()
                             .min_w_0()
-                            .when(group, |v| v.child(div().text_sm().child(name)))
                             .when_some(card, |v, c| v.child(c)),
                     )
                     .into_any_element()
@@ -600,51 +832,45 @@ impl Workspace {
             RowKind::Run(run) => {
                 let run = run.clone();
                 let status = text(&run, "status");
-                let pending = matches!(status, "running" | "dispatching");
-                let waiting = rows(&run, "native_interactions")
-                    .iter()
-                    .any(|r| r["observed_state"] == "pending")
-                    || rows(self.value(), "human_requests")
-                        .iter()
-                        .any(|r| r["source_run_id"] == run["id"] && r["state"] == "pending");
-                let label = if waiting {
-                    ActivityKind::Waiting.label()
-                } else {
-                    match status {
-                        "queued" => "Queued",
-                        "cancel_requested" => "Stop requested · waiting for confirmation",
-                        "cancelled" if run["cancellation"] == "confirmed" => "Stopped.",
-                        "unknown" => "Outcome unknown · checking before continuing",
-                        "failed" => "Could not finish this request",
-                        "dispatching" => "Getting ready…",
-                        _ => match rows(&run, "active_tools").first().map(|t| text(t, "kind")) {
-                            Some("reading") => ActivityKind::Reading.label(),
-                            Some("searching") => ActivityKind::Searching.label(),
-                            Some(_) => ActivityKind::Working.label(),
-                            None => ActivityKind::Thinking.label(),
-                        },
-                    }
-                };
+                let target = rows(&run, "active_tools")
+                    .last()
+                    .and_then(|tool| {
+                        self.agents
+                            .iter()
+                            .find(|agent| agent["id"] == tool["target_agent_id"])
+                    })
+                    .map(|agent| text(agent, "name"));
+                let label = activity::label(&run, self.checked, target);
                 let agent = text(&run, "agent_id").to_owned();
-                let name = self
-                    .agents
-                    .iter()
-                    .find(|a| a["id"] == agent)
-                    .map(|a| text(a, "name").to_owned())
-                    .unwrap_or_default();
-                let avatar = self
-                    .portraits
-                    .get(&format!("message:{id}:{agent}"))
-                    .map(|(_, a)| a.clone());
+                let avatar = self.grouped_avatar(&id, &agent, cx);
                 let mut card = div()
+                    .id(SharedString::from(format!(
+                        "run-status:{}",
+                        text(&run, "id")
+                    )))
+                    .role(Role::Status)
+                    .aria_label(label.clone())
+                    .test_support()
+                    .min_w_0()
+                    .max_w(ui(448.))
                     .flex()
                     .flex_col()
-                    .gap_2()
-                    .p_3()
-                    .rounded_lg()
-                    .bg(p.color("card"))
-                    .when(group, |v| v.child(div().text_sm().child(name)));
-                card = if pending && !waiting {
+                    .gap(ui(3.))
+                    .px(ui(13.))
+                    .pt(ui(9.))
+                    .pb(ui(10.))
+                    .rounded(ui(14.))
+                    .text_size(ui(14.))
+                    .line_height(ui(21.))
+                    .text_color(p.color(
+                        if status == "failed" || run["preparation"]["state"] == "blocked" {
+                            "destructive"
+                        } else {
+                            "muted-foreground"
+                        },
+                    ))
+                    .bg(p.color("card"));
+                card = if activity::loading(&run, self.checked) {
                     card.child(
                         ShimmerText::new(label)
                             .id(SharedString::from(format!("activity:{}", text(&run, "id")))),
@@ -653,23 +879,19 @@ impl Workspace {
                     card.child(label)
                 };
 
-                if matches!(status, "running" | "dispatching" | "queued") {
-                    let stop = run.clone();
+                if run["diagnostic"].is_object()
+                    && (status == "failed" || run["preparation"]["state"] == "blocked")
+                {
+                    let guidance = activity::guidance(text(&run["diagnostic"], "code"));
                     card = card.child(
-                        button(
-                            SharedString::from(format!("stop:{}", text(&run, "id"))),
-                            "Stop run",
-                            ButtonKind::Ghost,
-                            p,
-                            cx,
-                        )
-                        .on_click(cx.listener(
-                            move |this, _, window, cx| {
-                                this.run_command(stop.clone(), "cancel", window, cx)
-                            },
-                        )),
+                        caption(guidance, p)
+                            .id("activity-guidance")
+                            .role(Role::Status)
+                            .aria_label(guidance)
+                            .test_support(),
                     );
                 }
+
                 if run["retry_allowed"] == true {
                     let retry = run.clone();
                     card = card.child(
@@ -680,6 +902,7 @@ impl Workspace {
                             p,
                             cx,
                         )
+                        .disabled_state(self.busy || !self.checked, p)
                         .on_click(cx.listener(
                             move |this, _, window, cx| {
                                 this.run_command(retry.clone(), "retry", window, cx)
@@ -692,11 +915,12 @@ impl Workspace {
                     card = card.child(
                         button(
                             SharedString::from(format!("reconcile:{}", text(&run, "id"))),
-                            "Check outcome",
+                            "Check status",
                             ButtonKind::Outline,
                             p,
                             cx,
                         )
+                        .disabled_state(self.busy || !self.checked, p)
                         .on_click(cx.listener(
                             move |this, _, window, cx| {
                                 this.run_command(reconcile.clone(), "reconcile", window, cx)
@@ -714,12 +938,34 @@ impl Workspace {
                             p,
                             cx,
                         )
+                        .disabled_state(self.busy || !self.checked, p)
                         .on_click(cx.listener(
                             move |this, _, window, cx| {
                                 this.run_command(retry.clone(), "retry-preparation", window, cx)
                             },
                         )),
                     );
+                }
+                if run["preparation"]["state"] == "blocked"
+                    || run["diagnostic"].is_object()
+                        && !matches!(status, "succeeded" | "cancelled" | "unknown")
+                        && run["diagnostic"]["outcome"] != "not_dispatched"
+                {
+                    card = card.child(
+                        button(
+                            SharedString::from(format!("activity-settings:{}", text(&run, "id"))),
+                            "Open settings",
+                            ButtonKind::Ghost,
+                            p,
+                            cx,
+                        )
+                        .on_click(
+                            cx.listener(|this, _, window, cx| this.open_settings(window, cx)),
+                        ),
+                    );
+                }
+                if let Ok(time) = PublicationTime::local(&at) {
+                    card = card.child(clock(&time, p));
                 }
                 div()
                     .flex()
@@ -731,29 +977,42 @@ impl Workspace {
             RowKind::Route(route) => {
                 let route = route.clone();
                 let name = self.value()["thread"]["name"].as_str().unwrap_or("Group");
-                let label = match text(&route, "state") {
-                    "unknown" => "I couldn’t confirm who should reply.",
-                    "rejected" => "No member could start this request.",
-                    _ => match text(&route["execution"], "stage") {
-                        "blocked" => "I couldn’t get started.",
-                        "retrying" => "Reconnecting…",
-                        _ => "Finding the right person to help…",
-                    },
+                let stage = text(&route["execution"], "stage");
+                let loading =
+                    route["state"] == "pending" && !matches!(stage, "blocked" | "reconcile");
+                let label = if route["state"] == "rejected" {
+                    route["clarification"]
+                        .as_str()
+                        .filter(|text| !text.trim().is_empty())
+                        .unwrap_or_else(|| activity::routing_label(&route))
+                } else {
+                    activity::routing_label(&route)
                 };
                 let mut card = div()
+                    .id("group-routing-status")
+                    .role(Role::Status)
+                    .aria_label(format!("{name}: {label}"))
                     .flex()
                     .flex_col()
-                    .gap_2()
-                    .p_3()
-                    .rounded_lg()
-                    .bg(p.color("card"))
-                    .child(
-                        div()
-                            .text_sm()
-                            .font_weight(FontWeight::MEDIUM)
-                            .child(name.to_owned()),
-                    )
-                    .child(label);
+                    .min_w_0()
+                    .max_w(ui(448.))
+                    .gap(ui(3.))
+                    .px(ui(13.))
+                    .pt(ui(9.))
+                    .pb(ui(10.))
+                    .rounded(ui(14.))
+                    .text_size(ui(14.))
+                    .line_height(ui(21.))
+                    .text_color(p.color("muted-foreground"))
+                    .bg(p.color("card"));
+                card =
+                    if loading {
+                        card.child(ShimmerText::new(label.to_owned()).id(SharedString::from(
+                            format!("routing:{}", text(&route, "id")),
+                        )))
+                    } else {
+                        card.child(label.to_owned())
+                    };
 
                 if route["state"] == "rejected" {
                     let retry = route.clone();
@@ -800,69 +1059,222 @@ impl Workspace {
                         )),
                     );
                 }
-                card.into_any_element()
-            }
-            RowKind::Bar(part) => {
-                let actors = rows(part, "actors")
-                    .iter()
-                    .map(|a| text(a, "name"))
-                    .collect::<Vec<_>>()
-                    .join(" · ");
-                let event = if part["kind"] == "handoff_failed" {
-                    "Could not hand off this step".into()
-                } else {
-                    format!(
-                        "{} · {}",
-                        text(part, "name"),
-                        text(part, "kind").replace('_', " ")
-                    )
-                };
+                if stage == "blocked" {
+                    card = card.child(caption(
+                        activity::guidance(text(&route["execution"]["diagnostic"], "code")),
+                        p,
+                    ));
+                }
+                if let Ok(time) = PublicationTime::local(&at) {
+                    card = card.child(clock(&time, p));
+                }
                 div()
                     .flex()
-                    .justify_center()
-                    .text_sm()
-                    .text_color(p.color("muted-foreground"))
-                    .child(format!("{actors}  {event}"))
+                    .items_start()
+                    .gap(ui(9.))
+                    .when(group, |row| {
+                        row.child(self.thread_portrait(&self.value()["thread"], "route", cx))
+                    })
+                    .child(card.test_support())
                     .into_any_element()
             }
+            RowKind::Computer(run) => {
+                let run = run.clone();
+                let preview = self.panel != Some(Panel::Computer);
+                let agent = text(&run, "agent_id");
+                let avatar = self.grouped_avatar(&id, agent, cx);
+                let card = self
+                    .computer
+                    .update(cx, |computer, cx| computer.activity_view(&run, preview, cx));
+                div()
+                    .w_full()
+                    .flex()
+                    .gap(ui(9.))
+                    .when_some(avatar, |view, avatar| view.child(avatar))
+                    .child(card)
+                    .into_any_element()
+            }
+            RowKind::Sources(run) => {
+                let run_id = text(run, "id").to_owned();
+                let sources = crate::models::content::research_sources(rows(run, "sources"));
+                let expanded = self.source_expanded.contains(&run_id);
+                let mut view = div()
+                    .flex()
+                    .flex_col()
+                    .items_start()
+                    .gap(ui(6.))
+                    .max_w(ui(460.));
+                view = view.child(
+                    button(
+                        SharedString::from(format!("source-toggle:{run_id}")),
+                        "",
+                        ButtonKind::Ghost,
+                        p,
+                        cx,
+                    )
+                    .accessibility_label(format!("{} sumber riset", sources.len()))
+                    .h(ui(28.))
+                    .px(ui(2.))
+                    .justify_start()
+                    .child({
+                        let mut stack = div().flex().items_center();
+                        for (index, source) in sources.iter().take(3).enumerate() {
+                            stack = stack.child(
+                                div()
+                                    .size(ui(23.))
+                                    .flex()
+                                    .items_center()
+                                    .justify_center()
+                                    .rounded_full()
+                                    .border_1()
+                                    .border_color(p.color("panel"))
+                                    .bg(p.color("secondary"))
+                                    .text_size(ui(10.))
+                                    .font_weight(FontWeight::SEMIBOLD)
+                                    .when(index > 0, |view| view.ml(-ui(4.)))
+                                    .child(
+                                        crate::models::content::source_domain(text(source, "url"))
+                                            .chars()
+                                            .next()
+                                            .unwrap_or(' ')
+                                            .to_uppercase()
+                                            .to_string(),
+                                    ),
+                            );
+                        }
+                        stack
+                    })
+                    .child(caption(format!("{} sumber", sources.len()), p))
+                    .on_click(cx.listener(move |this, _, _, cx| {
+                        if !this.source_expanded.remove(&run_id) {
+                            this.source_expanded.insert(run_id.clone());
+                        }
+                        cx.notify();
+                    })),
+                );
+                if expanded {
+                    for source in sources {
+                        let url = text(source, "url").to_owned();
+                        if !crate::host::is_external_url(&url) {
+                            continue;
+                        }
+                        view = view.child(
+                            button(
+                                SharedString::from(format!("source:{url}")),
+                                "",
+                                ButtonKind::Ghost,
+                                p,
+                                cx,
+                            )
+                            .accessibility_label(text(source, "title").to_owned())
+                            .w_full()
+                            .h_auto()
+                            .py(ui(6.))
+                            .child(
+                                div()
+                                    .w_full()
+                                    .min_w_0()
+                                    .text_left()
+                                    .text_size(ui(13.))
+                                    .child(caption(crate::models::content::source_domain(&url), p))
+                                    .child(text(source, "title").to_owned()),
+                            )
+                            .on_click(move |_, _, cx| cx.open_url(&url)),
+                        );
+                    }
+                }
+                view.into_any_element()
+            }
+            RowKind::Milestones(parts) => self.timeline_view(&id, parts, cx),
         };
         let _ = window;
-        container.child(content).into_any_element()
+        container.child(content).test_support().into_any_element()
     }
+}
+struct MessageSlice<'a> {
+    start: usize,
+    at: &'a str,
+    sources: &'a [String],
 }
 fn push_message(
     result: &mut Vec<TranscriptRow>,
     previous: &mut BTreeMap<String, TranscriptRow>,
     message: &Value,
     content: &str,
-    start: usize,
-    at: &str,
+    slice: MessageSlice<'_>,
+    window: &mut Window,
     cx: &mut Context<Workspace>,
 ) {
-    let id = format!("message:{}:{start}", text(message, "id"));
-    let body = if let Some(TranscriptRow {
-        kind: RowKind::Message {
-            body, content: old, ..
-        },
-        ..
-    }) = previous.remove(&id)
-    {
-        if old != content {
-            body.update(cx, |body, cx| body.set_text(content, cx));
-        }
-        body
+    if content.trim().is_empty() && rows(message, "artifact_ids").is_empty() {
+        return;
+    }
+    let source = content;
+    let display = if message["author"] == "user" {
+        crate::models::content::literal_markdown(source)
     } else {
-        cx.new(|cx| TextViewState::markdown(content, cx))
+        source.to_owned()
+    };
+    let start = slice.start;
+    let tail = slice.start + source.len() == text(message, "text").len();
+    let id = format!("message:{}:{start}", text(message, "id"));
+    let retained = previous.remove(&id);
+    let (body, old_tables, retained_markup) = match retained.map(|row| row.kind) {
+        Some(RowKind::Message {
+            message: old_message,
+            body,
+            content: old,
+            tables,
+            markup,
+            sources,
+            ..
+        }) => {
+            let unchanged = old == source && sources == slice.sources;
+            let settled = old_message["state"] == "partial" && message["state"] != "partial";
+            let body = if settled {
+                // Commit the authoritative final snapshot in one parse. An
+                // in-flight incremental parse must not leave a closed code
+                // fence or trailing paragraph behind the completed clock.
+                cx.new(|cx| TextViewState::markdown(&display, cx))
+            } else {
+                if old != source {
+                    body.update(cx, |body, cx| body.set_text(&display, cx));
+                }
+                body
+            };
+            (body, tables, unchanged.then_some(markup))
+        }
+        _ => (
+            cx.new(|cx| TextViewState::markdown(&display, cx)),
+            BTreeMap::new(),
+            None,
+        ),
+    };
+    let (tables, markup) = if let Some(markup) = retained_markup {
+        (old_tables, markup)
+    } else {
+        let tables =
+            super::message_markup::prepare_tables(old_tables, &display, slice.sources, window, cx);
+        let markup = super::message_markup::extensions(
+            cx.entity().downgrade(),
+            slice.sources.to_vec(),
+            tables.clone(),
+        );
+        (tables, markup)
     };
     result.push(TranscriptRow {
         id,
-        at: at.into(),
+        at: slice.at.into(),
         starts_day: false,
         kind: RowKind::Message {
             message: message.clone(),
             body,
-            content: content.into(),
+            content: source.into(),
+            markup,
+            sources: slice.sources.to_vec(),
+            tables,
+            tail,
         },
     });
 }
+
 use gpui_kit::prelude::FluentBuilder as _;

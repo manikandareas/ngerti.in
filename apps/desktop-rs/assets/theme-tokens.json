@@ -99,7 +99,9 @@
     "bubble-purple": "#8057c8",
     "bubble-orange": "#af6100",
     "bubble-silver": "#70757c",
-    "computer-background": "#000000"
+    "computer-background": "#000000",
+    "ghost-hover": "color-mix(in srgb, var(--background), var(--foreground) 7%)",
+    "ghost-pressed": "color-mix(in srgb, var(--background), var(--foreground) 10%)"
   },
   "dark": {
     "background": "#121212",
@@ -201,6 +203,8 @@
     "bubble-purple": "#8057c8",
     "bubble-orange": "#af6100",
     "bubble-silver": "#70757c",
-    "computer-background": "#000000"
+    "computer-background": "#000000",
+    "ghost-hover": "color-mix(in srgb, var(--background), var(--foreground) 7%)",
+    "ghost-pressed": "color-mix(in srgb, var(--background), var(--foreground) 10%)"
   }
 }

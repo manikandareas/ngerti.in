@@ -1,18 +1,15 @@
 use super::*;
-use crate::{
-    storage::Operation,
-    ui::{
-        controls::{ButtonKind, ProductButtonStyle, button},
-        theme::{Palette, ui, ui_px},
-        workspace::{glyph, header_action},
-    },
+use crate::ui::{
+    controls::{ButtonKind, ProductButtonStyle, button},
+    theme::{Palette, ui},
+    workspace::header_action,
 };
+use gpui_kit::base::TestSupportExt;
 use gpui_kit::{
-    component::{WindowExt, checkbox::Checkbox, input::Input, popover::Popover},
+    component::{WindowExt, checkbox::Checkbox, input::Input},
     prelude::FluentBuilder as _,
 };
 use ngertiin_client::{rows, text};
-use serde_json::json;
 
 impl Workspace {
     pub(super) fn selected_agent(&self) -> Option<&Value> {
@@ -50,7 +47,6 @@ impl Workspace {
         let identity = button("conversation-identity", "", ButtonKind::Ghost, p, cx)
             .accessibility_label(format!("Detail {label}"))
             .h(ui(39.))
-            .h_auto()
             .pl(ui(7.5))
             .pr(ui(13.5))
             .py(ui(7.5))
@@ -85,30 +81,12 @@ impl Workspace {
                 .px(ui(12.))
                 .gap(ui(7.))
                 .text_size(ui(13.))
-                .child(glyph(
-                    if agent["harness"] == "muse" {
-                        "MuseProvider"
-                    } else {
-                        "CodexProvider"
-                    },
-                    15.,
+                .child(super::model_picker::provider_mark(
+                    agent["harness"] == "muse",
                     p,
                 ))
                 .child(div().max_w(ui(156.)).truncate().child(model.to_owned()));
-            let weak = cx.entity().downgrade();
-            right = right.child(
-                Popover::new("conversation-model-menu")
-                    .open(self.models_open)
-                    .trigger(trigger)
-                    .on_open_change(cx.listener(|this, open, _, cx| {
-                        this.models_open = *open;
-                        cx.notify();
-                    }))
-                    .content(move |_, _, cx| {
-                        weak.update(cx, |this, cx| this.model_options(cx))
-                            .unwrap_or_else(|_| div().into_any_element())
-                    }),
-            );
+            right = right.child(self.model_picker_trigger(trigger, agent, cx));
         }
         right = right.child(
             header_action("open-computer", "Browser agent", "ComputerIcon", p, cx).on_click(
@@ -119,6 +97,8 @@ impl Workspace {
             ),
         );
         div()
+            .id("conversation-header")
+            .test_support()
             .relative()
             .h(ui(59.))
             .w_full()
@@ -138,115 +118,6 @@ impl Workspace {
                     .child(identity.max_w(relative(0.5))),
             )
             .child(div().absolute().right(ui(20.)).top(ui(10.)).child(right))
-            .into_any_element()
-    }
-    pub(super) fn model_options(&self, cx: &mut Context<Self>) -> AnyElement {
-        let Some(agent) = self.selected_agent() else {
-            return div().into_any_element();
-        };
-        self.model_options_for(agent, cx)
-    }
-    pub(super) fn model_options_for(&self, agent: &Value, cx: &mut Context<Self>) -> AnyElement {
-        let p = Palette::new(self.store.dark());
-        let mut menu = div()
-            .id("model-options")
-            .w(ui(310.))
-            .max_h(ui(460.))
-            .overflow_y_scroll()
-            .flex()
-            .flex_col()
-            .gap(ui(4.));
-        {
-            for connection in self
-                .connections
-                .iter()
-                .filter(|connection| connection["state"] == "active")
-            {
-                menu = menu.child(
-                    div()
-                        .px(ui(8.))
-                        .py(ui(6.))
-                        .text_size(ui(12.))
-                        .text_color(p.color("muted-foreground"))
-                        .child(format!(
-                            "{} · {}",
-                            if connection["harness"] == "muse" {
-                                "Muse Code"
-                            } else {
-                                "ChatGPT"
-                            },
-                            text(&connection["authentication"], "billing_source")
-                        )),
-                );
-                for model in rows(connection, "models") {
-                    let current = agent["connection_id"] == connection["id"]
-                        && agent["model_id"] == model["id"];
-                    let label = text(model, "id").to_owned();
-                    let agent = agent.clone();
-                    let connection = connection.clone();
-                    let model = model.clone();
-                    menu=menu.child(button(SharedString::from(format!("model:{}:{label}",text(&connection,"id"))),"",ButtonKind::Ghost,p,cx).accessibility_label(label.clone()).w_full().h(ui(32.)).justify_start().px(ui(8.)).gap(ui(8.)).rounded(ui_px(6.,cx)).text_size(ui(13.)).when(current,|b|b.bg(p.color("secondary"))).child(div().w(ui(16.)).child(if current{"✓"}else{""})).child(label).on_click(cx.listener(move |this,_,window,cx|{
-                    let id=text(&agent,"id");let body=json!({"expected_revision":agent["revision"],"changes":{"connection_id":connection["id"],"harness":connection["harness"],"billing_source":connection["authentication"]["billing_source"],"model_id":model["id"],"reasoning":if rows(&model,"reasoning").contains(&agent["reasoning"]){agent["reasoning"].clone()}else{Value::Null}}});
-                    this.models_open=false;this.dispatch(format!("model:{id}"),Operation::command(format!("/v1/agents/{id}/configuration"),body,this.selected),window,cx);
-                })));
-                }
-            }
-        }
-        if let Some(connection) = self
-            .connections
-            .iter()
-            .find(|c| c["id"] == agent["connection_id"])
-            && let Some(model) = rows(connection, "models")
-                .iter()
-                .find(|m| m["id"] == agent["model_id"])
-        {
-            menu = menu.child(
-                div()
-                    .px(ui(8.))
-                    .py(ui(6.))
-                    .text_size(ui(12.))
-                    .child("Reasoning"),
-            );
-            for reasoning in rows(model, "reasoning") {
-                let reasoning = reasoning.clone();
-                let agent = agent.clone();
-                let label = reasoning.as_str().unwrap_or("Default harness").to_owned();
-                menu=menu.child(button(SharedString::from(format!("reasoning:{label}")),label,ButtonKind::Ghost,p,cx).w_full().justify_start().on_click(cx.listener(move|this,_,window,cx|{
-                    let id=text(&agent,"id");this.models_open=false;
-                    this.dispatch(format!("reasoning:{id}"),Operation::command(format!("/v1/agents/{id}/configuration"),json!({"expected_revision":agent["revision"],"changes":{"reasoning":reasoning}}),this.selected),window,cx);
-                })));
-            }
-        }
-        menu.into_any_element()
-    }
-    pub(super) fn contained_model_picker(
-        &self,
-        agent: &Value,
-        cx: &mut Context<Self>,
-    ) -> AnyElement {
-        let p = Palette::new(self.store.dark());
-        let weak = cx.entity().downgrade();
-        let agent = agent.clone();
-        Popover::new("context-model-picker")
-            .open(self.models_open)
-            .trigger(button(
-                "context-model-trigger",
-                format!(
-                    "Model · {}",
-                    agent["model_id"].as_str().unwrap_or("Choose model")
-                ),
-                ButtonKind::Outline,
-                p,
-                cx,
-            ))
-            .on_open_change(cx.listener(|this, open, _, cx| {
-                this.models_open = *open;
-                cx.notify();
-            }))
-            .content(move |_, _, cx| {
-                weak.update(cx, |this, cx| this.model_options_for(&agent, cx))
-                    .unwrap_or_else(|_| div().into_any_element())
-            })
             .into_any_element()
     }
     pub(super) fn open_group_dialog(&mut self, window: &mut Window, cx: &mut Context<Self>) {

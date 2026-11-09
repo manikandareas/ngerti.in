@@ -6,9 +6,14 @@ mod composer_view;
 mod computer;
 mod context;
 mod interactions;
+mod message_markup;
+mod model_picker;
 mod navigation;
 mod panels;
 mod sync;
+#[cfg(test)]
+mod tests;
+mod timeline;
 mod transcript;
 mod view;
 
@@ -66,6 +71,10 @@ pub(crate) struct Workspace {
     native: BTreeMap<String, Value>,
     interaction_views: BTreeMap<String, interactions::BoundInteraction>,
     answers: BTreeMap<String, Value>,
+    question_steps: BTreeMap<String, usize>,
+    source_expanded: std::collections::BTreeSet<String>,
+    timeline_expanded: std::collections::BTreeSet<String>,
+    wrapped_code: std::collections::BTreeSet<String>,
     composer: Entity<Composer>,
     composer_height: Pixels,
     search: Entity<InputState>,
@@ -84,7 +93,6 @@ pub(crate) struct Workspace {
     portrait_observers: BTreeMap<String, Subscription>,
     ready_portraits: std::collections::BTreeSet<String>,
     search_open: bool,
-    models_open: bool,
     panel: Option<Panel>,
     context_tab_focus: [FocusHandle; 3],
     sidebar: bool,
@@ -105,8 +113,16 @@ pub(crate) struct Workspace {
     _subscriptions: Vec<Subscription>,
 }
 impl Workspace {
-    pub fn new(mut store: Store, window: &mut Window, cx: &mut Context<Self>) -> Self {
-        let attachment = crate::host::api_client();
+    pub fn new(store: Store, window: &mut Window, cx: &mut Context<Self>) -> Self {
+        Self::with_attachment(store, crate::host::api_client(), window, cx)
+    }
+    fn with_attachment(
+        mut store: Store,
+        attachment: anyhow::Result<Option<(ngertiin_client::ApiClient, Option<Uuid>)>>,
+        window: &mut Window,
+        cx: &mut Context<Self>,
+    ) -> Self {
+        let retained_answers = store.interaction_answers();
         let mut error = String::new();
         let mut selected = store.selected();
         let (reads, writes) = match attachment {
@@ -176,6 +192,19 @@ impl Workspace {
             }),
             cx.observe_window_visibility(window, |this, _, window, cx| {
                 let visible = window.is_visible();
+                if std::env::var_os("NGERTIIN_RS_DIAGNOSTICS").is_some()
+                    && let Ok(home) = crate::host::profile_root()
+                {
+                    let _ = crate::host::write_diagnostic(
+                        &home.join("visibility.json"),
+                        &serde_json::json!({
+                            "visible":visible,
+                            "active":window.is_window_active(),
+                            "avatar_images_delivered":this.animator.read(cx).presented,
+                            "captured_at":chrono::Utc::now().to_rfc3339(),
+                        }),
+                    );
+                }
                 crate::host::views::visibility(visible);
                 this.computer
                     .update(cx, |computer, cx| computer.suspend(!visible, cx));
@@ -252,7 +281,11 @@ impl Workspace {
             opening: Value::Null,
             native: BTreeMap::new(),
             interaction_views: BTreeMap::new(),
-            answers: BTreeMap::new(),
+            answers: retained_answers,
+            question_steps: BTreeMap::new(),
+            source_expanded: Default::default(),
+            timeline_expanded: Default::default(),
+            wrapped_code: Default::default(),
             composer,
             composer_height: px(72.),
             search,
@@ -271,7 +304,6 @@ impl Workspace {
             portrait_observers: BTreeMap::new(),
             ready_portraits: std::collections::BTreeSet::new(),
             search_open: false,
-            models_open: false,
             panel: None,
             context_tab_focus: std::array::from_fn(|_| cx.focus_handle()),
             sidebar: true,
@@ -306,8 +338,17 @@ impl Workspace {
                 if view
                     .update_in(cx, |this, window, cx| {
                         let active = window.is_window_active() && window.is_visible();
-                        let computer_present =
-                            this.panel == Some(Panel::Computer) && !this.is_viewing();
+                        let first_visible = this.scroller.read(cx).logical_scroll_top().item_ix;
+                        let conversation_computer =
+                            this.transcript.iter().skip(first_visible).any(|row| {
+                                matches!(&row.kind, transcript::RowKind::Computer(run)
+                                    if matches!(ngertiin_client::text(run, "status"),
+                                        "running" | "dispatching" | "cancel_requested"))
+                            });
+                        let computer_present = (this.panel == Some(Panel::Computer)
+                            || conversation_computer)
+                            && !this.is_viewing()
+                            && this.panel != Some(Panel::Settings);
                         let computer_suspended = !window.is_visible()
                             || window.has_active_dialog(cx)
                             || window.has_active_sheet(cx);
@@ -345,6 +386,7 @@ impl Workspace {
     }
     fn lock_composer(&mut self, cx: &mut Context<Self>) {
         let locked = self.busy
+            || self.composer_response_locked(cx)
             || !self.checked
             || self.projection.is_none()
             || self
@@ -404,11 +446,14 @@ impl Workspace {
         self.lock_composer(cx);
         self.native.clear();
         self.interaction_views.clear();
-        self.answers.clear();
+        self.answers = self.store.interaction_answers();
+        self.question_steps.clear();
+        self.source_expanded.clear();
+        self.timeline_expanded.clear();
+        self.wrapped_code.clear();
         self.transcript.clear();
         self.editing = None;
         self.panel = None;
-        self.models_open = false;
         window.close_sheet(cx);
         self.parts.clear();
         self.order.clear();

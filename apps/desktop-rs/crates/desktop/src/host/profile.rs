@@ -155,6 +155,10 @@ pub(super) struct RuntimePaths {
 }
 impl RuntimePaths {
     pub fn resolve(profile: &Profile) -> Result<Self> {
+        // dx's development .app contains no staged backend; use the configured checkout.
+        if cfg!(all(debug_assertions, feature = "hot-reload")) {
+            return Self::from_profile(profile);
+        }
         Self::at(profile, &std::env::current_exe()?)
     }
     pub(super) fn at(profile: &Profile, executable: &Path) -> Result<Self> {
@@ -173,6 +177,9 @@ impl RuntimePaths {
                 });
             }
         }
+        Self::from_profile(profile)
+    }
+    fn from_profile(profile: &Profile) -> Result<Self> {
         if !profile.bun_executable.is_file()
             || !profile
                 .project_root

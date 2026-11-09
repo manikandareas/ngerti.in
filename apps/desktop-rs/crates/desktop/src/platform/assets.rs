@@ -2,6 +2,10 @@ use gpui_kit::{AssetSource, SharedString};
 use std::{borrow::Cow, path::PathBuf};
 
 pub fn root() -> PathBuf {
+    // dx creates an empty asset directory; hot-reload builds read the source assets.
+    if cfg!(all(debug_assertions, feature = "hot-reload")) {
+        return PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../assets");
+    }
     std::env::current_exe()
         .ok()
         .and_then(|path| path.parent().map(|p| p.join("../Resources/assets")))

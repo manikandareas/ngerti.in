@@ -1,5 +1,5 @@
 [workspace]
-members = ["crates/desktop", "crates/client", "crates/avatar"]
+members = ["crates/desktop", "crates/client", "crates/avatar", "crates/desktop-dev"]
 resolver = "2"
 
 [workspace.package]
@@ -15,6 +15,13 @@ serde_json = "1"
 [profile.dev]
 debug = 0
 incremental = false
+
+# dx uses this profile; keep application edits quick while retaining renderer overrides.
+[profile.desktop-dev]
+inherits = "dev"
+
+[profile.desktop-dev.package.ngertiin-desktop]
+opt-level = 0
 
 [profile.release]
 opt-level = "s"

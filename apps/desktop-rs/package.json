@@ -2,7 +2,7 @@
   "name": "@ngertiin/desktop-rs",
   "private": true,
   "scripts": {
-    "dev": "bun scripts/cargo.ts run -p ngertiin-desktop -j 2",
+    "dev": "bun scripts/dev.ts",
     "gallery": "bun scripts/cargo.ts run -p ngertiin-desktop --example gallery -j 2",
     "build": "bun scripts/cargo.ts build --workspace -j 2",
     "format": "bun scripts/cargo.ts fmt",

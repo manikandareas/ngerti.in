@@ -4,6 +4,9 @@ version.workspace = true
 edition.workspace = true
 publish.workspace = true
 
+[features]
+hot-reload = ["dep:gpui-fast"]
+
 [dependencies]
 anyhow.workspace = true
 fs2 = "0.4"
@@ -19,6 +22,8 @@ sha2 = "=0.10.9"
 ngertiin-client = { path = "../client" }
 ngertiin-avatar = { path = "../avatar" }
 gpui-kit = { version = "=0.9.0", features = ["gpui-fast", "syntect", "profiler"] }
+# GPUI Kit 0.9.0 does not forward this feature; unify its existing renderer dependency.
+gpui-fast = { version = "=0.1.13", optional = true, default-features = false, features = ["hot-reload"] }
 gpui-webview = { version = "=0.9.0", features = ["gpui-fast"] }
 wry = { version = "=0.53.3", package = "lb-wry" }
 uuid = { version = "1", features = ["serde"] }

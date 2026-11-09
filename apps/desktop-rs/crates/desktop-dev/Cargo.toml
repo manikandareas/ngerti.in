@@ -1,0 +1,17 @@
+[package]
+name = "ngertiin-desktop-dev"
+version.workspace = true
+edition.workspace = true
+publish.workspace = true
+
+[features]
+hot-reload = ["ngertiin-desktop/hot-reload"]
+
+[dependencies]
+anyhow.workspace = true
+ngertiin-desktop = { path = "../desktop" }
+
+[[bin]]
+name = "ngertiin-desktop-dev"
+path = "src/main.rs"
+required-features = ["hot-reload"]

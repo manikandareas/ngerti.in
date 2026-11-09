@@ -7,7 +7,7 @@ use std::{
     io::Read,
     pin::Pin,
     sync::{
-        Arc, LazyLock,
+        Arc, LazyLock, OnceLock,
         atomic::{AtomicBool, Ordering},
         mpsc::{SyncSender, sync_channel},
     },
@@ -17,8 +17,28 @@ use std::{
 use uuid::Uuid;
 
 const LIMIT: u64 = 16 * 1024 * 1024;
-type Validators = HashMap<(String, String, bool), jsonschema::Validator>;
-static VALIDATORS: LazyLock<Result<Validators, ClientError>> = LazyLock::new(|| {
+struct RouteValidator {
+    schema: Value,
+    compiled: OnceLock<Result<jsonschema::Validator, ClientError>>,
+}
+impl RouteValidator {
+    fn validator(&self) -> Result<&jsonschema::Validator, ClientError> {
+        self.compiled
+            .get_or_init(|| {
+                jsonschema::validator_for(&native_schema(self.schema.clone()))
+                    .map_err(|_| ClientError::ShapeMismatch)
+            })
+            .as_ref()
+            .map_err(Clone::clone)
+    }
+    fn is_valid(&self, value: &Value) -> Result<bool, ClientError> {
+        Ok(self.validator()?.is_valid(value))
+    }
+}
+type Validators = HashMap<(String, String, bool), RouteValidator>;
+// Compile only the routes this native session uses. The exact same pinned
+// schemas still validate every request and response before they cross the seam.
+static VALIDATORS: LazyLock<Validators> = LazyLock::new(|| {
     let mut validators = HashMap::new();
     for route in CONTRACT["http"].as_array().expect("Pinned routes") {
         for (request, schema) in [
@@ -32,13 +52,15 @@ static VALIDATORS: LazyLock<Result<Validators, ClientError>> = LazyLock::new(|| 
                         route["path"].as_str().unwrap().into(),
                         request,
                     ),
-                    jsonschema::validator_for(&native_schema(schema.clone()))
-                        .map_err(|_| ClientError::ShapeMismatch)?,
+                    RouteValidator {
+                        schema: schema.clone(),
+                        compiled: OnceLock::new(),
+                    },
                 );
             }
         }
     }
-    Ok(validators)
+    validators
 });
 
 fn native_schema(mut schema: Value) -> Value {
@@ -274,12 +296,8 @@ impl ApiClient {
             return Err(ClientError::ShapeMismatch);
         }
         if let Some(body) = body
-            && let Some(schema) = VALIDATORS.as_ref().map_err(Clone::clone)?.get(&(
-                method.into(),
-                pattern.clone(),
-                true,
-            ))
-            && !schema.is_valid(body)
+            && let Some(schema) = VALIDATORS.get(&(method.into(), pattern.clone(), true))
+            && !schema.is_valid(body)?
         {
             return Err(ClientError::ShapeMismatch);
         }
@@ -327,12 +345,8 @@ impl ApiClient {
             }
             return Err(ClientError::Http(status));
         }
-        if let Some(schema) =
-            VALIDATORS
-                .as_ref()
-                .map_err(Clone::clone)?
-                .get(&(method.into(), pattern, false))
-            && !schema.is_valid(&value)
+        if let Some(schema) = VALIDATORS.get(&(method.into(), pattern, false))
+            && !schema.is_valid(&value)?
         {
             return Err(ClientError::ShapeMismatch);
         }
@@ -436,7 +450,10 @@ mod tests {
     use super::*;
     #[test]
     fn every_exported_route_compiles_with_native_regex_semantics() {
-        assert!(!VALIDATORS.as_ref().unwrap().is_empty());
+        assert!(!VALIDATORS.is_empty());
+        for validator in VALIDATORS.values() {
+            validator.validator().unwrap();
+        }
         let schema =
             native_schema(serde_json::json!({"type":"string","pattern":"^[^\\r\\n\\0]+$"}));
         let validator = jsonschema::validator_for(&schema).unwrap();
@@ -444,5 +461,24 @@ mod tests {
         for invalid in ["bad\nkey", "bad\rkey", "bad\0key"] {
             assert!(!validator.is_valid(&serde_json::json!(invalid)));
         }
+    }
+    #[test]
+    fn deferred_route_compilation_preserves_rejection_and_caches_one_validator() {
+        let route = RouteValidator {
+            schema: serde_json::json!({"type":"object","required":["id"],"additionalProperties":false,"properties":{"id":{"type":"string"}}}),
+            compiled: OnceLock::new(),
+        };
+        assert!(route.compiled.get().is_none());
+        assert!(!route.is_valid(&serde_json::json!({"id":42})).unwrap());
+        assert!(
+            !route
+                .is_valid(&serde_json::json!({"id":"one","secret":"extra"}))
+                .unwrap()
+        );
+        assert!(route.is_valid(&serde_json::json!({"id":"one"})).unwrap());
+        assert!(std::ptr::eq(
+            route.validator().unwrap(),
+            route.validator().unwrap()
+        ));
     }
 }

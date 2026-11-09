@@ -8,6 +8,8 @@ The six [Desktop Rust milestones below](#desktop-rust-parity-plan) have NMA-066â
 
 The November 9 [NMA-071 completion](../verification/nma-071/README.md) delivers the requested UI/table/bubble/width refinements, complete component source coverage, focused native/API journeys and a verified local bundle under the [owner's bounded completion scope](../development/nma-071-closure-scope-2026-11-09.md). Exhaustive captures and paired 1:1 performance are not closure prerequisites; Muse remains a separate follow-up.
 
+The later [native conversation presentation amendment](../verification/nma-071/conversation-layout-2026-11-09.md) refines the header gradient, message bounds, tables that fill their bubble, attachment chips and hover actions. NMA-071 remains Done for its accepted scope; the retained bundle and provider evidence keep their original revisions.
+
 The [2026-11-07 sidebar loading refinement](../verification/sidebar-loading-2026-11-07/README.md) adds focused desktop/mobile evidence under NMA-061. Milestone statuses and dependencies are unchanged.
 
 The [2026-11-07 conversation chronology refinement](../verification/conversation-chronology-2026-11-07/README.md) adds centered day groups and consistent message/card clocks, with Goal/Routine event bars remaining without clocks. It retains NMA-061's status and the open product/distribution gates.

@@ -31,6 +31,12 @@ A fresh native walkthrough could not run: the computer-use native connection fai
 
 Additional reference behavior includes sidebar skeletons, day separators and retained clocks, agent-attributed transient activity, structured question/approval states, queued edits/deletes, exact-input retry, steering and confirmed versus requested cancellation. See [sidebar loading](../verification/sidebar-loading-2026-11-07/README.md), [chronology](../verification/conversation-chronology-2026-11-07/README.md), [conversation interactions](../verification/conversation-implementation-2026-11-06/README.md), and [later refinements](../verification/conversation-followup-2026-11-06/report.html).
 
+## Conversation presentation amendment — 2026-11-09
+
+The owner's screenshot follow-up bounds each message and its actions to 80% of the conversation lane, with wrapping prose and independently scrolling code. Tables fill the bubble's content width by default, sharing surplus width across columns and retaining horizontal scrolling when their minimum widths exceed the viewport. This replaces the earlier content-sized/384-point table treatment. Attachment chips fit their labels, truncate long filenames and use compact typography/icons. Code Copy/Wrap controls appear only for the hovered block; wrapping belongs to that block. Message Copy appears to the right of assistant bubbles and to the left of user bubbles, within the bubble/action hover region. Keyboard focus keeps the relevant control visible.
+
+The owner's final header correction supersedes the initial shadow-only request: use a continuous bottom-to-top background gradient from 2% to 94% opacity across the full header height, without a fully opaque plateau. [Follow-up evidence](../verification/nma-071/conversation-layout-2026-11-09.md) records the affected native UI checks separately from the original bundle/provider acceptance.
+
 ## Dependency disposition
 
 Installed manifests were inspected; usage was checked against actual imports, not inferred solely from dependencies. The client contains 27 Playwright spec files; this is a source inventory, not a test-run denominator.

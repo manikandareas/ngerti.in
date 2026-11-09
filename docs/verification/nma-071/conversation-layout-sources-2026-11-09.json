@@ -1,0 +1,14 @@
+{
+  "baseline_revision": "b768ced6f457e94513f42938579a6405bef7728a",
+  "source_sha256": {
+    "apps/desktop-rs/Cargo.lock": "1bc17d8e999526bbae99c7148c4c4792233937b241289e5d753c2657e8137292",
+    "apps/desktop-rs/crates/desktop/src/ui/table.rs": "8c5f4ece500c6d01fc885911e22c4516625aa36463fbba462ae02a24c85b7462",
+    "apps/desktop-rs/crates/desktop/src/ui/table/inline.rs": "1779bff0a151cac68514770ba04c3bb0afaf801c20cffea5c82249c41562b9be",
+    "apps/desktop-rs/crates/desktop/src/workspace/context/files.rs": "5bce77845cdf0a810401db521af49f56d4d796baf7563b50b2aa07c14ff4e32e",
+    "apps/desktop-rs/crates/desktop/src/workspace/context/mod.rs": "21fbb1c94cd75d90fe0fe53ecb3270fb7703bcc706dbf363a85852126b7dac9b",
+    "apps/desktop-rs/crates/desktop/src/workspace/message_markup.rs": "183dca1948867eafdf6e82d303523e6bb59ebbabf05073e6c3ac3ec4e41a1bfa",
+    "apps/desktop-rs/crates/desktop/src/workspace/transcript.rs": "195902c69ed03a2162cc5467149af5d5d65be628d508c743c72cce5ad9677551",
+    "apps/desktop-rs/crates/desktop/src/workspace/view.rs": "a75691cff6a479c465c899d62178d6bdab6ea129245590226fb7bd8f608bc9e6",
+    "apps/desktop-rs/crates/desktop/src/workspace/tests.rs": "37dd76d0b1d0cc35b5c672242c71ab6eb1b77cfadc3c94fea4b7a93081a84892"
+  }
+}

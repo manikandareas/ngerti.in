@@ -6,7 +6,7 @@ The current Tauri desktop and web-client assistant-studio remain the reference. 
 
 ## Delivered UI and behavior
 
-- Replies retain Markdown, code and tables inside one bubble. Bubble headings use body sizing; short tables have a bounded 384px minimum. Sorting, filtering, selection, copy, download and Focus use the displayed data. Header, conversation and composer share available width.
+- Replies retain Markdown, code and tables inside one bubble. Bubble headings use body sizing. The later [conversation presentation amendment](conversation-layout-2026-11-09.md) makes tables fill the bubble's content width, replacing the original bounded 384px minimum. Sorting, filtering, selection, copy, download and Focus use the displayed data. Header, conversation and composer share available width.
 - Assistant names are omitted from bubbles. Group portraits open member profiles. Loading/subtitles require the current thread; questions, ordinary queue/publication and normal handoff do not create redundant status bubbles.
 - Context tabs are centered and proportionate. Hover uses solid shades. The desktop button is a compact full-width row; date dividers have vertical clearance. Compact navigation bounds its roster/footer without overlapping controls. Model selection uses available models, original provider marks and supported reasoning controls.
 - Approval shows bounded, readable decision fields and decoded file text before Approve/Reject; command IDs and encoded text are hidden. Settled history removes decision controls. Multi-choice custom text is additional when the request permits multiple answers.

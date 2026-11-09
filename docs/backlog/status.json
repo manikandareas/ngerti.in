@@ -43,7 +43,7 @@
   },
   {
     "ticket": "NMA-051",
-    "title": "Ditunda · Claude Code dan runtime ACP tambahan",
+    "title": "Ditunda \u00b7 Claude Code dan runtime ACP tambahan",
     "plan": "Deferred",
     "status": "Backlog",
     "order": 5,
@@ -272,7 +272,7 @@
     "ticket": "NMA-071",
     "title": "Desktop parity acceptance and development bundle",
     "plan": "Desktop Rust",
-    "status": "Backlog",
+    "status": "Done",
     "order": 16.6,
     "layer": "Desktop / Verification",
     "depends_on": [

@@ -1,0 +1,14 @@
+   Compiling ngertiin-desktop v0.1.0 (/Users/vitoandareasmanik/Development/project/ngertiin/apps/desktop-rs/crates/desktop)
+    Finished `test` profile [unoptimized] target(s) in 53.45s
+     Running unittests src/lib.rs (/Users/vitoandareasmanik/Development/project/ngertiin/.dev/desktop-rs-target/debug/deps/ngertiin_desktop-68caf8721e825ba0)
+
+running 6 tests
+test workspace::tests::comprehensive_multiple_choice_keeps_custom_text_as_an_additional_answer ... ok
+test workspace::tests::comprehensive_approval_exposes_readable_decision_data_without_internal_ids ... ok
+test workspace::tests::comprehensive_milestones_batch_without_hiding_actionable_events ... ok
+test workspace::tests::comprehensive_uncertain_question_locks_send_and_exposes_status_check ... ok
+test workspace::tests::comprehensive_blocked_activity_guides_the_owner_to_settings ... ok
+test workspace::tests::comprehensive_composer_does_not_send_uncommitted_ime_text ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 54 filtered out; finished in 2.92s
+

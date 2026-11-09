@@ -1,0 +1,23 @@
+{
+  "pid": 44187,
+  "duration_seconds": 60.0479295,
+  "visibility_checks": 59,
+  "visibility_before": {
+    "visible": false,
+    "active": false,
+    "avatar_images_delivered": 2692,
+    "captured_at": "2026-11-08T13:51:51.960235+00:00"
+  },
+  "visibility_after": {
+    "visible": false,
+    "active": false,
+    "avatar_images_delivered": 2692,
+    "captured_at": "2026-11-08T13:51:51.960235+00:00"
+  },
+  "cpu_percent": 0.8326681771767002,
+  "rss_bytes": 23887872,
+  "peak_rss_bytes": 31506432,
+  "budget_cpu_percent": 1,
+  "cpu_budget_pass": true,
+  "boundary": "One integrated two-question fixture window; not a matched whole-application Tauri/Rust performance matrix."
+}

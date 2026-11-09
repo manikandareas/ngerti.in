@@ -1,0 +1,50 @@
+{
+  "at": "2026-11-08T15:25:02.117Z",
+  "binary_sha256": "411108bbef6ace65db8f0833f2dda08a57eeed4f85abe74b0ae6a210dfbb0ed3",
+  "receipts": [
+    {
+      "method": "POST",
+      "path": "/v1/creation/groups",
+      "status": 200,
+      "key": "6c704c0f-e549-4e44-8fe3-575e91cb8fff",
+      "body": "{\"name\":\"NMA071 Native journey\",\"member_agent_ids\":[\"ed0cbf82-0edc-4428-9a64-6a67dd5ef74d\",\"9a2db60b-d59f-4cc2-b72d-eab4ce860a2d\"]}"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/creation/agents",
+      "status": 200,
+      "key": "ee8d7645-3ee1-41f9-a5bc-2ea4ce597b2d",
+      "body": "{\"connection_id\":\"272663b1-c6df-484b-a3cc-2e16c1e25951\",\"harness\":\"codex\",\"model_id\":\"gpt-native-parity\",\"reasoning\":null,\"billing_source\":\"subscription\"}"
+    }
+  ],
+  "agents": [
+    {
+      "id": "ed0cbf82-0edc-4428-9a64-6a67dd5ef74d",
+      "name": "Tobi",
+      "harness": "codex",
+      "connection_id": "272663b1-c6df-484b-a3cc-2e16c1e25951",
+      "model_id": "gpt-native-parity",
+      "reasoning": null,
+      "billing_source": null
+    },
+    {
+      "id": "9a2db60b-d59f-4cc2-b72d-eab4ce860a2d",
+      "name": "Bianca",
+      "harness": "codex",
+      "connection_id": "272663b1-c6df-484b-a3cc-2e16c1e25951",
+      "model_id": null,
+      "reasoning": null,
+      "billing_source": null
+    },
+    {
+      "id": "3371b3f5-b2e6-42ff-b415-b4e9f8d0f575",
+      "name": "Long Aphid",
+      "harness": "codex",
+      "connection_id": "272663b1-c6df-484b-a3cc-2e16c1e25951",
+      "model_id": "gpt-native-parity",
+      "reasoning": null,
+      "billing_source": "subscription"
+    }
+  ],
+  "boundary": "Actual native UI to disposable product API; no provider executor. Creation and admission only, no inferred routing or inference outcome."
+}

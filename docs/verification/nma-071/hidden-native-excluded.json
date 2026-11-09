@@ -1,0 +1,12 @@
+{
+  "pid": 38400,
+  "duration_seconds": 60.704789915999996,
+  "window_state": "minimized through native menu shortcut",
+  "cpu_percent": 22.189352798418472,
+  "rss_bytes": 49823744,
+  "peak_rss_bytes": 94584832,
+  "budget_cpu_percent": 1,
+  "cpu_budget_pass": false,
+  "boundary": "One integrated two-question fixture window; not a matched whole-application Tauri/Rust performance matrix.",
+  "status": "Excluded iteration: the CUA state read restored the window, so hidden visibility was not confirmed."
+}

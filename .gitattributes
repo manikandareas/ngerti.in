@@ -9,3 +9,24 @@ docs/verification/nma-066/reference-v3-working-files-dark.ax.txt whitespace=-bla
 docs/verification/nma-066/tauri-web-rebuild.log whitespace=-blank-at-eol
 docs/verification/nma-067/components/rust-check.log whitespace=-blank-at-eof
 docs/verification/nma-067/components/commit-check.log whitespace=-blank-at-eof
+# Preserve hash-verified NMA-071 raw logs listed in its integrity.json.
+docs/verification/nma-071/native-closure-navigation-tests.log whitespace=-blank-at-eof
+docs/verification/nma-071/native-complete-check.log whitespace=-blank-at-eof
+docs/verification/nma-071/native-comprehensive-details-tests.log whitespace=-blank-at-eof
+docs/verification/nma-071/native-comprehensive-ui-tests.log whitespace=-blank-at-eof
+docs/verification/nma-071/native-comprehensive-workspace-tests.log whitespace=-blank-at-eof
+docs/verification/nma-071/native-continuation-tests.log whitespace=-blank-at-eof
+docs/verification/nma-071/native-delivery-tests.log whitespace=-blank-at-eof
+docs/verification/nma-071/native-final-desktop-tests.log whitespace=-blank-at-eof
+docs/verification/nma-071/native-final-source-tests.log whitespace=-blank-at-eof
+docs/verification/nma-071/native-final-ui-tests.log whitespace=-blank-at-eof
+docs/verification/nma-071/native-polish-tests.log whitespace=-blank-at-eof
+docs/verification/nma-071/native-streaming-registry-tests.log whitespace=-blank-at-eof
+docs/verification/nma-071/native-streaming-ui-tests.log whitespace=-blank-at-eof
+docs/verification/nma-071/native-width-tests.log whitespace=-blank-at-eof
+docs/verification/nma-071/sheet-height-test.log whitespace=-blank-at-eof
+docs/verification/nma-071/web-complete-check.log whitespace=-blank-at-eol
+docs/verification/nma-071/web-width-biome.log whitespace=-blank-at-eol
+# Preserve cleanup raw logs listed in cleanup-2026-11-09/integrity.json.
+docs/verification/nma-071/cleanup-2026-11-09/native-doctest.log whitespace=-blank-at-eof
+docs/verification/nma-071/cleanup-2026-11-09/native-workspace.log whitespace=-blank-at-eof

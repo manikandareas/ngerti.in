@@ -1,0 +1,18 @@
+{
+  "at": "2026-11-08T16:54:59.905Z",
+  "binary_sha256": "1f9e281d9f2cc849deb8bb7f8ad22467c5cf8f704fc38b3ecaf0c1de739ad7e4",
+  "native_submission": true,
+  "completed_reply_observed": true,
+  "observed": {
+    "one_reply_bubble": true,
+    "native_table_with_actions": true,
+    "short_table_minimum_present": true,
+    "unicode_code_visible": "日本語 café",
+    "trailing_paragraph_visible": "Complete.",
+    "composer_cleared": true
+  },
+  "table_accessibility": "\t\t18 table Data table\n\t\t\t19 button Sort by Name\n\t\t\t20 button Sort by Value\n\t\t\t\t22 cell Alpha\n\t\t\t\t23 cell 42\n\t\t\t\t25 cell Beta\n\t\t\t\t26 cell 7\n\t\t\t27 button Copy table\n\t\t\t28 button Download table\n\t\t\t29 button Maximize table\n\t\t34 table Data table\n\t\t\t35 button Sort by Name\n\t\t\t36 button Sort by Value\n\t\t\t\t38 cell Alpha\n\t\t\t\t39 cell 42\n\t\t\t\t41 cell Beta\n\t\t\t\t42 cell 7\n\t\t\t43 button Copy table\n\t\t\t44 button Download table\n\t\t\t45 button Maximize table\n\t\t53 text entry area (settable) Message with references, Placeholder: Pesan untuk NMA-071 Native Proof…",
+  "private_capture_sha256": "092c4520c07004a78d0df9e88f3701295438e3639bf2b26cd75ccf5055f6fc38",
+  "private_capture_retention": "Ignored local test output only; the sidebar contains unrelated conversation previews.",
+  "boundary": "Actual native Codex reply on the current bundle. API/provider stages are recorded separately; no full visual matrix or IME claim."
+}

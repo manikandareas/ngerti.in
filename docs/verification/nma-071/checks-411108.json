@@ -1,0 +1,42 @@
+{
+  "at": "2026-11-08T14:44:13.421717+00:00",
+  "milestone_status": "In Progress",
+  "binary_sha256": "411108bbef6ace65db8f0833f2dda08a57eeed4f85abe74b0ae6a210dfbb0ed3",
+  "source_input_matches": true,
+  "resources_verified": 11661,
+  "native_full_prior": {
+    "planned": 69,
+    "passed": 69
+  },
+  "native_final_desktop": {
+    "selected": 46,
+    "passed": 46,
+    "excluded_unchanged_compositor": 1,
+    "compositor_preceding_pass": true
+  },
+  "native_final_ui": {
+    "selected": 5,
+    "passed": 5,
+    "included_in_desktop": true
+  },
+  "web": {
+    "planned": 42,
+    "executed": 42,
+    "initial_pass": 38,
+    "initial_fail": 4,
+    "serial_rerun_pass": 4
+  },
+  "docs": {
+    "preexisting_broken_skill_links": 8,
+    "affected_links_broken": 0
+  },
+  "sensitive_fixture_credential_fields_retained": 0,
+  "open": [
+    "initial native raster presentation",
+    "inline Markdown table sorting",
+    "full matched visual/state matrix",
+    "matched performance and remaining integrated journeys",
+    "native relaunch check of content-size persistence"
+  ],
+  "separate_followup": "Muse API-key inference/tools/effective billing"
+}

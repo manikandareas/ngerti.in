@@ -1,0 +1,26 @@
+   Compiling ngertiin-desktop v0.1.0 (/Users/vitoandareasmanik/Development/project/ngertiin/apps/desktop-rs/crates/desktop)
+    Finished `test` profile [unoptimized] target(s) in 52.96s
+     Running unittests src/lib.rs (/Users/vitoandareasmanik/Development/project/ngertiin/.dev/desktop-rs-target/debug/deps/ngertiin_desktop-68caf8721e825ba0)
+
+running 18 tests
+test workspace::context::state::tests::folder_pages_append_without_duplicate_entries_and_keep_other_folders ... ok
+test workspace::context::state::tests::folder_status_follows_its_descendants_before_the_next_sibling ... ok
+test workspace::interactions::recovery_tests::lost_acknowledgement_requires_the_same_answer_and_exact_message_scope ... ok
+test workspace::context::state::tests::keyboard_skips_status_rows_and_preserves_expanded_parents ... ok
+test workspace::message_markup::tests::inline_table_code_preserves_gfm_pipe_values_after_unicode_text ... ok
+test workspace::message_markup::tests::table_actions_use_parsed_cells_including_formatting_and_escaped_pipes ... ok
+test workspace::context::files::tests::format_precedence_matches_reference ... ok
+test workspace::tests::group_routing_uses_a_compact_attributed_status_bubble ... ok
+test workspace::tests::question_choice_changes_selection_and_settled_history_has_no_submit_action ... ok
+test workspace::tests::settled_native_questions_keep_the_request_order ... ok
+test workspace::tests::short_one_and_two_column_tables_keep_their_minimum_width_inside_the_bubble ... ok
+test workspace::tests::native_question_keeps_back_navigation_and_submits_one_complete_answer ... ok
+test workspace::tests::streamed_tables_install_the_native_renderer_when_the_header_arrives ... ok
+test workspace::tests::inline_tables_sort_filter_and_retain_state_across_transcript_updates ... ok
+test workspace::tests::rich_reply_keeps_prose_table_and_code_in_one_message_bubble ... ok
+test workspace::tests::conversation_and_composer_follow_the_header_width_on_wide_windows ... ok
+test workspace::tests::compact_navigation_sheet_keeps_actions_inside_its_surface ... ok
+test workspace::tests::context_tabs_align_and_keyboard_navigation_returns_to_the_composer ... ok
+
+test result: ok. 18 passed; 0 failed; 0 ignored; 0 measured; 35 filtered out; finished in 2.84s
+

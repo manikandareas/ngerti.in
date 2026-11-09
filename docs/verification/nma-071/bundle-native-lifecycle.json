@@ -1,0 +1,24 @@
+{
+  "at": "2026-11-08T14:07:12.017Z",
+  "binary_sha256": "553004ec03b22a3b95527345283636a533da31408a441f3ae9c0678172c73d3b",
+  "invalid_configured_checkout": true,
+  "invalid_configured_bun": true,
+  "working_directory": "/tmp",
+  "backend": {
+    "pid": 46442,
+    "parent_pid": 46436,
+    "ready": "ready",
+    "contract": "1.31.0",
+    "agent_count": 1,
+    "thread_count": 1,
+    "shutdown_confirmed": true
+  },
+  "native_gui": {
+    "accessibility_workspace_ready": true,
+    "tobi_welcome_in_accessibility": true,
+    "initial_raster_stayed_connecting": true,
+    "visual_startup_pass": false
+  },
+  "boundary": "Isolated profile on the development machine; no provider inference or fresh-device distribution claim.",
+  "external_backend_preserved": true
+}

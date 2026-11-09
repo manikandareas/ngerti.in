@@ -1,0 +1,773 @@
+{
+  "at": "2026-11-09T02:55:00.107Z",
+  "reference": "apps/web-client/src/features/assistant-studio/catalog.ts",
+  "reference_sha256": "d4438a3867cc90a40315f2598dfc0d0ea7e8eb3d681ebf6b5dd8af07f3e0124c",
+  "categories": 8,
+  "source_audited": 67,
+  "meaning": "Every named state has a production native path. This is source coverage, not 67 separately executed native UI cases.",
+  "states": [
+    {
+      "category": "computer",
+      "state": "preparing",
+      "reference": "ComputerActivity · MachineScreen",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/workspace/computer.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    },
+    {
+      "category": "computer",
+      "state": "active",
+      "reference": "ComputerActivity · MachineScreen",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/workspace/computer.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    },
+    {
+      "category": "computer",
+      "state": "completed",
+      "reference": "ComputerActivity · MachineScreen",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/workspace/computer.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    },
+    {
+      "category": "activity",
+      "state": "thinking",
+      "reference": "AgentActivityBubble · activityPresentation",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/models/activity.rs",
+        "apps/desktop-rs/crates/desktop/src/workspace/transcript.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    },
+    {
+      "category": "activity",
+      "state": "working",
+      "reference": "AgentActivityBubble · activityPresentation",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/models/activity.rs",
+        "apps/desktop-rs/crates/desktop/src/workspace/transcript.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    },
+    {
+      "category": "activity",
+      "state": "searching",
+      "reference": "AgentActivityBubble · activityPresentation",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/models/activity.rs",
+        "apps/desktop-rs/crates/desktop/src/workspace/transcript.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    },
+    {
+      "category": "activity",
+      "state": "reading",
+      "reference": "AgentActivityBubble · activityPresentation",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/models/activity.rs",
+        "apps/desktop-rs/crates/desktop/src/workspace/transcript.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    },
+    {
+      "category": "activity",
+      "state": "updating",
+      "reference": "AgentActivityBubble · activityPresentation",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/models/activity.rs",
+        "apps/desktop-rs/crates/desktop/src/workspace/transcript.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    },
+    {
+      "category": "activity",
+      "state": "creating",
+      "reference": "AgentActivityBubble · activityPresentation",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/models/activity.rs",
+        "apps/desktop-rs/crates/desktop/src/workspace/transcript.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    },
+    {
+      "category": "activity",
+      "state": "browsing",
+      "reference": "AgentActivityBubble · activityPresentation",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/models/activity.rs",
+        "apps/desktop-rs/crates/desktop/src/workspace/transcript.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    },
+    {
+      "category": "activity",
+      "state": "asking_agent",
+      "reference": "AgentActivityBubble · activityPresentation",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/models/activity.rs",
+        "apps/desktop-rs/crates/desktop/src/workspace/transcript.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    },
+    {
+      "category": "activity",
+      "state": "queued",
+      "reference": "AgentActivityBubble · activityPresentation",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/models/activity.rs",
+        "apps/desktop-rs/crates/desktop/src/workspace/transcript.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    },
+    {
+      "category": "activity",
+      "state": "preparing",
+      "reference": "AgentActivityBubble · activityPresentation",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/models/activity.rs",
+        "apps/desktop-rs/crates/desktop/src/workspace/transcript.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    },
+    {
+      "category": "activity",
+      "state": "retrying",
+      "reference": "AgentActivityBubble · activityPresentation",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/models/activity.rs",
+        "apps/desktop-rs/crates/desktop/src/workspace/transcript.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    },
+    {
+      "category": "activity",
+      "state": "waiting",
+      "reference": "AgentActivityBubble · activityPresentation",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/models/activity.rs",
+        "apps/desktop-rs/crates/desktop/src/workspace/transcript.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    },
+    {
+      "category": "activity",
+      "state": "stopping",
+      "reference": "AgentActivityBubble · activityPresentation",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/models/activity.rs",
+        "apps/desktop-rs/crates/desktop/src/workspace/transcript.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    },
+    {
+      "category": "activity",
+      "state": "cancelled",
+      "reference": "AgentActivityBubble · activityPresentation",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/models/activity.rs",
+        "apps/desktop-rs/crates/desktop/src/workspace/transcript.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    },
+    {
+      "category": "activity",
+      "state": "failed",
+      "reference": "AgentActivityBubble · activityPresentation",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/models/activity.rs",
+        "apps/desktop-rs/crates/desktop/src/workspace/transcript.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    },
+    {
+      "category": "activity",
+      "state": "blocked",
+      "reference": "AgentActivityBubble · activityPresentation",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/models/activity.rs",
+        "apps/desktop-rs/crates/desktop/src/workspace/transcript.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    },
+    {
+      "category": "activity",
+      "state": "unknown",
+      "reference": "AgentActivityBubble · activityPresentation",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/models/activity.rs",
+        "apps/desktop-rs/crates/desktop/src/workspace/transcript.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    },
+    {
+      "category": "activity",
+      "state": "offline",
+      "reference": "AgentActivityBubble · activityPresentation",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/models/activity.rs",
+        "apps/desktop-rs/crates/desktop/src/workspace/transcript.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    },
+    {
+      "category": "routing",
+      "state": "classifying",
+      "reference": "WorkActivity",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/models/activity.rs",
+        "apps/desktop-rs/crates/desktop/src/workspace/transcript.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    },
+    {
+      "category": "routing",
+      "state": "reviewing",
+      "reference": "WorkActivity",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/models/activity.rs",
+        "apps/desktop-rs/crates/desktop/src/workspace/transcript.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    },
+    {
+      "category": "routing",
+      "state": "preparing",
+      "reference": "WorkActivity",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/models/activity.rs",
+        "apps/desktop-rs/crates/desktop/src/workspace/transcript.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    },
+    {
+      "category": "routing",
+      "state": "retrying",
+      "reference": "WorkActivity",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/models/activity.rs",
+        "apps/desktop-rs/crates/desktop/src/workspace/transcript.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    },
+    {
+      "category": "routing",
+      "state": "blocked",
+      "reference": "WorkActivity",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/models/activity.rs",
+        "apps/desktop-rs/crates/desktop/src/workspace/transcript.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    },
+    {
+      "category": "routing",
+      "state": "rejected",
+      "reference": "WorkActivity",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/models/activity.rs",
+        "apps/desktop-rs/crates/desktop/src/workspace/transcript.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    },
+    {
+      "category": "routing",
+      "state": "unknown",
+      "reference": "WorkActivity",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/models/activity.rs",
+        "apps/desktop-rs/crates/desktop/src/workspace/transcript.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    },
+    {
+      "category": "input",
+      "state": "input",
+      "reference": "HumanReplyCard · HumanReply",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/workspace/interactions.rs",
+        "apps/desktop-rs/crates/desktop/src/ui/interaction.rs",
+        "apps/desktop-rs/crates/desktop/src/ui/interaction/details.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    },
+    {
+      "category": "input",
+      "state": "single",
+      "reference": "HumanReplyCard · HumanReply",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/workspace/interactions.rs",
+        "apps/desktop-rs/crates/desktop/src/ui/interaction.rs",
+        "apps/desktop-rs/crates/desktop/src/ui/interaction/details.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    },
+    {
+      "category": "input",
+      "state": "multiple",
+      "reference": "HumanReplyCard · HumanReply",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/workspace/interactions.rs",
+        "apps/desktop-rs/crates/desktop/src/ui/interaction.rs",
+        "apps/desktop-rs/crates/desktop/src/ui/interaction/details.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    },
+    {
+      "category": "input",
+      "state": "custom",
+      "reference": "HumanReplyCard · HumanReply",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/workspace/interactions.rs",
+        "apps/desktop-rs/crates/desktop/src/ui/interaction.rs",
+        "apps/desktop-rs/crates/desktop/src/ui/interaction/details.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    },
+    {
+      "category": "input",
+      "state": "filled",
+      "reference": "HumanReplyCard · HumanReply",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/workspace/interactions.rs",
+        "apps/desktop-rs/crates/desktop/src/ui/interaction.rs",
+        "apps/desktop-rs/crates/desktop/src/ui/interaction/details.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    },
+    {
+      "category": "input",
+      "state": "review",
+      "reference": "HumanReplyCard · HumanReply",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/workspace/interactions.rs",
+        "apps/desktop-rs/crates/desktop/src/ui/interaction.rs",
+        "apps/desktop-rs/crates/desktop/src/ui/interaction/details.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    },
+    {
+      "category": "input",
+      "state": "approval",
+      "reference": "HumanReplyCard · HumanReply",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/workspace/interactions.rs",
+        "apps/desktop-rs/crates/desktop/src/ui/interaction.rs",
+        "apps/desktop-rs/crates/desktop/src/ui/interaction/details.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    },
+    {
+      "category": "input",
+      "state": "approval-submitting",
+      "reference": "HumanReplyCard · HumanReply",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/workspace/interactions.rs",
+        "apps/desktop-rs/crates/desktop/src/ui/interaction.rs",
+        "apps/desktop-rs/crates/desktop/src/ui/interaction/details.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    },
+    {
+      "category": "input",
+      "state": "approval-unconfirmed",
+      "reference": "HumanReplyCard · HumanReply",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/workspace/interactions.rs",
+        "apps/desktop-rs/crates/desktop/src/ui/interaction.rs",
+        "apps/desktop-rs/crates/desktop/src/ui/interaction/details.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    },
+    {
+      "category": "input",
+      "state": "submitting",
+      "reference": "HumanReplyCard · HumanReply",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/workspace/interactions.rs",
+        "apps/desktop-rs/crates/desktop/src/ui/interaction.rs",
+        "apps/desktop-rs/crates/desktop/src/ui/interaction/details.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    },
+    {
+      "category": "input",
+      "state": "answered",
+      "reference": "HumanReplyCard · HumanReply",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/workspace/interactions.rs",
+        "apps/desktop-rs/crates/desktop/src/ui/interaction.rs",
+        "apps/desktop-rs/crates/desktop/src/ui/interaction/details.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    },
+    {
+      "category": "input",
+      "state": "closed",
+      "reference": "HumanReplyCard · HumanReply",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/workspace/interactions.rs",
+        "apps/desktop-rs/crates/desktop/src/ui/interaction.rs",
+        "apps/desktop-rs/crates/desktop/src/ui/interaction/details.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    },
+    {
+      "category": "input",
+      "state": "unconfirmed",
+      "reference": "HumanReplyCard · HumanReply",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/workspace/interactions.rs",
+        "apps/desktop-rs/crates/desktop/src/ui/interaction.rs",
+        "apps/desktop-rs/crates/desktop/src/ui/interaction/details.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    },
+    {
+      "category": "input",
+      "state": "error",
+      "reference": "HumanReplyCard · HumanReply",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/workspace/interactions.rs",
+        "apps/desktop-rs/crates/desktop/src/ui/interaction.rs",
+        "apps/desktop-rs/crates/desktop/src/ui/interaction/details.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    },
+    {
+      "category": "files",
+      "state": "inline",
+      "reference": "Answer · InlineReferenceChip · FileActionChip · FileViewer",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/workspace/message_markup.rs",
+        "apps/desktop-rs/crates/desktop/src/workspace/transcript.rs",
+        "apps/desktop-rs/crates/desktop/src/workspace/context/focus.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    },
+    {
+      "category": "files",
+      "state": "attached",
+      "reference": "Answer · InlineReferenceChip · FileActionChip · FileViewer",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/workspace/message_markup.rs",
+        "apps/desktop-rs/crates/desktop/src/workspace/transcript.rs",
+        "apps/desktop-rs/crates/desktop/src/workspace/context/focus.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    },
+    {
+      "category": "files",
+      "state": "csv",
+      "reference": "Answer · InlineReferenceChip · FileActionChip · FileViewer",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/workspace/message_markup.rs",
+        "apps/desktop-rs/crates/desktop/src/workspace/transcript.rs",
+        "apps/desktop-rs/crates/desktop/src/workspace/context/focus.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    },
+    {
+      "category": "files",
+      "state": "markdown",
+      "reference": "Answer · InlineReferenceChip · FileActionChip · FileViewer",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/workspace/message_markup.rs",
+        "apps/desktop-rs/crates/desktop/src/workspace/transcript.rs",
+        "apps/desktop-rs/crates/desktop/src/workspace/context/focus.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    },
+    {
+      "category": "files",
+      "state": "missing",
+      "reference": "Answer · InlineReferenceChip · FileActionChip · FileViewer",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/workspace/message_markup.rs",
+        "apps/desktop-rs/crates/desktop/src/workspace/transcript.rs",
+        "apps/desktop-rs/crates/desktop/src/workspace/context/focus.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    },
+    {
+      "category": "sources",
+      "state": "single",
+      "reference": "Answer · ResearchSources · SourceCitation",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/workspace/transcript.rs",
+        "apps/desktop-rs/crates/desktop/src/models/content.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    },
+    {
+      "category": "sources",
+      "state": "multiple",
+      "reference": "Answer · ResearchSources · SourceCitation",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/workspace/transcript.rs",
+        "apps/desktop-rs/crates/desktop/src/models/content.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    },
+    {
+      "category": "timeline",
+      "state": "goal_created",
+      "reference": "TimelineActivity · ConversationEvent",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/workspace/timeline.rs",
+        "apps/desktop-rs/crates/desktop/src/workspace/transcript.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    },
+    {
+      "category": "timeline",
+      "state": "goal_completed",
+      "reference": "TimelineActivity · ConversationEvent",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/workspace/timeline.rs",
+        "apps/desktop-rs/crates/desktop/src/workspace/transcript.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    },
+    {
+      "category": "timeline",
+      "state": "goal_blocked",
+      "reference": "TimelineActivity · ConversationEvent",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/workspace/timeline.rs",
+        "apps/desktop-rs/crates/desktop/src/workspace/transcript.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    },
+    {
+      "category": "timeline",
+      "state": "goal_paused",
+      "reference": "TimelineActivity · ConversationEvent",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/workspace/timeline.rs",
+        "apps/desktop-rs/crates/desktop/src/workspace/transcript.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    },
+    {
+      "category": "timeline",
+      "state": "goal_resumed",
+      "reference": "TimelineActivity · ConversationEvent",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/workspace/timeline.rs",
+        "apps/desktop-rs/crates/desktop/src/workspace/transcript.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    },
+    {
+      "category": "timeline",
+      "state": "goal_stopped",
+      "reference": "TimelineActivity · ConversationEvent",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/workspace/timeline.rs",
+        "apps/desktop-rs/crates/desktop/src/workspace/transcript.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    },
+    {
+      "category": "timeline",
+      "state": "routine_created",
+      "reference": "TimelineActivity · ConversationEvent",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/workspace/timeline.rs",
+        "apps/desktop-rs/crates/desktop/src/workspace/transcript.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    },
+    {
+      "category": "timeline",
+      "state": "routine_paused",
+      "reference": "TimelineActivity · ConversationEvent",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/workspace/timeline.rs",
+        "apps/desktop-rs/crates/desktop/src/workspace/transcript.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    },
+    {
+      "category": "timeline",
+      "state": "routine_resumed",
+      "reference": "TimelineActivity · ConversationEvent",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/workspace/timeline.rs",
+        "apps/desktop-rs/crates/desktop/src/workspace/transcript.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    },
+    {
+      "category": "timeline",
+      "state": "routine_stopped",
+      "reference": "TimelineActivity · ConversationEvent",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/workspace/timeline.rs",
+        "apps/desktop-rs/crates/desktop/src/workspace/transcript.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    },
+    {
+      "category": "timeline",
+      "state": "handoff_failed",
+      "reference": "TimelineActivity · ConversationEvent",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/workspace/timeline.rs",
+        "apps/desktop-rs/crates/desktop/src/workspace/transcript.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    },
+    {
+      "category": "timeline",
+      "state": "batch",
+      "reference": "TimelineActivity · ConversationEvent",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/workspace/timeline.rs",
+        "apps/desktop-rs/crates/desktop/src/workspace/transcript.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    },
+    {
+      "category": "timeline",
+      "state": "handoff_requested",
+      "reference": "TimelineActivity · ConversationEvent",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/workspace/timeline.rs",
+        "apps/desktop-rs/crates/desktop/src/workspace/transcript.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    },
+    {
+      "category": "answers",
+      "state": "plain",
+      "reference": "Answer · AnswerCode · MarkdownTable · useStreamingText",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/workspace/message_markup.rs",
+        "apps/desktop-rs/crates/desktop/src/workspace/transcript.rs",
+        "apps/desktop-rs/crates/desktop/src/ui/message.rs",
+        "apps/desktop-rs/crates/desktop/src/ui/table.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    },
+    {
+      "category": "answers",
+      "state": "markdown",
+      "reference": "Answer · AnswerCode · MarkdownTable · useStreamingText",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/workspace/message_markup.rs",
+        "apps/desktop-rs/crates/desktop/src/workspace/transcript.rs",
+        "apps/desktop-rs/crates/desktop/src/ui/message.rs",
+        "apps/desktop-rs/crates/desktop/src/ui/table.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    },
+    {
+      "category": "answers",
+      "state": "code",
+      "reference": "Answer · AnswerCode · MarkdownTable · useStreamingText",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/workspace/message_markup.rs",
+        "apps/desktop-rs/crates/desktop/src/workspace/transcript.rs",
+        "apps/desktop-rs/crates/desktop/src/ui/message.rs",
+        "apps/desktop-rs/crates/desktop/src/ui/table.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    },
+    {
+      "category": "answers",
+      "state": "table",
+      "reference": "Answer · AnswerCode · MarkdownTable · useStreamingText",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/workspace/message_markup.rs",
+        "apps/desktop-rs/crates/desktop/src/workspace/transcript.rs",
+        "apps/desktop-rs/crates/desktop/src/ui/message.rs",
+        "apps/desktop-rs/crates/desktop/src/ui/table.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    },
+    {
+      "category": "answers",
+      "state": "streaming",
+      "reference": "Answer · AnswerCode · MarkdownTable · useStreamingText",
+      "native_sources": [
+        "apps/desktop-rs/crates/desktop/src/workspace/message_markup.rs",
+        "apps/desktop-rs/crates/desktop/src/workspace/transcript.rs",
+        "apps/desktop-rs/crates/desktop/src/ui/message.rs",
+        "apps/desktop-rs/crates/desktop/src/ui/table.rs"
+      ],
+      "review": "source-audited",
+      "native_capture_per_state": false
+    }
+  ]
+}

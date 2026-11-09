@@ -1,0 +1,18 @@
+{
+  "at": "2026-11-09T03:09:53.741Z",
+  "binary_sha256": "88873de32de207cf2c7101ca582613054a2b84477ac793d822ee95f2b2fdadf1",
+  "resources_verified": 11661,
+  "resource_bytes": 593130363,
+  "relative_links_verified": 4,
+  "checkout_working_directory": false,
+  "private_state_bundled": false,
+  "web_client_distribution": false,
+  "react_application_ui": false,
+  "backend": {
+    "ready": true,
+    "contract": "1.31.0",
+    "owned_process": true,
+    "shutdown_exit": 0
+  },
+  "boundaries": "Backend closure and resource integrity only. Native GUI, inference, signing and fresh-device distribution require separate observations."
+}

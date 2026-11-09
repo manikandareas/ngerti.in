@@ -1,0 +1,16 @@
+[WebServer] $ vite preview --host "127.0.0.1" --port "4301" --strictPort
+[WebServer] (node:45330) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 4 tests using 1 worker
+
+(node:45332) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [desktop] › tests/agent-avatar.spec.ts:77:1 › stored message times appear for users and agents in both DM and group (2.4s)
+  ✓  2 [desktop] › tests/agent-avatar.spec.ts:299:1 › saved avatar identity appears outside the left of group replies and survives reload (3.5s)
+  ✓  3 [desktop] › tests/agent-avatar.spec.ts:400:1 › avatar activity follows live refreshes, celebrates once and keeps DM/group activity separate (5.3s)
+(node:45364) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  4 [mobile] › tests/activity.spec.ts:110:1 › DM activity updates one bubble, follows streaming output and survives reload without technical text (1.7s)
+
+  4 passed (16.7s)

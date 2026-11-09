@@ -12,6 +12,10 @@ The 2026-11-07 content-viewer decision selects Focus: direct conversation file/t
 
 Current UI tabs are Detail, Library and Computer. The 2026-11-07 Working files amendment moves shared machine browsing out of Library into a dedicated file-tree page opened by the folder action beside Close. Source files use a lightweight read-only Focus view with syntax colors, line numbers, find, copy and wrapping. See [the interface decision](interface.md#working-files). Earlier File/Agent panel wording below describes responsibilities now reached through those surfaces; see [the current interface](interface.md). The ordinary composer queues during an active run; contextual steer and the explicit cancellation endpoint have separate receipt semantics. The explanatory C07 flow never authorizes deterministic natural-language cancellation classification.
 
+The November 9 owner request adopts Zed's native per-thread presentation-state pattern: retained conversation entities, protected/idle cache lifetimes, scoped event reconciliation and durable rich-draft/reading checkpoints. Backend identity, queue, receipts and recovery remain authoritative. [Interface semantics](interface.md#native-per-thread-presentation-state) and [bounded implementation evidence](../verification/nma-068/retained-threads-2026-11-09.md) own this amendment; optional search/fork, agent runtimes and distribution scope are unchanged.
+
+The subsequent owner-requested conversation transition refinement covers retained avatars and stable avatar gutters, neutral composer presentation from the first focused frame, and conversation-shaped skeletons only while uncached history is loading. [Transition evidence](../verification/nma-068/conversation-transitions-2026-11-09.md) retains its own source and validation cohort.
+
 ## Matriks fitur produk
 
 Jumlah: 60 fitur dalam delapan kelompok. Detail perilaku adalah ekspektasi bila fitur dipilih; dukungan runtime harus dibuktikan sebelum fitur dinyatakan tersedia.

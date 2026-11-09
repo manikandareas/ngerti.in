@@ -38,7 +38,7 @@ impl Workspace {
         let agent = agent.clone();
         let connections = self.connections.clone();
         let owner = cx.entity().downgrade();
-        let busy = self.busy || !self.checked;
+        let busy = self.busy || !self.checked || self.conversation.reconciling;
         trigger
             .dropdown_menu(move |menu, window, cx| {
                 model_menu(menu, &agent, &connections, owner.clone(), busy, window, cx)

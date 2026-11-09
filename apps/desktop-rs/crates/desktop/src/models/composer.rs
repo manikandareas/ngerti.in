@@ -247,11 +247,25 @@ impl Draft {
         })
     }
 }
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
 pub struct Snapshot {
     pub draft: Draft,
     pub selection: Range<usize>,
     pub reversed: bool,
+}
+impl Snapshot {
+    pub fn validate(&self) -> Result<(), &'static str> {
+        self.draft.validate()?;
+        if self.selection.start > self.selection.end
+            || self.selection.end > self.draft.text.len()
+            || !self.draft.text.is_char_boundary(self.selection.start)
+            || !self.draft.text.is_char_boundary(self.selection.end)
+        {
+            return Err("Composer selection is invalid.");
+        }
+        Ok(())
+    }
 }
 #[derive(Default)]
 pub struct History {

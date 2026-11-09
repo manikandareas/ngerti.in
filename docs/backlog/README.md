@@ -75,3 +75,7 @@ Delivery remains engine/backend → API readiness → UI → product acceptance 
 [Feature ownership](feature-coverage.md) accounts for all 83 product/runtime/foundation decision identities. [status.json](status.json) provides the same milestone metadata for validation. Individual milestone files carry exact scope and checklists; current product/architecture amendments explain how historical browser/file/native-client wording is interpreted today.
 
 Update the individual record, this table, status metadata, affected specifications and traceable evidence together. Done requires completed acceptance and dependencies. Historical NMA-001–046 belong to their former scope and are available through [Git history](../development/history.md); they are not an execution queue or a prerequisite for the current architecture.
+
+The November 9 [retained native conversation-state amendment](../verification/nma-068/retained-threads-2026-11-09.md) supplements NMA-068 with the owner-requested Zed pattern. Existing milestone metadata/status and the NMA-063/NMA-064 gates are unchanged; original acceptance captures retain their original source scope.
+
+Its subsequent [conversation transition refinement](../verification/nma-068/conversation-transitions-2026-11-09.md) fixes avatar/layout continuity, initial composer presentation and uncached conversation loading within the same native milestone scope.

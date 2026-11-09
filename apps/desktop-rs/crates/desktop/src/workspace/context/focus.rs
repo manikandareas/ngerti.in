@@ -394,7 +394,7 @@ impl Workspace {
                 } else {
                     60.
                 }))
-                .pb(self.composer_height + ui(24.).to_pixels(window.rem_size()))
+                .pb(self.conversation.composer_height + ui(24.).to_pixels(window.rem_size()))
                 .child(body),
         );
         let title = self
@@ -475,8 +475,10 @@ impl Workspace {
                                 let weak = weak.clone();
                                 cx.defer(move |cx| {
                                     let _ = weak.update(cx, |this, cx| {
-                                        if (this.composer_height - height).abs() > px(0.5) {
-                                            this.composer_height = height;
+                                        if (this.conversation.composer_height - height).abs()
+                                            > px(0.5)
+                                        {
+                                            this.conversation.composer_height = height;
                                             cx.notify();
                                         }
                                     });

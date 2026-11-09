@@ -199,7 +199,7 @@ impl Workspace {
                 json!([request["id"], request["revision"]]),
             ));
         }
-        let native = self.native.clone();
+        let native = self.conversation.native.clone();
         for (run_id, history) in &native {
             if run_id.starts_with("pending:") {
                 continue;
@@ -250,7 +250,7 @@ impl Workspace {
                 }
                 if record["type"] != "approval" {
                     if text(submission, "state") == "submitted" || !current && !unresolved {
-                        self.question_steps.remove(&slot);
+                        self.conversation.question_steps.remove(&slot);
                         self.answers
                             .retain(|key, _| !key.starts_with(&format!("{slot}:")));
                         if let Err(error) =
@@ -267,7 +267,10 @@ impl Workspace {
                                     .contains_key(&format!("{slot}:{}", text(question, "id")))
                             })
                             .unwrap_or(rows(request, "questions").len().saturating_sub(1));
-                        self.question_steps.entry(slot.clone()).or_insert(initial);
+                        self.conversation
+                            .question_steps
+                            .entry(slot.clone())
+                            .or_insert(initial);
                     }
                 }
                 let retained = self.store.operation(&slot);
@@ -412,9 +415,12 @@ impl Workspace {
             .iter()
             .map(|(key, _, _, _, _)| key.clone())
             .collect();
-        self.interaction_views.retain(|key, _| ids.contains(key));
+        self.conversation
+            .interaction_views
+            .retain(|key, _| ids.contains(key));
         for (key, value, binding, at, signature) in desired {
             if let Some(existing) = self
+                .conversation
                 .interaction_views
                 .get_mut(&key)
                 .filter(|old| old.signature == signature)
@@ -460,16 +466,28 @@ impl Workspace {
             let subscription = cx.subscribe_in(
                 &view,
                 window,
-                move |this, _, intent: &AnswerIntent, window, cx| match intent {
-                    AnswerIntent::Check { .. } => {
-                        this.read_task = None;
-                        this.refresh(true, window, cx);
+                move |this, owner, intent: &AnswerIntent, window, cx| {
+                    if !this
+                        .conversation
+                        .interaction_views
+                        .get(&id)
+                        .is_some_and(|bound| bound.view.entity_id() == owner.entity_id())
+                    {
+                        return;
                     }
-                    AnswerIntent::Reply(reply) => this.answer(&id, reply.clone(), None, window, cx),
-                    AnswerIntent::Previous => this.previous_question(&id, window, cx),
+                    match intent {
+                        AnswerIntent::Check { .. } => {
+                            this.read_task = None;
+                            this.refresh(true, window, cx);
+                        }
+                        AnswerIntent::Reply(reply) => {
+                            this.answer(&id, reply.clone(), None, window, cx)
+                        }
+                        AnswerIntent::Previous => this.previous_question(&id, window, cx),
+                    }
                 },
             );
-            self.interaction_views.insert(
+            self.conversation.interaction_views.insert(
                 key,
                 BoundInteraction {
                     view,
@@ -482,7 +500,7 @@ impl Workspace {
         }
     }
     pub(super) fn interaction_visible(&self, key: &str) -> bool {
-        let Some(bound) = self.interaction_views.get(key) else {
+        let Some(bound) = self.conversation.interaction_views.get(key) else {
             return false;
         };
         match &bound.binding {
@@ -491,11 +509,15 @@ impl Workspace {
                 question,
                 request,
                 ..
-            } => self.question_steps.get(slot).is_none_or(|index| {
-                rows(request, "questions")
-                    .get(*index)
-                    .is_some_and(|item| item["id"] == *question)
-            }),
+            } => self
+                .conversation
+                .question_steps
+                .get(slot)
+                .is_none_or(|index| {
+                    rows(request, "questions")
+                        .get(*index)
+                        .is_some_and(|item| item["id"] == *question)
+                }),
             _ => true,
         }
     }
@@ -503,10 +525,10 @@ impl Workspace {
         if let Some(BoundInteraction {
             binding: Binding::Question { slot, .. },
             ..
-        }) = self.interaction_views.get(key)
+        }) = self.conversation.interaction_views.get(key)
         {
             let slot = slot.clone();
-            if let Some(index) = self.question_steps.get_mut(&slot) {
+            if let Some(index) = self.conversation.question_steps.get_mut(&slot) {
                 *index = index.saturating_sub(1);
             }
             self.rebuild_transcript(window, cx);
@@ -515,18 +537,21 @@ impl Workspace {
         }
     }
     pub(super) fn composer_response_locked(&self, cx: &App) -> bool {
-        self.interaction_views.iter().any(|(key, bound)| {
-            let value = &bound.view.read(cx).value;
-            self.interaction_visible(key)
-                && !value.approval
-                && value.choices.is_empty()
-                && matches!(
-                    value.state,
-                    InteractionState::Submitting
-                        | InteractionState::Uncertain
-                        | InteractionState::Checking
-                )
-        })
+        self.conversation
+            .interaction_views
+            .iter()
+            .any(|(key, bound)| {
+                let value = &bound.view.read(cx).value;
+                self.interaction_visible(key)
+                    && !value.approval
+                    && value.choices.is_empty()
+                    && matches!(
+                        value.state,
+                        InteractionState::Submitting
+                            | InteractionState::Uncertain
+                            | InteractionState::Checking
+                    )
+            })
     }
     pub(super) fn answer_from_composer(
         &mut self,
@@ -538,6 +563,7 @@ impl Workspace {
             return true;
         }
         let target = self
+            .conversation
             .interaction_views
             .iter()
             .find(|(key, bound)| {
@@ -590,10 +616,10 @@ impl Workspace {
         window: &mut Window,
         cx: &mut Context<Self>,
     ) {
-        if self.busy || !self.checked {
+        if self.busy || !self.checked || self.conversation.reconciling {
             return;
         }
-        let Some(bound) = self.interaction_views.get(key) else {
+        let Some(bound) = self.conversation.interaction_views.get(key) else {
             return;
         };
         let binding = bound.binding.clone();
@@ -668,7 +694,7 @@ impl Workspace {
                     .position(|item| item["id"] == question)
                     .unwrap_or(0);
                 if index + 1 < rows(&request, "questions").len() {
-                    self.question_steps.insert(slot, index + 1);
+                    self.conversation.question_steps.insert(slot, index + 1);
                     if let (Some(authored), Some(thread)) = (&authored, self.selected)
                         && self.store.draft(thread) == *authored
                     {

@@ -111,7 +111,7 @@ impl MarkdownPlugin for CodeBlocks {
         let id = format!("code:{}:{offset}", self.row_id);
         let wrapped = self
             .owner
-            .read_with(cx, |view, _| view.wrapped_code.contains(&id))
+            .read_with(cx, |view, _| view.conversation.wrapped_code.contains(&id))
             .unwrap_or(false);
         let p = Palette::new(cx.theme().mode.is_dark());
         let mut code_style = StyleRefinement::default()
@@ -281,7 +281,8 @@ pub(super) fn prepare_tables(
                 let owner = owner.clone();
                 cx.defer(move |cx| {
                     let _ = owner.update(cx, |this, cx| {
-                        this.scroller
+                        this.conversation
+                            .scroller
                             .update(cx, |scroller, cx| scroller.remeasure(cx));
                         cx.notify();
                     });
@@ -350,8 +351,8 @@ fn code_actions(
         .focus_visible(|style| style.opacity(1.))
         .on_click(move |_, _, cx| {
             let _ = owner.update(cx, |this, cx| {
-                if !this.wrapped_code.remove(&block_id) {
-                    this.wrapped_code.insert(block_id.clone());
+                if !this.conversation.wrapped_code.remove(&block_id) {
+                    this.conversation.wrapped_code.insert(block_id.clone());
                 }
                 cx.notify();
             });

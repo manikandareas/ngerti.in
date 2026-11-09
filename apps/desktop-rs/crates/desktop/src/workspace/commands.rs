@@ -56,7 +56,11 @@ impl Workspace {
         window: &mut Window,
         cx: &mut Context<Self>,
     ) {
-        if self.busy || !self.checked || (!self.bound && operation.request.path != "/v1/setup") {
+        if self.busy
+            || !self.checked
+            || self.conversation.reconciling
+            || (!self.bound && operation.request.path != "/v1/setup")
+        {
             return;
         }
         if self.store.pending(&slot).is_some_and(|op| !op.replayable) {
@@ -98,7 +102,7 @@ impl Workspace {
         cx.notify();
     }
 
-    fn finish_command(
+    pub(super) fn finish_command(
         &mut self,
         slot: &str,
         operation: &Operation,
@@ -122,22 +126,22 @@ impl Workspace {
                         self.error = error.to_string();
                     }
                     if self.selected == operation.thread
-                        && self.scope == scope
-                        && self.composer.read(cx).snapshot(cx).draft.text == authored
+                        && self.conversation.composer.read(cx).snapshot(cx).draft.text == authored
                     {
                         self.restore_draft(window, cx);
+                    }
+                    if let Some(thread) = operation.thread {
+                        self.acknowledge_retained_composer(thread, authored);
                     }
                 }
                 if slot.starts_with("message:") && self.scope == scope {
                     self.accepted_focus(window, cx);
                 }
-                self.context_command_confirmed(operation, &result, window, cx);
+                if self.scope == scope {
+                    self.context_command_confirmed(operation, &result, window, cx);
+                }
                 let path = operation.request.path.as_str();
-                if path.starts_with("/v1/messages/")
-                    && path.ends_with("/edit")
-                    && self.scope == scope
-                {
-                    self.editing = None;
+                if self.acknowledge_thread_edit(operation, cx) {
                     self.restore_draft(window, cx);
                 }
                 if path.starts_with("/v1/creation/") || path == "/v1/setup" {
@@ -154,8 +158,11 @@ impl Workspace {
                 }
             }
             Err(error) => {
-                self.error = error.to_string();
-                self.context_failure(error.to_string());
+                self.record_retained_error(operation.thread, error.to_string());
+                if self.scope == scope {
+                    self.error = error.to_string();
+                    self.context_failure(error.to_string());
+                }
             }
         }
         self.lock_composer(cx);
@@ -167,6 +174,7 @@ impl Workspace {
     pub(super) fn send(&mut self, window: &mut Window, cx: &mut Context<Self>) {
         if self.staging_task.is_some()
             || self
+                .conversation
                 .composer
                 .update(cx, |composer, cx| composer.is_composing(window, cx))
         {
@@ -175,8 +183,8 @@ impl Workspace {
         let Some(thread) = self.selected else {
             return;
         };
-        let draft = self.composer.read(cx).snapshot(cx).draft;
-        if let Some(message) = self.editing.clone() {
+        let draft = self.conversation.composer.read(cx).snapshot(cx).draft;
+        if let Some(message) = self.conversation.editing.clone() {
             if draft.text.trim().is_empty() {
                 return;
             }
@@ -221,7 +229,8 @@ impl Workspace {
             Ok(op) => self.dispatch(slot, op, window, cx),
             Err(e) => self.error = e.to_string(),
         }
-        self.scroller
+        self.conversation
+            .scroller
             .update(cx, |state, cx| state.scroll_to_end(cx));
     }
     pub(super) fn create_agent(&mut self, window: &mut Window, cx: &mut Context<Self>) {
@@ -285,9 +294,9 @@ impl Workspace {
     }
     pub(super) fn edit(&mut self, message: Value, window: &mut Window, cx: &mut Context<Self>) {
         let value = text(&message, "text").to_owned();
-        self.editing = Some(message);
+        self.conversation.editing = Some(message);
         self.restoring = true;
-        self.composer.update(cx, |composer, cx| {
+        self.conversation.composer.update(cx, |composer, cx| {
             composer.restore(
                 Snapshot {
                     selection: value.len()..value.len(),
@@ -327,6 +336,7 @@ impl Workspace {
         if run["native_run_id"].is_null()
             || self.composer_response_locked(cx)
             || self
+                .conversation
                 .composer
                 .update(cx, |composer, cx| composer.is_composing(window, cx))
         {
@@ -335,7 +345,7 @@ impl Workspace {
         let body = if let Some(queued) = queued {
             json!({"queued_run_id":queued["id"],"expected_native_run_id":run["native_run_id"]})
         } else {
-            let draft = self.composer.read(cx).snapshot(cx).draft.text;
+            let draft = self.conversation.composer.read(cx).snapshot(cx).draft.text;
             if draft.trim().is_empty()
                 || self
                     .selected

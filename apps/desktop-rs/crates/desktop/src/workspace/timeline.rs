@@ -55,7 +55,7 @@ impl Workspace {
             return self.milestone(&parts[0], cx);
         }
         let p = Palette::new(self.store.dark());
-        let expanded = self.timeline_expanded.contains(id);
+        let expanded = self.conversation.timeline_expanded.contains(id);
         let target = id.to_owned();
         let title = format!("{} · {}", parts.len(), label(text(&parts[0], "kind")));
         let trigger = button(
@@ -78,10 +78,11 @@ impl Workspace {
             p,
         ))
         .on_click(cx.listener(move |this, _, _, cx| {
-            if !this.timeline_expanded.remove(&target) {
-                this.timeline_expanded.insert(target.clone());
+            if !this.conversation.timeline_expanded.remove(&target) {
+                this.conversation.timeline_expanded.insert(target.clone());
             }
-            this.scroller
+            this.conversation
+                .scroller
                 .update(cx, |scroller, cx| scroller.remeasure(cx));
             cx.notify();
         }));

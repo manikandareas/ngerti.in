@@ -48,3 +48,11 @@ The final native group Detail AX tree exposed its tabs, but the capture/control 
 ## Pre-commit cleanup
 
 Removed unused status-only state, gave command completion a named handler, retained subscriptions through an explicitly owned field, and retired avatar activity/cache entries with their views. The recovery helper and attachment/profile documentation were tidied. Request paths, durable identities, payloads and backend authority are unchanged. The five focused tests, strict library Clippy, formatting and the development bundle are checked again for the delivery commit; native/provider journeys retain the verification build above and are not relabeled as a new run.
+
+## Retained conversation-state amendment — 2026-11-09
+
+The [Zed-pattern follow-up](retained-threads-2026-11-09.md) records per-thread native entities, safe cache eviction, inactive projection replay, rich draft/reading checkpoints and switch/acknowledgement regression coverage. Its source/check manifests are separate from the original native/API captures above.
+
+The subsequent [conversation transition refinement](conversation-transitions-2026-11-09.md) covers retained avatars, stable message gutters, neutral initial composer focus and conversation-shaped loading skeletons, with native regression and current development-app observations.
+
+[Cleanup and local commit verification](thread-state-cleanup-2026-11-09.md) records the final source cleanup, regression cohort and exact evidence preservation for both amendments.

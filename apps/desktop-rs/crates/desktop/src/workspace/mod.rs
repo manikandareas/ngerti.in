@@ -6,13 +6,18 @@ mod composer_view;
 mod computer;
 mod context;
 mod interactions;
+mod loading;
 mod message_markup;
 mod model_picker;
 mod navigation;
 mod panels;
+mod scroll;
 mod sync;
 #[cfg(test)]
 mod tests;
+mod thread_state;
+#[cfg(test)]
+mod thread_tests;
 mod timeline;
 mod transcript;
 mod view;
@@ -26,7 +31,7 @@ use crate::{
     },
 };
 use gpui_kit::{
-    component::{WindowExt, input::InputState, message_scroller::MessageScrollerState},
+    component::{WindowExt, input::InputState},
     *,
 };
 use ngertiin_client::{ApiWorker, Conversation};
@@ -52,6 +57,9 @@ actions!(
     ]
 );
 pub(crate) struct Workspace {
+    conversation: thread_state::ThreadState,
+    retained_threads: thread_state::ThreadCache,
+    reading_save_task: Option<Task<()>>,
     computer: Entity<computer::Computer>,
     store: Store,
     context_work: context::ContextWork,
@@ -66,27 +74,10 @@ pub(crate) struct Workspace {
     connections: Vec<Value>,
     previews: BTreeMap<String, Value>,
     activities: Vec<Value>,
-    projection: Option<Conversation>,
-    opening: Value,
-    native: BTreeMap<String, Value>,
-    interaction_views: BTreeMap<String, interactions::BoundInteraction>,
     answers: BTreeMap<String, Value>,
-    question_steps: BTreeMap<String, usize>,
-    source_expanded: std::collections::BTreeSet<String>,
-    timeline_expanded: std::collections::BTreeSet<String>,
-    wrapped_code: std::collections::BTreeSet<String>,
-    composer: Entity<Composer>,
-    composer_height: Pixels,
     search: Entity<InputState>,
     group_name: Entity<InputState>,
     group_members: Vec<Uuid>,
-    editing: Option<Value>,
-    scroller: Entity<MessageScrollerState>,
-    transcript: Vec<transcript::TranscriptRow>,
-    order: Vec<String>,
-    parts: BTreeMap<String, Value>,
-    history_before: Option<u64>,
-    history_loaded: bool,
     animator: Entity<AvatarAnimator>,
     avatar_activity: BTreeMap<String, (bool, bool)>,
     portraits: BTreeMap<String, (Value, Entity<AvatarPortrait>)>,
@@ -163,7 +154,7 @@ impl Workspace {
         crate::ui::theme::apply(store.dark(), None, cx);
         let search = cx.new(|cx| InputState::new(window, cx).placeholder("Who’s on your mind?"));
         let group_name = cx.new(|cx| InputState::new(window, cx).placeholder("Group name"));
-        let composer = cx.new(|cx| Composer::new(vec![], window, cx));
+        let conversation = Self::new_thread_state(window, cx);
         let computer = cx.new(|cx| computer::Computer::new(window, cx));
         let sleep_weak = cx.entity().downgrade();
         let wake_weak = sleep_weak.clone();
@@ -192,6 +183,9 @@ impl Workspace {
             }),
             cx.observe_window_visibility(window, |this, _, window, cx| {
                 let visible = window.is_visible();
+                if !visible && let Err(error) = this.save_thread_presentation(window, cx) {
+                    this.error = error.to_string();
+                }
                 if std::env::var_os("NGERTIIN_RS_DIAGNOSTICS").is_some()
                     && let Ok(home) = crate::host::profile_root()
                 {
@@ -223,24 +217,6 @@ impl Workspace {
                     cx.notify();
                 }
             }),
-            cx.subscribe_in(
-                &composer,
-                window,
-                |this, _, event: &ComposerEvent, window, cx| match event {
-                    ComposerEvent::Submit(_) => this.send(window, cx),
-                    ComposerEvent::Files(entries) => this.stage_entries(entries.clone(), cx),
-                    ComposerEvent::Changed(draft) => {
-                        if !this.restoring
-                            && this.editing.is_none()
-                            && let Some(thread) = this.selected
-                            && let Err(error) = this.store.save_draft(thread, draft.text.clone())
-                        {
-                            this.error = error.to_string();
-                        }
-                        cx.notify();
-                    }
-                },
-            ),
             cx.observe(&search, |_, _, cx| cx.notify()),
         ];
         if let Some(id) = selected {
@@ -257,12 +233,21 @@ impl Workspace {
                 cx.notify();
             });
         });
-        window.on_window_should_close(cx, |_, cx| {
+        let close_weak = cx.entity().downgrade();
+        window.on_window_should_close(cx, move |window, cx| {
+            let _ = close_weak.update(cx, |this, cx| {
+                if let Err(error) = this.save_thread_presentation(window, cx) {
+                    this.error = error.to_string();
+                }
+            });
             crate::host::views::visibility(false);
             cx.hide();
             false
         });
         let mut this = Self {
+            conversation,
+            retained_threads: thread_state::ThreadCache::default(),
+            reading_save_task: None,
             computer,
             context_work: context::ContextWork::new(cx),
             store,
@@ -277,27 +262,10 @@ impl Workspace {
             connections: vec![],
             previews: BTreeMap::new(),
             activities: vec![],
-            projection: None,
-            opening: Value::Null,
-            native: BTreeMap::new(),
-            interaction_views: BTreeMap::new(),
             answers: retained_answers,
-            question_steps: BTreeMap::new(),
-            source_expanded: Default::default(),
-            timeline_expanded: Default::default(),
-            wrapped_code: Default::default(),
-            composer,
-            composer_height: px(72.),
             search,
             group_name,
             group_members: vec![],
-            editing: None,
-            scroller: cx.new(|cx| MessageScrollerState::new(0, cx)),
-            transcript: vec![],
-            order: vec![],
-            parts: BTreeMap::new(),
-            history_before: None,
-            history_loaded: false,
             animator: cx.new(|cx| AvatarAnimator::new(window, cx)),
             avatar_activity: BTreeMap::new(),
             portraits: BTreeMap::new(),
@@ -323,63 +291,74 @@ impl Workspace {
             refresh_pending: false,
             _subscriptions: subscriptions,
         };
+        this.conversation.restore_reading =
+            this.selected.and_then(|id| this.store.reading_position(id));
         this.recipient = this.selected.and_then(|id| this.store.recipient(id));
-        this.composer.update(cx, |composer, cx| {
-            composer.embedded("Pesan…".into(), window, cx)
-        });
         this.lock_composer(cx);
         this.restore_draft(window, cx);
         this.refresh(true, window, cx);
-        this.timer = Some(cx.spawn_in(window, async move |view, cx| {
-            loop {
-                cx.background_executor()
-                    .timer(std::time::Duration::from_millis(1000))
-                    .await;
-                if view
-                    .update_in(cx, |this, window, cx| {
-                        let active = window.is_window_active() && window.is_visible();
-                        let first_visible = this.scroller.read(cx).logical_scroll_top().item_ix;
-                        let conversation_computer =
-                            this.transcript.iter().skip(first_visible).any(|row| {
-                                matches!(&row.kind, transcript::RowKind::Computer(run)
+        this.timer =
+            Some(cx.spawn_in(window, async move |view, cx| {
+                loop {
+                    cx.background_executor()
+                        .timer(std::time::Duration::from_millis(1000))
+                        .await;
+                    if view
+                        .update_in(cx, |this, window, cx| {
+                            let active = window.is_window_active() && window.is_visible();
+                            let first_visible = this
+                                .conversation
+                                .scroller
+                                .read(cx)
+                                .logical_scroll_top()
+                                .item_ix;
+                            let conversation_computer =
+                                this.conversation.transcript.iter().skip(first_visible).any(
+                                    |row| {
+                                        matches!(&row.kind, transcript::RowKind::Computer(run)
                                     if matches!(ngertiin_client::text(run, "status"),
                                         "running" | "dispatching" | "cancel_requested"))
+                                    },
+                                );
+                            let computer_present = (this.panel == Some(Panel::Computer)
+                                || conversation_computer)
+                                && !this.is_viewing()
+                                && this.panel != Some(Panel::Settings);
+                            let computer_suspended = !window.is_visible()
+                                || window.has_active_dialog(cx)
+                                || window.has_active_sheet(cx);
+                            this.computer.update(cx, |computer, cx| {
+                                computer.present(computer_present, cx);
+                                computer.suspend(computer_suspended, cx);
                             });
-                        let computer_present = (this.panel == Some(Panel::Computer)
-                            || conversation_computer)
-                            && !this.is_viewing()
-                            && this.panel != Some(Panel::Settings);
-                        let computer_suspended = !window.is_visible()
-                            || window.has_active_dialog(cx)
-                            || window.has_active_sheet(cx);
-                        this.computer.update(cx, |computer, cx| {
-                            computer.present(computer_present, cx);
-                            computer.suspend(computer_suspended, cx);
-                        });
-                        if this.reads.is_none() && this.ticks.is_multiple_of(3) {
-                            this.reconnect(window, cx);
-                        }
+                            if this.reads.is_none() && this.ticks.is_multiple_of(3) {
+                                this.reconnect(window, cx);
+                            }
 
-                        let resumed = active && !this.was_active;
-                        this.was_active = active;
-                        if let Some(feed) = &this.feed {
-                            feed.set_visible(active);
-                        }
-                        this.ticks += 1;
-                        if active {
-                            this.refresh(resumed || this.ticks.is_multiple_of(30), window, cx);
-                        }
-                    })
-                    .is_err()
-                {
-                    break;
+                            let resumed = active && !this.was_active;
+                            this.was_active = active;
+                            if let Some(feed) = &this.feed {
+                                feed.set_visible(active);
+                            }
+                            this.ticks += 1;
+                            if active {
+                                if let Err(error) = this.save_thread_presentation(window, cx) {
+                                    this.error = error.to_string();
+                                }
+                                this.refresh(resumed || this.ticks.is_multiple_of(30), window, cx);
+                            }
+                        })
+                        .is_err()
+                    {
+                        break;
+                    }
                 }
-            }
-        }));
+            }));
         this
     }
     fn value(&self) -> &Value {
-        self.projection
+        self.conversation
+            .projection
             .as_ref()
             .map(Conversation::value)
             .unwrap_or(&Value::Null)
@@ -388,31 +367,35 @@ impl Workspace {
         let locked = self.busy
             || self.composer_response_locked(cx)
             || !self.checked
-            || self.projection.is_none()
+            || self.conversation.reconciling
+            || self.conversation.projection.is_none()
             || self
                 .selected
                 .is_some_and(|id| self.store.pending(&format!("message:{id}")).is_some());
-        self.composer
+        self.conversation
+            .composer
             .update(cx, |composer, cx| composer.readonly(locked, cx));
     }
     fn restore_draft(&mut self, window: &mut Window, cx: &mut Context<Self>) {
         self.restoring = true;
-        let text = self
+        let snapshot = self
             .selected
-            .map(|id| {
-                let draft = self.store.draft(id);
-                if draft.is_empty() {
-                    self.store
-                        .pending(&format!("message:{id}"))
-                        .and_then(|operation| operation.authored)
-                        .unwrap_or(draft)
-                } else {
-                    draft
-                }
-            })
-            .unwrap_or_default();
-        self.composer.update(cx, |composer, cx| {
-            composer.restore(
+            .and_then(|id| self.store.composer(id))
+            .unwrap_or_else(|| {
+                let text = self
+                    .selected
+                    .map(|id| {
+                        let draft = self.store.draft(id);
+                        if draft.is_empty() {
+                            self.store
+                                .pending(&format!("message:{id}"))
+                                .and_then(|op| op.authored)
+                                .unwrap_or(draft)
+                        } else {
+                            draft
+                        }
+                    })
+                    .unwrap_or_default();
                 Snapshot {
                     selection: text.len()..text.len(),
                     draft: Draft {
@@ -420,47 +403,45 @@ impl Workspace {
                         tokens: vec![],
                     },
                     reversed: false,
-                },
-                window,
-                cx,
-            )
-        });
+                }
+            });
+        self.conversation
+            .composer
+            .update(cx, |composer, cx| composer.restore(snapshot, window, cx));
         self.restoring = false;
     }
     fn select(&mut self, id: Uuid, window: &mut Window, cx: &mut Context<Self>) {
-        if self.selected == Some(id) && self.projection.is_some() {
+        if self.selected == Some(id) && self.conversation.projection.is_some() {
             return;
         }
-        if let Err(e) = self.store.select(id) {
+        if self
+            .conversation
+            .composer
+            .update(cx, |composer, cx| composer.is_composing(window, cx))
+        {
+            return;
+        }
+        if let Err(e) = self
+            .save_thread_presentation(window, cx)
+            .and_then(|_| self.store.select(id))
+        {
             self.error = e.to_string();
             return;
         }
         self.computer
             .update(cx, |computer, cx| computer.present(false, cx));
         self.read_task = None;
+        self.reading_save_task = None;
+        self.refresh_pending = false;
         self.context_work = context::ContextWork::new(cx);
         self.scope += 1;
-        self.selected = Some(id);
         self.recipient = self.store.recipient(id);
-        self.projection = None;
+        self.error.clear();
+        self.activate_thread(id, window, cx);
         self.lock_composer(cx);
-        self.native.clear();
-        self.interaction_views.clear();
         self.answers = self.store.interaction_answers();
-        self.question_steps.clear();
-        self.source_expanded.clear();
-        self.timeline_expanded.clear();
-        self.wrapped_code.clear();
-        self.transcript.clear();
-        self.editing = None;
         self.panel = None;
         window.close_sheet(cx);
-        self.parts.clear();
-        self.order.clear();
-        self.history_before = None;
-        self.history_loaded = false;
-        self.scroller.update(cx, |state, cx| state.reset(0, cx));
-        self.restore_draft(window, cx);
         self.refresh(true, window, cx);
         cx.notify();
     }

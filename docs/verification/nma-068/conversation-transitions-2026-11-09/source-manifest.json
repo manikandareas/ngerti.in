@@ -1,0 +1,115 @@
+{
+  "source_frozen_at_utc": "2026-11-09T09:40:20.198423+00:00",
+  "baseline_commit": "158073ed5f0a722442fce080f271994427b3cb62",
+  "scope": "Conversation avatar retention and stable gutters, neutral initial composer focus, and conversation loading skeletons.",
+  "host": {
+    "system": "Darwin",
+    "release": "25.3.0",
+    "machine": "arm64",
+    "macos": "26.3"
+  },
+  "tools": {
+    "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+    "cargo": "cargo 1.99.1 (5f94df478 2026-08-27)",
+    "bun": "1.3.10"
+  },
+  "pins": {
+    "gpui-kit": "0.9.0",
+    "gpui-fast": "0.1.13",
+    "api_contract": "1.31.0"
+  },
+  "unchanged_dependency_and_contract_files": {
+    "apps/desktop-rs/Cargo.toml": "81dd65b342e5dd7fda67f3f237815e15396a041286656ee58d8c950498c3a958",
+    "apps/desktop-rs/Cargo.lock": "1bc17d8e999526bbae99c7148c4c4792233937b241289e5d753c2657e8137292",
+    "apps/desktop-rs/crates/desktop/Cargo.toml": "e22ed1d94ceb1d3e447938c56bd619e56e784759db8c1f3f3b77b1d0a773b7a8",
+    "docs/contracts/1.31.0.json": "5278548fa5d4881be204a24d9ff883369300f03abfc203db213392b776545230",
+    "apps/server/src/contracts.ts": "52e349a225eddc74c8d1d9f4c569d38ac6993bd5d3f928b35a0f2aaadfe94517"
+  },
+  "changed_rust_source_sha256": {
+    "apps/desktop-rs/crates/desktop/src/models/composer.rs": "faf37622c439c985396749af69a72cc76bc2025617400b6aa47a679dae666c79",
+    "apps/desktop-rs/crates/desktop/src/storage/journal.rs": "7f5f2283dd115f7143a521b5f85df9df3a8e50c9c1f5ad7ce322fd26e52dc739",
+    "apps/desktop-rs/crates/desktop/src/storage/mod.rs": "2fdff9d2e558fc2826944d5a3f1026cd8296c1a1a7d03f1ffab24980ddd31ee5",
+    "apps/desktop-rs/crates/desktop/src/storage/reading.rs": "54009cbffe7dec7a43f9cfad0aef8cb74f7b1a605723a33f34c7cfbd695fb7d2",
+    "apps/desktop-rs/crates/desktop/src/storage/reading_tests.rs": "bfb4b0a060a95b487d4c33fb49ca4a838b897d9f330f85937452a14fb9612f10",
+    "apps/desktop-rs/crates/desktop/src/ui/avatar_view.rs": "72ba924cecfa373756699ca7b7fd31a48bb9a9ef6a2793b64a8bc63d979ee6df",
+    "apps/desktop-rs/crates/desktop/src/workspace/commands.rs": "61ff26a45d7ceadf27c545fe93c08769e3ff96324606133c20baa47833ccc977",
+    "apps/desktop-rs/crates/desktop/src/workspace/composer_view.rs": "49394ce2cf04c5cb15476061d9e8744bb5a6f4e478aec19955dd54f4a353ba63",
+    "apps/desktop-rs/crates/desktop/src/workspace/context/focus.rs": "4693d7c3bba91fc61da27604bfe2fd59213b47c8e733209c9550502128601277",
+    "apps/desktop-rs/crates/desktop/src/workspace/context/mod.rs": "b1e08f11f8c64ba842f5061a30839b8fa446563d774adb815d17988929b09309",
+    "apps/desktop-rs/crates/desktop/src/workspace/interactions.rs": "c3bd8c692024de135c950e94644718b4252a93f4c76051351c57963150c37aba",
+    "apps/desktop-rs/crates/desktop/src/workspace/loading.rs": "0fefacf12ec42f8e3fb67948e92b2893522daeb13b2b46498f4ed03eba3343dc",
+    "apps/desktop-rs/crates/desktop/src/workspace/message_markup.rs": "8827af8d18322acb5a18f8219576a5a5fc0711bad0f342693f51dff2393e4567",
+    "apps/desktop-rs/crates/desktop/src/workspace/mod.rs": "3faa0ee0ce2585c80a532f89483647c6f1525d87bf3ec4d8685e0ac27158dc45",
+    "apps/desktop-rs/crates/desktop/src/workspace/model_picker.rs": "dc3bd981bd2782e5a9728ea14b47da84b8a1858f9c2afa5f589dbf151119a26c",
+    "apps/desktop-rs/crates/desktop/src/workspace/navigation.rs": "aca9476d40a31f168678fa5268adff280d2226589e111e6a08292e21854cecc1",
+    "apps/desktop-rs/crates/desktop/src/workspace/panels.rs": "f7c702548a30cdba8a8bb1c95c783aa5e6b709a8a3f42cdeca13606723c8312f",
+    "apps/desktop-rs/crates/desktop/src/workspace/scroll.rs": "23d9cd00da6fbb456b27ca4b68f0f6966be30ea86de3f142a86fbf8f8c47785f",
+    "apps/desktop-rs/crates/desktop/src/workspace/sync.rs": "0c733270a87de8d59ef028c38d1d61fdaab6f6a1788eb9464c01c4a369de1cbb",
+    "apps/desktop-rs/crates/desktop/src/workspace/tests.rs": "dda3e2e4909afccf4a6023ef99f3d7f59121bd506f6d36c9381bcc2fd952a017",
+    "apps/desktop-rs/crates/desktop/src/workspace/thread_state.rs": "8b4f291803e2e36668dc49be7f8219eac5dff80184a196b4418e8da303a75d0e",
+    "apps/desktop-rs/crates/desktop/src/workspace/thread_tests.rs": "4a064eac02928c5ae58ace9c73f3365d04cdc6c654c3f02c1cc90598bf0ac081",
+    "apps/desktop-rs/crates/desktop/src/workspace/timeline.rs": "bbfedc5786e7e95e4cee2f62e3d77aa6d6b86cee99c8f82d7486a49a1d33917d",
+    "apps/desktop-rs/crates/desktop/src/workspace/transcript.rs": "6be7fa4174cc0445c5f3a4bae63433ebdbcb93bf02785152276da99ee3eab913",
+    "apps/desktop-rs/crates/desktop/src/workspace/view.rs": "4921efdf768256c61b85453a61631e8a03e7b4149fa788ec58c9cab7a498c850"
+  },
+  "local_presentation_reference": {
+    "path": "apps/web-client/src/features/conversation/components/conversation-loading.tsx",
+    "sha256": "9a3b157d98d52ae9273a9a12dfb13888a8df6c6ad00ea4533dde113224c176d9"
+  },
+  "development_app": {
+    "command": "CARGO_BUILD_JOBS=2 bun run dev:desktop-rs",
+    "executable": ".dev/desktop-rs-target/dx/ngertiin-desktop-dev/debug/macos/NgertiinDesktopDev.app/Contents/MacOS/ngertiin-desktop-dev",
+    "sha256": "854f4df24725687872953f88a2893e754e2a87b1881e8c0f28a969f68c370b07",
+    "build_log_sha256": "52da9c0218424884913feb269362e5f71e2b13b573e99fdbda2de8c11a94e72b",
+    "observations": [
+      "Cold DM and group: alternating bubble skeletons and neutral composer in the loading frame.",
+      "Cached Marketing group return: retained rendered portraits visible immediately.",
+      "Original Machine group restored; no message typed or submitted."
+    ]
+  },
+  "verification": {
+    "state": "passed",
+    "command": "CARGO_BUILD_JOBS=2 bun run check:desktop-rs",
+    "exit_status": 0,
+    "results": {
+      "avatar": 8,
+      "client_unit": 4,
+      "client_read_only": 12,
+      "client_worker": 1,
+      "desktop": 77,
+      "total": 102,
+      "failed": 0,
+      "ignored": 0
+    },
+    "logs_sha256": {
+      "check.txt": "f518ca90dc03ebd5dd6dd9aafee3b1d9892928425d93daf4e4b836b935bd2dab",
+      "avatar-gutter-before.txt": "28e6285cdb704b94aa166a3068ffd688027559a789f6675d570fe17e268b601e",
+      "thread-tests-initial.txt": "3a63d83d3ee207fcd9b21013f9d15a068da45d1ba7893c8530a7e5fad497388d",
+      "native-build.txt": "52da9c0218424884913feb269362e5f71e2b13b573e99fdbda2de8c11a94e72b",
+      "docs-check.txt": "5efb0b5810fe668cd10d1d0a8a485523c4cf8240d0adf089291545eebac215bf",
+      "docs-scoped-check.txt": "5e29faca9a1d0db069bcd4d92cd1d3621565f318f02a6a15b5642c91c6eacd81"
+    },
+    "initial_focused_cohort": {
+      "passed": 12,
+      "failed": 1,
+      "reason": "An older navigation fixture marked sidebar readiness before creating the portrait entities; final setup creates them first."
+    },
+    "documentation": {
+      "full_exit_status": 1,
+      "existing_imported_skill_broken_links": 8,
+      "scoped_exit_status": 0,
+      "scope_exception": "Temporary checker copy excludes only .agents/skills/gpui-kit* Markdown discovery.",
+      "markdown_files": 231,
+      "local_links": 2250,
+      "historical_links": 101,
+      "milestones": 25,
+      "decisions": 83
+    },
+    "whitespace": "git diff --check passed"
+  },
+  "limits": [
+    "Qualitative current dark wide-window macOS ARM64 native UI observation, not a frame-time or total-memory benchmark.",
+    "No fresh provider inference, production or distribution acceptance."
+  ],
+  "completed_at_utc": "2026-11-09T09:41:37.305956+00:00"
+}

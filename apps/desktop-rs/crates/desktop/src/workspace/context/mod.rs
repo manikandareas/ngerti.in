@@ -181,7 +181,11 @@ impl Workspace {
         )
     }
     pub(in crate::workspace) fn refresh_context_resources(&mut self, cx: &mut Context<Self>) {
-        let cursor = self.projection.as_ref().map(Conversation::cursor);
+        let cursor = self
+            .conversation
+            .projection
+            .as_ref()
+            .map(Conversation::cursor);
         if cursor == self.context_work.resource_cursor {
             return;
         }
@@ -402,7 +406,8 @@ impl Workspace {
         if let Some(focus) = self.context_work.return_focus.take() {
             focus.focus(window, cx);
         } else {
-            self.composer
+            self.conversation
+                .composer
                 .read(cx)
                 .input
                 .clone()

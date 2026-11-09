@@ -45,6 +45,31 @@ pub(super) struct TranscriptRow {
     pub starts_day: bool,
     pub kind: RowKind,
 }
+impl TranscriptRow {
+    // Entity revisions and the actual displayed slice are distinct: one message
+    // can span several rows around an interaction boundary.
+    fn layout_revision(&self) -> Option<u64> {
+        use std::hash::{Hash, Hasher};
+        let RowKind::Message {
+            message,
+            content,
+            sources,
+            tail,
+            ..
+        } = &self.kind
+        else {
+            return None;
+        };
+        let mut hash = std::collections::hash_map::DefaultHasher::new();
+        self.at.hash(&mut hash);
+        self.starts_day.hash(&mut hash);
+        message["revision"].as_u64().hash(&mut hash);
+        content.hash(&mut hash);
+        sources.hash(&mut hash);
+        tail.hash(&mut hash);
+        Some(hash.finish())
+    }
+}
 fn utf16_offset(s: &str, offset: u64) -> Option<usize> {
     let mut units = 0;
     for (i, c) in s.char_indices() {
@@ -109,11 +134,7 @@ impl Workspace {
         if self.value()["thread"]["type"] != "group" {
             return None;
         }
-        let portrait = self
-            .portraits
-            .get(&format!("message:{row}:{agent}"))?
-            .1
-            .clone();
+        let portrait = self.portrait(&format!("message:{row}:{agent}"));
         let name = self
             .agents
             .iter()
@@ -124,7 +145,7 @@ impl Workspace {
         let p = Palette::new(self.store.dark());
         Some(
             button(
-                SharedString::from(format!("activity-profile:{row}:{agent}")),
+                SharedString::from(format!("message-profile:{row}")),
                 "",
                 ButtonKind::Ghost,
                 p,
@@ -132,9 +153,14 @@ impl Workspace {
             )
             .accessibility_label(format!("Open {name}’s profile"))
             .size(ui(32.))
+            .flex_shrink_0()
             .p_0()
             .rounded_full()
-            .child(portrait)
+            .child(
+                portrait
+                    .map(IntoElement::into_any_element)
+                    .unwrap_or_else(|| super::loading::avatar_placeholder(cx)),
+            )
             .on_click(
                 cx.listener(move |this, _, window, cx| {
                     this.show_member(target.clone(), window, cx)
@@ -144,15 +170,22 @@ impl Workspace {
         )
     }
     pub(super) fn rebuild_transcript(&mut self, window: &mut Window, cx: &mut Context<Self>) {
+        let previous_layouts: BTreeMap<_, _> = self
+            .conversation
+            .transcript
+            .iter()
+            .map(|row| (row.id.clone(), row.layout_revision()))
+            .collect();
         let mut previous: BTreeMap<_, _> = self
+            .conversation
             .transcript
             .drain(..)
             .map(|row| (row.id.clone(), row))
             .collect();
         // Preserve presentation order separately from the lookup map.
-        let old_count = self.scroller.read(cx).item_count();
+        let old_count = self.conversation.scroller.read(cx).item_count();
         let value = self.value().clone();
-        let mut parts: Vec<_> = self.parts.values().cloned().collect();
+        let mut parts: Vec<_> = self.conversation.parts.values().cloned().collect();
         parts.sort_by_key(|p| p["sequence"].as_u64().unwrap_or(0));
         let mut result = vec![];
         let mut placed = std::collections::BTreeSet::new();
@@ -212,7 +245,7 @@ impl Workspace {
                     .filter(|r| r["message_id"] == message["id"])
                 {
                     let key = format!("human:{}", text(request, "id"));
-                    if let Some(card) = self.interaction_views.get(&key) {
+                    if let Some(card) = self.conversation.interaction_views.get(&key) {
                         result.push(TranscriptRow {
                             id: key.clone(),
                             at: card.at.clone(),
@@ -230,7 +263,10 @@ impl Workspace {
             let mut anchors = vec![];
             for run in rows(&value, "runs") {
                 for record in rows(
-                    self.native.get(text(run, "id")).unwrap_or(&Value::Null),
+                    self.conversation
+                        .native
+                        .get(text(run, "id"))
+                        .unwrap_or(&Value::Null),
                     "records",
                 ) {
                     if record["anchor_message_id"] != message["id"] {
@@ -245,10 +281,15 @@ impl Workspace {
                     let Some(offset) = observed_anchor(record, run, message) else {
                         continue;
                     };
-                    for (key, card) in self.interaction_views.iter().filter(|(key, _)| {
-                        self.interaction_visible(key)
-                            && (*key == &prefix || key.starts_with(&format!("{prefix}:")))
-                    }) {
+                    for (key, card) in
+                        self.conversation
+                            .interaction_views
+                            .iter()
+                            .filter(|(key, _)| {
+                                self.interaction_visible(key)
+                                    && (*key == &prefix || key.starts_with(&format!("{prefix}:")))
+                            })
+                    {
                         anchors.push((
                             offset,
                             key.clone(),
@@ -337,7 +378,7 @@ impl Workspace {
                 );
             }
         }
-        for (key, card) in &self.interaction_views {
+        for (key, card) in &self.conversation.interaction_views {
             if placed.contains(key) || !self.interaction_visible(key) {
                 continue;
             }
@@ -451,23 +492,30 @@ impl Workspace {
             .zip(new_ids[prefix..].iter().rev())
             .take_while(|(a, b)| a == b)
             .count();
-        self.scroller.update(cx, |state, cx| {
+        self.conversation.scroller.update(cx, |state, cx| {
             if old_count != original_ids.len() {
                 state.reset(result.len(), cx);
             } else {
-                state.splice(
-                    prefix..old_count - suffix,
-                    result.len() - prefix - suffix,
-                    cx,
-                );
-                state.remeasure(cx);
+                if prefix + suffix != old_count || old_count != result.len() {
+                    state.splice(
+                        prefix..old_count - suffix,
+                        result.len() - prefix - suffix,
+                        cx,
+                    );
+                }
+                for (ix, row) in result.iter().enumerate() {
+                    let revision = row.layout_revision();
+                    if revision.is_none() || previous_layouts.get(&row.id) != Some(&revision) {
+                        state.remeasure_items(ix..ix + 1, cx);
+                    }
+                }
             }
         });
-        self.transcript = result;
-        self.order = new_ids;
+        self.conversation.transcript = result;
+        self.conversation.order = new_ids;
     }
     fn row_order(&self) -> Vec<String> {
-        self.order.clone()
+        self.conversation.order.clone()
     }
     pub(super) fn transcript_row(
         &mut self,
@@ -476,7 +524,7 @@ impl Workspace {
         cx: &mut Context<Self>,
     ) -> AnyElement {
         let p = Palette::new(self.store.dark());
-        let Some(row) = self.transcript.get(ix) else {
+        let Some(row) = self.conversation.transcript.get(ix) else {
             return div().into_any_element();
         };
         let at = row.at.clone();
@@ -488,7 +536,7 @@ impl Workspace {
                 && !rows(self.value(), "human_requests")
                     .iter()
                     .any(|request| request["message_id"] == message["id"])
-                && !self.native.values().any(|history| {
+                && !self.conversation.native.values().any(|history| {
                     rows(history, "records")
                         .iter()
                         .any(|record| record["anchor_message_id"] == message["id"])
@@ -514,13 +562,14 @@ impl Workspace {
         };
         let join_above = ix
             .checked_sub(1)
-            .and_then(|index| self.transcript.get(index))
+            .and_then(|index| self.conversation.transcript.get(index))
             .is_some_and(|previous| joins(previous, row));
         let join_below = self
+            .conversation
             .transcript
             .get(ix + 1)
             .is_some_and(|next| joins(row, next));
-        let same_message_above = ix.checked_sub(1).and_then(|index|self.transcript.get(index)).is_some_and(|previous| matches!((&previous.kind,&row.kind),(RowKind::Message {message:a,..},RowKind::Message {message:b,..}) if a["id"] == b["id"]));
+        let same_message_above = ix.checked_sub(1).and_then(|index|self.conversation.transcript.get(index)).is_some_and(|previous| matches!((&previous.kind,&row.kind),(RowKind::Message {message:a,..},RowKind::Message {message:b,..}) if a["id"] == b["id"]));
         let mut container = div()
             .id(SharedString::from(id.clone()))
             .w_full()
@@ -731,9 +780,7 @@ impl Workspace {
                     }
                 }
                 let avatar = if group && !user {
-                    self.portraits
-                        .get(&format!("message:{id}:{agent}"))
-                        .map(|(_, a)| a.clone())
+                    self.grouped_avatar(&id, &agent, cx)
                 } else {
                     None
                 };
@@ -768,34 +815,7 @@ impl Workspace {
                     .w_full()
                     .gap_2()
                     .when(user, |v| v.justify_end())
-                    .when_some(avatar, |view, portrait| {
-                        let target = agent.clone();
-                        let name = self
-                            .agents
-                            .iter()
-                            .find(|item| item["id"] == target)
-                            .map(|item| text(item, "name"))
-                            .unwrap_or("Agent");
-                        view.child(
-                            button(
-                                SharedString::from(format!("message-profile:{id}")),
-                                "",
-                                ButtonKind::Ghost,
-                                p,
-                                cx,
-                            )
-                            .accessibility_label(format!("Open {name}’s profile"))
-                            .size(ui(32.))
-                            .p_0()
-                            .rounded_full()
-                            .child(portrait)
-                            .on_click(cx.listener(
-                                move |this, _, window, cx| {
-                                    this.show_member(target.clone(), window, cx)
-                                },
-                            )),
-                        )
-                    })
+                    .when_some(avatar, |view, portrait| view.child(portrait))
                     .child(
                         div()
                             .group(SharedString::from(format!("message-actions:{id}")))
@@ -822,7 +842,11 @@ impl Workspace {
             RowKind::Interaction { key, agent } => {
                 let key = key.clone();
                 let agent = agent.clone();
-                let card = self.interaction_views.get(&key).map(|c| c.view.clone());
+                let card = self
+                    .conversation
+                    .interaction_views
+                    .get(&key)
+                    .map(|c| c.view.clone());
                 let avatar = self.grouped_avatar(&id, &agent, cx);
                 div()
                     .flex()
@@ -1108,7 +1132,7 @@ impl Workspace {
             RowKind::Sources(run) => {
                 let run_id = text(run, "id").to_owned();
                 let sources = crate::models::content::research_sources(rows(run, "sources"));
-                let expanded = self.source_expanded.contains(&run_id);
+                let expanded = self.conversation.source_expanded.contains(&run_id);
                 let mut view = div()
                     .flex()
                     .flex_col()
@@ -1157,8 +1181,8 @@ impl Workspace {
                     })
                     .child(caption(format!("{} sumber", sources.len()), p))
                     .on_click(cx.listener(move |this, _, _, cx| {
-                        if !this.source_expanded.remove(&run_id) {
-                            this.source_expanded.insert(run_id.clone());
+                        if !this.conversation.source_expanded.remove(&run_id) {
+                            this.conversation.source_expanded.insert(run_id.clone());
                         }
                         cx.notify();
                     })),

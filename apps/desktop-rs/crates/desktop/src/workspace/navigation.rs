@@ -11,6 +11,14 @@ use gpui_kit::{
 use ngertiin_client::{rows, text};
 
 impl Workspace {
+    pub(super) fn portrait(&self, key: &str) -> Option<Entity<AvatarPortrait>> {
+        let portraits = if key.starts_with("nav:") {
+            &self.portraits
+        } else {
+            &self.conversation.portraits
+        };
+        portraits.get(key).map(|(_, portrait)| portrait.clone())
+    }
     pub(super) fn label(&self, thread: &Value) -> String {
         thread["name"]
             .as_str()
@@ -343,7 +351,7 @@ impl Workspace {
             .justify_center();
         if group {
             for (ix, agent) in members.iter().enumerate() {
-                if let Some((_, portrait)) = self.portraits.get(&format!("{role}:{id}:{agent}")) {
+                if let Some(portrait) = self.portrait(&format!("{role}:{id}:{agent}")) {
                     view = view.child(
                         div()
                             .absolute()
@@ -352,7 +360,7 @@ impl Workspace {
                             } else {
                                 if nav { 20. } else { 10. }
                             }))
-                            .child(portrait.clone()),
+                            .child(portrait),
                     );
                 }
             }
@@ -374,9 +382,9 @@ impl Workspace {
                 );
             }
         } else if let Some(agent) = members.first()
-            && let Some((_, portrait)) = self.portraits.get(&format!("{role}:{id}:{agent}"))
+            && let Some(portrait) = self.portrait(&format!("{role}:{id}:{agent}"))
         {
-            view = view.child(portrait.clone());
+            view = view.child(portrait);
         }
         let _ = cx;
         view.into_any_element()
@@ -430,6 +438,7 @@ impl Workspace {
                 {
                     if index < 2 {
                         if self
+                            .conversation
                             .transcript
                             .iter()
                             .any(|row| matches!(row.kind, super::transcript::RowKind::Route(_)))
@@ -458,7 +467,7 @@ impl Workspace {
             }
         }
         if self.value()["thread"]["type"] == "group" {
-            for row in &self.transcript {
+            for row in &self.conversation.transcript {
                 let agent = match &row.kind {
                     super::transcript::RowKind::Message { message, .. }
                         if message["author"] != "user" =>
@@ -485,15 +494,24 @@ impl Workspace {
             .retain(|key, _| retained.contains(key));
         self.ready_portraits.retain(|key| retained.contains(key));
         self.avatar_activity.retain(|key, _| retained.contains(key));
+        self.conversation
+            .portraits
+            .retain(|key, _| retained.contains(key));
+        self.conversation
+            .avatar_activity
+            .retain(|key, _| retained.contains(key));
         for (key, id, size, follow) in targets {
             let Some(agent) = self.agents.iter().find(|agent| agent["id"] == id) else {
                 continue;
             };
             let config = agent["avatar_config"].clone();
-            let fresh = self
-                .portraits
-                .get(&key)
-                .is_none_or(|(old, _)| old != &config);
+            let navigation = key.starts_with("nav:");
+            let portraits = if navigation {
+                &self.portraits
+            } else {
+                &self.conversation.portraits
+            };
+            let fresh = portraits.get(&key).is_none_or(|(old, _)| old != &config);
             if fresh {
                 let recipe = serde_json::from_value(config.clone()).ok().or_else(|| {
                     ngertiin_avatar::AvatarConfig::default_agent(
@@ -507,17 +525,23 @@ impl Workspace {
                 };
                 let portrait = AvatarPortrait::create(&self.animator, recipe, size, cx);
                 portrait.update(cx, |view, _| view.follow_pointer = follow);
-                self.ready_portraits.remove(&key);
-                let identity = key.clone();
-                let observer = cx.observe(&portrait, move |this, portrait, cx| {
-                    if portrait.read(cx).is_settled()
-                        && this.ready_portraits.insert(identity.clone())
-                    {
-                        cx.notify();
-                    }
-                });
-                self.portrait_observers.insert(key.clone(), observer);
-                self.portraits.insert(key.clone(), (config, portrait));
+                if navigation {
+                    self.ready_portraits.remove(&key);
+                    let identity = key.clone();
+                    let observer = cx.observe(&portrait, move |this, portrait, cx| {
+                        if portrait.read(cx).is_settled()
+                            && this.ready_portraits.insert(identity.clone())
+                        {
+                            cx.notify();
+                        }
+                    });
+                    self.portrait_observers.insert(key.clone(), observer);
+                    self.portraits.insert(key.clone(), (config, portrait));
+                } else {
+                    self.conversation
+                        .portraits
+                        .insert(key.clone(), (config, portrait));
+                }
             }
             let thread_id = key.split(':').nth(1).unwrap_or_default();
             let conversation_portrait = !key.starts_with("message:") && !key.starts_with("route:");
@@ -546,23 +570,27 @@ impl Workspace {
             let busy = run.is_some() || live.is_some();
             let waiting = live.is_some_and(|activity| activity["waiting_for_user"] == true)
                 || run.is_some_and(|run| crate::models::activity::waiting(run, self.value()));
-            if fresh || self.avatar_activity.get(&key) != Some(&(busy, waiting)) {
-                if let Some((_, portrait)) = self.portraits.get(&key) {
-                    portrait.update(cx, |view, cx| {
-                        view.loading(busy && !waiting, cx);
-                        view.state(
-                            if waiting {
-                                ngertiin_avatar::State::Listening
-                            } else if busy {
-                                ngertiin_avatar::State::Thinking
-                            } else {
-                                ngertiin_avatar::State::Idle
-                            },
-                            cx,
-                        );
-                    });
-                }
-                self.avatar_activity.insert(key, (busy, waiting));
+            let activity = if navigation {
+                &mut self.avatar_activity
+            } else {
+                &mut self.conversation.avatar_activity
+            };
+            let changed = fresh || activity.get(&key) != Some(&(busy, waiting));
+            activity.insert(key.clone(), (busy, waiting));
+            if changed && let Some(portrait) = self.portrait(&key) {
+                portrait.update(cx, |view, cx| {
+                    view.loading(busy && !waiting, cx);
+                    view.state(
+                        if waiting {
+                            ngertiin_avatar::State::Listening
+                        } else if busy {
+                            ngertiin_avatar::State::Thinking
+                        } else {
+                            ngertiin_avatar::State::Idle
+                        },
+                        cx,
+                    );
+                });
             }
         }
     }

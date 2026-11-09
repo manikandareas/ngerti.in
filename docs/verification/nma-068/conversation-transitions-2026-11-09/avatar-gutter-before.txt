@@ -1,0 +1,18 @@
+Pre-fix test binary SHA-256: 4e876a2db89cedbdfe7f872053f5a75506ab3268cbb7e4835c7010d0bbd2b146
+
+running 1 test
+
+thread 'workspace::thread_tests::group_avatar_gutter_is_stable_before_portraits_are_prepared' (15474281) panicked at crates/desktop/src/workspace/thread_tests.rs:633:9:
+assertion `left == right` failed: Portrait preparation must not move an existing message.
+  left: Point { x: 566px, y: 234px }
+ right: Point { x: 606px, y: 234px }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test workspace::thread_tests::group_avatar_gutter_is_stable_before_portraits_are_prepared ... FAILED
+
+failures:
+
+failures:
+    workspace::thread_tests::group_avatar_gutter_is_stable_before_portraits_are_prepared
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 74 filtered out; finished in 1.40s
+

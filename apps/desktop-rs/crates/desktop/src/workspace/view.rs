@@ -3,7 +3,7 @@ use crate::ui::{
     controls::{ButtonKind, button},
     theme::{Palette, ui},
 };
-use gpui_kit::component::{ActiveTheme, WindowExt, message_scroller::MessageScroller};
+use gpui_kit::component::{ActiveTheme, WindowExt};
 
 impl Render for Workspace {
     fn render(&mut self, window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
@@ -37,24 +37,7 @@ impl Render for Workspace {
                     .child(self.panel(cx)),
             );
         } else {
-            let weak = cx.entity().downgrade();
-            let scroll = MessageScroller::new(
-                "conversation-transcript",
-                self.scroller.clone(),
-                move |ix, window, cx| {
-                    weak.update(cx, |this, cx| this.transcript_row(ix, window, cx))
-                        .unwrap_or_else(|_| div().into_any_element())
-                },
-            )
-            .absolute()
-            .inset_0()
-            .with_list_style(
-                StyleRefinement::default()
-                    .pt(ui(83.))
-                    .pb(self.composer_height + window.rem_size() * 1.75),
-            )
-            .with_row_style(StyleRefinement::default().px(ui(0.)).pb(ui(16.)))
-            .with_jump_button_label("Ke pesan terbaru");
+            let scroll = self.transcript_view(window, cx);
             main = main.child(scroll).child(
                 div()
                     .absolute()
@@ -94,8 +77,14 @@ impl Render for Workspace {
                         ),
                 );
             }
-            if self.history_before.is_some()
-                && self.scroller.read(cx).logical_scroll_top().item_ix == 0
+            if self.conversation.history_before.is_some()
+                && self
+                    .conversation
+                    .scroller
+                    .read(cx)
+                    .logical_scroll_top()
+                    .item_ix
+                    == 0
             {
                 main = main.child(
                     div().absolute().top(ui(63.)).left(ui(20.)).child(
@@ -111,25 +100,21 @@ impl Render for Workspace {
                     ),
                 );
             }
-            if self.projection.is_none() && self.error.is_empty() {
-                main = main.child(
-                    div()
-                        .absolute()
-                        .inset_0()
-                        .flex()
-                        .items_center()
-                        .justify_center()
-                        .text_color(p.color("muted-foreground"))
-                        .child("Menghubungkan workspace…"),
-                );
+            if self.conversation.projection.is_none() && self.error.is_empty() {
+                main = main.child(self.conversation_loading(window, cx));
             }
-            if self.opening["recovery"] == "retry" && self.opening["run"].is_object() {
+            if self.conversation.opening["recovery"] == "retry"
+                && self.conversation.opening["run"].is_object()
+            {
                 let thread = self.selected;
-                let run = self.opening["run"]["id"].clone();
+                let run = self.conversation.opening["run"]["id"].clone();
                 main = main.child(
                     div()
                         .absolute()
-                        .bottom(self.composer_height + ui(12.).to_pixels(window.rem_size()))
+                        .bottom(
+                            self.conversation.composer_height
+                                + ui(12.).to_pixels(window.rem_size()),
+                        )
                         .left(ui(24.))
                         .child(
                             button(
@@ -177,9 +162,12 @@ impl Render for Workspace {
                                     let weak = weak.clone();
                                     cx.defer(move |cx| {
                                         let _ = weak.update(cx, |this, cx| {
-                                            if (this.composer_height - height).abs() > px(0.5) {
-                                                this.composer_height = height;
-                                                this.scroller
+                                            if (this.conversation.composer_height - height).abs()
+                                                > px(0.5)
+                                            {
+                                                this.conversation.composer_height = height;
+                                                this.conversation
+                                                    .scroller
                                                     .update(cx, |state, cx| state.remeasure(cx));
                                                 cx.notify();
                                             }

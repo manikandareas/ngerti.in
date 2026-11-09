@@ -8,12 +8,16 @@ use ngertiin_client::{Conversation, text};
 use serde_json::Value;
 use std::{borrow::Cow, path::PathBuf};
 
-fn fixture(name: &str) -> Value {
+pub(super) fn fixture(name: &str) -> Value {
     let path = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
         .join(format!("../../verification/nma-071/{name}.json"));
     serde_json::from_slice(&std::fs::read(path).unwrap()).unwrap()
 }
-fn workspace(value: Value, window: &mut Window, cx: &mut Context<Workspace>) -> Workspace {
+pub(super) fn workspace(
+    value: Value,
+    window: &mut Window,
+    cx: &mut Context<Workspace>,
+) -> Workspace {
     let root = std::env::temp_dir().join(format!("ngertiin-native-ui-{}", uuid::Uuid::new_v4()));
     let store = Store::open(root).unwrap();
     let mut view = Workspace::with_attachment(store, Ok(None), window, cx);
@@ -21,18 +25,21 @@ fn workspace(value: Value, window: &mut Window, cx: &mut Context<Workspace>) -> 
     view.selected = Some(id);
     view.agents = value["agents"].as_array().unwrap().clone();
     view.threads = vec![value["thread"].clone()];
-    view.projection = Some(Conversation::new(value, id).unwrap());
+    view.conversation.projection = Some(Conversation::new(value, id).unwrap());
     view.error.clear();
     view.loading = false;
     view.checked = true;
+    view.conversation.reconciling = false;
     view.bound = true;
     view.lock_composer(cx);
     for part in ngertiin_client::rows(&view.value()["timeline"], "parts").to_vec() {
-        view.parts.insert(text(&part, "id").into(), part);
+        view.conversation
+            .parts
+            .insert(text(&part, "id").into(), part);
     }
     for run in ngertiin_client::rows(view.value(), "runs").to_vec() {
         if !ngertiin_client::rows(&run, "native_interactions").is_empty() {
-            view.native.insert(
+            view.conversation.native.insert(
                 text(&run, "id").into(),
                 serde_json::json!({"records":run["native_interactions"]}),
             );
@@ -77,7 +84,7 @@ fn native_question_keeps_back_navigation_and_submits_one_complete_answer(cx: &mu
     .unwrap();
     cx.update_window(handle, |_, window, cx| {
         window.render_frame(cx);
-        let first = view.read(cx).interaction_views.values().find(|bound| matches!(&bound.binding, super::interactions::Binding::Question {question,..} if question == "format")).unwrap().view.clone();
+        let first = view.read(cx).conversation.interaction_views.values().find(|bound| matches!(&bound.binding, super::interactions::Binding::Question {question,..} if question == "format")).unwrap().view.clone();
         assert_eq!(first.read(cx).draft(cx).choices, vec!["Summary"]);
         window.click("interaction-answer", cx);
     }).unwrap();
@@ -107,7 +114,7 @@ fn native_question_keeps_back_navigation_and_submits_one_complete_answer(cx: &mu
     })
     .unwrap();
 }
-fn init(cx: &mut TestAppContext) {
+pub(super) fn init(cx: &mut TestAppContext) {
     cx.update(|cx| {
         gpui_kit::init(cx);
         cx.set_reduce_motion(true);
@@ -131,6 +138,7 @@ fn settled_native_questions_keep_the_request_order(cx: &mut TestAppContext) {
     cx.update(|cx| {
         let questions = view
             .read(cx)
+            .conversation
             .transcript
             .iter()
             .filter_map(|row| {
@@ -208,6 +216,7 @@ fn question_choice_changes_selection_and_settled_history_has_no_submit_action(
         window.render_frame(cx);
         let interaction = view
             .read(cx)
+            .conversation
             .interaction_views
             .values()
             .next()
@@ -356,6 +365,7 @@ fn inline_tables_sort_filter_and_retain_state_across_transcript_updates(cx: &mut
                 );
                 let table = view
                     .read(cx)
+                    .conversation
                     .transcript
                     .iter()
                     .find_map(|row| match &row.kind {
@@ -400,6 +410,7 @@ fn inline_tables_sort_filter_and_retain_state_across_transcript_updates(cx: &mut
             window.render_frame(cx);
             let retained = view
                 .read(cx)
+                .conversation
                 .transcript
                 .iter()
                 .find_map(|row| match &row.kind {
@@ -471,6 +482,7 @@ fn rich_reply_keeps_prose_table_and_code_in_one_message_bubble(cx: &mut TestAppC
     cx.update_window(handle, |_, window, cx| {
         let replies = view
             .read(cx)
+            .conversation
             .transcript
             .iter()
             .filter_map(|row| match &row.kind {
@@ -534,7 +546,8 @@ fn streamed_tables_install_the_native_renderer_when_the_header_arrives(cx: &mut 
                     value["messages"][1]["state"] = "complete".into();
                     value["timeline"]["messages"][1]["state"] = "complete".into();
                 }
-                view.projection = Some(Conversation::new(value, view.selected.unwrap()).unwrap());
+                view.conversation.projection =
+                    Some(Conversation::new(value, view.selected.unwrap()).unwrap());
                 view.rebuild_transcript(window, cx);
             });
             window.render_frame(cx);
@@ -688,8 +701,8 @@ fn code_actions_follow_only_the_hovered_block_and_copy_its_content(cx: &mut Test
             gpui_kit::SharedString::from(format!("wrap-code:{}", blocks[0])),
             cx,
         );
-        assert!(view.read(cx).wrapped_code.contains(&blocks[0]));
-        assert!(!view.read(cx).wrapped_code.contains(&blocks[1]));
+        assert!(view.read(cx).conversation.wrapped_code.contains(&blocks[0]));
+        assert!(!view.read(cx).conversation.wrapped_code.contains(&blocks[1]));
         assert!(
             window
                 .find(gpui_kit::SharedString::from(blocks[0].clone()))
@@ -916,6 +929,7 @@ fn comprehensive_uncertain_question_locks_send_and_exposes_status_check(cx: &mut
     cx.update_window(handle, |_, window, cx| {
         let card = view
             .read(cx)
+            .conversation
             .interaction_views
             .values()
             .next()
@@ -1002,6 +1016,7 @@ fn comprehensive_multiple_choice_keeps_custom_text_as_an_additional_answer(
     cx.update(|cx| {
         let card = view
             .read(cx)
+            .conversation
             .interaction_views
             .values()
             .next()
@@ -1067,7 +1082,7 @@ fn comprehensive_milestones_batch_without_hiding_actionable_events(cx: &mut Test
     });
     cx.update_window(handle,|_,window,cx|{
         window.render_frame(cx);
-        let rows=&view.read(cx).transcript;
+        let rows=&view.read(cx).conversation.transcript;
         assert_eq!(rows.iter().filter(|row|matches!(&row.kind,super::transcript::RowKind::Milestones(parts) if parts.len()==2)).count(),1);
         let trigger=gpui_kit::SharedString::from("milestone-batch:event-0");
         assert!(window.find_all(gpui_kit::SharedString::from("milestone:event-0")).is_empty());
@@ -1089,7 +1104,7 @@ fn comprehensive_composer_does_not_send_uncommitted_ime_text(cx: &mut TestAppCon
         .unwrap()
     });
     cx.update_window(handle, |_, window, cx| {
-        let input = view.read(cx).composer.read(cx).input.clone();
+        let input = view.read(cx).conversation.composer.read(cx).input.clone();
         input.update(cx, |input, cx| {
             input.focus(window, cx);
             input.replace_and_mark_text_in_range(None, "日本語", Some(3..3), window, cx);

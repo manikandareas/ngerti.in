@@ -1,3 +1,5 @@
+use super::ReadingPosition;
+use crate::models::composer::Snapshot;
 use anyhow::{Context, ensure};
 use base64::{Engine, engine::general_purpose::STANDARD};
 use ngertiin_client::{ApiClient, ClientError};
@@ -102,6 +104,8 @@ struct Preferences {
     dark: bool,
     appearance: Option<String>,
     drafts: BTreeMap<Uuid, String>,
+    composers: BTreeMap<Uuid, Snapshot>,
+    reading_positions: BTreeMap<Uuid, ReadingPosition>,
     files: BTreeMap<Uuid, Vec<StagedFile>>,
     recipients: BTreeMap<Uuid, Uuid>,
     interaction_answers: BTreeMap<String, Value>,
@@ -285,6 +289,44 @@ impl Store {
             return Ok(());
         }
         self.preferences.drafts.insert(id, text);
+        self.preferences.composers.remove(&id);
+        self.save_preferences()
+    }
+    pub fn composer(&self, id: Uuid) -> Option<Snapshot> {
+        self.preferences
+            .composers
+            .get(&id)
+            .filter(|s| s.validate().is_ok())
+            .cloned()
+    }
+    pub fn save_composer(&mut self, id: Uuid, snapshot: Snapshot) -> anyhow::Result<()> {
+        snapshot.validate().map_err(anyhow::Error::msg)?;
+        if self.preferences.composers.get(&id) == Some(&snapshot) {
+            return Ok(());
+        }
+        self.preferences
+            .drafts
+            .insert(id, snapshot.draft.text.clone());
+        self.preferences.composers.insert(id, snapshot);
+        self.save_preferences()
+    }
+    pub fn reading_position(&self, id: Uuid) -> Option<ReadingPosition> {
+        self.preferences
+            .reading_positions
+            .get(&id)
+            .filter(|p| p.is_valid())
+            .cloned()
+    }
+    pub fn save_reading_position(
+        &mut self,
+        id: Uuid,
+        position: ReadingPosition,
+    ) -> anyhow::Result<()> {
+        ensure!(position.is_valid(), "Reading position is invalid.");
+        if self.preferences.reading_positions.get(&id) == Some(&position) {
+            return Ok(());
+        }
+        self.preferences.reading_positions.insert(id, position);
         self.save_preferences()
     }
     pub fn files(&self, id: Uuid) -> Vec<StagedFile> {
@@ -469,6 +511,7 @@ impl Store {
                 .is_some_and(|text| self.draft(thread) == *text)
             {
                 self.preferences.drafts.remove(&thread);
+                self.preferences.composers.remove(&thread);
             }
             let ids = &op.staged_ids;
             if let Some(files) = self.preferences.files.get_mut(&thread) {

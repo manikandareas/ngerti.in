@@ -1,0 +1,15 @@
+# Retained conversation cleanup and commit verification — 2026-11-09
+
+Scope: the owner's cleanup and local commit request for the [retained-thread implementation](retained-threads-2026-11-09.md) and its [conversation transition refinement](conversation-transitions-2026-11-09.md). Both earlier reports and their evidence bytes retain their captured source scope.
+
+Cleanup removes the unused thread-ID argument from the presentation-state constructor, the repeated composer presentation setup in workspace bootstrap, and redundant avatar entity clones at their final render use. The constructor remains responsible for applying embedded composer presentation before focus. The cold-state reconstruction fixture uses the simplified constructor signature. No domain behavior, backend contract or dependency pin changes.
+
+The initial cleanup compile identified the fixture's old constructor call; `initial-check.txt` retains that failed iteration. The final frozen-source cohort is recorded in [check output](thread-state-cleanup-2026-11-09/check.txt) and the [source manifest](thread-state-cleanup-2026-11-09/source-manifest.json). The final `CARGO_BUILD_JOBS=2 bun run check:desktop-rs` exited 0: rendering/dependency boundaries, formatting, strict workspace/all-target Clippy and **102/102 tests** passed, with 0 failures and 0 ignored (avatar 8, client unit 4, read-only client 12, worker 1, desktop 77).
+
+Delivery groups the native conversation implementation, tests, product/source-adoption records and bounded evidence into one responsibility. Exact staged paths exclude the unrelated untracked PDF. Existing historical acceptance and NMA-063/NMA-064 status remain unchanged. The commit is local; no push, deployment or external message is part of this request.
+
+The final manifest records all changed Rust source hashes, unchanged dependency/contract pins and the preserved earlier evidence digests. Native visual observations and provider/distribution limits remain those of the earlier transition report; the cleanup does not relabel them as a new native/provider acceptance run.
+
+The full documentation checker retains exactly the eight existing broken links in imported GPUI skill references. A temporary checker copy excluding only `.agents/skills/gpui-kit*` Markdown discovery passes 232 Markdown files, 2,256 local links (101 checked in pinned historical Git trees), 25 milestones, 83 decisions and API 1.31.0. The original checker and imported skill files are unchanged; raw outputs and their digests are retained beside the manifest.
+
+Staged whitespace validation preserves captured terminal blank lines at EOF in exactly four digest-verified raw logs: `conversation-transitions-2026-11-09/avatar-gutter-before.txt`, `conversation-transitions-2026-11-09/check.txt`, `retained-threads-2026-11-09/check.txt` and `thread-state-cleanup-2026-11-09/check.txt`. Their exact hashes are recorded in the final manifest; every other staged path passes the ordinary whitespace check. No evidence bytes are normalized.

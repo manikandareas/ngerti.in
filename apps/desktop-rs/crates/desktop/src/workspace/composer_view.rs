@@ -17,6 +17,7 @@ impl Workspace {
                 if message["author"] != "user"
                     || message["state"] == "deleted"
                     || self
+                        .conversation
                         .parts
                         .values()
                         .any(|part| part["message_id"] == message["id"])
@@ -51,7 +52,8 @@ impl Workspace {
         for (message, run) in queued {
             let edit = (*message).clone();
             let delete = (*message).clone();
-            let disabled = self.busy || self.editing.is_some();
+            let disabled =
+                self.busy || self.conversation.reconciling || self.conversation.editing.is_some();
             let mut row = div()
                 .flex()
                 .items_center()
@@ -126,8 +128,8 @@ impl Workspace {
     }
     pub(super) fn composer_view(&self, cx: &mut Context<Self>) -> AnyElement {
         let p = Palette::new(self.store.dark());
-        let draft = self.composer.read(cx).snapshot(cx).draft.text;
-        let response_locked = self.composer_response_locked(cx);
+        let draft = self.conversation.composer.read(cx).snapshot(cx).draft.text;
+        let response_locked = self.composer_response_locked(cx) || self.conversation.reconciling;
         let pending = self
             .selected
             .and_then(|thread| self.store.pending(&format!("message:{thread}")));
@@ -139,7 +141,8 @@ impl Workspace {
             .iter()
             .find(|run| matches!(text(run, "status"), "running" | "dispatching"));
         let blank = draft.trim().is_empty() && files.is_empty();
-        let stop = blank && pending.is_none() && self.editing.is_none() && active.is_some();
+        let stop =
+            blank && pending.is_none() && self.conversation.editing.is_none() && active.is_some();
         let fill = if self.value()["thread"]["type"] == "group" {
             p.color("primary")
         } else {
@@ -214,7 +217,7 @@ impl Workspace {
                     ),
             );
         }
-        if self.editing.is_some() {
+        if self.conversation.editing.is_some() {
             content = content.child(
                 div()
                     .flex()
@@ -224,7 +227,7 @@ impl Workspace {
                     .child(
                         action("cancel-edit", "Batal edit pesan", "Cancel01Icon", p, cx).on_click(
                             cx.listener(|this, _, window, cx| {
-                                this.editing = None;
+                                this.conversation.editing = None;
                                 this.restore_draft(window, cx);
                                 cx.notify();
                             }),
@@ -312,7 +315,7 @@ impl Workspace {
                     || response_locked
                     || pending.is_some()
                     || self.staging_task.is_some()
-                    || self.editing.is_some()
+                    || self.conversation.editing.is_some()
                     || self.selected.is_none(),
                 p,
             )
@@ -323,7 +326,7 @@ impl Workspace {
                 "Stop run"
             } else if pending.is_some() {
                 "Coba kirim lagi"
-            } else if self.editing.is_some() {
+            } else if self.conversation.editing.is_some() {
                 "Simpan perubahan"
             } else {
                 "Kirim"
@@ -341,7 +344,7 @@ impl Workspace {
             self.busy
                 || response_locked
                 || self.staging_task.is_some()
-                || self.projection.is_none()
+                || self.conversation.projection.is_none()
                 || !self.checked
                 || (blank && !stop && pending.is_none()),
             p,
@@ -383,7 +386,7 @@ impl Workspace {
                 .flex()
                 .flex_col()
                 .gap(ui(8.))
-                .child(self.composer.clone())
+                .child(self.conversation.composer.clone())
                 .child(
                     div()
                         .flex()
@@ -398,7 +401,12 @@ impl Workspace {
                 .items_end()
                 .gap(ui(6.))
                 .child(attach)
-                .child(div().flex_1().min_w_0().child(self.composer.clone()))
+                .child(
+                    div()
+                        .flex_1()
+                        .min_w_0()
+                        .child(self.conversation.composer.clone()),
+                )
                 .child(actions)
         };
         if let Some(queue) = self.queue_view(cx) {

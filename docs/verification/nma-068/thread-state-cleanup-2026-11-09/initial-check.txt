@@ -1,0 +1,37 @@
+$ bun --cwd apps/desktop-rs check
+$ bun scripts/check-boundaries.ts && bun scripts/cargo.ts fmt -- --check && bun scripts/cargo.ts clippy --workspace --all-targets -- -D warnings && bun scripts/cargo.ts test --workspace
+Dependency direction and rendering ownership passed.
+    Checking ngertiin-desktop v0.1.0 (/Users/vitoandareasmanik/Development/project/ngertiin/apps/desktop-rs/crates/desktop)
+error[E0061]: this function takes 2 arguments but 3 arguments were supplied
+   --> crates/desktop/src/workspace/thread_tests.rs:219:29
+    |
+219 |                 let fresh = Workspace::new_thread_state(Some(a), window, cx);
+    |                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^ ------- unexpected argument #1 of type `std::option::Option<uuid::Uuid>`
+    |
+note: associated function defined here
+   --> crates/desktop/src/workspace/thread_state.rs:206:19
+    |
+206 |     pub(super) fn new_thread_state(window: &mut Window, cx: &mut Context<Self>) -> ThreadState {
+    |                   ^^^^^^^^^^^^^^^^
+help: remove the extra argument
+    |
+219 -                 let fresh = Workspace::new_thread_state(Some(a), window, cx);
+219 +                 let fresh = Workspace::new_thread_state(window, cx);
+    |
+
+For more information about this error, try `rustc --explain E0061`.
+error: could not compile `ngertiin-desktop` (lib test) due to 1 previous error
+warning: build failed, waiting for other jobs to finish...
+13 |     stdout: "inherit",
+14 |     stderr: "inherit",
+15 |     env: process.env,
+16 |   });
+17 |   const code = await child.exited;
+18 |   if (code) throw new Error(`Cargo failed with exit status ${code}`);
+                           ^
+error: Cargo failed with exit status 101
+      at run (/Users/vitoandareasmanik/Development/project/ngertiin/apps/desktop-rs/scripts/cargo.ts:18:23)
+
+Bun v1.3.10 (macOS arm64)
+error: script "check" exited with code 1
+error: script "check:desktop-rs" exited with code 1

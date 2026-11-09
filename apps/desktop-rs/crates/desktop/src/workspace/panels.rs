@@ -33,8 +33,8 @@ impl Workspace {
             .filter_map(Value::as_str)
             .take(if thread["type"] == "group" { 3 } else { 1 })
         {
-            if let Some((_, portrait)) = self.portraits.get(&format!("hero:{id}:{agent}")) {
-                portraits = portraits.child(portrait.clone());
+            if let Some(portrait) = self.portrait(&format!("hero:{id}:{agent}")) {
+                portraits = portraits.child(portrait);
             }
         }
         hero = hero.child(portraits).child(

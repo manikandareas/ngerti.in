@@ -1,0 +1,89 @@
+   Compiling objc2-exception-helper v0.1.1
+   Compiling ring v0.17.14
+   Compiling objc2 v0.6.4
+   Compiling block2 v0.6.2
+   Compiling dispatch2 v0.3.1
+   Compiling rustls-webpki v0.103.16
+   Compiling objc2-core-foundation v0.3.2
+   Compiling rustls v0.23.46
+   Compiling objc2-foundation v0.3.2
+   Compiling objc2-core-text v0.3.2
+   Compiling objc2-security v0.3.2
+   Compiling objc2-core-services v0.3.2
+   Compiling notify v8.2.1
+   Compiling tokio-rustls v0.26.6
+   Compiling hyper-rustls v0.27.10
+   Compiling reqwest v0.12.28
+   Compiling ngertiin-client v0.1.0 (/Users/vitoandareasmanik/Development/project/ngertiin/apps/desktop-rs/crates/client)
+   Compiling objc2-metal v0.3.2
+   Compiling objc2-core-video v0.3.2
+   Compiling objc2-core-graphics v0.3.2
+   Compiling objc2-core-image v0.3.2
+   Compiling objc2-quartz-core v0.3.2
+   Compiling objc2-uniform-type-identifiers v0.3.2
+   Compiling objc2-core-data v0.3.2
+   Compiling objc2-cloud-kit v0.3.2
+   Compiling objc2-app-kit v0.3.2
+   Compiling gpui-pre v0.3.11
+   Compiling gpui-fast v0.1.13
+   Compiling objc2-user-notifications v0.3.2
+   Compiling gpui-pre-apple v0.3.11
+   Compiling gpui-pre-macos v0.3.11
+   Compiling gpui-pre-platform v0.3.11
+   Compiling objc2-web-kit v0.3.2
+   Compiling lb-wry v0.53.3
+   Compiling muda v0.20.0
+   Compiling tray-icon v0.25.1
+   Compiling objc2-pdf-kit v0.3.2
+   Compiling gpui-fast-apple v0.1.13
+   Compiling gpui-fast-macos v0.1.13
+   Compiling gpui-kit-assets v0.9.0
+   Compiling gpui-base v0.9.0
+   Compiling gpui-component v0.9.0
+   Compiling gpui-fast-platform v0.1.13
+   Compiling gpui-kit v0.9.0
+   Compiling gpui-webview v0.9.0
+   Compiling ngertiin-desktop v0.1.0 (/Users/vitoandareasmanik/Development/project/ngertiin/apps/desktop-rs/crates/desktop)
+    Finished `test` profile [unoptimized] target(s) in 12m 37s
+     Running unittests src/lib.rs (/Users/vitoandareasmanik/Development/project/ngertiin/.dev/desktop-rs-target/debug/deps/ngertiin_desktop-68caf8721e825ba0)
+
+running 13 tests
+test workspace::thread_tests::group_avatar_gutter_is_stable_before_portraits_are_prepared ... ok
+test workspace::thread_tests::cold_restore_waits_for_contiguous_history_and_cancels_on_user_scroll ... ok
+test workspace::thread_tests::group_portraits_follow_retained_thread_lifetimes ... ok
+test workspace::thread_tests::retained_history_fills_disjoint_pages_without_skipping_the_older_frontier ... ok
+test workspace::thread_tests::cold_thread_has_conversation_skeleton_and_a_stable_focused_composer ... ok
+test workspace::thread_tests::retained_question_choices_survive_switching_without_submitting ... ok
+test workspace::thread_tests::an_edit_acknowledged_while_hidden_restores_the_ordinary_draft ... ok
+test workspace::thread_tests::late_failures_follow_the_originating_thread_across_reactivation ... ok
+test workspace::thread_tests::late_acknowledgement_clears_only_the_originating_cached_composer ... ok
+
+thread 'workspace::thread_tests::switching_threads_preserves_composer_identity_references_selection_and_undo' (15566772) panicked at crates/desktop/src/workspace/thread_tests.rs:130:9:
+assertion `left == right` failed
+  left: EntityId(73v1)
+ right: EntityId(6v1)
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test workspace::thread_tests::switching_threads_preserves_composer_identity_references_selection_and_undo ... FAILED
+test workspace::thread_tests::thread_switch_and_cold_restore_keep_an_exact_reading_anchor ... ok
+test workspace::thread_tests::eviction_releases_idle_views_and_protects_unknown_operations ... ok
+test workspace::thread_tests::inactive_threads_receive_revisioned_events_and_become_evictable_when_work_finishes ... ok
+
+failures:
+
+failures:
+    workspace::thread_tests::switching_threads_preserves_composer_identity_references_selection_and_undo
+
+test result: FAILED. 12 passed; 1 failed; 0 ignored; 0 measured; 64 filtered out; finished in 7.77s
+
+error: test failed, to rerun pass `-p ngertiin-desktop --lib`
+13 |     stdout: "inherit",
+14 |     stderr: "inherit",
+15 |     env: process.env,
+16 |   });
+17 |   const code = await child.exited;
+18 |   if (code) throw new Error(`Cargo failed with exit status ${code}`);
+                           ^
+error: Cargo failed with exit status 101
+      at run (/Users/vitoandareasmanik/Development/project/ngertiin/apps/desktop-rs/scripts/cargo.ts:18:23)
+
+Bun v1.3.10 (macOS arm64)

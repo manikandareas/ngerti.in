@@ -1,0 +1,171 @@
+$ bun --cwd apps/desktop-rs check
+$ bun scripts/check-boundaries.ts && bun scripts/cargo.ts fmt -- --check && bun scripts/cargo.ts clippy --workspace --all-targets -- -D warnings && bun scripts/cargo.ts test --workspace
+Dependency direction and rendering ownership passed.
+    Checking ngertiin-desktop v0.1.0 (/Users/vitoandareasmanik/Development/project/ngertiin/apps/desktop-rs/crates/desktop)
+    Finished `dev` profile [unoptimized] target(s) in 5.16s
+   Compiling ngertiin-desktop v0.1.0 (/Users/vitoandareasmanik/Development/project/ngertiin/apps/desktop-rs/crates/desktop)
+    Finished `test` profile [unoptimized] target(s) in 2m 03s
+     Running unittests src/lib.rs (/Users/vitoandareasmanik/Development/project/ngertiin/.dev/desktop-rs-target/debug/deps/ngertiin_avatar-54db00a74886cb6d)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/reference.rs (/Users/vitoandareasmanik/Development/project/ngertiin/.dev/desktop-rs-target/debug/deps/reference-8083d47c94ee9b80)
+
+running 8 tests
+test clock_suspends_and_resumes_with_bounded_smoothing_and_reduced_motion ... ok
+test states_actions_blinks_and_loading_match_fixed_web_timestamps ... ok
+test parse_version_unicode_length_and_legacy_colors_match_web ... ok
+test export_keeps_original_filters_has_no_user_markup_and_rejects_mismatched_material ... ok
+test pinned_raster_adapter_restores_five_unit_displacement_without_changing_exports ... ok
+test material_cache_is_bounded_shared_across_faces_and_validates_every_hit ... ok
+test all_recipes_random_identity_and_every_fiber_match_web_oracle ... ok
+test original_svg_and_rust_export_have_matching_transparent_pixels_with_eye_shadows ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.95s
+
+     Running unittests src/lib.rs (/Users/vitoandareasmanik/Development/project/ngertiin/.dev/desktop-rs-target/debug/deps/ngertiin_client-7dc32325b792471e)
+
+running 4 tests
+test sse::tests::every_utf8_and_crlf_boundary_waits_for_a_complete_frame ... ok
+test live::tests::deferred_route_compilation_preserves_rejection_and_caches_one_validator ... ok
+test projection::tests::revisions_overlap_deletion_and_scope_keep_one_authoritative_message ... ok
+test live::tests::every_exported_route_compiles_with_native_regex_semantics ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.90s
+
+     Running tests/read_only.rs (/Users/vitoandareasmanik/Development/project/ngertiin/.dev/desktop-rs-target/debug/deps/read_only-7d2099933b86ee31)
+
+running 12 tests
+test origin_and_credential_boundaries_are_explicit ... ok
+test incompatible_contract_never_requests_a_snapshot ... ok
+test original_content_is_byte_identical_and_redirects_are_not_followed ... ok
+test oversized_response_is_rejected_before_decoding ... ok
+test redirects_are_not_followed_with_installation_credentials ... ok
+test unavailable_connection_is_actionable ... ok
+test authentication_and_http_errors_do_not_read_snapshot ... ok
+test same_version_changed_schema_is_rejected ... ok
+test malformed_and_shape_errors_are_distinct ... ok
+test pinned_contract_and_current_fixture_decode ... ok
+test wrong_thread_is_rejected ... ok
+test only_two_gets_open_an_existing_thread ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.48s
+
+     Running tests/worker.rs (/Users/vitoandareasmanik/Development/project/ngertiin/.dev/desktop-rs-target/debug/deps/worker-e9c1d9f2bfc05ccd)
+
+running 1 test
+test cold_snapshot_decoding_from_a_small_stack_caller ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.40s
+
+     Running unittests src/lib.rs (/Users/vitoandareasmanik/Development/project/ngertiin/.dev/desktop-rs-target/debug/deps/ngertiin_desktop-68caf8721e825ba0)
+
+running 77 tests
+test host::navigation::tests::only_safe_external_navigation_reaches_the_os_browser ... ok
+test host::log::tests::redacts_backend_credentials_without_losing_status ... ok
+test host::tests::bundled_runtime_does_not_require_the_original_checkout ... ok
+test models::activity::tests::question_and_normal_queue_do_not_add_status_bubbles ... ok
+test models::activity::tests::shared_members_do_not_share_thread_activity ... ok
+test models::composer::tests::atomic_copy_cut_paste_and_history_keep_metadata ... ok
+test models::composer::tests::graphemes_and_invalid_clipboard_are_never_split_or_trusted ... ok
+test models::composer::tests::history_retires_old_drafts_within_its_byte_budget ... ok
+test host::tests::private_configuration_and_single_instance_are_fenced ... ok
+test models::content::tests::recorded_sources_filter_invalid_urls_and_replace_duplicates_in_place ... ok
+test host::tests::incompatible_live_authority_is_refused_without_spawning_or_stopping_it ... ok
+test models::content::tests::csv_quotes_sort_filter_selection_and_original_are_preserved ... ok
+test models::html::tests::no_truncated_or_oversized_document_is_partially_rendered ... ok
+test models::html::tests::scripts_resources_forms_and_navigation_have_no_privileged_path ... ok
+test models::message::tests::publication_calendar_matches_the_current_client_vectors ... ok
+test models::message::tests::publication_clocks_and_interactions_are_stable_and_revision_bound ... ok
+test host::tests::shutdown_during_startup_leaves_no_backend_behind ... ok
+test platform::files::tests::original_downloads_preserve_bytes_and_never_overwrite_a_collision ... ok
+test host::views::tests::cleanup_preserves_a_newer_human_lease ... ok
+test platform::pdf_worker::tests::page_rasters_stay_bounded_and_rotated_coordinates_round_trip ... ok
+CoreGraphics PDF has logged an error. Set environment variable "CG_PDF_VERBOSE" to learn more.
+test host::views::tests::cleanup_releases_only_the_exact_issued_human_revision ... ok
+test platform::pdf_worker::tests::texture_bands_preserve_all_pixels_and_neighbor_samples ... ok
+test platform::pdf_worker::tests::rejected_pdf_inputs_stay_actionable_and_large_documents_are_bounded ... ok
+test platform::pdf_worker::tests::native_pdf_worker_reads_fixture_and_bounds_page_memory ... ok
+test storage::journal::interaction_draft_tests::partial_question_answers_survive_restart_and_clear_only_their_request ... ok
+test storage::journal::tests::certain_rejection_keeps_files_but_next_intent_has_new_upload_identity ... ok
+test storage::reading_tests::rich_drafts_and_reading_anchors_survive_profile_restart_and_exact_cleanup ... ok
+test ui::image_view::tests::native_image_preparation_preserves_original_and_rejects_invalid ... ok
+test ui::interaction::details::tests::decision_file_content_is_readable_bounded_and_never_executed ... ok
+test ui::table::tests::column_window_preserves_space_and_covers_viewport ... ok
+test storage::journal::tests::restart_retains_exact_input_bytes_and_recovers_acknowledged_cleanup ... ok
+test workspace::context::state::tests::folder_pages_append_without_duplicate_entries_and_keep_other_folders ... ok
+test workspace::context::files::tests::format_precedence_matches_reference ... ok
+test workspace::context::state::tests::folder_status_follows_its_descendants_before_the_next_sibling ... ok
+test workspace::context::state::tests::keyboard_skips_status_rows_and_preserves_expanded_parents ... ok
+test workspace::interactions::recovery_tests::lost_acknowledgement_requires_the_same_answer_and_exact_message_scope ... ok
+test workspace::message_markup::tests::inline_table_code_preserves_gfm_pipe_values_after_unicode_text ... ok
+test workspace::message_markup::tests::table_actions_use_parsed_cells_including_formatting_and_escaped_pipes ... ok
+test models::content::tests::source_and_table_behavior_matches_current_client_vectors ... ok
+test host::tests::backend_authority_lock_survives_missing_discovery_without_a_second_service ... ok
+test models::content::tests::source_limits_language_unicode_find_and_virtualization ... ok
+test workspace::tests::comprehensive_approval_exposes_readable_decision_data_without_internal_ids ... ok
+test models::syntax::tests::supported_source_grammars_prepare_ordered_unicode_safe_runs ... ok
+test workspace::tests::comprehensive_milestones_batch_without_hiding_actionable_events ... ok
+test workspace::tests::code_actions_follow_only_the_hovered_block_and_copy_its_content ... ok
+test workspace::tests::comprehensive_multiple_choice_keeps_custom_text_as_an_additional_answer ... ok
+test workspace::tests::comprehensive_uncertain_question_locks_send_and_exposes_status_check ... ok
+test host::tests::managed_recovery_external_ownership_and_concurrent_start_are_preserved ... ok
+test workspace::tests::group_routing_uses_a_compact_attributed_status_bubble ... ok
+test workspace::tests::inline_tables_sort_filter_and_retain_state_across_transcript_updates ... ok
+test workspace::tests::long_replies_wrap_inside_dm_and_group_bubbles ... ok
+test workspace::tests::native_question_keeps_back_navigation_and_submits_one_complete_answer ... ok
+test workspace::tests::question_choice_changes_selection_and_settled_history_has_no_submit_action ... ok
+test workspace::tests::attachment_chips_fit_their_labels_and_message_actions_follow_the_author ... ok
+test workspace::tests::rich_reply_keeps_prose_table_and_code_in_one_message_bubble ... ok
+test workspace::tests::conversation_and_composer_follow_the_header_width_on_wide_windows ... ok
+test workspace::tests::comprehensive_blocked_activity_guides_the_owner_to_settings ... ok
+test workspace::tests::context_tabs_align_and_keyboard_navigation_returns_to_the_composer ... ok
+test workspace::tests::settled_native_questions_keep_the_request_order ... ok
+test workspace::tests::comprehensive_composer_does_not_send_uncommitted_ime_text ... ok
+test workspace::thread_tests::cold_restore_waits_for_contiguous_history_and_cancels_on_user_scroll ... ok
+test workspace::tests::compact_navigation_sheet_keeps_actions_inside_its_surface ... ok
+test workspace::tests::streamed_tables_install_the_native_renderer_when_the_header_arrives ... ok
+test workspace::thread_tests::group_avatar_gutter_is_stable_before_portraits_are_prepared ... ok
+test workspace::thread_tests::cold_thread_has_conversation_skeleton_and_a_stable_focused_composer ... ok
+test workspace::thread_tests::an_edit_acknowledged_while_hidden_restores_the_ordinary_draft ... ok
+test workspace::tests::short_one_and_two_column_tables_fill_the_bubble ... ok
+test workspace::thread_tests::retained_history_fills_disjoint_pages_without_skipping_the_older_frontier ... ok
+test workspace::thread_tests::retained_question_choices_survive_switching_without_submitting ... ok
+test workspace::thread_tests::late_acknowledgement_clears_only_the_originating_cached_composer ... ok
+test workspace::thread_tests::late_failures_follow_the_originating_thread_across_reactivation ... ok
+test workspace::thread_tests::switching_threads_preserves_composer_identity_references_selection_and_undo ... ok
+test workspace::thread_tests::thread_switch_and_cold_restore_keep_an_exact_reading_anchor ... ok
+test workspace::thread_tests::eviction_releases_idle_views_and_protects_unknown_operations ... ok
+test workspace::thread_tests::group_portraits_follow_retained_thread_lifetimes ... ok
+test workspace::thread_tests::inactive_threads_receive_revisioned_events_and_become_evictable_when_work_finishes ... ok
+test ui::avatar::tests::cached_compositor_tracks_original_geometry_eyes_and_motion has been running for over 60 seconds
+test ui::avatar::tests::cached_compositor_tracks_original_geometry_eyes_and_motion ... ok
+
+test result: ok. 77 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 85.77s
+
+     Running unittests src/main.rs (/Users/vitoandareasmanik/Development/project/ngertiin/.dev/desktop-rs-target/debug/deps/ngertiin_desktop-9d15dab272c08e54)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests ngertiin_avatar
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests ngertiin_client
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests ngertiin_desktop
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

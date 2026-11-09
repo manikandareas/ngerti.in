@@ -11,13 +11,14 @@ struct Refresh {
     history: Value,
     previews: Option<Value>,
     activities: Value,
+    more_events: bool,
 }
 impl Workspace {
     fn start_feed(&mut self, window: &mut Window, cx: &mut Context<Self>) {
         if self.feed.is_some() {
             return;
         }
-        let Some(projection) = &self.projection else {
+        let Some(projection) = &self.conversation.projection else {
             return;
         };
         let Some(worker) = &self.reads else {
@@ -56,8 +57,17 @@ impl Workspace {
         };
         let scope = self.scope;
         let selected = self.selected;
-        let cursor = self.projection.as_ref().map(Conversation::cursor);
+        let cursor = self
+            .conversation
+            .projection
+            .as_ref()
+            .map(Conversation::cursor);
+        let replay_cursor = cursor
+            .into_iter()
+            .chain(self.retained_threads.oldest_cursor())
+            .min();
         let mut retained = self
+            .conversation
             .projection
             .as_ref()
             .map(Conversation::retained_messages)
@@ -105,71 +115,67 @@ impl Workspace {
                 history: Value::Null,
                 previews: None,
                 activities: api.get("/v1/agents/activity")?,
+                more_events: false,
             };
             if let Some(thread) = selected {
                 let mut dirty = full || cursor.is_none();
-                if let Some(mut cursor) = cursor {
-                    loop {
-                        let page: EventPage = serde_json::from_value(
-                            api.get(&format!("/v1/events?after={cursor}&limit=1000"))?,
+                if let Some(cursor) = replay_cursor {
+                    let page: EventPage = serde_json::from_value(
+                        api.get(&format!("/v1/events?after={cursor}&limit=1000"))?,
+                    )
+                    .map_err(|_| ClientError::ShapeMismatch)?;
+                    dirty |= page.events.iter().any(|e| {
+                        e["conversation_thread_id"] == thread.to_string()
+                            || e["data"]["thread_id"] == thread.to_string()
+                            || matches!(text(e, "entity_kind"), "agent" | "thread")
+                    });
+                    if page.events.iter().any(|event| {
+                        matches!(
+                            text(event, "entity_kind"),
+                            "agent" | "thread" | "connection"
                         )
-                        .map_err(|_| ClientError::ShapeMismatch)?;
-                        dirty |= page.events.iter().any(|e| {
-                            e["conversation_thread_id"] == thread.to_string()
-                                || e["data"]["thread_id"] == thread.to_string()
-                                || matches!(text(e, "entity_kind"), "agent" | "thread")
-                        });
-                        if page.events.iter().any(|event| {
-                            matches!(
-                                text(event, "entity_kind"),
-                                "agent" | "thread" | "connection"
-                            )
-                        }) && result.catalog.is_none()
+                    }) && result.catalog.is_none()
+                    {
+                        result.catalog = Some((
+                            api.get("/v1/entities/agent")?
+                                .as_array()
+                                .ok_or(ClientError::ShapeMismatch)?
+                                .clone(),
+                            api.get("/v1/entities/thread")?
+                                .as_array()
+                                .ok_or(ClientError::ShapeMismatch)?
+                                .clone(),
+                            api.get("/v1/entities/connection")?
+                                .as_array()
+                                .ok_or(ClientError::ShapeMismatch)?
+                                .clone(),
+                        ));
+                    }
+                    if page
+                        .events
+                        .iter()
+                        .any(|event| matches!(text(event, "entity_kind"), "message" | "thread"))
+                    {
+                        result.previews = Some(api.get("/v1/conversations/previews")?);
+                    }
+                    for event in &page.events {
+                        if text(event, "entity_kind") == "message"
+                            && event["data"]["thread_id"] == thread.to_string()
+                            && let Some(old) = retained.get_mut(text(event, "entity_id"))
+                            && old["revision"].as_u64() < event["revision"].as_u64()
                         {
-                            result.catalog = Some((
-                                api.get("/v1/entities/agent")?
-                                    .as_array()
-                                    .ok_or(ClientError::ShapeMismatch)?
-                                    .clone(),
-                                api.get("/v1/entities/thread")?
-                                    .as_array()
-                                    .ok_or(ClientError::ShapeMismatch)?
-                                    .clone(),
-                                api.get("/v1/entities/connection")?
-                                    .as_array()
-                                    .ok_or(ClientError::ShapeMismatch)?
-                                    .clone(),
-                            ));
-                        }
-                        if page
-                            .events
-                            .iter()
-                            .any(|event| matches!(text(event, "entity_kind"), "message" | "thread"))
-                        {
-                            result.previews = Some(api.get("/v1/conversations/previews")?);
-                        }
-                        for event in &page.events {
-                            if text(event, "entity_kind") == "message"
-                                && event["data"]["thread_id"] == thread.to_string()
-                                && let Some(old) = retained.get_mut(text(event, "entity_id"))
-                                && old["revision"].as_u64() < event["revision"].as_u64()
-                            {
-                                *old = event["data"].clone();
-                            }
-                        }
-                        if page.next_cursor < cursor
-                            || page.events.len() == 1000 && page.next_cursor == cursor
-                        {
-                            return Err(ClientError::ShapeMismatch);
-                        }
-                        cursor = page.next_cursor;
-                        let complete = page.events.len() < 1000;
-                        // Only one event page and the already-loaded history are retained.
-                        result.events = Some(page);
-                        if complete {
-                            break;
+                            *old = event["data"].clone();
                         }
                     }
+                    if page.next_cursor < cursor
+                        || page.events.len() == 1000 && page.next_cursor == cursor
+                    {
+                        return Err(ClientError::ShapeMismatch);
+                    }
+                    // One bounded page advances every retained projection together.
+                    // Schedule the next page after applying this checkpoint on the UI.
+                    result.more_events = page.events.len() == 1000;
+                    result.events = Some(page);
                 }
                 result.history =
                     serde_json::json!({"messages":retained.into_values().collect::<Vec<_>>()});
@@ -232,7 +238,7 @@ impl Workspace {
                 return;
             }
         };
-        self.loading = self.projection.is_none();
+        self.loading = self.conversation.projection.is_none();
         self.read_task = Some(cx.spawn_in(window, async move |view, cx| {
             let result = receiver.await.unwrap_or(Err(ClientError::Unavailable));
             let _ = view.update_in(cx, |this, window, cx| {
@@ -260,7 +266,9 @@ impl Workspace {
                 if this.checked {
                     this.start_feed(window, cx);
                 }
-                if this.refresh_pending {
+                if this.checked && this.conversation.needs_history_recovery() {
+                    this.earlier(window, cx);
+                } else if this.refresh_pending {
                     this.refresh_pending = false;
                     this.refresh(false, window, cx);
                 }
@@ -275,13 +283,17 @@ impl Workspace {
         window: &mut Window,
         cx: &mut Context<Self>,
     ) -> anyhow::Result<()> {
+        if let Some(page) = &result.events {
+            self.retained_threads.apply_events(page)?;
+        }
+        self.refresh_pending |= result.more_events;
         let changed = self.activities.as_slice() != rows(&result.activities, "items")
             || result.catalog.is_some()
             || result.snapshot.is_some()
             || result
                 .native
                 .iter()
-                .any(|(key, value)| self.native.get(key) != Some(value));
+                .any(|(key, value)| self.conversation.native.get(key) != Some(value));
         self.activities = rows(&result.activities, "items").to_vec();
         if let Some(previews) = result.previews {
             self.previews = rows(&previews, "items")
@@ -342,43 +354,45 @@ impl Workspace {
                 text(&value["thread"], "owner_id"),
             )?;
             self.bound = true;
-            let first = self.projection.is_none();
+            let first = self.conversation.projection.is_none();
             let mut projection =
                 Conversation::new(value, self.selected.context("No selected conversation")?)?;
-            if let Some(previous) = &self.projection {
+            if let Some(previous) = &self.conversation.projection {
                 projection.merge_history(previous.value());
             }
             projection.merge_history(&result.history);
-            for part in rows(&projection.value()["timeline"], "parts") {
-                self.parts.insert(text(part, "id").into(), part.clone());
-            }
-            if !self.history_loaded {
-                self.history_before = projection.value()["timeline"]["next_before"].as_u64();
-            }
-            self.projection = Some(projection);
+            self.conversation
+                .retain_timeline(&projection.value()["timeline"]);
+            self.conversation.projection = Some(projection);
             if first {
-                self.scroller
+                self.conversation
+                    .scroller
                     .update(cx, |state, cx| state.scroll_to_end(cx));
             }
-        } else if let (Some(page), Some(projection)) = (result.events, &mut self.projection) {
+        } else if let (Some(page), Some(projection)) =
+            (result.events, &mut self.conversation.projection)
+            && projection.cursor() <= page.next_cursor
+        {
             projection.apply(page)?;
         }
         if let Some(opening) = result.opening {
-            self.opening = opening;
+            self.conversation.opening = opening;
         }
         for (id, value) in result.native {
-            self.native.insert(id, value);
+            self.conversation.native.insert(id, value);
         }
+        self.conversation.reconciling = false;
         if changed {
             self.sync_interactions(window, cx);
             self.rebuild_transcript(window, cx);
+            self.restore_reading_position(window, cx);
             self.prepare_portraits(cx);
             self.refresh_context_resources(cx);
             let name = self
                 .selected_agent()
                 .map(|agent| text(agent, "name").to_owned())
                 .unwrap_or_default();
-            self.composer.update(cx, |composer, cx| {
+            self.conversation.composer.update(cx, |composer, cx| {
                 composer.embedded(
                     format!(
                         "Pesan{}…",
@@ -415,18 +429,22 @@ impl Workspace {
                     }
                 }))
                 .collect();
-            self.composer
+            self.conversation
+                .composer
                 .update(cx, |composer, cx| composer.set_catalog(references, cx));
         }
+        self.trim_retained_threads();
         Ok(())
     }
     pub(super) fn earlier(&mut self, window: &mut Window, cx: &mut Context<Self>) {
         if self.read_task.is_some() {
             return;
         }
-        let (Some(thread), Some(before), Some(worker)) =
-            (self.selected, self.history_before, &self.reads)
-        else {
+        let (Some(thread), Some(before), Some(worker)) = (
+            self.selected,
+            self.conversation.earlier_cursor(),
+            &self.reads,
+        ) else {
             return;
         };
         let scope = self.scope;
@@ -446,17 +464,30 @@ impl Workspace {
                 this.read_task = None;
                 match result {
                     Ok(history) => {
-                        this.history_loaded = true;
-                        this.history_before = history["next_before"].as_u64();
-                        if let Some(projection) = &mut this.projection {
-                            projection.merge_history(&history);
+                        if history["next_before"]
+                            .as_u64()
+                            .is_some_and(|next| next >= before)
+                        {
+                            this.error =
+                                "History could not advance. Try loading the conversation again."
+                                    .into();
+                            cx.notify();
+                            return;
                         }
-                        for part in rows(&history, "parts") {
-                            this.parts.insert(text(part, "id").into(), part.clone());
+                        this.conversation.retain_earlier(&history);
+                        if let Some(projection) = &mut this.conversation.projection {
+                            projection.merge_history(&history);
                         }
                         this.sync_interactions(window, cx);
                         this.rebuild_transcript(window, cx);
+                        this.restore_reading_position(window, cx);
                         this.prepare_portraits(cx);
+                        if this.conversation.needs_history_recovery() {
+                            this.earlier(window, cx);
+                        } else if this.refresh_pending {
+                            this.refresh_pending = false;
+                            this.refresh(false, window, cx);
+                        }
                     }
                     Err(e) => this.error = e.to_string(),
                 }

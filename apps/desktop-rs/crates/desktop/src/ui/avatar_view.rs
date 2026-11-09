@@ -299,10 +299,14 @@ impl AvatarPortrait {
             cx.notify();
         }
     }
-    pub fn suspend(&mut self, window: &mut Window, cx: &mut Context<Self>) {
+    /// Stop hidden presentation work while retaining the last rendered image.
+    pub fn pause(&mut self) {
         self.visible.store(false, Ordering::Relaxed);
         self.motion.look_at(None);
         self.dirty = true;
+    }
+    pub fn suspend(&mut self, window: &mut Window, cx: &mut Context<Self>) {
+        self.pause();
         if let Some(image) = self.image.take() {
             cx.drop_image(image, Some(window));
         }

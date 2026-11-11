@@ -12,7 +12,7 @@ fn cold_snapshot_decoding_from_a_small_stack_caller() {
     let listener = TcpListener::bind("127.0.0.1:0").unwrap();
     let origin = format!("http://{}/", listener.local_addr().unwrap());
     let snapshot = include_bytes!("../../../verification/snapshot.json");
-    let contract = include_bytes!("../../../../../docs/contracts/1.31.0.json");
+    let contract = include_bytes!("../../../../../docs/contracts/1.32.0.json");
     let thread_id = serde_json::from_slice::<serde_json::Value>(snapshot).unwrap()["thread"]["id"]
         .as_str()
         .unwrap()

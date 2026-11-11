@@ -159,8 +159,22 @@ export const operationSchemas = {
   }),
   interaction_submitted: z.strictObject({ status: z.literal("submitted") }),
   app_catalog: z.strictObject({
-    items: z.array(z.strictObject({ slug: z.string(), name: z.string(), connected: z.boolean() })),
+    items: z.array(
+      z.strictObject({
+        slug: z.string(),
+        name: z.string(),
+        connected: z.boolean(),
+        logo: z.url().optional(),
+        description: z.string().optional(),
+        website: z.url().optional(),
+        categories: z.array(z.strictObject({ slug: z.string(), name: z.string() })).optional(),
+        tools_count: z.int().nonnegative().optional(),
+        triggers_count: z.int().nonnegative().optional(),
+        no_auth: z.boolean().optional(),
+      }),
+    ),
     cursor: z.string().optional(),
+    metadata_complete: z.boolean().optional(),
   }),
   app_connect: z.strictObject({ connection: schemas.app_connection, connect_url: z.url() }),
   app_search: z.union([

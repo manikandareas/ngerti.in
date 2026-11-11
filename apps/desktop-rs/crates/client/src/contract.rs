@@ -4,7 +4,7 @@ use std::{fmt, sync::LazyLock};
 use uuid::Uuid;
 
 pub(crate) static CONTRACT: LazyLock<Value> = LazyLock::new(|| {
-    serde_json::from_str(include_str!("../../../../../docs/contracts/1.31.0.json"))
+    serde_json::from_str(include_str!("../../../../../docs/contracts/1.32.0.json"))
         .expect("The retained API contract must be valid JSON")
 });
 static SNAPSHOT_VALIDATOR: LazyLock<jsonschema::Validator> = LazyLock::new(|| {
@@ -37,7 +37,7 @@ impl fmt::Display for ClientError {
             Self::Http(_) => "The backend request failed. Try the same request again.",
             Self::Malformed => "The backend returned malformed JSON. Check the backend version, then retry.",
             Self::TooLarge => "The response exceeds the 16 MiB preview limit. Open a smaller snapshot.",
-            Self::VersionMismatch => "Backend contract version differs from 1.31.0. Select a compatible backend.",
+            Self::VersionMismatch => "Backend contract version differs from 1.32.0. Select a compatible backend.",
             Self::ShapeMismatch => "The backend response differs from the pinned contract. Refresh the contract before continuing.",
             Self::InvalidConnection => "Select an explicit loopback HTTP origin and a valid installation credential.",
             Self::WrongThread => "The snapshot belongs to a different thread. Reattach to the intended conversation.",

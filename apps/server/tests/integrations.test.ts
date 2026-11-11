@@ -371,3 +371,85 @@ test("product approval gates the actual scoped app dispatch and changed argument
   await s.call("ngertiin.execute_app_tool", s.input);
   expect(s.host.calls).toBe(1);
 });
+
+test("catalog enriches provider pages in bulk without hiding apps when metadata fails", async () => {
+  let failMetadata = false;
+  const calls: unknown[] = [];
+  let deleted = 0;
+  const host = new ComposioHost({
+    sessions: {
+      create: async (user: string, config: unknown) => {
+        calls.push({ user, config });
+        return {
+          sessionId: "catalog-session",
+          toolkits: async (params: unknown) => {
+            calls.push(params);
+            return {
+              items: [
+                {
+                  slug: "github",
+                  name: "GitHub",
+                  logo: "https://assets.test/fallback.svg",
+                  isNoAuth: false,
+                  connection: { isActive: true },
+                },
+              ],
+              cursor: "next-page",
+            };
+          },
+        };
+      },
+      delete: async () => {
+        deleted++;
+      },
+    },
+    toolkits: {
+      getMany: async (slugs: string[], params: unknown) => {
+        calls.push({ slugs, params });
+        if (failMetadata) throw new Error("Provider metadata unavailable");
+        return [
+          {
+            slug: "github",
+            noAuth: false,
+            meta: {
+              description: "Repository collaboration",
+              logo: "https://assets.test/github.svg",
+              appUrl: "https://user:private@github.com",
+              toolsCount: 24,
+              triggersCount: 3,
+              categories: [{ slug: "developer-tools", name: "Developer Tools" }],
+            },
+          },
+        ];
+      },
+    },
+  } as unknown as Composio);
+  expect(await host.catalog("owner", "git", "page-one")).toEqual({
+    items: [
+      {
+        slug: "github",
+        name: "GitHub",
+        connected: true,
+        logo: "https://assets.test/github.svg",
+        description: "Repository collaboration",
+        website: undefined,
+        categories: [{ slug: "developer-tools", name: "Developer Tools" }],
+        tools_count: 24,
+        triggers_count: 3,
+        no_auth: false,
+      },
+    ],
+    cursor: "next-page",
+    metadata_complete: true,
+  });
+  expect(calls).toContainEqual({ search: "git", cursor: "page-one", limit: 50 });
+  expect(calls).toContainEqual({ slugs: ["github"], params: { limit: 50 } });
+  expect(calls).not.toContainEqual({ search: "", limit: 50 });
+  failMetadata = true;
+  expect(await host.catalog("owner", "")).toMatchObject({
+    items: [{ slug: "github", logo: "https://assets.test/fallback.svg", categories: [] }],
+    metadata_complete: false,
+  });
+  expect(calls).toContainEqual({ limit: 50 });
+  expect(deleted).toBe(2);
+});

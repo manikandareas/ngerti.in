@@ -7,7 +7,7 @@ use std::{
     thread,
 };
 
-const CONTRACT: &[u8] = include_bytes!("../../../../../docs/contracts/1.31.0.json");
+const CONTRACT: &[u8] = include_bytes!("../../../../../docs/contracts/1.32.0.json");
 const SNAPSHOT: &[u8] = include_bytes!("../../../verification/snapshot.json");
 
 #[test]

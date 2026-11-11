@@ -12,4 +12,4 @@ pub use live::{ApiClient, ApiWorker, EventFeed};
 pub use projection::{Conversation, EventPage, rows, text};
 pub use sse::SseDecoder;
 pub use worker::SnapshotWorker;
-pub const CONTRACT_VERSION: &str = "1.31.0";
+pub const CONTRACT_VERSION: &str = "1.32.0";

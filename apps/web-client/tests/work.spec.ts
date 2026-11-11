@@ -86,13 +86,13 @@ async function start(page: Page) {
   return { a, b };
 }
 async function menu(page: Page) {
-  const open = page.getByRole("button", { name: "Buka percakapan", exact: true });
+  const open = page.getByRole("button", { name: "Percakapan", exact: true });
   if (await open.isVisible()) await open.click();
   await page.getByRole("button", { name: "Buat baru", exact: true }).click();
   await page.getByRole("button", { name: "Create group", exact: true }).click();
 }
 async function chooseAgent(page: Page, name: string) {
-  const open = page.getByRole("button", { name: "Buka percakapan", exact: true });
+  const open = page.getByRole("button", { name: "Percakapan", exact: true });
   if (await open.isVisible()) await open.click();
   const row = page
     .getByRole("navigation", { name: "Percakapan", exact: true })
@@ -567,7 +567,7 @@ test("application access is assigned explicitly to this context and unsupported 
   expect(
     (await (await page.request.get(`/v1/threads/${a.thread.id}/snapshot`)).json()).artifacts,
   ).toHaveLength(0);
-  const navigation = page.getByRole("button", { name: "Buka percakapan", exact: true });
+  const navigation = page.getByRole("button", { name: "Percakapan", exact: true });
   if (await navigation.isVisible()) await navigation.click();
   await page.getByRole("button", { name: "Hubungkan aplikasi", exact: true }).click();
   await expect(page.getByText("Calendar fixture", { exact: true })).toBeVisible();
@@ -634,8 +634,8 @@ test("application access is assigned explicitly to this context and unsupported 
     .getByRole("textbox", { name: "Pesan", exact: true })
     .fill(`fixture apps:${created.id}`);
   await page.getByRole("button", { name: "Kirim", exact: true }).click();
-  if (await page.getByRole("button", { name: "Buka percakapan", exact: true }).isVisible())
-    await page.getByRole("button", { name: "Buka percakapan", exact: true }).click();
+  if (await page.getByRole("button", { name: "Percakapan", exact: true }).isVisible())
+    await page.getByRole("button", { name: "Percakapan", exact: true }).click();
   await page.getByRole("button", { name: "Hubungkan aplikasi", exact: true }).click();
   await page.getByText("calendar list events · Berhasil", { exact: true }).click();
   await expect(page.getByText("Receipt: fixture-provider-receipt", { exact: true })).toBeVisible();
@@ -655,8 +655,8 @@ test("apps catalog searches live and authorization recovers from blocked popups 
       await route.abort("failed");
     } else await route.continue();
   });
-  if (await page.getByRole("button", { name: "Buka percakapan", exact: true }).isVisible())
-    await page.getByRole("button", { name: "Buka percakapan", exact: true }).click();
+  if (await page.getByRole("button", { name: "Percakapan", exact: true }).isVisible())
+    await page.getByRole("button", { name: "Percakapan", exact: true }).click();
   await page.getByRole("button", { name: "Hubungkan aplikasi", exact: true }).click();
   await page.getByRole("button", { name: "Muat ulang katalog", exact: true }).click();
   await expect(page.getByText("Calendar fixture", { exact: true })).toBeVisible();

@@ -111,7 +111,7 @@ test("sidebar portraits idle independently and group conversation portraits shar
   await page.evaluate((id) => localStorage.setItem("ngertiin:thread", id), group.id);
   await page.reload();
   await expect(page.locator(".header-identity .ngertiin-avatar")).toHaveCount(2);
-  const sidebarToggle = page.getByRole("button", { name: "Buka percakapan", exact: true });
+  const sidebarToggle = page.getByRole("button", { name: "Percakapan", exact: true });
   if (await sidebarToggle.isVisible()) await sidebarToggle.click();
   const navigation = page.getByRole("navigation", { name: "Percakapan", exact: true });
   await expectIdle(navigation.locator(`[data-agent-id="${tobi.id}"] .ngertiin-avatar`).first());

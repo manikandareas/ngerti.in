@@ -1,0 +1,15 @@
+{
+  "scope": "Browser WebKit over the isolated local application origin; native window automation unavailable",
+  "checks": [
+    "Persistent compact borderless rail and Settings heading geometry in WebKit",
+    "Device preference survives reload at the application origin",
+    "All nine Settings sections navigate in WebKit",
+    "Public JSON export downloads in WebKit",
+    "Switching screens retains the draft and rail after document reload",
+    "Inline mobile agent list retains the rail and returns to the selected chat",
+    "No mobile horizontal overflow or WebKit runtime exceptions"
+  ],
+  "pass": 7,
+  "fail": 0,
+  "errors": []
+}

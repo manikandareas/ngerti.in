@@ -16,6 +16,8 @@ The November 9 owner request adopts Zed's native per-thread presentation-state p
 
 The subsequent owner-requested conversation transition refinement covers retained avatars and stable avatar gutters, neutral composer presentation from the first focused frame, and conversation-shaped skeletons only while uncached history is loading. [Transition evidence](../verification/nma-068/conversation-transitions-2026-11-09.md) retains its own source and validation cohort.
 
+The 2026-11-11 owner amendment makes Settings a full application screen in `apps/web-client` and the shared Tauri host, then adds device preferences, explicit connection controls, public-data export and shortcut guidance. The subsequent approved refinement adds the permanent compact icon rail, contextual sidebars and borderless surfaces; removes sidebar collapse controls and the redundant conversation title; and aligns the Settings sidebar title with section-heading typography. The [interface specification](interface.md#web-and-tauri-settings--2026-11-11) defines the nine supported sections. It preserves conversation/draft continuity, scoped app grants and explicit account/billing choices; it does not alter the separately accepted native Rust client or add account-login/provider-training controls.
+
 ## Matriks fitur produk
 
 Jumlah: 60 fitur dalam delapan kelompok. Detail perilaku adalah ekspektasi bila fitur dipilih; dukungan runtime harus dibuktikan sebelum fitur dinyatakan tersedia.

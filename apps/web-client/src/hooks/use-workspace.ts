@@ -11,17 +11,19 @@ import type {
   Thread,
 } from "@/types/workspace";
 import { observePreparation, type SessionPreparation } from "./conversation-preparation";
+import { usePreferences } from "./use-preferences";
 import { eventProjections, mergeEntity, type Projection } from "./workspace-events";
 import { WorkspaceSync } from "./workspace-sync";
 
 export function useWorkspace(composer: HTMLElement | null) {
+  const { preferences } = usePreferences();
   const [agents, setAgents] = useState<Agent[]>([]);
   const [activity, setActivity] = useState<AgentActivities>({ cursor: 0, items: [] });
   const [previews, setPreviews] = useState<ConversationPreviews>({ cursor: 0, items: [] });
   const [threads, setThreads] = useState<Thread[]>([]);
   const [connections, setConnections] = useState<Connection[]>([]);
   const [threadId, selectThread] = useState<string | null>(() =>
-    localStorage.getItem("ngertiin:thread"),
+    preferences.startup === "last" ? localStorage.getItem("ngertiin:thread") : null,
   );
   const [snapshot, setSnapshot] = useState<Snapshot | null>(null);
   const [opening, setOpening] = useState<Opening | null>(null);
@@ -130,6 +132,7 @@ export function useWorkspace(composer: HTMLElement | null) {
         if (abort.signal.aborted) return;
         if (!selectedThread.current) {
           selectedThread.current = value.thread_id;
+          localStorage.setItem("ngertiin:thread", value.thread_id);
           selectThread(value.thread_id);
         }
         setReady(true);

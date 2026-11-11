@@ -31,7 +31,7 @@ Electron source, dependencies, scripts and tests have been removed. Its historic
 
 ## Runtime and lifecycle
 
-The host owns one main WKWebView and an asynchronous Rust loopback gateway. Existing React screens, in-place Settings, Details/Library/Computer, API/event contracts, model/authentication semantics and product tools remain on their existing paths. No domain backend was rewritten in Rust.
+The host owns one main WKWebView and an asynchronous Rust loopback gateway. Existing React screens, full-screen Settings, Details/Library/Computer, API/event contracts, model/authentication semantics and product tools remain on their existing paths. No domain backend was rewritten in Rust. Settings uses the shared web-client screen and device-local preferences at the saved profile origin; its [November 11 specification](../product/interface.md#web-and-tauri-settings--2026-11-11) defines the supported controls and preserved return context.
 
 | Action | Behavior |
 | --- | --- |

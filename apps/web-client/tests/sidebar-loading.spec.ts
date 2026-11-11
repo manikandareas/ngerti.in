@@ -10,7 +10,7 @@ async function post(page: Page, path: string, data: unknown) {
 }
 
 async function openNavigation(page: Page, mobile: boolean) {
-  if (mobile) await page.getByRole("button", { name: "Buka percakapan", exact: true }).click();
+  if (mobile) await page.getByRole("button", { name: "Percakapan", exact: true }).click();
   return page.getByRole("navigation", { name: "Percakapan", exact: true });
 }
 

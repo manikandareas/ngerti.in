@@ -246,7 +246,7 @@ test("queued inputs enter the transcript after the preceding answer, including l
 });
 
 async function sidebar(page: Page) {
-  const button = page.getByRole("button", { name: "Buka percakapan", exact: true });
+  const button = page.getByRole("button", { name: "Percakapan", exact: true });
   if (await button.isVisible()) await button.click();
 }
 async function createAgent(page: Page) {

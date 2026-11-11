@@ -6,6 +6,7 @@ import type { AvatarState } from "@/features/avatar/engine/catalog";
 import { defaultAgentAvatar, parseAvatarConfig } from "@/features/avatar/engine/config";
 import type { AvatarController } from "@/features/avatar/engine/controller";
 import type { ReferenceAgent } from "@/features/conversation/lib/inline-references";
+import { usePreferences } from "@/hooks/use-preferences";
 import { cn } from "@/lib/utils";
 import { useAvatarActivity } from "./avatar-activity";
 
@@ -70,6 +71,7 @@ export function AgentAvatar({
   isLoading?: boolean;
   onReady?: () => void;
 }) {
+  const { preferences } = usePreferences();
   const view = useAvatarActivity(agent?.id, threadId);
   const { version, seed, shape, color, face } = agent?.avatar_config ?? {};
   const config = useMemo(
@@ -168,9 +170,9 @@ export function AgentAvatar({
           state={effectiveState}
           loading={loading}
           size="100%"
-          animated={animated}
+          animated={animated && preferences.animateAvatars}
           deferred={deferred}
-          followPointer={followPointer}
+          followPointer={followPointer && preferences.followPointer}
           onReady={onReady}
         />
       )}

@@ -8,7 +8,11 @@ import {
   redirect,
 } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
-import { validateSettingsSearch } from "@/features/settings/lib/settings-search";
+import {
+  isSettingsSection,
+  type SettingsSectionId,
+  validateSettingsSearch,
+} from "@/features/settings/lib/settings-search";
 import { type ComponentName, components } from "@/lib/component-catalog";
 
 const rootRoute = createRootRoute({
@@ -42,9 +46,8 @@ const settingsRoute = createRoute({
   path: "/settings",
   validateSearch: (
     search: Record<string, unknown>,
-  ): { section?: "general" | "providers" | "about"; provider?: "codex" | "muse" } => ({
-    section:
-      search.section === "providers" || search.section === "about" ? search.section : undefined,
+  ): { section?: SettingsSectionId; provider?: "codex" | "muse" } => ({
+    section: isSettingsSection(search.section) ? search.section : undefined,
     provider:
       search.section === "providers" && (search.provider === "codex" || search.provider === "muse")
         ? search.provider

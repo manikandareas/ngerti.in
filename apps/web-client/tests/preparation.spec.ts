@@ -33,18 +33,39 @@ async function workspace(
     expect(dm.ok()).toBe(true);
     threads.push({ id: (await dm.json()).id, name: agent.name });
   }
+  // Keep this timing probe's roster bounded; prior tests retain their own DMs in SQLite.
+  // Offscreen portrait loading belongs to the dedicated sidebar-loading cohort.
+  await page.route("**/v1/entities/thread", async (route) => {
+    const response = await route.fetch();
+    const items = await response.json();
+    await route.fulfill({
+      response,
+      json: items.filter((thread: { id: string }) => threads.some((item) => item.id === thread.id)),
+    });
+  });
   await page.evaluate((id) => localStorage.setItem("ngertiin:thread", id), threads[0].id);
   await page.reload();
   await expect(
     page.getByRole("button", { name: `Detail ${threads[0].name}`, exact: true }),
   ).toBeVisible();
   await expect.poll(() => calls.filter((id) => id === threads[0].id).length).toBeGreaterThan(0);
+  // Settle the real avatar/viewport work before these tests freeze browser time.
+  await page
+    .getByRole("navigation", { name: "Navigasi utama", exact: true })
+    .getByRole("button", { name: "Percakapan", exact: true })
+    .click();
+  for (const thread of threads)
+    await expect(page.locator(`[data-thread-id="${thread.id}"]`)).toBeVisible();
+  if (await page.getByRole("main", { name: "Percakapan aktif", exact: true }).isHidden())
+    await page.locator(`[data-thread-id="${threads[0].id}"]`).click();
+  await expect(page.getByRole("textbox", { name: "Pesan", exact: true })).toBeVisible();
   return { calls, threads };
 }
 
 async function sidebar(page: Page) {
-  const toggle = page.getByRole("button", { name: "Buka percakapan", exact: true });
+  const toggle = page.getByRole("button", { name: "Percakapan", exact: true });
   if (await toggle.isVisible()) await toggle.click();
+  await page.clock.runFor(50);
 }
 
 async function advanceAttempt(page: Page, milliseconds: number) {
@@ -74,12 +95,14 @@ test("navigation and Settings do not warm the previous DM; composer activity ren
   await sidebar(page);
   const beforeSettings = calls.length;
   await page.getByRole("button", { name: "Pengaturan", exact: true }).click();
-  const search = page.getByPlaceholder("Cari pengaturan");
-  if (await search.isVisible()) await search.fill("Tema");
-  else await page.getByRole("radio", { name: "Gelap", exact: true }).click();
+  await expect(page.getByRole("main", { name: "Pengaturan", exact: true })).toBeVisible();
+  const settingsMenu = page.getByRole("combobox", { name: "Menu pengaturan", exact: true });
+  if (await settingsMenu.isVisible()) await settingsMenu.selectOption("appearance");
+  else await page.getByRole("link", { name: "Tampilan", exact: true }).click();
+  await page.getByRole("radio", { name: "Gelap", exact: true }).click();
   await page.clock.fastForward(200_000);
   expect(calls).toHaveLength(beforeSettings);
-  await page.getByRole("button", { name: "Tutup pengaturan", exact: true }).click();
+  await page.getByRole("button", { name: "Percakapan", exact: true }).click();
   await page.clock.runFor(200);
   await expect.poll(() => calls.length).toBeGreaterThan(beforeSettings);
   const beforeInput = calls.length;
@@ -142,8 +165,7 @@ test("switching DM cancels scheduled retries from the previous selection", async
   ).toBeVisible();
   await page.clock.runFor(200);
   await expect.poll(() => calls.filter((id) => id === threads[1].id).length).toBe(1);
-  // An old-DM retry may run while the navigation click is still waiting for the
-  // mobile drawer animation. Cancellation starts when the selection actually changes.
+  // Cancellation starts when the selection actually changes.
   const previousCalls = calls.filter((id) => id === threads[0].id).length;
   await page.clock.fastForward(30_000);
   expect(calls.filter((id) => id === threads[0].id)).toHaveLength(previousCalls);

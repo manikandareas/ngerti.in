@@ -131,7 +131,7 @@ test("active computer activity and side panel use independent live previews; fin
     thread_id: thread.id,
     text: "fixture computer live",
   });
-  const open = page.getByRole("button", { name: "Buka percakapan", exact: true });
+  const open = page.getByRole("button", { name: "Percakapan", exact: true });
   if (await open.isVisible()) await open.click();
   await page
     .getByRole("navigation", { name: "Percakapan", exact: true })

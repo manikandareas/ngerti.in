@@ -1,0 +1,14 @@
+{
+  "scope": "Browser WebKit over the real development Tauri gateway; native window automation unavailable",
+  "checks": [
+    "Tauri loopback gateway serves the full nine-section screen to WebKit",
+    "WebKit persists preferences after reload at the Tauri origin",
+    "All nine sections navigate in WebKit",
+    "WebKit downloads a public JSON conversation export through the Tauri gateway",
+    "WebKit narrow viewport has no horizontal overflow",
+    "No WebKit runtime exceptions"
+  ],
+  "pass": 6,
+  "fail": 0,
+  "errors": []
+}

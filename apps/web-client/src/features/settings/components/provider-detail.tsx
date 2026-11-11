@@ -10,6 +10,7 @@ import { ProviderAccount } from "@/features/settings/components/provider-account
 import {
   type ProviderId,
   providers,
+  SettingsDisclosure,
   SettingsRow,
   SettingsSection,
 } from "@/features/settings/components/shared";
@@ -36,6 +37,7 @@ export function ProviderDetail({
 }) {
   const definition = providers.find((item) => item.id === provider) ?? providers[0];
   const [addKey, setAddKey] = useState(false);
+  const [technical, setTechnical] = useState(false);
   const keyButton = useRef<HTMLButtonElement>(null);
   const account = useProviderAccounts(provider, refresh);
   // Props are authoritative on equal revisions; revoked entries participate before filtering.
@@ -145,63 +147,64 @@ export function ProviderDetail({
           </SettingsRow>
         )}
       </SettingsSection>
-      <SettingsSection title="Runtime">
+      {runtime?.state === "missing" && (
         <SettingsRow
-          title={definition.runtime}
-          description="Diperiksa pada host backend yang menjalankan agent."
-        >
-          <Badge variant="outline">
-            {runtime
-              ? (runtimeStates[runtime.state] ?? runtime.state)
-              : runtimeError
-                ? "Gagal diperiksa"
-                : "Memeriksa…"}
-          </Badge>
-        </SettingsRow>
+          title="Runtime belum ditemukan"
+          description={`Pasang ${definition.runtime} pada host backend, lalu buka kembali Providers untuk memeriksanya.`}
+        />
+      )}
+      {runtime?.state === "too_old" && (
         <SettingsRow
-          title="Versi"
-          description={
-            runtime
-              ? `Minimum ${runtime.manifest.minimum_version} · Teruji ${runtime.manifest.tested_native_version}`
-              : "Menunggu informasi dari backend."
-          }
-        >
-          <span className="font-mono text-caption">{runtime?.version ?? "Belum diketahui"}</span>
-        </SettingsRow>
-        {runtime?.state === "missing" && (
+          title="Perbarui runtime"
+          description={`Gunakan ${definition.runtime} ${runtime.manifest.minimum_version} atau yang lebih baru pada host backend.`}
+        />
+      )}
+      <SettingsDisclosure
+        title="Detail teknis"
+        open={technical}
+        onToggle={() => setTechnical(!technical)}
+      >
+        <SettingsSection title="Runtime">
           <SettingsRow
-            title="Runtime belum ditemukan"
-            description={`Pasang ${definition.runtime} pada host backend, lalu buka kembali Providers untuk memeriksanya.`}
-          />
-        )}
-        {runtime?.state === "too_old" && (
+            title={definition.runtime}
+            description="Diperiksa pada host backend yang menjalankan agent."
+          >
+            <Badge variant="outline">
+              {runtime
+                ? (runtimeStates[runtime.state] ?? runtime.state)
+                : runtimeError
+                  ? "Gagal diperiksa"
+                  : "Memeriksa…"}
+            </Badge>
+          </SettingsRow>
           <SettingsRow
-            title="Perbarui runtime"
-            description={`Gunakan ${definition.runtime} ${runtime.manifest.minimum_version} atau yang lebih baru pada host backend.`}
-          />
+            title="Versi"
+            description={
+              runtime
+                ? `Minimum ${runtime.manifest.minimum_version} · Teruji ${runtime.manifest.tested_native_version}`
+                : "Menunggu informasi dari backend."
+            }
+          >
+            <span className="font-mono text-caption">{runtime?.version ?? "Belum diketahui"}</span>
+          </SettingsRow>
+        </SettingsSection>
+        {usedBy.length > 0 && (
+          <SettingsSection title="Digunakan oleh">
+            {usedBy.map((agent) => (
+              <SettingsRow
+                key={agent.id}
+                title={agent.name}
+                description={agent.model_id ?? "Model belum dipilih"}
+              >
+                <Button variant="outline" onClick={() => openAgent(agent)}>
+                  Atur agent
+                  <HugeiconsIcon icon={ArrowRight02Icon} size={14} aria-hidden="true" />
+                </Button>
+              </SettingsRow>
+            ))}
+          </SettingsSection>
         )}
-      </SettingsSection>
-      <SettingsSection title="Penggunaan">
-        {usedBy.length ? (
-          usedBy.map((agent) => (
-            <SettingsRow
-              key={agent.id}
-              title={agent.name}
-              description={agent.model_id ?? "Model belum dipilih"}
-            >
-              <Button variant="outline" onClick={() => openAgent(agent)}>
-                Atur agent
-                <HugeiconsIcon icon={ArrowRight02Icon} size={14} aria-hidden="true" />
-              </Button>
-            </SettingsRow>
-          ))
-        ) : (
-          <SettingsRow
-            title="Pilih provider di panel Agent"
-            description="Buka percakapan, pilih nama agent, lalu atur koneksi dan model melalui pilihan Model."
-          />
-        )}
-      </SettingsSection>
+      </SettingsDisclosure>
     </>
   );
 }

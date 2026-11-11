@@ -39,7 +39,7 @@ for (const mode of ["light", "dark"] as const) {
           })
           .toBeLessThanOrEqual(0.5);
         const navigation = await page
-          .getByRole("button", { name: "Buka percakapan", exact: true })
+          .getByRole("button", { name: "Percakapan", exact: true })
           .boundingBox();
         const identity = await page.locator(".header-identity").boundingBox();
         const model = await page
@@ -70,7 +70,7 @@ for (const mode of ["light", "dark"] as const) {
     await settled();
     await page.screenshot({ path: info.outputPath("conversation.png") });
     if (mobile) {
-      await page.getByRole("button", { name: "Buka percakapan", exact: true }).click();
+      await page.getByRole("button", { name: "Percakapan", exact: true }).click();
       await expect(page.locator(".contact-row > .agent-avatar").first()).toHaveCSS("width", "44px");
     }
     await expect(page.locator(".primary-contact")).toHaveCount(0);
@@ -124,17 +124,17 @@ test("source responsive roster and context transitions release modal focus at de
   await page.goto("/");
   await expect(page.getByRole("button", { name: "Detail Tobi", exact: true })).toBeVisible();
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.getByRole("button", { name: "Buka percakapan", exact: true }).click();
+  await page.getByRole("button", { name: "Percakapan", exact: true }).click();
   await expect(page.getByRole("dialog", { name: "Percakapan", exact: true })).toBeVisible();
   await page.setViewportSize({ width: 1280, height: 900 });
   await expect(page.getByRole("dialog", { name: "Percakapan", exact: true })).toBeHidden();
   await expect(page.locator(".workspace-sidebar")).toBeVisible();
-  await expect(page.getByRole("button", { name: "Buka percakapan", exact: true })).toBeHidden();
+  await expect(page.getByRole("button", { name: "Percakapan", exact: true })).toBeHidden();
   await page.getByRole("button", { name: "Detail Tobi", exact: true }).click();
   await page.setViewportSize({ width: 1024, height: 768 });
   await expect(page.locator(".workspace-sidebar")).toBeHidden();
   await expect(page.locator(".workspace-details")).toHaveCSS("width", "320px");
-  await page.getByRole("button", { name: "Buka percakapan", exact: true }).click();
+  await page.getByRole("button", { name: "Percakapan", exact: true }).click();
   const roster = page.getByRole("dialog", { name: "Percakapan", exact: true });
   await expect(roster).toHaveCSS("width", "280px");
   await roster.getByRole("button", { name: "Close", exact: true }).click();

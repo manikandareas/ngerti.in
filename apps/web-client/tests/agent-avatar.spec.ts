@@ -53,7 +53,7 @@ test("a large roster paints the conversation before preparing only visible avata
   await page.goto("/");
   await expect(page.getByRole("button", { name: "Detail Tobi", exact: true })).toBeVisible();
   const paintMs = Date.now() - started;
-  const sidebar = page.getByRole("button", { name: "Buka percakapan", exact: true });
+  const sidebar = page.getByRole("button", { name: "Percakapan", exact: true });
   if (await sidebar.isVisible()) await sidebar.click();
   const navigation = page.getByRole("navigation", { name: "Percakapan", exact: true });
   const last = navigation.locator(`[data-thread-id="thread-${ids.at(-1)}"]`);

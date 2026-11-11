@@ -10,13 +10,13 @@ For desktop-rs these application surfaces are native Rust/GPUI. Only static HTML
 
 | Surface | Behavior |
 | --- | --- |
-| Left sidebar | Agent/group list is also the chat list. Select an item to open its conversation. The + menu offers Create agent and Create group. |
+| Left navigation | Web/Tauri has a persistent icon rail selecting Conversation or Settings, with agents/groups or Settings sections in the contextual sidebar. The agent/group list is also the chat list; + offers Create agent and Create group. |
 | Conversation | Messages, streamed answers, agent activity, authored mentions, sources, attachment/result actions and actionable human questions. |
 | Detail | Selected agent/group profile, members/shared directions, contextual Goals and Routine. Advanced memory, skills and instructions stay within contextual navigation. |
 | Library | Scoped saved artifacts, file information/sharing and contextual memory/skills. |
 | Working files | Dedicated page opened by the folder action beside the contextual panel's Close, available from Details, Library and Computer. Its file tree browses the shared Linux working root used by agents. |
 | Computer | The retained Cua desktop; view-only and human takeover observe/control the same machine as agents. |
-| Settings | General harness/provider/default and app settings open in place with URL-backed navigation. Model selection remains in its canonical picker; avoid duplicate controls. |
+| Settings | Web/Tauri uses a full application screen beside the persistent rail, with the shared 280px contextual sidebar, borderless content surface and URL-backed sections. The Conversation rail action returns to the retained conversation/draft. The native Rust client retains its separately accepted implementation. |
 
 Clicking the conversation header name/avatar opens contextual detail. Goal/file actions open their relevant details/viewers. Panels can close; on mobile use a sheet/full-screen view with a clear return to chat. There are no mandatory global Agents, Workspace, Goals or Routine pages and no duplicated agent list. Keep tabs/lists legible, with progressive disclosure instead of stacks of cards or badges.
 
@@ -55,6 +55,32 @@ Handoff/review activity is concise and agent-attributed. Keep internal instructi
 Questions and approvals follow the shared conversation interaction model. Natural text uses the ordinary composer. Explicit option/approval cards bind to a current request/revision; confirmed cards retain the question according to the later refinement. Failed-response Retry follows durable backend eligibility, preserving the intended message/conversation and reconciling unknown effects.
 
 Computer progresses from preparation to an active preview and a compact finished state; the preview follows authoritative machine/run activity. Viewing is separate from acquiring control. Transient viewer loss can reattach without silently obtaining a new input lease. Human handback revokes interactive access and reconciles in-flight state.
+
+## Web and Tauri Settings — 2026-11-11
+
+The owner requested a full Settings screen and then expanded its scope using familiar ChatGPT/Claude and Cursor/Codex categories. The web client and `apps/desktop` share this React implementation; this amendment does not change `apps/desktop-rs`.
+
+| Menu | Working controls |
+| --- | --- |
+| General | Open the last conversation or Tobi on the next launch; configure Tobi/new-agent defaults through the existing model picker and explicit account/billing disclosure. |
+| Appearance | System/light/dark theme, conversation text size and reading width, with a text preview. |
+| Conversation | Enter or Command/Control+Enter to send, bounded streaming interpolation, and message clocks. Shift+Enter keeps its newline behavior. |
+| Accessibility | Avatar animation, pointer-following gaze, and always-visible message actions. System reduced-motion preferences remain effective. |
+| Providers | The two required providers, inline account/API-key setup, and progressively disclosed runtime details. Missing/outdated-runtime repair stays visible. |
+| Apps | Reuse the existing Composio connection/access flow and identify the current conversation explicitly. Grants remain scoped to the selected agent/thread. |
+| Data and privacy | Device-local persistent-text-draft preference, public-conversation JSON export through all timeline pages, and confirmed reset of interface preferences. Export omits private runtime/credential fields and attachment bytes. |
+| Keyboard shortcuts | Document the implemented composer/editor shortcuts and reflect the selected send key. |
+| About | A compact application description. |
+
+`?settings=<section>` and optional `provider=codex|muse` retain reload/history support. Legacy `/settings?section=...` links resolve all supported sections. Settings is ordinary document content without a scrim, modal semantics, focus trap or page-level Escape dismissal. Desktop navigation uses a sidebar; narrow Settings screens use a labelled section selector. The Conversation rail action restores keyboard focus and preserves unrelated URL parameters and composer identity. The Settings rail action reopens the last visited section/provider within the current workspace session.
+
+The same owner subsequently selected a permanent icon rail and a dynamic inner sidebar. The rail is 56px on desktop and 48px below 768px, with 20px Hugeicons and 40px controls. Conversation is at the top and Settings is anchored at the bottom. Active destinations use `aria-current`, visible selected styling, labelled controls and tooltips. Repeated clicks on the active destination do not collapse the sidebar. The conversation sidebar has no redundant title, collapse button or duplicated Settings entry. The Settings sidebar title uses the same 18px/500/28px typography as the section heading.
+
+The rail, sidebar and main content have no layout borders; the outer frame and content surface provide separation. On narrow screens, opening Conversation shows the agent list next to the retained rail; selecting an agent shows its chat in the same area. It is an inline screen transition rather than a drawer covering the rail. Contextual Detail/Library/Computer interactions retain their existing scope. At intermediate widths, opening right-side details can still replace the agent sidebar automatically to fit the available space.
+
+Interface preferences are versioned in the current origin's local storage; they are independent for a browser and each Tauri profile, and synchronize across same-origin tabs. Account/model choices remain authoritative backend configuration. Disabling persistent drafts removes only the device's stored plain-text drafts while retaining the current session; pending operation receipts, uploaded files, credentials and backend history keep their existing lifecycle. Reset preserves the theme and all provider/model/backend records.
+
+Focused evidence: [Settings screen and preferences verification](../verification/settings-screen-2026-11-11/README.md). This amendment does not close NMA-063 or NMA-064.
 
 ## Native per-thread presentation state
 

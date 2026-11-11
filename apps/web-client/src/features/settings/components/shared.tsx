@@ -44,7 +44,7 @@ export function SettingsSection({
   return (
     <section className="settings-section">
       <div className="settings-section-heading">
-        <h3>{title}</h3>
+        <h2>{title}</h2>
         {action}
       </div>
       <div className="settings-group">{children}</div>

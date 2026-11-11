@@ -162,9 +162,75 @@
   }
 }
 
-.workspace-sidebar {
+.application-frame {
+  --app-rail-width: 56px;
+  display: flex;
+  height: 100svh;
+  min-height: 0;
+  overflow: hidden;
+  padding: 8px 8px 8px 0;
+  background: var(--frame);
+}
+.workspace-rail {
+  display: flex;
+  width: var(--app-rail-width);
+  min-height: 0;
+  flex-shrink: 0;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding-block: 8px;
+}
+.workspace-rail-bottom {
+  margin-top: auto;
+}
+.workspace-rail .workspace-rail-item {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  color: var(--muted-foreground);
+  transition:
+    background-color 150ms,
+    color 150ms;
+}
+.workspace-rail .workspace-rail-item:hover,
+.workspace-rail .workspace-rail-item[aria-current="page"] {
+  background: var(--secondary);
+  color: var(--foreground);
+}
+.workspace-rail-item:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+.application-body {
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+  flex: 1;
+  overflow: hidden;
+  border-radius: 16px;
+  background: var(--background);
+}
+.app-screen {
+  display: flex;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  flex: 1;
+  overflow: hidden;
+  background: var(--background);
+}
+.app-screen[hidden],
+.workspace-sidebar[hidden],
+.workspace-main[hidden] {
+  display: none;
+}
+.app-sidebar {
   width: 280px;
   @apply shrink-0;
+}
+.app-surface {
+  background: var(--background);
 }
 
 .wordmark span {
@@ -236,15 +302,6 @@
 .workspace-main[data-details="true"] {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
-}
-.navigation-toggle {
-  display: none;
-}
-@media (min-width: 768px) {
-  .navigation-sheet {
-    width: 280px;
-    max-width: 280px;
-  }
 }
 
 .workspace-chat-header,
@@ -820,36 +877,28 @@ button.group-bubble-author:focus-visible {
     opacity: 1;
   }
 }
-@media (min-width: 768px) and (max-width: 1279px) {
-  .workspace-main[data-details="true"] .navigation-toggle {
-    display: inline-flex;
-  }
-  .workspace-sidebar-with-details {
-    @apply hidden;
-  }
+@media (min-width: 768px) and (max-width: 1343px) {
   .header-identity-position {
     padding-left: 0;
   }
 }
 @media (max-width: 767px) {
-  .navigation-toggle {
-    display: inline-flex;
-    width: 39px;
-  }
   .conversation-navigation {
     background: var(--background);
   }
-  .navigation-drawer[data-vaul-drawer-direction="bottom"] {
-    height: 85svh;
-    max-height: 85svh;
-  }
-  .navigation-drawer .conversation-navigation {
-    flex: 1;
-    height: auto;
-    padding-bottom: max(12px, env(safe-area-inset-bottom));
-  }
-  .workspace-shell {
+  .application-frame {
+    --app-rail-width: 48px;
     padding: 0;
+  }
+  .application-body {
+    border-radius: 0;
+  }
+  .workspace-rail {
+    padding-block: max(8px, env(safe-area-inset-top)) max(8px, env(safe-area-inset-bottom));
+  }
+  .workspace-sidebar {
+    width: 100%;
+    border-right: 0;
   }
   .workspace-main {
     --conversation-edge-fade: 32px;
@@ -974,6 +1023,12 @@ button.group-bubble-author:focus-visible {
     background: var(--card);
   }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .workspace-rail .workspace-rail-item {
+    transition: none;
+  }
+}
 @media (prefers-reduced-motion: reduce) {
   .workspace-details {
     animation: none;
@@ -1024,4 +1079,26 @@ button.group-bubble-author:focus-visible {
 
 .conversation-message[data-align="end"] .message-run-state > div {
   @apply justify-end;
+}
+
+/* Device-local reading preferences apply to public conversation content. */
+html[data-chat-text-size="small"] .workspace-shell {
+  --conversation-font-size: 14px;
+}
+html[data-chat-text-size="large"] .workspace-shell {
+  --conversation-font-size: 17px;
+}
+.workspace-shell .chat-bubble-content,
+.workspace-shell .chat-md {
+  font-size: var(--conversation-font-size, 15px);
+  line-height: 1.5;
+}
+html[data-reading-width="comfortable"] .conversation-column {
+  width: 100%;
+  max-width: 960px;
+  margin-inline: auto;
+}
+html[data-message-actions="always"] .message-hover-actions {
+  opacity: 1;
+  pointer-events: auto;
 }

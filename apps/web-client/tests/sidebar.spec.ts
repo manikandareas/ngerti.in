@@ -61,7 +61,7 @@ for (const mode of ["light", "dark"] as const) {
     await page.evaluate((id) => localStorage.setItem("ngertiin:thread", id), setup.thread_id);
     await page.reload();
     const mobile = info.project.name === "mobile";
-    if (mobile) await page.getByRole("button", { name: "Buka percakapan", exact: true }).click();
+    if (mobile) await page.getByRole("button", { name: "Percakapan", exact: true }).click();
     const nav = page.getByRole("navigation", { name: "Percakapan", exact: true });
     const row = (id: string) => nav.locator(`[data-thread-id="${id}"]`);
     const preview = (id: string) => row(id).locator(".contact-description");
@@ -76,25 +76,27 @@ for (const mode of ["light", "dark"] as const) {
     );
     const add = page.getByRole("button", { name: "Buat baru", exact: true });
     if (mobile) {
-      const drawer = page.getByRole("dialog", { name: "Percakapan", exact: true });
-      await expect(drawer).toHaveAttribute("data-slot", "drawer-content");
-      await expect(drawer).toHaveAttribute("data-vaul-drawer-direction", "bottom");
+      const sidebar = page.getByRole("complementary", { name: "Daftar percakapan", exact: true });
+      const rail = page.getByRole("navigation", { name: "Navigasi utama", exact: true });
+      await expect(rail).toBeVisible();
+      await expect(page.getByRole("dialog", { name: "Percakapan", exact: true })).toHaveCount(0);
       await settled(page);
-      const bounds = await drawer.boundingBox();
+      const bounds = await sidebar.boundingBox();
       const addBounds = await add.boundingBox();
-      const searchBounds = await drawer.locator(".navigation-search").boundingBox();
+      const searchBounds = await sidebar.locator(".navigation-search").boundingBox();
       expect(bounds && searchBounds && searchBounds.x >= bounds.x).toBeTruthy();
       expect(
         searchBounds && addBounds && searchBounds.x + searchBounds.width <= addBounds.x,
       ).toBeTruthy();
-      expect(bounds && bounds.y > 0).toBeTruthy();
-      await drawer.getByRole("button", { name: "Close", exact: true }).click();
-      await expect(drawer).toBeHidden();
+      expect(bounds?.x).toBeGreaterThanOrEqual(48);
       await expect(
-        page.getByRole("button", { name: "Buka percakapan", exact: true }),
-      ).toBeFocused();
-      await page.getByRole("button", { name: "Buka percakapan", exact: true }).click();
-      await expect(drawer).toBeVisible();
+        sidebar.getByRole("button", { name: "Tutup daftar percakapan", exact: true }),
+      ).toHaveCount(0);
+      await row(setup.thread_id).click();
+      await expect(sidebar).toBeHidden();
+      await expect(page.getByRole("main", { name: "Percakapan aktif", exact: true })).toBeVisible();
+      await rail.getByRole("button", { name: "Percakapan", exact: true }).click();
+      await expect(sidebar).toBeVisible();
     }
     expect(await add.evaluate((element) => getComputedStyle(element).backgroundColor)).not.toBe(
       "rgba(0, 0, 0, 0)",
@@ -181,7 +183,7 @@ for (const mode of ["light", "dark"] as const) {
     await expect(preview(dm.id)).toHaveText("Kamu: Latest DM message");
     await expect(preview(group.id)).toHaveText("Kamu: Latest group message");
     await page.reload();
-    if (mobile) await page.getByRole("button", { name: "Buka percakapan", exact: true }).click();
+    if (mobile) await page.getByRole("button", { name: "Percakapan", exact: true }).click();
     await expect(preview(dm.id)).toHaveText("Kamu: Latest DM message");
     await expect(preview(group.id)).toHaveText("Kamu: Latest group message");
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(

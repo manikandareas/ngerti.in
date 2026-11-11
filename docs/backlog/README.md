@@ -18,6 +18,8 @@ The [2026-11-07 Focus content viewer amendment](NMA-062.md#focus-content-viewer-
 
 The [2026-11-07 Working files/source viewer amendment](../verification/working-files-tree-2026-11-07/README.md) separates shared machine browsing from Library and adds a lazy file tree, local format icons and a read-only source view. Its focused desktop/mobile and native read-only evidence preserves the open product/distribution gates.
 
+The [2026-11-11 Settings screen/preferences amendment](../verification/settings-screen-2026-11-11/README.md) replaces the web/Tauri modal with a full screen, expands its nine functional sections and adds the permanent compact icon rail with borderless contextual sidebars while preserving conversation continuity. It is a scoped NMA-061 presentation/preference amendment; native Rust and all milestone statuses/dependencies retain their recorded scope.
+
 ## Active milestones
 
 | Order | Milestone | Status | Layer | Depends on |

@@ -1,7 +1,8 @@
 import { createContext, useContext } from "react";
-import type { Agent, Connection } from "@/types/workspace";
+import type { Agent, Connection, Snapshot } from "@/types/workspace";
 
 export type SettingsWorkspace = {
+  snapshot: Snapshot | null;
   agents: Agent[];
   connections: Connection[];
   refresh: () => Promise<unknown>;

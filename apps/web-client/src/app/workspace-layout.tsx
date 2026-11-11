@@ -3,7 +3,6 @@ import {
   ArrowUp02Icon,
   Cancel01Icon,
   ComputerIcon,
-  Menu01Icon,
   PencilEdit01Icon,
   StopIcon,
   Tick02Icon,
@@ -20,6 +19,7 @@ import {
   useRef,
   useState,
 } from "react";
+import { WorkspaceRail } from "@/app/workspace-rail";
 import {
   Conversation,
   ConversationContent,
@@ -28,13 +28,6 @@ import {
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Bubble, BubbleContent } from "@/components/ui/bubble";
 import { Button } from "@/components/ui/button";
-import {
-  Drawer,
-  DrawerContent,
-  DrawerDescription,
-  DrawerHeader,
-  DrawerTitle,
-} from "@/components/ui/drawer";
 import { Message, MessageContent, MessageHeader } from "@/components/ui/message";
 import {
   Sheet,
@@ -111,7 +104,7 @@ import { useComposerAttachments } from "@/features/conversation/lib/use-composer
 import { useConversationDraft } from "@/features/conversation/lib/use-conversation-draft";
 import { useConversationScroll } from "@/features/conversation/lib/use-conversation-scroll";
 import { useMessageSubmission } from "@/features/conversation/lib/use-message-submission";
-import { useSettingsDialog } from "@/features/settings/hooks/use-settings-dialog";
+import { useSettings } from "@/features/settings/hooks/use-settings";
 import type { SettingsSectionId } from "@/features/settings/lib/settings-search";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -142,10 +135,22 @@ const controlText: Record<string, string> = {
   complete: "Pengiriman arahan selesai",
 };
 const DOUBLE_ENTER_STEER_WINDOW_MS = 1500;
-const SettingsDialog = lazy(() => import("@/features/settings/components/settings-dialog"));
+const SettingsPage = lazy(() => import("@/features/settings/components/settings-page"));
 
 export default function Workspace() {
-  const { isOpen: isSettings, open: showSettings, close: closeSettings } = useSettingsDialog();
+  const {
+    isOpen: isSettings,
+    section: settingsSection,
+    provider: settingsProvider,
+    open: showSettings,
+    close: closeSettings,
+  } = useSettings();
+  const lastSettings = useRef({
+    section: settingsSection ?? "general",
+    provider: settingsProvider,
+  });
+  if (settingsSection)
+    lastSettings.current = { section: settingsSection, provider: settingsProvider };
   const [composerSurface, setComposerSurface] = useState<HTMLElement | null>(null);
   const workspace = useWorkspace(isSettings ? null : composerSurface);
   const {
@@ -212,7 +217,26 @@ export default function Workspace() {
     ]);
   }, [snapshot, threadId]);
   const mobile = useIsMobile();
-  const narrowNavigation = useMediaQuery("(max-width: 1279.98px)");
+  const narrowNavigation = useMediaQuery("(max-width: 1343.98px)");
+  const navigationVisible = mobile ? navigation : !(details && narrowNavigation);
+  const previouslySettings = useRef(isSettings);
+  useLayoutEffect(() => {
+    const returning = previouslySettings.current && !isSettings;
+    previouslySettings.current = isSettings;
+    if (!returning) return;
+    const frame = requestAnimationFrame(() => {
+      document
+        .querySelector<HTMLButtonElement>('.workspace-rail button[aria-label="Percakapan"]')
+        ?.focus({ preventScroll: true });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [isSettings]);
+  useLayoutEffect(() => {
+    if (!navigation && !isSettings && focusComposerAfterNavigation.current) {
+      focusComposerAfterNavigation.current = false;
+      composerInput.current?.focus();
+    }
+  }, [navigation, isSettings]);
   useEffect(() => {
     if (!narrowNavigation) setNavigation(false);
   }, [narrowNavigation]);
@@ -501,7 +525,6 @@ export default function Workspace() {
       threads={workspace.navigationReady ? threads : []}
       activities={workspace.activity.items}
       previews={workspace.previews.items}
-      closeNavigation={mobile ? () => setNavigation(false) : undefined}
       threadId={threadId}
       busy={busy}
       createMenu={createMenu}
@@ -518,30 +541,8 @@ export default function Workspace() {
         setDetails(true);
         locate({ tab: "detail", id: null, page: "apps" });
       }}
-      openSettings={() => {
-        openSettings("general");
-      }}
     />
   );
-  function restoreNavigationFocus(event: Event) {
-    event.preventDefault();
-    // Another modal may own focus before the navigation exit finishes.
-    if (document.querySelector('[role="dialog"][data-state="open"]')) return;
-    if (focusComposerAfterNavigation.current) {
-      focusComposerAfterNavigation.current = false;
-      focusComposer();
-      return;
-    }
-    const toggle = document.querySelector<HTMLButtonElement>(
-      '.workspace-shell button[aria-label="Buka percakapan"]',
-    );
-    if (
-      toggle?.isConnected &&
-      toggle.getClientRects().length > 0 &&
-      !toggle.closest('[inert], [aria-hidden="true"]')
-    )
-      toggle.focus({ preventScroll: true });
-  }
   function compose(text: string) {
     setDraft(text);
     setDetails(false);
@@ -640,6 +641,7 @@ export default function Workspace() {
   const conversationScroll = useConversationScroll(
     snapshot?.thread.id ?? null,
     latestUserEntry?.type === "message" ? latestUserEntry.part.sequence : 0,
+    !isSettings && !(mobile && navigation),
   );
   const activityByEntry = useMemo(
     () => conversationActivity(snapshot, entries),
@@ -909,10 +911,11 @@ export default function Workspace() {
       activity={{
         items: workspace.activity.items,
         threadId,
-        listeningThreadId: composerFocused && draft.trim() ? threadId : null,
+        listeningThreadId: !isSettings && composerFocused && draft.trim() ? threadId : null,
         online: workspace.online,
       }}
       settings={{
+        snapshot,
         agents,
         connections,
         refresh,
@@ -928,781 +931,796 @@ export default function Workspace() {
         },
       }}
     >
-      <div
-        className="workspace-shell [height:100svh] [background:var(--frame)] [padding:8px_8px_8px_0] flex min-h-0 overflow-hidden"
-        style={snapshot?.thread.type === "group" ? undefined : agentStyle(agent)}
-        data-group={snapshot?.thread.type === "group" ? "true" : undefined}
-      >
-        {!mobile && (
-          <aside className={`workspace-sidebar ${details ? "workspace-sidebar-with-details" : ""}`}>
-            {nav}
-          </aside>
-        )}
-        <Drawer open={navigation && mobile && !isSettings} onOpenChange={setNavigation} autoFocus>
-          <DrawerContent
-            className="navigation-drawer gap-0 overflow-hidden border-0 bg-background p-0"
-            onCloseAutoFocus={restoreNavigationFocus}
-          >
-            <DrawerHeader className="sr-only">
-              <DrawerTitle>Percakapan</DrawerTitle>
-              <DrawerDescription>Pilih agent atau percakapan.</DrawerDescription>
-            </DrawerHeader>
-            {nav}
-          </DrawerContent>
-        </Drawer>
-        <Sheet
-          open={navigation && narrowNavigation && !mobile && !isSettings}
-          onOpenChange={setNavigation}
-        >
-          <SheetContent
-            side="left"
-            className="navigation-sheet w-[280px] gap-0 border-0 bg-frame p-0"
-            onCloseAutoFocus={restoreNavigationFocus}
-          >
-            <SheetHeader className="sr-only">
-              <SheetTitle>Percakapan</SheetTitle>
-              <SheetDescription>Pilih agent atau percakapan.</SheetDescription>
-            </SheetHeader>
-            {nav}
-          </SheetContent>
-        </Sheet>
-        <main
-          ref={setConversationSurface}
-          className="workspace-main rounded-[16px] flex flex-1 flex-col min-w-0 min-h-0 overflow-hidden bg-background"
-          aria-label="Percakapan aktif"
-          data-details={details && !mobile && !viewing}
-          data-viewer={viewing}
-          onKeyDown={(event) => {
-            if (viewing && event.key === "Escape" && !event.defaultPrevented) {
-              if (
-                event.target instanceof Element &&
-                event.target.closest('[role="menu"], [role="listbox"]')
-              )
-                return;
-              event.preventDefault();
-              viewer.back();
+      <div className="application-frame">
+        <WorkspaceRail
+          settings={isSettings}
+          onConversation={() => {
+            if (isSettings) {
+              void closeSettings();
+              return;
+            }
+            if (mobile) setNavigation(true);
+            else if (details && narrowNavigation) {
+              setDetails(false);
             }
           }}
-        >
-          <ConversationContentViewer viewer={viewer} />
-          <header
-            inert={viewing}
-            aria-busy={!snapshot && !error}
-            className={`workspace-chat-header [grid-template-columns:minmax(0,_1fr)_auto_minmax(0,_1fr)] gap-2.5 [padding:10px_20px] grid items-center shrink-0 ${!snapshot && error ? "[&_[data-slot=skeleton]]:animate-none" : ""}`}
+          onSettings={() => {
+            if (isSettings) return;
+            setNavigation(false);
+            setCreateMenu(false);
+            void showSettings(lastSettings.current.section, lastSettings.current.provider);
+          }}
+        />
+        <div className="application-body">
+          <div
+            className="app-screen workspace-shell"
+            hidden={isSettings}
+            inert={isSettings}
+            style={snapshot?.thread.type === "group" ? undefined : agentStyle(agent)}
+            data-group={snapshot?.thread.type === "group" ? "true" : undefined}
           >
-            <Button
-              variant="ghost"
-              size="icon"
-              className={
-                mobile
-                  ? "navigation-toggle header-action rounded-full"
-                  : "navigation-toggle rounded-full"
-              }
-              aria-label="Buka percakapan"
-              onClick={() => setNavigation(true)}
+            <aside
+              id="workspace-navigation"
+              className="app-sidebar workspace-sidebar"
+              aria-label="Daftar percakapan"
+              hidden={!navigationVisible}
             >
-              <HugeiconsIcon icon={Menu01Icon} size={18} strokeWidth={1.5} />
-            </Button>
-            <div className="header-identity-position [grid-column:2] [grid-row:1] [padding-left:0] flex justify-center flex-1 min-w-0">
-              {snapshot ? (
-                <Button
-                  variant="ghost"
-                  type="button"
-                  onClick={() => {
-                    if (!details) locate({ tab: "detail", id: null });
-                    setDetails((value) => !value);
-                  }}
-                  disabled={!agent}
-                  aria-label={`Detail ${snapshot?.thread.name ?? agent?.name ?? "agent"}`}
-                  aria-expanded={details}
-                  aria-controls="conversation-details"
-                  className="header-action header-identity group gap-2 [max-width:100%] [padding:7.5px_13.5px_7.5px_7.5px] [border-radius:999px] inline-flex items-center min-w-0 font-medium h-auto"
-                >
-                  <AgentAvatar
-                    agent={agent}
-                    group={snapshot?.thread.type === "group"}
-                    members={snapshot?.agents}
-                    animated
-                    followPointer
-                    className="size-6 rounded-lg text-xs"
-                  />
-                  <span className="truncate">
-                    {snapshot?.thread.name ?? agent?.name ?? "Percakapan"}
-                  </span>
-                  {!details && (
-                    <span
-                      aria-hidden="true"
-                      className="-ml-2 flex w-0 shrink-0 overflow-hidden opacity-0 transition-[width,margin,opacity] duration-[140ms] group-hover:ml-0 group-hover:w-3 group-hover:opacity-100 group-focus-visible:ml-0 group-focus-visible:w-3 group-focus-visible:opacity-100"
-                    >
-                      <HugeiconsIcon
-                        icon={ArrowRight01Icon}
-                        className="size-3 shrink-0 text-muted-foreground"
-                      />
-                    </span>
-                  )}
-                  {activeRun && (
-                    <span
-                      role="status"
-                      className="flex items-center gap-1 text-caption text-muted-foreground"
-                    >
-                      <Spinner className="size-3" />
-                      <span className="sr-only">{runStatusLabel(activeRun)}</span>
-                    </span>
-                  )}
-                </Button>
-              ) : (
-                <ConversationIdentitySkeleton />
-              )}
-            </div>
-            <div className="header-model-actions col-start-3 row-start-1 flex min-w-0 items-center justify-end gap-3">
-              {snapshot ? (
-                <>
-                  {snapshot.thread.type === "dm" && (
-                    <ModelPicker
-                      key={agent?.id}
-                      className="header-action"
-                      agent={agent}
-                      connections={connections}
-                      refresh={refresh}
-                      report={report}
-                      manageProviders={() => openSettings("providers")}
-                    />
-                  )}
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="header-action header-browser-action hidden shrink-0 sm:inline-flex"
-                    aria-label="Browser agent"
-                    title="Browser agent"
-                    onClick={() => {
-                      setDetails(true);
-                      locate({ tab: "computer", id: null });
-                    }}
-                  >
-                    <HugeiconsIcon icon={ComputerIcon} className="size-[18px]" strokeWidth={1.5} />
-                  </Button>
-                </>
-              ) : (
-                <ConversationActionsSkeleton />
-              )}
-            </div>
-          </header>
-          {error && (
-            <Alert variant="destructive" className="workspace-error [width:auto] [margin:8px_24px]">
-              <AlertDescription className="flex flex-wrap items-center gap-2">
-                <span>{error}</span>
-                <Button size="sm" variant="outline" onClick={workspace.retry}>
-                  Coba hubungkan lagi
-                </Button>
-                <Button size="sm" variant="ghost" onClick={() => openSettings()}>
-                  Periksa pengaturan
-                </Button>
-              </AlertDescription>
-            </Alert>
-          )}
-          {!snapshot ? (
-            <ConversationLoading error={error} />
-          ) : (
-            <>
-              <Conversation
-                key={threadId}
-                contextRef={conversationScroll}
-                className="conversation-viewport min-h-0"
+              {nav}
+            </aside>
+            <main
+              ref={setConversationSurface}
+              className="app-surface workspace-main flex flex-1 flex-col min-w-0 min-h-0 overflow-hidden"
+              aria-label="Percakapan aktif"
+              hidden={mobile && navigation}
+              data-details={details && !mobile && !viewing}
+              data-viewer={viewing}
+              onKeyDown={(event) => {
+                if (viewing && event.key === "Escape" && !event.defaultPrevented) {
+                  if (
+                    event.target instanceof Element &&
+                    event.target.closest('[role="menu"], [role="listbox"]')
+                  )
+                    return;
+                  event.preventDefault();
+                  viewer.back();
+                }
+              }}
+            >
+              <ConversationContentViewer viewer={viewer} />
+              <header
                 inert={viewing}
+                aria-busy={!snapshot && !error}
+                className={`workspace-chat-header [grid-template-columns:minmax(0,_1fr)_auto_minmax(0,_1fr)] gap-2.5 [padding:10px_20px] grid items-center shrink-0 ${!snapshot && error ? "[&_[data-slot=skeleton]]:animate-none" : ""}`}
               >
-                <ConversationContent
-                  scrollClassName="conversation-scroll"
-                  className="conversation-column gap-4 w-full"
-                >
-                  {(historyLoaded ? before : snapshot.timeline.next_before) && (
+                <div className="header-identity-position [grid-column:2] [grid-row:1] [padding-left:0] flex justify-center flex-1 min-w-0">
+                  {snapshot ? (
                     <Button
                       variant="ghost"
-                      onClick={() =>
-                        void act(async () => {
-                          const result = await request<ConversationTimeline>(
-                            `/v1/threads/${threadId}/timeline?before=${historyLoaded ? before : snapshot.timeline.next_before}`,
-                          );
-                          setOlder((current) => [...result.messages, ...current]);
-                          setOlderParts((current) => [...result.parts, ...current]);
-                          setBefore(result.next_before);
-                          setHistoryLoaded(true);
-                        })
-                      }
+                      type="button"
+                      onClick={() => {
+                        if (!details) locate({ tab: "detail", id: null });
+                        setDetails((value) => !value);
+                      }}
+                      disabled={!agent}
+                      aria-label={`Detail ${snapshot?.thread.name ?? agent?.name ?? "agent"}`}
+                      aria-expanded={details}
+                      aria-controls="conversation-details"
+                      className="header-action header-identity group gap-2 [max-width:100%] [padding:7.5px_13.5px_7.5px_7.5px] [border-radius:999px] inline-flex items-center min-w-0 font-medium h-auto"
                     >
-                      Pesan sebelumnya
-                    </Button>
-                  )}
-                  {visibleMessages.length === 0 && (
-                    <div className="conversation-empty gap-3 [margin:auto] [padding:64px_24px] flex items-center flex-col text-center">
                       <AgentAvatar
                         agent={agent}
+                        group={snapshot?.thread.type === "group"}
+                        members={snapshot?.agents}
                         animated
                         followPointer
-                        className="size-16 rounded-2xl text-2xl"
+                        className="size-6 rounded-lg text-xs"
                       />
-                      <h1>{agent?.name ?? "Percakapan"}</h1>
-                      <p>{agent?.soul || "Apa yang ingin kamu kerjakan bersama?"}</p>
-                    </div>
-                  )}
-                  {rows.map((row, index) => {
-                    const date = row.startsDay ? <ConversationDate at={row.at} /> : null;
-                    if (row.type === "activity")
-                      return (
-                        <Fragment key={row.key}>
-                          {date}
-                          <TimelineActivity parts={row.parts} open={openResource} />
-                        </Fragment>
-                      );
-                    if (row.type === "run")
-                      return (
-                        <Fragment key={row.key}>
-                          {date}
-                          {runActivity(row.run, row.at)}
-                        </Fragment>
-                      );
-                    if (row.type === "native")
-                      return (
-                        <Fragment key={row.key}>
-                          {date}
-                          <div data-native-history-fallback={row.fallback || undefined}>
-                            {row.fallback && (
-                              <p className="text-[12px] text-muted-foreground">
-                                Riwayat input ·{" "}
-                                {snapshot.agents.find(
-                                  (agent) => agent.id === row.fragment.run.agent_id,
-                                )?.name ?? "Agent"}
-                              </p>
-                            )}
-                            {nativeFragment(row.fragment)}
-                          </div>
-                        </Fragment>
-                      );
-                    const { entry } = row;
-                    const { message } = entry;
-                    const previous = rows[index - 1];
-                    const next = rows[index + 1];
-                    const run = snapshot.runs.findLast(
-                      (run) => run.input_message_id === message.id,
-                    );
-                    const author = publishedAuthor(message);
-                    const inlineAttachmentIds = new Set(
-                      message.author === "user"
-                        ? attachmentParts(message.text).flatMap((part) =>
-                            "id" in part && snapshot.artifacts.some((file) => file.id === part.id)
-                              ? [part.id]
-                              : [],
-                          )
-                        : [],
-                    );
-                    return (
-                      <Fragment key={row.key}>
-                        {date}
-                        <Message
-                          data-timeline-part={row.first ? entry.part.id : undefined}
-                          data-part-sequence={entry.part.sequence}
-                          id={row.first ? `message-${message.id}` : undefined}
-                          align={message.author === "user" ? "end" : "start"}
-                          className="conversation-message"
-                          data-join-above={
-                            (!row.startsDay &&
-                              joins(
-                                previous?.type === "message" ? previous.entry.message : undefined,
-                                message,
-                              )) ||
-                            undefined
-                          }
-                          data-join-below={
-                            (next &&
-                              !next.startsDay &&
-                              joins(
-                                message,
-                                next.type === "message" ? next.entry.message : undefined,
-                              )) ||
-                            undefined
-                          }
+                      <span className="truncate">
+                        {snapshot?.thread.name ?? agent?.name ?? "Percakapan"}
+                      </span>
+                      {!details && (
+                        <span
+                          aria-hidden="true"
+                          className="-ml-2 flex w-0 shrink-0 overflow-hidden opacity-0 transition-[width,margin,opacity] duration-[140ms] group-hover:ml-0 group-hover:w-3 group-hover:opacity-100 group-focus-visible:ml-0 group-focus-visible:w-3 group-focus-visible:opacity-100"
                         >
-                          {snapshot.thread.type === "group" && message.author === "agent" && (
-                            <AgentMessageAvatar
-                              agent={author}
-                              loading={message.state === "partial"}
-                              open={author ? () => openResource("agent", author.id) : undefined}
-                            />
-                          )}
-                          <MessageContent>
-                            {!(snapshot.thread.type === "group" && message.author === "agent") && (
-                              <MessageHeader
-                                className={
-                                  snapshot.thread.type === "group" && message.author !== "user"
-                                    ? "message-author px-3 text-[12px] text-muted-foreground font-normal"
-                                    : "sr-only"
-                                }
-                              >
-                                {message.author === "user" ? (
-                                  "Kamu"
-                                ) : snapshot.thread.type === "group" && author ? (
-                                  <button
-                                    type="button"
-                                    className="text-link hover:underline"
-                                    onClick={() => openResource("agent", author.id)}
-                                  >
-                                    {author.name}
-                                  </button>
-                                ) : (
-                                  (author?.name ?? "Agent")
-                                )}
-                              </MessageHeader>
-                            )}
-                            {message.author === "user" ? (
-                              <MessageActions text={message.text} user>
-                                <Bubble variant="secondary" className="chat-user-bubble">
-                                  <BubbleContent className="chat-bubble-content text-[15px] leading-[22px] whitespace-pre-wrap">
-                                    <div data-message-text>
-                                      <UserMessageText
-                                        message={message}
-                                        artifacts={snapshot.artifacts}
-                                        documents={snapshot.attachment_documents}
-                                        preparing={
-                                          run
-                                            ? ["queued", "dispatching"].includes(run.status)
-                                            : false
-                                        }
-                                      />
-                                    </div>
-                                    <MessageTime at={row.at} />
-                                  </BubbleContent>
-                                </Bubble>
-                              </MessageActions>
-                            ) : (
-                              answer(message, row.text, row.at, row.last)
-                            )}
-                            {row.last && (
-                              <MessageAttachments
-                                ids={message.artifact_ids.filter(
-                                  (id) => !inlineAttachmentIds.has(id),
-                                )}
-                                files={snapshot.artifacts}
-                                at={row.at}
-                                standalone={
-                                  !row.text.trim() &&
-                                  message.author !== "user" &&
-                                  !snapshot.human_requests.some(
-                                    (request) => request.message_id === message.id,
-                                  )
-                                }
-                                open={(id) => openResource("files", id)}
-                              />
-                            )}
-                            {row.last &&
-                              snapshot.human_requests
-                                .filter((r) => r.message_id === message.id)
-                                .map((r) => (
-                                  <HumanReply
-                                    key={r.id}
-                                    request={r}
-                                    question={message.text}
-                                    author={author?.name ?? "Agent"}
-                                    refresh={refresh}
-                                  />
-                                ))}
-                            {row.last &&
-                              run?.status === "queued" &&
-                              (!run.preparation || run.preparation.state === "ready") && (
-                                <div className="message-run-state text-caption text-muted-foreground">
-                                  {runStatusLabel(run)}
-                                </div>
-                              )}
-                          </MessageContent>
-                        </Message>
-                        {row.last && (
-                          <WorkActivity
-                            message={message}
-                            at={row.at}
-                            run={run}
-                            snapshot={snapshot}
-                            retryPreparation={(runId, revision) =>
-                              void act(async () => {
-                                await queueCommand(
-                                  `router-preparation:${runId}`,
-                                  `/v1/runs/${runId}/retry-preparation`,
-                                  { expected_revision: revision },
-                                );
-                              })
-                            }
-                            retryRoute={(route) =>
-                              void act(async () => {
-                                await queueCommand(
-                                  `route:${route.id}`,
-                                  `/v1/groups/${snapshot.thread.id}/routes/${route.id}/retry`,
-                                  { expected_revision: route.revision },
-                                );
-                              })
-                            }
-                            busy={busy}
+                          <HugeiconsIcon
+                            icon={ArrowRight01Icon}
+                            className="size-3 shrink-0 text-muted-foreground"
                           />
-                        )}
-                      </Fragment>
-                    );
-                  })}
-                  {snapshot.controls.map((control) => (
-                    <p key={control.id} className="text-caption text-muted-foreground">
-                      {controlText[control.state] ?? "Memeriksa arahan"}
-                      {control.error_code ? ` · ${repairMessage(control.error_code)}` : ""}
-                    </p>
-                  ))}
-                  {activeRuns.filter(canObserveNative).map((run) => (
-                    <NativeInteractions
-                      key={run.id}
-                      threadId={snapshot.thread.id}
-                      runId={run.id}
-                      run={run}
-                      observePending
-                      openAgent={() => openResource("agent", run.agent_id)}
-                      recordIds={[]}
-                      refresh={refresh}
-                      author={snapshot.agents.find((a) => a.id === run.agent_id)?.name ?? "Agent"}
-                      agent={snapshot.agents.find((a) => a.id === run.agent_id)}
-                    />
-                  ))}
-                  {opening?.recovery === "retry" && opening.run && (
-                    <Alert>
-                      <AlertDescription>
-                        Pembuka belum berhasil. Agent dan percakapan tetap tersimpan.
+                        </span>
+                      )}
+                      {activeRun && (
+                        <span
+                          role="status"
+                          className="flex items-center gap-1 text-caption text-muted-foreground"
+                        >
+                          <Spinner className="size-3" />
+                          <span className="sr-only">{runStatusLabel(activeRun)}</span>
+                        </span>
+                      )}
+                    </Button>
+                  ) : (
+                    <ConversationIdentitySkeleton />
+                  )}
+                </div>
+                <div className="header-model-actions col-start-3 row-start-1 flex min-w-0 items-center justify-end gap-3">
+                  {snapshot ? (
+                    <>
+                      {snapshot.thread.type === "dm" && (
+                        <ModelPicker
+                          key={agent?.id}
+                          className="header-action"
+                          agent={agent}
+                          connections={connections}
+                          refresh={refresh}
+                          report={report}
+                          manageProviders={() => openSettings("providers")}
+                        />
+                      )}
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="header-action header-browser-action hidden shrink-0 sm:inline-flex"
+                        aria-label="Browser agent"
+                        title="Browser agent"
+                        onClick={() => {
+                          setDetails(true);
+                          locate({ tab: "computer", id: null });
+                        }}
+                      >
+                        <HugeiconsIcon
+                          icon={ComputerIcon}
+                          className="size-[18px]"
+                          strokeWidth={1.5}
+                        />
+                      </Button>
+                    </>
+                  ) : (
+                    <ConversationActionsSkeleton />
+                  )}
+                </div>
+              </header>
+              {error && (
+                <Alert
+                  variant="destructive"
+                  className="workspace-error [width:auto] [margin:8px_24px]"
+                >
+                  <AlertDescription className="flex flex-wrap items-center gap-2">
+                    <span>{error}</span>
+                    <Button size="sm" variant="outline" onClick={workspace.retry}>
+                      Coba hubungkan lagi
+                    </Button>
+                    <Button size="sm" variant="ghost" onClick={() => openSettings()}>
+                      Periksa pengaturan
+                    </Button>
+                  </AlertDescription>
+                </Alert>
+              )}
+              {!snapshot ? (
+                <ConversationLoading error={error} />
+              ) : (
+                <>
+                  <Conversation
+                    key={threadId}
+                    contextRef={conversationScroll}
+                    className="conversation-viewport min-h-0"
+                    inert={viewing}
+                  >
+                    <ConversationContent
+                      scrollClassName="conversation-scroll"
+                      className="conversation-column gap-4 w-full"
+                    >
+                      {(historyLoaded ? before : snapshot.timeline.next_before) && (
                         <Button
-                          variant="outline"
-                          size="sm"
-                          disabled={busy}
+                          variant="ghost"
                           onClick={() =>
                             void act(async () => {
-                              await command(`/v1/threads/${threadId}/opening/retry`, {
-                                expected_run_id: opening.run?.id,
-                              });
+                              const result = await request<ConversationTimeline>(
+                                `/v1/threads/${threadId}/timeline?before=${historyLoaded ? before : snapshot.timeline.next_before}`,
+                              );
+                              setOlder((current) => [...result.messages, ...current]);
+                              setOlderParts((current) => [...result.parts, ...current]);
+                              setBefore(result.next_before);
+                              setHistoryLoaded(true);
                             })
                           }
                         >
-                          Lanjutkan pembuka
+                          Pesan sebelumnya
                         </Button>
-                      </AlertDescription>
-                    </Alert>
-                  )}
-                </ConversationContent>
-                <ConversationScrollButton className="conversation-latest" />
-              </Conversation>
-              <div
-                onFocusCapture={() => setComposerFocused(true)}
-                onBlurCapture={(event) => {
-                  if (!event.currentTarget.contains(event.relatedTarget)) setComposerFocused(false);
-                }}
-                className="composer-dock [padding:12px_20px_16px] w-full shrink-0"
-              >
-                {!reply && !editing && (
-                  <ViewerComposerContext viewer={viewer} disabled={busy || pending !== null} />
-                )}
-                {connection?.login !== "authenticated" && (
-                  <Button
-                    variant="ghost"
-                    type="button"
-                    onClick={() => openSettings()}
-                    className="connection-setup-prompt mb-3 h-auto max-w-full justify-start whitespace-normal px-0 text-left text-caption text-link"
-                  >
-                    Siapkan koneksi agar {agent?.name} bisa mulai bekerja →
-                  </Button>
-                )}
-                <QueuedMessages
-                  items={queued}
-                  busy={busy || !!editing || pending !== null}
-                  settings={() => openSettings()}
-                  edit={editQueued}
-                  remove={(message) => {
-                    void act(async () => {
-                      await queueCommand(
-                        `queued-delete:${message.id}`,
-                        `/v1/messages/${message.id}/delete`,
-                        {
-                          expected_revision: message.revision,
-                        },
-                      );
-                    });
-                  }}
-                  steer={steerQueued}
-                />
-                {editing && (
+                      )}
+                      {visibleMessages.length === 0 && (
+                        <div className="conversation-empty gap-3 [margin:auto] [padding:64px_24px] flex items-center flex-col text-center">
+                          <AgentAvatar
+                            agent={agent}
+                            animated
+                            followPointer
+                            className="size-16 rounded-2xl text-2xl"
+                          />
+                          <h1>{agent?.name ?? "Percakapan"}</h1>
+                          <p>{agent?.soul || "Apa yang ingin kamu kerjakan bersama?"}</p>
+                        </div>
+                      )}
+                      {rows.map((row, index) => {
+                        const date = row.startsDay ? <ConversationDate at={row.at} /> : null;
+                        if (row.type === "activity")
+                          return (
+                            <Fragment key={row.key}>
+                              {date}
+                              <TimelineActivity parts={row.parts} open={openResource} />
+                            </Fragment>
+                          );
+                        if (row.type === "run")
+                          return (
+                            <Fragment key={row.key}>
+                              {date}
+                              {runActivity(row.run, row.at)}
+                            </Fragment>
+                          );
+                        if (row.type === "native")
+                          return (
+                            <Fragment key={row.key}>
+                              {date}
+                              <div data-native-history-fallback={row.fallback || undefined}>
+                                {row.fallback && (
+                                  <p className="text-[12px] text-muted-foreground">
+                                    Riwayat input ·{" "}
+                                    {snapshot.agents.find(
+                                      (agent) => agent.id === row.fragment.run.agent_id,
+                                    )?.name ?? "Agent"}
+                                  </p>
+                                )}
+                                {nativeFragment(row.fragment)}
+                              </div>
+                            </Fragment>
+                          );
+                        const { entry } = row;
+                        const { message } = entry;
+                        const previous = rows[index - 1];
+                        const next = rows[index + 1];
+                        const run = snapshot.runs.findLast(
+                          (run) => run.input_message_id === message.id,
+                        );
+                        const author = publishedAuthor(message);
+                        const inlineAttachmentIds = new Set(
+                          message.author === "user"
+                            ? attachmentParts(message.text).flatMap((part) =>
+                                "id" in part &&
+                                snapshot.artifacts.some((file) => file.id === part.id)
+                                  ? [part.id]
+                                  : [],
+                              )
+                            : [],
+                        );
+                        return (
+                          <Fragment key={row.key}>
+                            {date}
+                            <Message
+                              data-timeline-part={row.first ? entry.part.id : undefined}
+                              data-part-sequence={entry.part.sequence}
+                              id={row.first ? `message-${message.id}` : undefined}
+                              align={message.author === "user" ? "end" : "start"}
+                              className="conversation-message"
+                              data-join-above={
+                                (!row.startsDay &&
+                                  joins(
+                                    previous?.type === "message"
+                                      ? previous.entry.message
+                                      : undefined,
+                                    message,
+                                  )) ||
+                                undefined
+                              }
+                              data-join-below={
+                                (next &&
+                                  !next.startsDay &&
+                                  joins(
+                                    message,
+                                    next.type === "message" ? next.entry.message : undefined,
+                                  )) ||
+                                undefined
+                              }
+                            >
+                              {snapshot.thread.type === "group" && message.author === "agent" && (
+                                <AgentMessageAvatar
+                                  agent={author}
+                                  loading={message.state === "partial"}
+                                  open={author ? () => openResource("agent", author.id) : undefined}
+                                />
+                              )}
+                              <MessageContent>
+                                {!(
+                                  snapshot.thread.type === "group" && message.author === "agent"
+                                ) && (
+                                  <MessageHeader
+                                    className={
+                                      snapshot.thread.type === "group" && message.author !== "user"
+                                        ? "message-author px-3 text-[12px] text-muted-foreground font-normal"
+                                        : "sr-only"
+                                    }
+                                  >
+                                    {message.author === "user" ? (
+                                      "Kamu"
+                                    ) : snapshot.thread.type === "group" && author ? (
+                                      <button
+                                        type="button"
+                                        className="text-link hover:underline"
+                                        onClick={() => openResource("agent", author.id)}
+                                      >
+                                        {author.name}
+                                      </button>
+                                    ) : (
+                                      (author?.name ?? "Agent")
+                                    )}
+                                  </MessageHeader>
+                                )}
+                                {message.author === "user" ? (
+                                  <MessageActions text={message.text} user>
+                                    <Bubble variant="secondary" className="chat-user-bubble">
+                                      <BubbleContent className="chat-bubble-content text-[15px] leading-[22px] whitespace-pre-wrap">
+                                        <div data-message-text>
+                                          <UserMessageText
+                                            message={message}
+                                            artifacts={snapshot.artifacts}
+                                            documents={snapshot.attachment_documents}
+                                            preparing={
+                                              run
+                                                ? ["queued", "dispatching"].includes(run.status)
+                                                : false
+                                            }
+                                          />
+                                        </div>
+                                        <MessageTime at={row.at} />
+                                      </BubbleContent>
+                                    </Bubble>
+                                  </MessageActions>
+                                ) : (
+                                  answer(message, row.text, row.at, row.last)
+                                )}
+                                {row.last && (
+                                  <MessageAttachments
+                                    ids={message.artifact_ids.filter(
+                                      (id) => !inlineAttachmentIds.has(id),
+                                    )}
+                                    files={snapshot.artifacts}
+                                    at={row.at}
+                                    standalone={
+                                      !row.text.trim() &&
+                                      message.author !== "user" &&
+                                      !snapshot.human_requests.some(
+                                        (request) => request.message_id === message.id,
+                                      )
+                                    }
+                                    open={(id) => openResource("files", id)}
+                                  />
+                                )}
+                                {row.last &&
+                                  snapshot.human_requests
+                                    .filter((r) => r.message_id === message.id)
+                                    .map((r) => (
+                                      <HumanReply
+                                        key={r.id}
+                                        request={r}
+                                        question={message.text}
+                                        author={author?.name ?? "Agent"}
+                                        refresh={refresh}
+                                      />
+                                    ))}
+                                {row.last &&
+                                  run?.status === "queued" &&
+                                  (!run.preparation || run.preparation.state === "ready") && (
+                                    <div className="message-run-state text-caption text-muted-foreground">
+                                      {runStatusLabel(run)}
+                                    </div>
+                                  )}
+                              </MessageContent>
+                            </Message>
+                            {row.last && (
+                              <WorkActivity
+                                message={message}
+                                at={row.at}
+                                run={run}
+                                snapshot={snapshot}
+                                retryPreparation={(runId, revision) =>
+                                  void act(async () => {
+                                    await queueCommand(
+                                      `router-preparation:${runId}`,
+                                      `/v1/runs/${runId}/retry-preparation`,
+                                      { expected_revision: revision },
+                                    );
+                                  })
+                                }
+                                retryRoute={(route) =>
+                                  void act(async () => {
+                                    await queueCommand(
+                                      `route:${route.id}`,
+                                      `/v1/groups/${snapshot.thread.id}/routes/${route.id}/retry`,
+                                      { expected_revision: route.revision },
+                                    );
+                                  })
+                                }
+                                busy={busy}
+                              />
+                            )}
+                          </Fragment>
+                        );
+                      })}
+                      {snapshot.controls.map((control) => (
+                        <p key={control.id} className="text-caption text-muted-foreground">
+                          {controlText[control.state] ?? "Memeriksa arahan"}
+                          {control.error_code ? ` · ${repairMessage(control.error_code)}` : ""}
+                        </p>
+                      ))}
+                      {activeRuns.filter(canObserveNative).map((run) => (
+                        <NativeInteractions
+                          key={run.id}
+                          threadId={snapshot.thread.id}
+                          runId={run.id}
+                          run={run}
+                          observePending
+                          openAgent={() => openResource("agent", run.agent_id)}
+                          recordIds={[]}
+                          refresh={refresh}
+                          author={
+                            snapshot.agents.find((a) => a.id === run.agent_id)?.name ?? "Agent"
+                          }
+                          agent={snapshot.agents.find((a) => a.id === run.agent_id)}
+                        />
+                      ))}
+                      {opening?.recovery === "retry" && opening.run && (
+                        <Alert>
+                          <AlertDescription>
+                            Pembuka belum berhasil. Agent dan percakapan tetap tersimpan.
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              disabled={busy}
+                              onClick={() =>
+                                void act(async () => {
+                                  await command(`/v1/threads/${threadId}/opening/retry`, {
+                                    expected_run_id: opening.run?.id,
+                                  });
+                                })
+                              }
+                            >
+                              Lanjutkan pembuka
+                            </Button>
+                          </AlertDescription>
+                        </Alert>
+                      )}
+                    </ConversationContent>
+                    <ConversationScrollButton className="conversation-latest" />
+                  </Conversation>
                   <div
-                    data-queued-edit={editing.id}
-                    className="flex items-center gap-2 px-3 pb-1.5 pt-2 text-[13px] leading-[18px] text-muted-foreground"
+                    onFocusCapture={() => setComposerFocused(true)}
+                    onBlurCapture={(event) => {
+                      if (!event.currentTarget.contains(event.relatedTarget))
+                        setComposerFocused(false);
+                    }}
+                    className="composer-dock [padding:12px_20px_16px] w-full shrink-0"
                   >
-                    <HugeiconsIcon
-                      icon={PencilEdit01Icon}
-                      size={14}
-                      className="shrink-0"
-                      aria-hidden="true"
-                    />
-                    <span className="min-w-0 flex-1">
-                      {editPending !== null
-                        ? "Perubahan belum terkonfirmasi. Periksa operasi yang sama."
-                        : editStale
-                          ? "Pesan sudah diproses atau berubah. Buka lagi dari antrean untuk mengedit."
-                          : "Mengedit pesan antrean"}
-                    </span>
-                    <button
-                      type="button"
-                      className="flex size-7 shrink-0 items-center justify-center rounded-lg hover:bg-accent hover:text-foreground disabled:opacity-40"
-                      aria-label="Batal edit pesan"
-                      title="Batal edit pesan"
-                      disabled={busy || editPending !== null}
-                      onClick={cancelQueuedEdit}
-                    >
-                      <HugeiconsIcon icon={Cancel01Icon} size={14} aria-hidden="true" />
-                    </button>
-                  </div>
-                )}
-                {reply && !editing && (
-                  <div
-                    className="mb-2 flex flex-wrap items-center gap-2 px-2 text-[12px] text-muted-foreground"
-                    role="status"
-                  >
-                    {reply.error && <span>{reply.error}</span>}
-                    {replyTooLong && <span>Jawaban dibatasi {reply.maxLength} karakter.</span>}
-                    {attachments.length > 0 && (
-                      <span>Hapus lampiran untuk mengirim jawaban ini.</span>
+                    {!reply && !editing && (
+                      <ViewerComposerContext viewer={viewer} disabled={busy || pending !== null} />
                     )}
-                    {reply.check && (
-                      <button
+                    {connection?.login !== "authenticated" && (
+                      <Button
+                        variant="ghost"
                         type="button"
-                        className="text-link underline"
-                        disabled={busy || reply.busy}
-                        onClick={() =>
-                          void act(async () => {
-                            const accepted = await reply.check?.();
-                            if (accepted === true && currentThread.current === threadId)
-                              setDraft("");
-                          })
-                        }
+                        onClick={() => openSettings()}
+                        className="connection-setup-prompt mb-3 h-auto max-w-full justify-start whitespace-normal px-0 text-left text-caption text-link"
                       >
-                        Periksa status
-                      </button>
+                        Siapkan koneksi agar {agent?.name} bisa mulai bekerja →
+                      </Button>
                     )}
-                  </div>
-                )}
-                <form
-                  ref={setComposerSurface}
-                  onSubmit={(event) => {
-                    event.preventDefault();
-                    send();
-                  }}
-                  className="conversation-composer gap-1.5 p-2 flex items-end"
-                  data-multiline={multiline ? "true" : undefined}
-                >
-                  <AttachInput
-                    key={`attachments:${snapshot.thread.id}`}
-                    disabled={busy || pending !== null || !!editing || !!reply}
-                    count={attachments.length}
-                    addFiles={composerFiles.addFiles}
-                  />
-                  {editing ? (
-                    <ComposerInput
-                      ref={queuedEditInput}
-                      label="Edit pesan"
-                      value={editPending ?? editText}
-                      readOnly={editPending !== null}
-                      onChange={setEditText}
-                      placeholder={`Pesan${agent ? ` untuk ${agent.name}` : ""}…`}
-                      lookup={composerFiles.lookup}
-                      retry={composerFiles.retry}
-                      onFiles={() => {}}
-                      onMultiline={setMultiline}
-                      report={report}
-                      onEscape={cancelQueuedEdit}
-                      onEnter={saveQueuedEdit}
-                      suggestions={false}
+                    <QueuedMessages
+                      items={queued}
+                      busy={busy || !!editing || pending !== null}
+                      settings={() => openSettings()}
+                      edit={editQueued}
+                      remove={(message) => {
+                        void act(async () => {
+                          await queueCommand(
+                            `queued-delete:${message.id}`,
+                            `/v1/messages/${message.id}/delete`,
+                            {
+                              expected_revision: message.revision,
+                            },
+                          );
+                        });
+                      }}
+                      steer={steerQueued}
                     />
-                  ) : (
-                    <ComposerInput
-                      key={`editor:${snapshot.thread.id}`}
-                      ref={bindComposerInput}
-                      label={undefined}
-                      value={pending ?? reply?.restoreText ?? draft}
-                      readOnly={busy || pending !== null || !!reply?.busy || !!reply?.locked}
-                      placeholder={`Pesan${agent ? ` untuk ${agent.name}` : ""}…`}
-                      lookup={composerFiles.lookup}
-                      retry={composerFiles.retry}
-                      onChange={setDraft}
-                      onMultiline={setMultiline}
-                      onFiles={composerFiles.addFiles}
-                      report={report}
-                      onEnter={() => {
-                        if (
-                          !reply &&
-                          !pending &&
-                          !draft.trim() &&
-                          attachments.length === 0 &&
-                          queueHead?.target &&
-                          Date.now() < steerAgainUntil.current
-                        ) {
-                          steerQueued(queueHead);
-                          return;
-                        }
+                    {editing && (
+                      <div
+                        data-queued-edit={editing.id}
+                        className="flex items-center gap-2 px-3 pb-1.5 pt-2 text-[13px] leading-[18px] text-muted-foreground"
+                      >
+                        <HugeiconsIcon
+                          icon={PencilEdit01Icon}
+                          size={14}
+                          className="shrink-0"
+                          aria-hidden="true"
+                        />
+                        <span className="min-w-0 flex-1">
+                          {editPending !== null
+                            ? "Perubahan belum terkonfirmasi. Periksa operasi yang sama."
+                            : editStale
+                              ? "Pesan sudah diproses atau berubah. Buka lagi dari antrean untuk mengedit."
+                              : "Mengedit pesan antrean"}
+                        </span>
+                        <button
+                          type="button"
+                          className="flex size-7 shrink-0 items-center justify-center rounded-lg hover:bg-accent hover:text-foreground disabled:opacity-40"
+                          aria-label="Batal edit pesan"
+                          title="Batal edit pesan"
+                          disabled={busy || editPending !== null}
+                          onClick={cancelQueuedEdit}
+                        >
+                          <HugeiconsIcon icon={Cancel01Icon} size={14} aria-hidden="true" />
+                        </button>
+                      </div>
+                    )}
+                    {reply && !editing && (
+                      <div
+                        className="mb-2 flex flex-wrap items-center gap-2 px-2 text-[12px] text-muted-foreground"
+                        role="status"
+                      >
+                        {reply.error && <span>{reply.error}</span>}
+                        {replyTooLong && <span>Jawaban dibatasi {reply.maxLength} karakter.</span>}
+                        {attachments.length > 0 && (
+                          <span>Hapus lampiran untuk mengirim jawaban ini.</span>
+                        )}
+                        {reply.check && (
+                          <button
+                            type="button"
+                            className="text-link underline"
+                            disabled={busy || reply.busy}
+                            onClick={() =>
+                              void act(async () => {
+                                const accepted = await reply.check?.();
+                                if (accepted === true && currentThread.current === threadId)
+                                  setDraft("");
+                              })
+                            }
+                          >
+                            Periksa status
+                          </button>
+                        )}
+                      </div>
+                    )}
+                    <form
+                      ref={setComposerSurface}
+                      onSubmit={(event) => {
+                        event.preventDefault();
                         send();
                       }}
-                    />
-                  )}
-                  <div className="composer-actions gap-2 flex items-end shrink-0">
-                    <div className="flex gap-2">
-                      {reply?.locked && !stopInSlot && activeRun && (
-                        <ComposerStopPicker
-                          enabled={activeRuns.length > 1}
-                          runs={activeRuns}
-                          label={stopLabel}
-                          busy={busy}
-                          stop={stop}
-                        >
-                          <Button
-                            type="button"
-                            variant="ghost"
-                            size="icon"
-                            className="composer-aux"
-                            aria-label={activeRuns.length > 1 ? "Stop" : stopLabel(activeRun)}
-                            disabled={
-                              busy || activeRuns.every((run) => run.status === "cancel_requested")
+                      className="conversation-composer gap-1.5 p-2 flex items-end"
+                      data-multiline={multiline ? "true" : undefined}
+                    >
+                      <AttachInput
+                        key={`attachments:${snapshot.thread.id}`}
+                        disabled={busy || pending !== null || !!editing || !!reply}
+                        count={attachments.length}
+                        addFiles={composerFiles.addFiles}
+                      />
+                      {editing ? (
+                        <ComposerInput
+                          ref={queuedEditInput}
+                          label="Edit pesan"
+                          value={editPending ?? editText}
+                          readOnly={editPending !== null}
+                          onChange={setEditText}
+                          placeholder={`Pesan${agent ? ` untuk ${agent.name}` : ""}…`}
+                          lookup={composerFiles.lookup}
+                          retry={composerFiles.retry}
+                          onFiles={() => {}}
+                          onMultiline={setMultiline}
+                          report={report}
+                          onEscape={cancelQueuedEdit}
+                          onEnter={saveQueuedEdit}
+                          suggestions={false}
+                        />
+                      ) : (
+                        <ComposerInput
+                          key={`editor:${snapshot.thread.id}`}
+                          ref={bindComposerInput}
+                          label={undefined}
+                          value={pending ?? reply?.restoreText ?? draft}
+                          readOnly={busy || pending !== null || !!reply?.busy || !!reply?.locked}
+                          placeholder={`Pesan${agent ? ` untuk ${agent.name}` : ""}…`}
+                          lookup={composerFiles.lookup}
+                          retry={composerFiles.retry}
+                          onChange={setDraft}
+                          onMultiline={setMultiline}
+                          onFiles={composerFiles.addFiles}
+                          report={report}
+                          onEnter={() => {
+                            if (
+                              !reply &&
+                              !pending &&
+                              !draft.trim() &&
+                              attachments.length === 0 &&
+                              queueHead?.target &&
+                              Date.now() < steerAgainUntil.current
+                            ) {
+                              steerQueued(queueHead);
+                              return;
                             }
-                            onClick={() => {
-                              if (activeRuns.length === 1) stop(activeRun);
-                            }}
-                          >
-                            <HugeiconsIcon icon={StopIcon} className="size-2.5 fill-current" />
-                          </Button>
-                        </ComposerStopPicker>
-                      )}
-                      <ComposerStopPicker
-                        enabled={stopInSlot && activeRuns.length > 1}
-                        runs={activeRuns}
-                        label={stopLabel}
-                        busy={busy}
-                        stop={stop}
-                      >
-                        <Button
-                          type={stopInSlot ? "button" : "submit"}
-                          onClick={() => {
-                            if (stopInSlot && activeRuns.length === 1 && activeRun) stop(activeRun);
+                            send();
                           }}
-                          className="composer-send"
-                          aria-label={
-                            stopInSlot && activeRun
-                              ? activeRuns.length > 1
-                                ? "Stop"
-                                : stopLabel(activeRun)
-                              : editing
-                                ? editPending !== null
-                                  ? "Periksa perubahan pesan"
-                                  : "Simpan pesan"
-                                : busy
-                                  ? "Mengirim"
-                                  : pending
-                                    ? "Periksa pengiriman"
-                                    : reply
-                                      ? "Kirim jawaban"
-                                      : "Kirim"
-                          }
-                          title={
-                            stopInSlot && activeRun
-                              ? activeRuns.length > 1
-                                ? "Stop"
-                                : stopLabel(activeRun)
-                              : editing
-                                ? editPending !== null
-                                  ? "Periksa perubahan pesan"
-                                  : "Simpan pesan"
-                                : pending
-                                  ? "Periksa pengiriman"
-                                  : reply
-                                    ? "Kirim jawaban"
-                                    : "Kirim pesan"
-                          }
-                          size="icon"
-                          disabled={
-                            busy ||
-                            (!stopInSlot && (!!reply?.busy || !!reply?.locked || replyTooLong)) ||
-                            (Boolean(reply) && attachments.length > 0) ||
-                            !agent ||
-                            (stopInSlot
-                              ? activeRuns.every((run) => run.status === "cancel_requested")
-                              : editing
-                                ? (editPending === null && editStale) ||
-                                  !(editPending ?? editText).trim()
-                                : !(pending ?? draft).trim() || attachmentsBlocked)
-                          }
-                        >
-                          {stopInSlot ? (
-                            <HugeiconsIcon icon={StopIcon} className="size-2.5 fill-current" />
-                          ) : busy ? (
-                            <Spinner />
-                          ) : editing ? (
-                            <HugeiconsIcon icon={Tick02Icon} size={16} strokeWidth={1.75} />
-                          ) : (
-                            <HugeiconsIcon icon={ArrowUp02Icon} size={16} strokeWidth={1.75} />
+                        />
+                      )}
+                      <div className="composer-actions gap-2 flex items-end shrink-0">
+                        <div className="flex gap-2">
+                          {reply?.locked && !stopInSlot && activeRun && (
+                            <ComposerStopPicker
+                              enabled={activeRuns.length > 1}
+                              runs={activeRuns}
+                              label={stopLabel}
+                              busy={busy}
+                              stop={stop}
+                            >
+                              <Button
+                                type="button"
+                                variant="ghost"
+                                size="icon"
+                                className="composer-aux"
+                                aria-label={activeRuns.length > 1 ? "Stop" : stopLabel(activeRun)}
+                                disabled={
+                                  busy ||
+                                  activeRuns.every((run) => run.status === "cancel_requested")
+                                }
+                                onClick={() => {
+                                  if (activeRuns.length === 1) stop(activeRun);
+                                }}
+                              >
+                                <HugeiconsIcon icon={StopIcon} className="size-2.5 fill-current" />
+                              </Button>
+                            </ComposerStopPicker>
                           )}
-                        </Button>
-                      </ComposerStopPicker>
-                    </div>
+                          <ComposerStopPicker
+                            enabled={stopInSlot && activeRuns.length > 1}
+                            runs={activeRuns}
+                            label={stopLabel}
+                            busy={busy}
+                            stop={stop}
+                          >
+                            <Button
+                              type={stopInSlot ? "button" : "submit"}
+                              onClick={() => {
+                                if (stopInSlot && activeRuns.length === 1 && activeRun)
+                                  stop(activeRun);
+                              }}
+                              className="composer-send"
+                              aria-label={
+                                stopInSlot && activeRun
+                                  ? activeRuns.length > 1
+                                    ? "Stop"
+                                    : stopLabel(activeRun)
+                                  : editing
+                                    ? editPending !== null
+                                      ? "Periksa perubahan pesan"
+                                      : "Simpan pesan"
+                                    : busy
+                                      ? "Mengirim"
+                                      : pending
+                                        ? "Periksa pengiriman"
+                                        : reply
+                                          ? "Kirim jawaban"
+                                          : "Kirim"
+                              }
+                              title={
+                                stopInSlot && activeRun
+                                  ? activeRuns.length > 1
+                                    ? "Stop"
+                                    : stopLabel(activeRun)
+                                  : editing
+                                    ? editPending !== null
+                                      ? "Periksa perubahan pesan"
+                                      : "Simpan pesan"
+                                    : pending
+                                      ? "Periksa pengiriman"
+                                      : reply
+                                        ? "Kirim jawaban"
+                                        : "Kirim pesan"
+                              }
+                              size="icon"
+                              disabled={
+                                busy ||
+                                (!stopInSlot &&
+                                  (!!reply?.busy || !!reply?.locked || replyTooLong)) ||
+                                (Boolean(reply) && attachments.length > 0) ||
+                                !agent ||
+                                (stopInSlot
+                                  ? activeRuns.every((run) => run.status === "cancel_requested")
+                                  : editing
+                                    ? (editPending === null && editStale) ||
+                                      !(editPending ?? editText).trim()
+                                    : !(pending ?? draft).trim() || attachmentsBlocked)
+                              }
+                            >
+                              {stopInSlot ? (
+                                <HugeiconsIcon icon={StopIcon} className="size-2.5 fill-current" />
+                              ) : busy ? (
+                                <Spinner />
+                              ) : editing ? (
+                                <HugeiconsIcon icon={Tick02Icon} size={16} strokeWidth={1.75} />
+                              ) : (
+                                <HugeiconsIcon icon={ArrowUp02Icon} size={16} strokeWidth={1.75} />
+                              )}
+                            </Button>
+                          </ComposerStopPicker>
+                        </div>
+                      </div>
+                    </form>
                   </div>
-                </form>
-              </div>
-            </>
-          )}
-        </main>
-        {details && !mobile && (
-          <aside
-            className="workspace-details w-80 [border-left:1px_solid_var(--border-subtle)] [border-radius:0_16px_16px_0] shrink-0 min-h-0 overflow-y-auto bg-background"
-            aria-label="Detail percakapan"
-            hidden={viewing}
-          >
-            {panel}
-          </aside>
-        )}
-        <Sheet
-          open={details && mobile && !isSettings && !viewing}
-          onOpenChange={(open) => {
-            if (!viewing) setDetails(open);
-          }}
-        >
-          <SheetContent
-            showCloseButton={false}
-            onCloseAutoFocus={(event) => {
-              if (viewing) event.preventDefault();
-            }}
-            className="context-sheet gap-0 w-full data-[side=right]:w-full data-[side=right]:sm:max-w-none overflow-y-auto border-0 bg-background p-0"
-            onEscapeKeyDown={(event) => {
-              const back = Array.from(
-                document.querySelectorAll<HTMLButtonElement>(
-                  ".context-sheet #conversation-details [data-panel-back]",
-                ),
-              ).find((button) => button.getClientRects().length > 0);
-              if (back) {
-                event.preventDefault();
-                back.click();
+                </>
+              )}
+            </main>
+            {details && !mobile && (
+              <aside
+                className="workspace-details w-80 [border-radius:0_16px_16px_0] shrink-0 min-h-0 overflow-y-auto bg-background"
+                aria-label="Detail percakapan"
+                hidden={viewing}
+              >
+                {panel}
+              </aside>
+            )}
+            <Sheet
+              open={details && mobile && !isSettings && !viewing}
+              onOpenChange={(open) => {
+                if (!viewing) setDetails(open);
+              }}
+            >
+              <SheetContent
+                showCloseButton={false}
+                onCloseAutoFocus={(event) => {
+                  if (viewing) event.preventDefault();
+                }}
+                className="context-sheet gap-0 w-full data-[side=right]:w-full data-[side=right]:sm:max-w-none overflow-y-auto border-0 bg-background p-0"
+                onEscapeKeyDown={(event) => {
+                  const back = Array.from(
+                    document.querySelectorAll<HTMLButtonElement>(
+                      ".context-sheet #conversation-details [data-panel-back]",
+                    ),
+                  ).find((button) => button.getClientRects().length > 0);
+                  if (back) {
+                    event.preventDefault();
+                    back.click();
+                  }
+                }}
+              >
+                <SheetHeader className="sr-only">
+                  <SheetTitle>Detail percakapan</SheetTitle>
+                  <SheetDescription>Profil dan konteks percakapan.</SheetDescription>
+                </SheetHeader>
+                {panel}
+              </SheetContent>
+            </Sheet>
+            <CreateGroup
+              agents={agents}
+              open={createGroupOpen && !isSettings}
+              onOpenChange={setCreateGroupOpen}
+              created={async (thread) => {
+                choose(thread.id);
+              }}
+            />
+          </div>
+          {isSettings && (
+            <Suspense
+              fallback={
+                <div
+                  className="app-screen"
+                  role="status"
+                  aria-label="Memuat pengaturan"
+                  aria-busy="true"
+                />
               }
-            }}
-          >
-            <SheetHeader className="sr-only">
-              <SheetTitle>Detail percakapan</SheetTitle>
-              <SheetDescription>Profil dan konteks percakapan.</SheetDescription>
-            </SheetHeader>
-            {panel}
-          </SheetContent>
-        </Sheet>
-        <CreateGroup
-          agents={agents}
-          open={createGroupOpen && !isSettings}
-          onOpenChange={setCreateGroupOpen}
-          created={async (thread) => {
-            choose(thread.id);
-          }}
-        />
+            >
+              <SettingsPage />
+            </Suspense>
+          )}
+        </div>
       </div>
-      {isSettings && (
-        <Suspense fallback={null}>
-          <SettingsDialog />
-        </Suspense>
-      )}
     </WorkspaceProviders>
   );
 }

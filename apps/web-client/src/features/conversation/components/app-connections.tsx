@@ -15,7 +15,15 @@ type AppTool = { slug: string; description?: string };
 type Catalog = { items: { slug: string; name: string; connected: boolean }[]; cursor?: string };
 const pill =
   "inline-flex h-7 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap rounded-full bg-secondary/70 px-3 text-[13px] font-medium leading-5 transition-colors hover:bg-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-40 touch:h-9";
-export function AppConnections({ snapshot, onBack }: { snapshot: Snapshot; onBack: () => void }) {
+export function AppConnections({
+  snapshot,
+  onBack,
+  embedded = false,
+}: {
+  snapshot: Snapshot;
+  onBack: () => void;
+  embedded?: boolean;
+}) {
   const connections = useApiResource<AppConnection[]>("/v1/apps/connections", snapshot.cursor);
   const effects = useApiResource<AppEffect[]>("/v1/entities/app_effect", snapshot.cursor);
   const authorization = useAppAuthorization(connections.retry);
@@ -182,13 +190,15 @@ export function AppConnections({ snapshot, onBack }: { snapshot: Snapshot; onBac
     );
   }
   return (
-    <div className="context-section pt-3.5">
-      <PanelPageHeader
-        title="Koneksi aplikasi"
-        back="Detail"
-        onBack={onBack}
-        intro="Hubungkan aplikasi melalui Composio, lalu pilih akses untuk percakapan ini."
-      />
+    <div className={embedded ? "settings-app-connections" : "context-section pt-3.5"}>
+      {!embedded && (
+        <PanelPageHeader
+          title="Koneksi aplikasi"
+          back="Detail"
+          onBack={onBack}
+          intro="Hubungkan aplikasi melalui Composio, lalu pilih akses untuk percakapan ini."
+        />
+      )}
       <div className="space-y-4">
         <div className="flex items-center gap-2">
           <label className="flex h-9 min-w-0 flex-1 items-center gap-2.5 rounded-full bg-secondary/70 px-3.5 focus-within:ring-1 focus-within:ring-ring">

@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from "react";
+import { usePreferences } from "@/hooks/use-preferences";
 import { isPageVisible, subscribePageVisibility } from "@/lib/page-visibility";
 
 /** Smooth only arriving text; never replay history or build a typewriter backlog. */
 export function useStreamingText(text: string, streaming: boolean) {
+  const { preferences } = usePreferences();
   const [visible, setVisible] = useState(text);
   const displayed = useRef(text);
   const lastPaint = useRef(0);
@@ -13,7 +15,13 @@ export function useStreamingText(text: string, streaming: boolean) {
       displayed.current = text;
       setVisible(text);
     };
-    if (!streaming || motion.matches || !isPageVisible() || !text.startsWith(displayed.current)) {
+    if (
+      !streaming ||
+      !preferences.smoothStreaming ||
+      motion.matches ||
+      !isPageVisible() ||
+      !text.startsWith(displayed.current)
+    ) {
       flush();
       return;
     }
@@ -44,6 +52,6 @@ export function useStreamingText(text: string, streaming: boolean) {
       unsubscribe();
       motion.removeEventListener("change", finish);
     };
-  }, [text, streaming]);
-  return !streaming || !text.startsWith(visible) ? text : visible;
+  }, [text, streaming, preferences.smoothStreaming]);
+  return !streaming || !preferences.smoothStreaming || !text.startsWith(visible) ? text : visible;
 }

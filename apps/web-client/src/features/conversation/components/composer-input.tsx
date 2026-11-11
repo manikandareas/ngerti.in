@@ -42,6 +42,7 @@ import {
 } from "@/features/conversation/lib/attachment-references";
 import { isComposerMultiline } from "@/features/conversation/lib/composer-layout";
 import { referenceParts } from "@/features/conversation/lib/inline-references";
+import { usePreferences } from "@/hooks/use-preferences";
 import { AttachmentNode, ComposerAttachmentContext } from "./attachment-node";
 import { ComposerSuggestions } from "./composer-suggestions";
 import { ReferenceNode } from "./reference-node";
@@ -98,6 +99,9 @@ function adjacentCharacter(point: RangeSelection["anchor"], before: boolean) {
 }
 
 function ComposerBridge(props: Props) {
+  const { preferences } = usePreferences();
+  const shortcut = useRef(preferences.sendShortcut);
+  shortcut.current = preferences.sendShortcut;
   const [editor] = useLexicalComposerContext();
   const editable = useLexicalEditable();
   const latest = useRef(props);
@@ -229,6 +233,7 @@ function ComposerBridge(props: Props) {
       KEY_ENTER_COMMAND,
       (event) => {
         if (!event || event.shiftKey) return false;
+        if (shortcut.current === "mod-enter" && !event.metaKey && !event.ctrlKey) return false;
         if (event.isComposing || editor.isComposing()) return true;
         event.preventDefault();
         if (editor.getRootElement()?.dataset.suggestionsOpen === "true") return true;

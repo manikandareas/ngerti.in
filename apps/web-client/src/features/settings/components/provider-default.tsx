@@ -9,7 +9,7 @@ import {
   SettingsRow,
   SettingsSection,
 } from "@/features/settings/components/shared";
-import { useSettingsDialog } from "@/features/settings/hooks/use-settings-dialog";
+import { useSettings } from "@/features/settings/hooks/use-settings";
 import { observedStates } from "@/features/settings/utils/provider-state";
 import type { Agent, Connection } from "@/types/workspace";
 
@@ -22,7 +22,7 @@ export function ProviderDefault({
   connections: Connection[];
   refresh: () => Promise<unknown>;
 }) {
-  const { open: openSettings } = useSettingsDialog();
+  const { open: openSettings } = useSettings();
   const [error, setError] = useState("");
   const [details, setDetails] = useState(false);
   const current = connections.find((connection) => connection.id === agent?.connection_id);

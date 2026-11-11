@@ -3,7 +3,7 @@ import { useCallback } from "react";
 import type { ProviderId } from "@/features/settings/components/shared";
 import type { SettingsSectionId } from "@/features/settings/lib/settings-search";
 
-export function useSettingsDialog() {
+export function useSettings() {
   const { settings, provider } = useSearch({ from: "/workspace" });
   const navigate = useNavigate({ from: "/" });
   const open = useCallback(

@@ -7,6 +7,15 @@
     value: Object.freeze({
       platform: "darwin",
       nativeVisibility: true,
+      async openExternal(url) {
+        const response = await fetch("/_desktop/open-external", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ url }),
+          signal: AbortSignal.timeout(10000),
+        });
+        if (!response.ok) throw new Error("The browser could not be opened. Try Open browser again.");
+      },
       // Rust observes issued viewer tickets at the gateway. This is presentation-only compatibility.
       reportComputerView() {},
       onVisibility(callback) {

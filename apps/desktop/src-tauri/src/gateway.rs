@@ -100,6 +100,9 @@ async fn handle(State(state): State<Arc<GatewayState>>, request: Request<Body>) 
     if path == "/_desktop/status" {
         return axum::Json(state.supervisor.status().await).into_response();
     }
+    if path == "/_desktop/open-external" {
+        return open_external(request, &state.origin, |url| open::that(url)).await;
+    }
     if path == "/_desktop/retry" {
         if request.method() != Method::POST {
             return StatusCode::METHOD_NOT_ALLOWED.into_response();
@@ -157,6 +160,62 @@ async fn handle(State(state): State<Arc<GatewayState>>, request: Request<Body>) 
         return proxy(&state, request, vite.as_str().trim_end_matches('/'), false).await;
     }
     static_asset(&state, request).await
+}
+
+/// A bounded browser handoff for the main-frame bridge, without shell or file access.
+pub(crate) async fn open_external(
+    request: Request<Body>,
+    origin: &str,
+    opener: impl FnOnce(&str) -> std::io::Result<()> + Send + 'static,
+) -> Response {
+    if request.method() != Method::POST {
+        return StatusCode::METHOD_NOT_ALLOWED.into_response();
+    }
+    if request
+        .headers()
+        .get(header::ORIGIN)
+        .and_then(|v| v.to_str().ok())
+        != Some(origin)
+    {
+        return StatusCode::FORBIDDEN.into_response();
+    }
+    if request
+        .headers()
+        .get(header::CONTENT_TYPE)
+        .and_then(|v| v.to_str().ok())
+        != Some("application/json")
+    {
+        return StatusCode::UNSUPPORTED_MEDIA_TYPE.into_response();
+    }
+    #[derive(serde::Deserialize)]
+    #[serde(deny_unknown_fields)]
+    struct Handoff {
+        url: String,
+    }
+    let Ok(body) = to_bytes(request.into_body(), 16384).await else {
+        return StatusCode::PAYLOAD_TOO_LARGE.into_response();
+    };
+    let Ok(value) = serde_json::from_slice::<Handoff>(&body) else {
+        return StatusCode::BAD_REQUEST.into_response();
+    };
+    let Ok(url) = url::Url::parse(&value.url) else {
+        return StatusCode::BAD_REQUEST.into_response();
+    };
+    if value.url.len() > 8192
+        || value.url.chars().any(char::is_control)
+        || url.scheme() != "https"
+        || url.host_str().is_none()
+        || !url.username().is_empty()
+        || url.password().is_some()
+    {
+        return StatusCode::BAD_REQUEST.into_response();
+    }
+    match tokio::task::spawn_blocking(move || opener(url.as_str())).await {
+        Ok(Ok(())) => StatusCode::NO_CONTENT.into_response(),
+        _ => (StatusCode::BAD_GATEWAY, axum::Json(json!({
+            "error": { "code": "BROWSER_UNAVAILABLE", "message": "The browser could not be opened." }
+        }))).into_response(),
+    }
 }
 
 fn is_api(path: &str) -> bool {

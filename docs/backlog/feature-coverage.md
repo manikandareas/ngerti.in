@@ -64,7 +64,7 @@ All 83 decision identities are assigned or explicitly parked. Shared-machine and
 | H04 | Usage, kuota, dan sumber billing | Opsional | — | — | Diparkir sesuai matriks |
 | H05 | Diagnostik dan perbaikan yang mudah | Wajib | [NMA-053 · Antrean, steer, conversational stop dan durable recovery API](NMA-053.md), [NMA-060 · Gate engine/backend dan kontrak API siap untuk UI](NMA-060.md) | [NMA-061 · UI percakapan, agent dan koneksi berbasis API siap](NMA-061.md), [NMA-063 · Acceptance UI dan alur produk wajib harness-first](NMA-063.md) | — |
 | H06 | Pengaturan bertahap yang sederhana | Wajib | [NMA-065 · Agent/group creation and conversational personalization API](NMA-065.md) | [NMA-061 · UI percakapan, agent dan koneksi berbasis API siap](NMA-061.md), [NMA-063 · Acceptance UI dan alur produk wajib harness-first](NMA-063.md) | — |
-| X01 | Marketplace skills / agent templates | Tunda | — | — | Diparkir sesuai matriks |
+| X01 | Marketplace skills / agent templates | Scoped UI approved; public packages deferred | Existing [skills](NMA-055.md) and [apps](NMA-059.md) APIs | [NMA-061 amendment](NMA-061.md#marketplace-screen-amendment--2026-11-11) | [Catalog/direct-install evidence](../verification/marketplace-screen-2026-11-11/catalog-and-authorization/README.md) and [category navigation](../verification/marketplace-screen-2026-11-11/category-navigation/README.md); public package installation/publishing/payments remain deferred |
 | X02 | Voice input, TTS, dan panggilan suara | Tunda | — | — | Diparkir sesuai matriks |
 | X03 | Banyak host dan akses harness laptop dari VPS | Tunda | — | — | Diparkir sesuai matriks |
 | X04 | Downloader / manajer model lokal | Tunda | — | — | Diparkir sesuai matriks |
@@ -87,3 +87,5 @@ All 83 decision identities are assigned or explicitly parked. Shared-machine and
 | T04 | Posisi Hermes dan kontrak data baru | Cleanup sesuai relevansi | [NMA-047 · Fondasi harness-first, kontrak domain dan pensiun runtime lama](NMA-047.md) | — | — |
 | T05 | Host dan metode instalasi | Dev dahulu; installer terakhir | [NMA-047 · Fondasi harness-first, kontrak domain dan pensiun runtime lama](NMA-047.md) | — | [NMA-064 · Instalasi lokal dan distribusi setelah produk siap](NMA-064.md) |
 | T06 | Verifikasi perilaku per runtime | Wajib | [NMA-060 · Gate engine/backend dan kontrak API siap untuk UI](NMA-060.md) | [NMA-063 · Acceptance UI dan alur produk wajib harness-first](NMA-063.md) | — |
+
+Marketplace catalog performance now uses a seven-day persistent public-metadata cache, stale background revalidation, near-viewport row groups and independently refreshed connection status. Full-catalog/category search and six-item previews are retained. See [the NMA-061 amendment](NMA-061.md#marketplace-persistent-catalog-cache-and-rendering--2026-11-11) and [verification](../verification/marketplace-screen-2026-11-11/performance-cache/README.md); this adds no public-package installation or gate completion claim.

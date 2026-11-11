@@ -1,0 +1,18 @@
+[WebServer] $ vite preview --host "127.0.0.1" --port "4315" --strictPort
+[WebServer] (node:84770) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 6 tests using 1 worker
+
+(node:84772) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [desktop] › tests/settings.spec.ts:57:1 › settings screen, navigation, theme and return preserve the conversation draft (3.1s)
+  ✓  2 [desktop] › tests/settings.spec.ts:603:1 › data export downloads public history and plugin management lives in Marketplace (3.9s)
+  ✓  3 [desktop] › tests/settings.spec.ts:675:1 › persistent rail switches the contextual sidebar without collapse controls (2.0s)
+(node:84801) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  4 [mobile] › tests/settings.spec.ts:57:1 › settings screen, navigation, theme and return preserve the conversation draft (2.1s)
+  ✓  5 [mobile] › tests/settings.spec.ts:603:1 › data export downloads public history and plugin management lives in Marketplace (3.4s)
+  ✓  6 [mobile] › tests/settings.spec.ts:675:1 › persistent rail switches the contextual sidebar without collapse controls (1.6s)
+
+  6 passed (20.9s)

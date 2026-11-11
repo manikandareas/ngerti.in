@@ -1,0 +1,32 @@
+{
+  "baseline": "9ca7c38f4feb6e351357e6150e9bf1866414302c",
+  "preceding_manifest": "compact-conversation-tools-2026-11-09.json",
+  "api_contract": "1.31.0",
+  "gpui_kit": "0.9.0",
+  "source_before": {
+    "apps/desktop-rs/crates/desktop/src/workspace/thread_search.rs": "0287e14764a30498c559fd31923b0ab106baab80d7e0fac89ab09ed4bab26db7",
+    "apps/desktop-rs/crates/desktop/src/workspace/chrome.rs": "3e4d26ff305b77a0f84ecbf6781535b08e898e7f03e9a7e34e6afc97cdcde472",
+    "apps/desktop-rs/crates/desktop/src/workspace/scroll.rs": "2552586b67693f1298085d1c579f78f10b12068c096dbd4ab341df2e3aad6edb",
+    "apps/desktop-rs/crates/desktop/src/workspace/conversation_tools_tests.rs": "e523b9a14fba41fff3f41b33c746a01b5982d931287cb7d11d5446722883add9",
+    "apps/desktop-rs/assets/theme-tokens.json": "3618cb2a20a7bb822e6642ff1c0fab3bd3b3136c08ce069e9950b82339959826",
+    "apps/desktop-rs/crates/desktop/src/workspace/view.rs": "944cf924c2901aefb4933fdd441d4873c417a62e7d84ff2d014d98333cb4d74e"
+  },
+  "source_after": {
+    "apps/desktop-rs/crates/desktop/src/workspace/thread_search.rs": "927e23a57fba09bf3b79d546986d9ca07ae57082fc5d9f482337e968245c956b",
+    "apps/desktop-rs/crates/desktop/src/workspace/chrome.rs": "75112b52ed95ee5cc269893f34d9e6628f027a8946e5559f624284d6741f967b",
+    "apps/desktop-rs/crates/desktop/src/workspace/scroll.rs": "0bb3302b1c96470ebff3a6fd18940c3816d5473d98e4a569f6b7472df2b63449",
+    "apps/desktop-rs/crates/desktop/src/workspace/conversation_tools_tests.rs": "33268bbc8312281a5b2ade57f39a1dd69e474f446f0185d8f71161f65cec6ab4",
+    "apps/desktop-rs/assets/theme-tokens.json": "9651fbe10e0080d4a4613f2423a79c175740b48de9931908b0b8a6f5d438bdd3",
+    "apps/desktop-rs/crates/desktop/src/workspace/view.rs": "06853abe89fa18e71f9890b3e8decd7513df43e1115299bbb12a1a4f90ffc856"
+  },
+  "border_field_contrast": {
+    "light": 3.09,
+    "dark": 4.15
+  },
+  "logs": {
+    "affected-tests.log": "46a847fcad29bd6bfe9c60fd7ba1b867f5eff0c0970287eb4025b2b1ccf6ecc3",
+    "clippy.log": "b0d0c2607f2df69cfdd19ab7d846e906b56e833fef5e75a8f5b74518033640d9",
+    "boundaries.log": "f1fb492621a97ff186ad9c07c2590f91d047feb33ab9b013964815e449ffde8e",
+    "docs-check.log": "5efb0b5810fe668cd10d1d0a8a485523c4cf8240d0adf089291545eebac215bf"
+  }
+}

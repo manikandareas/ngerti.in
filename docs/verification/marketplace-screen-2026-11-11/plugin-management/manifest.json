@@ -1,0 +1,182 @@
+{
+  "parent_revision": "32d9b59393784dfe14c7a10d3f16aeb27c6c1151",
+  "captured_on": "2026-11-11",
+  "source_files": [
+    {
+      "path": "apps/web-client/playwright.marketplace.config.ts",
+      "sha256": "9cd6b9deafcf19e79b38ed094e552b9e1aa10a9211726e312d3102f104a7b600"
+    },
+    {
+      "path": "apps/web-client/src/app/workspace-layout.tsx",
+      "sha256": "e8946a2f15bdcb600416c2de8ee24a23b60a64676a486b12278778c5f4e88593"
+    },
+    {
+      "path": "apps/web-client/src/app/workspace-rail.tsx",
+      "sha256": "733dea26467c50b76e3b2a1e4ab2d00e16843d1fd3d0d4aa851263d8c7e75a71"
+    },
+    {
+      "path": "apps/web-client/src/features/conversation/components/app-connections.tsx",
+      "state": "deleted"
+    },
+    {
+      "path": "apps/web-client/src/features/conversation/components/context-panel.tsx",
+      "sha256": "eb2e0a3309a20400ccc5c13cea9f0cbc98067c41ca13da7cec58633bf24ae7af"
+    },
+    {
+      "path": "apps/web-client/src/features/conversation/components/use-app-authorization.ts",
+      "sha256": "39e1c75605c1af6e91416b40addd8887a840f02b760a01402df920b480073a24"
+    },
+    {
+      "path": "apps/web-client/src/features/marketplace/components/catalog-entry.tsx",
+      "sha256": "7a4aa88a5af727818e7effe51a31ca052d2d00d5fd9b52d9e2e5be79c9598da3"
+    },
+    {
+      "path": "apps/web-client/src/features/marketplace/components/entry-detail.tsx",
+      "sha256": "8cf29372b7a37cfeebda01062553a7ca79b6ab37ad59a50fa4883d2e21332c59"
+    },
+    {
+      "path": "apps/web-client/src/features/marketplace/components/marketplace-page.tsx",
+      "sha256": "848d43f4257294939a7bc08c7e88989e9f3f6332d376e33e7183e9d9b0a04fdb"
+    },
+    {
+      "path": "apps/web-client/src/features/marketplace/components/plugin-access.tsx",
+      "sha256": "d809bdd8f5cd35ac5c6ad18d8597bbd2f95424e8c50e110405f06a7251e9c9b7"
+    },
+    {
+      "path": "apps/web-client/src/features/marketplace/components/plugin-install.tsx",
+      "sha256": "c015f236e2f5c455ce8657658aab0d4cd08c25c4f4fe045908b40511113457a8"
+    },
+    {
+      "path": "apps/web-client/src/features/marketplace/components/plugin-management.tsx",
+      "sha256": "b5c9415a72443cf416a5cb7428cdcc5d292f9ccc70f1d89f7c4f136689504ec4"
+    },
+    {
+      "path": "apps/web-client/src/features/marketplace/hooks/use-marketplace.ts",
+      "sha256": "340fc5ca52f47b64ddc97b746113ee942038d1d7f7bacfadfb47e8d2ceefbb1c"
+    },
+    {
+      "path": "apps/web-client/src/features/marketplace/hooks/use-plugin-catalog.ts",
+      "sha256": "66765766f81ff800a50c9fcc7917bcf60c62def2da1d213839e7aa6f692d083d"
+    },
+    {
+      "path": "apps/web-client/src/features/marketplace/hooks/use-plugin-manager.ts",
+      "sha256": "a58f3147b09f845c0ff28a9dbd1270089bbc79109436a420a9d49c7fb47117fa"
+    },
+    {
+      "path": "apps/web-client/src/features/marketplace/lib/catalog.ts",
+      "sha256": "51c0f07247b24a9103e2f368fe362f2d7ad60a63ce5ad9334013711f22b0de32"
+    },
+    {
+      "path": "apps/web-client/src/features/marketplace/lib/marketplace-search.ts",
+      "sha256": "f214fd6a6c9e91f83a6e6ce58942b978f2902ac7170359711b23491c0e6ab40c"
+    },
+    {
+      "path": "apps/web-client/src/features/marketplace/marketplace.css",
+      "sha256": "d2e73d2fa77a7363896b4a844ee98ff39e77c1bdb71a49b32b9b14ce561533ab"
+    },
+    {
+      "path": "apps/web-client/src/features/settings/components/settings-page.tsx",
+      "sha256": "a977f364a4b0856a14b997b1c130fb4671776ae3a785f1d3dec934f4f36f3c28"
+    },
+    {
+      "path": "apps/web-client/src/features/settings/hooks/use-settings.ts",
+      "sha256": "f3067548910601d42c243203645fde682dcc7b529df2926cb8d15947efeb0ee3"
+    },
+    {
+      "path": "apps/web-client/src/features/settings/lib/settings-search.ts",
+      "sha256": "6f1bb2e6a7140d64b0a090cbf52c7fb73c36fc6e65267947784ff988a093e8bc"
+    },
+    {
+      "path": "apps/web-client/src/index.css",
+      "sha256": "6ed908573dab7f023a8d7c5e5932aa5021c78b945ed6db9db19b6fc3a9b38a0b"
+    },
+    {
+      "path": "apps/web-client/src/router.tsx",
+      "sha256": "4db3f6383952006b50231620a0b68028a44c38562fd6831761cde92e9248c151"
+    },
+    {
+      "path": "apps/web-client/tests/marketplace-install.spec.ts",
+      "sha256": "9f68b6829d230d2173a03caf1588fd527492089b4f781b57d477a1c8414963c7"
+    },
+    {
+      "path": "apps/web-client/tests/marketplace.spec.ts",
+      "sha256": "743e3654eb7ed7eae0e63cce9c11730ebfe4ab4ec2fe074de114bffce7555b3a"
+    },
+    {
+      "path": "apps/web-client/tests/settings.spec.ts",
+      "sha256": "245289e62b3a5ce0e87f6ccc9d1b0755aa7d752c0c8a25d99aa3e01c9dc26b98"
+    },
+    {
+      "path": "apps/web-client/tests/work.spec.ts",
+      "sha256": "f9d69e1e1c2b8a00a931f53b9cdef1647fdaa1f99272062ec31ddd2253103cfd"
+    },
+    {
+      "path": "apps/web-client/verification/settings-webkit-smoke.ts",
+      "sha256": "654547250c2a851ca99b316af9655928a79b172dd04fd011db89feb594a0730d"
+    }
+  ],
+  "screenshots": [
+    {
+      "path": "screenshots/desktop-detail-dark.png",
+      "sha256": "c19c30959435610018c1d4e95a387791302ffe76c5aee0e53521bca8398a1bdb"
+    },
+    {
+      "path": "screenshots/desktop-detail-light.png",
+      "sha256": "1a7c9ae379fd18912ec99761e749c92b1f4c589307a32a8f6b734ee9d12e2c00"
+    },
+    {
+      "path": "screenshots/desktop-plugin-before-install.png",
+      "sha256": "dc89f1f8652d4dd3cb807999b081d66596c726e29311369bc4edba9084901045"
+    },
+    {
+      "path": "screenshots/desktop-plugin-install-blocked.png",
+      "sha256": "d39482fa56e439c3aa0f8a541cba4820c2ffe675d67cbbb11fe39d04f88f7d8e"
+    },
+    {
+      "path": "screenshots/desktop-plugin-installed-access.png",
+      "sha256": "7db6237a6f82eb7a03f5a63b210bd7cf0044b668b2f92174c0978ca568da779a"
+    },
+    {
+      "path": "screenshots/mobile-detail-dark.png",
+      "sha256": "7280a0534c10edb074387d18d131d9b5ff879dc18f536cbb7fb541e6f8a9556e"
+    },
+    {
+      "path": "screenshots/mobile-detail-light.png",
+      "sha256": "b73af2d5804709f918be33ebf960b75396ade39b93e3813b11ac7289665d6dad"
+    },
+    {
+      "path": "screenshots/mobile-plugin-before-install.png",
+      "sha256": "615eb55fddc6ad010aa91b5888f43af44d0e45e0adc79638d3f5db1907c03470"
+    },
+    {
+      "path": "screenshots/mobile-plugin-install-blocked.png",
+      "sha256": "6a4d489a119498ce56ecc0ac8dbaa16117cbd0e895d244c13f997c18733f0c96"
+    },
+    {
+      "path": "screenshots/mobile-plugin-installed-access.png",
+      "sha256": "14218697b5bbc7bc00d4636b41995098c2e67018556e574f56bcaadfc2d36906"
+    }
+  ],
+  "checks": {
+    "marketplace_browser": {
+      "pass": 14,
+      "fail": 0
+    },
+    "app_workflow_browser": {
+      "pass": 4,
+      "fail": 0
+    },
+    "settings_browser": {
+      "pass": 24,
+      "fail": 0,
+      "boundary": "22 full-cohort passes plus two corrected count assertions passing the focused rerun"
+    },
+    "build": "pass",
+    "lint": "pass",
+    "visual_review": "ship for the scoped follow-up; no material UI fixes required",
+    "docs_check": {
+      "baseline_broken_links": 8,
+      "new_broken_links": 0
+    }
+  }
+}

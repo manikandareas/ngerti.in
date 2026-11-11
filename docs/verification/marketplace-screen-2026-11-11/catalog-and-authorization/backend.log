@@ -1,0 +1,32 @@
+bun test v1.3.10 (30e609e0)
+
+apps/server/tests/operation-responses.test.ts:
+(pass) consumer validates real creation, learning, workspace, group and control responses [627.96ms]
+
+apps/server/tests/contracts.test.ts:
+(pass) every registered domain route retains the shared authentication guard [42.89ms]
+(pass) published replay schema accepts browser and application receipts across restart [100.80ms]
+(pass) published command schemas retain optional defaulted admission fields [41.69ms]
+(pass) consumer contract describes actual routes without executing native operations [157.12ms]
+(pass) published response schemas validate admission, control, history, snapshots and safe errors [32.32ms]
+
+apps/server/tests/integrations.test.ts:
+(pass) application effects use the existing owner, exact account and durable sanitized receipts [94.90ms]
+(pass) discovery filters foreign toolkits and agent execution cannot call unassigned or meta tools [39.06ms]
+(pass) DM assignment grants do not leak to a group or another owner resource [16.65ms]
+(pass) revoke or reassignment during final SDK preflight prevents the external request [65.75ms]
+(pass) remote expiry is checked before every execution and reconnect fences old sessions [43.43ms]
+(pass) concurrent calls cannot duplicate a provider effect [58.78ms]
+(pass) lost acknowledgements survive restart, preserve unknown, and prohibit blind replay [43.55ms]
+(pass) credential-like host output and signed URLs never reach tool results [0.71ms]
+(pass) invalid bridge fields return actionable validation without exposing the rejected input [50.35ms]
+(pass) application management HTTP routes require owner authentication and idempotent assignment [68.01ms]
+(pass) SDK execution relies on one pinned account and rejects remote account drift before dispatch [1.25ms]
+(pass) SDK uncertainty retains a safe request ID without exposing exception bodies [0.32ms]
+(pass) product approval gates the actual scoped app dispatch and changed arguments never reuse a decision [82.17ms]
+(pass) catalog enriches provider pages in bulk without hiding apps when metadata fails [1.36ms]
+
+ 20 pass
+ 0 fail
+ 261 expect() calls
+Ran 20 tests across 3 files. [2.14s]

@@ -1,0 +1,15 @@
+{
+  "key_present": true,
+  "steps": [
+    {
+      "phase": "create",
+      "ok": true
+    },
+    {
+      "phase": "toolkits",
+      "ok": false,
+      "name": "Error",
+      "status": 400
+    }
+  ]
+}

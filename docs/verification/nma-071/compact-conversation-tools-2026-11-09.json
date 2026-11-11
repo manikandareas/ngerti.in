@@ -1,0 +1,24 @@
+{
+  "baseline": "9ca7c38f4feb6e351357e6150e9bf1866414302c",
+  "preceding_manifest": "conversation-tools-2026-11-09.json",
+  "api_contract": "1.31.0",
+  "gpui_kit": "0.9.0",
+  "source_before": {
+    "apps/desktop-rs/crates/desktop/src/workspace/view.rs": "06853abe89fa18e71f9890b3e8decd7513df43e1115299bbb12a1a4f90ffc856",
+    "apps/desktop-rs/crates/desktop/src/workspace/thread_search.rs": "9bcab19c7a09ffb206d95d530f99e6097556db0893db212723b8432e990ecd40",
+    "apps/desktop-rs/crates/desktop/src/workspace/model_catalog.rs": "650e0dd3a649221442bee7f003021af033b9a1da31362967e0e1e1776dbd59b0",
+    "apps/desktop-rs/crates/desktop/src/workspace/conversation_tools_tests.rs": "ea7a5c8fc4edebf1651bd1f1a6f804755cce6c226020857cbe129cac093b291c"
+  },
+  "source_after": {
+    "apps/desktop-rs/crates/desktop/src/workspace/view.rs": "944cf924c2901aefb4933fdd441d4873c417a62e7d84ff2d014d98333cb4d74e",
+    "apps/desktop-rs/crates/desktop/src/workspace/thread_search.rs": "0287e14764a30498c559fd31923b0ab106baab80d7e0fac89ab09ed4bab26db7",
+    "apps/desktop-rs/crates/desktop/src/workspace/model_catalog.rs": "9adb6f83000db214ef7ab2fdc20b2392fbb7a1aad57e6e10338af16413352333",
+    "apps/desktop-rs/crates/desktop/src/workspace/conversation_tools_tests.rs": "e523b9a14fba41fff3f41b33c746a01b5982d931287cb7d11d5446722883add9"
+  },
+  "logs": {
+    "workspace-check.log": "9822c6469bf1c73991f947252dc1b8588218986c32e4576bc7f9011b90e4a452",
+    "affected-tests.log": "92ff823d643c54073443cbebdaef4fb4679d5cbb3abca59ec9e49a941e294e2e",
+    "clippy.log": "3e79c41d8094a911739998d955c2e7422181faef9f97e61a8289968f9a151acf",
+    "docs-check.log": "5efb0b5810fe668cd10d1d0a8a485523c4cf8240d0adf089291545eebac215bf"
+  }
+}

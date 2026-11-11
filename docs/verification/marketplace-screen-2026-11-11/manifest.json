@@ -1,0 +1,171 @@
+{
+  "parent_revision": "32d9b59393784dfe14c7a10d3f16aeb27c6c1151",
+  "captured_on": "2026-11-11",
+  "source_files": [
+    {
+      "path": "apps/web-client/playwright.marketplace.config.ts",
+      "sha256": "14f33912ba23624138aa925fca8ea4b10f6b85cd074cc976fd31b2fa4d518726"
+    },
+    {
+      "path": "apps/web-client/src/app/workspace-layout.tsx",
+      "sha256": "ca36268cd688eb1978d93098cd6a5fbc026e90add20fe04b76b48901505c4adf"
+    },
+    {
+      "path": "apps/web-client/src/app/workspace-rail.tsx",
+      "sha256": "733dea26467c50b76e3b2a1e4ab2d00e16843d1fd3d0d4aa851263d8c7e75a71"
+    },
+    {
+      "path": "apps/web-client/src/features/marketplace/components/catalog-entry.tsx",
+      "sha256": "9274a6da43127f1fd29f7a2a7763cf29174da308b5f2bb01772806bb94b9e066"
+    },
+    {
+      "path": "apps/web-client/src/features/marketplace/components/entry-detail.tsx",
+      "sha256": "27c9b9b206839a73476e4c3ea2dc3cdaf0fe54cdc989890fddb14d5812630973"
+    },
+    {
+      "path": "apps/web-client/src/features/marketplace/components/marketplace-page.tsx",
+      "sha256": "30aa8a7132d3843ad8349b36b3251ebd6797c74b78a26f429be3611b1e409061"
+    },
+    {
+      "path": "apps/web-client/src/features/marketplace/hooks/use-marketplace.ts",
+      "sha256": "340fc5ca52f47b64ddc97b746113ee942038d1d7f7bacfadfb47e8d2ceefbb1c"
+    },
+    {
+      "path": "apps/web-client/src/features/marketplace/lib/catalog.ts",
+      "sha256": "51c0f07247b24a9103e2f368fe362f2d7ad60a63ce5ad9334013711f22b0de32"
+    },
+    {
+      "path": "apps/web-client/src/features/marketplace/lib/marketplace-search.ts",
+      "sha256": "f214fd6a6c9e91f83a6e6ce58942b978f2902ac7170359711b23491c0e6ab40c"
+    },
+    {
+      "path": "apps/web-client/src/features/marketplace/marketplace.css",
+      "sha256": "9e2f70e37f2faaaf8b268a68f385347469a158953f4d4db0c7d8d2287a6f3125"
+    },
+    {
+      "path": "apps/web-client/src/features/settings/hooks/use-settings.ts",
+      "sha256": "f3067548910601d42c243203645fde682dcc7b529df2926cb8d15947efeb0ee3"
+    },
+    {
+      "path": "apps/web-client/src/index.css",
+      "sha256": "6ed908573dab7f023a8d7c5e5932aa5021c78b945ed6db9db19b6fc3a9b38a0b"
+    },
+    {
+      "path": "apps/web-client/src/router.tsx",
+      "sha256": "8cef0e3cb1d45d730fc4275d046afd573cfa503907462816eda7f1d03c643eff"
+    },
+    {
+      "path": "apps/web-client/tests/marketplace.spec.ts",
+      "sha256": "df32ed72aeab9b209bbfeadd0b718b645de211c1d4f8e2c88c4110fc11b8f101"
+    },
+    {
+      "path": "apps/web-client/tests/settings.spec.ts",
+      "sha256": "6397144311f28787481b2c40fe787fa9f29722636240823aea001952ba4d0674"
+    }
+  ],
+  "screenshots": [
+    {
+      "path": "screenshots/desktop-connections-error-discover.png",
+      "sha256": "290d94ede250acb9f31417fa41341fd13c390258d8eb82bdcef951f7729d03d0"
+    },
+    {
+      "path": "screenshots/desktop-connections-error-initial.png",
+      "sha256": "94446b6730c5fc233d758dd278446e7aaf35d7ca3666ac3c7471d17282970602"
+    },
+    {
+      "path": "screenshots/desktop-connections-error.png",
+      "sha256": "57dacf82b55ffd1289f61e11dde3eb23e8f269ffdf6243570eea4fe1f8ea21bb"
+    },
+    {
+      "path": "screenshots/desktop-detail-dark.png",
+      "sha256": "a01468adb64524862d06e36740d82f80754d1e896f166f9c6c9b8b9874d3253a"
+    },
+    {
+      "path": "screenshots/desktop-detail-light.png",
+      "sha256": "548544ab44ecb9029595621ff24ed2edf31262341567c8b0a1de54e30e26d4bb"
+    },
+    {
+      "path": "screenshots/desktop-plugins-dark.png",
+      "sha256": "be3b0abec859a4401911a4da0cb7e65c1174762a922b22c23faf0d3846b8b906"
+    },
+    {
+      "path": "screenshots/desktop-plugins-light.png",
+      "sha256": "a246c469f70125220b7cdb0b294047540437390684ea81e809e1ae2cccf86c19"
+    },
+    {
+      "path": "screenshots/desktop-skills-dark-wide.png",
+      "sha256": "6e4d9cb0af532423c934ed25697e5a0c38d4e6fcac88ec943c43969917246c4e"
+    },
+    {
+      "path": "screenshots/desktop-skills-dark.png",
+      "sha256": "ad5bebef93b9cb4f23d45d8ff5f340d573557d98617de3317dfc054e18870332"
+    },
+    {
+      "path": "screenshots/desktop-skills-light.png",
+      "sha256": "510bdc0f25a6bde1151cbe6e522ff6d5700da05a26a7c6e6a37f787ee9ebd57e"
+    },
+    {
+      "path": "screenshots/mobile-connections-error-discover.png",
+      "sha256": "cb236d000e0e173966fea592e611761ab5d35993314c58a406e078d154c8ca0a"
+    },
+    {
+      "path": "screenshots/mobile-connections-error-initial.png",
+      "sha256": "6b91d83fb265d9b2a70b3bf5945eebb2a83942c9b7b075d44c4dcc40062aedf7"
+    },
+    {
+      "path": "screenshots/mobile-connections-error.png",
+      "sha256": "d2f1c285f1b92c39c0850388874c987debc922791e09bb3b0752fd301e6e982e"
+    },
+    {
+      "path": "screenshots/mobile-detail-dark.png",
+      "sha256": "ce8366df6db1e70a9547eb1acb9eb5252466f20a8a4355238ea13670c3984ff2"
+    },
+    {
+      "path": "screenshots/mobile-detail-light.png",
+      "sha256": "f886d6a3efe5292feced1cd76e41c88bb58e25b6e0b52c13ee10354c2521c51e"
+    },
+    {
+      "path": "screenshots/mobile-plugins-dark.png",
+      "sha256": "e161f9888b167e7856bf123caba7289208f252152c5c842c13bf00c23567f8e5"
+    },
+    {
+      "path": "screenshots/mobile-plugins-light.png",
+      "sha256": "a06ddb3e021234ac7d524d4d7765c685478b99846710031b7f740c8c356748f6"
+    },
+    {
+      "path": "screenshots/mobile-skills-dark.png",
+      "sha256": "471870bc9572abe02988044fa2286a6e7a87b01a5add20856b3be52fdfffcf0d"
+    },
+    {
+      "path": "screenshots/mobile-skills-light.png",
+      "sha256": "991845a036fdf5e83c9d7381c956b3b0e9416ad7bda5c9e9a197a59d5b94ee64"
+    }
+  ],
+  "verification": {
+    "marketplace_browser": {
+      "pass": 6,
+      "fail": 0
+    },
+    "settings_browser": {
+      "pass": 24,
+      "fail": 0
+    },
+    "build": "pass",
+    "typecheck": "pass",
+    "lint": "pass",
+    "mechanical_detector": [],
+    "visual_review": {
+      "disposition": "ship",
+      "scope": "Verdict pass: the full review finding on inventory failure feedback is resolved."
+    },
+    "docs_check": {
+      "status": "preexisting_failure",
+      "broken_links": 8,
+      "affected_paths": [
+        ".agents/skills/gpui-kit",
+        ".agents/skills/gpui-kit-design-guides"
+      ],
+      "new_marketplace_link_failures": 0
+    }
+  }
+}

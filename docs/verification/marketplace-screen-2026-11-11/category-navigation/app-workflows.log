@@ -1,0 +1,16 @@
+[WebServer] $ vite preview --host "127.0.0.1" --port "4321" --strictPort
+[WebServer] (node:84669) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 4 tests using 1 worker
+
+(node:84674) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [desktop] › tests/work.spec.ts:545:1 › application access is assigned explicitly to this context and unsupported images never upload (14.0s)
+  ✓  2 [desktop] › tests/work.spec.ts:651:1 › apps catalog searches live and authorization recovers from blocked popups and failed reads without changing grants (15.7s)
+(node:84747) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  3 [mobile] › tests/work.spec.ts:545:1 › application access is assigned explicitly to this context and unsupported images never upload (14.2s)
+  ✓  4 [mobile] › tests/work.spec.ts:651:1 › apps catalog searches live and authorization recovers from blocked popups and failed reads without changing grants (16.3s)
+
+  4 passed (1.1m)

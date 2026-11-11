@@ -1,0 +1,40 @@
+[WebServer] $ vite preview --host "127.0.0.1" --port "4315" --strictPort
+[WebServer] (node:84435) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 28 tests using 1 worker
+
+(node:84456) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [desktop] › tests/marketplace-install.spec.ts:37:1 › desktop authorization opens the provider through the native browser bridge (2.3s)
+  ✓   2 [desktop] › tests/marketplace-install.spec.ts:62:1 › native browser failure can be retried without creating another connection (6.3s)
+  ✓   3 [desktop] › tests/marketplace-install.spec.ts:98:1 › Install, scoped access and Uninstall execute directly inside plugin detail (8.2s)
+  ✓   4 [desktop] › tests/marketplace-install.spec.ts:190:1 › blocked OAuth and reload resume installation on the same account (7.3s)
+  ✓   5 [desktop] › tests/marketplace-install.spec.ts:240:1 › lost install acknowledgement reconciles pending state before retrying (7.2s)
+  ✓   6 [desktop] › tests/marketplace-install.spec.ts:275:1 › group access editing preserves the other member's grants (3.6s)
+  ✓   7 [desktop] › tests/marketplace-sidebar.spec.ts:27:1 › Marketplace sidebar matches Settings and agent navigation across themes (6.1s)
+  ✓   8 [desktop] › tests/marketplace.spec.ts:93:1 › rail, discovery, detail and prompt preserve the conversation and draft (2.5s)
+  ✓   9 [desktop] › tests/marketplace.spec.ts:169:1 › skills distinguish recommendations from scoped installed packages (918ms)
+  ✓  10 [desktop] › tests/marketplace.spec.ts:206:1 › empty states, dark theme and responsive catalog remain usable (2.1s)
+  ✓  11 [desktop] › tests/marketplace.spec.ts:273:1 › provider pages load automatically, retain partial results and search every category (994ms)
+  ✓  12 [desktop] › tests/marketplace.spec.ts:347:1 › loading uses row skeletons and unavailable logos never fall back to local images (800ms)
+  ✓  13 [desktop] › tests/marketplace.spec.ts:390:1 › category headings open complete lists and preserve category navigation (2.4s)
+  ✓  14 [desktop] › tests/marketplace.spec.ts:488:1 › catalog pages and preview logos reveal together and survive closing the screen (1.2s)
+(node:84621) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  15 [mobile] › tests/marketplace-install.spec.ts:37:1 › desktop authorization opens the provider through the native browser bridge (1.3s)
+  ✓  16 [mobile] › tests/marketplace-install.spec.ts:62:1 › native browser failure can be retried without creating another connection (6.2s)
+  ✓  17 [mobile] › tests/marketplace-install.spec.ts:98:1 › Install, scoped access and Uninstall execute directly inside plugin detail (8.9s)
+  ✓  18 [mobile] › tests/marketplace-install.spec.ts:190:1 › blocked OAuth and reload resume installation on the same account (9.6s)
+  ✓  19 [mobile] › tests/marketplace-install.spec.ts:240:1 › lost install acknowledgement reconciles pending state before retrying (8.0s)
+  ✓  20 [mobile] › tests/marketplace-install.spec.ts:275:1 › group access editing preserves the other member's grants (4.8s)
+  ✓  21 [mobile] › tests/marketplace-sidebar.spec.ts:27:1 › Marketplace sidebar matches Settings and agent navigation across themes (6.0s)
+  ✓  22 [mobile] › tests/marketplace.spec.ts:93:1 › rail, discovery, detail and prompt preserve the conversation and draft (2.0s)
+  ✓  23 [mobile] › tests/marketplace.spec.ts:169:1 › skills distinguish recommendations from scoped installed packages (914ms)
+  ✓  24 [mobile] › tests/marketplace.spec.ts:206:1 › empty states, dark theme and responsive catalog remain usable (2.1s)
+  ✓  25 [mobile] › tests/marketplace.spec.ts:273:1 › provider pages load automatically, retain partial results and search every category (1.7s)
+  ✓  26 [mobile] › tests/marketplace.spec.ts:347:1 › loading uses row skeletons and unavailable logos never fall back to local images (821ms)
+  ✓  27 [mobile] › tests/marketplace.spec.ts:390:1 › category headings open complete lists and preserve category navigation (2.6s)
+  ✓  28 [mobile] › tests/marketplace.spec.ts:488:1 › catalog pages and preview logos reveal together and survive closing the screen (1.1s)
+
+  28 passed (1.9m)

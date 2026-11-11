@@ -5,6 +5,7 @@ export type SettingsWorkspace = {
   snapshot: Snapshot | null;
   agents: Agent[];
   connections: Connection[];
+  appConnectionCursor: number;
   refresh: () => Promise<unknown>;
   openAgent: (agent: Agent) => void;
 };

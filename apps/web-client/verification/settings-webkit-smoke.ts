@@ -44,7 +44,6 @@ try {
     "Percakapan",
     "Aksesibilitas",
     "Providers",
-    "Aplikasi",
     "Data & privasi",
     "Pintasan keyboard",
     "Tentang",
@@ -59,7 +58,7 @@ try {
         .getByRole("heading", { name: section, exact: true }),
     ).toBeVisible();
   }
-  checks.push("All nine Settings sections navigate in WebKit");
+  checks.push("All eight Settings sections navigate in WebKit");
   await page.getByRole("link", { name: "Data & privasi", exact: true }).click();
   const pending = page.waitForEvent("download");
   await page.getByRole("button", { name: "Ekspor percakapan", exact: true }).click();

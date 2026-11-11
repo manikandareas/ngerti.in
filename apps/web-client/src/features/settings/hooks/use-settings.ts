@@ -9,7 +9,14 @@ export function useSettings() {
   const open = useCallback(
     (section: SettingsSectionId = "general", provider?: ProviderId, replace = false) =>
       navigate({
-        search: (previous) => ({ ...previous, settings: section, provider }),
+        search: (previous) => ({
+          ...previous,
+          settings: section,
+          provider,
+          marketplace: undefined,
+          item: undefined,
+          category: undefined,
+        }),
         replace,
         resetScroll: false,
       }),

@@ -104,6 +104,7 @@ import { useComposerAttachments } from "@/features/conversation/lib/use-composer
 import { useConversationDraft } from "@/features/conversation/lib/use-conversation-draft";
 import { useConversationScroll } from "@/features/conversation/lib/use-conversation-scroll";
 import { useMessageSubmission } from "@/features/conversation/lib/use-message-submission";
+import { useMarketplace } from "@/features/marketplace/hooks/use-marketplace";
 import { useSettings } from "@/features/settings/hooks/use-settings";
 import type { SettingsSectionId } from "@/features/settings/lib/settings-search";
 import { useMediaQuery } from "@/hooks/use-media-query";
@@ -136,6 +137,7 @@ const controlText: Record<string, string> = {
 };
 const DOUBLE_ENTER_STEER_WINDOW_MS = 1500;
 const SettingsPage = lazy(() => import("@/features/settings/components/settings-page"));
+const MarketplacePage = lazy(() => import("@/features/marketplace/components/marketplace-page"));
 
 export default function Workspace() {
   const {
@@ -145,6 +147,9 @@ export default function Workspace() {
     open: showSettings,
     close: closeSettings,
   } = useSettings();
+  const marketplace = useMarketplace();
+  const isMarketplace = marketplace.isOpen && !isSettings;
+  const isSecondaryScreen = isSettings || isMarketplace;
   const lastSettings = useRef({
     section: settingsSection ?? "general",
     provider: settingsProvider,
@@ -152,7 +157,7 @@ export default function Workspace() {
   if (settingsSection)
     lastSettings.current = { section: settingsSection, provider: settingsProvider };
   const [composerSurface, setComposerSurface] = useState<HTMLElement | null>(null);
-  const workspace = useWorkspace(isSettings ? null : composerSurface);
+  const workspace = useWorkspace(isSecondaryScreen ? null : composerSurface);
   const {
     agents,
     threads,
@@ -219,24 +224,24 @@ export default function Workspace() {
   const mobile = useIsMobile();
   const narrowNavigation = useMediaQuery("(max-width: 1343.98px)");
   const navigationVisible = mobile ? navigation : !(details && narrowNavigation);
-  const previouslySettings = useRef(isSettings);
+  const previouslySettings = useRef(isSecondaryScreen);
   useLayoutEffect(() => {
-    const returning = previouslySettings.current && !isSettings;
-    previouslySettings.current = isSettings;
-    if (!returning) return;
+    const returning = previouslySettings.current && !isSecondaryScreen;
+    previouslySettings.current = isSecondaryScreen;
+    if (!returning || focusComposerAfterNavigation.current) return;
     const frame = requestAnimationFrame(() => {
       document
         .querySelector<HTMLButtonElement>('.workspace-rail button[aria-label="Percakapan"]')
         ?.focus({ preventScroll: true });
     });
     return () => cancelAnimationFrame(frame);
-  }, [isSettings]);
+  }, [isSecondaryScreen]);
   useLayoutEffect(() => {
-    if (!navigation && !isSettings && focusComposerAfterNavigation.current) {
+    if (!navigation && !isSecondaryScreen && focusComposerAfterNavigation.current) {
       focusComposerAfterNavigation.current = false;
       composerInput.current?.focus();
     }
-  }, [navigation, isSettings]);
+  }, [navigation, isSecondaryScreen]);
   useEffect(() => {
     if (!narrowNavigation) setNavigation(false);
   }, [narrowNavigation]);
@@ -538,8 +543,7 @@ export default function Workspace() {
       choose={choose}
       openApps={() => {
         setNavigation(false);
-        setDetails(true);
-        locate({ tab: "detail", id: null, page: "apps" });
+        void marketplace.open("plugins");
       }}
     />
   );
@@ -641,7 +645,7 @@ export default function Workspace() {
   const conversationScroll = useConversationScroll(
     snapshot?.thread.id ?? null,
     latestUserEntry?.type === "message" ? latestUserEntry.part.sequence : 0,
-    !isSettings && !(mobile && navigation),
+    !isSecondaryScreen && !(mobile && navigation),
   );
   const activityByEntry = useMemo(
     () => conversationActivity(snapshot, entries),
@@ -911,13 +915,14 @@ export default function Workspace() {
       activity={{
         items: workspace.activity.items,
         threadId,
-        listeningThreadId: !isSettings && composerFocused && draft.trim() ? threadId : null,
+        listeningThreadId: !isSecondaryScreen && composerFocused && draft.trim() ? threadId : null,
         online: workspace.online,
       }}
       settings={{
         snapshot,
         agents,
         connections,
+        appConnectionCursor: workspace.appConnectionCursor,
         refresh,
         openAgent: (selectedAgent) => {
           const dm = threads.find(
@@ -934,15 +939,26 @@ export default function Workspace() {
       <div className="application-frame">
         <WorkspaceRail
           settings={isSettings}
+          marketplace={isMarketplace}
           onConversation={() => {
             if (isSettings) {
               void closeSettings();
+              return;
+            }
+            if (isMarketplace) {
+              void marketplace.close();
               return;
             }
             if (mobile) setNavigation(true);
             else if (details && narrowNavigation) {
               setDetails(false);
             }
+          }}
+          onMarketplace={() => {
+            if (isMarketplace) return;
+            setNavigation(false);
+            setCreateMenu(false);
+            void marketplace.open();
           }}
           onSettings={() => {
             if (isSettings) return;
@@ -954,8 +970,8 @@ export default function Workspace() {
         <div className="application-body">
           <div
             className="app-screen workspace-shell"
-            hidden={isSettings}
-            inert={isSettings}
+            hidden={isSecondaryScreen}
+            inert={isSecondaryScreen}
             style={snapshot?.thread.type === "group" ? undefined : agentStyle(agent)}
             data-group={snapshot?.thread.type === "group" ? "true" : undefined}
           >
@@ -1666,7 +1682,7 @@ export default function Workspace() {
               </aside>
             )}
             <Sheet
-              open={details && mobile && !isSettings && !viewing}
+              open={details && mobile && !isSecondaryScreen && !viewing}
               onOpenChange={(open) => {
                 if (!viewing) setDetails(open);
               }}
@@ -1698,7 +1714,7 @@ export default function Workspace() {
             </Sheet>
             <CreateGroup
               agents={agents}
-              open={createGroupOpen && !isSettings}
+              open={createGroupOpen && !isSecondaryScreen}
               onOpenChange={setCreateGroupOpen}
               created={async (thread) => {
                 choose(thread.id);
@@ -1717,6 +1733,27 @@ export default function Workspace() {
               }
             >
               <SettingsPage />
+            </Suspense>
+          )}
+          {isMarketplace && (
+            <Suspense
+              fallback={
+                <div
+                  className="app-screen"
+                  role="status"
+                  aria-label="Memuat marketplace"
+                  aria-busy="true"
+                />
+              }
+            >
+              <MarketplacePage
+                onPrompt={(prompt) => {
+                  setDraft(draft.trim() ? `${draft}\n\n${prompt}` : prompt);
+                  setNavigation(false);
+                  focusComposerAfterNavigation.current = true;
+                  void marketplace.close();
+                }}
+              />
             </Suspense>
           )}
         </div>

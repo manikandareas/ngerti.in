@@ -4,7 +4,6 @@ import {
   KeyboardIcon,
   Message01Icon,
   PaintBoardIcon,
-  Plug01Icon,
   Settings01Icon,
   Shield01Icon,
   SparklesIcon,
@@ -13,8 +12,6 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { Link } from "@tanstack/react-router";
 import { useLayoutEffect, useRef } from "react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Skeleton } from "@/components/ui/skeleton";
-import { AppConnections } from "@/features/conversation/components/app-connections";
 import { DataSettings } from "@/features/settings/components/data-settings";
 import {
   AccessibilitySettings,
@@ -37,15 +34,14 @@ const sections = [
   { id: "conversation", label: "Percakapan", icon: Message01Icon },
   { id: "accessibility", label: "Aksesibilitas", icon: AccessibilityIcon },
   { id: "providers", label: "Providers", icon: SparklesIcon },
-  { id: "apps", label: "Aplikasi", icon: Plug01Icon },
   { id: "data", label: "Data & privasi", icon: Shield01Icon },
   { id: "shortcuts", label: "Pintasan keyboard", icon: KeyboardIcon },
   { id: "about", label: "Tentang", icon: InformationCircleIcon },
 ] as const;
 
 export default function SettingsPage() {
-  const { agents, connections, refresh, openAgent, snapshot } = useSettingsWorkspace();
-  const { section, open, close } = useSettings();
+  const { agents, connections, refresh, openAgent } = useSettingsWorkspace();
+  const { section, open } = useSettings();
   const { error } = usePreferences();
   const page = section ?? "general";
   const current = sections.find((item) => item.id === page) ?? sections[0];
@@ -58,18 +54,18 @@ export default function SettingsPage() {
 
   return (
     <div className="app-screen settings-screen" data-settings-screen>
-      <aside className="app-sidebar settings-sidebar">
-        <div className="settings-sidebar-header">
-          <span className="settings-sidebar-title">Pengaturan</span>
+      <aside className="app-sidebar app-sidebar-menu settings-sidebar">
+        <div className="app-sidebar-header settings-sidebar-header">
+          <span className="app-sidebar-title settings-sidebar-title">Pengaturan</span>
         </div>
-        <nav aria-label="Menu pengaturan" className="settings-navigation">
+        <nav aria-label="Menu pengaturan" className="app-sidebar-navigation settings-navigation">
           {sections.map((item) => (
             <Link
               key={item.id}
               from="/"
               search={(previous) => ({ ...previous, settings: item.id, provider: undefined })}
               resetScroll={false}
-              className="settings-nav-item"
+              className="app-sidebar-link settings-nav-item"
               data-settings-page={item.id}
               aria-current={page === item.id ? "page" : undefined}
             >
@@ -118,18 +114,6 @@ export default function SettingsPage() {
                 openAgent={openAgent}
               />
             )}
-            {page === "apps" &&
-              (snapshot ? (
-                <>
-                  <p className="settings-intro">
-                    Hubungkan aplikasi dan kelola akses untuk percakapan{" "}
-                    {snapshot.thread.name ?? snapshot.agents[0]?.name ?? "ini"}.
-                  </p>
-                  <AppConnections snapshot={snapshot} onBack={() => void close()} embedded />
-                </>
-              ) : (
-                <Skeleton className="h-24 w-full" />
-              ))}
             {page === "about" && (
               <SettingsSection title="Aplikasi">
                 <SettingsRow

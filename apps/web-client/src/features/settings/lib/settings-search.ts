@@ -4,7 +4,6 @@ export const settingsSectionIds = [
   "conversation",
   "accessibility",
   "providers",
-  "apps",
   "data",
   "shortcuts",
   "about",

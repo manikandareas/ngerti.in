@@ -22,6 +22,7 @@ export function useWorkspace(composer: HTMLElement | null) {
   const [previews, setPreviews] = useState<ConversationPreviews>({ cursor: 0, items: [] });
   const [threads, setThreads] = useState<Thread[]>([]);
   const [connections, setConnections] = useState<Connection[]>([]);
+  const [appConnectionCursor, setAppConnectionCursor] = useState(0);
   const [threadId, selectThread] = useState<string | null>(() =>
     preferences.startup === "last" ? localStorage.getItem("ngertiin:thread") : null,
   );
@@ -156,6 +157,7 @@ export function useWorkspace(composer: HTMLElement | null) {
         setError(failure);
       },
       update: (event) => {
+        if (event.entity_kind === "app_connection") setAppConnectionCursor((value) => value + 1);
         if (event.entity_kind === "agent") {
           setAgents((previous) => mergeEntity(previous, event.data as unknown as Agent));
           snapshots.current.clear();
@@ -266,6 +268,7 @@ export function useWorkspace(composer: HTMLElement | null) {
     previews,
     threads,
     connections,
+    appConnectionCursor,
     snapshot,
     opening,
     threadId,

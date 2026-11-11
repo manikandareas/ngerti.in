@@ -1,0 +1,78 @@
+{
+  "retrieved_on": "2026-11-11",
+  "adaptation": "Added descriptive SVG title elements; visual paths and vendor notices preserved.",
+  "assets": [
+    {
+      "file": "gmail.svg",
+      "source": "https://logos.composio.dev/api/gmail",
+      "source_sha256": "3fb6577179fc89b5d939eb7772364766fb407bfcc16f55c827fc0ef6a092ecbd",
+      "sha256": "e246d76c60977d313ea5151f07bf91c1974ff9edb6045d6ed4918af4ca8e3dc6"
+    },
+    {
+      "file": "googledrive.svg",
+      "source": "https://logos.composio.dev/api/googledrive",
+      "source_sha256": "54a9341537bef548a09fd9402770564d7bc017b1bbcf6de5e3989fc81088cd14",
+      "sha256": "37f5f259f3590cfb5d53fe1794fa5c1791f3a2e6e2c2a24e4bc0c84672c1da70"
+    },
+    {
+      "file": "googlecalendar.svg",
+      "source": "https://logos.composio.dev/api/googlecalendar",
+      "source_sha256": "5f79aa99ca6e197bb27c76e6c74a1c8fbdd35207804879d5936aa057a7eb99b9",
+      "sha256": "4b784f1a1123a7dfb344344fd56096c8c9552488920d7f72e1c4e9942735f0f7"
+    },
+    {
+      "file": "github.svg",
+      "source": "https://logos.composio.dev/api/github",
+      "source_sha256": "2c1726d5c67c36eb69bf3ce012ecc3846766df1405efa7a83c2c7158e4422a13",
+      "sha256": "5167cbc78761523579d90a889c5241ce0f7fdc1bdaa3c4f476296c991803726e"
+    },
+    {
+      "file": "slack.svg",
+      "source": "https://logos.composio.dev/api/slack",
+      "source_sha256": "e830e224a020d33dd2d70cb2234d1a0184fdb49ec1c01735f001396ece25f417",
+      "sha256": "c48c9a77bac80eebf9b03a5a878d8097761f2ceb6256ab9d0513c6e4c72dc674"
+    },
+    {
+      "file": "notion.svg",
+      "source": "https://logos.composio.dev/api/notion",
+      "source_sha256": "23ae59b6190d947866e8832dd8c76b9d5c1aba97fd86224d83ada47f22ec195d",
+      "sha256": "71307ded2caf440e2ea71bc87c3366117698869534633a09a10e89c1d8c93fcc"
+    },
+    {
+      "file": "linear.svg",
+      "source": "https://logos.composio.dev/api/linear",
+      "source_sha256": "219bea2ab65fbde25868bfd992a75096c6d438cb4163556b29078adf26bc341d",
+      "sha256": "22c8e1751fcbd1713257eab8223db3a550a0cbdbe0faa7b5fba996c46ad73d59"
+    },
+    {
+      "file": "figma.svg",
+      "source": "https://logos.composio.dev/api/figma",
+      "source_sha256": "98fc179b3fd807b2c053d9df800fb58b4d8e5966e13768dc5fc9075b7129ca90",
+      "sha256": "55e7a11af2d080b1e8ea1da35d5d9381c86b23102fb93050b898f7a90919e532"
+    },
+    {
+      "file": "dropbox.svg",
+      "source": "https://logos.composio.dev/api/dropbox",
+      "source_sha256": "6bf8698f9e8120eb1948cff340d2878dafcce85294f8941b2b511d6afbc4b77f",
+      "sha256": "73ab23d2074426105fbc03b3bed1246ad1b27eb611c9bd3027e395673e6d00c9"
+    },
+    {
+      "file": "hubspot.svg",
+      "source": "https://logos.composio.dev/api/hubspot",
+      "source_sha256": "14ecd8400dd658af99222112ad0c6e675c38dc249290e484a690a4dc35cd793d",
+      "sha256": "e92d6f34b85b68503ac973a212b8d8b28699b91b92f35c33ef5cb9494187f701"
+    },
+    {
+      "file": "stripe.svg",
+      "source": "https://logos.composio.dev/api/stripe",
+      "source_sha256": "e99bd439967979d76c84cec77bdf02917b7a939be586eb1d5fe949a0cdc0ca76",
+      "sha256": "60118cb29e7e1b842ff465bd52e981bd6220246f02dc834beba56b2bf7a06124"
+    },
+    {
+      "file": "canva.svg",
+      "source": "https://logos.composio.dev/api/canva",
+      "source_sha256": "d9d208f7dc4f4143d3c18b71cbf79a5d957375135fe17d3830feeefe15db4a85",
+      "sha256": "fd18f2e4655d22d5513d6a9ee657b329dffadca9ab7c30c31583b8b13754ed9b"
+    }
+  ]
+}

@@ -7,7 +7,6 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import type { Artifact } from "@/types/work";
 import type { Agent, Snapshot, Thread } from "@/types/workspace";
 import { savedFileTarget, useContentViewer } from "../lib/content-viewer";
-import { AppConnections } from "./app-connections";
 import { DetailOverview } from "./detail-overview";
 import { FilesPanel } from "./files-panel";
 import { GroupPanel } from "./group-panel";
@@ -24,7 +23,7 @@ const WorkingFiles = lazy(() =>
 export type PanelLocation = {
   tab: "detail" | "library" | "computer";
   id: string | null;
-  page?: "apps" | "goals" | "routine";
+  page?: "goals" | "routine";
   workingFiles?: boolean;
 };
 export function ContextPanel({
@@ -54,7 +53,6 @@ export function ContextPanel({
 }) {
   const [headerSlot, setHeaderSlot] = useState<HTMLDivElement | null>(null);
   const agent = snapshot.agents[0];
-  const appsOpen = location.page === "apps";
   const filesOpen = location.workingFiles === true;
   const responsibility =
     location.page === "goals" || location.page === "routine" ? location.page : null;
@@ -65,7 +63,7 @@ export function ContextPanel({
       : !responsibility &&
         snapshot.thread.type === "group" &&
         snapshot.agents.some((item) => item.id === location.id));
-  const nested = filesOpen || (location.tab === "detail" && appsOpen) || selectedDetail;
+  const nested = filesOpen || selectedDetail;
   const container = useRef<HTMLDivElement>(null);
   const opener = useRef<string | null>(null);
   const returningFromFiles = useRef(false);
@@ -94,9 +92,6 @@ export function ContextPanel({
     } catch {
       locate({ tab: "library", id });
     }
-  };
-  const openDetail = () => {
-    locate({ tab: "detail", id: null });
   };
   const closeFiles = () => locate({ ...location, workingFiles: false });
   const groupPanel = snapshot.thread.type === "group" && (
@@ -237,9 +232,7 @@ export function ContextPanel({
         </div>
         <PanelHeaderSlot.Provider value={filesOpen ? null : headerSlot}>
           <TabsContent value="detail" hidden={filesOpen || undefined}>
-            {appsOpen ? (
-              <AppConnections snapshot={snapshot} onBack={openDetail} />
-            ) : snapshot.thread.type === "group" && location.id && !responsibility ? (
+            {snapshot.thread.type === "group" && location.id && !responsibility ? (
               groupPanel
             ) : (
               <>

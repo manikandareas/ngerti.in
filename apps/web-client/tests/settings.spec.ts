@@ -498,7 +498,7 @@ test("device preferences persist and control the composer and reading surface", 
   page,
 }, info) => {
   await settings(page);
-  await expect(page.locator(".settings-nav-item")).toHaveCount(9);
+  await expect(page.locator(".settings-nav-item")).toHaveCount(8);
   await section(page, "appearance", "Tampilan");
   await page
     .getByRole("combobox", { name: "Ukuran teks percakapan", exact: true })
@@ -600,7 +600,7 @@ test("draft privacy and reset change local preferences while preserving conversa
   await expect(page.getByRole("button", { name: "Detail Tobi", exact: true })).toBeVisible();
 });
 
-test("data export downloads public history and app settings retain an explicit conversation scope", async ({
+test("data export downloads public history and plugin management lives in Marketplace", async ({
   page,
 }, info) => {
   await settings(page);
@@ -625,19 +625,15 @@ test("data export downloads public history and app settings retain an explicit c
   ]);
   expect(data).not.toHaveProperty("runs");
   expect(data).not.toHaveProperty("connections");
-  await page.route("**/v1/apps/catalog?*", (route) =>
-    route.fulfill({ json: { items: [{ slug: "github", name: "GitHub", connected: false }] } }),
-  );
+  await expect(page.locator('[data-settings-page="apps"]')).toHaveCount(0);
+  await page.route("**/v1/apps/catalog?*", (route) => route.fulfill({ json: { items: [] } }));
   await page.route("**/v1/apps/connections", (route) => route.fulfill({ json: [] }));
-  await section(page, "apps", "Aplikasi");
-  await expect(
-    page.getByText("Hubungkan aplikasi dan kelola akses untuk percakapan Tobi.", { exact: true }),
-  ).toBeVisible();
-  await expect(page.getByRole("region", { name: "Katalog aplikasi", exact: true })).toContainText(
-    "GitHub",
-  );
-  await expect(page.getByRole("dialog")).toHaveCount(0);
-  await page.screenshot({ path: info.outputPath("apps-settings.png") });
+  await page.goto("/settings?section=apps");
+  await expect(page.getByRole("main", { name: "Marketplace", exact: true })).toBeVisible();
+  await expect(page).toHaveURL(/marketplace=plugins/);
+  await expect(page.getByRole("main", { name: "Pengaturan", exact: true })).toBeHidden();
+  await page.goto("/?settings=apps");
+  await expect(page.getByRole("main", { name: "Marketplace", exact: true })).toBeVisible();
   await page.goto("/settings?section=appearance");
   await expect(page.getByRole("heading", { name: "Tampilan", exact: true })).toBeVisible();
 });
@@ -685,7 +681,7 @@ test("persistent rail switches the contextual sidebar without collapse controls"
   const conversation = rail.getByRole("button", { name: "Percakapan", exact: true });
   const preferences = rail.getByRole("button", { name: "Pengaturan", exact: true });
   const originalRail = await rail.elementHandle();
-  await expect(rail.getByRole("button")).toHaveCount(2);
+  await expect(rail.getByRole("button")).toHaveCount(3);
   await expect(conversation).toHaveAttribute("aria-current", "page");
   await expect(conversation.locator("svg")).toHaveCSS("width", "20px");
   await expect(page.locator(".application-body")).toHaveCSS("border-left-width", "0px");

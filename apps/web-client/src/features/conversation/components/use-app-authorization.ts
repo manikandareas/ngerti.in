@@ -5,10 +5,24 @@ import type { AppConnection } from "@/types/work";
 const pollMs = 5000;
 const pollTries = 24;
 const linkMs = 10 * 60 * 1000;
-type Authorization = { id: string; url: string; createdAt: number };
+type Authorization = { id: string; toolkit: string; url: string; createdAt: number };
 
 /** Reserve user activation before awaiting the server-owned authorization URL. */
 function reservePage() {
+  if (window.ngertiinDesktop?.openExternal) {
+    const desktop = window.ngertiinDesktop;
+    return {
+      async open(url: string) {
+        try {
+          await desktop.openExternal?.(url);
+          return true;
+        } catch {
+          return false;
+        }
+      },
+      cancel() {},
+    };
+  }
   let page: Window | null = null;
   let navigated = false;
   let cancelled = false;
@@ -19,7 +33,7 @@ function reservePage() {
     page?.close();
   }
   return {
-    open(url: string) {
+    async open(url: string) {
       if (cancelled || !page || page.closed) return false;
       try {
         page.location.replace(url);
@@ -46,7 +60,10 @@ export function useAppAuthorization(refresh: () => void) {
   const [link, setLink] = useState<Authorization | null>(null);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
-  const [polling, setPolling] = useState<{ id: string; name: string } | null>(null);
+  const [verified, setVerified] = useState<AppConnection | null>(null);
+  const [polling, setPolling] = useState<{ id: string; name: string; toolkit: string } | null>(
+    null,
+  );
   useEffect(() => {
     mounted.current = true;
     return () => {
@@ -68,21 +85,24 @@ export function useAppAuthorization(refresh: () => void) {
           abort.signal,
         );
         if (abort.signal.aborted) return;
+        setVerified(connection);
         refreshRef.current();
         if (connection.state === "active") {
           setError("");
           setPolling(null);
           setLink((current) => (current?.id === connection.id ? null : current));
-          setNotice(`${polling?.name} terhubung. Pilih akses percakapan yang diperlukan.`);
+          setNotice(`${polling?.name} installed. Choose the actions your agent can use.`);
         } else if (++tries >= pollTries) {
           setPolling(null);
-          setNotice("Login belum terkonfirmasi. Lanjutkan login, lalu periksa koneksi lagi.");
+          setNotice(
+            "Authorization is still pending. Open the browser to continue, then check status.",
+          );
         } else timer = setTimeout(() => void read(), pollMs);
       } catch {
         if (!abort.signal.aborted) {
           setPolling(null);
           setError(
-            "Status koneksi belum dapat diperiksa. Lanjutkan login, lalu periksa koneksi lagi.",
+            "Could not verify the connection. Finish authorization, then check status again.",
           );
         }
       }
@@ -102,6 +122,7 @@ export function useAppAuthorization(refresh: () => void) {
     setPolling(null);
     setError("");
     setNotice("");
+    setVerified(null);
     const createdAt = Date.now();
     try {
       const value = await request<{ connection: AppConnection; connect_url: string }>(
@@ -111,18 +132,20 @@ export function useAppAuthorization(refresh: () => void) {
       if (!mounted.current) return;
       const url = new URL(value.connect_url);
       if (url.protocol !== "https:" || url.username || url.password)
-        throw new Error("Link otorisasi tidak valid. Periksa koneksi lagi.");
-      setLink({ id: value.connection.id, url: url.href, createdAt });
-      setPolling({ id: value.connection.id, name });
-      if (!reserved.open(url.href))
-        setError("Jendela login diblokir. Gunakan tautan Lanjutkan koneksi di bawah.");
+        throw new Error("The authorization link is invalid. Try installing again.");
+      setLink({ id: value.connection.id, toolkit, url: url.href, createdAt });
+      const opened = await reserved.open(url.href);
+      if (!mounted.current) return;
+      setPolling({ id: value.connection.id, toolkit, name });
+      if (!opened)
+        setError("Could not open the browser. Select Open browser to continue authorization.");
       refreshRef.current();
     } catch (failure) {
       if (mounted.current) {
         setError(
           failure instanceof Error
             ? failure.message
-            : "Koneksi belum terkonfirmasi. Periksa daftar koneksi sebelum mencoba lagi.",
+            : "Could not start installation. Check the connection, then try again.",
         );
         refreshRef.current();
       }
@@ -146,30 +169,68 @@ export function useAppAuthorization(refresh: () => void) {
         {},
       );
       if (!mounted.current) return;
+      setVerified(current);
       refreshRef.current();
       if (current.state === "active") {
         setLink((value) => (value?.id === current.id ? null : value));
-        setNotice(`${name} terhubung. Pilih akses percakapan yang diperlukan.`);
+        setNotice(`${name} installed. Choose the actions your agent can use.`);
       } else
         setNotice(
-          "Login belum terkonfirmasi. Lanjutkan login atau hubungkan ulang secara eksplisit.",
+          "Authorization is still pending. Open the browser to continue or try installing again.",
         );
     } catch {
-      if (mounted.current)
-        setError("Status koneksi belum dapat diperiksa. Coba Periksa koneksi lagi.");
+      if (mounted.current) setError("Could not verify the connection. Try Check status again.");
     } finally {
       inFlight.current = false;
       if (mounted.current) setBusy(false);
     }
   }
-  function continueLink(name: string) {
+  async function continueLink(name: string) {
+    if (inFlight.current) return false;
     if (!link || Date.now() < link.createdAt || Date.now() - link.createdAt >= linkMs) {
-      setError("Link login sudah berakhir. Pilih Hubungkan ulang untuk membuat link baru.");
+      setLink(null);
+      setPolling(null);
+      setError("The authorization link has expired. Select Install plugin to get a new link.");
       return false;
     }
+    const reserved = reservePage();
+    inFlight.current = true;
+    setBusy(true);
     setError("");
-    setPolling({ id: link.id, name });
-    return true;
+    setNotice("");
+    try {
+      const opened = await reserved.open(link.url);
+      if (!mounted.current) return false;
+      if (opened) setPolling({ id: link.id, toolkit: link.toolkit, name });
+      else {
+        setPolling(null);
+        setError("Could not open the browser. Allow popups or try Open browser again.");
+      }
+      return opened;
+    } finally {
+      reserved.cancel();
+      inFlight.current = false;
+      if (mounted.current) setBusy(false);
+    }
   }
-  return { authorize, check, continueLink, link, busy, error, notice, polling };
+  function reset() {
+    if (inFlight.current) return;
+    setLink(null);
+    setPolling(null);
+    setError("");
+    setNotice("");
+  }
+  return {
+    authorize,
+    check,
+    continueLink,
+    reset,
+    link,
+    busy,
+    integrating: busy || Boolean(polling),
+    error,
+    notice,
+    polling,
+    verified,
+  };
 }

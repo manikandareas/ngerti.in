@@ -4,56 +4,7 @@
   color: var(--foreground);
 }
 .settings-sidebar {
-  display: flex;
-  min-height: 0;
-  flex-direction: column;
-  gap: 20px;
   overflow-y: auto;
-  padding: 12px;
-}
-.settings-sidebar-header {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  min-height: 44px;
-}
-.settings-sidebar-title {
-  padding-inline: 12px;
-  font-size: 18px;
-  font-weight: 500;
-  line-height: 28px;
-  letter-spacing: -0.015em;
-}
-.settings-navigation {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-.settings-nav-item {
-  display: flex;
-  min-height: 40px;
-  min-width: 0;
-  align-items: center;
-  gap: 10px;
-  border-radius: 8px;
-  padding: 10px 12px;
-  color: var(--muted-foreground);
-  font-size: 14px;
-  line-height: 20px;
-  transition:
-    background-color 150ms,
-    color 150ms;
-}
-.settings-nav-item svg {
-  flex-shrink: 0;
-}
-.settings-nav-item:hover {
-  background: var(--panel);
-  color: var(--foreground);
-}
-.settings-nav-item[aria-current="page"] {
-  background: var(--secondary);
-  color: var(--foreground);
 }
 .settings-pane {
   display: flex;

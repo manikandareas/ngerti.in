@@ -8,6 +8,7 @@ import {
   redirect,
 } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
+import { validateMarketplaceSearch } from "@/features/marketplace/lib/marketplace-search";
 import {
   isSettingsSection,
   type SettingsSectionId,
@@ -31,7 +32,14 @@ const rootRoute = createRootRoute({
 const homeRoute = createRoute({
   getParentRoute: () => rootRoute,
   id: "workspace",
-  validateSearch: validateSettingsSearch,
+  validateSearch: (search: Record<string, unknown>) => ({
+    ...validateSettingsSearch(search),
+    ...validateMarketplaceSearch(
+      search.settings === "apps"
+        ? { ...search, marketplace: "plugins", item: undefined, category: undefined }
+        : search,
+    ),
+  }),
   component: lazyRouteComponent(() => import("@/app/workspace-layout")),
 });
 
@@ -46,8 +54,13 @@ const settingsRoute = createRoute({
   path: "/settings",
   validateSearch: (
     search: Record<string, unknown>,
-  ): { section?: SettingsSectionId; provider?: "codex" | "muse" } => ({
-    section: isSettingsSection(search.section) ? search.section : undefined,
+  ): { section?: SettingsSectionId | "apps"; provider?: "codex" | "muse" } => ({
+    section:
+      search.section === "apps"
+        ? "apps"
+        : isSettingsSection(search.section)
+          ? search.section
+          : undefined,
     provider:
       search.section === "providers" && (search.provider === "codex" || search.provider === "muse")
         ? search.provider
@@ -56,7 +69,10 @@ const settingsRoute = createRoute({
   beforeLoad: ({ search }) => {
     throw redirect({
       to: "/",
-      search: { settings: search.section ?? "general", provider: search.provider },
+      search:
+        search.section === "apps"
+          ? { marketplace: "plugins" }
+          : { settings: search.section ?? "general", provider: search.provider },
       replace: true,
     });
   },

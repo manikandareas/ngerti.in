@@ -570,45 +570,50 @@ test("application access is assigned explicitly to this context and unsupported 
   const navigation = page.getByRole("button", { name: "Percakapan", exact: true });
   if (await navigation.isVisible()) await navigation.click();
   await page.getByRole("button", { name: "Hubungkan aplikasi", exact: true }).click();
-  await expect(page.getByText("Calendar fixture", { exact: true })).toBeVisible();
-  await expect(page.getByText("Mail fixture", { exact: true })).toBeVisible();
-  await capture(page, testInfo.outputPath("apps-catalog.png"));
-  await page.getByRole("textbox", { name: "Cari aplikasi", exact: true }).fill("calendar");
   await expect(
-    page.getByRole("button", { name: "Hubungkan Mail fixture", exact: true }),
+    page.locator(".marketplace-entry-name").filter({ hasText: /^Calendar fixture$/ }),
+  ).toBeVisible();
+  await expect(
+    page.locator(".marketplace-entry-name").filter({ hasText: /^Mail fixture$/ }),
+  ).toBeVisible();
+  await capture(page, testInfo.outputPath("apps-catalog.png"));
+  await page.getByRole("searchbox", { name: "Search plugins", exact: true }).fill("calendar");
+  await expect(
+    page.locator(".marketplace-entry-open").filter({ hasText: "Mail fixture" }),
   ).toHaveCount(0);
   const connected = page.waitForResponse(
     (r) => r.url().endsWith("/v1/apps/connect") && r.request().method() === "POST",
   );
   const opened = page.waitForEvent("popup");
-  await page.getByRole("button", { name: "Hubungkan Calendar fixture", exact: true }).click();
+  await page.locator(".marketplace-entry-open").filter({ hasText: "Calendar fixture" }).click();
+  await page.getByRole("button", { name: "Install plugin", exact: true }).click();
   const authorizationPage = await opened;
   await expect(authorizationPage).toHaveURL("https://example.invalid/fixture-connect");
   expect(await authorizationPage.evaluate(() => window.opener)).toBeNull();
   await authorizationPage.close();
   const created = (await (await connected).json()).connection;
   const account = page.getByRole("region", {
-    name: `Koneksi calendar ${created.id.slice(0, 8)}`,
+    name: `Connection calendar ${created.id.slice(0, 8)}`,
     exact: true,
   });
   // Authorization is a provider fixture; only the real refresh receipt enables scoped access.
-  await expect(
-    account.getByRole("button", { name: "Kelola akses calendar", exact: true }),
-  ).toBeVisible({ timeout: 12000 });
+  await expect(account.getByRole("button", { name: "Manage access", exact: true })).toBeVisible({
+    timeout: 12000,
+  });
   expect(
     (await (await page.request.get("/v1/apps/connections")).json()).find(
       (connection: { id: string }) => connection.id === created.id,
     ).grants,
   ).toEqual([]);
   await capture(page, testInfo.outputPath("apps-connected.png"));
-  await account.getByRole("button", { name: "Kelola akses calendar", exact: true }).click();
+  await account.getByRole("button", { name: "Manage access", exact: true }).click();
   await page
-    .getByRole("textbox", { name: "Cari tindakan aplikasi", exact: true })
+    .getByRole("textbox", { name: "Search app actions", exact: true })
     .fill("list calendar");
-  await page.getByRole("button", { name: "Cari tindakan", exact: true }).click();
+  await page.getByRole("button", { name: "Search actions", exact: true }).click();
   await page.getByRole("checkbox", { name: "Read upcoming calendar events", exact: true }).check();
-  await page.getByRole("button", { name: "Simpan akses percakapan", exact: true }).click();
-  await expect(page.getByText("Akses percakapan diperbarui.", { exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "Save conversation access", exact: true }).click();
+  await expect(page.getByText("Conversation access updated.", { exact: true })).toBeVisible();
   const connections = await (await page.request.get("/v1/apps/connections")).json();
   const calendar = connections.find((c: { id: string }) => c.id === created.id);
   expect(calendar.grants).toEqual([
@@ -622,9 +627,10 @@ test("application access is assigned explicitly to this context and unsupported 
     expected_revision: a.agent.revision,
     changes: { connection_id: harness.id, model_id: "fixture", billing_source: "subscription" },
   });
-  const close = page.getByRole("button", { name: "Tutup detail", exact: true });
-  if (await close.isVisible()) await close.click();
-  else await page.getByRole("button", { name: "Close", exact: true }).click();
+  await page
+    .getByRole("navigation", { name: "Navigasi utama", exact: true })
+    .getByRole("button", { name: "Percakapan", exact: true })
+    .click();
   await expect(
     page
       .getByRole("main", { name: "Percakapan aktif" })
@@ -637,7 +643,8 @@ test("application access is assigned explicitly to this context and unsupported 
   if (await page.getByRole("button", { name: "Percakapan", exact: true }).isVisible())
     await page.getByRole("button", { name: "Percakapan", exact: true }).click();
   await page.getByRole("button", { name: "Hubungkan aplikasi", exact: true }).click();
-  await page.getByText("calendar list events · Berhasil", { exact: true }).click();
+  await page.locator(".marketplace-entry-open").filter({ hasText: "Calendar fixture" }).click();
+  await page.getByText("calendar list events · Succeeded", { exact: true }).click();
   await expect(page.getByText("Receipt: fixture-provider-receipt", { exact: true })).toBeVisible();
 });
 
@@ -649,7 +656,7 @@ test("apps catalog searches live and authorization recovers from blocked popups 
   await revokeFixtureApps(page, "mail");
   await chooseAgent(page, a.agent.name);
   let catalogFailed = false;
-  await page.route("**/v1/apps/catalog?**", async (route) => {
+  await page.route("**/v1/apps/catalog*", async (route) => {
     if (!catalogFailed) {
       catalogFailed = true;
       await route.abort("failed");
@@ -658,16 +665,25 @@ test("apps catalog searches live and authorization recovers from blocked popups 
   if (await page.getByRole("button", { name: "Percakapan", exact: true }).isVisible())
     await page.getByRole("button", { name: "Percakapan", exact: true }).click();
   await page.getByRole("button", { name: "Hubungkan aplikasi", exact: true }).click();
-  await page.getByRole("button", { name: "Muat ulang katalog", exact: true }).click();
-  await expect(page.getByText("Calendar fixture", { exact: true })).toBeVisible();
-  await expect(page.getByText("Mail fixture", { exact: true })).toBeVisible();
-  const search = page.getByRole("textbox", { name: "Cari aplikasi", exact: true });
-  await search.fill("no matching fixture app");
-  await expect(page.getByText("Tidak ada aplikasi yang cocok.", { exact: true })).toBeVisible();
-  await search.fill("mail");
-  await expect(page.getByText("Calendar fixture", { exact: true })).toHaveCount(0);
+  await page
+    .locator("[data-sonner-toast]")
+    .getByRole("button", { name: "Retry", exact: true })
+    .click();
   await expect(
-    page.getByRole("button", { name: "Hubungkan Mail fixture", exact: true }),
+    page.locator(".marketplace-entry-name").filter({ hasText: /^Calendar fixture$/ }),
+  ).toBeVisible();
+  await expect(
+    page.locator(".marketplace-entry-name").filter({ hasText: /^Mail fixture$/ }),
+  ).toBeVisible();
+  const search = page.getByRole("searchbox", { name: "Search plugins", exact: true });
+  await search.fill("no matching fixture app");
+  await expect(page.getByRole("heading", { name: "No results", exact: true })).toBeVisible();
+  await search.fill("mail");
+  await expect(
+    page.locator(".marketplace-entry-name").filter({ hasText: /^Calendar fixture$/ }),
+  ).toHaveCount(0);
+  await expect(
+    page.locator(".marketplace-entry-open").filter({ hasText: "Mail fixture" }),
   ).toBeVisible();
   // The external provider is a fixture. A blocked popup must retain the server-issued link;
   // connect, refresh, reconnect and assignment receipts still come from the real scoped API.
@@ -683,21 +699,20 @@ test("apps catalog searches live and authorization recovers from blocked popups 
       commands.push(request.url());
   });
   const connected = page.waitForResponse((response) => response.url().endsWith("/v1/apps/connect"));
-  await page.getByRole("button", { name: "Hubungkan Mail fixture", exact: true }).click();
+  await page.locator(".marketplace-entry-open").filter({ hasText: "Mail fixture" }).click();
+  await page.getByRole("button", { name: "Install plugin", exact: true }).click();
   const created = (await (await connected).json()).connection;
   expect(created.grants).toEqual([]);
   const account = page.getByRole("region", {
-    name: `Koneksi mail ${created.id.slice(0, 8)}`,
+    name: `Connection mail ${created.id.slice(0, 8)}`,
     exact: true,
   });
   await expect(
-    page.getByText("Jendela login diblokir. Gunakan tautan Lanjutkan koneksi di bawah.", {
+    page.getByText("Could not open the browser. Select Open browser to continue authorization.", {
       exact: true,
     }),
   ).toBeVisible();
-  await expect(
-    account.getByRole("link", { name: "Lanjutkan koneksi di Composio ↗", exact: true }),
-  ).toHaveAttribute("href", "https://example.invalid/fixture-connect");
+  await expect(page.getByRole("button", { name: "Open browser", exact: true })).toBeVisible();
   let readFailed = false;
   await page.route(`**/v1/apps/connections/${created.id}/refresh`, async (route) => {
     if (!readFailed) {
@@ -707,14 +722,12 @@ test("apps catalog searches live and authorization recovers from blocked popups 
   });
   await expect(
     page.getByText(
-      "Status koneksi belum dapat diperiksa. Lanjutkan login, lalu periksa koneksi lagi.",
+      "Could not verify the connection. Finish authorization, then check status again.",
       { exact: true },
     ),
   ).toBeVisible({ timeout: 12000 });
-  await account.getByRole("button", { name: "Periksa koneksi mail", exact: true }).click();
-  await expect(
-    account.getByRole("button", { name: "Hubungkan ulang mail", exact: true }),
-  ).toBeVisible();
+  await account.getByRole("button", { name: "Check status", exact: true }).click();
+  await expect(page.getByRole("button", { name: "Open browser", exact: true })).toBeVisible();
   const before = (await (await page.request.get("/v1/apps/connections")).json()).find(
     (connection: { id: string }) => connection.id === created.id,
   );
@@ -730,14 +743,15 @@ test("apps catalog searches live and authorization recovers from blocked popups 
   const reconnected = page.waitForResponse((response) =>
     response.url().endsWith(`/v1/apps/connections/${created.id}/reconnect`),
   );
-  await account.getByRole("button", { name: "Hubungkan ulang mail", exact: true }).click();
+  await page.reload();
+  await page.getByRole("button", { name: "Install plugin", exact: true }).click();
   const renewed = (await (await reconnected).json()).connection;
   expect(renewed.id).toBe(created.id);
   expect(renewed.account_id).not.toBe(created.account_id);
   expect(renewed.grants).toEqual(grants);
-  await expect(account.getByRole("button", { name: "Kelola akses mail", exact: true })).toBeVisible(
-    { timeout: 12000 },
-  );
+  await expect(account.getByRole("button", { name: "Manage access", exact: true })).toBeVisible({
+    timeout: 12000,
+  });
   const persisted = (await (await page.request.get("/v1/apps/connections")).json()).find(
     (connection: { id: string }) => connection.id === created.id,
   );
@@ -748,7 +762,7 @@ test("apps catalog searches live and authorization recovers from blocked popups 
     await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth),
   ).toBeTruthy();
   await capture(page, testInfo.outputPath("apps-reconnected.png"));
-  await account.getByRole("button", { name: "Kelola akses mail", exact: true }).click();
+  await account.getByRole("button", { name: "Manage access", exact: true }).click();
   await expect(
     page.getByRole("checkbox", { name: "mail list messages", exact: true }),
   ).toBeChecked();

@@ -86,16 +86,35 @@ impl Workspace {
                     p,
                 ))
                 .child(div().max_w(ui(156.)).truncate().child(model.to_owned()));
-            right = right.child(self.model_picker_trigger(trigger, agent, cx));
+            right = right.child(self.model_picker_trigger(trigger, agent, "header", cx));
         }
-        right = right.child(
-            header_action("open-computer", "Browser agent", "ComputerIcon", p, cx).on_click(
-                cx.listener(|this, _, _, cx| {
-                    this.panel = Some(Panel::Computer);
-                    cx.notify();
-                }),
-            ),
-        );
+        right = right
+            .child(
+                header_action(
+                    "find-in-conversation",
+                    "Find in conversation · ⌘F",
+                    "Search01Icon",
+                    p,
+                    cx,
+                )
+                .toggled(self.conversation.find.read(cx).open)
+                .when(self.conversation.find.read(cx).open, |button| {
+                    button
+                        .accessibility_label("Close conversation search")
+                        .bg(p.color("search-surface"))
+                        .border_1()
+                        .border_color(p.color("search-border"))
+                })
+                .on_click(cx.listener(|this, _, window, cx| this.toggle_thread_find(window, cx))),
+            )
+            .child(
+                header_action("open-computer", "Browser agent", "ComputerIcon", p, cx).on_click(
+                    cx.listener(|this, _, _, cx| {
+                        this.panel = Some(Panel::Computer);
+                        cx.notify();
+                    }),
+                ),
+            );
         div()
             .id("conversation-header")
             .test_support()

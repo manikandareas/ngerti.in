@@ -1,4 +1,4 @@
-//! Native menu behavior owns keyboard navigation, submenus and focus restoration.
+//! Model intent is validated against the live catalog before a durable configuration command.
 use super::*;
 use crate::{
     storage::Operation,
@@ -8,15 +8,11 @@ use crate::{
         workspace::glyph,
     },
 };
-use gpui_kit::component::{
-    ActiveTheme, Icon, Side,
-    button::Button,
-    menu::{DropdownMenu, PopupMenu, PopupMenuItem},
-};
+use gpui_kit::component::{button::Button, popover::Popover};
 use ngertiin_client::{rows, text};
 use serde_json::json;
 
-fn effort_label(value: &Value) -> &str {
+pub(super) fn effort_label(value: &Value) -> &str {
     match value.as_str() {
         Some("minimal") => "Minimal",
         Some("low") => "Low",
@@ -33,16 +29,44 @@ impl Workspace {
         &self,
         trigger: Button,
         agent: &Value,
+        surface: &'static str,
         cx: &Context<Self>,
     ) -> AnyElement {
-        let agent = agent.clone();
-        let connections = self.connections.clone();
+        let id = text(agent, "id").to_owned();
         let owner = cx.entity().downgrade();
-        let busy = self.busy || !self.checked || self.conversation.reconciling;
-        trigger
-            .dropdown_menu(move |menu, window, cx| {
-                model_menu(menu, &agent, &connections, owner.clone(), busy, window, cx)
+        let catalog = self.model_catalog.clone();
+        let state = catalog.read(cx);
+        let focus = state.state.read(cx).focus_handle(cx);
+        let open = state.open && state.agent_id == id && state.surface == surface;
+        Popover::new(SharedString::from(format!("model-selector:{surface}:{id}")))
+            .trigger(trigger)
+            .open(open)
+            .track_focus(&focus)
+            .on_open_change(move |open, window, cx| {
+                let _ = owner.update(cx, |this, cx| {
+                    if !*open {
+                        if catalog.read(cx).surface == surface {
+                            catalog.update(cx, |catalog, cx| {
+                                catalog.open = false;
+                                cx.notify();
+                            });
+                        }
+                    } else if !this.busy
+                        && this.checked
+                        && !this.conversation.reconciling
+                        && let Some(agent) =
+                            this.agents.iter().find(|agent| agent["id"] == id).cloned()
+                    {
+                        let favorites = this.store.favorite_models();
+                        catalog.update(cx, |catalog, cx| {
+                            catalog.surface = surface.into();
+                            catalog.thread_id = this.selected;
+                            catalog.configure(&agent, &this.connections, favorites, window, cx)
+                        });
+                    }
+                });
             })
+            .child(self.model_catalog.clone())
             .into_any_element()
     }
 
@@ -75,7 +99,7 @@ impl Workspace {
                     )
                     .child(glyph("ArrowDown01Icon", 14., p)),
             );
-        self.model_picker_trigger(trigger, agent, cx)
+        self.model_picker_trigger(trigger, agent, "context", cx)
     }
 }
 
@@ -90,172 +114,96 @@ pub(super) fn provider_mark(muse: bool, p: Palette) -> AnyElement {
     }
 }
 
-fn model_menu(
-    mut menu: PopupMenu,
-    agent: &Value,
-    connections: &[Value],
-    owner: WeakEntity<Workspace>,
-    busy: bool,
-    window: &mut Window,
-    cx: &mut Context<PopupMenu>,
-) -> PopupMenu {
-    let p = Palette::new(cx.theme().mode.is_dark());
-    menu = menu
-        .min_w(ui_px(260., cx))
-        .max_w(ui_px(340., cx))
-        .max_h(ui_px(560., cx))
-        .scrollable(true)
-        .check_side(Side::Right);
-    let mut groups: Vec<_> = connections
-        .iter()
-        .filter(|connection| {
-            connection["state"] == "active" || connection["id"] == agent["connection_id"]
-        })
-        .collect();
-    groups.sort_by_key(|connection| connection["id"] != agent["connection_id"]);
-    for (index, connection) in groups.iter().enumerate() {
-        if index > 0 {
-            menu = menu.separator();
+impl Workspace {
+    pub(super) fn choose_catalog_model(
+        &mut self,
+        choice: super::model_catalog::Choice,
+        window: &mut Window,
+        cx: &mut Context<Self>,
+    ) {
+        use super::model_catalog::Choice;
+        if self.busy || !self.checked || self.conversation.reconciling {
+            return;
         }
-        let muse = connection["harness"] == "muse";
-        let provider = if muse { "Muse Code" } else { "Codex" };
-        let billing = match text(&connection["authentication"], "billing_source") {
-            "api_key" => "API key",
-            "subscription" => "Subscription",
-            _ => "Check billing",
+        let (snapshot, changes) = match choice {
+            Choice::Settings => {
+                self.open_settings(window, cx);
+                return;
+            }
+            Choice::Model {
+                agent,
+                connection,
+                model,
+            } => {
+                let valid = self
+                    .connections
+                    .iter()
+                    .find(|current| {
+                        current["id"] == connection["id"]
+                            && current["harness"] == connection["harness"]
+                            && current["authentication"]["billing_source"]
+                                == connection["authentication"]["billing_source"]
+                            && current["state"] == "active"
+                            && current["login"] == "authenticated"
+                    })
+                    .and_then(|current| {
+                        rows(current, "models")
+                            .iter()
+                            .find(|current| current["id"] == model["id"])
+                    });
+                let Some(model) = valid else {
+                    self.error =
+                        "The model catalog changed. Open the selector and choose again.".into();
+                    cx.notify();
+                    return;
+                };
+                let reasoning = if rows(model, "reasoning").contains(&agent["reasoning"]) {
+                    agent["reasoning"].clone()
+                } else {
+                    Value::Null
+                };
+                let changes = json!({"connection_id":connection["id"],"harness":connection["harness"],"billing_source":connection["authentication"]["billing_source"],"model_id":model["id"],"reasoning":reasoning});
+                (agent, changes)
+            }
+            Choice::Effort { agent, effort } => {
+                let valid = self
+                    .connections
+                    .iter()
+                    .find(|c| c["id"] == agent["connection_id"])
+                    .and_then(|c| {
+                        rows(c, "models")
+                            .iter()
+                            .find(|m| m["id"] == agent["model_id"])
+                    })
+                    .is_some_and(|m| rows(m, "reasoning").contains(&effort));
+                if !valid {
+                    self.error = "This reasoning effort is no longer available.".into();
+                    cx.notify();
+                    return;
+                }
+                (agent, json!({"reasoning":effort}))
+            }
         };
-        menu = menu.label(format!("{provider} · {billing}"));
-        let ready = connection["state"] == "active" && connection["login"] == "authenticated";
-        for model in rows(connection, "models") {
-            let current =
-                agent["connection_id"] == connection["id"] && agent["model_id"] == model["id"];
-            let label = model["display_name"]
-                .as_str()
-                .unwrap_or(text(model, "id"))
-                .to_owned();
-            let agent = agent.clone();
-            let connection = (*connection).clone();
-            let model = model.clone();
-            let owner = owner.clone();
-            let icon = Icon::default()
-                .path(if muse {
-                    "icons/MuseProvider.svg"
-                } else {
-                    "icons/CodexProvider.svg"
-                })
-                .text_color(p.color(if muse {
-                    "identity-orange"
-                } else {
-                    "identity-purple"
-                }));
-            menu = menu.item(
-                PopupMenuItem::new(label)
-                    .icon(icon)
-                    .checked(current)
-                    .disabled(busy || !ready)
-                    .on_click(move |_, window, cx| {
-                        let _ = owner.update(cx, |this, cx| {
-                            let id = text(&agent, "id");
-                            let reasoning = if rows(&model, "reasoning").contains(&agent["reasoning"]) {
-                                agent["reasoning"].clone()
-                            } else {
-                                Value::Null
-                            };
-                            this.dispatch(
-                                format!("model:{id}"),
-                                Operation::command(
-                                    format!("/v1/agents/{id}/configuration"),
-                                    json!({
-                                        "expected_revision": agent["revision"],
-                                        "changes": {
-                                            "connection_id": connection["id"],
-                                            "harness": connection["harness"],
-                                            "billing_source": connection["authentication"]["billing_source"],
-                                            "model_id": model["id"],
-                                            "reasoning": reasoning
-                                        }
-                                    }),
-                                    this.selected,
-                                ),
-                                window,
-                                cx,
-                            );
-                        });
-                    }),
-            );
+        if !self
+            .agents
+            .iter()
+            .any(|agent| agent["id"] == snapshot["id"] && agent["revision"] == snapshot["revision"])
+        {
+            self.error =
+                "The agent configuration changed. Open the selector and choose again.".into();
+            cx.notify();
+            return;
         }
-        if !ready || rows(connection, "models").is_empty() {
-            menu = menu.item(
-                PopupMenuItem::new(if !ready {
-                    "Connect account…"
-                } else {
-                    "Refresh models…"
-                })
-                .on_click({
-                    let owner = owner.clone();
-                    move |_, window, cx| {
-                        let _ = owner.update(cx, |this, cx| this.open_settings(window, cx));
-                    }
-                }),
-            );
-        }
+        let id = text(&snapshot, "id");
+        self.dispatch(
+            format!("model:{id}"),
+            Operation::command(
+                format!("/v1/agents/{id}/configuration"),
+                json!({"expected_revision":snapshot["revision"],"changes":changes}),
+                self.selected,
+            ),
+            window,
+            cx,
+        );
     }
-    if let Some(model) = connections
-        .iter()
-        .find(|c| c["id"] == agent["connection_id"])
-        .and_then(|c| {
-            rows(c, "models")
-                .iter()
-                .find(|m| m["id"] == agent["model_id"])
-        })
-    {
-        let efforts = rows(model, "reasoning").to_vec();
-        if !efforts.is_empty() {
-            let agent = agent.clone();
-            let owner = owner.clone();
-            menu = menu.separator().submenu(
-                format!("Effort · {}", effort_label(&agent["reasoning"])),
-                window,
-                cx,
-                move |mut submenu, _, _| {
-                    submenu = submenu.check_side(Side::Right);
-                    for effort in &efforts {
-                        let owner = owner.clone();
-                        let agent = agent.clone();
-                        let effort = effort.clone();
-                        submenu = submenu.item(
-                            PopupMenuItem::new(effort_label(&effort))
-                                .checked(agent["reasoning"] == effort)
-                                .disabled(busy)
-                                .on_click(move |_, window, cx| {
-                                    let _ = owner.update(cx, |this, cx| {
-                                        let id = text(&agent, "id");
-                                        this.dispatch(
-                                            format!("reasoning:{id}"),
-                                            Operation::command(
-                                                format!("/v1/agents/{id}/configuration"),
-                                                json!({
-                                                    "expected_revision": agent["revision"],
-                                                    "changes": { "reasoning": effort }
-                                                }),
-                                                this.selected,
-                                            ),
-                                            window,
-                                            cx,
-                                        );
-                                    });
-                                }),
-                        );
-                    }
-                    submenu
-                },
-            );
-        }
-    }
-    menu.separator()
-        .item(
-            PopupMenuItem::new("Add or adjust models…").on_click(move |_, window, cx| {
-                let _ = owner.update(cx, |this, cx| this.open_settings(window, cx));
-            }),
-        )
 }

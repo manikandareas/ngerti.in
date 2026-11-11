@@ -58,6 +58,7 @@ impl ComposerLab {
         let subscription = cx.subscribe(&composer, |this, _, event: &ComposerEvent, cx| {
             this.status = match event {
                 ComposerEvent::Changed(_) => return,
+                ComposerEvent::EditQueued => return,
                 ComposerEvent::Submit(draft) => {
                     this.submissions += 1;
                     format!(

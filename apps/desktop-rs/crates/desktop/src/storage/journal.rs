@@ -109,6 +109,7 @@ struct Preferences {
     files: BTreeMap<Uuid, Vec<StagedFile>>,
     recipients: BTreeMap<Uuid, Uuid>,
     interaction_answers: BTreeMap<String, Value>,
+    favorite_models: std::collections::BTreeSet<String>,
 }
 
 pub(crate) struct Store {
@@ -139,6 +140,15 @@ fn load<T: for<'de> Deserialize<'de> + Default>(path: &Path) -> anyhow::Result<T
 }
 
 impl Store {
+    pub fn favorite_models(&self) -> std::collections::BTreeSet<String> {
+        self.preferences.favorite_models.clone()
+    }
+    pub fn toggle_favorite_model(&mut self, key: String) -> anyhow::Result<()> {
+        if !self.preferences.favorite_models.remove(&key) {
+            self.preferences.favorite_models.insert(key);
+        }
+        self.save_preferences()
+    }
     pub fn interaction_answers(&self) -> BTreeMap<String, Value> {
         self.preferences.interaction_answers.clone()
     }

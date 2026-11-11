@@ -513,6 +513,7 @@ impl Workspace {
         });
         self.conversation.transcript = result;
         self.conversation.order = new_ids;
+        self.sync_thread_find(cx);
     }
     fn row_order(&self) -> Vec<String> {
         self.conversation.order.clone()

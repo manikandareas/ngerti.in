@@ -4,6 +4,7 @@ use crate::ui::{
     theme::{Palette, ui},
 };
 use gpui_kit::component::{ActiveTheme, WindowExt};
+use gpui_kit::prelude::FluentBuilder as _;
 
 impl Render for Workspace {
     fn render(&mut self, window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
@@ -44,12 +45,17 @@ impl Render for Workspace {
                     .top_0()
                     .left_0()
                     .right_0()
+                    .flex()
+                    .flex_col()
                     .bg(linear_gradient(
                         0.,
                         linear_color_stop(p.color("background").opacity(0.02), 0.),
                         linear_color_stop(p.color("background").opacity(0.94), 1.),
                     ))
-                    .child(self.header_view(!show_sidebar, cx)),
+                    .child(self.header_view(!show_sidebar, cx))
+                    .when(self.conversation.find.read(cx).open, |view| {
+                        view.child(self.conversation.find.clone())
+                    }),
             );
             if !self.error.is_empty() {
                 main = main.child(
@@ -213,6 +219,7 @@ impl Render for Workspace {
             .on_action(cx.listener(|this, _: &ToggleDetails, window, cx| {
                 this.toggle_context(Panel::Detail, window, cx)
             }))
+            .on_action(cx.listener(|this, _: &FindInConversation, window, cx| this.open_thread_find(window, cx)))
             .on_action(cx.listener(|this,_:&crate::host::lifecycle::Reload,window,cx| {
                 this.computer.update(cx,|computer,cx|computer.suspend(true,cx));
                 this.computer.update(cx,|computer,cx|computer.suspend(false,cx));
@@ -237,6 +244,9 @@ impl Render for Workspace {
             .on_key_down(cx.listener(|this, event: &KeyDownEvent, window, cx| {
                 if event.keystroke.key == "escape" && this.computer.read(cx).open {
                     this.computer.update(cx,|computer,cx|computer.close(window,cx));
+                    cx.stop_propagation();
+                } else if event.keystroke.key == "escape" && this.conversation.find.read(cx).open && this.panel != Some(Panel::Settings) {
+                    this.conversation.find.update(cx, |find, cx| find.close(window, cx));
                     cx.stop_propagation();
                 } else if event.keystroke.key == "escape" && (this.panel.is_some() || this.is_viewing()) {
                     this.context_back(window, cx);

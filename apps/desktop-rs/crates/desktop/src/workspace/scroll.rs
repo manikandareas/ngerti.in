@@ -102,6 +102,11 @@ impl Workspace {
         let bottom = self.conversation.composer_height + window.rem_size() * 1.75;
         let weak = cx.entity().downgrade();
         let scroll_id = scroll.entity_id();
+        let top = if self.conversation.find.read(cx).open {
+            83. + super::thread_search::HEIGHT
+        } else {
+            83.
+        };
         let list = list(list_state.clone(), move |ix, window, cx| {
             weak.update(cx, |this, cx| {
                 if this.conversation.scroller.entity_id() != scroll_id {
@@ -109,7 +114,7 @@ impl Workspace {
                 }
                 div()
                     .w_full()
-                    .when(ix == 0, |view| view.pt(crate::ui::theme::ui(83.)))
+                    .when(ix == 0, |view| view.pt(crate::ui::theme::ui(top)))
                     .when(ix + 1 == count, |view| view.pb(bottom))
                     .child(
                         div()

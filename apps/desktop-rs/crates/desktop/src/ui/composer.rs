@@ -3,13 +3,14 @@ use crate::{
     models::composer::*,
     ui::{controls::*, theme::Palette},
 };
+use gpui_kit::base::TestSupportExt;
 use gpui_kit::prelude::FluentBuilder;
 use gpui_kit::{
     component::{
         ActiveTheme, Sizable,
         input::{
-            Copy, Cut, Enter, InlineToken, InputContent, InputEvent, Paste, Redo, Textarea,
-            TextareaState, Undo,
+            Copy, Cut, Enter, Escape, IndentInline, InlineToken, InputContent, InputEvent,
+            MoveDown, MoveUp, Paste, Redo, Textarea, TextareaState, Undo,
         },
     },
     *,
@@ -21,6 +22,7 @@ pub enum ComposerEvent {
     Submit(Draft),
     Files(Vec<ClipboardEntry>),
     Changed(Draft),
+    EditQueued,
 }
 pub struct Composer {
     pub input: Entity<TextareaState>,
@@ -328,12 +330,24 @@ impl Composer {
         if !query.starts_with(['@', '/']) {
             return None;
         }
-        let candidates = self
+        let skill = query.starts_with('/');
+        let query = &query[1..];
+        let mut candidates = self
             .references
             .values()
-            .filter(|r| r.label.to_lowercase().starts_with(&query.to_lowercase()))
+            .filter(|r| {
+                self.catalog.contains(&r.url()) && (r.kind == ReferenceKind::Skill) == skill
+            })
+            .filter_map(|r| {
+                crate::models::matching::score(query, r.label.trim_start_matches(['@', '/']))
+                    .map(|score| (score, r))
+            })
+            .collect::<Vec<_>>();
+        candidates.sort_by(|a, b| a.0.cmp(&b.0).then_with(|| a.1.label.cmp(&b.1.label)));
+        let candidates = candidates
+            .into_iter()
             .take(8)
-            .cloned()
+            .map(|(_, r)| r.clone())
             .collect::<Vec<_>>();
         (!candidates.is_empty()).then_some((start..range.start, candidates))
     }
@@ -348,6 +362,30 @@ impl Composer {
             self.replace(range, draft, window, cx);
         }
         true
+    }
+    fn move_suggestion(
+        &mut self,
+        previous: bool,
+        window: &mut Window,
+        cx: &mut Context<Self>,
+    ) -> bool {
+        if self.is_composing(window, cx) || self.readonly {
+            return false;
+        }
+        if let Some((_, items)) = self.suggestions(cx) {
+            self.selection = if previous {
+                (self.selection + items.len() - 1) % items.len()
+            } else {
+                (self.selection + 1) % items.len()
+            };
+            cx.notify();
+            true
+        } else if previous && self.snapshot(cx).draft.text.is_empty() {
+            cx.emit(ComposerEvent::EditQueued);
+            true
+        } else {
+            false
+        }
     }
 }
 impl Render for Composer {
@@ -390,6 +428,28 @@ impl Render for Composer {
                     cx.stop_propagation();
                 }
             }))
+            .capture_action(cx.listener(|this, _: &IndentInline, window, cx| {
+                if this.complete(window, cx) {
+                    cx.stop_propagation();
+                }
+            }))
+            .capture_action(cx.listener(|this, _: &MoveUp, window, cx| {
+                if this.move_suggestion(true, window, cx) {
+                    cx.stop_propagation();
+                }
+            }))
+            .capture_action(cx.listener(|this, _: &MoveDown, window, cx| {
+                if this.move_suggestion(false, window, cx) {
+                    cx.stop_propagation();
+                }
+            }))
+            .capture_action(cx.listener(|this, _: &Escape, window, cx| {
+                if !this.is_composing(window, cx) && this.suggestions(cx).is_some() {
+                    this.dismissed = true;
+                    cx.notify();
+                    cx.stop_propagation();
+                }
+            }))
             .on_drop(cx.listener(|this, paths: &ExternalPaths, _, cx| {
                 if !this.readonly {
                     cx.emit(ComposerEvent::Files(vec![ClipboardEntry::ExternalPaths(
@@ -400,19 +460,7 @@ impl Render for Composer {
             .capture_key_down(cx.listener(|this, event: &KeyDownEvent, window, cx| {
                 let s = this.snapshot(cx);
                 this.history.selection(s.selection, s.reversed);
-                if this.is_composing(window, cx) {
-                    return;
-                }
-                if let Some((_, items)) = this.suggestions(cx) {
-                    match event.keystroke.key.as_str() {
-                        "escape" => this.dismissed = true,
-                        "down" => this.selection = (this.selection + 1) % items.len(),
-                        "up" => this.selection = (this.selection + items.len() - 1) % items.len(),
-                        _ => return,
-                    }
-                    cx.stop_propagation();
-                    cx.notify();
-                }
+                let _ = (event, window);
             }))
             .child(
                 Textarea::new(&self.input)
@@ -429,6 +477,7 @@ impl Render for Composer {
         if let Some((_, items)) = suggestions {
             let mut menu = div()
                 .id("composer-suggestions")
+                .test_support()
                 .role(Role::ListBox)
                 .aria_label("Reference suggestions")
                 .flex()
@@ -439,19 +488,24 @@ impl Render for Composer {
             for (i, item) in items.into_iter().enumerate() {
                 let text = item.label.clone();
                 menu = menu.child(
-                    div()
-                        .id(("suggestion", i))
-                        .role(Role::ListBoxOption)
-                        .aria_label(text.clone())
-                        .px_3()
-                        .py_1()
-                        .when(i == self.selection, |v| v.bg(p.color("accent")))
-                        .child(text)
-                        .on_mouse_down(MouseButton::Left, |_, window, _| window.prevent_default())
-                        .on_click(cx.listener(move |this, _, window, cx| {
-                            this.selection = i;
-                            this.complete(window, cx);
-                        })),
+                    button(
+                        SharedString::from(format!("suggestion:{}", item.url())),
+                        text.clone(),
+                        ButtonKind::Ghost,
+                        p,
+                        cx,
+                    )
+                    .accessibility_label(text.clone())
+                    .justify_start()
+                    .w_full()
+                    .px_3()
+                    .py_1()
+                    .when(i == self.selection, |v| v.bg(p.color("accent")))
+                    .on_mouse_down(MouseButton::Left, |_, window, _| window.prevent_default())
+                    .on_click(cx.listener(move |this, _, window, cx| {
+                        this.selection = i;
+                        this.complete(window, cx);
+                    })),
                 );
             }
             view = view.child(menu);

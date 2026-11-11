@@ -8,124 +8,6 @@ use gpui_kit::base::TestSupportExt;
 use ngertiin_client::{rows, text};
 
 impl Workspace {
-    fn queue_view(&self, cx: &mut Context<Self>) -> Option<AnyElement> {
-        let p = Palette::new(self.store.dark());
-        let value = self.value();
-        let queued: Vec<_> = rows(value, "messages")
-            .iter()
-            .filter_map(|message| {
-                if message["author"] != "user"
-                    || message["state"] == "deleted"
-                    || self
-                        .conversation
-                        .parts
-                        .values()
-                        .any(|part| part["message_id"] == message["id"])
-                {
-                    return None;
-                }
-                rows(value, "runs")
-                    .iter()
-                    .rev()
-                    .find(|run| {
-                        run["input_message_id"] == message["id"] && run["status"] == "queued"
-                    })
-                    .map(|run| (message, run))
-            })
-            .collect();
-        if queued.is_empty() {
-            return None;
-        }
-        let mut tray = div()
-            .id("composer-message-queue")
-            .role(Role::Group)
-            .aria_label(format!("{} queued messages", queued.len()))
-            .flex()
-            .flex_col()
-            .max_h(ui(144.))
-            .overflow_y_scroll()
-            .mx(ui(12.))
-            .px(ui(10.))
-            .py(ui(6.))
-            .rounded_t(ui(16.))
-            .bg(p.color("secondary"));
-        for (message, run) in queued {
-            let edit = (*message).clone();
-            let delete = (*message).clone();
-            let disabled =
-                self.busy || self.conversation.reconciling || self.conversation.editing.is_some();
-            let mut row = div()
-                .flex()
-                .items_center()
-                .gap(ui(8.))
-                .min_h(ui(36.))
-                .child(crate::ui::workspace::glyph("ArrowTurnForwardIcon", 14., p))
-                .child(
-                    div()
-                        .flex_1()
-                        .min_w_0()
-                        .truncate()
-                        .text_size(ui(14.))
-                        .child(text(message, "text").to_owned()),
-                );
-            if let Some(active) = rows(value, "runs")
-                .iter()
-                .find(|active| {
-                    active["agent_id"] == run["agent_id"]
-                        && active["status"] == "running"
-                        && !active["native_run_id"].is_null()
-                })
-                .cloned()
-            {
-                let run = (*run).clone();
-                row = row.child(
-                    action(
-                        SharedString::from(format!("steer:{}", text(message, "id"))),
-                        "Steer queued message",
-                        "ArrowTurnForwardIcon",
-                        p,
-                        cx,
-                    )
-                    .size(ui(28.))
-                    .disabled_state(disabled, p)
-                    .on_click(cx.listener(move |this, _, window, cx| {
-                        this.steer(active.clone(), Some(run.clone()), window, cx)
-                    })),
-                );
-            }
-            row = row
-                .child(
-                    action(
-                        SharedString::from(format!("edit:{}", text(message, "id"))),
-                        "Edit queued message",
-                        "PencilEdit01Icon",
-                        p,
-                        cx,
-                    )
-                    .size(ui(28.))
-                    .disabled_state(disabled, p)
-                    .on_click(
-                        cx.listener(move |this, _, window, cx| this.edit(edit.clone(), window, cx)),
-                    ),
-                )
-                .child(
-                    action(
-                        SharedString::from(format!("delete:{}", text(message, "id"))),
-                        "Delete queued message",
-                        "Delete02Icon",
-                        p,
-                        cx,
-                    )
-                    .size(ui(28.))
-                    .disabled_state(disabled, p)
-                    .on_click(cx.listener(move |this, _, window, cx| {
-                        this.delete(delete.clone(), window, cx)
-                    })),
-                );
-            tray = tray.child(row);
-        }
-        Some(tray.into_any_element())
-    }
     pub(super) fn composer_view(&self, cx: &mut Context<Self>) -> AnyElement {
         let p = Palette::new(self.store.dark());
         let draft = self.conversation.composer.read(cx).snapshot(cx).draft.text;
@@ -374,7 +256,10 @@ impl Workspace {
                     .size(ui(28.))
                     .rounded_full()
                     .bg(p.color("header-surface"))
-                    .disabled_state(self.busy || response_locked, p)
+                    .disabled_state(
+                        self.busy || response_locked || !self.steer_supported(&run),
+                        p,
+                    )
                     .on_click(cx.listener(move |this, _, window, cx| {
                         this.steer(run.clone(), None, window, cx)
                     })),

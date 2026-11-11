@@ -293,6 +293,15 @@ impl Workspace {
         );
     }
     pub(super) fn edit(&mut self, message: Value, window: &mut Window, cx: &mut Context<Self>) {
+        if self.busy
+            || self.conversation.reconciling
+            || self
+                .conversation
+                .composer
+                .update(cx, |composer, cx| composer.is_composing(window, cx))
+        {
+            return;
+        }
         let value = text(&message, "text").to_owned();
         self.conversation.editing = Some(message);
         self.restoring = true;
@@ -333,7 +342,8 @@ impl Workspace {
         window: &mut Window,
         cx: &mut Context<Self>,
     ) {
-        if run["native_run_id"].is_null()
+        if !self.steer_supported(&run)
+            || run["native_run_id"].is_null()
             || self.composer_response_locked(cx)
             || self
                 .conversation

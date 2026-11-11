@@ -20,8 +20,10 @@ pub(super) struct ThreadState {
     pub(super) timeline_expanded: BTreeSet<String>,
     pub(super) wrapped_code: BTreeSet<String>,
     pub(super) composer: Entity<Composer>,
+    pub(super) find: Entity<thread_search::ThreadSearch>,
     pub(super) composer_height: Pixels,
     pub(super) editing: Option<Value>,
+    pub(super) queue_expanded: bool,
     pub(super) scroller: Entity<TranscriptScroll>,
     pub(super) transcript: Vec<transcript::TranscriptRow>,
     pub(super) order: Vec<String>,
@@ -212,6 +214,7 @@ impl Workspace {
             composer
         });
         let scroller = cx.new(|cx| TranscriptScroll::new(window, cx));
+        let find = cx.new(|cx| thread_search::ThreadSearch::new(window, cx));
         let owner = cx.entity().downgrade();
         let scroll_id = scroller.entity_id();
         scroller.read(cx).set_readiness(move |ix, cx| {
@@ -246,6 +249,56 @@ impl Workspace {
                 .unwrap_or(true)
         });
         let subscriptions = vec![
+            cx.observe(&find, |this, owner, cx| {
+                if this.conversation.find.entity_id() == owner.entity_id() {
+                    this.conversation
+                        .scroller
+                        .update(cx, |scroll, cx| scroll.remeasure_items(0..1, cx));
+                    cx.notify();
+                }
+            }),
+            cx.subscribe_in(
+                &find,
+                window,
+                |this, owner, reveal: &thread_search::Reveal, _, cx| {
+                    if this.conversation.find.entity_id() != owner.entity_id() {
+                        return;
+                    }
+                    let Some(ix) = this
+                        .conversation
+                        .transcript
+                        .iter()
+                        .position(|row| row.id == reveal.row)
+                    else {
+                        return;
+                    };
+                    this.conversation.restore_reading = None;
+                    this.conversation.scroller.update(cx, |scroll, cx| {
+                        scroll.scroll_to(
+                            ListOffset {
+                                item_ix: ix,
+                                offset_in_item: px(0.),
+                            },
+                            cx,
+                        )
+                    });
+                    let reveal = reveal.clone();
+                    let scope = this.scope;
+                    let workspace = cx.entity().downgrade();
+                    cx.defer(move |cx| {
+                        let _ = workspace.update(cx, |this, cx| {
+                            if this.scope == scope
+                                && this.conversation.find.read(cx).is_active(&reveal)
+                            {
+                                reveal.body.update(cx, |body, cx| {
+                                    let _ = body.reveal_range(reveal.range, cx);
+                                });
+                            }
+                        });
+                    });
+                    cx.notify();
+                },
+            ),
             cx.subscribe_in(
                 &composer,
                 window,
@@ -256,6 +309,7 @@ impl Workspace {
                     match event {
                         ComposerEvent::Submit(_) => this.send(window, cx),
                         ComposerEvent::Files(entries) => this.stage_entries(entries.clone(), cx),
+                        ComposerEvent::EditQueued => this.edit_next_queued(window, cx),
                         ComposerEvent::Changed(_) => {
                             if !this.restoring
                                 && this.conversation.editing.is_none()
@@ -297,8 +351,10 @@ impl Workspace {
             timeline_expanded: BTreeSet::new(),
             wrapped_code: BTreeSet::new(),
             composer,
+            find,
             composer_height: window.rem_size() * 4.5,
             editing: None,
+            queue_expanded: true,
             scroller,
             transcript: vec![],
             order: vec![],

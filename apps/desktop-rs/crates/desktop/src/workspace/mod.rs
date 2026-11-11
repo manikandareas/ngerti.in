@@ -5,16 +5,21 @@ mod commands;
 mod composer_view;
 mod computer;
 mod context;
+#[cfg(test)]
+mod conversation_tools_tests;
 mod interactions;
 mod loading;
 mod message_markup;
+mod model_catalog;
 mod model_picker;
 mod navigation;
 mod panels;
+mod queue;
 mod scroll;
 mod sync;
 #[cfg(test)]
 mod tests;
+mod thread_search;
 mod thread_state;
 #[cfg(test)]
 mod thread_tests;
@@ -53,7 +58,8 @@ actions!(
         CreateGroup,
         OpenSettings,
         ToggleSidebar,
-        ToggleDetails
+        ToggleDetails,
+        FindInConversation
     ]
 );
 pub(crate) struct Workspace {
@@ -76,6 +82,7 @@ pub(crate) struct Workspace {
     activities: Vec<Value>,
     answers: BTreeMap<String, Value>,
     search: Entity<InputState>,
+    model_catalog: Entity<model_catalog::ModelCatalog>,
     group_name: Entity<InputState>,
     group_members: Vec<Uuid>,
     animator: Entity<AvatarAnimator>,
@@ -143,6 +150,7 @@ impl Workspace {
         cx.bind_keys([
             KeyBinding::new("cmd-b", ToggleSidebar, Some("NativeWorkspace")),
             KeyBinding::new("cmd-i", ToggleDetails, Some("NativeWorkspace")),
+            KeyBinding::new("cmd-f", FindInConversation, Some("NativeWorkspace")),
         ]);
         if store.appearance() == "system" {
             let dark = matches!(
@@ -154,11 +162,30 @@ impl Workspace {
         crate::ui::theme::apply(store.dark(), None, cx);
         let search = cx.new(|cx| InputState::new(window, cx).placeholder("Who’s on your mind?"));
         let group_name = cx.new(|cx| InputState::new(window, cx).placeholder("Group name"));
+        let model_catalog = cx.new(|cx| model_catalog::ModelCatalog::new(window, cx));
         let conversation = Self::new_thread_state(window, cx);
         let computer = cx.new(|cx| computer::Computer::new(window, cx));
         let sleep_weak = cx.entity().downgrade();
         let wake_weak = sleep_weak.clone();
         let subscriptions = vec![
+            cx.observe(&model_catalog, |_, _, cx| cx.notify()),
+            cx.subscribe_in(
+                &model_catalog,
+                window,
+                |this, catalog, event: &model_catalog::CatalogEvent, window, cx| match event {
+                    model_catalog::CatalogEvent::Choose(choice) => {
+                        if catalog.read(cx).thread_id == this.selected {
+                            this.choose_catalog_model(choice.clone(), window, cx);
+                        }
+                    }
+                    model_catalog::CatalogEvent::Favorite(key) => {
+                        if let Err(error) = this.store.toggle_favorite_model(key.clone()) {
+                            this.error = error.to_string();
+                            cx.notify();
+                        }
+                    }
+                },
+            ),
             cx.on_system_sleep(move |cx| {
                 let _ = sleep_weak.update(cx, |this, cx| {
                     this.was_active = false;
@@ -264,6 +291,7 @@ impl Workspace {
             activities: vec![],
             answers: retained_answers,
             search,
+            model_catalog,
             group_name,
             group_members: vec![],
             animator: cx.new(|cx| AvatarAnimator::new(window, cx)),
@@ -430,6 +458,10 @@ impl Workspace {
         }
         self.computer
             .update(cx, |computer, cx| computer.present(false, cx));
+        self.model_catalog.update(cx, |catalog, cx| {
+            catalog.open = false;
+            cx.notify();
+        });
         self.read_task = None;
         self.reading_save_task = None;
         self.refresh_pending = false;

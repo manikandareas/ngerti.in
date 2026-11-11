@@ -195,7 +195,7 @@
 }
 .workspace-rail .workspace-rail-item:hover,
 .workspace-rail .workspace-rail-item[aria-current="page"] {
-  background: var(--secondary);
+  background: var(--accent);
   color: var(--foreground);
 }
 .workspace-rail-item:focus-visible {

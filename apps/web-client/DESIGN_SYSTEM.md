@@ -11,7 +11,7 @@ Product compositions reconstruct the reference's messenger layout and interactio
 | Token | Role | Daylight | Midnight |
 | --- | --- | --- | --- |
 | `background` | Conversation canvas | `#fcfcfc` | `#121212` |
-| `frame` | Surrounding shell / sidebar | `#ededed` | `#090909` |
+| `frame` | Surrounding shell / sidebar; dark matches the rendered macOS titlebar | `#ededed` | `#1e1e1e` |
 | `panel` | Secondary panel surface | `#f5f5f5` | `#0e0e0e` |
 | `card` | Replies and grouped content | `#f0f0f0` | `#1f1f1f` |
 | `popover` | Menus and floating controls | `#ffffff` | `#1f1f1f` |

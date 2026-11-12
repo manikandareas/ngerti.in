@@ -541,10 +541,6 @@ export default function Workspace() {
         setCreateGroupOpen(true);
       }}
       choose={choose}
-      openApps={() => {
-        setNavigation(false);
-        void marketplace.open("plugins");
-      }}
     />
   );
   function compose(text: string) {

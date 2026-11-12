@@ -163,7 +163,7 @@
 }
 
 .application-frame {
-  --app-rail-width: 56px;
+  --app-rail-width: 48px;
   display: flex;
   height: 100svh;
   min-height: 0;
@@ -184,13 +184,13 @@
 .workspace-rail-bottom {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 4px;
   margin-top: auto;
 }
 .workspace-rail .workspace-rail-item {
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
   color: var(--muted-foreground);
   transition:
     background-color 150ms,
@@ -204,6 +204,16 @@
 .workspace-rail-item:focus-visible {
   outline: 2px solid var(--ring);
   outline-offset: 2px;
+}
+@media (max-width: 767px), (hover: none), (pointer: coarse) {
+  .workspace-rail-bottom {
+    gap: 8px;
+  }
+  .workspace-rail .workspace-rail-item {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+  }
 }
 .application-body {
   display: flex;
@@ -836,9 +846,6 @@ button.group-bubble-author:focus-visible {
   white-space: normal;
   line-height: 18px;
 }
-.navigation-footer button {
-  background: var(--composer);
-}
 .workspace-details {
   border-left: 0.5px solid color-mix(in srgb, var(--foreground) 6%, transparent);
   animation: context-panel-in var(--duration-enter) var(--ease-panel);
@@ -955,7 +962,6 @@ button.group-bubble-author:focus-visible {
     background: var(--background);
   }
   .application-frame {
-    --app-rail-width: 48px;
     padding: 0;
   }
   .application-body {

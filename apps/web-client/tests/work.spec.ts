@@ -567,9 +567,7 @@ test("application access is assigned explicitly to this context and unsupported 
   expect(
     (await (await page.request.get(`/v1/threads/${a.thread.id}/snapshot`)).json()).artifacts,
   ).toHaveLength(0);
-  const navigation = page.getByRole("button", { name: "Percakapan", exact: true });
-  if (await navigation.isVisible()) await navigation.click();
-  await page.getByRole("button", { name: "Hubungkan aplikasi", exact: true }).click();
+  await page.getByRole("button", { name: "Marketplace", exact: true }).click();
   await expect(
     page.locator(".marketplace-entry-name").filter({ hasText: /^Calendar fixture$/ }),
   ).toBeVisible();
@@ -640,9 +638,7 @@ test("application access is assigned explicitly to this context and unsupported 
     .getByRole("textbox", { name: "Pesan", exact: true })
     .fill(`fixture apps:${created.id}`);
   await page.getByRole("button", { name: "Kirim", exact: true }).click();
-  if (await page.getByRole("button", { name: "Percakapan", exact: true }).isVisible())
-    await page.getByRole("button", { name: "Percakapan", exact: true }).click();
-  await page.getByRole("button", { name: "Hubungkan aplikasi", exact: true }).click();
+  await page.getByRole("button", { name: "Marketplace", exact: true }).click();
   await page.locator(".marketplace-entry-open").filter({ hasText: "Calendar fixture" }).click();
   await page.getByText("calendar list events · Succeeded", { exact: true }).click();
   await expect(page.getByText("Receipt: fixture-provider-receipt", { exact: true })).toBeVisible();
@@ -662,9 +658,7 @@ test("apps catalog searches live and authorization recovers from blocked popups 
       await route.abort("failed");
     } else await route.continue();
   });
-  if (await page.getByRole("button", { name: "Percakapan", exact: true }).isVisible())
-    await page.getByRole("button", { name: "Percakapan", exact: true }).click();
-  await page.getByRole("button", { name: "Hubungkan aplikasi", exact: true }).click();
+  await page.getByRole("button", { name: "Marketplace", exact: true }).click();
   await page
     .locator("[data-sonner-toast]")
     .getByRole("button", { name: "Retry", exact: true })

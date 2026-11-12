@@ -1,4 +1,4 @@
-import { Add01Icon, Plug01Icon, UserGroupIcon } from "@hugeicons/core-free-icons";
+import { Add01Icon, UserGroupIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
@@ -23,7 +23,6 @@ export function ConversationNavigation({
   createAgent,
   createGroup,
   choose,
-  openApps,
 }: {
   agents: Agent[];
   threads: Thread[];
@@ -37,7 +36,6 @@ export function ConversationNavigation({
   createAgent: () => void;
   createGroup: () => void;
   choose: (id: string) => void;
-  openApps: () => void;
 }) {
   const [search, setSearch] = useState("");
   const query = search.trim().toLocaleLowerCase();
@@ -130,16 +128,6 @@ export function ConversationNavigation({
           />
         )}
       </nav>
-      <div className="navigation-footer pt-4 pb-1 flex flex-col">
-        <Button
-          variant="ghost"
-          className="h-9 min-w-0 flex-1 gap-2 rounded-full bg-card text-[13px] font-medium"
-          onClick={openApps}
-        >
-          <HugeiconsIcon icon={Plug01Icon} size={16} strokeWidth={1.5} />
-          Hubungkan aplikasi
-        </Button>
-      </div>
     </div>
   );
 }

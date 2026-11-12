@@ -45,6 +45,8 @@ Primary buttons use a solid fill with explicit hover/pressed colors, no gradient
 
 ## Typography and geometry
 
+- The persistent navigation rail is 48px wide with 20px Hugeicons. Desktop mouse controls are 36px square with 8px corners and a 4px gap between bottom actions; narrow/coarse/no-hover layouts retain 40px targets, 10px corners and an 8px gap. Window/header geometry, outer-frame insets and contextual-sidebar widths stay independent of rail density.
+
 - UI: self-hosted Geist Variable 5.3.0. Code: Geist Mono Variable 5.3.0. Native/system fallbacks remain available. No runtime font CDN.
 - Replies 15/22px; primary UI 14/20px; sidebar preview 13/18px; metadata 11–12px. Desktop composer text is 14/20px; phone text entry stays 16px to prevent focus zoom.
 - Generic buttons and desktop inputs use 13/20px; menu items use 14/18px. Menu surfaces have 6px padding, 6px item corners, 4px between rows and a 50% hairline. Rows are at least 30px high, increasing to 40px for coarse pointers or devices without hover.
@@ -64,7 +66,7 @@ Color transitions 120ms, popup entrance 200ms, panel entrance 240ms, sheet entra
 
 ## Components and existing behavior
 
-- Navigation: source-sized Tobi tile, agent/group rows, Settings owner control and app-connections pill at the bottom. Theme controls live in General Settings.
+- Navigation: source-sized Tobi tile and agent/group rows, with Marketplace and Settings in the persistent rail. Theme controls live in General Settings.
 - Header: the bar stays transparent. Identity, model/routing and browser actions share a solid neutral surface, foreground color, 39px height and fully rounded corners. Their surface mixes the canvas with 5% foreground at rest and on hover. The identity's full 12px chevron appears on hover or keyboard focus; its centered capsule toggles the contextual panel. The model trigger shows the provider icon and capitalized model name without a dropdown chevron. Model names also appear capitalized in the shared searchable account/model/reasoning popup, retaining their original identifiers for configuration and search. Provider labels throughout the picker, agent panel and Settings show names, billing and status without exposing internal account IDs. The popup uses source suggestion limits, expansion, keyboard/typeahead navigation and source menu geometry.
 - Messages: identity-tinted user bubbles, neutral assistant replies, compact truthful queue/error/tool state. Edit/delete/steer/stop/reconcile operations retain existing server-side behavior.
 - Conversation edges: messages scroll across the full canvas behind the transparent header and composer dock. An opacity mask spans each control area's measured height plus 48px on desktop or 32px on phone, so there are no solid top/bottom bands. The lighter fade retains 25% message opacity at the outer edges and 31% at the control-area boundaries. Resize observation keeps multiline inputs, queue rows and error notices clear; matching content padding keeps the first and latest messages readable at rest. The latest-message button stays outside the mask and above the composer.

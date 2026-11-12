@@ -1,5 +1,7 @@
 # Persistent agents and conversation API
 
+Planned November 12 amendment: [the server-organizations plan](server-organizations-plan-2026-11-12.md) and NMA-072–083 define PostgreSQL, authenticated organization/user scope, private Team-agent interactions and explicit connections. This guide retains its current/recorded implementation boundary until the new NMA-079 API gate verifies the changed contract; its owner-only examples do not establish multi-user authorization.
+
 Application contract **1.3.0** extends the harness-first backend with product identity, atomic Tobi setup, conversational configuration and conversation reads. This is the NMA-052 implementation. [NMA-050](../backlog/NMA-050.md) and the NMA-060 API gate are Done under the accepted Muse API-key billing scope; Muse subscription remains unverified. This guide records the original backend milestone; current UI and distribution status is maintained in [the local backlog](../backlog/README.md).
 
 ## Identity and setup

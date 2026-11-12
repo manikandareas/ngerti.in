@@ -4,9 +4,11 @@ This repository is the authority for product decisions, local backlog, implement
 
 ## Product and work
 
+- [Central server, PostgreSQL and organizations plan](architecture/server-organizations-plan-2026-11-12.md): the main November 12 design and diagrams, with [NMA-072–083](backlog/README.md#server-organizations-plan) covering auth, roles/Workgroups, private/Team agents, scoped data/execution/connections and web/Tauri delivery. All new implementation is Backlog. Further desktop-rs work is paused.
+
 - [All 83 feature decisions](product/feature-decisions.md), [agents/conversations/groups](product/conversations.md), [Goals and Routine](product/goals-routine.md), and [current interface](product/interface.md).
 - [Local backlog and delivery status](backlog/README.md), [feature ownership](backlog/feature-coverage.md), and [acceptance/readiness gates](development/acceptance.md).
-- [Desktop Rust observation and parity plan](architecture/desktop-rs-plan-2026-11-07.md): six ordered GPUI milestones targeting `apps/desktop-rs`; NMA-066/NMA-067 are Done under the [2026-11-08 owner decision](development/nma-066-067-closure-2026-11-08.md), with remaining technical verification non-blocking. NMA-068–071 remain Backlog. [Component evidence](verification/nma-067/README.md) records the native avatar, composer and rich-content components. See the [native workspace](../apps/desktop-rs/README.md) and [foundation evidence](verification/nma-066/README.md).
+- [Desktop Rust observation and parity plan](architecture/desktop-rs-plan-2026-11-07.md): six ordered GPUI milestones targeting `apps/desktop-rs`; NMA-066/NMA-067 are Done under the [2026-11-08 owner decision](development/nma-066-067-closure-2026-11-08.md), with remaining technical verification non-blocking. NMA-068–071 are also Done for their retained scope; further desktop-rs work is paused. [Component evidence](verification/nma-067/README.md) records the native avatar, composer and rich-content components. See the [native workspace](../apps/desktop-rs/README.md) and [foundation evidence](verification/nma-066/README.md).
 - [Conversation content viewer prototype](product/conversation-viewer-prototype-2026-11-07.md): archived comparison of three layouts; Focus is implemented in the conversation.
 - [Source adoption and upgrades](development/source-adoption.md), [decision handoff provenance](development/decision-record.json), and [historical evidence/Git recovery](development/history.md).
 
@@ -19,7 +21,7 @@ The handoff reconciled eleven decision documents and nineteen milestone records,
 - [Harness broker](architecture/harness-broker-contract.md), [Codex adapter](architecture/codex-adapter.md), and [Muse adapter](architecture/muse-adapter.md).
 - [Agents/conversations API](architecture/agent-conversation-api.md), [queue/control/recovery](architecture/conversation-control-api.md), and [group collaboration](architecture/group-collaboration-api.md).
 - [Goals/Routine API](architecture/goals-routines-api.md), [memory/skills](architecture/memory-skills-api.md), [workspace/artifacts](architecture/workspace-artifact-api.md), and [app connections/research/visual input](architecture/apps-research-visual-api.md).
-- [Current checked-in contract 1.31.0](contracts/1.31.0.json). Earlier bundles and versioned guides retain their original scope; authenticated `/v1/contracts` identifies the installed server's export.
+- [Current checked-in contract 1.32.0](contracts/1.32.0.json). Earlier bundles and versioned guides retain their original scope; authenticated `/v1/contracts` identifies the installed server's export.
 
 ## Machine, desktop and evidence
 
@@ -31,6 +33,6 @@ The handoff reconciled eleven decision documents and nineteen milestone records,
 - [Working files tree, local file icons and source viewer](verification/working-files-tree-2026-11-07/README.md).
 - [Research index](research/README.md), [initial NMA-060 API gate](verification/nma-060/final-cohort/README.md), [NMA-061 UI](verification/nma-061/README.md), and [NMA-062 UI](verification/nma-062/README.md).
 
-Sixteen active milestones and two Desktop Rust milestones are Done for their recorded accepted scope. NMA-063 product-wide acceptance and NMA-064 distribution remain Backlog. Desktop Rust has NMA-066/NMA-067 Done and NMA-068–071 Backlog. Native/provider, billing, API, browser/UI and installation claims have separate evidence. Retained historical captures are evidence, not workflow instructions or a blanket production-readiness claim.
+Sixteen earlier active milestones and six Desktop Rust milestones are Done for their recorded scope. NMA-072–083 are the planned server-organizations sequence; NMA-063 full-product acceptance now depends on its focused acceptance, and NMA-064 remains distribution. Further desktop-rs work is paused. Native/provider, billing, API, browser/Tauri and installation claims retain separate evidence boundaries.
 
 Run `make docs-check` or `bun run docs:check` to validate local links and backlog consistency. Only byte-identical registered historical captures may resolve missing targets in pinned Git trees. Current guides resolve against the working tree.

@@ -1,5 +1,7 @@
 # Harness broker contract v1.4.0
 
+Planned November 12 amendment: [the server-organizations plan](server-organizations-plan-2026-11-12.md) and NMA-072–083 define PostgreSQL, authenticated organization/user scope, private Team-agent interactions and explicit connections. This guide retains its current/recorded implementation boundary until the new NMA-079 API gate verifies the changed contract; its owner-only examples do not establish multi-user authorization.
+
 NMA-054 adds captured workspace resources, scoped Codex native command permissions and native tool observations. See the [workspace/artifact contract](workspace-artifact-api.md) for the current per-adapter capability boundary, including the Muse scoped product-tool path.
 
 NMA-053 adds durable controls, incremental redacted snapshots, typed failure diagnostics and native receipt reads; see the [conversation control and recovery contract](conversation-control-api.md). Codex native steer is verified. Muse steer is now `unknown` after a live single-turn mapping failure; the broker preserves its ordinary queue. Earlier fixture observations below do not override that capability.

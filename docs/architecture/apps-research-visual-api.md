@@ -1,5 +1,7 @@
 # Applications, web research and visual input API
 
+Planned November 12 amendment: [the server-organizations plan](server-organizations-plan-2026-11-12.md) and NMA-072–083 define PostgreSQL, authenticated organization/user scope, private Team-agent interactions and explicit connections. This guide retains its current/recorded implementation boundary until the new NMA-079 API gate verifies the changed contract; its owner-only examples do not establish multi-user authorization.
+
 Application integration introduced in contract **1.10.0**, with catalog metadata added in **1.32.0**; harness broker **1.5.0**. This is a backend contract; API readiness, UI and installation remain separate gates.
 
 Composio Platform uses `COMPOSIO_API_KEY` from the root environment. The existing installation owner UUID is the remote Composio user ID. Neither this key nor Composio session credentials reach native process environments, prompts, tool results or workspaces. The SDK is pinned to `@composio/core` 0.27.0; its client uses REST API v3.1. No additional model framework or agent loop is involved.

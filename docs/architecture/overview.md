@@ -2,6 +2,10 @@
 
 [Product scope](../../PRODUCT.md) defines the intended behavior; [the local backlog](../backlog/README.md) defines milestone status and dependencies. This overview reconciles the harness-first foundation with the shared-machine amendment and the implemented Tauri development host. Detailed API guides retain their original contract-version boundaries; the [consumer contract](api-consumer-contract.md) and installed `/v1/contracts` export define executable schemas.
 
+## Planned server organizations — 2026-11-12
+
+The [main plan](server-organizations-plan-2026-11-12.md) and NMA-072–083 promote PostgreSQL, authenticated users, multiple organizations, organization-local roles/Workgroups, personal/Team agents and explicit personal/organization connections. New clients are web and Tauri; further desktop-rs work is paused. The target server owns harnesses and durable execution independently of remote clients. Separate execution domains must enforce cross-human privacy; the singleton shared machine below describes the current single-owner baseline, not the target multi-user boundary. No new runtime or readiness is claimed until its milestones are verified.
+
 ## Ownership
 
 | Component | Authority |

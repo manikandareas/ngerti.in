@@ -1,10 +1,11 @@
 # Ngertiin repository guidance
 
-Ngertiin is a persistent agent workspace with one human owner, private DMs, groups, automatic Goals and Routine. The repository is the authority for product decisions, scope, acceptance and delivery status. Explicit user instructions take precedence; record resulting scope changes locally.
+Ngertiin is a persistent agent workspace with private DMs, groups, automatic Goals and Routine. The implemented baseline is single-owner; the planned central-server organization model is defined below. The repository is the authority for product decisions, scope, acceptance and delivery status. Explicit user instructions take precedence; record resulting scope changes locally.
 
 ## Read for the task
 
 - Product/runtime design or implementation: read [PRODUCT.md](PRODUCT.md), the relevant [feature decisions](docs/product/feature-decisions.md), [architecture](docs/architecture/overview.md), and the applicable local API guide.
+- PostgreSQL, authentication, organization/Workgroup access, personal/Team agents, or remote clients: read [the server-organizations plan](docs/architecture/server-organizations-plan-2026-11-12.md) and NMA-072–083. Focus implementation on web-client/Tauri; desktop-rs work is paused, with historical evidence retained.
 - A named milestone: read its file in [the local backlog](docs/backlog/README.md), including acceptance and `Depends on`. NMA-051 is deferred; historical milestones are not an active queue.
 - Readiness or completion claims: use [acceptance gates](docs/development/acceptance.md) and the relevant retained evidence. [The local workflow](docs/development/workflow.md) owns status and documentation maintenance.
 - Machine changes: read [the shared-machine trust/implementation plan](docs/architecture/shared-machine-cua-plan-2026-11-04.md) and [setup/native evidence](docs/verification/shared-machine/README.md). Desktop-host changes use [Tauri development](docs/architecture/tauri-development.md).
@@ -19,7 +20,7 @@ Keep detailed policy in these documents; update the affected local specification
 - Product tools derive server-validated owner/agent/thread/run/binding scope and recheck current grants/membership/capabilities before dispatch. Reconcile unknown external effects before replay. Stop intent differs from confirmed native stop.
 - Agent identity is persistent across DM/group use; native session, transcript, private memory and saved-artifact metadata retain their scope. Only the selected group member answers. Keep prompts, commands, raw observations and technical handoff instructions private.
 - Goals capture durable responsibility or explicit tracking, not every request or multi-step run. Routine covers schedules/checks and may have no Goal. Stop run differs from stopping a responsibility and its continuation. Do not introduce a universal approval or initiative restriction without an agreed need.
-- All agents share one retained local Linux desktop through Cua SDK → spacesd → Driver. Browser, terminal and working files use that machine. Foreground input has one human-or-agent lease; terminal processes may run concurrently. Shared working files/attachment copies are cooperative, owner-wide OS resources; private backend data remains scoped.
+- The single-owner baseline shares one retained Cua Linux desktop. The organization plan requires separate execution domains across users/organizations before claiming multi-user privacy; folder prefixes on a common sudo-capable OS are insufficient. Within one human's authorized domain, agents may cooperate, with one foreground input lease and concurrent terminal processes. Private backend records retain their own scope.
 - Composio supplies app connections. App-owned and inherited harness skills remain separate; agents only create/repair app-owned packages. Tauri is the sole macOS ARM64 development host; fresh-device distribution and other platforms remain separate.
 - Optional/deferred features require an explicit scope decision before becoming implementation commitments. Upstream source availability does not expand scope.
 

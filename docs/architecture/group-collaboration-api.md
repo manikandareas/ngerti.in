@@ -1,5 +1,7 @@
 # Group routing, peer tasks and human input
 
+Planned November 12 amendment: [the server-organizations plan](server-organizations-plan-2026-11-12.md) and NMA-072–083 define PostgreSQL, authenticated organization/user scope, private Team-agent interactions and explicit connections. This guide retains its current/recorded implementation boundary until the new NMA-079 API gate verifies the changed contract; its owner-only examples do not establish multi-user authorization.
+
 Application contract **1.23.0** implements NMA-056 on the existing Bun/SQLite application authority. This is a backend contract; the NMA-060 API gate, UI, installation and production readiness remain separate.
 
 A conversation group belongs to the installation's one human owner and contains that owner's persistent agents. `POST /v1/threads` creates it with `type: "group"` and unique `member_agent_ids`. Agent identity stays the same across channels, while bindings, native history and private memory stay separate. Contract **1.22.0** gives the group one shared workspace; DM and other-group files remain isolated. No other human can join.

@@ -1,5 +1,7 @@
 # Agents, conversations and groups
 
+Planned November 12 amendment: the [server-organizations plan](../architecture/server-organizations-plan-2026-11-12.md) owns user/organization scope, personal/Team agents, private interactions and durable execution principals. NMA-072–083 implement it for web/Tauri. The single-owner behavior below remains the current baseline until the changed API and product gates pass; multi-human shared chat remains deferred.
+
 [Product scope](../../PRODUCT.md), [interface behavior](interface.md) and [current architecture](../architecture/overview.md) are the companion specifications. These rules combine the original conversation decisions with accepted creation, group-resource, semantic-routing and presentation amendments.
 
 ## Identity and creation

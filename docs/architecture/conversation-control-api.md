@@ -1,5 +1,7 @@
 # Conversation control and recovery API v1.12.0
 
+Planned November 12 amendment: [the server-organizations plan](server-organizations-plan-2026-11-12.md) and NMA-072–083 define PostgreSQL, authenticated organization/user scope, private Team-agent interactions and explicit connections. This guide retains its current/recorded implementation boundary until the new NMA-079 API gate verifies the changed contract; its owner-only examples do not establish multi-user authorization.
+
 NMA-053 uses the existing application authority, SQLite event/receipt store and native adapters. The [agent/conversation API](agent-conversation-api.md) remains the identity/history foundation. Application contract **1.12.0** replaces the original deterministic cancellation recognizer with agent-selected structured tools, following the user's decision on 2026-10-31. Broker contract remains **1.5.0**. The original milestone changed backend/API behavior. NMA-060 is now Done for its accepted scope; [the local backlog](../backlog/README.md) tracks later UI and distribution gates.
 
 ## Ordinary input, steering and cancellation

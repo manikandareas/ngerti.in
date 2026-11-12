@@ -1,5 +1,7 @@
 # Tauri development application
 
+Planned November 12 amendment: [NMA-081](../backlog/NMA-081.md) adds an explicit remote-client mode under the [server-organizations plan](server-organizations-plan-2026-11-12.md). It uses native user sessions and does not start/stop the central backend or harnesses. The local supervision and installation-token behavior below describes the existing development baseline, not an implemented remote mode.
+
 Date: 2026-11-05. Tauri is the sole desktop implementation following the user-authorized removal of Electron and the legacy `apps/web` workspace. This is a macOS ARM64 development application; it does not close NMA-063/NMA-064 or establish production distribution readiness. The Bun backend remains the sole application lifecycle authority.
 
 ## Run and build

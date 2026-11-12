@@ -2,7 +2,7 @@
 
 This backlog is the authority for milestone scope, acceptance, dependencies and status. Read [PRODUCT.md](../../PRODUCT.md), [feature decisions](../product/feature-decisions.md), [architecture](../architecture/overview.md) and [acceptance gates](../development/acceptance.md) before changing the relevant boundary. [The workflow](../development/workflow.md) defines how to maintain these records locally.
 
-Status was initially reconciled on 2026-11-06 and updated on 2026-11-09 for focused completion of NMA-071. Sixteen active milestones and six Desktop Rust milestones are Done; NMA-063/NMA-064 remain Backlog. NMA-051 is a separate deferred reference, not an active prerequisite. Recorded Done covers its accepted scope only. Later Cua, semantic-routing, Tauri and conversation refinements retain their dedicated evidence; they do not complete product-wide acceptance or fresh-device distribution.
+Status was initially reconciled on 2026-11-06, updated on 2026-11-09 for focused completion of NMA-071, and expanded on 2026-11-12 with the server-organizations plan. Sixteen earlier active milestones and six Desktop Rust milestones are Done; NMA-072–083 and NMA-063/NMA-064 remain Backlog. NMA-051 is a separate deferred reference, not an active prerequisite. Recorded Done covers its accepted scope only. Later Cua, semantic-routing, Tauri and conversation refinements retain their dedicated evidence; they do not complete product-wide acceptance or fresh-device distribution.
 
 The six [Desktop Rust milestones below](#desktop-rust-parity-plan) have NMA-066–071 **Done**. The [2026-11-08 owner decision](../development/nma-066-067-closure-2026-11-08.md) accepts the implemented foundation and native avatar, composer and rich-content components, with remaining technical verification non-blocking. [Foundation](../verification/nma-066/README.md) and [component evidence](../verification/nma-067/README.md) retain actual executed results, failures and optional unexecuted checks. Tauri remains active; integrated parity and host replacement retain their separate decisions/gates.
 
@@ -42,10 +42,33 @@ The [2026-11-11 Marketplace screen amendment](../verification/marketplace-screen
 | 14 | [NMA-060 · Gate engine/backend dan kontrak API siap untuk UI](NMA-060.md) | Done | Engine / Backend | [NMA-049](NMA-049.md), [NMA-050](NMA-050.md), [NMA-052](NMA-052.md), [NMA-053](NMA-053.md), [NMA-054](NMA-054.md), [NMA-055](NMA-055.md), [NMA-056](NMA-056.md), [NMA-057](NMA-057.md), [NMA-058](NMA-058.md), [NMA-059](NMA-059.md), [NMA-065](NMA-065.md) |
 | 15 | [NMA-061 · UI percakapan, agent dan koneksi berbasis API siap](NMA-061.md) | Done | UI | [NMA-060](NMA-060.md) |
 | 16 | [NMA-062 · UI grup, goals/Routine, workspace dan browser VNC](NMA-062.md) | Done | UI | [NMA-060](NMA-060.md), [NMA-061](NMA-061.md) |
-| 17 | [NMA-063 · Acceptance UI dan alur produk wajib harness-first](NMA-063.md) | Backlog | UI | [NMA-061](NMA-061.md), [NMA-062](NMA-062.md) |
+| 17 | [NMA-063 · Acceptance UI dan alur produk wajib harness-first](NMA-063.md) | Backlog | UI | [NMA-061](NMA-061.md), [NMA-062](NMA-062.md), [NMA-083](NMA-083.md) |
 | 18 | [NMA-064 · Instalasi lokal dan distribusi setelah produk siap](NMA-064.md) | Backlog | Distribusi | [NMA-063](NMA-063.md) |
 
+## Server organizations plan
+
+The owner requested this [main implementation plan](../architecture/server-organizations-plan-2026-11-12.md) on 2026-11-12, after selecting PostgreSQL and web/Tauri as the implementation focus. It promotes account authentication, multiple organizations, Owner/Admin/Member, Workgroups, personal/Team agents, private context, explicit personal/organization provider and app connections, enforced execution domains and a central HTTPS server. All twelve milestones are Backlog; planning does not imply implementation or deployment. Assigned people and dates remain unset. Orders 16.7–16.81 insert this sequence before the expanded NMA-063 gate.
+
+| Order | Milestone | Status | Layer | Depends on |
+| --- | --- | --- | --- | --- |
+| 16.7 | [NMA-072 · PostgreSQL persistence and controlled SQLite cutover](NMA-072.md) | Backlog | Engine / Backend | [NMA-060](NMA-060.md) |
+| 16.71 | [NMA-073 · User authentication, device sessions and owner bootstrap](NMA-073.md) | Backlog | Engine / Backend | [NMA-072](NMA-072.md) |
+| 16.72 | [NMA-074 · Organizations, administrative roles and Workgroups](NMA-074.md) | Backlog | Engine / Backend | [NMA-073](NMA-073.md) |
+| 16.73 | [NMA-075 · Private and Team agents with scoped data and events](NMA-075.md) | Backlog | Engine / Backend | [NMA-074](NMA-074.md) |
+| 16.74 | [NMA-076 · Execution domains, browser files and viewer isolation](NMA-076.md) | Backlog | Engine / Backend | [NMA-075](NMA-075.md) |
+| 16.75 | [NMA-077 · Personal and organization AI connections on server harnesses](NMA-077.md) | Backlog | Engine / Backend | [NMA-076](NMA-076.md) |
+| 16.76 | [NMA-078 · Scoped MCP accounts and published agent skills](NMA-078.md) | Backlog | Engine / Backend | [NMA-077](NMA-077.md) |
+| 16.77 | [NMA-079 · Server organizations API and isolation readiness gate](NMA-079.md) | Backlog | Engine / Backend | [NMA-072](NMA-072.md), [NMA-073](NMA-073.md), [NMA-074](NMA-074.md), [NMA-075](NMA-075.md), [NMA-076](NMA-076.md), [NMA-077](NMA-077.md), [NMA-078](NMA-078.md) |
+| 16.78 | [NMA-080 · Web onboarding, organization management and agent access UI](NMA-080.md) | Backlog | UI | [NMA-079](NMA-079.md) |
+| 16.79 | [NMA-081 · Tauri remote profiles and secure user sessions](NMA-081.md) | Backlog | Desktop / Web client host | [NMA-079](NMA-079.md), [NMA-080](NMA-080.md) |
+| 16.8 | [NMA-082 · Single-server HTTPS deployment and recovery runbook](NMA-082.md) | Backlog | Deployment / Operations | [NMA-079](NMA-079.md), [NMA-081](NMA-081.md) |
+| 16.81 | [NMA-083 · Integrated multi-organization web and Tauri acceptance](NMA-083.md) | Backlog | Product / Verification | [NMA-080](NMA-080.md), [NMA-081](NMA-081.md), [NMA-082](NMA-082.md) |
+
+The dependency diagram, implementation defaults, migration approach and evidence matrix live in the main plan. A personal interaction remains private even when another person uses the same Team agent. Separate users/organizations cannot rely on a common sudo-capable desktop for private working files.
+
 ## Desktop Rust parity plan
+
+Further desktop-rs work is paused by the November 12 owner direction. The six Done milestones below retain their historical accepted scope; none is a dependency of the new web/Tauri organization plan.
 
 The [observation, architecture and parity contract](../architecture/desktop-rs-plan-2026-11-07.md) maps the current host/client and retained evidence to six ordered implementation slices. Orders 16.1–16.6 insert this separate plan after the NMA-061/062 reference; existing NMA-063/064 dependencies are unchanged. Initial verification targets the current macOS ARM64 development host. Other platforms, fresh-device installation and active-host replacement retain their separate decisions/gates.
 
@@ -66,7 +89,9 @@ The [NMA-068 implementation handoff](../verification/nma-068/README.md) adds the
 
 ## Next gates
 
-NMA-063 validates the full current product with real API desktop/mobile journeys and both required harnesses after NMA-060/061/062. It remains Backlog; this documentation handoff does not run that acceptance or promote it automatically. NMA-064 follows NMA-063 for fresh-device local installation. A macOS ARM64 Tauri development bundle does not satisfy the fresh-device gate.
+The [server-organizations plan](../architecture/server-organizations-plan-2026-11-12.md) expands the current product target. NMA-072–078 deliver PostgreSQL/auth/scoped backend behavior, NMA-079 verifies its API, NMA-080/081 deliver web/Tauri, NMA-082 rehearses deployment and restore, and NMA-083 provides focused acceptance before NMA-063. Historical NMA-060 readiness does not certify this delta.
+
+NMA-063 validates the full current product with real API desktop/mobile journeys and both required harnesses after the retained NMA-060/061/062 baseline and the new NMA-083 focused server-organizations acceptance. It remains Backlog; this documentation handoff does not run that acceptance or promote it automatically. NMA-064 follows NMA-063 for fresh-device installation. A macOS ARM64 Tauri development bundle does not satisfy the fresh-device gate.
 
 Delivery remains engine/backend → API readiness → UI → product acceptance → installation. Reverify affected API deltas before UI consumption. Optional/deferred features are not hidden dependencies. IDs are stable; NMA-065 order 13.5 is an inserted backend amendment, not work after installation.
 

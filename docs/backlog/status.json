@@ -280,6 +280,148 @@
     ]
   },
   {
+    "ticket": "NMA-072",
+    "title": "PostgreSQL persistence and controlled SQLite cutover",
+    "plan": "Harness-first",
+    "status": "Backlog",
+    "order": 16.7,
+    "layer": "Engine / Backend",
+    "depends_on": [
+      "NMA-060"
+    ]
+  },
+  {
+    "ticket": "NMA-073",
+    "title": "User authentication, device sessions and owner bootstrap",
+    "plan": "Harness-first",
+    "status": "Backlog",
+    "order": 16.71,
+    "layer": "Engine / Backend",
+    "depends_on": [
+      "NMA-072"
+    ]
+  },
+  {
+    "ticket": "NMA-074",
+    "title": "Organizations, administrative roles and Workgroups",
+    "plan": "Harness-first",
+    "status": "Backlog",
+    "order": 16.72,
+    "layer": "Engine / Backend",
+    "depends_on": [
+      "NMA-073"
+    ]
+  },
+  {
+    "ticket": "NMA-075",
+    "title": "Private and Team agents with scoped data and events",
+    "plan": "Harness-first",
+    "status": "Backlog",
+    "order": 16.73,
+    "layer": "Engine / Backend",
+    "depends_on": [
+      "NMA-074"
+    ]
+  },
+  {
+    "ticket": "NMA-076",
+    "title": "Execution domains, browser files and viewer isolation",
+    "plan": "Harness-first",
+    "status": "Backlog",
+    "order": 16.74,
+    "layer": "Engine / Backend",
+    "depends_on": [
+      "NMA-075"
+    ]
+  },
+  {
+    "ticket": "NMA-077",
+    "title": "Personal and organization AI connections on server harnesses",
+    "plan": "Harness-first",
+    "status": "Backlog",
+    "order": 16.75,
+    "layer": "Engine / Backend",
+    "depends_on": [
+      "NMA-076"
+    ]
+  },
+  {
+    "ticket": "NMA-078",
+    "title": "Scoped MCP accounts and published agent skills",
+    "plan": "Harness-first",
+    "status": "Backlog",
+    "order": 16.76,
+    "layer": "Engine / Backend",
+    "depends_on": [
+      "NMA-077"
+    ]
+  },
+  {
+    "ticket": "NMA-079",
+    "title": "Server organizations API and isolation readiness gate",
+    "plan": "Harness-first",
+    "status": "Backlog",
+    "order": 16.77,
+    "layer": "Engine / Backend",
+    "depends_on": [
+      "NMA-072",
+      "NMA-073",
+      "NMA-074",
+      "NMA-075",
+      "NMA-076",
+      "NMA-077",
+      "NMA-078"
+    ]
+  },
+  {
+    "ticket": "NMA-080",
+    "title": "Web onboarding, organization management and agent access UI",
+    "plan": "Harness-first",
+    "status": "Backlog",
+    "order": 16.78,
+    "layer": "UI",
+    "depends_on": [
+      "NMA-079"
+    ]
+  },
+  {
+    "ticket": "NMA-081",
+    "title": "Tauri remote profiles and secure user sessions",
+    "plan": "Harness-first",
+    "status": "Backlog",
+    "order": 16.79,
+    "layer": "Desktop / Web client host",
+    "depends_on": [
+      "NMA-079",
+      "NMA-080"
+    ]
+  },
+  {
+    "ticket": "NMA-082",
+    "title": "Single-server HTTPS deployment and recovery runbook",
+    "plan": "Harness-first",
+    "status": "Backlog",
+    "order": 16.8,
+    "layer": "Deployment / Operations",
+    "depends_on": [
+      "NMA-079",
+      "NMA-081"
+    ]
+  },
+  {
+    "ticket": "NMA-083",
+    "title": "Integrated multi-organization web and Tauri acceptance",
+    "plan": "Harness-first",
+    "status": "Backlog",
+    "order": 16.81,
+    "layer": "Product / Verification",
+    "depends_on": [
+      "NMA-080",
+      "NMA-081",
+      "NMA-082"
+    ]
+  },
+  {
     "ticket": "NMA-063",
     "title": "Acceptance UI dan alur produk wajib harness-first",
     "plan": "Harness-first",
@@ -288,7 +430,8 @@
     "layer": "UI",
     "depends_on": [
       "NMA-061",
-      "NMA-062"
+      "NMA-062",
+      "NMA-083"
     ]
   },
   {

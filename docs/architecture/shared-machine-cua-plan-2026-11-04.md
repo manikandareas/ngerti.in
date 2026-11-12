@@ -1,5 +1,7 @@
 # Shared persistent machine with Cua
 
+Planned November 12 amendment: the [server-organizations plan](server-organizations-plan-2026-11-12.md#8-agent-sharing-memory-and-files) and NMA-076 replace the singleton machine as the future cross-human privacy boundary with isolated organization/user execution domains. The cooperative shared OS described below remains the implemented single-owner baseline and retained evidence; folder prefixes alone do not isolate different users.
+
 Date: 2026-11-04. Status: approved plan implemented in the working tree. Backend/API delta and native Cua/Codex/Muse checks were completed before UI consumption. Current evidence, setup and limitations: [verification report](../verification/shared-machine/README.md).
 
 Task cleanup amendment (2026-11-04): contract 1.30.0 adds tracked task-owned browser/GUI-terminal windows. Cleanup follows successful completion of the whole root task/handoff, uses graceful native close through the shared input gate, and preserves files, profiles, previews, existing windows and potentially human-edited resources. Details, native results and conservative unknown-outcome behavior: [cleanup verification](../verification/shared-machine/cleanup-2026-11-04.md).

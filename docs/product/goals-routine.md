@@ -1,5 +1,7 @@
 # Goals, Routine and continuation
 
+Planned November 12 amendment: the [server-organizations plan](../architecture/server-organizations-plan-2026-11-12.md) owns user/organization scope, personal/Team agents, private interactions and durable execution principals. NMA-072–083 implement it for web/Tauri. The single-owner behavior below remains the current baseline until the changed API and product gates pass; multi-human shared chat remains deferred.
+
 A Goal preserves an outcome whose ownership, progress and useful follow-through must survive current execution, or an outcome the user explicitly wants tracked as a Goal. Clear implicit ongoing responsibility is captured automatically from conversation without a form, command, activation button or confirmation ceremony.
 
 A real request, many steps/tools, research, a file deliverable, a temporary clarification or a change of executor alone does not require a Goal. Ordinary work can complete through its run/task. Standalone reminders and recurring checks can use Routine with no Goal. A task can acquire durable responsibility later as scope develops.

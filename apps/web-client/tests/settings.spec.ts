@@ -533,7 +533,7 @@ test("device preferences persist and control the composer and reading surface", 
   await expect(page.locator("html")).toHaveAttribute("data-reading-width", "comfortable");
   await expect(page.locator(".message-time")).toHaveCount(0);
   await expect(page.locator(".chat-md").first()).toHaveCSS("font-size", "17px");
-  await expect(page.locator(".conversation-column")).toHaveCSS("max-width", "960px");
+  await expect(page.locator(".conversation-column")).toHaveCSS("max-width", "704px");
   const input = page.getByRole("textbox", { name: "Pesan", exact: true });
   const text = `Settings shortcut ${crypto.randomUUID()}`;
   await input.fill(text);

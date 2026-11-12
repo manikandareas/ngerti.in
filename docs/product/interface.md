@@ -90,6 +90,8 @@ The rail, sidebar and main content have no layout borders; the outer frame and c
 
 The November 12 sidebar follow-up removes the redundant **Hubungkan aplikasi** footer action. The conversation list fills the sidebar; app connection discovery and management remain available through Marketplace in the persistent rail.
 
+[Sidebar-divider history](../verification/sidebar-divider-2026-11-12/README.md) records the temporary right-border trial and its subsequent removal at the owner's request.
+
 Interface preferences are versioned in the current origin's local storage; they are independent for a browser and each Tauri profile, and synchronize across same-origin tabs. Account/model choices remain authoritative backend configuration. Disabling persistent drafts removes only the device's stored plain-text drafts while retaining the current session; pending operation receipts, uploaded files, credentials and backend history keep their existing lifecycle. Reset preserves the theme and all provider/model/backend records.
 
 Focused evidence: [Settings screen and preferences verification](../verification/settings-screen-2026-11-11/README.md). This amendment does not close NMA-063 or NMA-064.
@@ -148,7 +150,7 @@ The November 8–9 refinements keep all heading levels inside a chat bubble at t
 
 Native table rendering follows Zed's GPUI grid pattern: content-sized shared columns, semibold headers, Markdown body alignment, cell rules and inline Markdown content. Short tables use a 384px minimum at the default text scale, bounded by the bubble's available width. Sorting, filtering, selection, copy, download and Focus remain available. Table actions must not obscure the header. This bubble-specific typography policy does not replace document preview typography. See the [reviewed NMA-071 delta](../development/nma-071-scope-2026-11-08.md).
 
-The conversation and composer use the header's available width and horizontal inset, without an additional fixed maximum-width column. Individual bubbles retain their alignment and relative width; short tables must not collapse into a narrow column solely because their content is brief.
+The November 12 web/Tauri refinement centers the conversation, header and composer within the same 60rem (960px) maximum-width column. The comfortable reading preference narrows all three to 44rem (704px); loading placeholders use the same column. Each remains fluid below that cap, with matching horizontal insets. User and assistant bubbles share a 35rem (560px) maximum, further bounded by 80% of their message row and available action clearance. Group avatars do not change that shared maximum. Individual bubbles retain their alignment; short tables must not collapse into a narrow column solely because their content is brief. [Browser verification](../verification/chat-bubble-width-2026-11-12/README.md) records the scoped measurements. The native Rust client retains its separately accepted presentation.
 
 ## Conversation content viewer
 

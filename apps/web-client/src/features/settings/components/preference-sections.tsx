@@ -113,7 +113,7 @@ export function AppearanceSettings() {
             value={preferences.readingWidth}
             options={[
               { value: "comfortable", label: "Nyaman dibaca" },
-              { value: "wide", label: "Lebar penuh" },
+              { value: "wide", label: "Lebar" },
             ]}
             onChange={(value) => update("readingWidth", value)}
           />

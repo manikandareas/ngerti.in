@@ -50,7 +50,7 @@ export function ConversationLoading({ error }: { error: string }) {
   return (
     <>
       <div
-        className="conversation-loading [max-width:var(--chat-column-max)] [margin:auto] [padding:60px_24px] w-full flex-1"
+        className="conversation-loading [padding:60px_20px] w-full flex-1"
         role="status"
         aria-label={error ? "Percakapan belum terhubung" : "Membuka percakapan"}
       >
@@ -70,10 +70,7 @@ export function ConversationLoading({ error }: { error: string }) {
         )}
       </div>
       {!error && (
-        <div
-          aria-hidden="true"
-          className="composer-dock [max-width:calc(var(--chat-column-max)_+_40px)] [margin:auto] [padding:12px_20px_16px] w-full shrink-0"
-        >
+        <div aria-hidden="true" className="composer-dock [padding:12px_20px_16px] w-full shrink-0">
           <Skeleton className="h-16 w-full rounded-2xl" />
         </div>
       )}

@@ -383,6 +383,15 @@
 }
 
 .workspace-chat-header,
+.conversation-column,
+.conversation-loading,
+.composer-dock {
+  width: 100%;
+  max-width: var(--chat-column-max);
+  margin-inline: auto;
+}
+
+.workspace-chat-header,
 .composer-dock {
   background: transparent;
   position: relative;
@@ -444,11 +453,16 @@
   width: 0;
 }
 
+.conversation-message {
+  /* Keep both authors' width relative to the row, including group avatars. */
+  container-type: inline-size;
+  --chat-message-max: min(var(--chat-bubble-max), 80cqi, calc(100cqi - 82px));
+}
+
 .conversation-message [data-slot="message-content"] {
   gap: 7px;
 }
 .conversation-column {
-  max-width: none;
   padding: calc(var(--conversation-top, 0px) + var(--conversation-edge-fade) + 8px) 20px
     calc(
       var(--conversation-bottom, 0px) +
@@ -481,13 +495,10 @@
 
 .chat-user-bubble,
 .chat-agent-bubble {
-  max-width: min(80%, calc(100% - 82px));
+  max-width: min(var(--chat-message-max, var(--chat-bubble-max)), 100%);
   min-width: 36px;
   padding: 0;
   background: transparent;
-}
-.group-message-avatar + [data-slot="message-content"] .chat-agent-bubble {
-  max-width: 100%;
 }
 .chat-user-bubble > [data-slot="bubble-content"] {
   background: var(--agent-bubble, var(--user-bubble));
@@ -1025,7 +1036,7 @@ button.group-bubble-author:focus-visible {
     padding-inline: 10px;
   }
   .conversation-column {
-    padding-inline: 16px;
+    padding-inline: 12px;
     gap: 20px;
   }
   .chat-bubble-content {
@@ -1199,10 +1210,8 @@ html[data-chat-text-size="large"] .workspace-shell {
   font-size: var(--conversation-font-size, 15px);
   line-height: 1.5;
 }
-html[data-reading-width="comfortable"] .conversation-column {
-  width: 100%;
-  max-width: 960px;
-  margin-inline: auto;
+html[data-reading-width="comfortable"] .workspace-shell {
+  --chat-column-max: 44rem;
 }
 html[data-message-actions="always"] .message-hover-actions {
   opacity: 1;

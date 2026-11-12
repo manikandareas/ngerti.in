@@ -890,7 +890,39 @@ button.group-bubble-author:focus-visible {
   opacity: 1;
   color: var(--text-tertiary);
 }
-.context-panel > [data-slot="tabs-content"] {
+.context-view-tabs {
+  height: 32px;
+  padding: 0;
+  gap: 4px;
+  background: transparent;
+}
+.context-view-tabs [role="tab"] {
+  width: 32px;
+  height: 32px;
+  flex: none;
+  border: 0;
+  border-radius: 8px;
+  padding: 0;
+}
+.context-view-tabs [aria-selected="true"] {
+  background: var(--secondary);
+  color: var(--foreground);
+  box-shadow: none;
+}
+.context-view-tabs [role="tab"]:hover {
+  background: var(--accent);
+  color: var(--foreground);
+}
+.context-info-content[hidden],
+.context-files-content[hidden] {
+  display: none;
+}
+.context-files-content {
+  display: flex;
+  min-height: 0;
+  flex-direction: column;
+}
+.context-info-tabs > [data-slot="tabs-content"] {
   padding: 0 16px;
 }
 .context-sheet .profile-identity {

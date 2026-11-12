@@ -1,0 +1,41 @@
+{
+  "base_revision": "8cf5c61e0f75dbd3322481bcde796a2e50eb3d1a",
+  "scope": "Final session source and automatic-sync evidence; prior capture manifests retain historical source hashes.",
+  "files": {
+    "PRODUCT.md": "b8fefa4cdb1da6f3ad4147f73f65692dc5b1fd016372656f06acedad0680af8c",
+    "apps/web-client/DESIGN_SYSTEM.md": "a8ffcc9726e8d40f4147228ddaa0da7aca5c6ab5d19c1c60bb05a77ef99c7072",
+    "apps/web-client/src/app/workspace-layout.tsx": "ff641ee9e211ddd5372f99e8094a0096df982c04b3e7ae506424d3708bfd94e6",
+    "apps/web-client/src/features/conversation/components/context-panel.tsx": "92f010462c2452050e6dcceddcbed86e4c26d76fd84e8223e9fc5502e1ac7a07",
+    "apps/web-client/src/features/conversation/components/create-group.tsx": "797d367373456bd8aa23762d1cd6a01073f11b5f0e1575c42b01d6fe17493b66",
+    "apps/web-client/src/features/conversation/components/edit-group.tsx": "3de353ed5b61d805b363010ddfe0209dcd3b0fc587126c3691de1689ad6931b2",
+    "apps/web-client/src/features/conversation/components/group-dialog.tsx": "f49905b88d650ca61d285e46107bad7c65803208488c18bd39cdd4407368d9b0",
+    "apps/web-client/src/features/conversation/components/group-panel.tsx": "43a5a50e94b9a55843b859b1e34bfed97c748d0260c9cedb84ecbf54ec88a516",
+    "apps/web-client/src/features/conversation/components/navigation.tsx": "49c32d9fbd29d8e4c29f6cf6e41dc037e3e47b3df147497db896cfb9c3457cb2",
+    "apps/web-client/src/features/conversation/components/working-files.css": "45cf12268bc9b2d18891b2f46c67bba4e4f38ebb386d88f85ebd6889147ea57d",
+    "apps/web-client/src/features/conversation/components/working-files.tsx": "1fd8053912931ce9c28961fbe85eaaa54c197883fc1b28029903d2c12e8e64a7",
+    "apps/web-client/src/features/conversation/lib/group-edit.ts": "40a6b75f209528fbdd5d26185a68f1310aa241e1cc57c7873fb4cf461817170a",
+    "apps/web-client/src/features/conversation/lib/use-working-files-sync.ts": "b9f7100dd2e4246a6fa1baf793b563c6e672662f59fd09e2ae7214c62d4e62a0",
+    "apps/web-client/src/features/conversation/lib/working-files-browser.ts": "7a72c5e5cd930346126c3b4bcf6fb5b41c09ce80951984f61b907f7125ea7aa7",
+    "apps/web-client/src/index.css": "68056e99d99598cad7cc132aa3491698809a98fdd972dfe32047a7c0adf4525a",
+    "apps/web-client/tests/composer.spec.ts": "b00334d7a52d99a211647aa722f6994195fbb8273600803c98d08005ceff6e0b",
+    "apps/web-client/tests/machine.spec.ts": "994c4c051419a2b52d1b3a604dcf4a77f5f7b42dc5f198c65b98df2c8f83d38f",
+    "apps/web-client/tests/work.spec.ts": "14d90b070b7f214c604260215974d5cbcac5b2f33249e328d1894642b3331d9b",
+    "apps/web-client/tests/working-files.spec.ts": "2f2d2d28be7629efedef52381d01debde88e57fe70b974b74892d1d7a5eb9887",
+    "apps/web-client/verification/working-files.test.ts": "36a630c674b6a7f989e0573bfa26ff84c4d3a6c81e7e1caf35b6715d5704240b",
+    "docs/product/feature-decisions.md": "ebc8cd75d509a38da89be63e0056aa99e1dc3fe7ef7d0ebbcf0fce2901dd6c79",
+    "docs/product/interface.md": "d4da7d5f8d83e38508fc513eab7e548696a058fb54451566a2f7bb182746c768",
+    "docs/verification/working-files-sync-2026-11-12/README.md": "91d7e5346622971389ce04a73e77792e146bfb72c28d1c8795c37908ecf26b65",
+    "docs/verification/working-files-sync-2026-11-12/build.log": "147a66af722929884ca7edf88c35143997969b603dc9f075d06122e211742680",
+    "docs/verification/working-files-sync-2026-11-12/docs-check.log": "5efb0b5810fe668cd10d1d0a8a485523c4cf8240d0adf089291545eebac215bf",
+    "docs/verification/working-files-sync-2026-11-12/group-initial.log": "18b32cc2fee41018ed44bc5df75be379bd4958661c840d216a259d593c38e47d",
+    "docs/verification/working-files-sync-2026-11-12/group-recovery.log": "82a0a4a61c512016f2700dce97510168c023d5455da8caa0b30d14018de7114b",
+    "docs/verification/working-files-sync-2026-11-12/metrics.json": "ea141812b9b7944e1652f6c9550352520deeba6a6941ffc14f91c22a0bd59dd5",
+    "docs/verification/working-files-sync-2026-11-12/screenshots/desktop.png": "172f5f638d1e16fc1e3ec8594d647610fc53145c8977620a8298cc976b65b63a",
+    "docs/verification/working-files-sync-2026-11-12/screenshots/mobile.png": "b93472ce29caa404aa35f9d062eaba93a4b6efe438765c15a1c7bf57747c2009",
+    "docs/verification/working-files-sync-2026-11-12/viewer.log": "13e92f78ce0aa8d20da34da65fa53a27b40c3aeef2fea9f65b816a25396d2381"
+  },
+  "immutable_evidence": [
+    "docs/verification/working-files-sync-2026-11-12/build.log",
+    "docs/verification/working-files-sync-2026-11-12/group-initial.log"
+  ]
+}

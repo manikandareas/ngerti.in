@@ -25,28 +25,25 @@ async function projectOutputs(page: Page, threadId: string, names?: string[]) {
 }
 async function expectPanelHeader(page: Page, title: string) {
   const panel = page.locator("#conversation-details");
-  const toolbar = panel.locator(".details-toolbar");
+  const toolbar = panel.locator(".panel-page-toolbar");
   const heading = toolbar.getByRole("heading", { name: title, exact: true });
   await expect(heading).toBeVisible();
   await expect(heading).toHaveCSS("font-size", "18px");
   await expect(heading).toHaveCSS("font-weight", "500");
   await expect(toolbar.locator("[data-panel-back]")).toHaveCount(1);
-  await expect(toolbar.locator("[data-panel-close]")).toHaveCount(1);
+  await expect(panel.locator(".details-toolbar [data-panel-close]")).toHaveCount(1);
   await expect(panel.getByRole("heading", { name: title, exact: true })).toHaveCount(1);
   await expect
     .poll(() =>
       toolbar.evaluate((element) => {
         const back = element.querySelector<HTMLElement>("[data-panel-back]");
         const title = element.querySelector("h3");
-        const close = element.querySelector("[data-panel-close]");
-        if (!back || !title || !close) return false;
+        if (!back || !title) return false;
         const a = back.getBoundingClientRect();
         const b = title.getBoundingClientRect();
-        const c = close.getBoundingClientRect();
         return (
-          Math.abs(a.y + a.height / 2 - c.y - c.height / 2) < 1 &&
           a.right <= b.left &&
-          b.right <= c.left &&
+          Math.abs(a.y + a.height / 2 - b.y - b.height / 2) < 1 &&
           getComputedStyle(back).backgroundColor !== "rgba(0, 0, 0, 0)"
         );
       }),
@@ -130,11 +127,9 @@ test("contextual goals, Routine and files use real scoped state and keep stop re
   });
   await chooseAgent(page, a.agent.name);
   await page.getByRole("button", { name: `Detail ${a.agent.name}`, exact: true }).click();
-  await expect(page.locator("#conversation-details").getByRole("tab")).toHaveText([
-    "Details",
-    "Library",
-    "Computer",
-  ]);
+  await expect(
+    page.getByRole("tablist", { name: "Conversation details", exact: true }).getByRole("tab"),
+  ).toHaveText(["Details", "Library", "Computer"]);
   await expect(page.locator(".context-hero").getByRole("status")).toHaveCount(0);
   await expect(page.locator(".context-hero [data-activity-label]")).toHaveCount(0);
   await expect(page.getByRole("link", { name: "Ubah avatar", exact: true })).toHaveCount(0);

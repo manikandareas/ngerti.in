@@ -24,3 +24,7 @@ Environment: Bun 1.3.10, Vite 8.3.5, Playwright 1.64.1, Chromium at 1440×1000 a
 Visually inspected the [desktop edit dialog](screenshots/edit-desktop.png), [mobile panel](screenshots/panel-mobile.png) and [dark pending dialog](screenshots/pending-desktop.png). Additional retained captures: [desktop panel](screenshots/panel-desktop.png), [mobile edit dialog](screenshots/edit-mobile.png), [mobile pending dialog](screenshots/pending-mobile.png). These establish browser presentation and real-API persistence coverage; no new native-window, production, installation or live-provider claim is made. Backend/API contract 1.32.0 and milestone status remain unchanged.
 
 The three-avatar layout was also visually inspected on [desktop](screenshots/three-members-desktop.png) and [mobile](screenshots/three-members-mobile.png). [Source and capture hashes](manifest.json) identify this captured working-tree slice before subsequent header and cleanup refinements.
+
+## Subsequent cleanup
+
+The [automatic-sync follow-up](../working-files-sync-2026-11-12/README.md) records the final cleanup checks and browser regressions. Earlier source hashes and captures above remain historical evidence; they are not hashes of the later final tree.

@@ -46,7 +46,7 @@ Primary buttons use a solid fill with explicit hover/pressed colors, no gradient
 ## Typography and geometry
 
 - The persistent navigation rail is 48px wide with 20px Hugeicons. Desktop mouse controls are 36px square with 8px corners and a 4px gap between bottom actions; narrow/coarse/no-hover layouts retain 40px targets, 10px corners and an 8px gap. Window/header geometry, outer-frame insets and contextual-sidebar widths stay independent of rail density.
-
+- The contextual-panel header keeps two 32px icon tabs at the left (18px UserAccount/Folder icons, 8px corners, 4px gap) and Close at the right. Agent info is selected on opening. Working files shares that same header; nested information-page Back/title controls sit below it. The file area begins directly with its tree, with no manual Refresh action. Prepared folders open from cache; automatic background reconciliation preserves cached rows without loading flashes.
 - UI: self-hosted Geist Variable 5.3.0. Code: Geist Mono Variable 5.3.0. Native/system fallbacks remain available. No runtime font CDN.
 - Replies 15/22px; primary UI 14/20px; sidebar preview 13/18px; metadata 11–12px. Desktop composer text is 14/20px; phone text entry stays 16px to prevent focus zoom.
 - Generic buttons and desktop inputs use 13/20px; menu items use 14/18px. Menu surfaces have 6px padding, 6px item corners, 4px between rows and a 50% hairline. Rows are at least 30px high, increasing to 40px for coarse pointers or devices without hover.

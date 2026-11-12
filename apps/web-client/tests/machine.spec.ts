@@ -83,8 +83,11 @@ test("shared desktop supports native viewing, takeover, handback and working fil
   await expect
     .poll(async () => (await (await page.request.get("/v1/machine")).json()).lease.holder)
     .toBe("none");
-  await page.getByRole("button", { name: "Working files", exact: true }).click();
-  await expect(page.getByRole("heading", { name: "Working files", exact: true })).toBeVisible();
+  await page.getByRole("tab", { name: "Working files", exact: true }).click();
+  await expect(page.getByRole("tab", { name: "Working files", exact: true })).toHaveAttribute(
+    "aria-selected",
+    "true",
+  );
   await page.getByRole("treeitem", { name: "projects", exact: true }).click();
   await page.getByRole("treeitem", { name: "desktop-check.txt", exact: true }).click();
   const fileViewer = page.locator("[data-content-viewer]");
@@ -95,7 +98,7 @@ test("shared desktop supports native viewing, takeover, handback and working fil
     "aria-expanded",
     "false",
   );
-  await page.getByRole("button", { name: "Back to Computer", exact: true }).click();
+  await page.getByRole("tab", { name: "Agent info", exact: true }).click();
   const status = await (await page.request.get("/v1/machine")).json();
   expect(status.state).toBe("ready");
   expect(errors).toEqual([]);

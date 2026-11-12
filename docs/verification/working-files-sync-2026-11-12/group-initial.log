@@ -1,0 +1,64 @@
+[WebServer] $ vite preview --host "127.0.0.1" --port "4321" --strictPort
+[WebServer] (node:38009) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 10 tests using 1 worker
+
+(node:38010) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘   1 [desktop] › tests/work.spec.ts:449:1 › group creation recovers a lost acknowledgement, routes messages and keeps member DM resources private (35.7s)
+(node:38230) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   2 [desktop] › tests/work.spec.ts:1326:1 › group editing reuses the creation form, saves the existing group and cancels without changes (16.9s)
+  ✓   3 [desktop] › tests/work.spec.ts:1398:3 › group editing resumes a lost membership acknowledgement without repeating confirmed changes (16.5s)
+  ✓   4 [desktop] › tests/work.spec.ts:1398:3 › group editing resumes a lost configuration acknowledgement without repeating confirmed changes (15.5s)
+  ✓   5 [desktop] › tests/work.spec.ts:1452:1 › membership editing keeps its original revision and cannot overwrite a concurrent change (17.2s)
+(node:39015) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   6 [mobile] › tests/work.spec.ts:449:1 › group creation recovers a lost acknowledgement, routes messages and keeps member DM resources private (17.7s)
+  ✓   7 [mobile] › tests/work.spec.ts:1326:1 › group editing reuses the creation form, saves the existing group and cancels without changes (11.6s)
+  ✓   8 [mobile] › tests/work.spec.ts:1398:3 › group editing resumes a lost membership acknowledgement without repeating confirmed changes (16.4s)
+  ✓   9 [mobile] › tests/work.spec.ts:1398:3 › group editing resumes a lost configuration acknowledgement without repeating confirmed changes (25.1s)
+  ✓  10 [mobile] › tests/work.spec.ts:1452:1 › membership editing keeps its original revision and cannot overwrite a concurrent change (16.6s)
+
+
+  1) [desktop] › tests/work.spec.ts:449:1 › group creation recovers a lost acknowledgement, routes messages and keeps member DM resources private 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('button', { name: 'Detail Tobi', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('button', { name: 'Detail Tobi', exact: true }) with timeout 5000ms
+      - waiting for getByRole('button', { name: 'Detail Tobi', exact: true })
+
+
+      472 |   await page.unroute("**/v1/creation/groups");
+      473 |   await page.reload();
+    > 474 |   await expect(page.getByRole("button", { name: "Detail Tobi", exact: true })).toBeVisible();
+          |                                                                                ^
+      475 |   await menu(page);
+      476 |   await expect(page.getByLabel("Nama grup", { exact: true })).toHaveValue("Research circle");
+      477 |   await page.getByRole("button", { name: "Periksa pembuatan grup", exact: true }).click();
+        at /Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests/work.spec.ts:474:80
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../../../../../../tmp/ngertiin-group-final-20261112/work-group-creation-recove-26d1f-member-DM-resources-private-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../../../../../../tmp/ngertiin-group-final-20261112/work-group-creation-recove-26d1f-member-DM-resources-private-desktop/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../../../../../../tmp/ngertiin-group-final-20261112/work-group-creation-recove-26d1f-member-DM-resources-private-desktop/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../../../../../../tmp/ngertiin-group-final-20261112/work-group-creation-recove-26d1f-member-DM-resources-private-desktop/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    [desktop] › tests/work.spec.ts:449:1 › group creation recovers a lost acknowledgement, routes messages and keeps member DM resources private 
+  9 passed (3.6m)

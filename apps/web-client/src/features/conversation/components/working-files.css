@@ -11,12 +11,6 @@
   flex-direction: column;
   overflow: hidden;
 }
-.working-files-description {
-  padding: 4px 16px 16px;
-  font-size: 12px;
-  line-height: 18px;
-  color: var(--muted-foreground);
-}
 .working-files-scroll {
   min-height: 0;
   flex: 1;

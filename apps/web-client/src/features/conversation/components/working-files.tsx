@@ -1,9 +1,8 @@
 import { hotkeysCoreFeature, selectionFeature, syncDataLoaderFeature } from "@headless-tree/core";
 import { useTree } from "@headless-tree/react";
-import { ArrowRight01Icon, RefreshIcon } from "@hugeicons/core-free-icons";
+import { ArrowRight01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useEffect, useLayoutEffect, useRef, useSyncExternalStore } from "react";
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useContentViewer, workingFileTarget } from "../lib/content-viewer";
 import {
@@ -12,18 +11,9 @@ import {
   type WorkingFilesBrowser,
 } from "../lib/working-files-browser";
 import { FileTypeIcon } from "./file-type-icon";
-import { PanelPageHeader } from "./panel-primitives";
 import "./working-files.css";
 
-export function WorkingFiles({
-  browser,
-  onBack,
-  back,
-}: {
-  browser: WorkingFilesBrowser;
-  onBack: () => void;
-  back: string;
-}) {
+export function WorkingFiles({ browser }: { browser: WorkingFilesBrowser }) {
   const state = useSyncExternalStore(browser.subscribe, browser.getSnapshot);
   const viewer = useContentViewer();
   const viewport = useRef<HTMLDivElement>(null);
@@ -53,10 +43,18 @@ export function WorkingFiles({
   useEffect(() => {
     void browser.load("");
   }, [browser]);
-  // biome-ignore lint/correctness/useExhaustiveDependencies: The synchronous tree loader must rebuild after external folder pages change.
+  const visibleFolders = useRef<(typeof state.folders)[string][]>([]);
+  // Unopened prefetch results do not require rebuilding the visible tree.
   useLayoutEffect(() => {
+    const next = ["", ...state.tree.expandedItems].map((path) => state.folders[path]);
+    if (
+      next.length === visibleFolders.current.length &&
+      next.every((folder, index) => folder === visibleFolders.current[index])
+    )
+      return;
+    visibleFolders.current = next;
     tree.rebuildTree();
-  }, [state.folders, tree]);
+  }, [state.folders, state.tree.expandedItems, tree]);
   const items = tree.getItems();
   useLayoutEffect(() => {
     if (
@@ -69,28 +67,9 @@ export function WorkingFiles({
       restored.current = true;
     }
   }, [items.length, state.folders]);
-  const loading = Object.values(state.folders).some((folder) => folder.loading);
+  const loading = ["", ...state.tree.expandedItems].some((path) => state.folders[path]?.loading);
   return (
     <section className="working-files-page" aria-label="Working files browser">
-      <PanelPageHeader
-        title="Working files"
-        back={back}
-        onBack={onBack}
-        focusBack
-        action={
-          <Button
-            variant="ghost"
-            size="icon-sm"
-            aria-label="Refresh working files"
-            title="Refresh working files"
-            disabled={loading}
-            onClick={() => void browser.refresh()}
-          >
-            <HugeiconsIcon icon={RefreshIcon} size={16} />
-          </Button>
-        }
-      />
-      <p className="working-files-description">Shared with all your agents on this machine.</p>
       <div
         ref={viewport}
         className="working-files-scroll"
@@ -114,6 +93,9 @@ export function WorkingFiles({
                 key={item.getKey()}
                 type="button"
                 {...item.getProps()}
+                onPointerEnter={() => {
+                  if (node.type === "directory") browser.prefetch(node.path);
+                }}
                 data-viewer-file={node.type === "file" ? node.path : undefined}
                 data-file-path={node.path}
                 data-file-status={status}

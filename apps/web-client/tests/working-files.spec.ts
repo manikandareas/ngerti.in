@@ -77,7 +77,7 @@ async function openLocal(
 }
 
 for (const theme of ["light", "dark"]) {
-  test(`Working files ${theme}: tree pagination, icons, refresh and Back preserve the originating panel`, async ({
+  test(`Working files ${theme}: tree pagination, icons, synchronization and tabs preserve the originating panel`, async ({
     page,
   }, info) => {
     await page.addInitScript(
@@ -99,11 +99,13 @@ for (const theme of ["light", "dark"]) {
                 path: `docs/note-${String(index).padStart(3, "0")}.txt`,
                 type: "file",
               }))
-          : [
-              { name: "docs", path: "docs", type: "directory" },
-              { name: "src", path: "src", type: "directory" },
-              { name: "Dockerfile", path: "Dockerfile", type: "file" },
-            ];
+          : path === "src"
+            ? [{ name: "index.ts", path: "src/index.ts", type: "file" }]
+            : [
+                { name: "docs", path: "docs", type: "directory" },
+                { name: "src", path: "src", type: "directory" },
+                { name: "Dockerfile", path: "Dockerfile", type: "file" },
+              ];
       await route.fulfill({
         json: { entries, next_after: path === "docs" && !after ? "note-099.txt" : null },
       });
@@ -116,17 +118,43 @@ for (const theme of ["light", "dark"]) {
     );
     const { details } = await setup(page);
     await details.click();
+    const toolbar = page.locator(".details-toolbar");
+    const infoTab = toolbar.getByRole("tab", { name: "Agent info", exact: true });
+    const filesTab = toolbar.getByRole("tab", { name: "Working files", exact: true });
+    await expect(infoTab).toHaveAttribute("aria-selected", "true");
+    await expect(toolbar.getByRole("tab")).toHaveCount(2);
+    const headerBounds = await toolbar.boundingBox();
+    await page.screenshot({ path: info.outputPath(`agent-info-${theme}.png`) });
     for (const tab of ["Details", "Computer", "Library"]) {
       await page.getByRole("tab", { name: tab, exact: true }).click();
-      await expect(page.getByRole("button", { name: "Working files", exact: true })).toBeVisible();
+      await expect(page.getByRole("tab", { name: "Working files", exact: true })).toBeVisible();
     }
-    expect(requests).toEqual([]);
-    await page.getByRole("button", { name: "Working files", exact: true }).click();
+    await expect.poll(() => requests.some((request) => request.path === "docs")).toBe(true);
+    await infoTab.focus();
+    await infoTab.press("ArrowRight");
+    await expect(filesTab).toBeFocused();
+    await expect(filesTab).toHaveAttribute("aria-selected", "true");
     const browser = page.getByRole("region", { name: "Working files browser", exact: true });
     const tree = page.getByRole("tree", { name: "Working files", exact: true });
     await expect(tree.getByRole("treeitem", { name: "docs", exact: true })).toBeVisible();
     await expect(page.getByRole("tab", { name: "Library", exact: true })).toBeHidden();
-    await expect(browser).toContainText("Shared with all your agents");
+    await expect(browser).not.toContainText("Shared with all your agents");
+    const filesHeaderBounds = await toolbar.boundingBox();
+    for (const metric of ["width", "height", "y"] as const)
+      expect(filesHeaderBounds?.[metric]).toBeCloseTo(headerBounds?.[metric] ?? 0, 2);
+    await expect(toolbar.getByRole("button")).toHaveCount(1);
+    await expect(toolbar.getByRole("heading")).toHaveCount(0);
+    const infoBounds = await infoTab.boundingBox();
+    const filesBounds = await filesTab.boundingBox();
+    const closeBounds = await toolbar.locator("[data-panel-close]").boundingBox();
+    expect((infoBounds?.x ?? 0) + (infoBounds?.width ?? 0)).toBeLessThanOrEqual(
+      filesBounds?.x ?? 0,
+    );
+    expect((filesBounds?.x ?? 0) + (filesBounds?.width ?? 0)).toBeLessThan(closeBounds?.x ?? 0);
+    expect((filesBounds?.y ?? 0) + (filesBounds?.height ?? 0) / 2).toBeCloseTo(
+      (closeBounds?.y ?? 0) + (closeBounds?.height ?? 0) / 2,
+      0,
+    );
     const folder = tree.getByRole("treeitem", { name: "docs", exact: true });
     await folder.focus();
     await folder.press("ArrowRight");
@@ -135,7 +163,7 @@ for (const theme of ["light", "dark"]) {
     await expect(first).toBeVisible();
     await folder.press("ArrowDown");
     await expect(first).toBeFocused();
-    expect(requests.some((request) => request.path === "src")).toBe(false);
+    expect(requests.some((request) => request.path === "src")).toBe(true);
     await tree.getByRole("treeitem", { name: "Load more files", exact: true }).click();
     const last = tree.getByRole("treeitem", { name: "z-last.ts", exact: true });
     await expect(last).toBeVisible();
@@ -164,26 +192,36 @@ for (const theme of ["light", "dark"]) {
     expect(
       await page.locator(".working-files-scroll").evaluate((element) => element.scrollTop),
     ).toBeCloseTo(scrollBefore, -1);
-    await page.getByRole("button", { name: "Refresh working files", exact: true }).click();
     await expect(
       page.getByRole("button", { name: "Refresh working files", exact: true }),
-    ).toBeEnabled();
+    ).toHaveCount(0);
+    const beforeSync = requests.length;
+    await page.evaluate(() => window.dispatchEvent(new Event("focus")));
+    await expect.poll(() => requests.length).toBeGreaterThan(beforeSync);
     await expect(folder).toHaveAttribute("aria-expanded", "true");
     await expect(last).toHaveAttribute("aria-selected", "true");
-    await page.getByRole("button", { name: "Back to Library", exact: true }).click();
+    await page.getByRole("tab", { name: "Agent info", exact: true }).click();
     await expect(page.getByRole("tab", { name: "Library", exact: true })).toHaveAttribute(
       "data-state",
       "active",
     );
-    await expect(page.getByRole("button", { name: "Working files", exact: true })).toBeFocused();
+    await expect(page.getByRole("tab", { name: "Agent info", exact: true })).toBeFocused();
     await expect(page.getByRole("tree", { name: "Working files", exact: true })).toHaveCount(0);
     await page.getByRole("tab", { name: "Computer", exact: true }).click();
-    await page.getByRole("button", { name: "Working files", exact: true }).click();
+    await page.getByRole("tab", { name: "Working files", exact: true }).click();
     await expect(last).toBeVisible();
-    await page.getByRole("button", { name: "Back to Computer", exact: true }).click();
+    await page.getByRole("tab", { name: "Agent info", exact: true }).click();
     await expect(page.getByRole("tab", { name: "Computer", exact: true })).toHaveAttribute(
       "data-state",
       "active",
+    );
+    await filesTab.click();
+    await toolbar.locator("[data-panel-close]").click();
+    await expect(infoTab).toBeHidden();
+    await details.click();
+    await expect(page.getByRole("tab", { name: "Agent info", exact: true })).toHaveAttribute(
+      "aria-selected",
+      "true",
     );
     await info.attach("directory-requests.json", {
       body: JSON.stringify(requests, null, 2),
@@ -196,11 +234,11 @@ for (const theme of ["light", "dark"]) {
 test("Working files retries each folder, exposes empty states and restores nested panel navigation", async ({
   page,
 }) => {
-  let rootReads = 0;
+  let rootUnavailable = true;
   let failedReads = 0;
   await page.route("**/v1/machine/files?**", async (route) => {
     const path = new URL(route.request().url()).searchParams.get("path") ?? "";
-    if ((!path && ++rootReads === 1) || (path === "unavailable" && ++failedReads === 1)) {
+    if ((!path && rootUnavailable) || (path === "unavailable" && ++failedReads === 1)) {
       await route.fulfill({ status: 503, json: { error: { code: "MACHINE_UNAVAILABLE" } } });
       return;
     }
@@ -218,25 +256,141 @@ test("Working files retries each folder, exposes empty states and restores neste
   });
   const { details } = await setup(page);
   await details.click();
-  await page.getByRole("button", { name: "Working files", exact: true }).click();
+  await page.getByRole("tab", { name: "Working files", exact: true }).click();
   const retry = page.getByRole("treeitem", {
     name: "Couldn't load this folder. Try again",
     exact: true,
   });
-  await retry.click();
+  await expect(retry).toBeVisible();
+  rootUnavailable = false;
   const empty = page.getByRole("treeitem", { name: "empty", exact: true });
-  await expect(empty).toBeVisible();
+  await expect(empty).toBeVisible({ timeout: 12000 });
   await empty.click();
   await expect(
     page.getByRole("treeitem", { name: "This folder is empty", exact: true }),
   ).toHaveAttribute("aria-disabled", "true");
+  await expect.poll(() => failedReads).toBeGreaterThan(0);
   await page.getByRole("treeitem", { name: "unavailable", exact: true }).click();
-  await retry.click();
   await expect(
     page.getByRole("treeitem", { name: "This folder is empty", exact: true }),
   ).toHaveCount(2);
-  await page.getByRole("button", { name: "Back to Details", exact: true }).press("Escape");
+  await page.locator(".details-toolbar [data-panel-close]").press("Escape");
   await expect(page.getByRole("tab", { name: "Details", exact: true })).toBeVisible();
+  await page.unrouteAll({ behavior: "wait" });
+});
+
+test("Working files opens prepared folders immediately and synchronizes without a reload action", async ({
+  page,
+}, info) => {
+  test.setTimeout(60000);
+  let version = 0;
+  let fail = false;
+  let ready = false;
+  let reads = 0;
+  let failures = 0;
+  await page.route("**/v1/machine/files?**", async (route) => {
+    reads++;
+    const path = new URL(route.request().url()).searchParams.get("path") ?? "";
+    await new Promise((resolve) => setTimeout(resolve, path ? 700 : 50));
+    if (fail) {
+      failures++;
+      await route.fulfill({ status: 503, json: { error: { code: "MACHINE_UNAVAILABLE" } } });
+      return;
+    }
+    const names =
+      version === 0
+        ? ["ready.txt"]
+        : version === 1
+          ? ["ready.txt", "added.txt"]
+          : ["added.txt", "latest.txt"];
+    await route.fulfill({
+      json: {
+        entries: path
+          ? names.map((name) => ({ name, path: `docs/${name}`, type: "file" }))
+          : [{ name: "docs", path: "docs", type: "directory" }],
+        next_after: null,
+      },
+    });
+    if (path === "docs") ready = true;
+  });
+  const { details } = await setup(page);
+  await details.click();
+  await expect(page.getByRole("tab", { name: "Agent info", exact: true })).toHaveAttribute(
+    "aria-selected",
+    "true",
+  );
+  await expect.poll(() => ready).toBe(true);
+  await page.getByRole("tab", { name: "Working files", exact: true }).click();
+  const tree = page.getByRole("tree", { name: "Working files", exact: true });
+  await expect(
+    page.getByRole("button", { name: "Refresh working files", exact: true }),
+  ).toHaveCount(0);
+  const folder = tree.getByRole("treeitem", { name: "docs", exact: true });
+  const expansion = await folder.evaluate(async (element) => {
+    const started = performance.now();
+    (element as HTMLElement).click();
+    await new Promise(requestAnimationFrame);
+    await new Promise(requestAnimationFrame);
+    const tree = element.closest('[role="tree"]');
+    return {
+      milliseconds: performance.now() - started,
+      ready: !!tree?.querySelector('[data-file-path="docs/ready.txt"]'),
+      loading: !!tree?.querySelector('[data-file-status="loading"]'),
+    };
+  });
+  expect(expansion.ready).toBe(true);
+  expect(expansion.loading).toBe(false);
+  const first = tree.getByRole("treeitem", { name: "ready.txt", exact: true });
+  await first.focus();
+  await page.evaluate(() => {
+    const probe = { loadingRows: 0 };
+    Object.assign(window, { workingFilesProbe: probe });
+    const tree = document.querySelector('[role="tree"][aria-label="Working files"]');
+    if (tree)
+      new MutationObserver(() => {
+        if (tree.querySelector('[data-file-status="loading"]')) probe.loadingRows++;
+      }).observe(tree, { subtree: true, childList: true });
+  });
+  version = 1;
+  await expect(tree.getByRole("treeitem", { name: "added.txt", exact: true })).toBeVisible({
+    timeout: 12000,
+  });
+  await expect(folder).toHaveAttribute("aria-expanded", "true");
+  await expect(first).toBeFocused();
+  fail = true;
+  await page.evaluate(() => window.dispatchEvent(new Event("focus")));
+  await expect.poll(() => failures).toBeGreaterThan(0);
+  await expect(first).toBeVisible();
+  await expect(tree).toHaveAttribute("aria-busy", "false");
+  await expect(tree.locator('[data-file-status="error"]')).toHaveCount(0);
+  fail = false;
+  version = 2;
+  await page.evaluate(() => window.dispatchEvent(new Event("online")));
+  await expect(tree.getByRole("treeitem", { name: "latest.txt", exact: true })).toBeVisible({
+    timeout: 12000,
+  });
+  await expect(first).toHaveCount(0);
+  const loadingRows = await page.evaluate(
+    () =>
+      (window as unknown as { workingFilesProbe: { loadingRows: number } }).workingFilesProbe
+        .loadingRows,
+  );
+  expect(loadingRows).toBe(0);
+  await info.attach("working-files-smoothness.json", {
+    contentType: "application/json",
+    body: JSON.stringify(
+      {
+        cold_response_delay_ms: 700,
+        prepared_expansion: expansion,
+        background_loading_rows: loadingRows,
+        reads,
+        failures,
+      },
+      null,
+      2,
+    ),
+  });
+  await page.screenshot({ path: info.outputPath("working-files-automatic.png") });
   await page.unrouteAll({ behavior: "wait" });
 });
 
@@ -271,11 +425,15 @@ test("Working files restores saved-file details with one contextual header", asy
     .click();
   await page.getByRole("menuitem", { name: "Info file", exact: true }).click();
   await expect(page.getByRole("heading", { name: "result.json", exact: true })).toBeVisible();
-  await page.getByRole("button", { name: "Working files", exact: true }).click();
-  await expect(page.getByRole("heading", { name: "Working files", exact: true })).toBeVisible();
+  await page.getByRole("tab", { name: "Working files", exact: true }).click();
+  await expect(page.getByRole("tab", { name: "Working files", exact: true })).toHaveAttribute(
+    "aria-selected",
+    "true",
+  );
   await expect(page.getByRole("heading", { name: "result.json", exact: true })).toHaveCount(0);
-  await expect(page.locator(".details-toolbar [data-panel-back]")).toHaveCount(1);
-  await page.getByRole("button", { name: "Back to Library", exact: true }).click();
+  await expect(page.locator(".details-toolbar [data-panel-back]")).toHaveCount(0);
+  await expect(page.locator(".details-toolbar").getByRole("tab")).toHaveCount(2);
+  await page.getByRole("tab", { name: "Agent info", exact: true }).click();
   await expect(page.getByRole("heading", { name: "result.json", exact: true })).toBeVisible();
   await expect(page.getByRole("heading", { name: "About this file", exact: true })).toBeVisible();
   await page.unrouteAll({ behavior: "wait" });

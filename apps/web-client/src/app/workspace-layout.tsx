@@ -1690,6 +1690,11 @@ export default function Workspace() {
                 }}
                 className="context-sheet gap-0 w-full data-[side=right]:w-full data-[side=right]:sm:max-w-none overflow-y-auto border-0 bg-background p-0"
                 onEscapeKeyDown={(event) => {
+                  if (location.workingFiles) {
+                    event.preventDefault();
+                    locate({ ...location, workingFiles: false });
+                    return;
+                  }
                   const back = Array.from(
                     document.querySelectorAll<HTMLButtonElement>(
                       ".context-sheet #conversation-details [data-panel-back]",

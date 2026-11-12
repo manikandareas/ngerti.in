@@ -1,5 +1,6 @@
 import { fromBinary, toBinary } from "@bufbuild/protobuf";
 import { DomainError } from "../contracts";
+import { asyncMap } from "../persistence/async-collections";
 import { OpenMediaResponseSchema } from "./protocol/stream_pb";
 import type { Machines } from "./service";
 
@@ -39,32 +40,32 @@ export class MachineViews {
   readonly #unsubscribe: () => void;
   readonly #expiry: ReturnType<typeof setInterval>;
   constructor(readonly machines: Machines) {
-    this.#unsubscribe = machines.onControl(() => this.sweep());
-    this.#expiry = setInterval(() => {
+    this.#unsubscribe = machines.onControl(async () => this.sweep());
+    this.#expiry = setInterval(async () => {
       if (
         [...this.#peers.values()].some(
           (bridge) => bridge.view.interactive && bridge.socket.readyState === WebSocket.OPEN,
         )
       )
-        machines.renewHuman();
+        await machines.renewHuman();
       void machines
         .expireControl()
-        .then(() => this.sweep())
+        .then(async () => this.sweep())
         .catch(() => {});
     }, 1000);
     this.#expiry.unref();
   }
-  private valid(view: View) {
+  private async valid(view: View) {
     if (
       this.#views.get(view.id) !== view ||
       Date.now() >= view.expires ||
-      this.machines.snapshot().generation !== view.generation
+      (await this.machines.snapshot()).generation !== view.generation
     )
       throw new DomainError("UNAUTHORIZED", 401);
-    this.machines.assertViewer(view.revision, view.interactive);
+    await this.machines.assertViewer(view.revision, view.interactive);
     return view;
   }
-  authorize(request: Request, media = false) {
+  async authorize(request: Request, media = false) {
     const url = new URL(request.url);
     const id = url.pathname.slice(prefix.length).split("/")[0];
     const view = id ? this.#views.get(id) : undefined;
@@ -78,12 +79,12 @@ export class MachineViews {
         : ![view.origin, view.apiOrigin].includes(url.origin))
     )
       throw new DomainError("UNAUTHORIZED", 401);
-    return this.valid(view);
+    return await this.valid(view);
   }
   async issue(origin: string, interactive = false, apiOrigin = origin) {
     const host = await this.machines.ready();
-    const current = this.machines.snapshot();
-    this.machines.assertViewer(current.lease.revision, interactive);
+    const current = await this.machines.snapshot();
+    await this.machines.assertViewer(current.lease.revision, interactive);
     const reply = (await host.rpc("SystemService/CreateViewerTicket", {
       ttl: "600s",
       policy: interactive ? "SESSION_POLICY_ALLOW_ACTIVATION" : "SESSION_POLICY_VIEW_ONLY",
@@ -92,7 +93,7 @@ export class MachineViews {
       principal: { id: "owner", displayName: "You" },
     })) as { ticket: string };
     if (!reply.ticket) throw new DomainError("MACHINE_UNAVAILABLE", 503);
-    this.machines.assertViewer(current.lease.revision, interactive);
+    await this.machines.assertViewer(current.lease.revision, interactive);
     await this.sweep();
     if (this.#views.size >= 40) throw new DomainError("CONFLICT");
     const id = `${crypto.randomUUID().replaceAll("-", "")}${crypto.randomUUID().replaceAll("-", "")}`;
@@ -122,15 +123,15 @@ export class MachineViews {
     const view = this.#views.get(id);
     if (!view || ![view.origin, view.apiOrigin].includes(origin))
       throw new DomainError("UNAUTHORIZED", 401);
-    this.valid(view);
+    await this.valid(view);
     const reply = (await this.machines.host?.rpc("SystemService/CreateViewerTicket", {
       ttl: "600s",
       policy: view.interactive ? "SESSION_POLICY_ALLOW_ACTIVATION" : "SESSION_POLICY_VIEW_ONLY",
       clipboard: view.interactive,
-      filesRoot: view.interactive ? this.machines.snapshot().root : "",
+      filesRoot: view.interactive ? (await this.machines.snapshot()).root : "",
       principal: { id: "owner", displayName: "You" },
     })) as { ticket?: string } | undefined;
-    this.valid(view);
+    await this.valid(view);
     if (!reply?.ticket) throw new DomainError("MACHINE_UNAVAILABLE", 503);
     view.ticket = reply.ticket;
     view.expires = Date.now() + 590_000;
@@ -140,7 +141,7 @@ export class MachineViews {
       control_revision: view.revision,
     };
   }
-  private closeMedia(id: string) {
+  private async closeMedia(id: string) {
     const existing = this.#closingMedia.get(id);
     if (existing) return existing;
     const work = (async () => {
@@ -155,8 +156,8 @@ export class MachineViews {
       }
     })();
     const tracked = work
-      .catch((error) => {
-        this.machines.uncertainControl();
+      .catch(async (error) => {
+        await this.machines.uncertainControl();
         throw error;
       })
       .finally(() => this.#closingMedia.delete(id));
@@ -168,7 +169,10 @@ export class MachineViews {
     view.abort.abort();
     for (const [peer, bridge] of this.#peers)
       if (bridge.view === view) this.denyPeer(peer, "Machine control changed.");
-    const pending = [...new Set(view.media.values())].map((id) => this.closeMedia(id));
+    const pending = await asyncMap(
+      [...new Set(view.media.values())],
+      async (id) => await this.closeMedia(id),
+    );
     view.media.clear();
     await Promise.all(pending);
   }
@@ -181,7 +185,7 @@ export class MachineViews {
     const pending: Promise<void>[] = [];
     for (const view of this.#views.values()) {
       try {
-        this.valid(view);
+        await this.valid(view);
       } catch {
         pending.push(this.revoke(view));
       }
@@ -193,9 +197,9 @@ export class MachineViews {
     this.#mediaServer = Bun.serve<{ request: Request }>({
       hostname: "127.0.0.1",
       port: 0,
-      fetch: (request, server) => {
+      fetch: async (request, server) => {
         try {
-          const view = this.authorize(request, true);
+          const view = await this.authorize(request, true);
           const ticket = new URL(request.url).searchParams.get("ticket") ?? "";
           if (!view.media.has(ticket)) return new Response(null, { status: 401 });
           if (server.upgrade(request, { data: { request } })) return;
@@ -208,8 +212,8 @@ export class MachineViews {
         maxPayloadLength: 65_536,
         backpressureLimit: 8 * 1024 * 1024,
         closeOnBackpressureLimit: true,
-        open: (peer) => this.open(peer.data.request, peer),
-        message: (peer, message) => this.message(peer, message),
+        open: async (peer) => await this.open(peer.data.request, peer),
+        message: async (peer, message) => await this.message(peer, message),
         close: (peer) => this.closePeer(peer),
       },
     });
@@ -224,7 +228,7 @@ export class MachineViews {
     return { path, search: url.search };
   }
   async proxy(request: Request) {
-    const view = this.authorize(request);
+    const view = await this.authorize(request);
     const { path, search } = this.path(request, view);
     if (path === "viewer/ngertiin-health.js")
       return new Response(viewerHealthScript, {
@@ -318,7 +322,7 @@ export class MachineViews {
         offset += 5 + length;
       }
       try {
-        this.valid(view);
+        await this.valid(view);
       } catch (error) {
         for (const id of view.media.values()) void this.closeMedia(id).catch(() => {});
         throw error;
@@ -328,7 +332,7 @@ export class MachineViews {
         headers: responseHeaders,
       });
     }
-    this.valid(view);
+    await this.valid(view);
     if (staticAsset && upstream.ok && responseHeaders.get("Content-Type")?.includes("text/html")) {
       const html = await upstream.text();
       return new Response(
@@ -391,10 +395,10 @@ export class MachineViews {
       },
     });
   }
-  open(request: Request, peer: Peer) {
+  async open(request: Request, peer: Peer) {
     this.#sockets.add(peer);
     try {
-      const view = this.authorize(request, true);
+      const view = await this.authorize(request, true);
       const ticket = new URL(request.url).searchParams.get("ticket") ?? "";
       const mediaId = view.media.get(ticket);
       if (!mediaId || !this.machines.host) throw new DomainError("UNAUTHORIZED", 401);
@@ -405,18 +409,18 @@ export class MachineViews {
       socket.binaryType = "arraybuffer";
       const bridge: Bridge = { view, socket, mediaId, queued: [], queuedBytes: 0 };
       this.#peers.set(peer, bridge);
-      socket.onopen = () => {
+      socket.onopen = async () => {
         try {
-          this.valid(view);
+          await this.valid(view);
           for (const message of bridge.queued) socket.send(message);
           bridge.queued.length = 0;
         } catch {
           this.denyPeer(peer, "Machine view expired.");
         }
       };
-      socket.onmessage = (event) => {
+      socket.onmessage = async (event) => {
         try {
-          this.valid(view);
+          await this.valid(view);
           if (peer.send(event.data) === -1) throw new Error("Backpressure");
         } catch {
           this.denyPeer(peer, "Machine view expired.");
@@ -435,11 +439,11 @@ export class MachineViews {
       this.denyPeer(peer, "Machine view denied.");
     }
   }
-  message(peer: Peer, message: unknown) {
+  async message(peer: Peer, message: unknown) {
     const bridge = this.#peers.get(peer);
     if (!bridge) return this.denyPeer(peer, "Machine view denied.");
     try {
-      this.valid(bridge.view);
+      await this.valid(bridge.view);
       const data =
         message instanceof Uint8Array
           ? Uint8Array.from(message)
@@ -476,8 +480,8 @@ export class MachineViews {
     peer.terminate?.();
     this.closePeer(peer);
   }
-  close() {
-    this.#unsubscribe();
+  async close() {
+    await this.#unsubscribe();
     clearInterval(this.#expiry);
     for (const view of this.#views.values()) void this.revoke(view).catch(() => {});
     for (const peer of this.#sockets) this.closePeer(peer);

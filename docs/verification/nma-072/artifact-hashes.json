@@ -1,0 +1,23 @@
+{
+  "README.md": "8cb9303a06199af51105fd1243b7dc798c8a5648479c0b4edfb7ea77442aebdf",
+  "checks/commands.json": "3ba60ebdb27a9fea30df682997073e83f091c2ca44e90a1e5f4b1f50a28fd9d7",
+  "checks/desktop-typecheck.log": "d5bdf35ac8837352e6d0330544a079573907d2ab988abf525f54a45862482190",
+  "checks/docs-check.log": "5efb0b5810fe668cd10d1d0a8a485523c4cf8240d0adf089291545eebac215bf",
+  "checks/lint.log": "9989bb2e9cc2bacee3ab75eca43f129c7252af7d614bf0753476cad48109913a",
+  "checks/typecheck.log": "c16281326e38b1541990f005f65cd97978e864e32b4c6ee505234983c4902255",
+  "checks/verification-tools-tsconfig.json": "637d2c9a075e8bed57f6ac6b9e14a46460da299e57f8d083615b7525bc63f2d5",
+  "checks/verification-tools.log": "9d28594ca8082656d4d4ba05f5c4cf0738e8146fdb9d342cafb03b07f8d733c4",
+  "database-restart.json": "429644c7c83d58d0376188a3ec271402c904e704212dc265863d3485bdc7fba8",
+  "groups-attachments.log": "7baa36d1b9747f59e19a102dbdb9db5710a8eac5e0f4824d96d519ecfe0cb7d2",
+  "import-rehearsal.json": "57003a7252db6bc64cc2fc436b6f8d0e2798dbd6a351c1310bf7c452e7268413",
+  "inventory.md": "cb8f1f67bf4dab95e6525c7279256f355f114f6e7b2c8eb8a4f70e825ecd6376",
+  "iterations/initial-regression.log": "2f138e4e3753fe672419f504b19a9c84053c9d3b9e340d42d1fa879887ca64e7",
+  "iterations/parallel-a-aborted.log": "4de93f856caf3e2f2aa86060f84795502f4ac13bb9ca41d1a4ad1bf4030a333b",
+  "iterations/parallel-b-takeover.log": "11c411041f87118bd8d932be96875e374290d7bb48f7988fdf1ccdb0e219a85a",
+  "latency.json": "d38edcbdff9cb9d9c83f77dd8ef34bd5d08bbc9962dc4d38f3a3a216b0c945a2",
+  "partitions.json": "3c39e16bc0e1ca7833bccf4924fc1031e175020d960b59a0630248c69a836fae",
+  "regression-a.log": "5c7fb0bb391f5b154880a7c56de7b1475becc28ff8b247b4ac9fa3e57d427d11",
+  "regression-b.log": "9dfca4a7cca8a1a7b119c7194d1c92776f8cb8e1ab1bdf0c52ff25b2d63c2648",
+  "results.json": "56045f4bf07460e4ba11978810e52790ac2ec31f50a1859644d4da2f6ea81c80",
+  "source-manifest.json": "3dfbcebec8cb91f84cab24ac8561d866fcbb5cc814e5903db123b22e19df2b10"
+}

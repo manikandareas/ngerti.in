@@ -13,6 +13,8 @@ import { Lifecycle } from "../../../apps/server/src/lifecycle";
 import { Store } from "../../../apps/server/src/store";
 
 // Only model/protocol outcomes are fixtures. The API, runtime detection, journal and retry are real.
+if (!process.env.NGERTIIN_TEST_DATABASE_URL)
+  throw new Error("Select a disposable PostgreSQL database with NGERTIIN_TEST_DATABASE_URL.");
 const config = developmentConfig();
 const executable = join(config.stateDir, "fixture-codex");
 let uncertain = false;
@@ -27,8 +29,11 @@ function version(ready: boolean) {
 }
 version(false);
 const runtime = new HarnessRuntime({ codex: executable });
-const store = new Store(config.database, config.owner_id);
-const lifecycle = new Lifecycle(store, {
+const store = await Store.open(config.database, config.owner_id, {
+  connectionString: process.env.NGERTIIN_TEST_DATABASE_URL,
+  schema: `test_web_${config.owner_id.replaceAll("-", "")}`,
+});
+const lifecycle = await Lifecycle.open(store, {
   async choose() {
     decisions++;
     return {
@@ -40,7 +45,7 @@ const lifecycle = new Lifecycle(store, {
     };
   },
 });
-const tools = new ProductTools(lifecycle);
+const tools = await ProductTools.open(lifecycle);
 const adapter: HarnessAdapter = {
   harness: "codex",
   async connect(context) {
@@ -103,28 +108,30 @@ const broker = new HarnessBroker(
   runtime.detect,
 );
 const background = new Background(lifecycle, broker.executors());
-const app = createApi(lifecycle, background, config.token, {
-  broker,
-  tools,
-  connections: broker.connections,
-  detect: runtime.detect,
-})
-  .post("/v1/verification/runtime", ({ body }) => {
+const app = (
+  await createApi(lifecycle, background, config.token, {
+    broker,
+    tools,
+    connections: broker.connections,
+    detect: runtime.detect,
+  })
+)
+  .post("/v1/verification/runtime", async ({ body }) => {
     const input = body as { ready: boolean; unknown?: boolean };
     uncertain = !!input.unknown;
     version(input.ready);
-    background.tick();
+    await background.tick();
     return { decisions };
   })
   .get("/v1/verification/runtime", () => ({ decisions }))
   .listen({ hostname: "127.0.0.1", port: config.port });
-background.start(100);
+await background.start(100);
 async function stop() {
   await app.stop(true);
   await background.stop();
   await broker.close();
   await tools.browsers.shutdown();
-  store.close();
+  await store.close();
   process.exit(0);
 }
 process.on("SIGINT", stop);

@@ -13,26 +13,26 @@ import { fixture } from "../helpers";
 
 for (const harness of ["codex", "muse"] as const) {
   test(`${harness} protocol fixture uses the trusted learning bridge and resumes pinned assets after restart`, async () => {
-    const f = fixture();
-    const connection = new Connections(f.lifecycle).create({
+    const f = await fixture();
+    const connection = await new Connections(f.lifecycle).create({
       harness,
       authentication: { method: "native_login", billing_source: "subscription" },
     });
-    const agent = f.lifecycle.createAgent({
+    const agent = await f.lifecycle.createAgent({
       name: "Learning fixture",
       harness,
       connection_id: connection.id,
       model_id: "model-a",
       reasoning: "high",
     });
-    const thread = f.lifecycle.create("thread", { type: "dm", member_agent_ids: [agent.id] });
-    let app: ReturnType<typeof createApi>;
+    const thread = await f.lifecycle.create("thread", { type: "dm", member_agent_ids: [agent.id] });
+    let app: Awaited<ReturnType<typeof createApi>>;
     let background: Background;
     let broker: HarnessBroker;
     const token = "l".repeat(64);
     const base = () => `http://127.0.0.1:${app.server?.port}`;
-    const compose = () => {
-      const tools = new ProductTools(f.lifecycle);
+    const compose = async () => {
+      const tools = await ProductTools.open(f.lifecycle);
       broker = new HarnessBroker(
         f.lifecycle,
         new CredentialContexts(f.dir),
@@ -56,11 +56,13 @@ for (const harness of ["codex", "muse"] as const) {
         }),
       );
       background = new Background(f.lifecycle, broker.executors());
-      app = createApi(f.lifecycle, background, token, {
-        tools,
-        broker,
-        connections: broker.connections,
-      }).listen({ hostname: "127.0.0.1", port: 0 });
+      app = (
+        await createApi(f.lifecycle, background, token, {
+          tools,
+          broker,
+          connections: broker.connections,
+        })
+      ).listen({ hostname: "127.0.0.1", port: 0 });
     };
     const close = async () => {
       await background.stop();
@@ -83,16 +85,16 @@ for (const harness of ["codex", "muse"] as const) {
       });
       const admitted = await response.json();
       expect(response.status).toBe(200);
-      background.tick();
+      await background.tick();
       await background.idle();
-      const run = f.store.get("run", admitted.run.id);
+      const run = await f.store.get("run", admitted.run.id);
       expect(run.status).toBe("succeeded");
-      const answer = JSON.parse(f.store.answer(run.id)?.text ?? "null");
+      const answer = JSON.parse((await f.store.answer(run.id))?.text ?? "null");
       const text =
         harness === "codex" ? answer.tool.contentItems[0].text : answer.tool.result.content[0].text;
       return { result: JSON.parse(text), run };
     };
-    compose();
+    await compose();
     try {
       const memoryId = crypto.randomUUID();
       const input = {
@@ -115,7 +117,7 @@ for (const harness of ["codex", "muse"] as const) {
         expected_revision: 2,
       });
       await call("ngertiin.write_memory", input);
-      expect(f.store.get("memory", memoryId).state).toBe("deleted");
+      expect((await f.store.get("memory", memoryId)).state).toBe("deleted");
       const created = await call("ngertiin.create_skill", {
         command_id: crypto.randomUUID(),
         name: "scoped-report",
@@ -145,8 +147,8 @@ for (const harness of ["codex", "muse"] as const) {
         },
       });
       await close();
-      f.restart();
-      compose();
+      await f.restart();
+      await compose();
       const old = await call("ngertiin.read_skill", { skill_id: skill.id, version: 1 });
       expect(old.result.revision.package.assets[0].text).toBe("PRIVATE_ASSET");
       expect(old.run.binding_id).toBe(first.run.binding_id);
@@ -155,14 +157,17 @@ for (const harness of ["codex", "muse"] as const) {
       expect(inventory.result.native_state).toBe("supported");
       const memories = await call("ngertiin.list_memories", {});
       expect(memories.result.memories).toEqual([]);
-      const group = f.lifecycle.create("thread", { type: "group", member_agent_ids: [agent.id] });
+      const group = await f.lifecycle.create("thread", {
+        type: "group",
+        member_agent_ids: [agent.id],
+      });
       const scoped = await call("ngertiin.list_skills", {}, group.id);
       expect(scoped.result.application).toEqual([]);
       expect(JSON.stringify(scoped.result)).not.toContain("PRIVATE_ASSET");
-      expect(f.store.list("skill_revision")).toHaveLength(2);
+      expect(await f.store.list("skill_revision")).toHaveLength(2);
     } finally {
       await close();
-      f.close();
+      await f.close();
     }
-  });
+  }, 45_000);
 }

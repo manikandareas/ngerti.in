@@ -20,67 +20,78 @@ import { Machines } from "./machines/service";
 import { publishRuntime } from "./runtime-record";
 import { Store } from "./store";
 
-export function startApplication(config = developmentConfig()) {
-  const store = new Store(config.database, config.owner_id);
-  const lifecycle = new Lifecycle(
-    store,
-    config.groupRouter === "jev" ? new JevRouter(config.typesafeApiKey as string) : undefined,
-  );
-  const machines = new Machines(lifecycle, readMachineConfiguration(config.stateDir));
-  new Conversations(lifecycle).setup();
-  const tools = new ProductTools(lifecycle, (scope, name) => {
-    console.log(
-      JSON.stringify({
-        event: "product_tool.completed",
-        run_id: scope.run_id,
-        thread_id: scope.thread_id,
-        agent_id: scope.agent_id,
-        name,
-      }),
-    );
+export async function startApplication(config = developmentConfig()) {
+  const store = await Store.open(config.database, config.owner_id, {
+    connectionString: config.databaseUrl,
+    schema: config.databaseSchema,
   });
-  const credentials = new CredentialContexts(config.stateDir);
-  const runtime = new HarnessRuntime(config.harnessExecutables);
-  const broker = new HarnessBroker(
-    lifecycle,
-    credentials,
-    tools,
-    {
-      codex: new CodexAdapter(() => `http://127.0.0.1:${app.server?.port}/v1/harness/tools`),
-      muse: new MuseAdapter(() => `http://127.0.0.1:${app.server?.port}/v1/harness/tools`),
-    },
-    runtime.detect,
-  );
-  const codexAccounts = new CodexAccounts(broker.connections, credentials, () =>
-    runtime.detect("codex"),
-  );
-  const museAccounts = new MuseAccounts(broker.connections, credentials, () =>
-    runtime.detect("muse"),
-  );
-  const accounts = new HarnessAccounts(broker.connections, {
-    codex: codexAccounts,
-    muse: museAccounts,
-  });
-  const background = new Background(lifecycle, broker.executors(), (code) =>
-    console.error(JSON.stringify({ event: "background.error", code })),
-  );
-  const app = createApi(lifecycle, background, config.token, {
-    connections: broker.connections,
-    tools,
-    broker,
-    accounts,
-    credentialStorage: new CredentialStorage(config.stateDir),
-    detect: runtime.detect,
-  });
-  let closing = false;
+  const cleanup: (() => Promise<unknown>)[] = [() => store.close()];
   try {
+    const lifecycle = await Lifecycle.open(
+      store,
+      config.groupRouter === "jev" ? new JevRouter(config.typesafeApiKey as string) : undefined,
+    );
+    const machines = await Machines.open(lifecycle, readMachineConfiguration(config.stateDir));
+    cleanup.push(() => machines.close());
+    await new Conversations(lifecycle).setup();
+    const tools = await ProductTools.open(lifecycle, (scope, name) => {
+      console.log(
+        JSON.stringify({
+          event: "product_tool.completed",
+          run_id: scope.run_id,
+          thread_id: scope.thread_id,
+          agent_id: scope.agent_id,
+          name,
+        }),
+      );
+    });
+    const credentials = new CredentialContexts(config.stateDir);
+    const runtime = new HarnessRuntime(config.harnessExecutables);
+    const broker = new HarnessBroker(
+      lifecycle,
+      credentials,
+      tools,
+      {
+        codex: new CodexAdapter(() => `http://127.0.0.1:${app.server?.port}/v1/harness/tools`),
+        muse: new MuseAdapter(() => `http://127.0.0.1:${app.server?.port}/v1/harness/tools`),
+      },
+      runtime.detect,
+    );
+    cleanup.push(() => broker.close());
+    const codexAccounts = new CodexAccounts(broker.connections, credentials, async () =>
+      runtime.detect("codex"),
+    );
+    const museAccounts = new MuseAccounts(broker.connections, credentials, async () =>
+      runtime.detect("muse"),
+    );
+    const accounts = new HarnessAccounts(broker.connections, {
+      codex: codexAccounts,
+      muse: museAccounts,
+    });
+    cleanup.push(() => Promise.allSettled([codexAccounts.close(), museAccounts.close()]));
+    const background = new Background(lifecycle, broker.executors(), (code) =>
+      console.error(JSON.stringify({ event: "background.error", code })),
+    );
+    cleanup.push(() => background.stop());
+    const app = await createApi(lifecycle, background, config.token, {
+      connections: broker.connections,
+      tools,
+      broker,
+      accounts,
+      credentialStorage: new CredentialStorage(config.stateDir),
+      detect: runtime.detect,
+    });
+    cleanup.push(async () => {
+      if (app.server) await app.stop(true);
+    });
+    let closing = false;
     app.listen({ hostname: "127.0.0.1", port: config.port });
-    background.start();
+    await background.start();
     void machines.recover().then(
-      () =>
+      async () =>
         !closing &&
-        broker.startRecovery((runId, code) => {
-          const run = store.get("run", runId);
+        (await broker.startRecovery(async (runId, code) => {
+          const run = await store.get("run", runId);
           console.error(
             JSON.stringify({
               event: "harness.recovery.error",
@@ -89,49 +100,49 @@ export function startApplication(config = developmentConfig()) {
               code,
             }),
           );
-        }),
+        })),
     );
+    const record = publishRuntime(config.stateDir, {
+      pid: process.pid,
+      instance_id: crypto.randomUUID(),
+      owner_id: config.owner_id,
+      url: `http://127.0.0.1:${app.server?.port}`,
+      contract_version: CONTRACT_VERSION,
+      manager_id: process.env.NGERTIIN_DESKTOP_MANAGER ?? null,
+    });
+    console.log(
+      JSON.stringify({
+        event: "foundation.started",
+        url: record.value.url,
+        credentials_file: config.installationFile,
+        registered_executors: background.executorCount,
+        api_readiness_gate: API_READINESS_GATE,
+      }),
+    );
+    let stopping: Promise<void> | undefined;
+    async function stop() {
+      closing = true;
+      stopping ??= (async () => {
+        const httpStopped = app.stop(true);
+        await background.stop();
+        await broker.close();
+        await machines.close();
+        await Promise.allSettled([codexAccounts.close(), museAccounts.close()]);
+        await httpStopped;
+        await store.close();
+        record.remove();
+      })();
+      return stopping;
+    }
+    return { url: record.value.url, stop };
   } catch (error) {
-    store.close();
+    for (const close of cleanup.reverse()) await close().catch(() => {});
     throw error;
   }
-  const record = publishRuntime(config.stateDir, {
-    pid: process.pid,
-    instance_id: crypto.randomUUID(),
-    owner_id: config.owner_id,
-    url: `http://127.0.0.1:${app.server?.port}`,
-    contract_version: CONTRACT_VERSION,
-    manager_id: process.env.NGERTIIN_DESKTOP_MANAGER ?? null,
-  });
-  console.log(
-    JSON.stringify({
-      event: "foundation.started",
-      url: record.value.url,
-      credentials_file: config.installationFile,
-      registered_executors: background.executorCount,
-      api_readiness_gate: API_READINESS_GATE,
-    }),
-  );
-  let stopping: Promise<void> | undefined;
-  function stop() {
-    closing = true;
-    stopping ??= (async () => {
-      const httpStopped = app.stop(true);
-      await background.stop();
-      await broker.close();
-      await machines.close();
-      await Promise.allSettled([codexAccounts.close(), museAccounts.close()]);
-      await httpStopped;
-      store.close();
-      record.remove();
-    })();
-    return stopping;
-  }
-  return { url: record.value.url, stop };
 }
 
 if (import.meta.main) {
-  const application = startApplication();
+  const application = await startApplication();
   const stop = () =>
     void application
       .stop()

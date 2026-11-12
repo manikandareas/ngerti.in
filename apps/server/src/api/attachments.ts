@@ -22,19 +22,19 @@ export function registerAttachmentRoutes(api: Elysia, lifecycle: Lifecycle) {
   return api
     .post(
       "/v1/message-uploads",
-      ({ request, body }) =>
-        submissions.stage(id.parse(request.headers.get("Idempotency-Key")), body),
+      async ({ request, body }) =>
+        await submissions.stage(id.parse(request.headers.get("Idempotency-Key")), body),
       { body: stagedUploadInput },
     )
     .get(
       "/v1/message-submissions/:id",
-      ({ params }) => {
-        const receipt = submissionResult.safeParse(lifecycle.store.receipt(params.id));
+      async ({ params }) => {
+        const receipt = submissionResult.safeParse(await lifecycle.store.receipt(params.id));
         if (receipt.success) return { state: "committed" as const, result: receipt.data };
         return {
-          state: lifecycle.store
-            .list("attachment_upload")
-            .some((item) => item.submission_id === params.id && item.state === "staged")
+          state: (await lifecycle.store.list("attachment_upload", { state: "staged" })).some(
+            (item) => item.submission_id === params.id && item.state === "staged",
+          )
             ? ("pending" as const)
             : ("missing" as const),
         };

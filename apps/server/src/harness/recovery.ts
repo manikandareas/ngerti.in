@@ -37,18 +37,18 @@ export class RunRecovery {
     this.#policy = { ...defaults, ...policy };
   }
 
-  start() {
+  async start() {
     if (this.#closed || this.#timer !== undefined) return;
-    this.#timer = setInterval(() => this.tick(), this.#policy.interval_ms);
+    this.#timer = setInterval(async () => await this.tick(), this.#policy.interval_ms);
     this.#unsubscribe = this.store.subscribe(() => {
       if (this.#wakePending) return;
       this.#wakePending = true;
-      queueMicrotask(() => {
+      queueMicrotask(async () => {
         this.#wakePending = false;
-        this.tick();
+        await this.tick();
       });
     });
-    this.tick();
+    await this.tick();
   }
 
   watch(runId: string, inspect: () => Promise<void>) {
@@ -71,10 +71,12 @@ export class RunRecovery {
     };
   }
 
-  private tick() {
+  private async tick() {
     if (this.#closed || this.store.closed) return;
     const now = Date.now();
-    const unknown = this.store.list("run").filter((run) => run.status === "unknown");
+    const unknown = (await this.store.list("run", { status: "unknown" })).filter(
+      (run) => run.status === "unknown",
+    );
     const unresolved = new Set(unknown.map((run) => run.id));
     for (const id of this.#unknown.keys()) if (!unresolved.has(id)) this.#unknown.delete(id);
     for (const run of unknown) {

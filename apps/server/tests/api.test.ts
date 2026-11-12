@@ -4,11 +4,11 @@ import { Background } from "../src/background";
 import { fixture } from "./helpers";
 
 const token = "a".repeat(64);
-let f: ReturnType<typeof fixture>;
-afterEach(() => f?.close());
-function setup() {
-  f = fixture();
-  return createApi(f.lifecycle, new Background(f.lifecycle), token);
+let f: Awaited<ReturnType<typeof fixture>>;
+afterEach(async () => await f?.close());
+async function setup() {
+  f = await fixture();
+  return await createApi(f.lifecycle, new Background(f.lifecycle), token);
 }
 function request(path: string, body?: unknown, key = crypto.randomUUID(), bearer = token) {
   return new Request(`http://localhost${path}`, {
@@ -23,7 +23,7 @@ function request(path: string, body?: unknown, key = crypto.randomUUID(), bearer
 }
 
 test("HTTP authentication is required for state and contracts", async () => {
-  const app = setup();
+  const app = await setup();
   expect((await app.handle(new Request("http://localhost/health/live"))).status).toBe(200);
   expect((await app.handle(request("/v1/contracts", undefined, undefined, "wrong"))).status).toBe(
     401,
@@ -37,7 +37,7 @@ test("HTTP authentication is required for state and contracts", async () => {
 });
 
 test("HTTP admission retry returns the same persisted receipt and changed input conflicts", async () => {
-  const app = setup();
+  const app = await setup();
   const key = crypto.randomUUID();
   const body = { thread_id: f.thread.id, agent_id: f.agent.id, text: "Tolong periksa" };
   const first = await app.handle(request("/v1/runs", body, key));
@@ -47,11 +47,11 @@ test("HTTP admission retry returns the same persisted receipt and changed input 
   expect((await app.handle(request("/v1/runs", { ...body, text: "changed" }, key))).status).toBe(
     409,
   );
-  expect(f.store.list("message")).toHaveLength(1);
+  expect(await f.store.list("message")).toHaveLength(1);
 });
 
 test("HTTP rejects identity injection, missing command keys and cross-scope references", async () => {
-  const app = setup();
+  const app = await setup();
   expect(
     (
       await app.handle(
@@ -77,7 +77,7 @@ test("HTTP rejects identity injection, missing command keys and cross-scope refe
 });
 
 test("HTTP errors do not echo malformed input or exception details", async () => {
-  const app = setup();
+  const app = await setup();
   const secret = "META_API_KEY=private-example-do-not-echo";
   const response = await app.handle(
     new Request("http://localhost/v1/agents", {
@@ -91,8 +91,8 @@ test("HTTP errors do not echo malformed input or exception details", async () =>
 });
 
 test("HTTP exposes schemas and cursor replay, and validates cursor bounds", async () => {
-  const app = setup();
-  f.admit();
+  const app = await setup();
+  await f.admit();
   expect((await (await app.handle(request("/v1/contracts"))).json()).version).toBe("1.32.0");
   const first = await (await app.handle(request("/v1/events?limit=1"))).json();
   const second = await (await app.handle(request(`/v1/events?after=${first.next_cursor}`))).json();
@@ -102,8 +102,8 @@ test("HTTP exposes schemas and cursor replay, and validates cursor bounds", asyn
 });
 
 test("HTTP cancel records local cancellation without changing goal responsibility", async () => {
-  const app = setup();
-  const { run } = f.admit();
+  const app = await setup();
+  const { run } = await f.admit();
   const cancelled = await (await app.handle(request(`/v1/runs/${run.id}/cancel`, {}))).json();
   expect(cancelled.status).toBe("cancelled");
   expect(cancelled.cancellation).toBe("confirmed");
@@ -113,7 +113,7 @@ test("HTTP cancel records local cancellation without changing goal responsibilit
         request("/v1/agents", {
           name: "Muse",
           harness: "codex",
-          connection_id: f.store.get("agent", f.agent.id).connection_id,
+          connection_id: (await f.store.get("agent", f.agent.id)).connection_id,
         }),
       )
     ).status,

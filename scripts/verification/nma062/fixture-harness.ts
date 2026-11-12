@@ -12,7 +12,7 @@ export function fixtureAdapter(tools: ProductTools): HarnessAdapter {
   return {
     harness: "codex",
     async connect(context) {
-      let sessionId = crypto.randomUUID();
+      let sessionId: string = crypto.randomUUID();
       let multiple = false;
       let textOnly = false;
       let ambiguous = false;
@@ -81,7 +81,7 @@ export function fixtureAdapter(tools: ProductTools): HarnessAdapter {
               native_run_id: nativeRunId,
             };
           }
-          const currentRun = tools.lifecycle.store.get("run", input.tools.scope.run_id);
+          const currentRun = await tools.lifecycle.store.get("run", input.tools.scope.run_id);
           const call = (name: string, arguments_: Record<string, unknown>) =>
             tools.call(input.tools.token, input.tools.scope, name, {
               command_id: crypto.randomUUID(),
@@ -103,16 +103,16 @@ export function fixtureAdapter(tools: ProductTools): HarnessAdapter {
               path: "summary.txt",
               media_type: "text/plain",
             });
-            const peer = tools.lifecycle.store
-              .get("thread", currentRun.thread_id)
-              .member_agent_ids.find((id) => id !== currentRun.agent_id);
+            const peer = (
+              await tools.lifecycle.store.get("thread", currentRun.thread_id)
+            ).member_agent_ids.find((id) => id !== currentRun.agent_id);
             await call("ngertiin.group_handoff", {
               agent_id: peer,
               purpose: "review",
               instruction:
                 "INTERNAL_HANDOFF_CANARY_8472: prepare and publish the reviewed example, then finish the task.",
               summary: "Prepare the reviewed example",
-              announcement: `The campaign summary is ready.\n\n[@${tools.lifecycle.store.get("agent", peer as string).name}](ngertiin://agent/${peer}) please review [summary.txt](ngertiin://file/${tools.lifecycle.store.list("artifact").find(file => file.thread_id === currentRun.thread_id && file.name === "summary.txt")?.id}).`,
+              announcement: `The campaign summary is ready.\n\n[@${(await tools.lifecycle.store.get("agent", peer as string)).name}](ngertiin://agent/${peer}) please review [summary.txt](ngertiin://file/${(await tools.lifecycle.store.list("artifact")).find((file) => file.thread_id === currentRun.thread_id && file.name === "summary.txt")?.id}).`,
               continuation: "finalize",
             });
             input.onEvent({ type: "text", text: "The campaign summary is ready." });
@@ -139,7 +139,10 @@ export function fixtureAdapter(tools: ProductTools): HarnessAdapter {
               path: "example.txt",
               media_type: "text/plain",
             });
-            input.onEvent({ type: "text", text: "The reviewed example is ready.\n\n[@user](ngertiin://user/owner) please check the file." });
+            input.onEvent({
+              type: "text",
+              text: "The reviewed example is ready.\n\n[@user](ngertiin://user/owner) please check the file.",
+            });
             return {
               status: "succeeded",
               native_session_id: sessionId,
@@ -155,12 +158,10 @@ export function fixtureAdapter(tools: ProductTools): HarnessAdapter {
             )) as { goals: { id: string; revision: number; title: string }[] };
             const goal = shared.goals.find((goal) => goal.title === "Shared campaign report");
             if (goal) {
-              const artifacts = tools.lifecycle.store
-                .list("artifact")
-                .filter(
-                  (file) =>
-                    file.thread_id === currentRun.thread_id && file.origin === "native_output",
-                );
+              const artifacts = (await tools.lifecycle.store.list("artifact")).filter(
+                (file) =>
+                  file.thread_id === currentRun.thread_id && file.origin === "native_output",
+              );
               await call("ngertiin.report_goal", {
                 goal_id: goal.id,
                 expected_revision: goal.revision,
@@ -188,19 +189,59 @@ export function fixtureAdapter(tools: ProductTools): HarnessAdapter {
             await tools.call(input.tools.token, input.tools.scope, "ngertiin.ask_user", {
               command_id: crypto.randomUUID(),
               purpose: input.text.includes("approval") ? "approval" : "input",
-              action: input.text.includes("approval") ? { tool_name: "ngertiin.create_file", arguments: { path: "fixture-checklist.md", base64: "Rml4dHVyZSBjaGVja2xpc3Q=" } } : null,
-              question: input.text.includes("mentions") ? "[@user](ngertiin://user/owner), which city should I use?" : input.text.includes("approval") ? "Publish this exact checklist?" : "Which city should I use?",
-              options: input.text.includes("options") ? { choices: [{ id: "makassar", label: "Makassar" }, { id: "jakarta", label: "Jakarta" }], min: 1, max: 1, allow_custom: true } : null,
+              action: input.text.includes("approval")
+                ? {
+                    tool_name: "ngertiin.create_file",
+                    arguments: { path: "fixture-checklist.md", base64: "Rml4dHVyZSBjaGVja2xpc3Q=" },
+                  }
+                : null,
+              question: input.text.includes("mentions")
+                ? "[@user](ngertiin://user/owner), which city should I use?"
+                : input.text.includes("approval")
+                  ? "Publish this exact checklist?"
+                  : "Which city should I use?",
+              options: input.text.includes("options")
+                ? {
+                    choices: [
+                      { id: "makassar", label: "Makassar" },
+                      { id: "jakarta", label: "Jakarta" },
+                    ],
+                    min: 1,
+                    max: 1,
+                    allow_custom: true,
+                  }
+                : null,
             });
-            return { status: "succeeded", native_session_id: sessionId, native_run_id: nativeRunId };
+            return {
+              status: "succeeded",
+              native_session_id: sessionId,
+              native_run_id: nativeRunId,
+            };
           }
           if (input.text === "fixture answer Makassar") {
-            const run = tools.lifecycle.store.get("run", input.tools.scope.run_id);
-            const request = tools.lifecycle.store.list("human_request").findLast(request => request.thread_id === run.thread_id && request.agent_id === run.agent_id && request.state === "pending");
-            if (request) await tools.call(input.tools.token, input.tools.scope, "ngertiin.resolve_user_input", { command_id: crypto.randomUUID(), request_id: request.id, expected_revision: request.revision, user_message_id: run.input_message_id, disposition: "answer" });
+            const run = await tools.lifecycle.store.get("run", input.tools.scope.run_id);
+            const request = (await tools.lifecycle.store.list("human_request")).findLast(
+              (request) =>
+                request.thread_id === run.thread_id &&
+                request.agent_id === run.agent_id &&
+                request.state === "pending",
+            );
+            if (request)
+              await tools.call(
+                input.tools.token,
+                input.tools.scope,
+                "ngertiin.resolve_user_input",
+                {
+                  command_id: crypto.randomUUID(),
+                  request_id: request.id,
+                  expected_revision: request.revision,
+                  user_message_id: run.input_message_id,
+                  disposition: "answer",
+                },
+              );
           }
           if (input.text === "fixture failed response") {
-            const run = tools.lifecycle.store.get("run", input.tools.scope.run_id);
+            const run = await tools.lifecycle.store.get("run", input.tools.scope.run_id);
             if (!failedInputs.has(run.input_message_id)) {
               failedInputs.add(run.input_message_id);
               input.onEvent({ type: "text", text: "Incomplete fixture response" });
@@ -275,10 +316,12 @@ export function fixtureAdapter(tools: ProductTools): HarnessAdapter {
                         id: "format",
                         header: "Format",
                         question: "Choose the report format",
-                        options: textOnly ? [] : [
-                          { label: "Markdown", description: "A concise report" },
-                          { label: "CSV" },
-                        ],
+                        options: textOnly
+                          ? []
+                          : [
+                              { label: "Markdown", description: "A concise report" },
+                              { label: "CSV" },
+                            ],
                         selection: {
                           mode: multiple ? "multiple" : "single",
                           min: 1,

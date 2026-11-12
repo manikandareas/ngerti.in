@@ -23,32 +23,37 @@ export function registerIntegrationRoutes(
         }),
       },
     )
-    .get("/v1/apps/connections", () => applications.list())
-    .post("/v1/apps/connect", ({ body }) => applications.connect(body.toolkit), {
+    .get("/v1/apps/connections", async () => await applications.list())
+    .post("/v1/apps/connect", async ({ body }) => applications.connect(body.toolkit), {
       body: appAuthorize,
     })
     .post(
       "/v1/apps/connections/:id/reconnect",
-      ({ params }) => {
-        const connection = lifecycle.store.get("app_connection", params.id);
+      async ({ params }) => {
+        const connection = await lifecycle.store.get("app_connection", params.id);
         return applications.connect(connection.toolkit, connection.id);
       },
       { params: z.object({ id }), body: z.strictObject({}) },
     )
-    .post("/v1/apps/connections/:id/refresh", ({ params }) => applications.refresh(params.id), {
-      params: z.object({ id }),
-      body: z.strictObject({}),
-    })
+    .post(
+      "/v1/apps/connections/:id/refresh",
+      async ({ params }) => applications.refresh(params.id),
+      {
+        params: z.object({ id }),
+        body: z.strictObject({}),
+      },
+    )
     .post(
       "/v1/apps/connections/:id/revoke",
-      ({ request, params, body }) => command(request, body, () => applications.revoke(params.id)),
+      async ({ request, params, body }) =>
+        await command(request, body, async () => await applications.revoke(params.id)),
       { params: z.object({ id }), body: z.strictObject({}) },
     )
     .post(
       "/v1/apps/connections/:id/assign",
-      ({ request, params, body }) =>
-        command(request, body, () => applications.assign(params.id, body)),
+      async ({ request, params, body }) =>
+        await command(request, body, async () => await applications.assign(params.id, body)),
       { params: z.object({ id }), body: appAssignment },
     )
-    .post("/v1/apps/search", ({ body }) => applications.search(body), { body: appSearch });
+    .post("/v1/apps/search", async ({ body }) => applications.search(body), { body: appSearch });
 }

@@ -5,36 +5,36 @@ import { type LearningContext, learningContext } from "./contracts";
 /** A shared record belongs to one persistent agent; group records belong to one conversation. */
 export class LearningScope {
   constructor(readonly lifecycle: Lifecycle) {}
-  context(input: LearningContext) {
+  async context(input: LearningContext) {
     const context = learningContext.parse(input);
-    const agent = this.lifecycle.store.get("agent", context.agent_id);
-    const thread = this.lifecycle.store.get("thread", context.thread_id);
+    const agent = await this.lifecycle.store.get("agent", context.agent_id);
+    const thread = await this.lifecycle.store.get("thread", context.thread_id);
     if (!thread.member_agent_ids.includes(agent.id)) throw new DomainError("SCOPE_DENIED", 403);
     return { agent, thread };
   }
-  validate(context: LearningContext, visibility: "dm_private" | "group" | "shared") {
-    const { thread } = this.context(context);
+  async validate(context: LearningContext, visibility: "dm_private" | "group" | "shared") {
+    const { thread } = await this.context(context);
     if (
       (visibility === "dm_private" && thread.type !== "dm") ||
       (visibility === "group" && thread.type !== "group")
     )
       throw new DomainError("SCOPE_DENIED", 403);
   }
-  visible(
+  async visible(
     context: LearningContext,
     item: { agent_id: string; thread_id: string; visibility: string },
   ) {
-    this.context(context);
+    await this.context(context);
     return item.visibility === "shared"
       ? item.agent_id === context.agent_id
       : item.thread_id === context.thread_id &&
           (item.visibility === "group" || item.agent_id === context.agent_id);
   }
-  require(
+  async require(
     context: LearningContext,
     item: { agent_id: string; thread_id: string; visibility: string },
   ) {
-    if (!this.visible(context, item)) throw new DomainError("SCOPE_DENIED", 403);
+    if (!(await this.visible(context, item))) throw new DomainError("SCOPE_DENIED", 403);
   }
   base() {
     const now = new Date().toISOString();
@@ -46,8 +46,8 @@ export class LearningScope {
       updated_at: now,
     };
   }
-  update<T extends Entity>(item: T, changes: Partial<T>): T {
-    return this.lifecycle.store.put(
+  async update<T extends Entity>(item: T, changes: Partial<T>): Promise<T> {
+    return await this.lifecycle.store.put(
       { ...item, ...changes, revision: item.revision + 1, updated_at: new Date().toISOString() },
       item.revision,
     );

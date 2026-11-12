@@ -19,15 +19,16 @@ import { CredentialContexts, Diagnostics, Redactor } from "../src/harness/contex
 import { HarnessError, type NativeEvent, unknownCapabilities } from "../src/harness/contracts";
 import { OwnedProcess } from "../src/harness/process";
 import { ProductTools } from "../src/harness/tools";
+import { asyncFilter, asyncMap } from "../src/persistence/async-collections";
 import { RunControls } from "../src/run-controls";
 import { fixture } from "./helpers";
 
-let f: ReturnType<typeof fixture>;
+let f: Awaited<ReturnType<typeof fixture>>;
 let broker: HarnessBroker | undefined;
 afterEach(async () => {
   await broker?.close();
   broker = undefined;
-  f?.close();
+  await f?.close();
 });
 const caps = {
   ...unknownCapabilities,
@@ -35,22 +36,22 @@ const caps = {
   settings: "supported",
   resume: "supported",
 } as const;
-function setup() {
-  f = fixture();
+async function setup() {
+  f = await fixture();
   return new Connections(f.lifecycle);
 }
-function assign(connection: Entity<"connection">, name = "Researcher", model = "model-a") {
-  const agent = f.lifecycle.create("agent", {
+async function assign(connection: Entity<"connection">, name = "Researcher", model = "model-a") {
+  const agent = (await f.lifecycle.create("agent", {
     name,
     harness: connection.harness,
     connection_id: connection.id,
     model_id: model,
     reasoning: "high",
-  }) as Entity<"agent">;
-  const thread = f.lifecycle.create("thread", {
+  })) as Entity<"agent">;
+  const thread = (await f.lifecycle.create("thread", {
     type: "dm",
     member_agent_ids: [agent.id],
-  }) as Entity<"thread">;
+  })) as Entity<"thread">;
   return { agent, thread };
 }
 function client(overrides: Partial<HarnessClient> = {}): HarnessClient {
@@ -111,12 +112,12 @@ function client(overrides: Partial<HarnessClient> = {}): HarnessClient {
 }
 // Tools are retained alongside each fixture so adapter callbacks use the exact server-issued leases.
 let tools: ProductTools;
-function makeBroker(
+async function makeBroker(
   adapters: Partial<Record<HarnessId, HarnessAdapter>>,
   publish?: (run: string, event: NativeEvent) => void,
   readSecret?: (ref: string) => string,
 ) {
-  tools = new ProductTools(f.lifecycle);
+  tools = await ProductTools.open(f.lifecycle);
   broker = new HarnessBroker(
     f.lifecycle,
     new CredentialContexts(f.dir, readSecret),
@@ -141,9 +142,9 @@ function adapter(
 }
 
 test("DM prewarm performs no inference and reuses skills, transport and presentation-only revisions", async () => {
-  const connections = setup();
-  const lane = assign(
-    connections.create({
+  const connections = await setup();
+  const lane = await assign(
+    await connections.create({
       harness: "codex",
       authentication: { method: "native_login", billing_source: "subscription" },
     }),
@@ -151,7 +152,7 @@ test("DM prewarm performs no inference and reuses skills, transport and presenta
   let opens = 0;
   let skills = 0;
   let prompts = 0;
-  const native = makeBroker({
+  const native = await makeBroker({
     codex: adapter("codex", async () => {
       opens++;
       return client({
@@ -175,13 +176,13 @@ test("DM prewarm performs no inference and reuses skills, transport and presenta
       });
     }),
   });
-  expect(native.prewarm(lane.thread.id, lane.agent.id).state).toBe("preparing");
+  expect((await native.prewarm(lane.thread.id, lane.agent.id)).state).toBe("preparing");
   await native.openSession(lane.thread.id, lane.agent.id);
-  expect(f.store.list("run")).toHaveLength(0);
+  expect(await f.store.list("run")).toHaveLength(0);
   expect(prompts).toBe(0);
-  expect(native.prewarm(lane.thread.id, lane.agent.id).state).toBe("ready");
+  expect((await native.prewarm(lane.thread.id, lane.agent.id)).state).toBe("ready");
   await dispatch(lane, native);
-  f.lifecycle.updateAgent(lane.agent.id, {
+  await f.lifecycle.updateAgent(lane.agent.id, {
     expected_revision: lane.agent.revision,
     changes: { avatar: "https://example.test/avatar.png" },
   });
@@ -192,15 +193,18 @@ test("DM prewarm performs no inference and reuses skills, transport and presenta
 });
 
 test("DM prewarm replaces the least recently used idle transport and preserves native identities", async () => {
-  const connections = setup();
-  const connection = connections.create({
+  const connections = await setup();
+  const connection = await connections.create({
     harness: "codex",
     authentication: { method: "native_login", billing_source: "subscription" },
   });
-  const lanes = Array.from({ length: 4 }, (_, i) => assign(connection, `Idle ${i}`));
+  const lanes = await asyncMap(
+    Array.from({ length: 4 }),
+    async (_, i) => await assign(connection, `Idle ${i}`),
+  );
   const closed: string[] = [];
   let prompts = 0;
-  const native = makeBroker({
+  const native = await makeBroker({
     codex: adapter("codex", async (context) =>
       client({
         async close() {
@@ -217,33 +221,40 @@ test("DM prewarm replaces the least recently used idle transport and preserves n
     await native.openSession(lane.thread.id, lane.agent.id);
     await Bun.sleep(2);
   }
-  const firstBinding = f.store.list("binding").find((b) => b.thread_id === lanes[0].thread.id);
+  const firstBinding = (await f.store.list("binding")).find(
+    (b) => b.thread_id === lanes[0].thread.id,
+  );
   if (!firstBinding) throw new Error("Expected the first native binding.");
-  const evictedBinding = f.store.list("binding").find((b) => b.thread_id === lanes[1].thread.id);
+  const evictedBinding = (await f.store.list("binding")).find(
+    (b) => b.thread_id === lanes[1].thread.id,
+  );
   if (!evictedBinding) throw new Error("Expected the idle native binding.");
-  expect(native.prewarm(lanes[0].thread.id, lanes[0].agent.id).state).toBe("ready");
+  expect((await native.prewarm(lanes[0].thread.id, lanes[0].agent.id)).state).toBe("ready");
   await Bun.sleep(2);
-  expect(native.prewarm(lanes[3].thread.id, lanes[3].agent.id).state).toBe("preparing");
+  expect((await native.prewarm(lanes[3].thread.id, lanes[3].agent.id)).state).toBe("preparing");
   await native.openSession(lanes[3].thread.id, lanes[3].agent.id);
   expect(closed).toEqual([lanes[1].thread.id]);
-  expect(f.store.get("binding", firstBinding.id).native_session_id).toBe(
+  expect((await f.store.get("binding", firstBinding.id)).native_session_id).toBe(
     firstBinding.native_session_id,
   );
   const resumed = await native.openSession(lanes[1].thread.id, lanes[1].agent.id);
   expect(resumed.native_session_id).toBe(evictedBinding.native_session_id);
-  expect(f.store.list("run")).toHaveLength(0);
+  expect(await f.store.list("run")).toHaveLength(0);
   expect(prompts).toBe(0);
 });
 
 test("speculative DM preparation never evicts transports while active or unknown work exists", async () => {
-  const connections = setup();
-  const connection = connections.create({
+  const connections = await setup();
+  const connection = await connections.create({
     harness: "codex",
     authentication: { method: "native_login", billing_source: "subscription" },
   });
-  const lanes = Array.from({ length: 4 }, (_, i) => assign(connection, `Busy ${i}`));
+  const lanes = await asyncMap(
+    Array.from({ length: 4 }),
+    async (_, i) => await assign(connection, `Busy ${i}`),
+  );
   let closes = 0;
-  const native = makeBroker({
+  const native = await makeBroker({
     codex: adapter("codex", async () =>
       client({
         async close() {
@@ -253,32 +264,32 @@ test("speculative DM preparation never evicts transports while active or unknown
     ),
   });
   for (const lane of lanes.slice(0, 3)) await native.openSession(lane.thread.id, lane.agent.id);
-  f.lifecycle.admit({
+  await f.lifecycle.admit({
     thread_id: lanes[0].thread.id,
     agent_id: lanes[0].agent.id,
     text: "Pending work.",
   });
-  const run = f.lifecycle.claimNext(lanes[0].thread.id, lanes[0].agent.id);
+  const run = await f.lifecycle.claimNext(lanes[0].thread.id, lanes[0].agent.id);
   if (!run?.dispatch_token) throw new Error("Expected a claimed run.");
   const target = lanes[3];
-  expect(native.prewarm(target.thread.id, target.agent.id).state).toBe("skipped");
-  f.lifecycle.settle(run.id, run.dispatch_token, "unknown");
-  expect(native.prewarm(target.thread.id, target.agent.id).state).toBe("skipped");
+  expect((await native.prewarm(target.thread.id, target.agent.id)).state).toBe("skipped");
+  await f.lifecycle.settle(run.id, run.dispatch_token, "unknown");
+  expect((await native.prewarm(target.thread.id, target.agent.id)).state).toBe("skipped");
   expect(closes).toBe(0);
-  expect(f.store.list("binding").some((b) => b.thread_id === target.thread.id)).toBe(false);
+  expect((await f.store.list("binding")).some((b) => b.thread_id === target.thread.id)).toBe(false);
 });
-async function dispatch(lane: ReturnType<typeof assign>, native = broker) {
+async function dispatch(lane: Awaited<ReturnType<typeof assign>>, native = broker) {
   if (!native) throw new Error("Broker is required.");
   await native.openSession(lane.thread.id, lane.agent.id);
-  const receipt = f.lifecycle.admit({
+  const receipt = await f.lifecycle.admit({
     thread_id: lane.thread.id,
     agent_id: lane.agent.id,
     text: "Please inspect this project.",
   });
   const bg = new Background(f.lifecycle, native.executors());
-  bg.tick();
+  await bg.tick();
   await bg.idle();
-  return { run: f.store.get("run", receipt.run.id), bg };
+  return { run: await f.store.get("run", receipt.run.id), bg };
 }
 
 test("minimum policies reject below-floor and prerelease versions for both harnesses", () => {
@@ -306,7 +317,7 @@ test("minimum policies reject below-floor and prerelease versions for both harne
 });
 
 test("real executable probes distinguish supported, old, missing, unknown and failed without returning diagnostics", async () => {
-  setup();
+  await setup();
   for (const [version, state] of [
     ["0.165.0", "supported"],
     ["0.164.9", "too_old"],
@@ -325,8 +336,8 @@ test("real executable probes distinguish supported, old, missing, unknown and fa
 });
 
 test("connection API persists secret references and independent evidence states across restart", async () => {
-  setup();
-  const app = createApi(f.lifecycle, new Background(f.lifecycle), "x".repeat(64));
+  await setup();
+  const app = await createApi(f.lifecycle, new Background(f.lifecycle), "x".repeat(64));
   const key = crypto.randomUUID();
   const reference = crypto.randomUUID();
   const request = () =>
@@ -359,13 +370,13 @@ test("connection API persists secret references and independent evidence states 
     account_id: null,
     capabilities: unknownCapabilities,
   });
-  f.restart();
-  expect(f.store.get("connection", result.id)).toEqual(result);
+  await f.restart();
+  expect(await f.store.get("connection", result.id)).toEqual(result);
 });
 
 test("API rejects billing mismatches, secret values and caller-supplied owner identity", async () => {
-  setup();
-  const app = createApi(f.lifecycle, new Background(f.lifecycle), "x".repeat(64));
+  await setup();
+  const app = await createApi(f.lifecycle, new Background(f.lifecycle), "x".repeat(64));
   for (const extra of [
     { authentication: { method: "native_login", billing_source: "api_key" } },
     { secret: "private-key" },
@@ -391,14 +402,14 @@ test("API rejects billing mismatches, secret values and caller-supplied owner id
   }
 });
 
-test("isolated native-login environment strips inherited billing keys; selected keys are connection-specific", () => {
-  const connections = setup();
+test("isolated native-login environment strips inherited billing keys; selected keys are connection-specific", async () => {
+  const connections = await setup();
   let reads = 0;
   const contexts = new CredentialContexts(f.dir, (ref) => {
     reads++;
     return ref === "a" ? "key-a" : "key-b";
   });
-  const plan = connections.create({
+  const plan = await connections.create({
     harness: "codex",
     authentication: { method: "native_login", billing_source: "subscription" },
   });
@@ -409,7 +420,7 @@ test("isolated native-login environment strips inherited billing keys; selected 
   try {
     const a = contexts.create(plan);
     const b = contexts.create(
-      connections.create({
+      await connections.create({
         harness: "muse",
         authentication: { method: "native_login", billing_source: "subscription" },
       }),
@@ -420,7 +431,7 @@ test("isolated native-login environment strips inherited billing keys; selected 
     expect(a.env.HOME).not.toBe(b.env.HOME);
     expect(a.env.CODEX_HOME).not.toBe(b.env.CODEX_HOME);
     const selected = contexts.create(
-      connections.create({
+      await connections.create({
         harness: "muse",
         authentication: {
           method: "api_key",
@@ -440,10 +451,10 @@ test("isolated native-login environment strips inherited billing keys; selected 
   }
 });
 
-test("credential files fail closed on missing or public permissions", () => {
-  const connections = setup();
+test("credential files fail closed on missing or public permissions", async () => {
+  const connections = await setup();
   const reference = crypto.randomUUID();
-  const connection = connections.create({
+  const connection = await connections.create({
     harness: "codex",
     authentication: { method: "api_key", billing_source: "api_key", credential_ref: reference },
   });
@@ -471,9 +482,9 @@ test("diagnostic redaction buffers split UTF-8/secret records and discards overs
 });
 
 test("owned native processes run concurrently with separate environment and redact fragmented stderr", async () => {
-  const connections = setup();
+  const connections = await setup();
   const a = new CredentialContexts(f.dir, () => "selected-key").create(
-    connections.create({
+    await connections.create({
       harness: "codex",
       authentication: {
         method: "api_key",
@@ -483,7 +494,7 @@ test("owned native processes run concurrently with separate environment and reda
     }),
   );
   const b = new CredentialContexts(f.dir).create(
-    connections.create({
+    await connections.create({
       harness: "muse",
       authentication: { method: "native_login", billing_source: "subscription" },
     }),
@@ -503,13 +514,13 @@ test("owned native processes run concurrently with separate environment and reda
     expect(await new Response(first.child.stdout).text()).toBe(a.env.CODEX_HOME);
     expect(await new Response(second.child.stdout).text()).toBe(b.env.CODEX_HOME);
   } finally {
-    await Promise.all([first.close(), second.close()]);
+    await Promise.all([await first.close(), await second.close()]);
   }
   expect(lines).toEqual(["[REDACTED]"]);
 });
 
 test("two harnesses, accounts, models and agents execute concurrently through scoped product tools", async () => {
-  const connections = setup();
+  const connections = await setup();
   const observed: string[][] = [];
   const make = (harness: HarnessId, account: string) =>
     adapter(harness, async (context) => {
@@ -548,35 +559,42 @@ test("two harnesses, accounts, models and agents execute concurrently through sc
         },
       });
     });
-  const native = makeBroker({ codex: make("codex", "account-a"), muse: make("muse", "account-b") });
-  const lanes = (["codex", "muse"] as const).map((harness) =>
-    assign(
-      connections.create({
+  const native = await makeBroker({
+    codex: make("codex", "account-a"),
+    muse: make("muse", "account-b"),
+  });
+  const lanes = await asyncMap(
+    ["codex", "muse"] as const,
+    async (harness) =>
+      await assign(
+        await connections.create({
+          harness,
+          authentication: { method: "native_login", billing_source: "subscription" },
+        }),
         harness,
-        authentication: { method: "native_login", billing_source: "subscription" },
-      }),
-      harness,
-      harness === "codex" ? "model-a" : "model-b",
-    ),
+        harness === "codex" ? "model-a" : "model-b",
+      ),
   );
-  await Promise.all(lanes.map((lane) => native.openSession(lane.thread.id, lane.agent.id)));
+  await Promise.all(lanes.map(async (lane) => native.openSession(lane.thread.id, lane.agent.id)));
   for (const lane of lanes)
-    f.lifecycle.admit({
+    await f.lifecycle.admit({
       agent_id: lane.agent.id,
       thread_id: lane.thread.id,
       text: "Please inspect this project.",
     });
   const bg = new Background(f.lifecycle, native.executors());
-  bg.tick();
+  await bg.tick();
   expect(bg.activeCount).toBeLessThanOrEqual(2);
   await bg.idle();
-  expect(f.store.list("run").map((run) => run.status)).toEqual(["succeeded", "succeeded"]);
+  expect((await f.store.list("run")).map((run) => run.status)).toEqual(["succeeded", "succeeded"]);
   expect(new Set(observed.map((row) => row[3])).size).toBe(2);
   expect(
-    f.store
-      .list("connection")
-      .filter((item) => item.id !== f.store.get("agent", f.agent.id).connection_id)
-      .map((item) => [item.account_id, item.login, item.discovery, item.inference]),
+    (
+      await asyncFilter(
+        await f.store.list("connection"),
+        async (item) => item.id !== (await f.store.get("agent", f.agent.id)).connection_id,
+      )
+    ).map((item) => [item.account_id, item.login, item.discovery, item.inference]),
   ).toEqual([
     ["account-a", "authenticated", "succeeded", "succeeded"],
     ["account-b", "authenticated", "succeeded", "succeeded"],
@@ -584,13 +602,13 @@ test("two harnesses, accounts, models and agents execute concurrently through sc
 });
 
 test("login, catalog failure and completed inference remain separate observations", async () => {
-  const connections = setup();
-  const connection = connections.create({
+  const connections = await setup();
+  const connection = await connections.create({
     harness: "codex",
     authentication: { method: "native_login", billing_source: "subscription" },
   });
-  const lane = assign(connection);
-  const native = makeBroker({
+  const lane = await assign(connection);
+  const native = await makeBroker({
     codex: adapter("codex", async () =>
       client({
         async discoverModels() {
@@ -600,7 +618,7 @@ test("login, catalog failure and completed inference remain separate observation
     ),
   });
   await expect(native.openSession(lane.thread.id, lane.agent.id)).rejects.toThrow("PROTOCOL_ERROR");
-  expect(connections.get(connection.id)).toMatchObject({
+  expect(await connections.get(connection.id)).toMatchObject({
     login: "authenticated",
     discovery: "failed",
     inference: "not_attempted",
@@ -608,14 +626,14 @@ test("login, catalog failure and completed inference remain separate observation
 });
 
 test("native account cannot silently switch selected authentication or billing", async () => {
-  const connections = setup();
-  const connection = connections.create({
+  const connections = await setup();
+  const connection = await connections.create({
     harness: "codex",
     authentication: { method: "native_login", billing_source: "subscription" },
   });
-  const lane = assign(connection);
+  const lane = await assign(connection);
   let prompts = 0;
-  const native = makeBroker({
+  const native = await makeBroker({
     codex: adapter("codex", async () =>
       client({
         async inspect() {
@@ -637,22 +655,22 @@ test("native account cannot silently switch selected authentication or billing",
     "BILLING_MISMATCH",
   );
   expect(prompts).toBe(0);
-  expect(connections.get(connection.id)).toMatchObject({
+  expect(await connections.get(connection.id)).toMatchObject({
     login: "rejected",
     effective_billing_source: "unknown",
   });
 });
 
 test("unknown resume never starts a replacement session", async () => {
-  const connections = setup();
-  const connection = connections.create({
+  const connections = await setup();
+  const connection = await connections.create({
     harness: "codex",
     authentication: { method: "native_login", billing_source: "subscription" },
   });
-  const lane = assign(connection);
-  f.lifecycle.bind(lane.thread.id, lane.agent.id, "native-existing");
+  const lane = await assign(connection);
+  await f.lifecycle.bind(lane.thread.id, lane.agent.id, "native-existing");
   let starts = 0;
-  const native = makeBroker({
+  const native = await makeBroker({
     codex: adapter("codex", async () =>
       client({
         async inspect() {
@@ -678,15 +696,15 @@ test("unknown resume never starts a replacement session", async () => {
 });
 
 test("concurrent opens share one lane and separate sessions for two agents on one connection", async () => {
-  const connections = setup();
-  const connection = connections.create({
+  const connections = await setup();
+  const connection = await connections.create({
     harness: "codex",
     authentication: { method: "native_login", billing_source: "subscription" },
   });
-  const a = assign(connection);
-  const b = assign(connection, "Writer", "model-b");
+  const a = await assign(connection);
+  const b = await assign(connection, "Writer", "model-b");
   let clients = 0;
-  const native = makeBroker({
+  const native = await makeBroker({
     codex: adapter("codex", async () => {
       clients++;
       return client();
@@ -703,12 +721,12 @@ test("concurrent opens share one lane and separate sessions for two agents on on
 });
 
 test("grant revocation while native initialization waits prevents session binding", async () => {
-  const connections = setup();
-  const connection = connections.create({
+  const connections = await setup();
+  const connection = await connections.create({
     harness: "codex",
     authentication: { method: "native_login", billing_source: "subscription" },
   });
-  const lane = assign(connection);
+  const lane = await assign(connection);
   let release: () => void = () => {};
   const waiting = new Promise<void>((resolve) => {
     release = resolve;
@@ -717,7 +735,7 @@ test("grant revocation while native initialization waits prevents session bindin
   const entered = new Promise<void>((resolve) => {
     started = resolve;
   });
-  const native = makeBroker({
+  const native = await makeBroker({
     codex: adapter("codex", async () =>
       client({
         async start() {
@@ -730,29 +748,29 @@ test("grant revocation while native initialization waits prevents session bindin
   });
   const pending = native.openSession(lane.thread.id, lane.agent.id);
   await entered;
-  connections.revoke(connection.id);
+  await connections.revoke(connection.id);
   release();
   await expect(pending).rejects.toThrow("SCOPE_DENIED");
-  expect(f.store.list("binding")).toHaveLength(0);
+  expect(await f.store.list("binding")).toHaveLength(0);
 });
 
 test("scope, private resources, current grants and terminal runs are rechecked on each tool call", async () => {
-  const connections = setup();
-  const connection = connections.create({
+  const connections = await setup();
+  const connection = await connections.create({
     harness: "codex",
     authentication: { method: "native_login", billing_source: "subscription" },
   });
-  const lane = assign(connection);
-  const native = makeBroker({ codex: adapter("codex") });
+  const lane = await assign(connection);
+  const native = await makeBroker({ codex: adapter("codex") });
   await native.openSession(lane.thread.id, lane.agent.id);
-  const { run: admitted } = f.lifecycle.admit({
+  const { run: admitted } = await f.lifecycle.admit({
     agent_id: lane.agent.id,
     thread_id: lane.thread.id,
     text: "Please inspect this project.",
   });
-  const run = f.lifecycle.claimNext(lane.thread.id, lane.agent.id);
+  const run = await f.lifecycle.claimNext(lane.thread.id, lane.agent.id);
   if (!run) throw new Error("Missing run.");
-  const lease = tools.issue(run);
+  const lease = await tools.issue(run);
   await expect(
     tools.call(
       lease.token,
@@ -761,7 +779,7 @@ test("scope, private resources, current grants and terminal runs are rechecked o
       {},
     ),
   ).rejects.toThrow("SCOPE_DENIED");
-  const foreign = f.lifecycle.create("artifact", {
+  const foreign = await f.lifecycle.create("artifact", {
     agent_id: f.agent.id,
     thread_id: f.thread.id,
     media_type: "text/plain",
@@ -776,11 +794,11 @@ test("scope, private resources, current grants and terminal runs are rechecked o
   await expect(
     tools.call(lease.token, lease.scope, "ngertiin.read_artifact_fixture", { id: foreign.id }),
   ).rejects.toThrow("SCOPE_DENIED");
-  connections.revoke(connection.id);
+  await connections.revoke(connection.id);
   await expect(
     tools.call(lease.token, lease.scope, "ngertiin.read_run_context", {}),
   ).rejects.toThrow("SCOPE_DENIED");
-  f.lifecycle.settle(admitted.id, run.dispatch_token as string, "failed");
+  await f.lifecycle.settle(admitted.id, run.dispatch_token as string, "failed");
   await expect(
     tools.call(lease.token, lease.scope, "ngertiin.read_run_context", {}),
   ).rejects.toThrow("STALE_DISPATCH");
@@ -791,24 +809,24 @@ test("scope, private resources, current grants and terminal runs are rechecked o
 });
 
 test("MCP HTTP round trip uses scoped leases and refuses the installation token", async () => {
-  const connections = setup();
-  const lane = assign(
-    connections.create({
+  const connections = await setup();
+  const lane = await assign(
+    await connections.create({
       harness: "codex",
       authentication: { method: "native_login", billing_source: "subscription" },
     }),
   );
-  const native = makeBroker({ codex: adapter("codex") });
+  const native = await makeBroker({ codex: adapter("codex") });
   await native.openSession(lane.thread.id, lane.agent.id);
-  f.lifecycle.admit({
+  await f.lifecycle.admit({
     agent_id: lane.agent.id,
     thread_id: lane.thread.id,
     text: "Private DM context",
   });
-  const run = f.lifecycle.claimNext(lane.thread.id, lane.agent.id);
+  const run = await f.lifecycle.claimNext(lane.thread.id, lane.agent.id);
   if (!run) throw new Error("Missing run.");
-  const lease = tools.issue(run);
-  const app = createApi(f.lifecycle, new Background(f.lifecycle), "x".repeat(64), {
+  const lease = await tools.issue(run);
+  const app = await createApi(f.lifecycle, new Background(f.lifecycle), "x".repeat(64), {
     connections,
     tools,
   });
@@ -854,18 +872,18 @@ test("MCP HTTP round trip uses scoped leases and refuses the installation token"
 });
 
 test("grant change between settings and prompt blocks final dispatch", async () => {
-  const connections = setup();
-  const connection = connections.create({
+  const connections = await setup();
+  const connection = await connections.create({
     harness: "codex",
     authentication: { method: "native_login", billing_source: "subscription" },
   });
-  const lane = assign(connection);
+  const lane = await assign(connection);
   let prompts = 0;
-  makeBroker({
+  await makeBroker({
     codex: adapter("codex", async () =>
       client({
         async settings() {
-          connections.revoke(connection.id);
+          await connections.revoke(connection.id);
         },
         async prompt() {
           prompts++;
@@ -876,19 +894,19 @@ test("grant change between settings and prompt blocks final dispatch", async () 
   const { run } = await dispatch(lane);
   expect(run.status).toBe("failed");
   expect(prompts).toBe(0);
-  expect(connections.get(connection.id).inference).toBe("not_attempted");
+  expect((await connections.get(connection.id)).inference).toBe("not_attempted");
 });
 
 test("native acceptance followed by failure becomes unknown and blocks retry", async () => {
-  const connections = setup();
-  const lane = assign(
-    connections.create({
+  const connections = await setup();
+  const lane = await assign(
+    await connections.create({
       harness: "codex",
       authentication: { method: "native_login", billing_source: "subscription" },
     }),
   );
   let prompts = 0;
-  makeBroker({
+  await makeBroker({
     codex: adapter("codex", async () =>
       client({
         async prompt(request) {
@@ -904,22 +922,22 @@ test("native acceptance followed by failure becomes unknown and blocks retry", a
     ),
   });
   const { run, bg } = await dispatch(lane);
-  bg.tick();
+  await bg.tick();
   await bg.idle();
   expect(run.status).toBe("unknown");
   expect(prompts).toBe(1);
-  expect(JSON.stringify(f.store.events(0))).not.toContain("secret-example");
+  expect(JSON.stringify(await f.store.events(0))).not.toContain("secret-example");
 });
 
 test("native rejection is failed; malformed terminal identity remains unknown", async () => {
-  const connections = setup();
-  const lane = assign(
-    connections.create({
+  const connections = await setup();
+  const lane = await assign(
+    await connections.create({
       harness: "codex",
       authentication: { method: "native_login", billing_source: "subscription" },
     }),
   );
-  makeBroker({
+  await makeBroker({
     codex: adapter("codex", async () =>
       client({
         async prompt() {
@@ -930,7 +948,7 @@ test("native rejection is failed; malformed terminal identity remains unknown", 
   });
   expect((await dispatch(lane)).run.status).toBe("failed");
   await broker?.close();
-  makeBroker({
+  await makeBroker({
     codex: adapter("codex", async () =>
       client({
         async prompt() {
@@ -943,9 +961,9 @@ test("native rejection is failed; malformed terminal identity remains unknown", 
 });
 
 test("native stop receipt confirms cancellation", async () => {
-  const connections = setup();
-  const lane = assign(
-    connections.create({
+  const connections = await setup();
+  const lane = await assign(
+    await connections.create({
       harness: "codex",
       authentication: { method: "native_login", billing_source: "subscription" },
     }),
@@ -954,7 +972,7 @@ test("native stop receipt confirms cancellation", async () => {
   const ready = new Promise<void>((resolve) => {
     entered = resolve;
   });
-  const native = makeBroker({
+  const native = await makeBroker({
     codex: adapter("codex", async () =>
       client({
         async prompt(request) {
@@ -973,25 +991,25 @@ test("native stop receipt confirms cancellation", async () => {
     ),
   });
   await native.openSession(lane.thread.id, lane.agent.id);
-  const receipt = f.lifecycle.admit({
+  const receipt = await f.lifecycle.admit({
     agent_id: lane.agent.id,
     thread_id: lane.thread.id,
     text: "Please inspect this project.",
   });
   const bg = new Background(f.lifecycle, native.executors());
-  bg.tick();
+  await bg.tick();
   await ready;
   await bg.stop();
-  expect(f.store.get("run", receipt.run.id)).toMatchObject({
+  expect(await f.store.get("run", receipt.run.id)).toMatchObject({
     status: "cancelled",
     cancellation: "confirmed",
   });
 });
 
 test("native text redaction covers secrets split across events", async () => {
-  const connections = setup();
-  const lane = assign(
-    connections.create({
+  const connections = await setup();
+  const lane = await assign(
+    await connections.create({
       harness: "codex",
       authentication: {
         method: "api_key",
@@ -1001,7 +1019,7 @@ test("native text redaction covers secrets split across events", async () => {
     }),
   );
   const published: NativeEvent[] = [];
-  makeBroker(
+  await makeBroker(
     {
       codex: adapter("codex", async () =>
         client({
@@ -1039,10 +1057,10 @@ test("native text redaction covers secrets split across events", async () => {
 });
 
 test("API exposes host detection states for both manifests and authenticated revocation", async () => {
-  const connections = setup();
-  const leaseTools = new ProductTools(f.lifecycle);
+  const connections = await setup();
+  const leaseTools = await ProductTools.open(f.lifecycle);
   for (const state of ["supported", "too_old", "missing", "unknown", "probe_failed"] as const) {
-    const app = createApi(f.lifecycle, new Background(f.lifecycle), "x".repeat(64), {
+    const app = await createApi(f.lifecycle, new Background(f.lifecycle), "x".repeat(64), {
       connections,
       tools: leaseTools,
       detect: async (harness) => ({
@@ -1067,29 +1085,29 @@ test("API exposes host detection states for both manifests and authenticated rev
 });
 
 test("tool capability revocation during an asynchronous handler blocks its final effect", async () => {
-  const connections = setup();
-  const connection = connections.create({
+  const connections = await setup();
+  const connection = await connections.create({
     harness: "codex",
     authentication: { method: "native_login", billing_source: "subscription" },
   });
-  const lane = assign(connection);
-  const native = makeBroker({ codex: adapter("codex") });
+  const lane = await assign(connection);
+  const native = await makeBroker({ codex: adapter("codex") });
   await native.openSession(lane.thread.id, lane.agent.id);
-  f.lifecycle.admit({ agent_id: lane.agent.id, thread_id: lane.thread.id, text: "Inspect" });
-  const run = f.lifecycle.claimNext(lane.thread.id, lane.agent.id);
+  await f.lifecycle.admit({ agent_id: lane.agent.id, thread_id: lane.thread.id, text: "Inspect" });
+  const run = await f.lifecycle.claimNext(lane.thread.id, lane.agent.id);
   if (!run) throw new Error("Missing run.");
-  const lease = tools.issue(run);
+  const lease = await tools.issue(run);
   let effects = 0;
   tools.register("ngertiin.revoke_fixture", {
     schema: z.strictObject({}),
     resources: () => [],
     async execute(_input, access) {
-      const current = connections.get(connection.id);
-      connections.update(current, {
+      const current = await connections.get(connection.id);
+      await connections.update(current, {
         capabilities: { ...current.capabilities, product_tools: "unsupported" },
       });
       await Promise.resolve();
-      access.authorize();
+      await access.authorize();
       effects++;
       return {};
     },
@@ -1101,9 +1119,9 @@ test("tool capability revocation during an asynchronous handler blocks its final
 });
 
 test("broker shutdown fences late completion and text after an unconfirmed native stop", async () => {
-  const connections = setup();
-  const lane = assign(
-    connections.create({
+  const connections = await setup();
+  const lane = await assign(
+    await connections.create({
       harness: "codex",
       authentication: { method: "native_login", billing_source: "subscription" },
     }),
@@ -1114,7 +1132,7 @@ test("broker shutdown fences late completion and text after an unconfirmed nativ
     entered = resolve;
   });
   const events: NativeEvent[] = [];
-  const native = makeBroker(
+  const native = await makeBroker(
     {
       codex: adapter("codex", async () =>
         client({
@@ -1141,42 +1159,42 @@ test("broker shutdown fences late completion and text after an unconfirmed nativ
     (_run, event) => events.push(event),
   );
   await native.openSession(lane.thread.id, lane.agent.id);
-  const receipt = f.lifecycle.admit({
+  const receipt = await f.lifecycle.admit({
     agent_id: lane.agent.id,
     thread_id: lane.thread.id,
     text: "Inspect",
   });
   const bg = new Background(f.lifecycle, native.executors());
-  bg.tick();
+  await bg.tick();
   await ready;
   await bg.stop(1);
   await native.close();
-  const cursor = f.store.events(0).at(-1)?.cursor;
+  const cursor = (await f.store.events(0)).at(-1)?.cursor;
   finish();
   await bg.idle();
-  expect(f.store.get("run", receipt.run.id)).toMatchObject({
+  expect(await f.store.get("run", receipt.run.id)).toMatchObject({
     status: "unknown",
     native_run_id: receipt.run.id,
   });
-  expect(f.store.events(0).at(-1)?.cursor).toBe(cursor);
+  expect((await f.store.events(0)).at(-1)?.cursor).toBe(cursor);
   expect(events.some((event) => event.type === "text")).toBe(false);
 });
 
 test("MCP transport validates origin/protocol, initialization and notification responses", async () => {
-  const connections = setup();
-  const lane = assign(
-    connections.create({
+  const connections = await setup();
+  const lane = await assign(
+    await connections.create({
       harness: "codex",
       authentication: { method: "native_login", billing_source: "subscription" },
     }),
   );
-  const native = makeBroker({ codex: adapter("codex") });
+  const native = await makeBroker({ codex: adapter("codex") });
   await native.openSession(lane.thread.id, lane.agent.id);
-  f.lifecycle.admit({ agent_id: lane.agent.id, thread_id: lane.thread.id, text: "Inspect" });
-  const run = f.lifecycle.claimNext(lane.thread.id, lane.agent.id);
+  await f.lifecycle.admit({ agent_id: lane.agent.id, thread_id: lane.thread.id, text: "Inspect" });
+  const run = await f.lifecycle.claimNext(lane.thread.id, lane.agent.id);
   if (!run) throw new Error("Missing run.");
-  const lease = tools.issue(run);
-  const app = createApi(f.lifecycle, new Background(f.lifecycle), "x".repeat(64), {
+  const lease = await tools.issue(run);
+  const app = await createApi(f.lifecycle, new Background(f.lifecycle), "x".repeat(64), {
     connections,
     tools,
   });
@@ -1218,16 +1236,16 @@ test("MCP transport validates origin/protocol, initialization and notification r
 });
 
 test("native account change after session initialization cannot dispatch under the old connection", async () => {
-  const connections = setup();
-  const lane = assign(
-    connections.create({
+  const connections = await setup();
+  const lane = await assign(
+    await connections.create({
       harness: "codex",
       authentication: { method: "native_login", billing_source: "subscription" },
     }),
   );
   let inspectCount = 0;
   let prompts = 0;
-  makeBroker({
+  await makeBroker({
     codex: adapter("codex", async () =>
       client({
         async inspect() {
@@ -1250,23 +1268,23 @@ test("native account change after session initialization cannot dispatch under t
 });
 
 test("a connection change starts a separate native session and retains the previous mapping", async () => {
-  const connections = setup();
-  const first = connections.create({
+  const connections = await setup();
+  const first = await connections.create({
     harness: "codex",
     authentication: { method: "native_login", billing_source: "subscription" },
   });
-  const lane = assign(first);
-  f.lifecycle.bind(lane.thread.id, lane.agent.id, "private-native-session");
-  const second = connections.create({
+  const lane = await assign(first);
+  await f.lifecycle.bind(lane.thread.id, lane.agent.id, "private-native-session");
+  const second = await connections.create({
     harness: "codex",
     authentication: { method: "native_login", billing_source: "subscription" },
   });
-  f.store.put(
+  await f.store.put(
     { ...lane.agent, connection_id: second.id, revision: lane.agent.revision + 1 },
     lane.agent.revision,
   );
   let resumes = 0;
-  const native = makeBroker({
+  const native = await makeBroker({
     codex: adapter("codex", async () =>
       client({
         async resume(identity) {
@@ -1278,14 +1296,14 @@ test("a connection change starts a separate native session and retains the previ
   });
   const binding = await native.openSession(lane.thread.id, lane.agent.id);
   expect(binding.connection_id).toBe(second.id);
-  expect(f.store.list("binding").filter((item) => !item.active)).toHaveLength(1);
+  expect((await f.store.list("binding")).filter((item) => !item.active)).toHaveLength(1);
   expect(resumes).toBe(0);
 });
 
 test("version and executable failures cannot reach the adapter connect boundary", async () => {
-  const connections = setup();
+  const connections = await setup();
   let connects = 0;
-  tools = new ProductTools(f.lifecycle);
+  tools = await ProductTools.open(f.lifecycle);
   const cases = {
     missing: "EXECUTABLE_MISSING",
     too_old: "VERSION_TOO_OLD",
@@ -1293,8 +1311,8 @@ test("version and executable failures cannot reach the adapter connect boundary"
     probe_failed: "PROBE_FAILED",
   } as const;
   for (const harness of ["codex", "muse"] as const) {
-    const lane = assign(
-      connections.create({
+    const lane = await assign(
+      await connections.create({
         harness,
         authentication: { method: "native_login", billing_source: "subscription" },
       }),
@@ -1326,13 +1344,13 @@ test("version and executable failures cannot reach the adapter connect boundary"
 });
 
 test("protocol request and close deadlines bound an unresponsive client without fabricating login", async () => {
-  const connections = setup();
-  const connection = connections.create({
+  const connections = await setup();
+  const connection = await connections.create({
     harness: "codex",
     authentication: { method: "native_login", billing_source: "subscription" },
   });
-  const lane = assign(connection);
-  tools = new ProductTools(f.lifecycle);
+  const lane = await assign(connection);
+  tools = await ProductTools.open(f.lifecycle);
   broker = new HarnessBroker(
     f.lifecycle,
     new CredentialContexts(f.dir),
@@ -1362,25 +1380,27 @@ test("protocol request and close deadlines bound an unresponsive client without 
   await expect(broker.openSession(lane.thread.id, lane.agent.id)).rejects.toThrow(
     "SERVICE_UNAVAILABLE",
   );
-  expect(connections.get(connection.id).login).toBe("unknown");
-  expect(f.store.list("binding")).toHaveLength(0);
+  expect((await connections.get(connection.id)).login).toBe("unknown");
+  expect(await f.store.list("binding")).toHaveLength(0);
 });
 
 test("two simultaneous key connections on the same harness retain their selected accounts and models", async () => {
-  const connections = setup();
+  const connections = await setup();
   const references = [crypto.randomUUID(), crypto.randomUUID()];
-  const lanes = references.map((credential_ref, index) =>
-    assign(
-      connections.create({
-        harness: "codex",
-        authentication: { method: "api_key", billing_source: "api_key", credential_ref },
-      }),
-      `Agent ${index}`,
-      index === 0 ? "model-a" : "model-b",
-    ),
+  const lanes = await asyncMap(
+    references,
+    async (credential_ref, index) =>
+      await assign(
+        await connections.create({
+          harness: "codex",
+          authentication: { method: "api_key", billing_source: "api_key", credential_ref },
+        }),
+        `Agent ${index}`,
+        index === 0 ? "model-a" : "model-b",
+      ),
   );
   const seen: string[] = [];
-  const native = makeBroker(
+  const native = await makeBroker(
     {
       codex: adapter("codex", async (context) => {
         const index = context.env.OPENAI_API_KEY === "secret-a" ? 0 : 1;
@@ -1405,32 +1425,32 @@ test("two simultaneous key connections on the same harness retain their selected
     undefined,
     (ref) => (ref === references[0] ? "secret-a" : "secret-b"),
   );
-  await Promise.all(lanes.map((lane) => native.openSession(lane.thread.id, lane.agent.id)));
+  await Promise.all(lanes.map(async (lane) => native.openSession(lane.thread.id, lane.agent.id)));
   for (const lane of lanes)
-    f.lifecycle.admit({
+    await f.lifecycle.admit({
       agent_id: lane.agent.id,
       thread_id: lane.thread.id,
       text: "Please inspect this project.",
     });
   const bg = new Background(f.lifecycle, native.executors());
-  bg.tick();
+  await bg.tick();
   await bg.idle();
   expect(new Set(seen).size).toBe(2);
-  expect(f.store.list("run").map((run) => run.status)).toEqual(["succeeded", "succeeded"]);
-  expect(JSON.stringify(f.store.events(0))).not.toContain("secret-a");
-  expect(JSON.stringify(f.store.events(0))).not.toContain("secret-b");
+  expect((await f.store.list("run")).map((run) => run.status)).toEqual(["succeeded", "succeeded"]);
+  expect(JSON.stringify(await f.store.events(0))).not.toContain("secret-a");
+  expect(JSON.stringify(await f.store.events(0))).not.toContain("secret-b");
 });
 
 test("concurrent steering receipts send once and a lost acknowledgement never resends", async () => {
-  const connections = setup();
-  const lane = assign(
-    connections.create({
+  const connections = await setup();
+  const lane = await assign(
+    await connections.create({
       harness: "codex",
       authentication: { method: "native_login", billing_source: "subscription" },
     }),
   );
   let calls = 0;
-  const native = makeBroker({
+  const native = await makeBroker({
     codex: adapter("codex", async () =>
       client({
         async inspect() {
@@ -1451,38 +1471,38 @@ test("concurrent steering receipts send once and a lost acknowledgement never re
     ),
   });
   await native.openSession(lane.thread.id, lane.agent.id);
-  const active = f.lifecycle.admit({
+  const active = await f.lifecycle.admit({
     thread_id: lane.thread.id,
     agent_id: lane.agent.id,
     text: "Inspect",
   });
-  const run = f.lifecycle.claimNext(lane.thread.id, lane.agent.id);
+  const run = await f.lifecycle.claimNext(lane.thread.id, lane.agent.id);
   if (!run?.dispatch_token) throw new Error("Missing run.");
-  f.lifecycle.started(run.id, run.dispatch_token, "native-turn");
-  const queued = f.lifecycle.admit({
+  await f.lifecycle.started(run.id, run.dispatch_token, "native-turn");
+  const queued = await f.lifecycle.admit({
     thread_id: lane.thread.id,
     agent_id: lane.agent.id,
     text: "Correction",
   });
   const controls = new RunControls(f.lifecycle);
-  const control = controls.requestSteer(active.run.id, { queued_run_id: queued.run.id });
+  const control = await controls.requestSteer(active.run.id, { queued_run_id: queued.run.id });
   const results = await Promise.all(
-    Array.from({ length: 16 }, () => native.dispatchSteer(control.id)),
+    Array.from({ length: 16 }, async () => await native.dispatchSteer(control.id)),
   );
   expect(results.every((item) => item.state === "unknown")).toBe(true);
   expect(calls).toBe(1);
   expect((await native.dispatchSteer(control.id)).state).toBe("unknown");
   expect(calls).toBe(1);
-  expect(f.store.get("run", queued.run.id).delivery).toBe("unknown");
+  expect((await f.store.get("run", queued.run.id)).delivery).toBe("unknown");
 });
 
 test("native receipt reads recheck revocation before committing recovered output", async () => {
-  const connections = setup();
-  const connection = connections.create({
+  const connections = await setup();
+  const connection = await connections.create({
     harness: "codex",
     authentication: { method: "native_login", billing_source: "subscription" },
   });
-  const lane = assign(connection);
+  const lane = await assign(connection);
   let ready: () => void = () => {};
   let release: () => void = () => {};
   const entered = new Promise<void>((resolve) => {
@@ -1491,7 +1511,7 @@ test("native receipt reads recheck revocation before committing recovered output
   const held = new Promise<void>((resolve) => {
     release = resolve;
   });
-  const native = makeBroker({
+  const native = await makeBroker({
     codex: adapter("codex", async () =>
       client({
         async reconcile(identity, nativeRunId) {
@@ -1508,41 +1528,41 @@ test("native receipt reads recheck revocation before committing recovered output
     ),
   });
   await native.openSession(lane.thread.id, lane.agent.id);
-  f.lifecycle.admit({ thread_id: lane.thread.id, agent_id: lane.agent.id, text: "Inspect" });
-  const run = f.lifecycle.claimNext(lane.thread.id, lane.agent.id);
+  await f.lifecycle.admit({ thread_id: lane.thread.id, agent_id: lane.agent.id, text: "Inspect" });
+  const run = await f.lifecycle.claimNext(lane.thread.id, lane.agent.id);
   if (!run?.dispatch_token) throw new Error("Missing run.");
-  f.lifecycle.started(run.id, run.dispatch_token, "native-turn");
-  f.lifecycle.settle(run.id, run.dispatch_token, "unknown");
+  await f.lifecycle.started(run.id, run.dispatch_token, "native-turn");
+  await f.lifecycle.settle(run.id, run.dispatch_token, "unknown");
   const recovering = native.reconcile(run.id);
   await entered;
-  connections.revoke(connection.id);
+  await connections.revoke(connection.id);
   release();
   await expect(recovering).rejects.toThrow("STALE_DISPATCH");
-  expect(f.store.get("run", run.id).status).toBe("unknown");
-  expect(f.store.answer(run.id)).toBeNull();
+  expect((await f.store.get("run", run.id)).status).toBe("unknown");
+  expect(await f.store.answer(run.id)).toBeNull();
 });
 
 test("owner receipt inspection releases revoked group work without restoring its workspace or publishing its output", async () => {
-  const connections = setup();
-  const connection = connections.create({
+  const connections = await setup();
+  const connection = await connections.create({
     harness: "codex",
     authentication: { method: "native_login", billing_source: "subscription" },
   });
-  const lane = assign(connection);
-  const remaining = f.lifecycle.createAgent({
+  const lane = await assign(connection);
+  const remaining = await f.lifecycle.createAgent({
     name: "Remaining member",
     harness: "codex",
     connection_id: connection.id,
     model_id: "model-a",
     reasoning: "high",
   });
-  const group = f.lifecycle.create("thread", {
+  const group = await f.lifecycle.create("thread", {
     type: "group",
     member_agent_ids: [lane.agent.id, remaining.id],
   });
   let recoveredWithoutWorkspace = false;
   let prompts = 0;
-  const native = makeBroker({
+  const native = await makeBroker({
     codex: adapter("codex", async (context) =>
       client({
         async prompt() {
@@ -1562,32 +1582,36 @@ test("owner receipt inspection releases revoked group work without restoring its
     ),
   });
   await native.openSession(group.id, lane.agent.id);
-  f.lifecycle.admit({
+  await f.lifecycle.admit({
     thread_id: group.id,
     agent_id: lane.agent.id,
     text: "Inspect the shared source.",
   });
-  const run = f.lifecycle.claimNext(group.id, lane.agent.id);
+  const run = await f.lifecycle.claimNext(group.id, lane.agent.id);
   if (!run?.dispatch_token) throw new Error("Missing group run.");
-  f.lifecycle.started(run.id, run.dispatch_token, "revoked-native-turn");
-  f.lifecycle.settle(run.id, run.dispatch_token, "unknown");
-  new Groups(f.lifecycle).membership(group.id, {
+  await f.lifecycle.started(run.id, run.dispatch_token, "revoked-native-turn");
+  await f.lifecycle.settle(run.id, run.dispatch_token, "unknown");
+  await new Groups(f.lifecycle).membership(group.id, {
     expected_revision: group.revision,
     member_agent_ids: [remaining.id],
   });
   expect((await native.reconcile(run.id)).status).toBe("cancelled");
   expect(recoveredWithoutWorkspace).toBe(true);
   expect(prompts).toBe(0);
-  expect(f.store.answer(run.id)).toBeNull();
-  f.lifecycle.admit({ thread_id: group.id, agent_id: remaining.id, text: "Continue group work." });
+  expect(await f.store.answer(run.id)).toBeNull();
+  await f.lifecycle.admit({
+    thread_id: group.id,
+    agent_id: remaining.id,
+    text: "Continue group work.",
+  });
   await native.openSession(group.id, remaining.id);
-  expect(f.lifecycle.claimNext(group.id, remaining.id)?.status).toBe("dispatching");
+  expect((await f.lifecycle.claimNext(group.id, remaining.id))?.status).toBe("dispatching");
 });
 
 test("an unconfirmed native stop reaches a bounded unknown outcome and fences late events", async () => {
-  const connections = setup();
-  const lane = assign(
-    connections.create({
+  const connections = await setup();
+  const lane = await assign(
+    await connections.create({
       harness: "codex",
       authentication: { method: "native_login", billing_source: "subscription" },
     }),
@@ -1597,7 +1621,7 @@ test("an unconfirmed native stop reaches a bounded unknown outcome and fences la
     ready = resolve;
   });
   let closes = 0;
-  tools = new ProductTools(f.lifecycle);
+  tools = await ProductTools.open(f.lifecycle);
   broker = new HarnessBroker(
     f.lifecycle,
     new CredentialContexts(f.dir),
@@ -1631,25 +1655,25 @@ test("an unconfirmed native stop reaches a bounded unknown outcome and fences la
     { request_ms: 20, close_ms: 20 },
   );
   await broker.openSession(lane.thread.id, lane.agent.id);
-  const admitted = f.lifecycle.admit({
+  const admitted = await f.lifecycle.admit({
     thread_id: lane.thread.id,
     agent_id: lane.agent.id,
     text: "Inspect",
   });
   const background = new Background(f.lifecycle, broker.executors());
-  background.tick();
+  await background.tick();
   await entered;
-  f.lifecycle.cancel(admitted.run.id);
-  background.notifyControls();
-  expect(f.store.get("run", admitted.run.id).status).toBe("cancel_requested");
+  await f.lifecycle.cancel(admitted.run.id);
+  await background.notifyControls();
+  expect((await f.store.get("run", admitted.run.id)).status).toBe("cancel_requested");
   await background.idle();
-  expect(f.store.get("run", admitted.run.id)).toMatchObject({
+  expect(await f.store.get("run", admitted.run.id)).toMatchObject({
     status: "unknown",
     cancellation: "requested",
     diagnostic: { code: "NATIVE_UNKNOWN" },
   });
   expect(closes).toBeGreaterThan(0);
-  background.tick();
+  await background.tick();
   expect(background.activeCount).toBe(0);
   await background.stop();
 });

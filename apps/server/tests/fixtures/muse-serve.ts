@@ -51,7 +51,7 @@ function fail(id: string | number, kind = "commandRejected") {
     `${JSON.stringify({ jsonrpc: "2.0", id, error: { code: -32030, message: "Fixture rejected.", data: { kind, retryable: false } } })}\n`,
   );
 }
-createInterface({ input: process.stdin }).on("line", (line) => {
+createInterface({ input: process.stdin }).on("line", async (line) => {
   void handle(JSON.parse(line));
 });
 async function handle(request: {

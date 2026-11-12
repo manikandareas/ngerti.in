@@ -83,22 +83,24 @@ export class MuseClient implements HarnessClient {
       !host.initializeResult.grantedCapabilities.includes("sessionMcp")
     )
       throw new HarnessError("CAPABILITY_UNSUPPORTED");
-    host.connection.onNotification(({ method, params }) => this.enqueue(method, params));
+    host.connection.onNotification(
+      async ({ method, params }) => await this.enqueue(method, params),
+    );
     host.connection.onServerRequest(async ({ method, params }) => {
       if (method !== "approval/request" && method !== "userInput/request")
         throw new HarnessError("CAPABILITY_UNSUPPORTED");
-      this.enqueue(
+      await this.enqueue(
         method === "approval/request" ? "approval/requested" : "userInput/requested",
         params,
       );
       return {};
     });
-    host.connection.onProtocolError(() => this.fail());
-    void host.connection.closed.then(() => {
-      if (!this.#closed) this.fail();
+    host.connection.onProtocolError(async () => await this.fail());
+    void host.connection.closed.then(async () => {
+      if (!this.#closed) await this.fail();
     });
   }
-  private fail() {
+  private async fail() {
     this.#active?.reject(new HarnessError("NATIVE_UNKNOWN", "unknown"));
     void this.close();
   }
@@ -260,6 +262,9 @@ export class MuseClient implements HarnessClient {
       lease: request.tools,
       signal: request.signal,
       accepted: () => this.#active === active && active.accepted,
+      delivered: () => {
+        request.onEvent({ type: "activity", activity: "generating" });
+      },
     };
     try {
       request.onEvent({ type: "dispatch", native_run_id: active.turn });
@@ -328,7 +333,9 @@ export class MuseClient implements HarnessClient {
     });
   }
   private enqueue(method: string, params: unknown) {
-    this.#events = this.#events.then(() => this.receive(method, params)).catch(() => this.fail());
+    this.#events = this.#events
+      .then(async () => this.receive(method, params))
+      .catch(async () => await this.fail());
   }
   private async receive(method: string, raw: unknown) {
     if (this.#closed) return;

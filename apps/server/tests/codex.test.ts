@@ -14,19 +14,19 @@ import { NativeSessionMissing } from "../src/harness/contracts";
 import { ProductTools } from "../src/harness/tools";
 import { fixture } from "./helpers";
 
-let f: ReturnType<typeof fixture>;
+let f: Awaited<ReturnType<typeof fixture>>;
 let broker: HarnessBroker;
 let background: Background;
-let app: ReturnType<typeof createApi>;
+let app: Awaited<ReturnType<typeof createApi>>;
 const token = "a".repeat(64);
 afterEach(async () => {
   await background?.stop(100);
   await broker?.close();
   if (app?.server) await app.stop();
-  f?.close();
+  await f?.close();
 });
-function compose() {
-  const tools = new ProductTools(f.lifecycle);
+async function compose() {
+  const tools = await ProductTools.open(f.lifecycle);
   broker = new HarnessBroker(
     f.lifecycle,
     new CredentialContexts(f.dir, () => "selected-key"),
@@ -44,39 +44,45 @@ function compose() {
       state: "supported",
       manifest: manifests.codex,
     }),
-    (id, event, outcome) => {
+    async (id, event, outcome) => {
       if (event.type === "text")
-        f.lifecycle.appendAnswer(id, event.text, outcome === "succeeded" ? "complete" : "partial");
+        await f.lifecycle.appendAnswer(
+          id,
+          event.text,
+          outcome === "succeeded" ? "complete" : "partial",
+        );
     },
   );
   background = new Background(f.lifecycle, broker.executors());
-  app = createApi(f.lifecycle, background, token, {
-    connections: broker.connections,
-    tools,
-    broker,
-  }).listen({ hostname: "127.0.0.1", port: 0 });
+  app = (
+    await createApi(f.lifecycle, background, token, {
+      connections: broker.connections,
+      tools,
+      broker,
+    })
+  ).listen({ hostname: "127.0.0.1", port: 0 });
 }
-function setup(key = false) {
-  f = fixture();
-  const connection = new Connections(f.lifecycle).create({
+async function setup(key = false) {
+  f = await fixture();
+  const connection = await new Connections(f.lifecycle).create({
     harness: "codex",
     authentication: key
       ? { method: "api_key", billing_source: "api_key", credential_ref: crypto.randomUUID() }
       : { method: "native_login", billing_source: "subscription" },
   });
-  const agent = f.lifecycle.create("agent", {
+  const agent = (await f.lifecycle.create("agent", {
     name: "Codex",
     harness: "codex",
     connection_id: connection.id,
     model_id: "model-a",
     reasoning: "high",
     instructions: "Keep the conversation private.",
-  }) as Entity<"agent">;
-  const thread = f.lifecycle.create("thread", {
+  })) as Entity<"agent">;
+  const thread = (await f.lifecycle.create("thread", {
     type: "dm",
     member_agent_ids: [agent.id],
-  }) as Entity<"thread">;
-  compose();
+  })) as Entity<"thread">;
+  await compose();
   return { connection, agent, thread };
 }
 async function post(path: string, body = {}) {
@@ -93,19 +99,19 @@ async function post(path: string, body = {}) {
   if (!result.ok) throw new Error(JSON.stringify(value));
   return value;
 }
-async function admit(lane: ReturnType<typeof setup>, text: string) {
+async function admit(lane: Awaited<ReturnType<typeof setup>>, text: string) {
   await post(`/v1/threads/${lane.thread.id}/sessions`, { agent_id: lane.agent.id });
   const { run } = await post("/v1/runs", {
     thread_id: lane.thread.id,
     agent_id: lane.agent.id,
     text,
   });
-  background.tick();
+  await background.tick();
   return run as Entity<"run">;
 }
 async function waitRunning(id: string) {
   for (let i = 0; i < 100; i++) {
-    if (f.store.get("run", id).status === "running") return;
+    if ((await f.store.get("run", id)).status === "running") return;
     await Bun.sleep(5);
   }
   throw new Error("Run did not reach native acceptance.");
@@ -125,70 +131,71 @@ test("only an exact missing-rollout response for the requested resume permits pr
   }
 });
 test("an unused prewarmed Codex thread is replaced after its process closes before first dispatch", async () => {
-  const lane = setup();
+  const lane = await setup();
   const prepared = await broker.openSession(lane.thread.id, lane.agent.id);
-  expect(f.store.list("run")).toHaveLength(0);
+  expect(await f.store.list("run")).toHaveLength(0);
   await background.stop(100);
   await broker.close();
   await app.stop();
-  f.restart();
-  compose();
+  await f.restart();
+  await compose();
   const run = await admit(lane, "First message after unused prewarm closed.");
   await background.idle();
-  expect(f.store.get("run", run.id).status).toBe("succeeded");
-  const active = f.store.list("binding").find((binding) => binding.active);
+  expect((await f.store.get("run", run.id)).status).toBe("succeeded");
+  const active = (await f.store.list("binding")).find((binding) => binding.active);
   expect(active?.native_session_id).not.toBe(prepared.native_session_id);
   expect(active?.generation).toBe(prepared.generation + 1);
-  expect(f.store.get("binding", prepared.id).active).toBe(false);
-  expect(f.store.list("message").filter((message) => message.author === "agent")).toHaveLength(1);
+  expect((await f.store.get("binding", prepared.id)).active).toBe(false);
+  expect(
+    (await f.store.list("message")).filter((message) => message.author === "agent"),
+  ).toHaveLength(1);
 });
 
 test("a missing Codex rollout used by a prior dispatch is never silently replaced or replayed", async () => {
-  const lane = setup();
+  const lane = await setup();
   const run = await admit(lane, "A previously completed native conversation.");
   await background.idle();
-  const binding = f.store.list("binding").find((item) => item.active);
+  const binding = (await f.store.list("binding")).find((item) => item.active);
   if (!binding) throw new Error("The completed run has no active native binding.");
-  const messages = f.store.list("message");
+  const messages = await f.store.list("message");
   await background.stop(100);
   await broker.close();
   await app.stop();
   const file = join(f.dir, "connections", lane.connection.id, "codex", "fixture-sessions.json");
   renameSync(file, `${file}.saved`);
-  f.restart();
-  compose();
+  await f.restart();
+  await compose();
   await expect(broker.openSession(lane.thread.id, lane.agent.id)).rejects.toMatchObject({
     code: "NATIVE_REJECTED",
   });
-  expect(f.store.get("run", run.id).status).toBe("succeeded");
-  expect(f.store.get("binding", binding.id)).toEqual(binding);
-  expect(f.store.list("message")).toEqual(messages);
+  expect((await f.store.get("run", run.id)).status).toBe("succeeded");
+  expect(await f.store.get("binding", binding.id)).toEqual(binding);
+  expect(await f.store.list("message")).toEqual(messages);
 });
 
 test("Codex JSONL fixture performs an HTTP product-tool round trip and persists owned output", async () => {
-  const lane = setup();
+  const lane = await setup();
   const run = await admit(lane, "Private DM input 日本語");
   await background.idle();
-  expect(f.store.get("run", run.id)).toMatchObject({
+  expect(await f.store.get("run", run.id)).toMatchObject({
     status: "succeeded",
     native_run_id: expect.any(String),
   });
-  const answer = f.store.list("message").find((m) => m.author === "agent");
+  const answer = (await f.store.list("message")).find((m) => m.author === "agent");
   expect(answer).toMatchObject({ thread_id: lane.thread.id, run_id: run.id, state: "complete" });
   expect(answer?.text).toContain(lane.thread.id);
   expect(answer?.text).toContain("Private DM input 日本語");
-  expect(f.store.get("connection", lane.connection.id)).toMatchObject({
+  expect(await f.store.get("connection", lane.connection.id)).toMatchObject({
     login: "authenticated",
     discovery: "succeeded",
     inference: "succeeded",
   });
 });
 test("Codex publishes search activity at start and preserves overlapping file work", async () => {
-  const lane = setup();
+  const lane = await setup();
   const run = await admit(lane, "activity-search");
   await background.idle();
-  const observations = f.store
-    .events(0)
+  const observations = (await f.store.events(0))
     .filter((event) => event.entity_id === run.id)
     .map((event) => event.data as Entity<"run">);
   expect(
@@ -200,168 +207,176 @@ test("Codex publishes search activity at start and preserves overlapping file wo
       (value) => value.active_tools?.length === 1 && value.active_tools[0].kind === "updating",
     ),
   ).toBe(true);
-  expect(f.store.get("run", run.id)).toMatchObject({ status: "succeeded", active_tools: [] });
+  expect(await f.store.get("run", run.id)).toMatchObject({ status: "succeeded", active_tools: [] });
 });
 test("native session and separate DM/group histories survive backend and child restart", async () => {
-  const lane = setup();
-  const group = f.lifecycle.create("thread", {
+  const lane = await setup();
+  const group = (await f.lifecycle.create("thread", {
     type: "group",
     member_agent_ids: [lane.agent.id],
-  }) as Entity<"thread">;
+  })) as Entity<"thread">;
   await admit(lane, "DM-secret");
   await background.idle();
   await admit({ ...lane, thread: group }, "group-secret");
   await background.idle();
-  const bindings = f.store.list("binding");
+  const bindings = await f.store.list("binding");
   expect(new Set(bindings.map((b) => b.native_session_id)).size).toBe(2);
   await background.stop();
   await broker.close();
   await app.stop();
-  f.restart();
-  compose();
+  await f.restart();
+  await compose();
   const run = await admit(lane, "DM-after-restart");
   await background.idle();
-  expect(f.store.list("binding")).toEqual(bindings);
-  const answer = f.store.list("message").find((m) => m.author === "agent" && m.run_id === run.id);
+  expect(await f.store.list("binding")).toEqual(bindings);
+  const answer = (await f.store.list("message")).find(
+    (m) => m.author === "agent" && m.run_id === run.id,
+  );
   expect(answer?.text).toContain("DM-secret");
   expect(answer?.text).not.toContain("group-secret");
 });
 test("selected API-key authentication is observed separately without a subscription fallback", async () => {
-  const lane = setup(true);
+  const lane = await setup(true);
   await admit(lane, "Key request");
   await background.idle();
-  expect(f.store.get("connection", lane.connection.id)).toMatchObject({
+  expect(await f.store.get("connection", lane.connection.id)).toMatchObject({
     authentication: { method: "api_key", billing_source: "api_key" },
     login: "authenticated",
     inference: "succeeded",
   });
-  expect(JSON.stringify(f.store.events(0))).not.toContain("selected-key");
+  expect(JSON.stringify(await f.store.events(0))).not.toContain("selected-key");
 });
 test("native interruption ack stays intent until interrupted terminal confirmation", async () => {
-  const lane = setup();
+  const lane = await setup();
   const run = await admit(lane, "wait");
   await waitRunning(run.id);
   await post(`/v1/runs/${run.id}/cancel`);
-  background.tick();
-  expect(f.store.get("run", run.id).cancellation).toBe("requested");
+  await background.tick();
+  expect((await f.store.get("run", run.id)).cancellation).toBe("requested");
   await background.idle();
-  expect(f.store.get("run", run.id)).toMatchObject({
+  expect(await f.store.get("run", run.id)).toMatchObject({
     status: "cancelled",
     cancellation: "confirmed",
   });
 });
 test("steer is bound to the active native turn and keeps the same run", async () => {
-  const lane = setup();
+  const lane = await setup();
   const run = await admit(lane, "wait");
   await waitRunning(run.id);
   await post(`/v1/runs/${run.id}/steer`, { text: "Use the updated direction" });
   await background.idle();
-  expect(f.store.get("run", run.id).status).toBe("succeeded");
-  expect(f.store.list("run")).toHaveLength(1);
-  expect(f.store.list("message").at(-1)?.text).toBe("Use the updated direction");
+  expect((await f.store.get("run", run.id)).status).toBe("succeeded");
+  expect(await f.store.list("run")).toHaveLength(1);
+  expect((await f.store.list("message")).at(-1)?.text).toBe("Use the updated direction");
 });
 test("native permission escalation is declined and reported unsupported", async () => {
-  const lane = setup();
+  const lane = await setup();
   await admit(lane, "permission");
   await background.idle();
-  expect(f.store.get("connection", lane.connection.id).capabilities.permission_requests).toBe(
-    "unsupported",
-  );
-  expect(f.store.list("message").at(-1)?.text).toBe('{"decision":"decline"}');
+  expect(
+    (await f.store.get("connection", lane.connection.id)).capabilities.permission_requests,
+  ).toBe("unsupported");
+  expect((await f.store.list("message")).at(-1)?.text).toBe('{"decision":"decline"}');
 });
 test("a native tool request cannot use another thread scope", async () => {
-  const lane = setup();
+  const lane = await setup();
   const run = await admit(lane, "wrong-scope");
   await background.idle();
-  expect(f.store.get("run", run.id).status).toBe("failed");
-  expect(f.store.list("message").filter((m) => m.author === "agent")).toHaveLength(0);
+  expect((await f.store.get("run", run.id)).status).toBe("failed");
+  expect((await f.store.list("message")).filter((m) => m.author === "agent")).toHaveLength(0);
 });
 test("process loss preserves partial output and blocks automatic replay", async () => {
-  const lane = setup();
+  const lane = await setup();
   const run = await admit(lane, "disconnect");
   await background.idle();
-  expect(f.store.get("run", run.id).status).toBe("unknown");
-  expect(f.store.list("message").at(-1)).toMatchObject({
+  expect((await f.store.get("run", run.id)).status).toBe("unknown");
+  expect((await f.store.list("message")).at(-1)).toMatchObject({
     text: "Partial answer",
     state: "partial",
   });
-  background.tick();
+  await background.tick();
   expect(background.activeCount).toBe(0);
 });
 test("mismatched native terminal identity remains unknown", async () => {
-  const lane = setup();
+  const lane = await setup();
   const run = await admit(lane, "wrong-terminal");
   await background.idle();
-  expect(f.store.get("run", run.id).status).toBe("unknown");
+  expect((await f.store.get("run", run.id)).status).toBe("unknown");
 });
 test("explicit native turn rejection fails without publishing native error secrets", async () => {
-  const lane = setup();
+  const lane = await setup();
   const run = await admit(lane, "reject");
   await background.idle();
-  expect(f.store.get("run", run.id).status).toBe("failed");
-  expect(JSON.stringify(f.store.events(0))).not.toContain("sk-native-secret");
+  expect((await f.store.get("run", run.id)).status).toBe("failed");
+  expect(JSON.stringify(await f.store.events(0))).not.toContain("sk-native-secret");
 });
 
 test("Codex streams a stable partial message before the native turn completes", async () => {
-  const lane = setup();
+  const lane = await setup();
   const run = await admit(lane, "stream-wait");
   await waitRunning(run.id);
-  for (let i = 0; i < 100 && !f.store.list("message").some((item) => item.author === "agent"); i++)
+  for (
+    let i = 0;
+    i < 100 && !(await f.store.list("message")).some((item) => item.author === "agent");
+    i++
+  )
     await Bun.sleep(5);
-  const partial = f.store.list("message").find((item) => item.author === "agent");
+  const partial = (await f.store.list("message")).find((item) => item.author === "agent");
   expect(partial?.state).toBe("partial");
   expect(partial?.text).toContain("Streaming native output");
-  expect(f.store.get("run", run.id).status).toBe("running");
+  expect((await f.store.get("run", run.id)).status).toBe("running");
   await post(`/v1/runs/${run.id}/steer`, { text: "Finish with this correction" });
   await background.idle();
-  expect(f.store.list("message").filter((item) => item.author === "agent")).toHaveLength(1);
-  expect(f.store.get("message", partial?.id as string).state).toBe("complete");
+  expect((await f.store.list("message")).filter((item) => item.author === "agent")).toHaveLength(1);
+  expect((await f.store.get("message", partial?.id as string)).state).toBe("complete");
 });
 
 test("Codex reconciles native commit before publication after restart without repeating a tool effect", async () => {
-  const lane = setup();
+  const lane = await setup();
   const command = crypto.randomUUID();
   const run = await admit(
     lane,
     `crash-after-commit:${JSON.stringify({ name: "ngertiin.update_agent", arguments: { command_id: command, agent_id: lane.agent.id, expected_revision: 1, changes: { soul: "Committed exactly once" } } })}`,
   );
   await background.idle();
-  expect(f.store.get("run", run.id).status).toBe("unknown");
-  expect(f.store.get("agent", lane.agent.id).revision).toBe(2);
+  expect((await f.store.get("run", run.id)).status).toBe("unknown");
+  expect((await f.store.get("agent", lane.agent.id)).revision).toBe(2);
   await background.stop();
   await broker.close();
   await app.stop();
-  f.restart();
-  compose();
+  await f.restart();
+  await compose();
   const result = await post(`/v1/runs/${run.id}/reconcile`, {});
   expect(result.status).toBe("succeeded");
-  const cursor = f.store.cursor;
+  const cursor = await f.store.cursor;
   expect((await post(`/v1/runs/${run.id}/reconcile`, {})).status).toBe("succeeded");
-  expect(f.store.cursor).toBe(cursor);
-  expect(f.store.get("agent", lane.agent.id)).toMatchObject({
+  expect(await f.store.cursor).toBe(cursor);
+  expect(await f.store.get("agent", lane.agent.id)).toMatchObject({
     revision: 2,
     soul: "Committed exactly once",
   });
-  expect(f.store.list("run")).toHaveLength(1);
-  expect(f.store.list("message").filter((item) => item.author === "agent")).toHaveLength(1);
-  expect(f.store.list("message").find((item) => item.author === "agent")?.state).toBe("complete");
+  expect(await f.store.list("run")).toHaveLength(1);
+  expect((await f.store.list("message")).filter((item) => item.author === "agent")).toHaveLength(1);
+  expect((await f.store.list("message")).find((item) => item.author === "agent")?.state).toBe(
+    "complete",
+  );
 });
 
 test("default reasoning omits the native config override and completes a turn", async () => {
-  const lane = setup();
-  f.lifecycle.updateAgent(lane.agent.id, {
+  const lane = await setup();
+  await f.lifecycle.updateAgent(lane.agent.id, {
     expected_revision: lane.agent.revision,
     changes: { reasoning: null },
   });
   const run = await admit(lane, "Use the native reasoning default.");
   await background.idle();
-  expect(f.store.get("run", run.id).status).toBe("succeeded");
+  expect((await f.store.get("run", run.id)).status).toBe("succeeded");
 });
 
 test("native commentary and final answer item phases stay separate in live output and receipt recovery", async () => {
-  const lane = setup();
+  const lane = await setup();
   const run = await admit(lane, "phase-output");
   await background.idle();
-  expect(f.store.get("run", run.id).status).toBe("succeeded");
-  expect(f.store.answer(run.id)?.text).toBe("Here is the useful final example.");
+  expect((await f.store.get("run", run.id)).status).toBe("succeeded");
+  expect((await f.store.answer(run.id))?.text).toBe("Here is the useful final example.");
 });

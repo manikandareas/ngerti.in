@@ -19,11 +19,10 @@ export const agentActivities = z.strictObject({
 });
 
 /** Owner-only activity summaries exclude transcripts, native requests and routing contexts. */
-export function readAgentActivities(store: Store): z.infer<typeof agentActivities> {
-  const threads = new Map(store.list("thread").map((thread) => [thread.id, thread]));
+export async function readAgentActivities(store: Store): Promise<z.infer<typeof agentActivities>> {
+  const threads = new Map((await store.list("thread")).map((thread) => [thread.id, thread]));
   const waiting = new Set(
-    store
-      .list("human_request")
+    (await store.list("human_request", { state: "pending" }))
       .filter((request) => request.state === "pending")
       .map((request) => request.source_run_id),
   );
@@ -32,12 +31,11 @@ export function readAgentActivities(store: Store): z.infer<typeof agentActivitie
     { value: z.infer<typeof activity>; priority: number; at: string }
   >();
   const routers = new Map(
-    store
-      .list("group_route")
+    (await store.list("group_route"))
       .filter((route) => ["pending", "unknown"].includes(route.state) && route.router_run_id)
       .map((route) => [route.router_run_id, route.thread_id]),
   );
-  for (const current of store.list("run")) {
+  for (const current of await store.list("run")) {
     const thread = threads.get(routers.get(current.id) ?? current.thread_id);
     if (thread?.purpose !== "conversation" || !thread.member_agent_ids.includes(current.agent_id))
       continue;
@@ -80,5 +78,5 @@ export function readAgentActivities(store: Store): z.infer<typeof agentActivitie
       },
     });
   }
-  return { cursor: store.cursor, items: Array.from(latest.values(), (entry) => entry.value) };
+  return { cursor: await store.cursor, items: Array.from(latest.values(), (entry) => entry.value) };
 }

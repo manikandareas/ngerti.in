@@ -10,8 +10,8 @@ import { AttachmentSubmissions } from "../src/attachments/submissions";
 import { Background } from "../src/background";
 import { fixture } from "./helpers";
 
-let f: ReturnType<typeof fixture>;
-afterEach(() => f?.close());
+let f: Awaited<ReturnType<typeof fixture>>;
+afterEach(async () => await f?.close());
 const token = "a".repeat(64);
 function pdf(pages: string[]) {
   const objects = [
@@ -53,33 +53,34 @@ function upload(
     content_base64: bytes.toString("base64"),
   };
 }
-function running(text: string, ids: string[]) {
+async function running(text: string, ids: string[]) {
   const files = new Artifacts(f.lifecycle);
-  const workspace = files.workspaces.ensure(f.thread.id, f.agent.id);
-  f.lifecycle.bind(f.thread.id, f.agent.id, "attachment-native", workspace);
-  const input = f.lifecycle.admit({
+  const workspace = await files.workspaces.ensure(f.thread.id, f.agent.id);
+  await f.lifecycle.bind(f.thread.id, f.agent.id, "attachment-native", workspace);
+  const input = await f.lifecycle.admit({
     thread_id: f.thread.id,
     agent_id: f.agent.id,
     text,
     artifact_ids: ids,
   });
-  const claimed = f.lifecycle.claimNext(f.thread.id, f.agent.id);
+  const claimed = await f.lifecycle.claimNext(f.thread.id, f.agent.id);
   if (!claimed?.dispatch_token) throw new Error("No run claimed.");
-  f.lifecycle.started(claimed.id, claimed.dispatch_token, "attachment-turn");
+  await f.lifecycle.started(claimed.id, claimed.dispatch_token, "attachment-turn");
   return {
-    run: f.store.get("run", input.run.id),
-    authorize: () => f.lifecycle.authorizeDispatch(claimed.id, claimed.dispatch_token as string),
+    run: await f.store.get("run", input.run.id),
+    authorize: async () =>
+      await f.lifecycle.authorizeDispatch(claimed.id, claimed.dispatch_token as string),
   };
 }
 
 test("private uploads appear in neither workspace nor artifacts until one message commits", async () => {
-  f = fixture();
+  f = await fixture();
   const service = new AttachmentSubmissions(f.lifecycle);
   const submission = crypto.randomUUID();
-  const staged = service.stage(crypto.randomUUID(), upload(submission));
-  expect(f.store.list("artifact")).toHaveLength(0);
-  expect(f.store.list("workspace")).toHaveLength(0);
-  const result = service.commit(
+  const staged = await service.stage(crypto.randomUUID(), upload(submission));
+  expect(await f.store.list("artifact")).toHaveLength(0);
+  expect(await f.store.list("workspace")).toHaveLength(0);
+  const result = await service.commit(
     {
       submission_id: submission,
       thread_id: f.thread.id,
@@ -90,42 +91,45 @@ test("private uploads appear in neither workspace nor artifacts until one messag
     submission,
   );
   expect(result.message.artifact_ids).toEqual([staged.id]);
-  const artifact = f.store.get("artifact", staged.id);
+  const artifact = await f.store.get("artifact", staged.id);
   expect(artifact.materialization).toBe("pending");
   if (!artifact.workspace_id || !artifact.source_path)
     throw new Error("Missing artifact projection.");
-  const root = service.artifacts.workspaces.path(f.store.get("workspace", artifact.workspace_id));
+  const root = service.artifacts.workspaces.path(
+    await f.store.get("workspace", artifact.workspace_id),
+  );
   expect(existsSync(join(root, artifact.source_path))).toBe(false);
   await service.materialize(result.message);
   expect(readFileSync(join(root, artifact.source_path), "utf8")).toContain("turquoise badger");
 });
 
-test("a missing second upload rolls back all artifact and message publication", () => {
-  f = fixture();
+test("a missing second upload rolls back all artifact and message publication", async () => {
+  f = await fixture();
   const service = new AttachmentSubmissions(f.lifecycle);
   const submission = crypto.randomUUID();
-  const staged = service.stage(crypto.randomUUID(), upload(submission));
-  expect(() =>
-    service.commit(
-      {
-        submission_id: submission,
-        thread_id: f.thread.id,
-        agent_id: f.agent.id,
-        text: "Read both.",
-        artifact_ids: [staged.id, crypto.randomUUID()],
-      },
-      submission,
-    ),
-  ).toThrow();
-  expect(f.store.list("artifact")).toHaveLength(0);
-  expect(f.store.list("message")).toHaveLength(0);
-  expect(f.store.list("attachment_upload")[0]?.state).toBe("staged");
+  const staged = await service.stage(crypto.randomUUID(), upload(submission));
+  await expect(
+    (async () =>
+      service.commit(
+        {
+          submission_id: submission,
+          thread_id: f.thread.id,
+          agent_id: f.agent.id,
+          text: "Read both.",
+          artifact_ids: [staged.id, crypto.randomUUID()],
+        },
+        submission,
+      ))(),
+  ).rejects.toThrow();
+  expect(await f.store.list("artifact")).toHaveLength(0);
+  expect(await f.store.list("message")).toHaveLength(0);
+  expect((await f.store.list("attachment_upload"))[0]?.state).toBe("staged");
 });
 
 test("HTTP lost acknowledgement, exact replay and restart publish one message and artifact", async () => {
-  f = fixture();
+  f = await fixture();
   const submission = crypto.randomUUID();
-  let app = createApi(f.lifecycle, new Background(f.lifecycle), token);
+  let app = await createApi(f.lifecycle, new Background(f.lifecycle), token);
   const call = (path: string, body?: object, key = crypto.randomUUID()) =>
     app.handle(
       new Request(`http://localhost${path}`, {
@@ -149,8 +153,8 @@ test("HTTP lost acknowledgement, exact replay and restart publish one message an
   };
   const first = await (await call("/v1/runs", body, submission)).json();
   expect(first.message.artifact_ids).toEqual([fileId]);
-  f.restart();
-  app = createApi(f.lifecycle, new Background(f.lifecycle), token);
+  await f.restart();
+  app = await createApi(f.lifecycle, new Background(f.lifecycle), token);
   const status = await (await call(`/v1/message-submissions/${submission}`)).json();
   expect(status.state).toBe("committed");
   expect((await (await call("/v1/runs", body, submission)).json()).message.id).toBe(
@@ -159,16 +163,16 @@ test("HTTP lost acknowledgement, exact replay and restart publish one message an
   expect((await call("/v1/runs", { ...body, text: "Changed payload" }, submission)).status).toBe(
     409,
   );
-  expect(f.store.list("message")).toHaveLength(1);
-  expect(f.store.list("artifact")).toHaveLength(1);
+  expect(await f.store.list("message")).toHaveLength(1);
+  expect(await f.store.list("artifact")).toHaveLength(1);
 });
 
 test("restart finishes a committed pending projection and expiry only removes uncommitted bytes", async () => {
-  f = fixture();
+  f = await fixture();
   let service = new AttachmentSubmissions(f.lifecycle);
   const id = crypto.randomUUID();
-  const staged = service.stage(crypto.randomUUID(), upload(id));
-  service.commit(
+  const staged = await service.stage(crypto.randomUUID(), upload(id));
+  await service.commit(
     {
       submission_id: id,
       thread_id: f.thread.id,
@@ -178,20 +182,20 @@ test("restart finishes a committed pending projection and expiry only removes un
     },
     id,
   );
-  const unused = service.stage(crypto.randomUUID(), upload(crypto.randomUUID()));
-  f.restart();
+  const unused = await service.stage(crypto.randomUUID(), upload(crypto.randomUUID()));
+  await f.restart();
   service = new AttachmentSubmissions(f.lifecycle);
   await service.recover();
-  expect(f.store.get("artifact", staged.id).materialization).toBe("ready");
-  service.sweep(new Date(Date.now() + 25 * 60 * 60 * 1000));
+  expect((await f.store.get("artifact", staged.id)).materialization).toBe("ready");
+  await service.sweep(new Date(Date.now() + 25 * 60 * 60 * 1000));
   expect(existsSync(join(service.artifacts.blobRoot, unused.id))).toBe(false);
   expect(existsSync(join(service.artifacts.blobRoot, staged.id))).toBe(true);
 });
 
 test("PDF extraction supplies real page text, search locations and bounded read receipts", async () => {
-  f = fixture();
+  f = await fixture();
   const files = new Artifacts(f.lifecycle);
-  const workspace = files.workspaces.ensure(f.thread.id, f.agent.id);
+  const workspace = await files.workspaces.ensure(f.thread.id, f.agent.id);
   const file = await files.upload(workspace.id, crypto.randomUUID(), {
     name: "source.pdf",
     media_type: "application/pdf",
@@ -201,7 +205,7 @@ test("PDF extraction supplies real page text, search locations and bounded read 
       "Conclusion",
     ]).toString("base64"),
   });
-  const { run, authorize } = running("Explain this file.", [file.id]);
+  const { run, authorize } = await running("Explain this file.", [file.id]);
   const service = new Attachments(f.lifecycle);
   const context = await service.context(run, authorize);
   expect(context.text).toContain("turquoise badger 9137");
@@ -217,17 +221,16 @@ test("PDF extraction supplies real page text, search locations and bounded read 
     authorize,
   );
   expect(result.pages[0]?.text).toContain("turquoise badger 9137");
-  expect(f.store.get("run", run.id).attachment_observations.map((r) => r.operation)).toEqual([
-    "search",
-    "read",
-  ]);
-  expect(f.store.get("attachment_document", file.id).page_count).toBe(3);
+  expect(
+    (await f.store.get("run", run.id)).attachment_observations.map((r) => r.operation),
+  ).toEqual(["search", "read"]);
+  expect((await f.store.get("attachment_document", file.id)).page_count).toBe(3);
 }, 20_000);
 
 test("follow-up context finds prior sent files but excludes drafts, future messages and foreign lanes", async () => {
-  f = fixture();
+  f = await fixture();
   const files = new Artifacts(f.lifecycle);
-  const workspace = files.workspaces.ensure(f.thread.id, f.agent.id);
+  const workspace = await files.workspaces.ensure(f.thread.id, f.agent.id);
   const sent = await files.upload(workspace.id, crypto.randomUUID(), {
     name: "same.txt",
     content_base64: Buffer.from("first content").toString("base64"),
@@ -236,38 +239,38 @@ test("follow-up context finds prior sent files but excludes drafts, future messa
     name: "same.txt",
     content_base64: Buffer.from("private draft").toString("base64"),
   });
-  f.lifecycle.admit({
+  await f.lifecycle.admit({
     thread_id: f.thread.id,
     agent_id: f.agent.id,
     text: "Read earlier.",
     artifact_ids: [sent.id],
   });
-  const earlier = f.store.list("run")[0];
+  const earlier = (await f.store.list("run"))[0];
   if (!earlier) throw new Error("Missing earlier run.");
-  f.store.put(
+  await f.store.put(
     { ...earlier, status: "cancelled", outcome: "cancelled", revision: earlier.revision + 1 },
     earlier.revision,
   );
-  const { run } = running("Which page?", []);
+  const { run } = await running("Which page?", []);
   const service = new Attachments(f.lifecycle);
-  expect(service.current(run).attachments).toHaveLength(0);
-  expect(service.current(run).previous_attachments.map((a) => a.id)).toEqual([sent.id]);
+  expect((await service.current(run)).attachments).toHaveLength(0);
+  expect((await service.current(run)).previous_attachments.map((a) => a.id)).toEqual([sent.id]);
   await expect(
     service.read(run, attachmentRead.parse({ artifact_id: draft.id }), () => {}),
   ).rejects.toThrow("SCOPE_DENIED");
-  f.lifecycle.admit({
+  await f.lifecycle.admit({
     thread_id: f.thread.id,
     agent_id: f.agent.id,
     text: "Later file",
     artifact_ids: [draft.id],
   });
-  expect(service.list(run).attachments.map((a) => a.id)).toEqual([sent.id]);
+  expect((await service.list(run)).attachments.map((a) => a.id)).toEqual([sent.id]);
 });
 
 test("unsupported, empty and invalid documents have explicit failures without a fabricated read", async () => {
-  f = fixture();
+  f = await fixture();
   const files = new Artifacts(f.lifecycle);
-  const workspace = files.workspaces.ensure(f.thread.id, f.agent.id);
+  const workspace = await files.workspaces.ensure(f.thread.id, f.agent.id);
   const documents = new AttachmentDocuments(f.lifecycle);
   for (const [name, content, expected] of [
     ["data.bin", "binary", "UNSUPPORTED_FORMAT"],
@@ -283,30 +286,30 @@ test("unsupported, empty and invalid documents have explicit failures without a 
 }, 20_000);
 
 test("cached document reads recheck revoked access and immutable source corruption", async () => {
-  f = fixture();
+  f = await fixture();
   const files = new Artifacts(f.lifecycle);
-  const workspace = files.workspaces.ensure(f.thread.id, f.agent.id);
+  const workspace = await files.workspaces.ensure(f.thread.id, f.agent.id);
   const file = await files.upload(workspace.id, crypto.randomUUID(), {
     name: "source.txt",
     content_base64: Buffer.from("original").toString("base64"),
   });
-  const { run, authorize } = running("Read.", [file.id]);
+  const { run, authorize } = await running("Read.", [file.id]);
   const service = new Attachments(f.lifecycle);
   await service.read(run, attachmentRead.parse({ artifact_id: file.id }), authorize);
   writeFileSync(join(files.blobRoot, file.id), "modified");
   await expect(
     service.read(run, attachmentRead.parse({ artifact_id: file.id }), authorize),
   ).rejects.toThrow("CONFLICT");
-  files.workspaces.revoke(workspace.id);
+  await files.workspaces.revoke(workspace.id);
   await expect(
     service.read(run, attachmentRead.parse({ artifact_id: file.id }), authorize),
   ).rejects.toThrow();
 });
 
 test("an interrupted derived text cache is recomputed without changing source bytes", async () => {
-  f = fixture();
+  f = await fixture();
   const files = new Artifacts(f.lifecycle);
-  const workspace = files.workspaces.ensure(f.thread.id, f.agent.id);
+  const workspace = await files.workspaces.ensure(f.thread.id, f.agent.id);
   const file = await files.upload(workspace.id, crypto.randomUUID(), {
     name: "cache.txt",
     content_base64: Buffer.from("durable original text").toString("base64"),
@@ -317,5 +320,7 @@ test("an interrupted derived text cache is recomputed without changing source by
   if (!cache) throw new Error("Missing derived cache.");
   writeFileSync(join(documents.root, cache), "{");
   expect((await documents.prepare(file, () => {})).pages[0]?.text).toBe("durable original text");
-  expect(files.download(file.id, workspace.id).bytes.toString()).toBe("durable original text");
+  expect((await files.download(file.id, workspace.id)).bytes.toString()).toBe(
+    "durable original text",
+  );
 });

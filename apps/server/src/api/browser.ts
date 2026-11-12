@@ -12,19 +12,26 @@ export function registerBrowserRoutes(api: Elysia, services: ApiServices, comman
   api.onStop(() => browserViews?.close());
   return api
     .get("/v1/browser/contracts", () => browserCapabilities())
-    .get("/v1/browser/profiles", ({ query }) => browsers.list(browserScope.parse(query)), {
-      query: browserScope,
-    })
+    .get(
+      "/v1/browser/profiles",
+      async ({ query }) => await browsers.list(browserScope.parse(query)),
+      {
+        query: browserScope,
+      },
+    )
     .post(
       "/v1/browser/profiles",
-      ({ request, body }) => command(request, body, () => browsers.create(body)),
+      async ({ request, body }) =>
+        await command(request, body, async () => await browsers.create(body)),
       { body: browserProfileInput },
     )
     .post(
       "/v1/browser/profiles/:id/grants",
-      ({ request, params, body }) =>
-        command(request, body, () =>
-          browsers.grant(params.id, body.expected_revision, body.profile),
+      async ({ request, params, body }) =>
+        await command(
+          request,
+          body,
+          async () => await browsers.grant(params.id, body.expected_revision, body.profile),
         ),
       {
         params: z.object({ id }),
@@ -34,22 +41,30 @@ export function registerBrowserRoutes(api: Elysia, services: ApiServices, comman
         }),
       },
     )
-    .post("/v1/browser/profiles/:id/open", ({ params, body }) => browsers.open(params.id, body), {
-      params: z.object({ id }),
-      body: browserScope,
-    })
-    .get("/v1/browser/sessions/:id", ({ params, query }) => browsers.observe(params.id, query), {
-      params: z.object({ id }),
-      query: browserScope,
-    })
+    .post(
+      "/v1/browser/profiles/:id/open",
+      async ({ params, body }) => browsers.open(params.id, body),
+      {
+        params: z.object({ id }),
+        body: browserScope,
+      },
+    )
+    .get(
+      "/v1/browser/sessions/:id",
+      async ({ params, query }) => browsers.observe(params.id, query),
+      {
+        params: z.object({ id }),
+        query: browserScope,
+      },
+    )
     .get(
       "/v1/browser/sessions/:id/receipts",
-      ({ params, query }) => browsers.receipts(params.id, query),
+      async ({ params, query }) => await browsers.receipts(params.id, query),
       { params: z.object({ id }), query: browserScope },
     )
     .post(
       "/v1/browser/sessions/:id/view",
-      ({ params, body, request }) => {
+      async ({ params, body, request }) => {
         browserViews ??= new BrowserViews(browsers);
         return browserViews.issue(params.id, body, new URL(request.url).origin);
       },
@@ -57,7 +72,7 @@ export function registerBrowserRoutes(api: Elysia, services: ApiServices, comman
     )
     .post(
       "/v1/browser/sessions/:id/control",
-      ({ params, body }) => browsers.control(params.id, body, body.operation),
+      async ({ params, body }) => browsers.control(params.id, body, body.operation),
       {
         params: z.object({ id }),
         body: browserScope.extend({ operation: z.enum(["detach", "close", "reset"]) }),

@@ -13,7 +13,7 @@ export async function prepareVisualInputs(
   modelId: string,
 ) {
   const artifacts = new Artifacts(lifecycle);
-  const message = lifecycle.store.get("message", run.input_message_id);
+  const message = await lifecycle.store.get("message", run.input_message_id);
   const images: string[] = [];
   const receipts: {
     artifact_id: string;
@@ -23,7 +23,7 @@ export async function prepareVisualInputs(
     height: number;
   }[] = [];
   for (const id of message.artifact_ids) {
-    const item = lifecycle.store.get("artifact", id);
+    const item = await lifecycle.store.get("artifact", id);
     const video = item.media_type.startsWith("video/");
     const image = item.media_type.startsWith("image/");
     if (!video && !image) continue;
@@ -39,7 +39,7 @@ export async function prepareVisualInputs(
     // Neither active adapter has a native video input contract. Never silently substitute frames.
     if (video) throw new HarnessError("CAPABILITY_UNSUPPORTED");
     if (images.length >= 4 || !run.workspace_id) throw new DomainError("INVALID_REQUEST", 422);
-    const { bytes } = artifacts.download(id, run.workspace_id);
+    const { bytes } = await artifacts.download(id, run.workspace_id);
     try {
       const decoder = sharp(bytes, {
         limitInputPixels: 40_000_000,

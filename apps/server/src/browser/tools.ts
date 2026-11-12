@@ -6,15 +6,18 @@ export function registerBrowserTools(tools: ProductTools) {
   tools.register("ngertiin.browser_sessions", {
     schema: z.strictObject({}),
     resources: () => [],
-    execute: (_input, access) => {
-      access.authorize();
-      return { profiles: tools.browsers.list(access.scope), capabilities: browserCapabilities() };
+    execute: async (_input, access) => {
+      await access.authorize();
+      return {
+        profiles: await tools.browsers.list(access.scope),
+        capabilities: browserCapabilities(),
+      };
     },
   });
   tools.register("ngertiin.browser_open", {
     schema: z.strictObject({ profile_id: z.uuid() }),
     resources: () => [],
-    execute: (input, access) =>
+    execute: async (input, access) =>
       tools.browsers.open(
         (input as { profile_id: string }).profile_id,
         access.scope,
@@ -24,6 +27,6 @@ export function registerBrowserTools(tools: ProductTools) {
   tools.register("ngertiin.browser_action", {
     schema: browserActionInput,
     resources: () => [],
-    execute: (input, access) => tools.browsers.action(input, access),
+    execute: async (input, access) => tools.browsers.action(input, access),
   });
 }

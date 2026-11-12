@@ -11,9 +11,9 @@ export function registerWorkspaceTools(tools: ProductTools) {
   const { lifecycle } = tools;
   const artifacts = new Artifacts(lifecycle);
   const workspaces = artifacts.workspaces;
-  const workspaceFor = (access: ToolAccess) => {
-    access.authorize();
-    return workspaces.authorizeRun(lifecycle.store.get("run", access.scope.run_id));
+  const workspaceFor = async (access: ToolAccess) => {
+    await access.authorize();
+    return await workspaces.authorizeRun(await lifecycle.store.get("run", access.scope.run_id));
   };
   for (const name of [
     "ngertiin.get_workspace",
@@ -28,7 +28,7 @@ export function registerWorkspaceTools(tools: ProductTools) {
       schema: productToolSchemas[name],
       resources: () => [],
       execute: async (raw, access) => {
-        const workspace = workspaceFor(access);
+        const workspace = await workspaceFor(access);
         const data = raw as {
           command_id: string;
           path: string;
@@ -45,9 +45,9 @@ export function registerWorkspaceTools(tools: ProductTools) {
             shared: workspace.machine_id !== null || workspace.scope === "group",
           };
         if (name === "ngertiin.list_files")
-          return workspaces.workingFiles(workspace.id).list(data.path, "", 200);
+          return (await workspaces.workingFiles(workspace.id)).list(data.path, "", 200);
         if (name === "ngertiin.read_file") {
-          const bytes = await workspaces.workingFiles(workspace.id).read(data.path);
+          const bytes = await (await workspaces.workingFiles(workspace.id)).read(data.path);
           if (bytes.length > 100_000) throw new DomainError("INVALID_REQUEST", 413);
           return {
             path: data.path,
@@ -58,11 +58,11 @@ export function registerWorkspaceTools(tools: ProductTools) {
         const machine = machineFor(lifecycle);
         if (machine && (name === "ngertiin.create_file" || name === "ngertiin.write_file")) {
           const bytes = Buffer.from(data.text);
-          const actor = machine.actor(access);
+          const actor = await machine.actor(access);
           const create = name === "ngertiin.create_file" || data.expected_sha256 === null;
           return machine.operations.execute(
             data.command_id,
-            machine.snapshot().generation,
+            (await machine.snapshot()).generation,
             actor,
             name,
             {
@@ -71,7 +71,7 @@ export function registerWorkspaceTools(tools: ProductTools) {
               expected_sha256: create ? null : data.expected_sha256,
             },
             access.authorize,
-            () =>
+            async () =>
               machine.operations.path(data.path, async () => {
                 let current: Buffer | null = null;
                 try {
@@ -85,8 +85,8 @@ export function registerWorkspaceTools(tools: ProductTools) {
                     : current === null || sha256(current) !== data.expected_sha256
                 )
                   throw new MachineEffectRefused("CONFLICT");
-                access.authorize();
-                authorizeResponsibilityWork(lifecycle, access.scope.run_id);
+                await access.authorize();
+                await authorizeResponsibilityWork(lifecycle, access.scope.run_id);
                 await machine.files().write(data.path, bytes, create);
                 return { path: data.path, sha256: sha256(bytes) };
               }),
@@ -96,13 +96,13 @@ export function registerWorkspaceTools(tools: ProductTools) {
         }
         if (name === "ngertiin.write_file") throw new DomainError("MACHINE_UNAVAILABLE", 503);
         if (name === "ngertiin.create_file")
-          return lifecycle.store.command(
+          return await lifecycle.store.command(
             data.command_id,
             { operation: name, workspace_id: workspace.id, path: data.path, text: data.text },
-            () => {
-              access.authorize();
-              authorizeResponsibilityWork(lifecycle, access.scope.run_id);
-              workspaces.files(workspace.id).create(data.path, Buffer.from(data.text));
+            async () => {
+              await access.authorize();
+              await authorizeResponsibilityWork(lifecycle, access.scope.run_id);
+              (await workspaces.files(workspace.id)).create(data.path, Buffer.from(data.text));
               return { path: data.path };
             },
           );

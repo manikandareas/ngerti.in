@@ -15,10 +15,12 @@ export const conversationPreviews = z.strictObject({
 });
 
 /** Read one visible message excerpt per owner conversation without opening native sessions. */
-export function readConversationPreviews(store: Store): z.infer<typeof conversationPreviews> {
-  return store.transaction(() => {
+export async function readConversationPreviews(
+  store: Store,
+): Promise<z.infer<typeof conversationPreviews>> {
+  return await store.transaction(async () => {
     const latest = new Map<string, z.infer<typeof latestMessage>>();
-    for (const current of store.list("message")) {
+    for (const current of await store.list("message")) {
       if (
         current.state === "deleted" ||
         ["continuation", "handoff", "review"].includes(current.purpose)
@@ -40,9 +42,8 @@ export function readConversationPreviews(store: Store): z.infer<typeof conversat
       });
     }
     return {
-      cursor: store.cursor,
-      items: store
-        .list("thread")
+      cursor: await store.cursor,
+      items: (await store.list("thread"))
         .filter((thread) => thread.purpose === "conversation")
         .map((thread) => ({ thread_id: thread.id, latest_message: latest.get(thread.id) ?? null })),
     };

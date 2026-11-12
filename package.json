@@ -23,7 +23,7 @@
     "check": "bun run lint && bun run typecheck && bun run test:server",
     "docs:check": "bun scripts/check-docs.ts",
     "test:server": "bun run --filter @ngertiin/server test",
-    "verify:foundation": "bun scripts/verification/nma047/foundation.ts",
+    "verify:foundation": "bun scripts/verification/nma072/run-tests.ts tests/lifecycle.test.ts tests/persistence/postgres.test.ts tests/bootstrap.test.ts",
     "setup:machine": "bun apps/server/src/machines/setup.ts",
     "import:machine": "bun apps/server/src/machines/import.ts",
     "setup:desktop": "bun apps/desktop/scripts/setup.ts",
@@ -34,7 +34,9 @@
     "lint:desktop": "bun --filter @ngertiin/desktop lint",
     "dev:desktop-rs": "bun --cwd apps/desktop-rs dev",
     "gallery:desktop-rs": "bun --cwd apps/desktop-rs gallery",
-    "check:desktop-rs": "bun --cwd apps/desktop-rs check"
+    "check:desktop-rs": "bun --cwd apps/desktop-rs check",
+    "db:sqlite-import": "bun apps/server/src/persistence/cli.ts",
+    "test:postgres": "bun run --filter @ngertiin/server test"
   },
   "engines": {
     "node": ">=22.12"

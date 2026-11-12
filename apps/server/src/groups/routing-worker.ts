@@ -12,11 +12,11 @@ export class RoutingWorker {
     private readonly lifecycle: Lifecycle,
     private readonly wake: () => void,
   ) {}
-  advance() {
+  async advance() {
     const router = this.lifecycle.groupRouter;
     if (this.#closed) return;
     const groups = new Groups(this.lifecycle);
-    for (const route of this.lifecycle.store.list("group_route")) {
+    for (const route of await this.lifecycle.store.list("group_route")) {
       if (this.#pending.size >= 4) break;
       if (
         route.state !== "pending" ||
@@ -27,11 +27,11 @@ export class RoutingWorker {
       const attemptId = crypto.randomUUID();
       try {
         if (!router) {
-          groups.fallbackRouting(route.id);
+          await groups.fallbackRouting(route.id);
           continue;
         }
-        const packet = groups.routingPacket(route.id);
-        this.lifecycle.store.put(
+        const packet = await groups.routingPacket(route.id);
+        await this.lifecycle.store.put(
           {
             ...route,
             revision: route.revision + 1,
@@ -54,9 +54,9 @@ export class RoutingWorker {
         };
         const done = Promise.resolve()
           .then(() =>
-            router.choose(packet, controller.signal, (event) => {
+            router.choose(packet, controller.signal, async (event) => {
               if (this.#closed || this.lifecycle.store.closed) return;
-              const current = this.lifecycle.store.get("group_route", route.id);
+              const current = await this.lifecycle.store.get("group_route", route.id);
               if (current.state !== "pending" || current.routing?.attempt_id !== attemptId) return;
               const routing = current.routing;
               const entry = JSON.parse(
@@ -67,10 +67,10 @@ export class RoutingWorker {
                 }),
               );
               trace.events.push(entry);
-              this.lifecycle.store.transaction(() => {
-                this.lifecycle.store.recordRoutingTrace(trace);
+              await this.lifecycle.store.transaction(async () => {
+                await this.lifecycle.store.recordRoutingTrace(trace);
                 if (event.response === undefined)
-                  this.lifecycle.store.put(
+                  await this.lifecycle.store.put(
                     {
                       ...current,
                       revision: current.revision + 1,
@@ -82,13 +82,18 @@ export class RoutingWorker {
               });
             }),
           )
-          .then((decision) => {
+          .then(async (decision) => {
             if (!this.#closed && !this.lifecycle.store.closed)
-              groups.resolveRouting(route.id, attemptId, decision, performance.now() - started);
+              await groups.resolveRouting(
+                route.id,
+                attemptId,
+                decision,
+                performance.now() - started,
+              );
           })
-          .catch((error) => {
+          .catch(async (error) => {
             if (!this.#closed && !this.lifecycle.store.closed)
-              groups.rejectRouting(
+              await groups.rejectRouting(
                 route.id,
                 attemptId,
                 error instanceof DomainError ? error.code : "ROUTING_UNAVAILABLE",
@@ -100,7 +105,7 @@ export class RoutingWorker {
           });
         this.#pending.set(route.id, { controller, done });
       } catch (error) {
-        groups.rejectRouting(
+        await groups.rejectRouting(
           route.id,
           route.routing.attempt_id,
           error instanceof DomainError ? error.code : "ROUTING_INVALID",

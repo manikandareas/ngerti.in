@@ -1,8 +1,7 @@
-import { Database } from "bun:sqlite";
 import { existsSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { developmentConfig } from "../config";
-import { workspace } from "../workspaces/contracts";
+import { Store } from "../store";
 import { WorkspaceFiles } from "../workspaces/files";
 import { readMachineConfiguration } from "./config";
 import { CuaMachine, sha256 } from "./cua";
@@ -11,13 +10,12 @@ import { CuaMachine, sha256 } from "./cua";
 const config = developmentConfig();
 const machine = readMachineConfiguration(config.stateDir);
 if (!machine) throw new Error("Set up the retained machine before importing files.");
-if (!existsSync(config.database)) throw new Error("No application database exists to import.");
-const db = new Database(config.database, { readonly: true });
-const sources = db
-  .query<{ body: string }, []>("SELECT body FROM entities WHERE kind='workspace'")
-  .all()
-  .map((row) => workspace.parse(JSON.parse(row.body)));
-db.close();
+const store = await Store.open(config.database, config.owner_id, {
+  connectionString: config.databaseUrl,
+  schema: config.databaseSchema,
+});
+const sources = await store.list("workspace");
+await store.close();
 const files = new CuaMachine(machine).files();
 const entries: { workspace_id: string; source: string; destination: string; sha256: string }[] = [];
 const skipped: { workspace_id: string; reason: string }[] = [];

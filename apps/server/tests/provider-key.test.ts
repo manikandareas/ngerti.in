@@ -1,4 +1,3 @@
-import { Database } from "bun:sqlite";
 import { afterEach, expect, test } from "bun:test";
 import { chmodSync, lstatSync, mkdirSync, readdirSync, readFileSync, symlinkSync } from "node:fs";
 import { join } from "node:path";
@@ -14,8 +13,8 @@ import { fixture } from "./helpers";
 
 const token = "a".repeat(64);
 const secret = "provider-proof-key-do-not-publish-9d42824c";
-let f: ReturnType<typeof fixture>;
-afterEach(() => f?.close());
+let f: Awaited<ReturnType<typeof fixture>>;
+afterEach(async () => await f?.close());
 function request(body: unknown, key: string | null = crypto.randomUUID(), bearer = token) {
   return new Request("http://localhost/v1/connections/api-key", {
     method: "POST",
@@ -27,13 +26,13 @@ function request(body: unknown, key: string | null = crypto.randomUUID(), bearer
     body: JSON.stringify(body),
   });
 }
-function setup() {
-  f = fixture();
-  return createApi(f.lifecycle, new Background(f.lifecycle), token);
+async function setup() {
+  f = await fixture();
+  return await createApi(f.lifecycle, new Background(f.lifecycle), token);
 }
 
 test("provider key onboarding stores only a private host key and replays across restart", async () => {
-  let app = setup();
+  let app = await setup();
   const key = crypto.randomUUID();
   const body = { harness: "muse", api_key: secret };
   const response = await app.handle(request(body, key));
@@ -51,35 +50,36 @@ test("provider key onboarding stores only a private host key and replays across 
   expect(lstatSync(directory).mode & 0o777).toBe(0o700);
   expect(lstatSync(credential).mode & 0o777).toBe(0o600);
   expect(readFileSync(credential, "utf8")).toBe(secret);
-  const cursor = f.store.cursor;
+  const cursor = await f.store.cursor;
   expect(await (await app.handle(request(body, key))).json()).toEqual(connection);
-  expect(f.store.cursor).toBe(cursor);
+  expect(await f.store.cursor).toBe(cursor);
   expect(readdirSync(directory)).toHaveLength(1);
   const changed = await app.handle(request({ ...body, api_key: "a-different-key" }, key));
   expect(changed.status).toBe(409);
   expect((await changed.json()).error.code).toBe("IDEMPOTENCY_CONFLICT");
   expect(readdirSync(directory)).toHaveLength(1);
-  const read = new Database(f.store.path, { readonly: true });
+  const read = f.store;
   try {
-    const commands = read.query("SELECT fingerprint,receipt FROM commands").all();
+    const commands = (await read.query("SELECT fingerprint,receipt FROM commands")).rows;
     expect(JSON.stringify(commands)).not.toContain(secret);
     expect(JSON.stringify(commands)).not.toContain("a-different-key");
-    expect(JSON.stringify(f.store.events(0))).not.toContain(secret);
-    expect(JSON.stringify(f.store.list("connection"))).not.toContain(secret);
+    expect(JSON.stringify(await f.store.events(0))).not.toContain(secret);
+    expect(JSON.stringify(await f.store.list("connection"))).not.toContain(secret);
   } finally {
-    read.close();
   }
-  f.restart();
-  app = createApi(f.lifecycle, new Background(f.lifecycle), token);
+  await f.restart();
+  app = await createApi(f.lifecycle, new Background(f.lifecycle), token);
   expect(await (await app.handle(request(body, key))).json()).toEqual(connection);
-  const launch = new CredentialContexts(f.dir).create(f.store.get("connection", connection.id));
+  const launch = new CredentialContexts(f.dir).create(
+    await f.store.get("connection", connection.id),
+  );
   expect(launch.env.META_API_KEY).toBe(secret);
   expect(launch.env.OPENAI_API_KEY).toBeUndefined();
   expect(readdirSync(directory)).toHaveLength(1);
 });
 
 test("key onboarding preserves explicit Codex API billing and published request/response schemas", async () => {
-  const app = setup();
+  const app = await setup();
   const response = await app.handle(request({ harness: "codex", api_key: secret }));
   const connection = schemas.connection.parse(await response.json());
   const launch = new CredentialContexts(f.dir).create(connection);
@@ -105,8 +105,8 @@ test("key onboarding preserves explicit Codex API billing and published request/
 });
 
 test("unauthorized, malformed and missing-key requests never write credentials or domain state", async () => {
-  const app = setup();
-  const cursor = f.store.cursor;
+  const app = await setup();
+  const cursor = await f.store.cursor;
   expect(
     (await app.handle(request({ harness: "muse", api_key: secret }, undefined, "wrong"))).status,
   ).toBe(401);
@@ -125,25 +125,25 @@ test("unauthorized, malformed and missing-key requests never write credentials o
     expect(await response.text()).not.toContain(secret);
   }
   expect((await app.handle(request({ harness: "muse", api_key: secret }, null))).status).toBe(422);
-  expect(f.store.cursor).toBe(cursor);
+  expect(await f.store.cursor).toBe(cursor);
   expect(readdirSync(f.dir)).not.toContain("credentials");
 });
 
 test("credential onboarding rejects symlinked credential directories", async () => {
-  const app = setup();
+  const app = await setup();
   const outside = join(f.dir, "outside");
   mkdirSync(outside, { mode: 0o700 });
   symlinkSync(outside, join(f.dir, "credentials"));
-  const cursor = f.store.cursor;
+  const cursor = await f.store.cursor;
   const response = await app.handle(request({ harness: "muse", api_key: secret }));
   expect(response.status).toBe(500);
   expect(await response.text()).not.toContain(secret);
   expect(readdirSync(outside)).toEqual([]);
-  expect(f.store.cursor).toBe(cursor);
+  expect(await f.store.cursor).toBe(cursor);
 });
 
 test("credential onboarding rejects publicly readable credential storage", async () => {
-  const app = setup();
+  const app = await setup();
   mkdirSync(join(f.dir, "credentials"), { mode: 0o700 });
   chmodSync(join(f.dir, "credentials"), 0o755);
   const response = await app.handle(request({ harness: "muse", api_key: secret }));
@@ -152,14 +152,14 @@ test("credential onboarding rejects publicly readable credential storage", async
 });
 
 test("a rejected connection transaction removes its new host key", async () => {
-  f = fixture();
+  f = await fixture();
   const connections = new Connections(f.lifecycle);
   connections.create = () => {
     throw new Error("Simulated transaction failure.");
   };
-  const app = createApi(f.lifecycle, new Background(f.lifecycle), token, {
+  const app = await createApi(f.lifecycle, new Background(f.lifecycle), token, {
     connections,
-    tools: new ProductTools(f.lifecycle),
+    tools: await ProductTools.open(f.lifecycle),
     credentialStorage: new CredentialStorage(f.dir),
   });
   const response = await app.handle(request({ harness: "muse", api_key: secret }));

@@ -1,0 +1,387 @@
+{
+  "verified_at": "2026-11-12T14:26:36.596913+00:00",
+  "milestone": "NMA-072",
+  "base_revision": "1a024950c94bd54a2c1c911fc96b7557627c77d1",
+  "source_manifest": "source-manifest.json",
+  "source_manifest_sha256": "3dfbcebec8cb91f84cab24ac8561d866fcbb5cc814e5903db123b22e19df2b10",
+  "versions": {
+    "bun": "1.3.10",
+    "pg": "8.23.1",
+    "types_pg": "8.23.1",
+    "postgres": "18.1",
+    "postgres_image": "postgres:18.1-alpine@sha256:aa6eb304ddb6dd26df23d05db4e5cb05af8951cda3e0dc57731b771e0ef4ab29"
+  },
+  "latest_unique_results": {
+    "pass": 424,
+    "fail": 0,
+    "skip": 0,
+    "files": 47
+  },
+  "execution_results": {
+    "pass": 433,
+    "fail": 1,
+    "skip": 0,
+    "total": 434,
+    "repeated_executions": 10
+  },
+  "regression_runs": [
+    {
+      "log": "regression-a.log",
+      "command": [
+        "bun",
+        "scripts/verification/nma072/run-tests.ts",
+        "tests/activity.test.ts",
+        "tests/agents.test.ts",
+        "tests/api.test.ts",
+        "tests/attachments.test.ts",
+        "tests/avatar.test.ts",
+        "tests/background.test.ts",
+        "tests/bootstrap.test.ts",
+        "tests/cancellation-adapters.test.ts",
+        "tests/codex.test.ts",
+        "tests/contracts.test.ts",
+        "tests/controls.test.ts",
+        "tests/conversation-latency.test.ts",
+        "tests/conversation-parts.test.ts",
+        "tests/conversation-previews.test.ts",
+        "tests/creation.test.ts",
+        "tests/harness.test.ts",
+        "tests/integrations.test.ts",
+        "tests/interaction-journal.test.ts",
+        "tests/lifecycle.test.ts",
+        "tests/multimodal.test.ts",
+        "tests/muse-interaction-view.test.ts",
+        "tests/muse-launch.test.ts",
+        "tests/muse.test.ts",
+        "tests/operation-responses.test.ts",
+        "tests/product-interactions.test.ts",
+        "tests/provider-key.test.ts",
+        "tests/response-retry.test.ts",
+        "tests/routing-policy.test.ts",
+        "tests/routing-recovery.test.ts",
+        "tests/routing-semantics.test.ts",
+        "tests/run-recovery.test.ts",
+        "tests/submission-replay.test.ts",
+        "tests/workspaces.test.ts"
+      ],
+      "database": "owned auto-provisioned disposable database",
+      "pass": 288,
+      "fail": 0,
+      "skip": 0,
+      "files": 33,
+      "duration_seconds": 249.32,
+      "source_boundary": "Before final machine admission coalescing; that module and bootstrap are covered again in B."
+    },
+    {
+      "log": "regression-b.log",
+      "command": [
+        "bun",
+        "scripts/verification/nma072/run-tests.ts",
+        "tests/browser/domain.test.ts",
+        "tests/goals/adapters.test.ts",
+        "tests/goals/domain.test.ts",
+        "tests/goals/tool-discovery.test.ts",
+        "tests/groups/adapters.test.ts",
+        "tests/groups/attachments.test.ts",
+        "tests/groups/domain.test.ts",
+        "tests/groups/responsibilities.test.ts",
+        "tests/learning/adapters.test.ts",
+        "tests/learning/domain.test.ts",
+        "tests/machines/cleanup.test.ts",
+        "tests/machines/domain.test.ts",
+        "tests/machines/view-sessions.test.ts",
+        "tests/persistence/postgres.test.ts",
+        "tests/bootstrap.test.ts"
+      ],
+      "database": "owned auto-provisioned disposable database",
+      "pass": 136,
+      "fail": 1,
+      "skip": 0,
+      "files": 15,
+      "duration_seconds": 203.54,
+      "source_boundary": "Final runtime; before group descendant fixture synchronization."
+    },
+    {
+      "log": "groups-attachments.log",
+      "command": [
+        "bun",
+        "scripts/verification/nma072/run-tests.ts",
+        "tests/groups/attachments.test.ts"
+      ],
+      "database": "explicit disposable database",
+      "pass": 9,
+      "fail": 0,
+      "skip": 0,
+      "files": 1,
+      "duration_seconds": 14.63,
+      "source_boundary": "Final runtime and synchronized fixture; supersedes the nine group attachment results in B."
+    }
+  ],
+  "latest_by_file": {
+    "tests/activity.test.ts": {
+      "pass": 4,
+      "fail": 0,
+      "skip": 0
+    },
+    "tests/agents.test.ts": {
+      "pass": 11,
+      "fail": 0,
+      "skip": 0
+    },
+    "tests/api.test.ts": {
+      "pass": 6,
+      "fail": 0,
+      "skip": 0
+    },
+    "tests/attachments.test.ts": {
+      "pass": 9,
+      "fail": 0,
+      "skip": 0
+    },
+    "tests/avatar.test.ts": {
+      "pass": 3,
+      "fail": 0,
+      "skip": 0
+    },
+    "tests/background.test.ts": {
+      "pass": 7,
+      "fail": 0,
+      "skip": 0
+    },
+    "tests/bootstrap.test.ts": {
+      "pass": 1,
+      "fail": 0,
+      "skip": 0
+    },
+    "tests/browser/domain.test.ts": {
+      "pass": 15,
+      "fail": 0,
+      "skip": 0
+    },
+    "tests/cancellation-adapters.test.ts": {
+      "pass": 2,
+      "fail": 0,
+      "skip": 0
+    },
+    "tests/codex.test.ts": {
+      "pass": 18,
+      "fail": 0,
+      "skip": 0
+    },
+    "tests/contracts.test.ts": {
+      "pass": 5,
+      "fail": 0,
+      "skip": 0
+    },
+    "tests/controls.test.ts": {
+      "pass": 13,
+      "fail": 0,
+      "skip": 0
+    },
+    "tests/conversation-latency.test.ts": {
+      "pass": 15,
+      "fail": 0,
+      "skip": 0
+    },
+    "tests/conversation-parts.test.ts": {
+      "pass": 8,
+      "fail": 0,
+      "skip": 0
+    },
+    "tests/conversation-previews.test.ts": {
+      "pass": 2,
+      "fail": 0,
+      "skip": 0
+    },
+    "tests/creation.test.ts": {
+      "pass": 8,
+      "fail": 0,
+      "skip": 0
+    },
+    "tests/goals/adapters.test.ts": {
+      "pass": 2,
+      "fail": 0,
+      "skip": 0
+    },
+    "tests/goals/domain.test.ts": {
+      "pass": 25,
+      "fail": 0,
+      "skip": 0
+    },
+    "tests/goals/tool-discovery.test.ts": {
+      "pass": 1,
+      "fail": 0,
+      "skip": 0
+    },
+    "tests/groups/adapters.test.ts": {
+      "pass": 2,
+      "fail": 0,
+      "skip": 0
+    },
+    "tests/groups/attachments.test.ts": {
+      "pass": 9,
+      "fail": 0,
+      "skip": 0
+    },
+    "tests/groups/domain.test.ts": {
+      "pass": 18,
+      "fail": 0,
+      "skip": 0
+    },
+    "tests/groups/responsibilities.test.ts": {
+      "pass": 13,
+      "fail": 0,
+      "skip": 0
+    },
+    "tests/harness.test.ts": {
+      "pass": 37,
+      "fail": 0,
+      "skip": 0
+    },
+    "tests/integrations.test.ts": {
+      "pass": 14,
+      "fail": 0,
+      "skip": 0
+    },
+    "tests/interaction-journal.test.ts": {
+      "pass": 17,
+      "fail": 0,
+      "skip": 0
+    },
+    "tests/learning/adapters.test.ts": {
+      "pass": 2,
+      "fail": 0,
+      "skip": 0
+    },
+    "tests/learning/domain.test.ts": {
+      "pass": 13,
+      "fail": 0,
+      "skip": 0
+    },
+    "tests/lifecycle.test.ts": {
+      "pass": 17,
+      "fail": 0,
+      "skip": 0
+    },
+    "tests/machines/cleanup.test.ts": {
+      "pass": 15,
+      "fail": 0,
+      "skip": 0
+    },
+    "tests/machines/domain.test.ts": {
+      "pass": 8,
+      "fail": 0,
+      "skip": 0
+    },
+    "tests/machines/view-sessions.test.ts": {
+      "pass": 2,
+      "fail": 0,
+      "skip": 0
+    },
+    "tests/multimodal.test.ts": {
+      "pass": 4,
+      "fail": 0,
+      "skip": 0
+    },
+    "tests/muse-interaction-view.test.ts": {
+      "pass": 1,
+      "fail": 0,
+      "skip": 0
+    },
+    "tests/muse-launch.test.ts": {
+      "pass": 2,
+      "fail": 0,
+      "skip": 0
+    },
+    "tests/muse.test.ts": {
+      "pass": 24,
+      "fail": 0,
+      "skip": 0
+    },
+    "tests/operation-responses.test.ts": {
+      "pass": 1,
+      "fail": 0,
+      "skip": 0
+    },
+    "tests/persistence/postgres.test.ts": {
+      "pass": 11,
+      "fail": 0,
+      "skip": 0
+    },
+    "tests/product-interactions.test.ts": {
+      "pass": 7,
+      "fail": 0,
+      "skip": 0
+    },
+    "tests/provider-key.test.ts": {
+      "pass": 6,
+      "fail": 0,
+      "skip": 0
+    },
+    "tests/response-retry.test.ts": {
+      "pass": 4,
+      "fail": 0,
+      "skip": 0
+    },
+    "tests/routing-policy.test.ts": {
+      "pass": 3,
+      "fail": 0,
+      "skip": 0
+    },
+    "tests/routing-recovery.test.ts": {
+      "pass": 4,
+      "fail": 0,
+      "skip": 0
+    },
+    "tests/routing-semantics.test.ts": {
+      "pass": 10,
+      "fail": 0,
+      "skip": 0
+    },
+    "tests/run-recovery.test.ts": {
+      "pass": 8,
+      "fail": 0,
+      "skip": 0
+    },
+    "tests/submission-replay.test.ts": {
+      "pass": 2,
+      "fail": 0,
+      "skip": 0
+    },
+    "tests/workspaces.test.ts": {
+      "pass": 15,
+      "fail": 0,
+      "skip": 0
+    }
+  },
+  "additional_probes": {
+    "database_restart": {
+      "report": "database-restart.json",
+      "pass": 7,
+      "fail": 0
+    },
+    "import_rollback": {
+      "report": "import-rehearsal.json",
+      "pass": 9,
+      "fail": 0
+    },
+    "latency": {
+      "report": "latency.json",
+      "samples_per_operation": 30
+    }
+  },
+  "static_checks": {
+    "commands": "checks/commands.json",
+    "lint": "pass",
+    "server_web_typecheck": "pass",
+    "desktop_typecheck": "pass",
+    "verification_tooling_typecheck": "pass",
+    "docs_check": "8 existing broken links in untouched GPUI skill references; no changed-document/status/contract errors"
+  },
+  "limitations": [
+    "Combined latest results, not one all-green suite execution. Prior failures are retained.",
+    "Single-owner disposable data and native protocol fixtures; no live import/reset/cutover or real credential copy.",
+    "No current provider inference, Cua cross-user privacy, browser/Tauri journey, deployment or distribution acceptance.",
+    "Installation-wide mutation clock and one lifecycle authority; no production scale or SQLite overload claim."
+  ]
+}

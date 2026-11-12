@@ -12,16 +12,21 @@ import { Machines } from "../../../apps/server/src/machines/service";
 import { Store } from "../../../apps/server/src/store";
 import { fixtureAdapter } from "../nma062/fixture-harness";
 
-// Real Cua machine, API, SQLite and UI; no provider inference in this UI cohort.
+// Real Cua machine, API, PostgreSQL and UI; no provider inference in this UI cohort.
+if (!process.env.NGERTIIN_TEST_DATABASE_URL)
+  throw new Error("Select a disposable PostgreSQL database with NGERTIIN_TEST_DATABASE_URL.");
 const config = developmentConfig();
-const store = new Store(config.database, config.owner_id);
-const lifecycle = new Lifecycle(store);
+const store = await Store.open(config.database, config.owner_id, {
+  connectionString: process.env.NGERTIIN_TEST_DATABASE_URL,
+  schema: `test_web_${config.owner_id.replaceAll("-", "")}`,
+});
+const lifecycle = await Lifecycle.open(store);
 const machineConfig = readMachineConfiguration(
   resolve(import.meta.dir, "../../../.dev/harness-first"),
 );
 if (!machineConfig) throw new Error("Run setup:machine before the native UI verification.");
-const machines = new Machines(lifecycle, machineConfig);
-new Conversations(lifecycle).setup();
+const machines = await Machines.open(lifecycle, machineConfig);
+await new Conversations(lifecycle).setup();
 await machines.recover();
 const proofBytes = Buffer.from("Shared desktop working file.\n");
 try {
@@ -29,19 +34,17 @@ try {
 } catch (error) {
   if (!(await machines.files().read("projects/desktop-check.txt")).equals(proofBytes)) throw error;
 }
-const tools = new ProductTools(lifecycle);
+const tools = await ProductTools.open(lifecycle);
 const adapter = fixtureAdapter(tools);
 const connect = adapter.connect.bind(adapter);
 adapter.connect = async (context) => {
   const client = await connect(context);
   const prompt = client.prompt.bind(client);
   client.prompt = async (input) => {
-    if (input.text !== "fixture computer live") return prompt(input);
+    if (input.text !== "fixture computer live") return await prompt(input);
     const nativeRunId = crypto.randomUUID();
-    const nativeSessionId = lifecycle.store.get(
-      "binding",
-      input.tools.scope.binding_id,
-    ).native_session_id;
+    const nativeSessionId = (await lifecycle.store.get("binding", input.tools.scope.binding_id))
+      .native_session_id;
     input.onEvent({
       type: "accepted",
       native_session_id: nativeSessionId,
@@ -83,18 +86,20 @@ const broker = new HarnessBroker(
   }),
 );
 const background = new Background(lifecycle, broker.executors());
-const app = createApi(lifecycle, background, config.token, {
-  connections: broker.connections,
-  tools,
-  broker,
-}).listen({ hostname: "127.0.0.1", port: config.port });
-background.start();
+const app = (
+  await createApi(lifecycle, background, config.token, {
+    connections: broker.connections,
+    tools,
+    broker,
+  })
+).listen({ hostname: "127.0.0.1", port: config.port });
+await background.start();
 async function stop() {
   await app.stop(true);
   await background.stop();
   await broker.close();
   await machines.close();
-  store.close();
+  await store.close();
   process.exit(0);
 }
 process.on("SIGINT", stop);

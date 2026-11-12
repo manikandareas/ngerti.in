@@ -21,15 +21,15 @@ export function registerMachineTools(tools: ProductTools, machines: Machines) {
       schema: productToolSchemas[name],
       resources: () => [],
       execute: async (input, access) => {
-        const actor = machines.actor(access);
+        const actor = await machines.actor(access);
         if (name === "ngertiin.machine_status") {
           await machines.refresh().catch(() => {});
-          return machines.snapshot();
+          return await machines.snapshot();
         }
         if (name === "ngertiin.machine_receipts")
           return {
-            operations: machines.operations.list(actor),
-            processes: machines.processes.list(actor),
+            operations: await machines.operations.list(actor),
+            processes: await machines.processes.list(actor),
           };
         if (name === "ngertiin.computer_tools") {
           const { names } = productToolSchemas[name].parse(input);
@@ -59,17 +59,17 @@ export function registerMachineTools(tools: ProductTools, machines: Machines) {
           return machines.processes.control(input, actor, access.authorize);
         if (name === "ngertiin.machine_window") return machines.window(input, access);
         const data = z.object({ command_id: z.uuid(), operation_id: z.uuid() }).parse(input);
-        const operation = tools.lifecycle.store.get("machine_operation", data.operation_id);
+        const operation = await tools.lifecycle.store.get("machine_operation", data.operation_id);
         if (
           operation.agent_id !== actor.agent_id ||
           operation.thread_id !== actor.thread_id ||
-          operation.generation !== machines.snapshot().generation ||
+          operation.generation !== (await machines.snapshot()).generation ||
           !operation.resource?.startsWith("file:")
         )
           throw new DomainError("SCOPE_DENIED", 403);
         return machines.operations.execute(
           data.command_id,
-          machines.snapshot().generation,
+          (await machines.snapshot()).generation,
           actor,
           "reconcile.file",
           data,
@@ -82,8 +82,8 @@ export function registerMachineTools(tools: ProductTools, machines: Machines) {
             } catch (error) {
               if (!(error instanceof DomainError) || error.code !== "NOT_FOUND") throw error;
             }
-            access.authorize();
-            const current = tools.lifecycle.store.get("machine_operation", operation.id);
+            await access.authorize();
+            const current = await tools.lifecycle.store.get("machine_operation", operation.id);
             const result = {
               path,
               observed_sha256: observed,
@@ -92,7 +92,7 @@ export function registerMachineTools(tools: ProductTools, machines: Machines) {
             };
             if (current.state === "dispatched") throw new DomainError("MACHINE_INPUT_BUSY");
             if (current.state === "unknown")
-              machines.operations.update(current, {
+              await machines.operations.update(current, {
                 reconciled_at: new Date().toISOString(),
                 result,
               });

@@ -221,7 +221,7 @@ export class ComposioHost implements AppHost {
     if (selected.length !== 1 || selected[0] !== account)
       throw new DomainError("SCOPE_DENIED", 403);
     request.signal.throwIfAborted();
-    authorize();
+    await authorize();
     let aborted = () => {};
     try {
       // The account is already pinned in the session. Some live projects reject a redundant

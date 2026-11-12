@@ -1,27 +1,35 @@
 import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { Client } from "pg";
 import { Connections } from "../src/harness/connections";
 import { Lifecycle } from "../src/lifecycle";
 import { Store } from "../src/store";
 
-export function fixture() {
+export async function fixture() {
+  if (!process.env.NGERTIIN_TEST_DATABASE_URL)
+    throw new Error("NGERTIIN_TEST_DATABASE_URL must select a disposable PostgreSQL database.");
   const dir = mkdtempSync(join(tmpdir(), "ngertiin-foundation-"));
   const owner = crypto.randomUUID();
-  let store = new Store(join(dir, "state.sqlite"), owner);
-  let lifecycle = new Lifecycle(store);
-  const connection = new Connections(lifecycle).create({
+  const options = {
+    connectionString: process.env.NGERTIIN_TEST_DATABASE_URL,
+    schema: `test_${owner.replaceAll("-", "")}`,
+  };
+  let store = await Store.open(join(dir, "state.sqlite"), owner, options);
+  let lifecycle = await Lifecycle.open(store);
+  const connection = await new Connections(lifecycle).create({
     harness: "codex",
     authentication: { method: "native_login", billing_source: "subscription" },
   });
-  const agent = lifecycle.create("agent", {
+  const agent = await lifecycle.create("agent", {
     name: "Researcher",
     harness: "codex",
     connection_id: connection.id,
   });
-  const thread = lifecycle.create("thread", { type: "dm", member_agent_ids: [agent.id] });
+  const thread = await lifecycle.create("thread", { type: "dm", member_agent_ids: [agent.id] });
   return {
     dir,
+    options,
     owner,
     agent,
     thread,
@@ -31,19 +39,26 @@ export function fixture() {
     get lifecycle() {
       return lifecycle;
     },
-    admit(text = "Please inspect this project.") {
-      return lifecycle.admit({ thread_id: thread.id, agent_id: agent.id, text });
+    async admit(text = "Please inspect this project.") {
+      return await lifecycle.admit({ thread_id: thread.id, agent_id: agent.id, text });
     },
-    bind() {
-      return lifecycle.bind(thread.id, agent.id, crypto.randomUUID());
+    async bind() {
+      return await lifecycle.bind(thread.id, agent.id, crypto.randomUUID());
     },
-    restart() {
-      store.close();
-      store = new Store(join(dir, "state.sqlite"), owner);
-      lifecycle = new Lifecycle(store);
+    async restart() {
+      await store.close();
+      store = await Store.open(join(dir, "state.sqlite"), owner, options);
+      lifecycle = await Lifecycle.open(store);
     },
-    close() {
-      store.close();
+    async close() {
+      await store.close();
+      const client = new Client({ connectionString: options.connectionString });
+      await client.connect();
+      try {
+        await client.query(`DROP SCHEMA IF EXISTS "${options.schema}" CASCADE`);
+      } finally {
+        await client.end();
+      }
       rmSync(dir, { recursive: true, force: true });
     },
   };

@@ -4,11 +4,11 @@ import type { Store } from "../store";
 import type { groupRouteView } from "./contracts";
 
 /** Derive public progress from the authoritative run; never copy its private routing input. */
-export function routeView(
+export async function routeView(
   store: Store,
   route: Entity<"group_route">,
-): z.infer<typeof groupRouteView> {
-  const run = route.router_run_id ? store.get("run", route.router_run_id) : null;
+): Promise<z.infer<typeof groupRouteView>> {
+  const run = route.router_run_id ? await store.get("run", route.router_run_id) : null;
   let stage: z.infer<typeof groupRouteView>["execution"]["stage"] = "classifying";
   if (route.routing?.phase === "contextual" || route.routing?.phase === "reviewing")
     stage = "reviewing";

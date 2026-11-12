@@ -25,7 +25,7 @@ The following behavior describes the implemented single-owner foundation. NMA-07
 
 ## Runtime and machine
 
-Ngertiin owns one application lifecycle: identity, admission, queue, persistence, events, scheduling, stop intent and recovery. Codex/ChatGPT App Server and Muse Code SDK/MSP own their inner model/tool loops. Bun + TypeScript + Elysia + SQLite is the implemented foundation; PostgreSQL is the planned primary server database under NMA-072. ACP is an optional transport, not a requirement for a generic runtime registry. Hermes and additional harnesses remain deferred; there is no legacy runtime fallback.
+Ngertiin owns one application lifecycle: identity, admission, queue, persistence, events, scheduling, stop intent and recovery. Codex/ChatGPT App Server and Muse Code SDK/MSP own their inner model/tool loops. Bun + TypeScript + Elysia + PostgreSQL is the NMA-072 persistence implementation. The controlled SQLite import retains the legacy owner; account/organization binding and multi-user access follow NMA-073–075. See [persistence and cutover](docs/architecture/postgresql-persistence.md). ACP is an optional transport, not a requirement for a generic runtime registry. Hermes and additional harnesses remain deferred; there is no legacy runtime fallback.
 
 Subscription and API-key billing remain distinct. Use only the selected connection; never silently switch billing. The accepted NMA-050/NMA-060 scope verifies ChatGPT subscription and explicitly selected Muse API-key billing. Muse subscription remains unverified. Missing or unsupported capability is represented honestly, with actionable errors and redacted diagnostics.
 

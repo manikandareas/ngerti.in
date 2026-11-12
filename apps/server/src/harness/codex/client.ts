@@ -79,9 +79,9 @@ export class CodexClient implements HarnessClient {
   ) {
     mkdirSync(workspace, { recursive: true, mode: 0o700 });
     this.rpc = new CodexRpc(executable, context, args);
-    this.rpc.onMessage = (message) => {
+    this.rpc.onMessage = async (message) => {
       try {
-        this.receive(message);
+        await this.receive(message);
       } catch {
         this.#active?.reject(new HarnessError("PROTOCOL_ERROR", "unknown"));
         void this.close();
@@ -329,14 +329,14 @@ export class CodexClient implements HarnessClient {
       });
     }
   }
-  private receive(message: RpcMessage) {
+  private async receive(message: RpcMessage) {
     const active = this.#active;
     if (message.id !== undefined) {
       if (message.method === "item/tool/call") {
         const requestId = message.id;
-        void this.tool(message).catch(() => {
+        void this.tool(message).catch(async () => {
           try {
-            this.rpc.reject(requestId);
+            await this.rpc.reject(requestId);
           } catch {
             /* The owned transport may already be closed. */
           }
@@ -348,10 +348,10 @@ export class CodexClient implements HarnessClient {
         message.method === "item/commandExecution/requestApproval" ||
         message.method === "item/fileChange/requestApproval"
       )
-        this.rpc.respond(message.id, { decision: "decline" });
+        await this.rpc.respond(message.id, { decision: "decline" });
       else if (message.method === "item/permissions/requestApproval")
-        this.rpc.respond(message.id, { permissions: {}, scope: "turn" });
-      else this.rpc.reject(message.id);
+        await this.rpc.respond(message.id, { permissions: {}, scope: "turn" });
+      else await this.rpc.reject(message.id);
       return;
     }
     if (
@@ -499,7 +499,7 @@ export class CodexClient implements HarnessClient {
     const rpc = async (method: string, body: unknown, notification = false) => {
       if (this.#active !== active || active.request.signal.aborted)
         throw new HarnessError("NATIVE_REJECTED");
-      const response = await fetch(this.toolEndpoint(), {
+      const response = await fetch(await this.toolEndpoint(), {
         method: "POST",
         headers: {
           Authorization: `Bearer ${active.request.tools.token}`,
@@ -536,7 +536,7 @@ export class CodexClient implements HarnessClient {
       .parse(await rpc("tools/call", params.arguments)).result;
     if (this.#active !== active || active.request.signal.aborted)
       throw new HarnessError("NATIVE_REJECTED");
-    this.rpc.respond(message.id, {
+    await this.rpc.respond(message.id, {
       contentItems: result.content.map((item) =>
         item.type === "text"
           ? {

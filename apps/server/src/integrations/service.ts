@@ -12,14 +12,10 @@ type Scope = { agent_id: string; thread_id: string };
 export class Applications {
   readonly #opening = new Map<string, Promise<Entity<"app_session">>>();
   readonly #busy = new Set<string>();
-  constructor(
+  private constructor(
     readonly lifecycle: Lifecycle,
     readonly host: AppHost = new ComposioHost(),
-  ) {
-    for (const effect of lifecycle.store.list("app_effect"))
-      if (effect.state === "dispatched")
-        this.update(effect, { state: "unknown", error_code: "APP_UNKNOWN" });
-  }
+  ) {}
   private base() {
     const now = new Date().toISOString();
     return {
@@ -30,11 +26,11 @@ export class Applications {
       updated_at: now,
     };
   }
-  private update<T extends Entity<"app_connection" | "app_effect">>(
+  private async update<T extends Entity<"app_connection" | "app_effect">>(
     entity: T,
     fields: Partial<T>,
-  ): T {
-    return this.lifecycle.store.put(
+  ): Promise<T> {
+    return await this.lifecycle.store.put(
       {
         ...entity,
         ...fields,
@@ -44,37 +40,37 @@ export class Applications {
       entity.revision,
     );
   }
-  private scope(scope: Scope) {
-    const agent = this.lifecycle.store.get("agent", scope.agent_id);
-    const thread = this.lifecycle.store.get("thread", scope.thread_id);
+  private async scope(scope: Scope) {
+    const agent = await this.lifecycle.store.get("agent", scope.agent_id);
+    const thread = await this.lifecycle.store.get("thread", scope.thread_id);
     if (!thread.member_agent_ids.includes(agent.id) || thread.purpose !== "conversation")
       throw new DomainError("SCOPE_DENIED", 403);
   }
-  list(scope?: Scope) {
-    if (scope) this.scope(scope);
-    return this.lifecycle.store
-      .list("app_connection")
-      .filter(
-        (c) =>
-          !scope ||
-          c.grants.some((g) => g.agent_id === scope.agent_id && g.thread_id === scope.thread_id),
-      );
+  async list(scope?: Scope) {
+    if (scope) await this.scope(scope);
+    return (await this.lifecycle.store.list("app_connection")).filter(
+      (c) =>
+        !scope ||
+        c.grants.some((g) => g.agent_id === scope.agent_id && g.thread_id === scope.thread_id),
+    );
   }
   catalog(query: string, cursor?: string) {
     return this.host.catalog(this.lifecycle.store.ownerId, query, cursor);
   }
   async connect(toolkit: string, previousId?: string) {
     toolkitSlug.parse(toolkit);
-    const previous = previousId ? this.lifecycle.store.get("app_connection", previousId) : null;
+    const previous = previousId
+      ? await this.lifecycle.store.get("app_connection", previousId)
+      : null;
     if (previous && previous.toolkit !== toolkit) throw new DomainError("SCOPE_DENIED", 403);
     const link = await this.host.connect(this.lifecycle.store.ownerId, toolkit);
     const connection = previous
-      ? this.update(previous, {
+      ? await this.update(previous, {
           account_id: link.account_id,
           state: "pending",
           generation: previous.generation + 1,
         })
-      : this.lifecycle.store.put({
+      : await this.lifecycle.store.put({
           ...this.base(),
           kind: "app_connection",
           toolkit,
@@ -87,10 +83,10 @@ export class Applications {
     return { connection, connect_url: link.connect_url };
   }
   async refresh(id: string) {
-    const connection = this.lifecycle.store.get("app_connection", id);
+    const connection = await this.lifecycle.store.get("app_connection", id);
     if (connection.state === "revoked") throw new DomainError("SCOPE_DENIED", 403);
     const accounts = await this.host.accounts(this.lifecycle.store.ownerId);
-    const current = this.lifecycle.store.get("app_connection", id);
+    const current = await this.lifecycle.store.get("app_connection", id);
     if (current.revision !== connection.revision) throw new DomainError("STALE_DISPATCH");
     const state = accounts.some(
       (a) => a.id === connection.account_id && a.toolkit === connection.toolkit && a.active,
@@ -99,26 +95,29 @@ export class Applications {
       : "auth_required";
     return current.state === state
       ? current
-      : this.update(current, { state, generation: current.generation + 1 });
+      : await this.update(current, { state, generation: current.generation + 1 });
   }
-  assign(id: string, input: unknown) {
+  async assign(id: string, input: unknown) {
     const data = appAssignment.parse(input),
-      connection = this.lifecycle.store.get("app_connection", id);
+      connection = await this.lifecycle.store.get("app_connection", id);
     if (connection.revision !== data.expected_revision) throw new DomainError("CONFLICT");
-    for (const grant of data.grants) this.scope(grant);
+    for (const grant of data.grants) await this.scope(grant);
     if (new Set(data.grants.map((g) => `${g.agent_id}:${g.thread_id}`)).size !== data.grants.length)
       throw new DomainError("INVALID_REQUEST", 422);
-    return this.update(connection, { grants: data.grants, generation: connection.generation + 1 });
+    return await this.update(connection, {
+      grants: data.grants,
+      generation: connection.generation + 1,
+    });
   }
-  revoke(id: string) {
-    const connection = this.lifecycle.store.get("app_connection", id);
+  async revoke(id: string) {
+    const connection = await this.lifecycle.store.get("app_connection", id);
     return connection.state === "revoked"
       ? connection
-      : this.update(connection, { state: "revoked", generation: connection.generation + 1 });
+      : await this.update(connection, { state: "revoked", generation: connection.generation + 1 });
   }
-  private authorized(id: string, scope: Scope, generation?: number, tool?: string) {
-    this.scope(scope);
-    const connection = this.lifecycle.store.get("app_connection", id);
+  private async authorized(id: string, scope: Scope, generation?: number, tool?: string) {
+    await this.scope(scope);
+    const connection = await this.lifecycle.store.get("app_connection", id);
     if (connection.state !== "active")
       throw new DomainError(
         connection.state === "revoked" ? "SCOPE_DENIED" : "APP_AUTH_REQUIRED",
@@ -133,13 +132,13 @@ export class Applications {
     return { connection, grant };
   }
   private async session(id: string, scope: Scope) {
-    const { connection, grant } = this.authorized(id, scope);
+    const { connection, grant } = await this.authorized(id, scope);
     const matches = (s: Entity<"app_session">) =>
       s.connection_id === id &&
       s.agent_id === scope.agent_id &&
       s.thread_id === scope.thread_id &&
       s.generation === connection.generation;
-    const existing = this.lifecycle.store.list("app_session").find(matches);
+    const existing = (await this.lifecycle.store.list("app_session")).find(matches);
     if (existing) return existing;
     const key = `${id}:${scope.agent_id}:${scope.thread_id}:${connection.generation}`;
     const pending = this.#opening.get(key);
@@ -150,8 +149,8 @@ export class Applications {
         account_id: connection.account_id,
         tools: grant.tools,
       });
-      this.authorized(id, scope, connection.generation);
-      return this.lifecycle.store.put({
+      await this.authorized(id, scope, connection.generation);
+      return await this.lifecycle.store.put({
         ...this.base(),
         kind: "app_session",
         connection_id: id,
@@ -170,8 +169,8 @@ export class Applications {
   }
   async search(input: unknown, scope?: Scope, authorize = () => {}) {
     const data = appSearch.parse(input);
-    authorize();
-    const connection = this.lifecycle.store.get("app_connection", data.connection_id);
+    await authorize();
+    const connection = await this.lifecycle.store.get("app_connection", data.connection_id);
     if (connection.state !== "active") throw new DomainError("APP_AUTH_REQUIRED");
     const session = scope
       ? await this.session(connection.id, scope)
@@ -181,14 +180,17 @@ export class Applications {
             account_id: connection.account_id,
           }),
         };
-    authorize();
+    await authorize();
     const tools = await this.host.search(session.native_session_id, data.query);
-    authorize();
+    await authorize();
     if (
-      this.lifecycle.store.get("app_connection", connection.id).generation !== connection.generation
+      (await this.lifecycle.store.get("app_connection", connection.id)).generation !==
+      connection.generation
     )
       throw new DomainError("STALE_DISPATCH");
-    const grant = scope ? this.authorized(connection.id, scope, connection.generation).grant : null;
+    const grant = scope
+      ? (await this.authorized(connection.id, scope, connection.generation)).grant
+      : null;
     return appOutput(
       tools.filter(
         (t) =>
@@ -200,44 +202,53 @@ export class Applications {
   }
   async execute(input: unknown, access: ToolAccess) {
     const data = appExecute.parse(input);
-    access.authorize();
-    authorizeResponsibilityWork(this.lifecycle, access.scope.run_id);
-    const { connection } = this.authorized(data.connection_id, access.scope, undefined, data.tool);
+    await access.authorize();
+    await authorizeResponsibilityWork(this.lifecycle, access.scope.run_id);
+    const { connection } = await this.authorized(
+      data.connection_id,
+      access.scope,
+      undefined,
+      data.tool,
+    );
     const fingerprint = createHash("sha256")
       .update(canonical({ ...data, run_id: access.scope.run_id }))
       .digest("hex");
-    const previous = this.lifecycle.store.list("app_effect").find((e) => e.id === data.command_id);
+    const previous = (await this.lifecycle.store.list("app_effect")).find(
+      (e) => e.id === data.command_id,
+    );
     if (previous) {
       if (previous.fingerprint !== fingerprint) throw new DomainError("IDEMPOTENCY_CONFLICT");
       return { receipt: previous };
     }
     if (this.#busy.has(connection.account_id)) throw new DomainError("CONFLICT");
-    if (
-      this.lifecycle.store
-        .list("app_effect")
-        .some(
-          (e) =>
-            e.account_id === connection.account_id && ["dispatched", "unknown"].includes(e.state),
-        )
-    )
-      throw new DomainError("RECONCILIATION_REQUIRED");
     this.#busy.add(connection.account_id);
     let effect: Entity<"app_effect"> | undefined;
     try {
+      if (
+        (await this.lifecycle.store.list("app_effect")).some(
+          (effect) =>
+            effect.account_id === connection.account_id &&
+            ["dispatched", "unknown"].includes(effect.state),
+        )
+      )
+        throw new DomainError("RECONCILIATION_REQUIRED");
       const session = await this.session(connection.id, access.scope);
       const accounts = await this.host.accounts(this.lifecycle.store.ownerId);
-      const authorize = () => {
-        access.authorize();
-        authorizeResponsibilityWork(this.lifecycle, access.scope.run_id);
-        this.authorized(connection.id, access.scope, connection.generation, data.tool);
+      const authorize = async () => {
+        await access.authorize();
+        await authorizeResponsibilityWork(this.lifecycle, access.scope.run_id);
+        await this.authorized(connection.id, access.scope, connection.generation, data.tool);
       };
-      authorize();
+      await authorize();
       if (
         !accounts.some(
           (a) => a.id === connection.account_id && a.toolkit === connection.toolkit && a.active,
         )
       ) {
-        this.update(connection, { state: "auth_required", generation: connection.generation + 1 });
+        await this.update(connection, {
+          state: "auth_required",
+          generation: connection.generation + 1,
+        });
         throw new DomainError("APP_AUTH_REQUIRED");
       }
       const result = await this.host.execute(
@@ -245,9 +256,9 @@ export class Applications {
         connection.account_id,
         data.tool,
         data.arguments,
-        () => {
-          authorize();
-          effect = this.lifecycle.store.put({
+        async () => {
+          await authorize();
+          effect = await this.lifecycle.store.put({
             ...this.base(),
             id: data.command_id,
             kind: "app_effect",
@@ -269,7 +280,7 @@ export class Applications {
         },
       );
       if (!effect) throw new DomainError("APP_UNAVAILABLE");
-      const receipt = this.update(effect, {
+      const receipt = await this.update(effect, {
         state: result.state,
         log_id: result.log_id,
         request_id: result.request_id ?? null,
@@ -282,14 +293,32 @@ export class Applications {
               : null,
         result: appOutput(result.data),
       });
-      authorize();
+      await authorize();
       return { receipt };
     } catch (error) {
-      if (effect && this.lifecycle.store.get("app_effect", effect.id).state === "dispatched")
-        this.update(effect, { state: "unknown", error_code: "APP_UNKNOWN" });
+      if (
+        effect &&
+        (await this.lifecycle.store.get("app_effect", effect.id)).state === "dispatched"
+      )
+        await this.update(effect, { state: "unknown", error_code: "APP_UNKNOWN" });
       throw error;
     } finally {
       this.#busy.delete(connection.account_id);
     }
+  }
+
+  private async initialize(lifecycle: Lifecycle) {
+    for (const effect of await lifecycle.store.list("app_effect"))
+      if (effect.state === "dispatched")
+        await this.update(effect, { state: "unknown", error_code: "APP_UNKNOWN" });
+  }
+
+  static async open(
+    lifecycle: Lifecycle,
+    host: AppHost = new ComposioHost(),
+  ): Promise<Applications> {
+    const instance = new Applications(lifecycle, host);
+    await instance.initialize(lifecycle);
+    return instance;
   }
 }

@@ -1,6 +1,7 @@
 import type { z } from "zod";
 import { DomainError, type Entity } from "../contracts";
 import type { Lifecycle } from "../lifecycle";
+import { asyncMap } from "../persistence/async-collections";
 import type { Workspaces } from "../workspaces/service";
 import type { attachmentObservation, attachmentRead, attachmentSearch } from "./contracts";
 import { AttachmentDocuments } from "./documents";
@@ -14,11 +15,11 @@ export class Attachments {
     this.documents = new AttachmentDocuments(lifecycle);
     this.workspaces = this.documents.artifacts.workspaces;
   }
-  private visible(run: Entity<"run">) {
-    const workspace = this.workspaces.authorizeRun(run);
-    const messages = this.lifecycle.store
-      .list("message")
-      .filter((m) => m.thread_id === run.thread_id);
+  private async visible(run: Entity<"run">) {
+    const workspace = await this.workspaces.authorizeRun(run);
+    const messages = (
+      await this.lifecycle.store.list("message", { thread_id: run.thread_id })
+    ).filter((m) => m.thread_id === run.thread_id);
     const end = messages.findIndex((m) => m.id === run.input_message_id);
     const retained = messages.slice(0, end + 1).filter((m) => m.state !== "deleted");
     const ids = new Set(retained.flatMap((m) => m.artifact_ids));
@@ -31,23 +32,27 @@ export class Attachments {
         )
         .map((m) => m.run_id),
     );
-    return this.lifecycle.store
-      .list("artifact")
-      .filter(
-        (a) =>
-          a.workspace_id === workspace.id &&
-          a.agent_id === workspace.agent_id &&
-          a.thread_id === run.thread_id &&
-          (ids.has(a.id) || (a.origin === "native_output" && outputRuns.has(a.run_id))),
-      );
+    return (
+      await this.lifecycle.store.list("artifact", {
+        workspace_id: workspace.id,
+        agent_id: workspace.agent_id,
+        thread_id: run.thread_id,
+      })
+    ).filter(
+      (a) =>
+        a.workspace_id === workspace.id &&
+        a.agent_id === workspace.agent_id &&
+        a.thread_id === run.thread_id &&
+        (ids.has(a.id) || (a.origin === "native_output" && outputRuns.has(a.run_id))),
+    );
   }
-  manifest(item: Entity<"artifact">) {
-    const document = this.documents.status(item);
+  async manifest(item: Entity<"artifact">) {
+    const document = await this.documents.status(item);
     return {
       id: item.id,
       name: item.name,
       media_type: item.media_type,
-      path: this.documents.artifacts.inputPath(item),
+      path: await this.documents.artifacts.inputPath(item),
       sha256: item.sha256,
       document_state:
         document?.state ??
@@ -56,39 +61,46 @@ export class Attachments {
       error_code: document?.error_code ?? null,
     };
   }
-  list(run: Entity<"run">, after?: string, limit = 20) {
-    const visible = this.visible(run).toReversed();
+  async list(run: Entity<"run">, after?: string, limit = 20) {
+    const visible = (await this.visible(run)).toReversed();
     const start = after ? visible.findIndex((a) => a.id === after) + 1 : 0;
     if (after && start === 0) throw new DomainError("SCOPE_DENIED", 403);
     const items = visible.slice(start, start + limit);
     return {
-      attachments: items.map((a) => this.manifest(a)),
+      attachments: await asyncMap(items, async (a) => await this.manifest(a)),
       next_after: start + limit < visible.length ? (items.at(-1)?.id ?? null) : null,
     };
   }
-  current(run: Entity<"run">) {
-    const ids = new Set(this.lifecycle.store.get("message", run.input_message_id).artifact_ids);
-    const visible = this.visible(run);
+  async current(run: Entity<"run">) {
+    const ids = new Set(
+      (await this.lifecycle.store.get("message", run.input_message_id)).artifact_ids,
+    );
+    const visible = await this.visible(run);
     return {
-      attachments: visible.filter((a) => ids.has(a.id)).map((a) => this.manifest(a)),
-      previous_attachments: visible
-        .filter((a) => !ids.has(a.id))
-        .slice(-10)
-        .reverse()
-        .map((a) => this.manifest(a)),
+      attachments: await asyncMap(
+        visible.filter((a) => ids.has(a.id)),
+        async (a) => await this.manifest(a),
+      ),
+      previous_attachments: await asyncMap(
+        visible
+          .filter((a) => !ids.has(a.id))
+          .slice(-10)
+          .reverse(),
+        async (a) => await this.manifest(a),
+      ),
     };
   }
-  private get(run: Entity<"run">, id: string) {
-    const item = this.visible(run).find((a) => a.id === id);
+  private async get(run: Entity<"run">, id: string) {
+    const item = (await this.visible(run)).find((a) => a.id === id);
     if (!item) throw new DomainError("SCOPE_DENIED", 403);
     return item;
   }
-  record(runId: string, observations: Observation[], authorize: () => void) {
+  async record(runId: string, observations: Observation[], authorize: () => void) {
     if (!observations.length) return;
-    authorize();
-    const run = this.lifecycle.store.get("run", runId);
-    this.workspaces.authorizeRun(run);
-    this.lifecycle.store.put(
+    await authorize();
+    const run = await this.lifecycle.store.get("run", runId);
+    await this.workspaces.authorizeRun(run);
+    await this.lifecycle.store.put(
       {
         ...run,
         attachment_observations: [...run.attachment_observations, ...observations].slice(-200),
@@ -114,15 +126,15 @@ export class Attachments {
     };
   }
   async context(run: Entity<"run">, authorize: () => void) {
-    const ids = this.lifecycle.store.get("message", run.input_message_id).artifact_ids;
+    const ids = (await this.lifecycle.store.get("message", run.input_message_id)).artifact_ids;
     const observations: Observation[] = [];
     const previews: object[] = [];
     let remaining = 12_000;
     for (const id of ids) {
-      const item = this.get(run, id);
+      const item = await this.get(run, id);
       if (item.media_type.startsWith("image/") || item.media_type.startsWith("video/")) continue;
       const document = await this.documents.prepare(item, authorize);
-      authorize();
+      await authorize();
       const pages = document.pages
         .slice(0, 2)
         .map((page) => {
@@ -147,7 +159,7 @@ export class Attachments {
           ),
         );
     }
-    const context = this.current(run);
+    const context = await this.current(run);
     if (!context.attachments.length && !context.previous_attachments.length)
       return { text: "", observations };
     return {
@@ -158,7 +170,7 @@ export class Attachments {
     };
   }
   async read(run: Entity<"run">, input: z.infer<typeof attachmentRead>, authorize: () => void) {
-    const item = this.get(run, input.artifact_id);
+    const item = await this.get(run, input.artifact_id);
     const document = await this.documents.prepare(item, authorize);
     if (document.error_code)
       return {
@@ -170,8 +182,8 @@ export class Attachments {
       };
     const last = input.end_page ?? Math.min(input.start_page + 2, document.page_count);
     const result = await this.documents.range(item, document, input.start_page, last, authorize);
-    authorize();
-    this.get(run, item.id);
+    await authorize();
+    await this.get(run, item.id);
     let skip = input.offset;
     let budget = input.max_chars;
     let available = 0;
@@ -187,7 +199,7 @@ export class Attachments {
       })
       .filter((p) => p.text.length);
     const truncated = available > input.max_chars || result.truncated;
-    this.record(
+    await this.record(
       run.id,
       [
         this.observation(
@@ -210,10 +222,10 @@ export class Attachments {
     };
   }
   async search(run: Entity<"run">, input: z.infer<typeof attachmentSearch>, authorize: () => void) {
-    const item = this.get(run, input.artifact_id);
+    const item = await this.get(run, input.artifact_id);
     const document = await this.documents.prepare(item, authorize);
-    authorize();
-    this.get(run, item.id);
+    await authorize();
+    await this.get(run, item.id);
     const query = input.query.toLocaleLowerCase();
     const matches: { page: number; excerpt: string }[] = [];
     let count = 0;
@@ -230,7 +242,7 @@ export class Attachments {
         offset = text.indexOf(query, offset + query.length);
       }
     }
-    this.record(
+    await this.record(
       run.id,
       [
         this.observation(

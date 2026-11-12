@@ -56,7 +56,7 @@ export class MuseInteractions {
         !pending.availableChoices.some((c) => c.choiceId === answer.choice_id)
       )
         throw new HarnessError("NATIVE_REJECTED");
-      return transport.command("approval/decide", {
+      return await transport.command("approval/decide", {
         sessionId: sessionId,
         approvalId: pending.approvalId,
         requirementId: pending.currentRequirementId,
@@ -94,7 +94,7 @@ export class MuseInteractions {
       )
         throw new HarnessError("NATIVE_REJECTED");
     }
-    return transport.command("userInput/answer", {
+    return await transport.command("userInput/answer", {
       sessionId: sessionId,
       userInputId: pending.userInputId,
       answers: answer.answers,

@@ -19,11 +19,11 @@ export class MuseAccounts implements AccountService {
   constructor(
     readonly connections: Connections,
     readonly credentials: CredentialContexts,
-    private readonly detect = () => detectHarness("muse"),
+    private readonly detect = async () => detectHarness("muse"),
     private readonly args: string[] = [],
   ) {}
-  private current(id: string, revision: number) {
-    const connection = this.connections.get(id);
+  private async current(id: string, revision: number) {
+    const connection = await this.connections.get(id);
     if (
       this.#closed ||
       connection.harness !== "muse" ||
@@ -34,10 +34,10 @@ export class MuseAccounts implements AccountService {
     return connection;
   }
   private async client(id: string) {
-    const connection = this.connections.get(id);
-    this.current(id, connection.grant_revision);
+    const connection = await this.connections.get(id);
+    await this.current(id, connection.grant_revision);
     const available = requireAvailable(await this.detect());
-    this.current(id, connection.grant_revision);
+    await this.current(id, connection.grant_revision);
     const launch = this.credentials.create(connection);
     const client = new MuseClient(
       available.executable as string,
@@ -52,7 +52,7 @@ export class MuseAccounts implements AccountService {
     this.#clients.add(client);
     try {
       await client.initialize();
-      this.current(id, connection.grant_revision);
+      await this.current(id, connection.grant_revision);
       return client;
     } catch (error) {
       await this.release(client);
@@ -64,17 +64,17 @@ export class MuseAccounts implements AccountService {
     await client.close();
   }
   async inspect(id: string) {
-    const revision = this.connections.get(id).grant_revision;
+    const revision = (await this.connections.get(id)).grant_revision;
     const client = await this.client(id);
     try {
       const observed = await client.inspect();
-      const before = this.current(id, revision);
+      const before = await this.current(id, revision);
       if (
         observed.auth_method !== before.authentication.method ||
         observed.billing_source !== before.authentication.billing_source
       )
         throw new HarnessError("BILLING_MISMATCH");
-      let current = this.connections.update(before, {
+      let current = await this.connections.update(before, {
         login: observed.login,
         effective_billing_source:
           observed.login === "authenticated" ? observed.billing_source : "unknown",
@@ -84,23 +84,26 @@ export class MuseAccounts implements AccountService {
       if (observed.login !== "authenticated") return current;
       try {
         const models = await client.discoverModels();
-        current = this.current(id, current.grant_revision);
-        return this.connections.update(current, { models, discovery: "succeeded" });
+        current = await this.current(id, current.grant_revision);
+        return await this.connections.update(current, { models, discovery: "succeeded" });
       } catch (error) {
-        current = this.connections.get(id);
+        current = await this.connections.get(id);
         if (!this.#closed && current.state === "active")
-          this.connections.update(current, { discovery: "failed" });
+          await this.connections.update(current, { discovery: "failed" });
         throw error;
       }
     } catch (error) {
-      const latest = this.connections.get(id);
+      const latest = await this.connections.get(id);
       if (
         !this.#closed &&
         latest.state === "active" &&
         error instanceof HarnessError &&
         error.code === "BILLING_MISMATCH"
       )
-        this.connections.update(latest, { login: "rejected", effective_billing_source: "unknown" });
+        await this.connections.update(latest, {
+          login: "rejected",
+          effective_billing_source: "unknown",
+        });
       if (error instanceof z.ZodError) throw new HarnessError("PROTOCOL_ERROR");
       throw error;
     } finally {
@@ -108,7 +111,7 @@ export class MuseAccounts implements AccountService {
     }
   }
   async login(id: string) {
-    const connection = this.connections.get(id);
+    const connection = await this.connections.get(id);
     if (connection.authentication.method !== "native_login")
       throw new HarnessError("BILLING_MISMATCH");
     if (this.#starting.has(id) || this.#logins.has(id)) throw new DomainError("CONFLICT");
@@ -117,10 +120,10 @@ export class MuseAccounts implements AccountService {
     try {
       client = await this.client(id);
       // The account host has no session. Claim notifications before starting the device flow.
-      client.transport.connection.onNotification(({ method, params }) => {
+      client.transport.connection.onNotification(async ({ method, params }) => {
         if (method !== "account/loginCompleted") return;
         const outcome = z.object({ outcome: z.string() }).safeParse(params);
-        const latest = this.connections.get(id);
+        const latest = await this.connections.get(id);
         if (
           !this.#closed &&
           latest.state === "active" &&
@@ -128,7 +131,7 @@ export class MuseAccounts implements AccountService {
           outcome.success &&
           outcome.data.outcome !== "granted"
         )
-          this.connections.update(latest, { login: "rejected" });
+          await this.connections.update(latest, { login: "rejected" });
         // A granted browser flow is not evidence of the effective billing lane or inference.
         void this.cancel(id).catch(() => {});
       });
@@ -141,7 +144,7 @@ export class MuseAccounts implements AccountService {
           userCode: z.string().min(1).max(200),
         })
         .parse(await client.transport.read("account/loginStart", { type: "deviceCode" }));
-      this.current(id, connection.grant_revision);
+      await this.current(id, connection.grant_revision);
       return {
         auth_url: result.verificationUrl,
         user_code: result.userCode,
@@ -168,7 +171,7 @@ export class MuseAccounts implements AccountService {
   }
   async close() {
     this.#closed = true;
-    await Promise.allSettled([...this.#logins.keys()].map((id) => this.cancel(id)));
-    await Promise.allSettled([...this.#clients].map((client) => this.release(client)));
+    await Promise.allSettled([...this.#logins.keys()].map(async (id) => this.cancel(id)));
+    await Promise.allSettled([...this.#clients].map(async (client) => this.release(client)));
   }
 }

@@ -16,16 +16,26 @@ class FixtureApps implements AppHost {
   accountsCreated: { id: string; toolkit: string; active: boolean }[] = [];
   async catalog(_user: string, search: string) {
     const query = search.trim().toLowerCase();
-    return { items: [
-      { slug: "calendar", name: "Calendar fixture" },
-      { slug: "mail", name: "Mail fixture" },
-    ].filter((item) => `${item.slug} ${item.name}`.toLowerCase().includes(query))
-      .map((item) => ({ ...item, connected: this.accountsCreated.some((account) => account.toolkit === item.slug && account.active) })) };
+    return {
+      items: [
+        { slug: "calendar", name: "Calendar fixture" },
+        { slug: "mail", name: "Mail fixture" },
+      ]
+        .filter((item) => `${item.slug} ${item.name}`.toLowerCase().includes(query))
+        .map((item) => ({
+          ...item,
+          connected: this.accountsCreated.some(
+            (account) => account.toolkit === item.slug && account.active,
+          ),
+        })),
+    };
   }
   async connect(_owner: string, toolkit: string) {
     const account_id = crypto.randomUUID();
     // Each Mail fixture pair requires an explicit reconnect; Calendar keeps its existing behavior.
-    const active = toolkit !== "mail" || this.accountsCreated.filter((account) => account.toolkit === toolkit).length % 2 === 1;
+    const active =
+      toolkit !== "mail" ||
+      this.accountsCreated.filter((account) => account.toolkit === toolkit).length % 2 === 1;
     this.accountsCreated.push({ id: account_id, toolkit, active });
     return { account_id, connect_url: "https://example.invalid/fixture-connect" };
   }
@@ -59,10 +69,15 @@ class FixtureApps implements AppHost {
     };
   }
 }
+if (!process.env.NGERTIIN_TEST_DATABASE_URL)
+  throw new Error("Select a disposable PostgreSQL database with NGERTIIN_TEST_DATABASE_URL.");
 const config = developmentConfig();
-const store = new Store(config.database, config.owner_id);
-const lifecycle = new Lifecycle(store);
-const tools = new ProductTools(lifecycle, undefined, undefined, new FixtureApps());
+const store = await Store.open(config.database, config.owner_id, {
+  connectionString: process.env.NGERTIIN_TEST_DATABASE_URL,
+  schema: `test_web_${config.owner_id.replaceAll("-", "")}`,
+});
+const lifecycle = await Lifecycle.open(store);
+const tools = await ProductTools.open(lifecycle, undefined, undefined, new FixtureApps());
 const broker = new HarnessBroker(
   lifecycle,
   new CredentialContexts(config.stateDir),
@@ -77,18 +92,20 @@ const broker = new HarnessBroker(
   }),
 );
 const background = new Background(lifecycle, broker.executors());
-const app = createApi(lifecycle, background, config.token, {
-  connections: new Connections(lifecycle),
-  tools,
-  broker,
-}).listen({ hostname: "127.0.0.1", port: config.port });
-background.start();
+const app = (
+  await createApi(lifecycle, background, config.token, {
+    connections: new Connections(lifecycle),
+    tools,
+    broker,
+  })
+).listen({ hostname: "127.0.0.1", port: config.port });
+await background.start();
 async function stop() {
   await app.stop(true);
   await background.stop();
   await broker.close();
   await tools.browsers.shutdown();
-  store.close();
+  await store.close();
   process.exit(0);
 }
 process.on("SIGTERM", stop);

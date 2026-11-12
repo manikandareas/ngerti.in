@@ -17,6 +17,7 @@ import { GroupSchedules } from "./goals/group-schedules";
 import { dueWindow, firstDue } from "./goals/schedule";
 import { ResponsibilityScope } from "./goals/scope";
 import type { GroupRouter } from "./groups/router";
+import { asyncMap, asyncSome } from "./persistence/async-collections";
 import { InteractionJournal } from "./runs/interaction-journal";
 import { canRetryResponse } from "./runs/retry-policy";
 import type { Store } from "./store";
@@ -28,20 +29,39 @@ const final = new Set(["succeeded", "failed", "cancelled", "steered"]);
 /** Owns admission, identity, queue decisions, stop intent and recovery. Harnesses own execution. */
 export class Lifecycle {
   readonly epoch = crypto.randomUUID();
+  readonly #toolControls = new Set<string>();
+  holdToolControl(runId: string) {
+    this.#toolControls.add(runId);
+  }
+  releaseToolControl(runId: string) {
+    this.#toolControls.delete(runId);
+  }
+  toolControlHeld(runId: string) {
+    return this.#toolControls.has(runId);
+  }
   constructor(
     readonly store: Store,
     readonly groupRouter?: GroupRouter,
-  ) {
-    this.store.transaction(() => {
+  ) {}
+
+  static async open(store: Store, groupRouter?: GroupRouter): Promise<Lifecycle> {
+    const lifecycle = new Lifecycle(store, groupRouter);
+    await lifecycle.initialize();
+    return lifecycle;
+  }
+
+  private async initialize() {
+    const store = this.store;
+    await this.store.transaction(async () => {
       const scopes = new ResponsibilityScope(store);
-      for (const item of [...store.list("goal"), ...store.list("routine")]) {
-        const thread = store.get("thread", item.thread_id);
+      for (const item of [...(await store.list("goal")), ...(await store.list("routine"))]) {
+        const thread = await store.get("thread", item.thread_id);
         if (thread.type !== "group" || thread.purpose !== "conversation" || item.scope === "group")
           continue;
         const actor = item.agent_id;
         const valid = actor !== null && thread.member_agent_ids.includes(actor);
-        this.update(item, {
-          ...scopes.ownership({ thread_id: thread.id, agent_id: valid ? actor : null }),
+        await this.update(item, {
+          ...(await scopes.ownership({ thread_id: thread.id, agent_id: valid ? actor : null })),
           created_by_agent_id: actor,
           ...(item.kind === "goal"
             ? {
@@ -51,42 +71,52 @@ export class Lifecycle {
             : { execution_target: actor ? { type: "agent", agent_id: actor } : { type: "auto" } }),
         } as Partial<typeof item>);
       }
-      for (const task of store.list("peer_task")) {
+      for (const task of await store.list("peer_task")) {
         const missing = task.goal_ids.filter((id) => task.goal_generations[id] === undefined);
         if (missing.length)
-          this.update(task, {
+          await this.update(task, {
             goal_generations: {
               ...task.goal_generations,
-              ...Object.fromEntries(missing.map((id) => [id, store.get("goal", id).generation])),
+              ...Object.fromEntries(
+                await asyncMap(missing, async (id) => [
+                  id,
+                  (await store.get("goal", id)).generation,
+                ]),
+              ),
             },
           });
       }
-      for (const goal of store.list("goal")) {
+      for (const goal of await store.list("goal")) {
         if (!goal.root_task_id) {
-          const run = [
-            ...new Set(
-              [goal.current_run_id, ...goal.source_run_ids].filter(
-                (id): id is string => id !== null,
-              ),
-            ),
-          ]
-            .map((id) => store.get("run", id))
-            .find((run) => run.thread_id === goal.thread_id && run.task_id !== null);
+          const run = (
+            await asyncMap(
+              [
+                ...new Set(
+                  [goal.current_run_id, ...goal.source_run_ids].filter(
+                    (id): id is string => id !== null,
+                  ),
+                ),
+              ],
+              async (id) => await store.get("run", id),
+            )
+          ).find((run) => run.thread_id === goal.thread_id && run.task_id !== null);
           if (run?.task_id)
-            this.update(goal, { root_task_id: store.get("peer_task", run.task_id).root_task_id });
+            await this.update(goal, {
+              root_task_id: (await store.get("peer_task", run.task_id)).root_task_id,
+            });
         }
       }
-      for (const run of this.store.list("run")) {
+      for (const run of await this.store.list("run")) {
         if (active.has(run.status))
-          this.update(run, { status: "unknown", outcome: "unknown", activity: "unknown" });
+          await this.update(run, { status: "unknown", outcome: "unknown", activity: "unknown" });
       }
-      new InteractionJournal(this.store).recover();
-      for (const control of this.store.list("control")) {
+      await new InteractionJournal(this.store).recover();
+      for (const control of await this.store.list("control")) {
         if (control.state === "requested")
-          this.update(control, { state: "unknown", error_code: "NATIVE_UNKNOWN" });
+          await this.update(control, { state: "unknown", error_code: "NATIVE_UNKNOWN" });
         if (control.state === "requested" && control.queued_run_id) {
-          const queued = this.store.get("run", control.queued_run_id);
-          if (queued.status === "queued") this.update(queued, { delivery: "unknown" });
+          const queued = await this.store.get("run", control.queued_run_id);
+          if (queued.status === "queued") await this.update(queued, { delivery: "unknown" });
         }
       }
     });
@@ -103,45 +133,45 @@ export class Lifecycle {
     };
   }
 
-  private update<T extends Entity>(entity: T, fields: Partial<T>): T {
-    return this.store.put(
+  private async update<T extends Entity>(entity: T, fields: Partial<T>): Promise<T> {
+    return await this.store.put(
       { ...entity, ...fields, revision: entity.revision + 1, updated_at: new Date().toISOString() },
       entity.revision,
     );
   }
 
-  private scope(threadId: string, agentId: string) {
-    const thread = this.store.get("thread", threadId);
-    const agent = this.store.get("agent", agentId);
+  private async scope(threadId: string, agentId: string) {
+    const thread = await this.store.get("thread", threadId);
+    const agent = await this.store.get("agent", agentId);
     if (!thread.member_agent_ids.includes(agent.id)) throw new DomainError("SCOPE_DENIED", 403);
     if (
       thread.purpose === "routing" &&
       thread.group_thread_id &&
-      !this.store.get("thread", thread.group_thread_id).member_agent_ids.includes(agentId)
+      !(await this.store.get("thread", thread.group_thread_id)).member_agent_ids.includes(agentId)
     )
       throw new DomainError("SCOPE_DENIED", 403);
     return { thread, agent };
   }
 
-  create(kind: "agent" | "thread" | "goal" | "routine" | "artifact", input: unknown): Entity {
-    return this.store.transaction(() => {
+  async create(
+    kind: "agent" | "thread" | "goal" | "routine" | "artifact",
+    input: unknown,
+  ): Promise<Entity> {
+    return await this.store.transaction(async () => {
       const base = this.base();
       switch (kind) {
         case "agent":
-          return this.createAgent(input);
+          return await this.createAgent(input);
         case "thread": {
           const data = threadInput.parse(input);
-          for (const agentId of data.member_agent_ids) this.store.get("agent", agentId);
+          for (const agentId of data.member_agent_ids) await this.store.get("agent", agentId);
           if (data.type === "dm") {
-            const existing = this.store
-              .list("thread")
-              .find(
-                (item) =>
-                  item.type === "dm" && item.member_agent_ids[0] === data.member_agent_ids[0],
-              );
+            const existing = (await this.store.list("thread")).find(
+              (item) => item.type === "dm" && item.member_agent_ids[0] === data.member_agent_ids[0],
+            );
             if (existing) return existing;
           }
-          return this.store.put({
+          return await this.store.put({
             ...base,
             ...data,
             kind,
@@ -156,17 +186,17 @@ export class Lifecycle {
           const data = goalInput.parse(input);
           const actor =
             data.agent_id ??
-            (this.store.get("thread", data.thread_id).member_agent_ids[0] as string);
-          this.scope(data.thread_id, actor);
-          return this.store.put(
+            ((await this.store.get("thread", data.thread_id)).member_agent_ids[0] as string);
+          await this.scope(data.thread_id, actor);
+          return await this.store.put(
             goalSchema.parse({
               ...base,
               ...data,
               kind,
-              ...new ResponsibilityScope(this.store).ownership({
+              ...(await new ResponsibilityScope(this.store).ownership({
                 thread_id: data.thread_id,
                 agent_id: actor,
-              }),
+              })),
               coordinator_agent_id: actor,
               state: "active",
               generation: 1,
@@ -178,24 +208,24 @@ export class Lifecycle {
           const data = routineInput.parse(input);
           const actor =
             data.agent_id ??
-            (this.store.get("thread", data.thread_id).member_agent_ids[0] as string);
-          this.scope(data.thread_id, actor);
-          if (data.goal_id) this.checkGoal(data.goal_id, data.thread_id, actor);
-          const shared = this.store.get("thread", data.thread_id).type === "group";
+            ((await this.store.get("thread", data.thread_id)).member_agent_ids[0] as string);
+          await this.scope(data.thread_id, actor);
+          if (data.goal_id) await this.checkGoal(data.goal_id, data.thread_id, actor);
+          const shared = (await this.store.get("thread", data.thread_id)).type === "group";
           const target =
             data.execution_target ??
             (shared ? { type: "auto" as const } : { type: "agent" as const, agent_id: actor });
-          if (target.type === "agent") this.scope(data.thread_id, target.agent_id);
+          if (target.type === "agent") await this.scope(data.thread_id, target.agent_id);
           else if (!shared) throw new DomainError("SCOPE_DENIED", 403);
-          return this.store.put(
+          return await this.store.put(
             routineSchema.parse({
               ...base,
               ...data,
               kind,
-              ...new ResponsibilityScope(this.store).ownership({
+              ...(await new ResponsibilityScope(this.store).ownership({
                 thread_id: data.thread_id,
                 agent_id: actor,
-              }),
+              })),
               execution_target: target,
               state: "active",
               generation: 1,
@@ -206,13 +236,13 @@ export class Lifecycle {
         case "artifact": {
           const data = artifactInput.parse(input);
           if (!data.agent_id) throw new DomainError("SCOPE_DENIED", 403);
-          this.scope(data.thread_id, data.agent_id);
+          await this.scope(data.thread_id, data.agent_id);
           if (data.run_id) {
-            const run = this.store.get("run", data.run_id);
+            const run = await this.store.get("run", data.run_id);
             if (run.thread_id !== data.thread_id || run.agent_id !== data.agent_id)
               throw new DomainError("SCOPE_DENIED", 403);
           }
-          return this.store.put({
+          return await this.store.put({
             ...base,
             ...data,
             kind,
@@ -233,10 +263,12 @@ export class Lifecycle {
     });
   }
 
-  createAgent(input: unknown): Entity<"agent"> {
+  async createAgent(input: unknown): Promise<Entity<"agent">> {
     const data = agentInput.parse(input);
     if (data.workspace_id !== null) throw new DomainError("SCOPE_DENIED", 403);
-    const connection = data.connection_id ? this.store.get("connection", data.connection_id) : null;
+    const connection = data.connection_id
+      ? await this.store.get("connection", data.connection_id)
+      : null;
     if (
       connection &&
       (connection.state !== "active" ||
@@ -247,9 +279,9 @@ export class Lifecycle {
       throw new DomainError("SCOPE_DENIED", 403);
     const base = this.base();
     const handle = data.handle ?? `agent_${base.id.replaceAll("-", "")}`;
-    if (this.store.list("agent").some((item) => item.handle === handle))
+    if ((await this.store.list("agent")).some((item) => item.handle === handle))
       throw new DomainError("CONFLICT");
-    return this.store.put({
+    return await this.store.put({
       ...base,
       ...data,
       handle,
@@ -261,18 +293,18 @@ export class Lifecycle {
     });
   }
 
-  updateAgent(agentId: string, input: unknown): Entity<"agent"> {
+  async updateAgent(agentId: string, input: unknown): Promise<Entity<"agent">> {
     const data = agentUpdate.parse(input);
-    return this.store.transaction(() => {
-      const current = this.store.get("agent", agentId);
+    return await this.store.transaction(async () => {
+      const current = await this.store.get("agent", agentId);
       if (current.revision !== data.expected_revision) throw new DomainError("CONFLICT");
       const merged = agentInput.parse({ ...agentInput.strip().parse(current), ...data.changes });
       if (merged.workspace_id !== null) {
-        const workspace = new Workspaces(this).get(merged.workspace_id);
+        const workspace = await new Workspaces(this).get(merged.workspace_id);
         if (workspace.agent_id !== agentId) throw new DomainError("SCOPE_DENIED", 403);
       }
       const connection = merged.connection_id
-        ? this.store.get("connection", merged.connection_id)
+        ? await this.store.get("connection", merged.connection_id)
         : null;
       if (
         connection &&
@@ -284,52 +316,53 @@ export class Lifecycle {
         throw new DomainError("SCOPE_DENIED", 403);
       if (
         merged.handle === null ||
-        this.store
-          .list("agent")
-          .some((item) => item.id !== agentId && item.handle === merged.handle)
+        (await this.store.list("agent")).some(
+          (item) => item.id !== agentId && item.handle === merged.handle,
+        )
       )
         throw new DomainError("CONFLICT");
-      return this.update(current, merged);
+      return await this.update(current, merged);
     });
   }
 
   /** Active work keeps its dispatch snapshot; configuration edits affect the next claim. */
-  executionAgent(threadId: string, agentId: string): Entity<"agent"> {
-    const current = this.store.get("agent", agentId);
-    const running = this.store
-      .list("run")
-      .find(
-        (item) =>
-          item.thread_id === threadId &&
-          item.agent_id === agentId &&
-          (active.has(item.status) || item.status === "unknown"),
-      );
+  async executionAgent(threadId: string, agentId: string): Promise<Entity<"agent">> {
+    const current = await this.store.get("agent", agentId);
+    const running = (await this.store.list("run", { thread_id: threadId, agent_id: agentId })).find(
+      (item) =>
+        item.thread_id === threadId &&
+        item.agent_id === agentId &&
+        (active.has(item.status) || item.status === "unknown"),
+    );
     if (!running?.agent_snapshot) return current;
     const { agent_id: _id, revision, ...profile } = running.agent_snapshot;
     return { ...current, ...profile, revision };
   }
 
-  private checkGoal(goalId: string, threadId: string, agentId: string) {
-    const goal = this.store.get("goal", goalId);
-    new ResponsibilityScope(this.store).require({ thread_id: threadId, agent_id: agentId }, goal);
+  private async checkGoal(goalId: string, threadId: string, agentId: string) {
+    const goal = await this.store.get("goal", goalId);
+    await new ResponsibilityScope(this.store).require(
+      { thread_id: threadId, agent_id: agentId },
+      goal,
+    );
     if (goal.state !== "active") throw new DomainError("CONFLICT");
     return goal;
   }
 
-  private responsibility(run: Entity<"run">) {
+  private async responsibility(run: Entity<"run">) {
     if (run.task_id) {
-      const task = this.store.get("peer_task", run.task_id);
+      const task = await this.store.get("peer_task", run.task_id);
       if (
         task.state === "cancelled" ||
-        task.goal_ids.some((id) => {
-          const goal = this.store.get("goal", id);
+        (await asyncSome(task.goal_ids, async (id) => {
+          const goal = await this.store.get("goal", id);
           return goal.state !== "active" || task.goal_generations[id] !== goal.generation;
-        })
+        }))
       )
         throw new DomainError("STALE_DISPATCH");
     }
     if (run.goal_id) {
-      const goal = this.checkGoal(run.goal_id, run.thread_id, run.agent_id);
+      const goal = await this.checkGoal(run.goal_id, run.thread_id, run.agent_id);
       if (
         run.goal_assignment_revision !== null &&
         run.goal_assignment_revision !== goal.assignment_revision
@@ -339,21 +372,21 @@ export class Lifecycle {
         throw new DomainError("STALE_DISPATCH");
     }
     if (run.routine_id) {
-      const routine = this.store.get("routine", run.routine_id);
+      const routine = await this.store.get("routine", run.routine_id);
       if (routine.state !== "active") throw new DomainError("CONFLICT");
       if (run.routine_generation !== null && run.routine_generation !== routine.generation)
         throw new DomainError("STALE_DISPATCH");
-      if (routine.goal_id) this.checkGoal(routine.goal_id, run.thread_id, run.agent_id);
+      if (routine.goal_id) await this.checkGoal(routine.goal_id, run.thread_id, run.agent_id);
     }
   }
 
-  admit(input: unknown, author: "user" | "routine" = "user") {
+  async admit(input: unknown, author: "user" | "routine" = "user") {
     const data = admissionInput.parse(input);
-    return this.store.transaction(() => {
-      this.scope(data.thread_id, data.agent_id);
-      if (data.goal_id) this.checkGoal(data.goal_id, data.thread_id, data.agent_id);
+    return await this.store.transaction(async () => {
+      await this.scope(data.thread_id, data.agent_id);
+      if (data.goal_id) await this.checkGoal(data.goal_id, data.thread_id, data.agent_id);
       if (data.routine_id) {
-        const routine = this.store.get("routine", data.routine_id);
+        const routine = await this.store.get("routine", data.routine_id);
         if (
           routine.thread_id !== data.thread_id ||
           (routine.scope !== "group" && routine.agent_id !== data.agent_id) ||
@@ -362,9 +395,13 @@ export class Lifecycle {
           throw new DomainError("SCOPE_DENIED", 403);
         if (routine.state !== "active") throw new DomainError("CONFLICT");
       }
-      new Workspaces(this).authorizeArtifacts(data.thread_id, data.agent_id, data.artifact_ids);
+      await new Workspaces(this).authorizeArtifacts(
+        data.thread_id,
+        data.agent_id,
+        data.artifact_ids,
+      );
       const runId = crypto.randomUUID();
-      const message = this.store.put({
+      const message = await this.store.put({
         ...this.base(),
         kind: "message",
         creation_operation_id: null,
@@ -379,7 +416,7 @@ export class Lifecycle {
         artifact_ids: data.artifact_ids,
         state: "complete",
       });
-      const run = this.enqueue(message, data.agent_id, {
+      const run = await this.enqueue(message, data.agent_id, {
         id: runId,
         goal_id: data.goal_id,
         routine_id: data.routine_id,
@@ -389,7 +426,7 @@ export class Lifecycle {
   }
 
   /** Trusted application admission of an existing authored group message. */
-  enqueue(
+  async enqueue(
     message: Entity<"message">,
     agentId: string,
     options: {
@@ -398,11 +435,11 @@ export class Lifecycle {
       goal_id?: string | null;
       routine_id?: string | null;
     } = {},
-  ): Entity<"run"> {
-    const { agent, thread } = this.scope(message.thread_id, agentId);
-    if (this.store.get("message", message.id).thread_id !== thread.id)
+  ): Promise<Entity<"run">> {
+    const { agent, thread } = await this.scope(message.thread_id, agentId);
+    if ((await this.store.get("message", message.id)).thread_id !== thread.id)
       throw new DomainError("SCOPE_DENIED", 403);
-    return this.store.put({
+    return await this.store.put({
       ...this.base(),
       id: options.id ?? crypto.randomUUID(),
       kind: "run",
@@ -418,11 +455,13 @@ export class Lifecycle {
       goal_id: options.goal_id ?? null,
       routine_id: options.routine_id ?? null,
       goal_assignment_revision: options.goal_id
-        ? this.store.get("goal", options.goal_id).assignment_revision
+        ? (await this.store.get("goal", options.goal_id)).assignment_revision
         : null,
-      goal_generation: options.goal_id ? this.store.get("goal", options.goal_id).generation : null,
+      goal_generation: options.goal_id
+        ? (await this.store.get("goal", options.goal_id)).generation
+        : null,
       routine_generation: options.routine_id
-        ? this.store.get("routine", options.routine_id).generation
+        ? (await this.store.get("routine", options.routine_id)).generation
         : null,
       publication:
         options.routine_id || message.purpose === "continuation" ? "deferred" : "immediate",
@@ -454,20 +493,21 @@ export class Lifecycle {
     });
   }
 
-  bind(
+  async bind(
     threadId: string,
     agentId: string,
     nativeSessionId: string,
-    workspace: Entity<"workspace"> = new Workspaces(this).ensure(threadId, agentId),
+    workspace?: Entity<"workspace">,
     replaceUnused?: Pick<Entity<"binding">, "id" | "revision">,
   ) {
-    return this.store.transaction(() => {
-      this.scope(threadId, agentId);
-      const agent = this.executionAgent(threadId, agentId);
+    workspace ??= await new Workspaces(this).ensure(threadId, agentId);
+    return await this.store.transaction(async () => {
+      await this.scope(threadId, agentId);
+      const agent = await this.executionAgent(threadId, agentId);
       if (!agent.connection_id) throw new DomainError("SCOPE_DENIED", 403);
-      const existing = this.store
-        .list("binding")
-        .find((item) => item.active && item.thread_id === threadId && item.agent_id === agentId);
+      const existing = (
+        await this.store.list("binding", { thread_id: threadId, agent_id: agentId })
+      ).find((item) => item.active && item.thread_id === threadId && item.agent_id === agentId);
       if (existing) {
         if (
           existing.connection_id === agent.connection_id &&
@@ -481,13 +521,15 @@ export class Lifecycle {
             existing.harness !== "codex" ||
             replaceUnused?.id !== existing.id ||
             replaceUnused.revision !== existing.revision ||
-            this.store.list("run").some((run) => run.binding_id === existing.id)
+            (await this.store.list("run", { binding_id: existing.id })).some(
+              (run) => run.binding_id === existing.id,
+            )
           )
             throw new DomainError("CONFLICT");
         }
-        this.update(existing, { active: false });
+        await this.update(existing, { active: false });
       }
-      return this.store.put({
+      return await this.store.put({
         ...this.base(),
         kind: "binding",
         thread_id: threadId,
@@ -505,35 +547,33 @@ export class Lifecycle {
   }
 
   /** Adapter seam only; no executor is registered by this foundation. */
-  claimNext(threadId: string, agentId: string): Entity<"run"> | null {
-    return this.store.transaction(() => {
-      const { agent, thread } = this.scope(threadId, agentId);
+  async claimNext(threadId: string, agentId: string): Promise<Entity<"run"> | null> {
+    return await this.store.transaction(async () => {
+      const { agent, thread } = await this.scope(threadId, agentId);
       // Every current group adapter can mutate files. The durable run is the exclusive lease;
       // unknown work keeps it until native reconciliation, including after an application restart.
       if (
         thread.type === "group" &&
         thread.purpose === "conversation" &&
-        this.store
-          .list("run")
-          .some(
-            (run) =>
-              run.thread_id === threadId && (active.has(run.status) || run.status === "unknown"),
-          )
+        (await this.store.list("run", { thread_id: threadId })).some(
+          (run) =>
+            run.thread_id === threadId && (active.has(run.status) || run.status === "unknown"),
+        )
       )
         return null;
-      const lane = this.store
-        .list("run")
-        .filter((run) => run.thread_id === threadId && run.agent_id === agentId);
+      const lane = (
+        await this.store.list("run", { thread_id: threadId, agent_id: agentId })
+      ).filter((run) => run.thread_id === threadId && run.agent_id === agentId);
       if (lane.some((run) => active.has(run.status) || run.status === "unknown")) return null;
       const next = lane.find((run) => run.status === "queued");
       if (next?.delivery !== "pending") return null;
       if (next.thread_revision !== null && next.thread_revision !== thread.revision)
         throw new DomainError("STALE_DISPATCH");
-      this.responsibility(next);
+      await this.responsibility(next);
       if (agent.grant_revision !== next.grant_revision) throw new DomainError("STALE_DISPATCH");
-      const binding = this.store
-        .list("binding")
-        .find((item) => item.active && item.thread_id === threadId && item.agent_id === agentId);
+      const binding = (
+        await this.store.list("binding", { thread_id: threadId, agent_id: agentId })
+      ).find((item) => item.active && item.thread_id === threadId && item.agent_id === agentId);
       if (!binding) throw new DomainError("CONFLICT");
       if (
         binding.connection_id !== agent.connection_id ||
@@ -541,7 +581,7 @@ export class Lifecycle {
         binding.agent_revision !== agent.revision
       )
         throw new DomainError("STALE_DISPATCH");
-      return this.update(next, {
+      return await this.update(next, {
         status: "dispatching",
         timings: { ...next.timings, dispatched_at: new Date().toISOString() },
         dispatch_token: crypto.randomUUID(),
@@ -559,8 +599,8 @@ export class Lifecycle {
     });
   }
 
-  private dispatch(runId: string, token: string) {
-    const run = this.store.get("run", runId);
+  private async dispatch(runId: string, token: string) {
+    const run = await this.store.get("run", runId);
     if (
       !active.has(run.status) ||
       run.dispatch_token !== token ||
@@ -570,9 +610,9 @@ export class Lifecycle {
     return run;
   }
 
-  started(runId: string, token: string, nativeRunId?: string) {
-    return this.store.transaction(() => {
-      const run = this.dispatch(runId, token);
+  async started(runId: string, token: string, nativeRunId?: string) {
+    return await this.store.transaction(async () => {
+      const run = await this.dispatch(runId, token);
       if (
         run.native_run_id !== null &&
         nativeRunId !== undefined &&
@@ -580,7 +620,7 @@ export class Lifecycle {
       )
         throw new DomainError("STALE_DISPATCH");
       if (run.status === "dispatching" || (nativeRunId !== undefined && run.native_run_id === null))
-        return this.update(run, {
+        return await this.update(run, {
           status: run.status === "dispatching" ? "running" : run.status,
           timings: {
             ...run.timings,
@@ -594,24 +634,24 @@ export class Lifecycle {
     });
   }
 
-  authorizeDispatch(runId: string, token: string) {
-    return this.store.transaction(() => {
-      const run = this.dispatch(runId, token);
-      const { thread } = this.scope(run.thread_id, run.agent_id);
+  async authorizeDispatch(runId: string, token: string) {
+    return await this.store.transaction(async () => {
+      const run = await this.dispatch(runId, token);
+      const { thread } = await this.scope(run.thread_id, run.agent_id);
       if (run.thread_revision !== null && thread.revision !== run.thread_revision)
         throw new DomainError("STALE_DISPATCH");
       if (thread.purpose === "routing" && thread.group_thread_id) {
-        const group = this.store.get("thread", thread.group_thread_id);
+        const group = await this.store.get("thread", thread.group_thread_id);
         if (!group.member_agent_ids.includes(run.agent_id))
           throw new DomainError("SCOPE_DENIED", 403);
       }
-      const agent = this.executionAgent(run.thread_id, run.agent_id);
+      const agent = await this.executionAgent(run.thread_id, run.agent_id);
       if (run.cancellation !== "none" || agent.grant_revision !== run.grant_revision)
         throw new DomainError("STALE_DISPATCH");
-      this.responsibility(run);
-      if (run.workspace_id) new Workspaces(this).authorizeRun(run);
+      await this.responsibility(run);
+      if (run.workspace_id) await new Workspaces(this).authorizeRun(run);
       if (!run.binding_id) throw new DomainError("STALE_DISPATCH");
-      const binding = this.store.get("binding", run.binding_id);
+      const binding = await this.store.get("binding", run.binding_id);
       if (
         binding.connection_id !== agent.connection_id ||
         binding.harness !== agent.harness ||
@@ -624,10 +664,10 @@ export class Lifecycle {
   }
 
   /** The application's single scheduler admits an occurrence and advances its cursor atomically. */
-  fireRoutine(routineId: string, now: Date) {
-    return this.store.transaction(() => {
-      const routine = this.store.get("routine", routineId);
-      if (routine.scope === "group") return new GroupSchedules(this).fire(routine, now);
+  async fireRoutine(routineId: string, now: Date) {
+    return await this.store.transaction(async () => {
+      const routine = await this.store.get("routine", routineId);
+      if (routine.scope === "group") return await new GroupSchedules(this).fire(routine, now);
       if (
         routine.state !== "active" ||
         !routine.next_run_at ||
@@ -635,25 +675,31 @@ export class Lifecycle {
       )
         return null;
       if (!routine.agent_id) throw new DomainError("SCOPE_DENIED", 403);
-      this.scope(routine.thread_id, routine.agent_id);
+      await this.scope(routine.thread_id, routine.agent_id);
       if (routine.goal_id) {
-        const goal = this.checkGoal(routine.goal_id, routine.thread_id, routine.agent_id);
+        const goal = await this.checkGoal(routine.goal_id, routine.thread_id, routine.agent_id);
         if (goal.work_state !== "ready") return null;
         if (goal.current_run_id) {
-          const current = this.store.get("run", goal.current_run_id);
+          const current = await this.store.get("run", goal.current_run_id);
           if (!final.has(current.status)) return null;
           if (
             current.task_id &&
             !["completed", "failed", "cancelled"].includes(
-              this.store.get("peer_task", current.task_id).state,
+              (await this.store.get("peer_task", current.task_id)).state,
             )
           )
             return null;
         }
-        if (this.store.list("run").some((r) => r.goal_id === goal.id && !final.has(r.status)))
+        if (
+          (await this.store.list("run")).some((r) => r.goal_id === goal.id && !final.has(r.status))
+        )
           return null;
       }
-      if (this.store.list("run").some((r) => r.routine_id === routineId && !final.has(r.status)))
+      if (
+        (await this.store.list("run")).some(
+          (r) => r.routine_id === routineId && !final.has(r.status),
+        )
+      )
         return null;
       const { scheduled_for, next } = dueWindow(
         routine.schedule,
@@ -661,11 +707,11 @@ export class Lifecycle {
         routine.next_run_at,
         now,
       );
-      return this.store.command(
+      return await this.store.command(
         `routine:${routine.id}:${routine.generation}:${scheduled_for}`,
         { scheduled_for },
-        () => {
-          const receipt = this.admit(
+        async () => {
+          const receipt = await this.admit(
             {
               thread_id: routine.thread_id,
               agent_id: routine.agent_id,
@@ -675,7 +721,7 @@ export class Lifecycle {
             },
             "routine",
           );
-          const occurrence = this.store.put({
+          const occurrence = await this.store.put({
             ...this.base(),
             kind: "occurrence",
             routine_id: routine.id,
@@ -686,10 +732,10 @@ export class Lifecycle {
             selected_agent_id: routine.agent_id,
             state: "queued",
           });
-          this.update(routine, { next_run_at: next });
+          await this.update(routine, { next_run_at: next });
           if (routine.goal_id) {
-            const goal = this.store.get("goal", routine.goal_id);
-            this.update(goal, {
+            const goal = await this.store.get("goal", routine.goal_id);
+            await this.update(goal, {
               current_run_id: receipt.run.id,
               source_run_ids: [...new Set([...goal.source_run_ids, receipt.run.id])].slice(-200),
             });
@@ -700,19 +746,23 @@ export class Lifecycle {
     });
   }
 
-  settle(runId: string, token: string, outcome: "succeeded" | "failed" | "cancelled" | "unknown") {
-    return this.store.transaction(() => {
-      const run = this.dispatch(runId, token);
+  async settle(
+    runId: string,
+    token: string,
+    outcome: "succeeded" | "failed" | "cancelled" | "unknown",
+  ) {
+    return await this.store.transaction(async () => {
+      const run = await this.dispatch(runId, token);
       if (outcome === "cancelled" && run.cancellation !== "requested")
         throw new DomainError("CONFLICT");
-      this.publishDeferred(run, outcome);
-      const answer = this.store.answer(runId);
+      await this.publishDeferred(run, outcome);
+      const answer = await this.store.answer(runId);
       if (answer && answer.state !== (outcome === "succeeded" ? "complete" : "partial"))
-        this.update(answer, { state: outcome === "succeeded" ? "complete" : "partial" });
-      return this.update(run, {
+        await this.update(answer, { state: outcome === "succeeded" ? "complete" : "partial" });
+      return await this.update(run, {
         status: outcome,
         outcome,
-        retry_allowed: canRetryResponse(this.store, { ...run, status: outcome, outcome }),
+        retry_allowed: await canRetryResponse(this.store, { ...run, status: outcome, outcome }),
         timings: { ...run.timings, settled_at: new Date().toISOString() },
         cancellation: outcome === "cancelled" ? "confirmed" : run.cancellation,
         activity: outcome === "unknown" ? "unknown" : "idle",
@@ -721,33 +771,33 @@ export class Lifecycle {
     });
   }
   /** Persist redacted native output in the owning thread before publishing its terminal run. */
-  appendAnswer(runId: string, text: string, state: "complete" | "partial" = "complete") {
-    return this.store.transaction(() => {
-      let run = this.store.get("run", runId);
+  async appendAnswer(runId: string, text: string, state: "complete" | "partial" = "complete") {
+    return await this.store.transaction(async () => {
+      let run = await this.store.get("run", runId);
       if (!active.has(run.status) || !run.native_run_id || run.authority_epoch !== this.epoch)
         throw new DomainError("STALE_DISPATCH");
       if (run.cancellation !== "none") throw new DomainError("STALE_DISPATCH");
-      this.authorizeDispatch(run.id, run.dispatch_token as string);
+      await this.authorizeDispatch(run.id, run.dispatch_token as string);
       if (text && !run.timings?.first_output_at)
-        run = this.update(run, {
+        run = await this.update(run, {
           timings: { ...run.timings, first_output_at: new Date().toISOString() },
         });
       if (
-        this.store
-          .list("goal")
-          .some((g) => g.current_run_id === run.id && g.deferred_by_run_id === run.id)
+        (await this.store.list("goal")).some(
+          (g) => g.current_run_id === run.id && g.deferred_by_run_id === run.id,
+        )
       )
         return run;
       if (run.publication !== "immediate" || run.response_mode === "finalize") {
-        return this.update(run, { pending_answer: text });
+        return await this.update(run, { pending_answer: text });
       }
-      return this.writeAnswer(run, text, state);
+      return await this.writeAnswer(run, text, state);
     });
   }
 
-  private publishDeferred(run: Entity<"run">, outcome: string, text = run.pending_answer) {
+  private async publishDeferred(run: Entity<"run">, outcome: string, text = run.pending_answer) {
     if (!text && run.goal_id) {
-      const goal = this.store.get("goal", run.goal_id);
+      const goal = await this.store.get("goal", run.goal_id);
       if (goal.report_run_id === run.id && goal.work_state !== "ready") text = goal.progress;
     }
     if (
@@ -759,21 +809,21 @@ export class Lifecycle {
     )
       return;
     try {
-      this.scope(run.thread_id, run.agent_id);
-      this.responsibility(run);
+      await this.scope(run.thread_id, run.agent_id);
+      await this.responsibility(run);
     } catch {
       return;
     }
-    this.writeAnswer(run, text, "complete");
+    await this.writeAnswer(run, text, "complete");
   }
 
-  private writeAnswer(run: Entity<"run">, text: string, state: "complete" | "partial") {
-    const existing = this.store.answer(run.id);
+  private async writeAnswer(run: Entity<"run">, text: string, state: "complete" | "partial") {
+    const existing = await this.store.answer(run.id);
     if (existing) {
       if (existing.text === text && existing.state === state) return existing;
-      return this.update(existing, { text, state });
+      return await this.update(existing, { text, state });
     }
-    return this.store.put({
+    return await this.store.put({
       ...this.base(),
       kind: "message",
       creation_operation_id: null,
@@ -790,7 +840,7 @@ export class Lifecycle {
     });
   }
 
-  observe(
+  async observe(
     runId: string,
     token: string,
     fields: Pick<
@@ -807,33 +857,33 @@ export class Lifecycle {
       | "visual_inputs"
     >,
   ) {
-    return this.store.transaction(() => {
-      const run = this.dispatch(runId, token);
-      return this.update(run, fields);
+    return await this.store.transaction(async () => {
+      const run = await this.dispatch(runId, token);
+      return await this.update(run, fields);
     });
   }
 
-  recordDiagnostic(runId: string, diagnostic: Entity<"run">["diagnostic"]) {
-    return this.store.transaction(() => {
-      const run = this.store.get("run", runId);
+  async recordDiagnostic(runId: string, diagnostic: Entity<"run">["diagnostic"]) {
+    return await this.store.transaction(async () => {
+      const run = await this.store.get("run", runId);
       if (JSON.stringify(run.diagnostic) === JSON.stringify(diagnostic)) return run;
-      return this.update(run, { diagnostic });
+      return await this.update(run, { diagnostic });
     });
   }
 
-  preparationConfiguration(run: Entity<"run">) {
-    const agent = this.store.get("agent", run.agent_id);
+  async preparationConfiguration(run: Entity<"run">) {
+    const agent = await this.store.get("agent", run.agent_id);
     const connection = agent.connection_id
-      ? this.store.get("connection", agent.connection_id)
+      ? await this.store.get("connection", agent.connection_id)
       : null;
-    return `${agent.revision}:${connection?.revision ?? 0}:${this.store.get("thread", run.thread_id).revision}`;
+    return `${agent.revision}:${connection?.revision ?? 0}:${(await this.store.get("thread", run.thread_id)).revision}`;
   }
 
-  preparing(runId: string, runtimeRevision?: string) {
-    return this.store.transaction(() => {
-      const run = this.store.get("run", runId);
+  async preparing(runId: string, runtimeRevision?: string) {
+    return await this.store.transaction(async () => {
+      const run = await this.store.get("run", runId);
       if (run.status !== "queued" || run.delivery !== "pending") throw new DomainError("CONFLICT");
-      return this.update(run, {
+      return await this.update(run, {
         timings: {
           ...run.timings,
           preparing_at: run.timings?.preparing_at ?? new Date().toISOString(),
@@ -842,31 +892,31 @@ export class Lifecycle {
           state: "preparing",
           attempts: (run.preparation?.attempts ?? 0) + 1,
           next_attempt_at: null,
-          configuration_revision: this.preparationConfiguration(run),
+          configuration_revision: await this.preparationConfiguration(run),
           runtime_revision: runtimeRevision,
         },
       });
     });
   }
 
-  prepared(runId: string) {
-    const run = this.store.get("run", runId);
+  async prepared(runId: string) {
+    const run = await this.store.get("run", runId);
     if (run.status !== "queued" || !run.preparation) return run;
-    return this.update(run, {
+    return await this.update(run, {
       timings: { ...run.timings, ready_at: new Date().toISOString() },
       preparation: { ...run.preparation, state: "ready", next_attempt_at: null },
     });
   }
 
-  preparationFailed(
+  async preparationFailed(
     runId: string,
     failure: NonNullable<Entity<"run">["diagnostic"]>,
     runtimeRevision?: string,
   ) {
-    const run = this.store.get("run", runId);
+    const run = await this.store.get("run", runId);
     if (run.status !== "queued" || !run.preparation) return run;
     const retry = failure.category === "temporary" && run.preparation.attempts < 3;
-    return this.update(run, {
+    return await this.update(run, {
       diagnostic: failure,
       preparation: {
         ...run.preparation,
@@ -879,24 +929,24 @@ export class Lifecycle {
     });
   }
 
-  retryPreparation(runId: string, expectedRevision: number) {
-    return this.store.transaction(() => {
-      const run = this.store.get("run", runId);
+  async retryPreparation(runId: string, expectedRevision: number) {
+    return await this.store.transaction(async () => {
+      const run = await this.store.get("run", runId);
       if (
         run.revision !== expectedRevision ||
         run.status !== "queued" ||
         run.preparation?.state !== "blocked"
       )
         throw new DomainError("CONFLICT");
-      return this.update(run, { preparation: undefined, diagnostic: null });
+      return await this.update(run, { preparation: undefined, diagnostic: null });
     });
   }
 
-  cancel(runId: string) {
-    return this.store.transaction(() => {
-      const run = this.store.get("run", runId);
+  async cancel(runId: string) {
+    return await this.store.transaction(async () => {
+      const run = await this.store.get("run", runId);
       if (final.has(run.status) || run.cancellation === "requested") return run;
-      return this.update(
+      return await this.update(
         run,
         run.status === "queued"
           ? {
@@ -915,7 +965,7 @@ export class Lifecycle {
   }
 
   /** Unknown work cannot be queued again. Only a native receipt can resolve it, in a later adapter. */
-  reconcile(
+  async reconcile(
     runId: string,
     expectedRevision: number,
     outcome: "succeeded" | "failed" | "cancelled",
@@ -924,45 +974,45 @@ export class Lifecycle {
     nativeRunId?: string,
   ) {
     if (!receiptId.trim()) throw new DomainError("RECONCILIATION_REQUIRED");
-    return this.store.command(
+    return await this.store.command(
       receiptId,
       { runId, expectedRevision, outcome, text: text ?? null, nativeRunId: nativeRunId ?? null },
-      () => {
-        const run = this.store.get("run", runId);
+      async () => {
+        const run = await this.store.get("run", runId);
         if (run.revision !== expectedRevision || run.status !== "unknown")
           throw new DomainError("CONFLICT");
         if (outcome === "cancelled" && run.cancellation !== "requested")
           throw new DomainError("CONFLICT");
         if (run.publication !== "immediate")
-          this.publishDeferred(run, outcome, text ?? run.pending_answer);
+          await this.publishDeferred(run, outcome, text ?? run.pending_answer);
         else if (
           text !== undefined &&
           run.cancellation === "none" &&
-          (text || this.store.answer(run.id))
+          (text || (await this.store.answer(run.id)))
         ) {
           try {
-            this.scope(run.thread_id, run.agent_id);
-            this.responsibility(run);
-            this.writeAnswer(run, text, outcome === "succeeded" ? "complete" : "partial");
+            await this.scope(run.thread_id, run.agent_id);
+            await this.responsibility(run);
+            await this.writeAnswer(run, text, outcome === "succeeded" ? "complete" : "partial");
           } catch {
             /* Retain the receipt without publishing into revoked responsibility scope. */
           }
         }
-        return this.update(run, {
+        return await this.update(run, {
           status: outcome,
           outcome,
           cancellation: outcome === "cancelled" ? "confirmed" : run.cancellation,
           activity: "idle",
           native_run_id: nativeRunId ?? run.native_run_id,
-          retry_allowed: canRetryResponse(this.store, { ...run, status: outcome, outcome }),
+          retry_allowed: await canRetryResponse(this.store, { ...run, status: outcome, outcome }),
         });
       },
     );
   }
 
-  controlGoal(goalId: string, state: "paused" | "stopped" | "active" | "completed") {
-    return this.store.transaction(() => {
-      const goal = this.store.get("goal", goalId);
+  async controlGoal(goalId: string, state: "paused" | "stopped" | "active" | "completed") {
+    return await this.store.transaction(async () => {
+      const goal = await this.store.get("goal", goalId);
       if (goal.state === "completed") throw new DomainError("CONFLICT");
       if (goal.state === state) return goal;
       if (state === "completed") {
@@ -974,11 +1024,11 @@ export class Lifecycle {
           !goal.evidence_artifact_ids.length
         )
           throw new DomainError("CONFLICT");
-        const run = this.store.get("run", goal.current_run_id);
+        const run = await this.store.get("run", goal.current_run_id);
         if (run.status !== "succeeded" || run.cancellation !== "none")
           throw new DomainError("CONFLICT");
       }
-      const result = this.update(goal, {
+      const result = await this.update(goal, {
         state,
         generation: goal.generation + 1,
         continuation_at: state === "active" ? new Date().toISOString() : null,
@@ -986,43 +1036,43 @@ export class Lifecycle {
         current_run_id:
           state === "active" &&
           goal.current_run_id &&
-          final.has(this.store.get("run", goal.current_run_id).status)
+          final.has((await this.store.get("run", goal.current_run_id)).status)
             ? null
             : goal.current_run_id,
       });
       if (state !== "active") {
         if (goal.assignment_route_id) {
-          const route = this.store.get("group_route", goal.assignment_route_id);
-          if (route.router_run_id) this.cancel(route.router_run_id);
+          const route = await this.store.get("group_route", goal.assignment_route_id);
+          if (route.router_run_id) await this.cancel(route.router_run_id);
         }
-        for (const task of this.store.list("peer_task")) {
+        for (const task of await this.store.list("peer_task")) {
           if (
             !task.goal_ids.includes(goalId) ||
             ["completed", "failed", "cancelled"].includes(task.state)
           )
             continue;
-          this.cancel(task.current_run_id);
-          this.update(task, { state: "cancelled" });
-          for (const request of this.store.list("human_request"))
+          await this.cancel(task.current_run_id);
+          await this.update(task, { state: "cancelled" });
+          for (const request of await this.store.list("human_request"))
             if (request.task_id === task.id && request.state === "pending")
-              this.update(request, { state: "cancelled" });
+              await this.update(request, { state: "cancelled" });
         }
-        for (const routine of this.store.list("routine")) {
+        for (const routine of await this.store.list("routine")) {
           if (routine.goal_id === goalId && routine.state !== "stopped")
-            this.update(routine, {
+            await this.update(routine, {
               state: state === "completed" ? "stopped" : state,
               paused_by_goal: state === "paused" && routine.state === "active",
               generation: routine.generation + 1,
             });
         }
-        for (const run of this.store.list("run"))
+        for (const run of await this.store.list("run"))
           if ((run.goal_id === goalId || run.id === goal.current_run_id) && !final.has(run.status))
-            this.cancel(run.id);
+            await this.cancel(run.id);
       }
       if (state === "active")
-        for (const routine of this.store.list("routine"))
+        for (const routine of await this.store.list("routine"))
           if (routine.goal_id === goalId && routine.paused_by_goal && routine.state === "paused")
-            this.update(routine, {
+            await this.update(routine, {
               state: "active",
               paused_by_goal: false,
               generation: routine.generation + 1,

@@ -19,38 +19,39 @@ export function registerWorkspaceRoutes(
   return api
     .post(
       "/v1/workspaces",
-      ({ request, body }) => command(request, body, () => workspaces.bind(body)),
+      async ({ request, body }) =>
+        await command(request, body, async () => await workspaces.bind(body)),
       { body: workspaceInput },
     )
     .get(
       "/v1/threads/:id/workspace",
-      ({ params, query }) =>
+      async ({ params, query }) =>
         Response.json(
           machineFor(lifecycle)
-            ? workspaces.ensure(params.id, query.agent_id)
-            : workspaces.current(params.id, query.agent_id),
+            ? await workspaces.ensure(params.id, query.agent_id)
+            : await workspaces.current(params.id, query.agent_id),
         ),
       { params: z.object({ id }), query: z.strictObject({ agent_id: id }) },
     )
     .post(
       "/v1/workspaces/:id/revoke",
-      ({ request, params, body }) => {
-        const result = command(request, body, () => workspaces.revoke(params.id));
-        background.notifyControls();
+      async ({ request, params, body }) => {
+        const result = await command(request, body, async () => await workspaces.revoke(params.id));
+        await background.notifyControls();
         return result;
       },
       { params: z.object({ id }), body: z.strictObject({}) },
     )
     .get(
       "/v1/workspaces/:id/files",
-      ({ params, query }) =>
-        workspaces.workingFiles(params.id).list(query.path, query.after, query.limit),
+      async ({ params, query }) =>
+        (await workspaces.workingFiles(params.id)).list(query.path, query.after, query.limit),
       { params: z.object({ id }), query: fileQuery },
     )
     .get(
       "/v1/workspaces/:id/file",
       async ({ params, query }) => {
-        const bytes = await workspaces.workingFiles(params.id).read(query.path);
+        const bytes = await (await workspaces.workingFiles(params.id)).read(query.path);
         return new Response(bytes, {
           headers: {
             "Content-Type": "application/octet-stream",
@@ -64,14 +65,14 @@ export function registerWorkspaceRoutes(
     )
     .post(
       "/v1/workspaces/:id/uploads",
-      ({ request, params, body }) =>
+      async ({ request, params, body }) =>
         artifacts.upload(params.id, id.parse(request.headers.get("Idempotency-Key")), body),
       { params: z.object({ id }), body: uploadInput },
     )
     .get(
       "/v1/artifacts/:id/content",
-      ({ params, query }) => {
-        const result = artifacts.download(params.id, query.workspace_id);
+      async ({ params, query }) => {
+        const result = await artifacts.download(params.id, query.workspace_id);
         return new Response(result.bytes, {
           headers: {
             "Content-Type": result.artifact.media_type,
@@ -86,7 +87,7 @@ export function registerWorkspaceRoutes(
     )
     .post(
       "/v1/artifacts/:id/share",
-      ({ request, params, body }) =>
+      async ({ request, params, body }) =>
         artifacts.share(
           params.id,
           body.workspace_id,
@@ -96,11 +97,11 @@ export function registerWorkspaceRoutes(
     )
     .post(
       "/v1/artifacts",
-      ({ request, body }) =>
-        artifacts.publish(id.parse(request.headers.get("Idempotency-Key")), body, () => {
-          const run = lifecycle.store.get("run", body.run_id);
+      async ({ request, body }) =>
+        artifacts.publish(id.parse(request.headers.get("Idempotency-Key")), body, async () => {
+          const run = await lifecycle.store.get("run", body.run_id);
           if (!run.dispatch_token) throw new DomainError("SCOPE_DENIED", 403);
-          lifecycle.authorizeDispatch(run.id, run.dispatch_token);
+          await lifecycle.authorizeDispatch(run.id, run.dispatch_token);
         }),
       { body: publicationInput },
     );

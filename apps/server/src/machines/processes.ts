@@ -16,44 +16,43 @@ export class MachineProcesses {
     readonly lifecycle: Lifecycle,
     readonly host: CuaMachine | null,
     readonly operations: MachineOperations,
-    readonly generation: () => number,
+    readonly generation: () => Promise<number>,
   ) {
-    this.#unsubscribe = lifecycle.store.subscribe(() => {
-      for (const process of this.list()) {
+    this.#unsubscribe = lifecycle.store.subscribe(async () => {
+      for (const process of await this.list()) {
         if (!["running", "starting"].includes(process.state) || this.#stopping.has(process.id))
           continue;
-        const run = lifecycle.store.get("run", process.run_id);
+        const run = await lifecycle.store.get("run", process.run_id);
         if (run.cancellation !== "requested" && run.status !== "cancelled") continue;
         this.#stopping.add(process.id);
         void this.stop(process)
-          .catch(() => this.unknown(process.id))
+          .catch(async () => await this.unknown(process.id))
           .finally(() => this.#stopping.delete(process.id));
       }
     });
   }
-  list(actor?: MachineActor) {
-    return this.lifecycle.store
-      .list("machine_process")
-      .filter(
-        (item) =>
-          item.machine_id === this.operations.machineId &&
-          (!actor || (item.agent_id === actor.agent_id && item.thread_id === actor.thread_id)),
-      );
+  async list(actor?: MachineActor) {
+    return (await this.lifecycle.store.list("machine_process")).filter(
+      (item) =>
+        item.machine_id === this.operations.machineId &&
+        (!actor || (item.agent_id === actor.agent_id && item.thread_id === actor.thread_id)),
+    );
   }
   private hostRequired() {
     if (!this.host) throw new DomainError("MACHINE_UNAVAILABLE", 503);
     return this.host;
   }
-  private current(id: string) {
-    return this.lifecycle.store.get("machine_process", id);
+  private async current(id: string) {
+    return await this.lifecycle.store.get("machine_process", id);
   }
-  private unknown(id: string) {
+  private async unknown(id: string) {
     if (this.#closed || this.lifecycle.store.closed) return;
-    const current = this.current(id);
-    if (current.state !== "exited") this.operations.update(current, { state: "unknown" });
+    const current = await this.current(id);
+    if (current.state !== "exited") await this.operations.update(current, { state: "unknown" });
   }
   private async handle(item: Entity<"machine_process">) {
-    if (item.generation !== this.generation()) throw new DomainError("STALE_DISPATCH");
+    if (item.generation !== (await await this.generation()))
+      throw new DomainError("STALE_DISPATCH");
     const existing = this.#handles.get(item.id);
     if (existing) return existing;
     const client = await this.hostRequired().client();
@@ -74,9 +73,9 @@ export class MachineProcesses {
         const event = await handle.nextEvent();
         if (this.#closed || this.lifecycle.store.closed) return;
         if (!event) break;
-        const current = this.current(id);
+        const current = await this.current(id);
         if (event.kind === ProcessEventKind.Exit) {
-          this.operations.update(current, {
+          await this.operations.update(current, {
             state: event.exit?.error ? "unknown" : "exited",
             exit_code: event.exit?.code ?? null,
             exit_signal: event.exit?.signal ?? null,
@@ -93,7 +92,7 @@ export class MachineProcesses {
         );
         const text =
           current[key] + (key === "stderr" ? stderr : stdout).decode(data, { stream: true });
-        this.operations.update(current, {
+        await this.operations.update(current, {
           state: "running",
           [key]: text.slice(-131_072),
           output_offset: String(end),
@@ -101,30 +100,30 @@ export class MachineProcesses {
             current.output_truncated || text.length > 131_072 || event.offset > seen,
         });
       }
-      this.unknown(id);
+      await this.unknown(id);
     } catch {
-      this.unknown(id);
+      await this.unknown(id);
     } finally {
       this.#handles.delete(id);
     }
   }
   async execute(raw: unknown, actor: NonNullable<MachineActor>, authorize: () => void) {
     const data = machineCommand.parse(raw);
-    authorize();
+    await authorize();
     const host = this.hostRequired();
     await this.operations.execute(
       data.command_id,
-      this.generation(),
+      await await this.generation(),
       actor,
       "execute",
       data,
       authorize,
       async () => {
-        const record = this.lifecycle.store.put({
+        const record = await this.lifecycle.store.put({
           ...this.operations.base(data.command_id),
           kind: "machine_process",
           machine_id: this.operations.machineId,
-          generation: this.generation(),
+          generation: await await this.generation(),
           ...actor,
           tag: `ngertiin-${data.command_id}`,
           state: "starting",
@@ -145,12 +144,15 @@ export class MachineProcesses {
             pty: data.pty,
             timeoutMs: data.timeout_ms,
           });
-          this.operations.update(this.current(record.id), { pid: handle.pid(), state: "running" });
+          await this.operations.update(await this.current(record.id), {
+            pid: handle.pid(),
+            state: "running",
+          });
           this.#handles.set(record.id, handle);
           void this.collect(record.id, handle);
           return { process_id: record.id };
         } catch (error) {
-          this.unknown(record.id);
+          await this.unknown(record.id);
           throw error;
         }
       },
@@ -158,19 +160,23 @@ export class MachineProcesses {
     return this.read(data.command_id, actor, data.wait_ms, authorize);
   }
   async read(id: string, actor: MachineActor, waitMs: number, authorize: () => void) {
-    authorize();
-    const initial = this.current(id);
+    await authorize();
+    const initial = await this.current(id);
     if (
       initial.machine_id !== this.operations.machineId ||
       (actor && (initial.agent_id !== actor.agent_id || initial.thread_id !== actor.thread_id))
     )
       throw new DomainError("SCOPE_DENIED", 403);
-    if (initial.generation !== this.generation()) throw new DomainError("STALE_DISPATCH");
+    if (initial.generation !== (await await this.generation()))
+      throw new DomainError("STALE_DISPATCH");
     const deadline = Date.now() + waitMs;
-    while (["starting", "running"].includes(this.current(id).state) && Date.now() < deadline)
+    while (
+      ["starting", "running"].includes((await this.current(id)).state) &&
+      Date.now() < deadline
+    )
       await Bun.sleep(Math.min(50, deadline - Date.now()));
-    authorize();
-    return this.current(id);
+    await authorize();
+    return await this.current(id);
   }
   private async stop(item: Entity<"machine_process">) {
     const handle = await this.handle(item);
@@ -185,14 +191,14 @@ export class MachineProcesses {
     if (item.state === "exited") return item;
     await this.operations.execute(
       data.command_id,
-      this.generation(),
+      await await this.generation(),
       actor,
       `process.${data.operation}`,
       data,
       authorize,
       async () => {
         const handle = await this.handle(item);
-        authorize();
+        await authorize();
         if (data.operation === "input")
           await handle.writeStdin(new TextEncoder().encode(data.text).buffer);
         else await handle.signal(data.operation === "interrupt" ? "int" : "term", true);
@@ -203,8 +209,8 @@ export class MachineProcesses {
   }
   async recover() {
     if (!this.host) return;
-    for (const item of this.list()) {
-      if (item.state === "exited" || item.generation !== this.generation()) continue;
+    for (const item of await this.list()) {
+      if (item.state === "exited" || item.generation !== (await await this.generation())) continue;
       try {
         const ledger = z
           .object({
@@ -221,21 +227,25 @@ export class MachineProcesses {
           .parse(await this.host.rpc("ProcessService/GetExecRecord", { requestId: item.id }));
         if (ledger.record?.state === "EXEC_STATE_RUNNING") {
           await this.handle(item);
-          this.operations.update(this.current(item.id), { state: "running" });
+          await this.operations.update(await this.current(item.id), { state: "running" });
         } else if (ledger.record?.state === "EXEC_STATE_EXITED")
-          this.operations.update(this.current(item.id), {
+          await this.operations.update(await this.current(item.id), {
             state: "exited",
             exit_code: ledger.record.end?.exitCode ?? null,
             exit_signal: ledger.record.end?.signal ?? null,
           });
-        else this.operations.update(this.current(item.id), { state: "unknown", lost: true });
+        else
+          await this.operations.update(await this.current(item.id), {
+            state: "unknown",
+            lost: true,
+          });
         if (
           ledger.record &&
           ["EXEC_STATE_RUNNING", "EXEC_STATE_EXITED"].includes(ledger.record.state)
         ) {
-          const operation = this.lifecycle.store.get("machine_operation", item.id);
+          const operation = await this.lifecycle.store.get("machine_operation", item.id);
           if (operation.name === "execute" && operation.state === "unknown")
-            this.operations.update(operation, {
+            await this.operations.update(operation, {
               state: "succeeded",
               result: { process_id: item.id },
               error_code: null,
@@ -243,13 +253,13 @@ export class MachineProcesses {
             });
         }
       } catch {
-        this.unknown(item.id);
+        await this.unknown(item.id);
       }
     }
   }
   async close() {
     this.#closed = true;
-    this.#unsubscribe();
+    await this.#unsubscribe();
     await Promise.allSettled([...this.#handles.values()].map((handle) => handle.detach()));
     this.#handles.clear();
   }

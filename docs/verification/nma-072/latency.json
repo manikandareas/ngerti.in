@@ -1,0 +1,45 @@
+{
+  "measured_at": "2026-11-12T14:21:58.608Z",
+  "bun": "1.3.10",
+  "pg": "8.23.1",
+  "postgres": "18.1",
+  "workload": {
+    "warmup_transactions": 5,
+    "transaction_samples": 30,
+    "admissions": 30,
+    "events": 60,
+    "concurrent_lifecycle_authorities": 1,
+    "providers": "none",
+    "database": "disposable loopback PostgreSQL"
+  },
+  "latency": {
+    "transaction": {
+      "n": 30,
+      "p50_ms": 9.759625000000142,
+      "p95_ms": 26.902582999999822,
+      "max_ms": 48.25108399999999
+    },
+    "admission": {
+      "n": 30,
+      "p50_ms": 45.53420899999992,
+      "p95_ms": 127.42320800000016,
+      "max_ms": 210.10775000000012
+    },
+    "event_replay": {
+      "n": 30,
+      "p50_ms": 2.301875000000109,
+      "p95_ms": 5.521625000000313,
+      "max_ms": 6.364792000000307
+    },
+    "commit_notification": {
+      "n": 30,
+      "p50_ms": 45.52616699999999,
+      "p95_ms": 127.41391700000031,
+      "max_ms": 210.11245800000006
+    }
+  },
+  "limitations": [
+    "Local fixture timings, no production capacity or SQLite overload claim.",
+    "commit_notification measures command start through notification; it is not isolated database COMMIT wire latency."
+  ]
+}

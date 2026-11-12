@@ -4,9 +4,12 @@ import { Lifecycle } from "./lifecycle";
 import { Store } from "./store";
 
 const config = developmentConfig();
-const store = new Store(config.database, config.owner_id);
-const setup = new Conversations(new Lifecycle(store)).setup();
-store.close();
+const store = await Store.open(config.database, config.owner_id, {
+  connectionString: config.databaseUrl,
+  schema: config.databaseSchema,
+});
+const setup = await new Conversations(await Lifecycle.open(store)).setup();
+await store.close();
 console.log(
   JSON.stringify({
     event: "foundation.initialized",

@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "bun src/main.ts",
-    "test": "bun test tests",
+    "test": "bun ../../scripts/verification/nma072/run-tests.ts",
     "typecheck": "tsc --noEmit",
     "lint": "biome check ."
   },
@@ -17,12 +17,14 @@
     "@typesafe-ai/sdk": "0.6.0",
     "elysia": "1.4.30",
     "pdfjs-dist": "6.5.438",
+    "pg": "8.23.1",
     "sharp": "0.35.5",
     "unique-names-generator": "4.7.1",
     "zod": "4.4.3"
   },
   "devDependencies": {
     "@types/bun": "1.3.10",
+    "@types/pg": "8.23.1",
     "typescript": "7.0.2"
   }
 }

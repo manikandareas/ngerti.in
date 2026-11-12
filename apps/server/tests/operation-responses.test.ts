@@ -7,9 +7,9 @@ import { Background } from "../src/background";
 import { fixture } from "./helpers";
 
 test("consumer validates real creation, learning, workspace, group and control responses", async () => {
-  const f = fixture();
+  const f = await fixture();
   try {
-    const app = createApi(f.lifecycle, new Background(f.lifecycle), "x".repeat(64));
+    const app = await createApi(f.lifecycle, new Background(f.lifecycle), "x".repeat(64));
     async function call(template: string, path = template, body?: unknown) {
       const method = body === undefined ? "GET" : "POST";
       const response = await app.handle(
@@ -110,6 +110,6 @@ test("consumer validates real creation, learning, workspace, group and control r
       "response contract is missing",
     );
   } finally {
-    f.close();
+    await f.close();
   }
 });

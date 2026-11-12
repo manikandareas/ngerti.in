@@ -6,23 +6,25 @@ import { ProductTools } from "../../src/harness/tools";
 import { fixture } from "../helpers";
 
 test("responsibility guidance reaches MCP, exact-schema discovery and the Muse native catalog", async () => {
-  const f = fixture();
-  const tools = new ProductTools(f.lifecycle);
+  const f = await fixture();
+  const tools = await ProductTools.open(f.lifecycle);
   const muse = new MuseTools(() => "http://127.0.0.1:1");
   try {
     const connections = new Connections(f.lifecycle);
-    const connection = connections.get(f.store.get("agent", f.agent.id).connection_id);
-    connections.update(connection, {
+    const connection = await connections.get(
+      (await f.store.get("agent", f.agent.id)).connection_id,
+    );
+    await connections.update(connection, {
       capabilities: { ...connection.capabilities, product_tools: "supported" },
     });
-    f.bind();
-    f.admit();
-    const run = f.lifecycle.claimNext(f.thread.id, f.agent.id);
+    await f.bind();
+    await f.admit();
+    const run = await f.lifecycle.claimNext(f.thread.id, f.agent.id);
     if (!run?.dispatch_token) throw new Error("Expected a claimed run.");
-    f.lifecycle.started(run.id, run.dispatch_token, crypto.randomUUID());
-    const lease = tools.issue(f.store.get("run", run.id));
-    const rpc = (method: string, params?: Record<string, unknown>, notification = false) =>
-      tools.rpc(lease.token, {
+    await f.lifecycle.started(run.id, run.dispatch_token, crypto.randomUUID());
+    const lease = await tools.issue(await f.store.get("run", run.id));
+    const rpc = async (method: string, params?: Record<string, unknown>, notification = false) =>
+      await tools.rpc(lease.token, {
         jsonrpc: "2.0",
         ...(!notification ? { id: crypto.randomUUID() } : {}),
         method,
@@ -72,8 +74,8 @@ test("responsibility guidance reaches MCP, exact-schema discovery and the Muse n
       }
     }
   } finally {
-    muse.server.stop(true);
+    await muse.server.stop(true);
     await tools.browsers.shutdown();
-    f.close();
+    await f.close();
   }
 });

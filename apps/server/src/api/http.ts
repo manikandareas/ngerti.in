@@ -7,9 +7,9 @@ import type { ProductTools } from "../harness/tools";
 import type { Lifecycle } from "../lifecycle";
 
 export function createCommand(lifecycle: Lifecycle) {
-  return function command<T>(request: Request, body: unknown, action: () => T): T {
+  return async function command<T>(request: Request, body: unknown, action: () => T): Promise<T> {
     const commandId = id.parse(request.headers.get("Idempotency-Key"));
-    return lifecycle.store.command(
+    return await lifecycle.store.command(
       commandId,
       { method: request.method, path: new URL(request.url).pathname, body },
       action,
@@ -51,7 +51,7 @@ export function createHttp(
       };
     })
     .get("/health/live", () => ({ status: "alive" }))
-    .onRequest(({ request }) => {
+    .onRequest(async ({ request }) => {
       if (request.method === "GET" && new URL(request.url).pathname === "/health/live") return;
       const size = Number(request.headers.get("Content-Length") ?? 0);
       const maximum =
@@ -63,7 +63,7 @@ export function createHttp(
       if (!Number.isFinite(size) || size > maximum) throw new DomainError("INVALID_REQUEST", 413);
       if (new URL(request.url).pathname.startsWith("/v1/machine/viewer/")) {
         if (!viewerAccess) throw new DomainError("UNAUTHORIZED", 401);
-        viewerAccess(request);
+        await viewerAccess(request);
         return;
       }
       // The MCP endpoint accepts only a server-issued run lease, never the installation token.
@@ -81,7 +81,9 @@ export function createHttp(
         const protocol = request.headers.get("MCP-Protocol-Version");
         if (protocol !== null && protocol !== "2025-06-18")
           throw new DomainError("INVALID_REQUEST", 400);
-        tools.authenticate((request.headers.get("Authorization") ?? "").replace(/^Bearer /, ""));
+        await tools.authenticate(
+          (request.headers.get("Authorization") ?? "").replace(/^Bearer /, ""),
+        );
         return;
       }
       const supplied = request.headers.get("Authorization") ?? "";

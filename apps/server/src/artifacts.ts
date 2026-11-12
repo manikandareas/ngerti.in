@@ -74,7 +74,7 @@ export class Artifacts {
       closeSync(directory);
     }
   }
-  private save(
+  private async save(
     id: string,
     workspace: Entity<"workspace">,
     bytes: Uint8Array,
@@ -92,7 +92,7 @@ export class Artifacts {
     },
   ) {
     const now = new Date().toISOString();
-    return this.lifecycle.store.put(
+    return await this.lifecycle.store.put(
       artifact.parse({
         id,
         kind: "artifact",
@@ -110,21 +110,23 @@ export class Artifacts {
       }),
     );
   }
-  inputPath(item: Entity<"artifact">) {
+  async inputPath(item: Entity<"artifact">) {
     if (!item.workspace_id) return item.source_path;
-    const workspace = this.workspaces.get(item.workspace_id);
+    const workspace = await this.workspaces.get(item.workspace_id);
     return workspace.machine_id ? `inputs/${item.id}/${basename(item.name)}` : item.source_path;
   }
   async verifyInputs(run: Entity<"run">) {
-    const workspace = this.workspaces.authorizeRun(run);
-    const message = this.lifecycle.store.get("message", run.input_message_id);
+    const workspace = await this.workspaces.authorizeRun(run);
+    const message = await this.lifecycle.store.get("message", run.input_message_id);
     for (const id of message.artifact_ids) {
       await this.materialize(id);
-      const { artifact: item } = this.download(id, workspace.id);
+      const { artifact: item } = await this.download(id, workspace.id);
       if (
-        !this.inputPath(item) ||
+        !(await this.inputPath(item)) ||
         digest(
-          await this.workspaces.workingFiles(workspace.id).read(this.inputPath(item) as string),
+          await (await this.workspaces.workingFiles(workspace.id)).read(
+            (await this.inputPath(item)) as string,
+          ),
         ) !== item.sha256
       )
         throw new DomainError("CONFLICT");
@@ -143,12 +145,12 @@ export class Artifacts {
       sha256: digest(bytes),
     };
   }
-  commitUpload(upload: Entity<"attachment_upload">, workspace: Entity<"workspace">) {
+  async commitUpload(upload: Entity<"attachment_upload">, workspace: Entity<"workspace">) {
     const bytes = this.bytes(upload.id);
     if (digest(bytes) !== upload.sha256 || bytes.length !== upload.size_bytes)
       throw new DomainError("CONFLICT");
     const now = new Date().toISOString();
-    return this.lifecycle.store.put(
+    return await this.lifecycle.store.put(
       artifact.parse({
         id: upload.id,
         kind: "artifact",
@@ -171,16 +173,16 @@ export class Artifacts {
     );
   }
   async materialize(artifactId: string) {
-    const item = this.lifecycle.store.get("artifact", artifactId);
+    const item = await this.lifecycle.store.get("artifact", artifactId);
     if (!item.workspace_id || !item.source_path) throw new DomainError("SCOPE_DENIED", 403);
-    const workspace = this.workspaces.get(item.workspace_id);
+    const workspace = await this.workspaces.get(item.workspace_id);
     if (item.materialization !== "pending" && !workspace.machine_id) return item;
-    const { bytes } = this.download(item.id, item.workspace_id);
-    await this.stage(item.workspace_id, this.inputPath(item) as string, bytes);
-    this.workspaces.get(workspace.id);
-    const current = this.lifecycle.store.get("artifact", artifactId);
+    const { bytes } = await this.download(item.id, item.workspace_id);
+    await this.stage(item.workspace_id, (await this.inputPath(item)) as string, bytes);
+    await this.workspaces.get(workspace.id);
+    const current = await this.lifecycle.store.get("artifact", artifactId);
     if (current.materialization === "ready") return current;
-    return this.lifecycle.store.put(
+    return await this.lifecycle.store.put(
       {
         ...current,
         materialization: "ready",
@@ -190,8 +192,10 @@ export class Artifacts {
       current.revision,
     );
   }
-  discardReserved(upload: Entity<"attachment_upload">) {
-    if (this.lifecycle.store.list("artifact").some((item) => item.storage_key === upload.id))
+  async discardReserved(upload: Entity<"attachment_upload">) {
+    if (
+      (await this.lifecycle.store.list("artifact")).some((item) => item.storage_key === upload.id)
+    )
       return;
     try {
       if (digest(this.bytes(upload.id)) !== upload.sha256) throw new DomainError("CONFLICT");
@@ -202,15 +206,15 @@ export class Artifacts {
   }
   async upload(workspaceId: string, commandId: string, input: unknown) {
     const data = uploadInput.parse(input);
-    const workspace = this.workspaces.get(workspaceId);
+    const workspace = await this.workspaces.get(workspaceId);
     const bytes = Buffer.from(data.content_base64, "base64");
     if (bytes.toString("base64") !== data.content_base64 || bytes.length > MAX_FILE_BYTES)
       throw new DomainError("INVALID_REQUEST", 422);
-    const authorize = () => {
-      if (this.workspaces.get(workspaceId).revision !== workspace.revision)
+    const authorize = async () => {
+      if ((await this.workspaces.get(workspaceId)).revision !== workspace.revision)
         throw new DomainError("STALE_DISPATCH");
     };
-    return this.lifecycle.store.asyncCommand(
+    return this.lifecycle.store.fileCommand(
       commandId,
       { operation: "upload", workspaceId, ...data },
       async () => {
@@ -219,8 +223,8 @@ export class Artifacts {
         await this.stage(workspaceId, path, bytes);
         return path;
       },
-      (path) => {
-        return this.save(commandId, workspace, bytes, {
+      async (path) => {
+        return await this.save(commandId, workspace, bytes, {
           name: data.name,
           source_path: path,
           media_type: data.media_type,
@@ -231,7 +235,7 @@ export class Artifacts {
     );
   }
   private async stage(workspaceId: string, path: string, bytes: Uint8Array) {
-    const files = this.workspaces.workingFiles(workspaceId);
+    const files = await this.workspaces.workingFiles(workspaceId);
     try {
       await files.create(path, bytes);
     } catch (error) {
@@ -247,9 +251,9 @@ export class Artifacts {
   }
   async publish(commandId: string, input: unknown, authorize: () => void) {
     const data = publicationInput.parse(input);
-    authorize();
-    const run = this.lifecycle.store.get("run", data.run_id);
-    const workspace = this.workspaces.authorizeRun(run);
+    await authorize();
+    const run = await this.lifecycle.store.get("run", data.run_id);
+    const workspace = await this.workspaces.authorizeRun(run);
     if (
       workspace.id !== data.workspace_id ||
       !run.native_run_id ||
@@ -257,37 +261,40 @@ export class Artifacts {
       !run.dispatch_token
     )
       throw new DomainError("SCOPE_DENIED", 403);
-    this.lifecycle.authorizeDispatch(run.id, run.dispatch_token);
-    const reauthorize = () => {
-      authorize();
-      this.workspaces.authorizeRun(this.lifecycle.store.get("run", run.id));
-      this.lifecycle.authorizeDispatch(run.id, run.dispatch_token as string);
-      authorizeResponsibilityWork(this.lifecycle, run.id);
+    await this.lifecycle.authorizeDispatch(run.id, run.dispatch_token);
+    const reauthorize = async () => {
+      await authorize();
+      await this.workspaces.authorizeRun(await this.lifecycle.store.get("run", run.id));
+      await this.lifecycle.authorizeDispatch(run.id, run.dispatch_token as string);
+      await authorizeResponsibilityWork(this.lifecycle, run.id);
     };
-    return this.lifecycle.store.asyncCommand(
+    return this.lifecycle.store.fileCommand(
       commandId,
       { operation: "publish_artifact", ...data },
       async () => {
-        reauthorize();
-        const bytes = await this.workspaces.workingFiles(workspace.id).read(data.path);
+        await reauthorize();
+        const bytes = await (await this.workspaces.workingFiles(workspace.id)).read(data.path);
         this.persist(commandId, bytes);
         return bytes;
       },
-      (bytes) => {
-        const previous = this.lifecycle.store
-          .list("artifact")
-          .find(
-            (a) =>
-              a.run_id === run.id &&
-              a.workspace_id === workspace.id &&
-              a.source_path === data.path &&
-              a.sha256 === digest(bytes),
-          );
+      async (bytes) => {
+        const previous = (
+          await this.lifecycle.store.list("artifact", {
+            run_id: run.id,
+            workspace_id: workspace.id,
+          })
+        ).find(
+          (a) =>
+            a.run_id === run.id &&
+            a.workspace_id === workspace.id &&
+            a.source_path === data.path &&
+            a.sha256 === digest(bytes),
+        );
         if (previous) return previous;
-        const binding = this.lifecycle.store.get("binding", run.binding_id as string);
+        const binding = await this.lifecycle.store.get("binding", run.binding_id as string);
         if (run.publication === "quiet") {
-          const current = this.lifecycle.store.get("run", run.id);
-          this.lifecycle.store.put(
+          const current = await this.lifecycle.store.get("run", run.id);
+          await this.lifecycle.store.put(
             {
               ...current,
               publication: "deferred",
@@ -297,7 +304,7 @@ export class Artifacts {
             current.revision,
           );
         }
-        return this.save(commandId, workspace, bytes, {
+        return await this.save(commandId, workspace, bytes, {
           name: basename(data.path),
           media_type: data.media_type,
           source_path: data.path,
@@ -307,7 +314,7 @@ export class Artifacts {
           native_run_id: run.native_run_id as string,
           created_by_agent_id: run.agent_id,
           goal_generations: run.task_id
-            ? this.lifecycle.store.get("peer_task", run.task_id).goal_generations
+            ? (await this.lifecycle.store.get("peer_task", run.task_id)).goal_generations
             : run.goal_id && run.goal_generation
               ? { [run.goal_id]: run.goal_generation }
               : {},
@@ -316,9 +323,9 @@ export class Artifacts {
       reauthorize,
     );
   }
-  download(artifactId: string, workspaceId: string) {
-    const workspace = this.workspaces.get(workspaceId);
-    const item = this.lifecycle.store.get("artifact", artifactId);
+  async download(artifactId: string, workspaceId: string) {
+    const workspace = await this.workspaces.get(workspaceId);
+    const item = await this.lifecycle.store.get("artifact", artifactId);
     if (
       item.workspace_id !== workspace.id ||
       item.agent_id !== workspace.agent_id ||
@@ -332,11 +339,11 @@ export class Artifacts {
     return { artifact: item, bytes };
   }
   async share(artifactId: string, workspaceId: string, commandId: string) {
-    const original = this.lifecycle.store.get("artifact", artifactId);
+    const original = await this.lifecycle.store.get("artifact", artifactId);
     if (!original.workspace_id) throw new DomainError("SCOPE_DENIED", 403);
-    const source = this.download(artifactId, original.workspace_id);
-    const target = this.workspaces.get(workspaceId);
-    return this.lifecycle.store.asyncCommand(
+    const source = await this.download(artifactId, original.workspace_id);
+    const target = await this.workspaces.get(workspaceId);
+    return this.lifecycle.store.fileCommand(
       commandId,
       { operation: "share_artifact", artifactId, workspaceId },
       async () => {
@@ -345,8 +352,8 @@ export class Artifacts {
         await this.stage(target.id, path, source.bytes);
         return path;
       },
-      (path) => {
-        return this.save(commandId, target, source.bytes, {
+      async (path) => {
+        return await this.save(commandId, target, source.bytes, {
           name: original.name,
           media_type: original.media_type,
           source_path: path,
@@ -354,8 +361,8 @@ export class Artifacts {
           source_artifact_id: original.id,
         });
       },
-      () => {
-        if (this.workspaces.get(workspaceId).revision !== target.revision)
+      async () => {
+        if ((await this.workspaces.get(workspaceId)).revision !== target.revision)
           throw new DomainError("STALE_DISPATCH");
       },
     );

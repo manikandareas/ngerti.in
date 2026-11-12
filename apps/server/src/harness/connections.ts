@@ -6,13 +6,13 @@ import { connectionInput, unknownCapabilities } from "./contracts";
 /** Secret-free connection projections share the application store, transactions and events. */
 export class Connections {
   constructor(readonly lifecycle: Lifecycle) {}
-  get(id: string | null) {
-    return this.lifecycle.store.get("connection", id);
+  async get(id: string | null) {
+    return await this.lifecycle.store.get("connection", id);
   }
-  create(input: unknown) {
+  async create(input: unknown) {
     const data = connectionInput.parse(input);
     const now = new Date().toISOString();
-    return this.lifecycle.store.put({
+    return await this.lifecycle.store.put({
       ...data,
       id: crypto.randomUUID(),
       kind: "connection",
@@ -31,7 +31,7 @@ export class Connections {
       capabilities: { ...unknownCapabilities },
     });
   }
-  update(
+  async update(
     connection: Entity<"connection">,
     changes: Partial<
       Pick<
@@ -60,7 +60,7 @@ export class Connections {
       )
     )
       return connection;
-    return this.lifecycle.store.put(
+    return await this.lifecycle.store.put(
       {
         ...connection,
         ...changes,
@@ -71,15 +71,15 @@ export class Connections {
       connection.revision,
     );
   }
-  revoke(id: string | null) {
-    const current = this.get(id);
-    return current.state === "revoked" ? current : this.update(current, { state: "revoked" });
+  async revoke(id: string | null) {
+    const current = await this.get(id);
+    return current.state === "revoked" ? current : await this.update(current, { state: "revoked" });
   }
-  forAgent(agentId: string, threadId?: string) {
+  async forAgent(agentId: string, threadId?: string) {
     const agent = threadId
-      ? this.lifecycle.executionAgent(threadId, agentId)
-      : this.lifecycle.store.get("agent", agentId);
-    const connection = this.get(agent.connection_id);
+      ? await this.lifecycle.executionAgent(threadId, agentId)
+      : await this.lifecycle.store.get("agent", agentId);
+    const connection = await this.get(agent.connection_id);
     if (
       connection.state !== "active" ||
       connection.harness !== agent.harness ||

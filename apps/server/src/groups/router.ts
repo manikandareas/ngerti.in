@@ -122,12 +122,12 @@ export class JevRouter implements GroupRouter {
         : focusedQuestions(packet);
     const request = { model: "jev-1.14.0", state, questions };
     const started = performance.now();
-    observe?.({ phase: "focused", request });
+    await observe?.({ phase: "focused", request });
     const response = await this.client.systemOne(request, {
       signal: signalWithDeadline,
       retry: { maxRetries: 0 },
     });
-    observe?.({
+    await observe?.({
       phase: "focused",
       request,
       response: response.answers,
@@ -171,12 +171,12 @@ export class JevRouter implements GroupRouter {
         questions: { responder: recipientQuestion(packet) },
       };
       const at = performance.now();
-      observe?.({ phase: "contextual", request: expanded });
+      await observe?.({ phase: "contextual", request: expanded });
       const reviewed = await this.client.systemOne(expanded, {
         signal: signalWithDeadline,
         retry: { maxRetries: 0 },
       });
-      observe?.({
+      await observe?.({
         phase: "contextual",
         request: expanded,
         response: reviewed.answers,
@@ -211,12 +211,12 @@ export class JevRouter implements GroupRouter {
         questions: relationalQuestions(packet),
       };
       const at = performance.now();
-      observe?.({ phase: "reviewing", request: review });
+      await observe?.({ phase: "reviewing", request: review });
       const checked = await this.client.systemOne(review, {
         signal: signalWithDeadline,
         retry: { maxRetries: 0 },
       });
-      observe?.({
+      await observe?.({
         phase: "reviewing",
         request: review,
         response: checked.answers,

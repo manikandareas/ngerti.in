@@ -46,96 +46,111 @@ export class Creation {
       }),
   ) {}
 
-  agent(operationId: string, input: unknown) {
+  async agent(operationId: string, input: unknown) {
     const data = createAgentConversation.parse(input);
     const { store } = this.lifecycle;
-    return store.command(operationId, { operation: "create_agent_conversation", data }, () => {
-      const connection = data.connection_id ? store.get("connection", data.connection_id) : null;
-      if (!connection && !data.harness) throw new DomainError("INVALID_REQUEST", 422);
-      if (connection && connection.authentication.billing_source !== data.billing_source)
-        throw new DomainError("SCOPE_DENIED", 403);
-      const names = new Set(store.list("agent").map((a) => a.name.toLocaleLowerCase("en")));
-      const base = this.generateName();
-      let name = base;
-      for (let suffix = 2; names.has(name.toLocaleLowerCase("en")); suffix++)
-        name = `${base} ${suffix}`;
-      const agent = this.lifecycle.createAgent({
-        name,
-        avatar: "🤖",
-        harness: connection?.harness ?? data.harness,
-        connection_id: connection?.id ?? null,
-        billing_source: data.billing_source,
-        model_id: data.model_id,
-        reasoning: data.reasoning,
-      });
-      const thread = this.lifecycle.create("thread", { type: "dm", member_agent_ids: [agent.id] });
-      const saved = store.put(
-        { ...thread, creation_operation_id: operationId, revision: thread.revision + 1 },
-        thread.revision,
-      );
-      const admission = this.lifecycle.admit({
-        thread_id: thread.id,
-        agent_id: agent.id,
-        text: data.opener,
-      });
-      const message = store.put(
-        {
-          ...admission.message,
-          creation_operation_id: operationId,
-          revision: admission.message.revision + 1,
-        },
-        admission.message.revision,
-      );
-      return { agent, thread: saved, message, run: admission.run };
-    });
+    return await store.command(
+      operationId,
+      { operation: "create_agent_conversation", data },
+      async () => {
+        const connection = data.connection_id
+          ? await store.get("connection", data.connection_id)
+          : null;
+        if (!connection && !data.harness) throw new DomainError("INVALID_REQUEST", 422);
+        if (connection && connection.authentication.billing_source !== data.billing_source)
+          throw new DomainError("SCOPE_DENIED", 403);
+        const names = new Set(
+          (await store.list("agent")).map((a) => a.name.toLocaleLowerCase("en")),
+        );
+        const base = this.generateName();
+        let name = base;
+        for (let suffix = 2; names.has(name.toLocaleLowerCase("en")); suffix++)
+          name = `${base} ${suffix}`;
+        const agent = await this.lifecycle.createAgent({
+          name,
+          avatar: "🤖",
+          harness: connection?.harness ?? data.harness,
+          connection_id: connection?.id ?? null,
+          billing_source: data.billing_source,
+          model_id: data.model_id,
+          reasoning: data.reasoning,
+        });
+        const thread = await this.lifecycle.create("thread", {
+          type: "dm",
+          member_agent_ids: [agent.id],
+        });
+        const saved = await store.put(
+          { ...thread, creation_operation_id: operationId, revision: thread.revision + 1 },
+          thread.revision,
+        );
+        const admission = await this.lifecycle.admit({
+          thread_id: thread.id,
+          agent_id: agent.id,
+          text: data.opener,
+        });
+        const message = await store.put(
+          {
+            ...admission.message,
+            creation_operation_id: operationId,
+            revision: admission.message.revision + 1,
+          },
+          admission.message.revision,
+        );
+        return { agent, thread: saved, message, run: admission.run };
+      },
+    );
   }
 
-  group(operationId: string, input: unknown) {
+  async group(operationId: string, input: unknown) {
     const data = createGroupConversation.parse(input);
     const { store } = this.lifecycle;
-    return store.command(operationId, { operation: "create_group_conversation", data }, () => {
-      const thread = this.lifecycle.create("thread", {
-        type: "group",
-        member_agent_ids: data.member_agent_ids,
-      });
-      const saved = store.put(
-        {
-          ...thread,
-          name: data.name,
-          creation_operation_id: operationId,
-          revision: thread.revision + 1,
-        },
-        thread.revision,
-      );
-      const route = new Groups(this.lifecycle).send(thread.id, { text: data.opener });
-      const original = store.get("message", route.message_id);
-      const message = store.put(
-        { ...original, creation_operation_id: operationId, revision: original.revision + 1 },
-        original.revision,
-      );
-      const annotatedRoute = route.routing
-        ? store.put(
-            {
-              ...route,
-              revision: route.revision + 1,
-              routing: { ...route.routing, request_revision: message.revision },
-            },
-            route.revision,
-          )
-        : route;
-      return { thread: saved, message, route: annotatedRoute };
-    });
+    return await store.command(
+      operationId,
+      { operation: "create_group_conversation", data },
+      async () => {
+        const thread = await this.lifecycle.create("thread", {
+          type: "group",
+          member_agent_ids: data.member_agent_ids,
+        });
+        const saved = await store.put(
+          {
+            ...thread,
+            name: data.name,
+            creation_operation_id: operationId,
+            revision: thread.revision + 1,
+          },
+          thread.revision,
+        );
+        const route = await new Groups(this.lifecycle).send(thread.id, { text: data.opener });
+        const original = await store.get("message", route.message_id);
+        const message = await store.put(
+          { ...original, creation_operation_id: operationId, revision: original.revision + 1 },
+          original.revision,
+        );
+        const annotatedRoute = route.routing
+          ? await store.put(
+              {
+                ...route,
+                revision: route.revision + 1,
+                routing: { ...route.routing, request_revision: message.revision },
+              },
+              route.revision,
+            )
+          : route;
+        return { thread: saved, message, route: annotatedRoute };
+      },
+    );
   }
 
-  configureGroup(threadId: string, input: unknown) {
+  async configureGroup(threadId: string, input: unknown) {
     const data = groupConfiguration.parse(input);
-    return this.lifecycle.store.transaction(() => {
-      const thread = this.lifecycle.store.get("thread", threadId);
+    return await this.lifecycle.store.transaction(async () => {
+      const thread = await this.lifecycle.store.get("thread", threadId);
       if (thread.type !== "group" || thread.purpose !== "conversation")
         throw new DomainError("SCOPE_DENIED", 403);
       if (thread.revision !== data.expected_revision) throw new DomainError("CONFLICT");
       const store = this.lifecycle.store;
-      const saved = store.put(
+      const saved = await store.put(
         {
           ...thread,
           ...data.changes,
@@ -144,13 +159,13 @@ export class Creation {
         },
         thread.revision,
       );
-      for (const run of store.list("run")) {
+      for (const run of await store.list("run")) {
         if (
           run.thread_id === threadId &&
           run.thread_revision === thread.revision &&
           ["queued", "dispatching", "running", "cancel_requested"].includes(run.status)
         )
-          store.put(
+          await store.put(
             { ...run, thread_revision: saved.revision, revision: run.revision + 1 },
             run.revision,
           );
@@ -161,24 +176,26 @@ export class Creation {
 }
 
 /** Reads are derived from durable projections, never from assistant prose. */
-export function openingState(lifecycle: Lifecycle, threadId: string) {
+export async function openingState(lifecycle: Lifecycle, threadId: string) {
   const { store } = lifecycle;
-  const thread = store.get("thread", threadId);
-  const message = store
-    .list("message")
-    .find((m) => m.thread_id === threadId && m.creation_operation_id !== null);
+  const thread = await store.get("thread", threadId);
+  const message = (await store.list("message", { thread_id: threadId })).find(
+    (m) => m.thread_id === threadId && m.creation_operation_id !== null,
+  );
   const route = message
-    ? (store.list("group_route").find((r) => r.message_id === message.id) ?? null)
+    ? ((await store.list("group_route")).find((r) => r.message_id === message.id) ?? null)
     : null;
-  const task = route?.task_id ? store.get("peer_task", route.task_id) : null;
-  const runs = message ? store.list("run").filter((r) => r.input_message_id === message.id) : [];
+  const task = route?.task_id ? await store.get("peer_task", route.task_id) : null;
+  const runs = message
+    ? (await store.list("run")).filter((r) => r.input_message_id === message.id)
+    : [];
   const current = task
-    ? store.get("run", task.current_run_id)
+    ? await store.get("run", task.current_run_id)
     : route?.router_run_id
-      ? store.get("run", route.router_run_id)
+      ? await store.get("run", route.router_run_id)
       : (runs.at(-1) ?? null);
-  const connectionId = current ? store.get("agent", current.agent_id).connection_id : null;
-  const connection = connectionId ? store.get("connection", connectionId) : null;
+  const connectionId = current ? (await store.get("agent", current.agent_id)).connection_id : null;
+  const connection = connectionId ? await store.get("connection", connectionId) : null;
   return {
     thread,
     message: message ?? null,
@@ -206,32 +223,30 @@ export function openingState(lifecycle: Lifecycle, threadId: string) {
   };
 }
 
-export function retryOpening(lifecycle: Lifecycle, threadId: string, expectedRunId: string) {
-  return lifecycle.store.transaction(() => {
-    const state = openingState(lifecycle, threadId);
+export async function retryOpening(lifecycle: Lifecycle, threadId: string, expectedRunId: string) {
+  return await lifecycle.store.transaction(async () => {
+    const state = await openingState(lifecycle, threadId);
     if (!state.run || state.run.id !== expectedRunId || state.recovery !== "retry")
       throw new DomainError("CONFLICT");
     const run = state.run;
     if (
-      lifecycle.store
-        .list("app_effect")
-        .some(
-          (effect) => effect.run_id === run.id && ["unknown", "dispatched"].includes(effect.state),
-        )
+      (await lifecycle.store.list("app_effect", { run_id: run.id })).some(
+        (effect) => effect.run_id === run.id && ["unknown", "dispatched"].includes(effect.state),
+      )
     )
       throw new DomainError("CONFLICT");
     if (
-      lifecycle.store
-        .list("browser_action")
-        .some(
-          (effect) => effect.run_id === run.id && ["unknown", "dispatched"].includes(effect.state),
-        )
+      (await lifecycle.store.list("browser_action", { run_id: run.id })).some(
+        (effect) => effect.run_id === run.id && ["unknown", "dispatched"].includes(effect.state),
+      )
     )
       throw new DomainError("CONFLICT");
-    const message = lifecycle.store.get("message", run.input_message_id);
-    const next = lifecycle.enqueue(message, run.agent_id, { task_id: run.task_id ?? undefined });
+    const message = await lifecycle.store.get("message", run.input_message_id);
+    const next = await lifecycle.enqueue(message, run.agent_id, {
+      task_id: run.task_id ?? undefined,
+    });
     if (state.task)
-      lifecycle.store.put(
+      await lifecycle.store.put(
         {
           ...state.task,
           current_run_id: next.id,
@@ -241,7 +256,7 @@ export function retryOpening(lifecycle: Lifecycle, threadId: string, expectedRun
         state.task.revision,
       );
     else if (state.route)
-      lifecycle.store.put(
+      await lifecycle.store.put(
         {
           ...state.route,
           router_run_id: next.id,

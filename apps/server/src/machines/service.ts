@@ -3,6 +3,7 @@ import { DomainError, type Entity } from "../contracts";
 import { authorizeResponsibilityWork } from "../goals/work-fence";
 import type { ToolAccess } from "../harness/tools";
 import type { Lifecycle } from "../lifecycle";
+import { asyncFind } from "../persistence/async-collections";
 import type { MachineConfiguration } from "./config";
 import { computerCall, machineControl, machineWindowInput } from "./contracts";
 import { CuaMachine, type DriverTool } from "./cua";
@@ -59,77 +60,25 @@ const noLease = (revision = 0) => ({
 
 /** Shared-machine routing, durable input ownership and upstream capability admission. */
 export class Machines {
-  readonly host: CuaMachine | null;
-  readonly operations: MachineOperations;
-  readonly processes: MachineProcesses;
-  readonly desktop: MachineDesktop;
+  host!: CuaMachine | null;
+  operations!: MachineOperations;
+  processes!: MachineProcesses;
+  desktop!: MachineDesktop;
   readonly #controlListeners = new Set<() => void | Promise<void>>();
   readonly #revocations = new Set<Promise<void>>();
   #renewedAt = 0;
   #registry: DriverTool[] = [];
-  #refresh: Promise<Entity<"machine">> | undefined;
+  #refresh!: Promise<Entity<"machine">> | undefined;
   #refreshedAt = 0;
-  #input: Promise<unknown> | undefined;
+  #input!: Promise<unknown> | undefined;
   #handoff = false;
   #maintenance = false;
-  constructor(
+  private constructor(
     readonly lifecycle: Lifecycle,
     readonly configuration: MachineConfiguration | null,
-    host?: CuaMachine,
-  ) {
-    if (installations.has(lifecycle))
-      throw new Error("This application already has a machine module.");
-    installations.set(lifecycle, this);
-    this.host = host ?? (configuration ? new CuaMachine(configuration) : null);
-    this.operations = new MachineOperations(lifecycle, lifecycle.store.ownerId);
-    const current = lifecycle.store
-      .list("machine")
-      .find((item) => item.id === lifecycle.store.ownerId);
-    if (
-      current &&
-      configuration &&
-      current.machine_key &&
-      (current.machine_key !== configuration.id || current.generation !== configuration.generation)
-    )
-      throw new Error(
-        "The retained machine binding changed. Reconcile it before starting this installation.",
-      );
-    if (!current)
-      lifecycle.store.put({
-        ...this.operations.base(lifecycle.store.ownerId),
-        kind: "machine",
-        machine_key: configuration?.id ?? null,
-        generation: configuration?.generation ?? 1,
-        state: configuration ? "offline" : "unconfigured",
-        root: configuration?.root ?? "/home/cua/workspace",
-        service_version: null,
-        driver_version: null,
-        features: [],
-        lease: noLease(),
-      });
-    else
-      this.operations.update(current, {
-        machine_key: configuration?.id ?? current.machine_key,
-        state: configuration ? "offline" : "unconfigured",
-        lease:
-          current.lease.holder === "none" ? current.lease : { ...current.lease, state: "unknown" },
-      });
-    this.processes = new MachineProcesses(
-      lifecycle,
-      this.host,
-      this.operations,
-      () => this.snapshot().generation,
-    );
-    this.desktop = new MachineDesktop(
-      lifecycle,
-      this.host,
-      this.operations,
-      () => this.snapshot(),
-      (effect) => this.withIdleInput(effect),
-    );
-  }
+  ) {}
   private async withIdleInput(effect: () => Promise<void>): Promise<void> {
-    const current = this.snapshot();
+    const current = await this.snapshot();
     if (
       this.#input ||
       this.#handoff ||
@@ -140,50 +89,59 @@ export class Machines {
     )
       return;
     this.#maintenance = true;
-    const pending = Promise.resolve().then(effect);
+    // Human takeover must wait for the persisted observation fence as well as
+    // the native effect, or cleanup could overwrite the newly granted lease.
+    const pending = Promise.resolve().then(async () => {
+      try {
+        await effect();
+      } catch (error) {
+        await this.uncertainControl();
+        throw error;
+      } finally {
+        try {
+          // Cleanup changes desktop geometry. Observations made before or during
+          // it must not authorize a later click, even though no agent held input.
+          const lease = (await this.snapshot()).lease;
+          if (lease.holder === "none" && lease.state === "active")
+            await this.lease(noLease(lease.revision + 1));
+        } finally {
+          this.#input = undefined;
+          this.#maintenance = false;
+        }
+      }
+    });
     this.#input = pending;
-    try {
-      await pending;
-    } catch (error) {
-      this.uncertainControl();
-      throw error;
-    } finally {
-      // Cleanup changes desktop geometry. Observations made before or during
-      // it must not authorize a later click, even though no agent held input.
-      const lease = this.snapshot().lease;
-      if (lease.holder === "none" && lease.state === "active")
-        this.lease(noLease(lease.revision + 1));
-      this.#input = undefined;
-      this.#maintenance = false;
-    }
+    await pending;
   }
-  snapshot() {
-    return this.lifecycle.store.get("machine", this.operations.machineId);
+  async snapshot() {
+    return await this.lifecycle.store.get("machine", this.operations.machineId);
   }
   onControl(listener: () => void | Promise<void>) {
     this.#controlListeners.add(listener);
     return () => this.#controlListeners.delete(listener);
   }
-  private lease(lease: Entity<"machine">["lease"]) {
-    const record = this.operations.update(this.snapshot(), { lease });
+  private async lease(lease: Entity<"machine">["lease"]) {
+    const record = await this.lifecycle.store.transaction(async () =>
+      this.operations.update(await this.snapshot(), { lease }),
+    );
     for (const listener of this.#controlListeners) {
       const result = listener();
       if (result) {
         this.#revocations.add(result);
         void result
-          .catch(() => this.uncertainControl())
+          .catch(async () => await this.uncertainControl())
           .finally(() => this.#revocations.delete(result));
       }
     }
     return record;
   }
-  uncertainControl() {
+  async uncertainControl() {
     if (this.lifecycle.store.closed) return;
-    const current = this.snapshot();
-    if (current.lease.state !== "unknown") this.lease({ ...current.lease, state: "unknown" });
+    const current = await this.snapshot();
+    if (current.lease.state !== "unknown") await this.lease({ ...current.lease, state: "unknown" });
   }
-  renewHuman() {
-    const lease = this.snapshot().lease;
+  async renewHuman() {
+    const lease = (await this.snapshot()).lease;
     if (
       lease.holder !== "human" ||
       lease.state !== "active" ||
@@ -192,22 +150,22 @@ export class Machines {
     )
       return;
     this.#renewedAt = Date.now();
-    this.operations.update(this.snapshot(), {
+    await this.operations.update(await this.snapshot(), {
       lease: { ...lease, expires_at: new Date(Date.now() + 60_000).toISOString() },
     });
   }
   private async quiesce() {
     try {
       await Promise.all([...this.#revocations]);
-      if (this.snapshot().lease.state === "unknown")
+      if ((await this.snapshot()).lease.state === "unknown")
         throw new DomainError("RECONCILIATION_REQUIRED");
     } catch {
-      this.uncertainControl();
+      await this.uncertainControl();
       throw new DomainError("RECONCILIATION_REQUIRED");
     }
   }
   async expireControl() {
-    const lease = this.snapshot().lease;
+    const lease = (await this.snapshot()).lease;
     if (
       this.#handoff ||
       lease.holder !== "human" ||
@@ -218,17 +176,17 @@ export class Machines {
       return;
     this.#handoff = true;
     try {
-      this.lease(noLease(lease.revision + 1));
+      await this.lease(noLease(lease.revision + 1));
       await this.quiesce();
     } finally {
       this.#handoff = false;
     }
   }
   async refresh() {
-    if (!this.host) return this.snapshot();
+    if (!this.host) return await this.snapshot();
     if (this.#refresh) return this.#refresh;
-    if (Date.now() - this.#refreshedAt < 3000 && this.snapshot().state === "ready")
-      return this.snapshot();
+    if (Date.now() - this.#refreshedAt < 3000 && (await this.snapshot()).state === "ready")
+      return await this.snapshot();
     this.#refresh = (async () => {
       try {
         const capabilities = z
@@ -248,7 +206,7 @@ export class Machines {
           throw new DomainError("MACHINE_UNAVAILABLE", 503);
         this.#registry = registry.tools.filter((tool) => computerTools.has(tool.name));
         this.#refreshedAt = Date.now();
-        const current = this.snapshot();
+        const current = await this.snapshot();
         if (
           current.state === "ready" &&
           current.service_version === capabilities.version &&
@@ -256,16 +214,17 @@ export class Machines {
           JSON.stringify(current.features) === JSON.stringify(features)
         )
           return current;
-        return this.operations.update(current, {
+        return await this.operations.update(current, {
           state: "ready",
           service_version: capabilities.version,
           driver_version: registry.contractVersion,
           features,
         });
       } catch {
-        const current = this.snapshot();
-        if (current.state !== "offline") this.operations.update(current, { state: "offline" });
-        if (current.lease.holder !== "none") this.uncertainControl();
+        const current = await this.snapshot();
+        if (current.state !== "offline")
+          await this.operations.update(current, { state: "offline" });
+        if (current.lease.holder !== "none") await this.uncertainControl();
         throw new DomainError("MACHINE_UNAVAILABLE", 503);
       } finally {
         this.#refresh = undefined;
@@ -282,9 +241,9 @@ export class Machines {
     if (!this.host) throw new DomainError("MACHINE_UNAVAILABLE", 503);
     return this.host.files();
   }
-  actor(access: ToolAccess): NonNullable<MachineActor> {
-    access.authorize();
-    authorizeResponsibilityWork(this.lifecycle, access.scope.run_id);
+  async actor(access: ToolAccess): Promise<NonNullable<MachineActor>> {
+    await access.authorize();
+    await authorizeResponsibilityWork(this.lifecycle, access.scope.run_id);
     return {
       agent_id: access.scope.agent_id,
       thread_id: access.scope.thread_id,
@@ -306,9 +265,9 @@ export class Machines {
       };
     });
   }
-  private acquire(actor: MachineActor) {
+  private async acquire(actor: MachineActor) {
     if (this.#handoff || this.#maintenance) throw new DomainError("MACHINE_INPUT_BUSY");
-    const current = this.snapshot().lease;
+    const current = (await this.snapshot()).lease;
     if (current.state === "unknown") throw new DomainError("RECONCILIATION_REQUIRED");
     if (
       (current.holder === "human" && actor !== null) ||
@@ -316,7 +275,7 @@ export class Machines {
     )
       throw new DomainError("MACHINE_INPUT_BUSY");
     if (current.holder === "none")
-      return this.lease({
+      return await this.lease({
         holder: actor ? "agent" : "human",
         agent_id: actor?.agent_id ?? null,
         run_id: actor?.run_id ?? null,
@@ -324,21 +283,21 @@ export class Machines {
         state: "active",
         expires_at: null,
       });
-    return this.snapshot();
+    return await this.snapshot();
   }
   async control(raw: unknown, actor: MachineActor, authorize: () => void = () => {}) {
     const data = machineControl.parse(raw);
     await this.ready();
     await this.expireControl();
-    authorize();
-    const existing = this.lifecycle.store
-      .list("machine_operation")
-      .find((item) => item.id === data.command_id);
-    if (!existing && this.snapshot().lease.revision !== data.expected_revision)
+    await authorize();
+    const existing = (await this.lifecycle.store.list("machine_operation")).find(
+      (item) => item.id === data.command_id,
+    );
+    if (!existing && (await this.snapshot()).lease.revision !== data.expected_revision)
       throw new DomainError("CONFLICT");
     return this.operations.execute(
       data.command_id,
-      this.snapshot().generation,
+      (await this.snapshot()).generation,
       actor,
       `control.${data.operation}`,
       data,
@@ -348,10 +307,10 @@ export class Machines {
           this.#handoff = true;
           try {
             await this.#input;
-            authorize();
-            const lease = this.snapshot().lease;
+            await authorize();
+            const lease = (await this.snapshot()).lease;
             if (lease.state === "unknown") throw new DomainError("RECONCILIATION_REQUIRED");
-            const record = this.lease({
+            const record = await this.lease({
               holder: "human",
               agent_id: null,
               run_id: null,
@@ -359,15 +318,15 @@ export class Machines {
               state: "active",
               expires_at: new Date(Date.now() + 60_000).toISOString(),
             });
-            this.desktop.preserveForHuman();
+            await this.desktop.preserveForHuman();
             await this.quiesce();
             return record;
           } finally {
             this.#handoff = false;
           }
         }
-        if (data.operation === "acquire") return this.acquire(actor);
-        const lease = this.snapshot().lease;
+        if (data.operation === "acquire") return await this.acquire(actor);
+        const lease = (await this.snapshot()).lease;
         if (actor && (lease.holder !== "agent" || lease.run_id !== actor.run_id))
           throw new DomainError("SCOPE_DENIED", 403);
         if (this.#input) throw new DomainError("MACHINE_INPUT_BUSY");
@@ -378,10 +337,10 @@ export class Machines {
           });
           if (!observation || observation.isError) throw new DomainError("RECONCILIATION_REQUIRED");
         }
-        authorize();
+        await authorize();
         this.#handoff = true;
         try {
-          const record = this.lease(noLease(this.snapshot().lease.revision + 1));
+          const record = await this.lease(noLease((await this.snapshot()).lease.revision + 1));
           await this.quiesce();
           return record;
         } finally {
@@ -390,24 +349,27 @@ export class Machines {
       },
     );
   }
-  private claimTarget(actor: NonNullable<MachineActor>, targetId: string, tabId: string | null) {
-    const existing = this.lifecycle.store
-      .list("machine_target")
-      .find(
-        (item) =>
-          item.machine_id === this.operations.machineId &&
-          item.generation === this.snapshot().generation &&
-          item.active &&
-          item.target_id === targetId &&
-          item.tab_id === tabId,
-      );
+  private async claimTarget(
+    actor: NonNullable<MachineActor>,
+    targetId: string,
+    tabId: string | null,
+  ) {
+    const existing = await asyncFind(
+      await this.lifecycle.store.list("machine_target"),
+      async (item) =>
+        item.machine_id === this.operations.machineId &&
+        item.generation === (await this.snapshot()).generation &&
+        item.active &&
+        item.target_id === targetId &&
+        item.tab_id === tabId,
+    );
     if (existing && existing.run_id !== actor.run_id) throw new DomainError("MACHINE_INPUT_BUSY");
     if (!existing)
-      this.lifecycle.store.put({
+      await this.lifecycle.store.put({
         ...this.operations.base(),
         kind: "machine_target",
         machine_id: this.operations.machineId,
-        generation: this.snapshot().generation,
+        generation: (await this.snapshot()).generation,
         agent_id: actor.agent_id,
         run_id: actor.run_id,
         target_id: targetId,
@@ -417,26 +379,26 @@ export class Machines {
   }
   async window(raw: unknown, access: ToolAccess) {
     const data = machineWindowInput.parse(raw);
-    const actor = this.actor(access);
-    if (data.operation === "list") return { windows: this.desktop.list(actor) };
+    const actor = await this.actor(access);
+    if (data.operation === "list") return { windows: await this.desktop.list(actor) };
     if (!data.command_id) throw new DomainError("INVALID_REQUEST", 422);
     if (data.operation === "retain")
-      return this.lifecycle.store.command(data.command_id, { actor, ...data }, () => {
-        access.authorize();
-        return this.desktop.retain(data.resource_id as string, actor);
+      return await this.lifecycle.store.command(data.command_id, { actor, ...data }, async () => {
+        await access.authorize();
+        return await this.desktop.retain(data.resource_id as string, actor);
       });
     await this.ready();
     await this.expireControl();
     return this.operations.execute(
       data.command_id,
-      this.snapshot().generation,
+      (await this.snapshot()).generation,
       actor,
       `window.${data.operation}`,
       data,
       access.authorize,
       async () => {
         if (this.#input) throw new DomainError("MACHINE_INPUT_BUSY");
-        this.acquire(actor);
+        await this.acquire(actor);
         const pending = this.desktop.open(
           actor,
           data.operation === "open_browser" ? "browser" : "terminal",
@@ -448,7 +410,7 @@ export class Machines {
         try {
           return await pending;
         } catch (error) {
-          this.uncertainControl();
+          await this.uncertainControl();
           throw error;
         } finally {
           this.#input = undefined;
@@ -458,7 +420,7 @@ export class Machines {
   }
   async computer(raw: unknown, access: ToolAccess) {
     const data = computerCall.parse(raw);
-    const actor = this.actor(access);
+    const actor = await this.actor(access);
     const host = await this.ready();
     await this.expireControl();
     const definition = this.#registry.find((tool) => tool.name === data.name);
@@ -471,7 +433,7 @@ export class Machines {
     )
       throw new DomainError("INVALID_REQUEST", 422);
     if (!observations.has(data.name)) {
-      const lease = this.snapshot().lease;
+      const lease = (await this.snapshot()).lease;
       if (
         this.#handoff ||
         this.#maintenance ||
@@ -481,18 +443,16 @@ export class Machines {
         throw new DomainError("MACHINE_INPUT_BUSY");
       if (lease.state === "unknown") throw new DomainError("RECONCILIATION_REQUIRED");
       const minimum = lease.holder === "agent" ? lease.revision - 1 : lease.revision;
-      const fresh = this.operations
-        .list(actor)
-        .some(
-          (operation) =>
-            operation.run_id === actor.run_id &&
-            observations.has(operation.name) &&
-            operation.state === "succeeded" &&
-            (operation.result as { input_revision?: number; isError?: boolean })?.input_revision !==
-              undefined &&
-            (operation.result as { input_revision: number }).input_revision >= minimum &&
-            !(operation.result as { isError?: boolean }).isError,
-        );
+      const fresh = (await this.operations.list(actor)).some(
+        (operation) =>
+          operation.run_id === actor.run_id &&
+          observations.has(operation.name) &&
+          operation.state === "succeeded" &&
+          (operation.result as { input_revision?: number; isError?: boolean })?.input_revision !==
+            undefined &&
+          (operation.result as { input_revision: number }).input_revision >= minimum &&
+          !(operation.result as { isError?: boolean }).isError,
+      );
       if (!fresh) throw new DomainError("RECONCILIATION_REQUIRED");
     }
     if (
@@ -504,7 +464,7 @@ export class Machines {
     const args: Record<string, unknown> = { ...data.arguments, session };
     return this.operations.execute(
       data.command_id,
-      this.snapshot().generation,
+      (await this.snapshot()).generation,
       actor,
       data.name,
       data.arguments,
@@ -512,19 +472,19 @@ export class Machines {
       async () => {
         const mutation = !observations.has(data.name);
         if (mutation && this.#input) throw new DomainError("MACHINE_INPUT_BUSY");
-        if (mutation) this.acquire(actor);
+        if (mutation) await this.acquire(actor);
         if (mutation && typeof args.target_id === "string")
-          this.claimTarget(
+          await this.claimTarget(
             actor,
             args.target_id,
             typeof args.tab_id === "string" ? args.tab_id : null,
           );
         const effect = (async () => {
-          access.authorize();
-          const inputRevision = this.snapshot().lease.revision;
+          await access.authorize();
+          const inputRevision = (await this.snapshot()).lease.revision;
           const started = await host.call("start_session", { session });
           if (started.isError) throw new DomainError("MACHINE_UNAVAILABLE", 503);
-          access.authorize();
+          await access.authorize();
           const result = await host.call(data.name, args);
           if (result.structuredJson) {
             const structured = JSON.parse(result.structuredJson);
@@ -547,8 +507,8 @@ export class Machines {
         try {
           return await effect;
         } catch (error) {
-          const lease = this.snapshot().lease;
-          this.lease({ ...lease, state: "unknown" });
+          const lease = (await this.snapshot()).lease;
+          await this.lease({ ...lease, state: "unknown" });
           throw error;
         } finally {
           this.#input = undefined;
@@ -559,19 +519,19 @@ export class Machines {
   }
   async releaseRun(runId: string) {
     if (this.lifecycle.store.closed) return;
-    if (this.snapshot().lease.run_id === runId) await this.#input?.catch(() => {});
+    if ((await this.snapshot()).lease.run_id === runId) await this.#input?.catch(() => {});
     if (this.host)
       await this.host.call("end_session", { session: `ngertiin-${runId}` }).catch(() => {});
     if (this.lifecycle.store.closed) return;
-    const current = this.snapshot();
+    const current = await this.snapshot();
     if (current.lease.run_id === runId && current.lease.state === "active")
-      this.lease(noLease(current.lease.revision + 1));
-    for (const target of this.lifecycle.store.list("machine_target"))
+      await this.lease(noLease(current.lease.revision + 1));
+    for (const target of await this.lifecycle.store.list("machine_target"))
       if (target.run_id === runId && target.active)
-        this.operations.update(target, { active: false });
+        await this.operations.update(target, { active: false });
   }
-  assertViewer(revision: number, interactive: boolean) {
-    const current = this.snapshot();
+  async assertViewer(revision: number, interactive: boolean) {
+    const current = await this.snapshot();
     if (
       current.state !== "ready" ||
       (interactive &&
@@ -586,7 +546,7 @@ export class Machines {
   }
   async recover() {
     await this.refresh()
-      .then(() => this.processes.recover())
+      .then(async () => this.processes.recover())
       .catch(() => {});
   }
   async close() {
@@ -594,5 +554,72 @@ export class Machines {
     await this.#input?.catch(() => {});
     await this.processes.close();
     installations.delete(this.lifecycle);
+  }
+
+  private async initialize(
+    lifecycle: Lifecycle,
+    configuration: MachineConfiguration | null,
+    host?: CuaMachine,
+  ) {
+    if (installations.has(lifecycle))
+      throw new Error("This application already has a machine module.");
+    installations.set(lifecycle, this);
+    this.host = host ?? (configuration ? new CuaMachine(configuration) : null);
+    this.operations = await MachineOperations.open(lifecycle, lifecycle.store.ownerId);
+    const current = (await lifecycle.store.list("machine")).find(
+      (item) => item.id === lifecycle.store.ownerId,
+    );
+    if (
+      current &&
+      configuration &&
+      current.machine_key &&
+      (current.machine_key !== configuration.id || current.generation !== configuration.generation)
+    )
+      throw new Error(
+        "The retained machine binding changed. Reconcile it before starting this installation.",
+      );
+    if (!current)
+      await lifecycle.store.put({
+        ...this.operations.base(lifecycle.store.ownerId),
+        kind: "machine",
+        machine_key: configuration?.id ?? null,
+        generation: configuration?.generation ?? 1,
+        state: configuration ? "offline" : "unconfigured",
+        root: configuration?.root ?? "/home/cua/workspace",
+        service_version: null,
+        driver_version: null,
+        features: [],
+        lease: noLease(),
+      });
+    else
+      await this.operations.update(current, {
+        machine_key: configuration?.id ?? current.machine_key,
+        state: configuration ? "offline" : "unconfigured",
+        lease:
+          current.lease.holder === "none" ? current.lease : { ...current.lease, state: "unknown" },
+      });
+    this.processes = new MachineProcesses(
+      lifecycle,
+      this.host,
+      this.operations,
+      async () => (await this.snapshot()).generation,
+    );
+    this.desktop = await MachineDesktop.open(
+      lifecycle,
+      this.host,
+      this.operations,
+      async () => await this.snapshot(),
+      async (effect) => this.withIdleInput(effect),
+    );
+  }
+
+  static async open(
+    lifecycle: Lifecycle,
+    configuration: MachineConfiguration | null,
+    host?: CuaMachine,
+  ): Promise<Machines> {
+    const instance = new Machines(lifecycle, configuration);
+    await instance.initialize(lifecycle, configuration, host);
+    return instance;
   }
 }

@@ -14,24 +14,27 @@ export function registerHarnessRoutes(api: Elysia, services: ApiServices, comman
   return api
     .get("/v1/harness/contracts", () => brokerContract())
     .get("/v1/harnesses", async () =>
-      Promise.all((["codex", "muse"] as const).map((id) => (services.detect ?? detectHarness)(id))),
+      Promise.all(
+        (["codex", "muse"] as const).map(async (id) => (services.detect ?? detectHarness)(id)),
+      ),
     )
     .post(
       "/v1/connections",
-      ({ request, body }) => command(request, body, () => services.connections.create(body)),
+      async ({ request, body }) =>
+        await command(request, body, async () => await services.connections.create(body)),
       { body: connectionInput },
     )
     .post(
       "/v1/connections/api-key",
-      ({ request, body }) => {
+      async ({ request, body }) => {
         const storage = services.credentialStorage;
         if (!storage) throw new HarnessError("ADAPTER_UNAVAILABLE");
         let reference: string | undefined;
         try {
           // The command store retains a SHA-256 fingerprint and secret-free receipt only.
-          return command(request, body, () => {
+          return await command(request, body, async () => {
             reference = storage.write(body.api_key);
-            return services.connections.create({
+            return await services.connections.create({
               harness: body.harness,
               authentication: {
                 method: "api_key",
@@ -49,7 +52,8 @@ export function registerHarnessRoutes(api: Elysia, services: ApiServices, comman
     )
     .post(
       "/v1/connections/:id/revoke",
-      ({ request, params }) => command(request, {}, () => services.connections.revoke(params.id)),
+      async ({ request, params }) =>
+        await command(request, {}, async () => await services.connections.revoke(params.id)),
       { params: z.object({ id }) },
     )
     .post(
@@ -79,13 +83,13 @@ export function registerHarnessRoutes(api: Elysia, services: ApiServices, comman
     )
     .post(
       "/v1/threads/:id/prepare",
-      ({ params, body }) =>
-        services.broker?.prewarm(params.id, body.agent_id) ?? { state: "skipped" as const },
+      async ({ params, body }) =>
+        (await services.broker?.prewarm(params.id, body.agent_id)) ?? { state: "skipped" as const },
       { params: z.object({ id }), body: z.strictObject({ agent_id: id }) },
     )
     .post(
       "/v1/threads/:id/sessions",
-      ({ params, body }) => {
+      async ({ params, body }) => {
         if (!services.broker) throw new HarnessError("ADAPTER_UNAVAILABLE");
         return services.broker.openSession(params.id, body.agent_id);
       },

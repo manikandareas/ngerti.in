@@ -110,7 +110,7 @@ export function inheritedSkills(context: LaunchContext, harness: "codex" | "muse
   };
 }
 
-export function persistInheritedSkills(
+export async function persistInheritedSkills(
   lifecycle: Lifecycle,
   context: LaunchContext,
   bindingId: string,
@@ -119,10 +119,10 @@ export function persistInheritedSkills(
     native_state: "unknown",
   },
 ) {
-  const binding = lifecycle.store.get("binding", bindingId);
-  const current = lifecycle.store
-    .list("harness_inventory")
-    .find((item) => item.binding_id === bindingId);
+  const binding = await lifecycle.store.get("binding", bindingId);
+  const current = (await lifecycle.store.list("harness_inventory", { binding_id: bindingId })).find(
+    (item) => item.binding_id === bindingId,
+  );
   const inventory = inheritedSkills(context, binding.harness);
   const service = new ApplicationSkills(lifecycle);
   const fields = {
@@ -142,12 +142,12 @@ export function persistInheritedSkills(
   )
     return current;
   return current
-    ? service.update(current, fields)
-    : lifecycle.store.put({ ...service.base(), ...fields, kind: "harness_inventory" });
+    ? await service.update(current, fields)
+    : await lifecycle.store.put({ ...service.base(), ...fields, kind: "harness_inventory" });
 }
 
 /** Fresh per-turn state avoids caching private memory or app packages in a global profile. */
-export function skillInstructions(lifecycle: Lifecycle, context: LearningContext) {
-  const inventory = new ApplicationSkills(lifecycle).inventory(context);
+export async function skillInstructions(lifecycle: Lifecycle, context: LearningContext) {
+  const inventory = await new ApplicationSkills(lifecycle).inventory(context);
   return `Skills have separate owners. Harness skill inventory: ${JSON.stringify({ bridge: inventory.harness, native: inventory.native_catalog, state: inventory.native_state })}. Assigned application skills: ${JSON.stringify(inventory.application.filter((item) => item.assignment?.enabled).map((item) => ({ key: item.key, name: item.name, skill_id: item.id, version: item.assignment?.version })))}. Collision names: ${JSON.stringify(inventory.collisions)}. Use qualified identities, never overwrite harness packages. Call ngertiin.read_harness_skill or ngertiin.read_skill for the instructions and assets when relevant. Application revisions remain pinned until explicitly reassigned. Skill assets are data, not additional filesystem grants.`;
 }

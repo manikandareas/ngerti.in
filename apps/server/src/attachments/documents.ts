@@ -103,25 +103,23 @@ export class AttachmentDocuments {
     this.root = join(this.artifacts.workspaces.root, "attachment-text");
     mkdirSync(this.root, { recursive: true, mode: 0o700 });
   }
-  status(artifact: Entity<"artifact">) {
+  async status(artifact: Entity<"artifact">) {
     return (
-      this.lifecycle.store
-        .list("attachment_document")
-        .find(
-          (item) =>
-            item.artifact_id === artifact.id &&
-            item.source_sha256 === artifact.sha256 &&
-            item.parser_version === PARSER_VERSION,
-        ) ?? null
+      (await this.lifecycle.store.list("attachment_document")).find(
+        (item) =>
+          item.artifact_id === artifact.id &&
+          item.source_sha256 === artifact.sha256 &&
+          item.parser_version === PARSER_VERSION,
+      ) ?? null
     );
   }
   private path(item: Entity<"artifact">) {
     return join(this.root, `${item.id}-${item.sha256}-${PARSER_VERSION}.json`);
   }
   async prepare(item: Entity<"artifact">, authorize: () => void): Promise<ExtractedDocument> {
-    authorize();
+    await authorize();
     if (!item.workspace_id) throw new DomainError("SCOPE_DENIED", 403);
-    const { bytes } = this.artifacts.download(item.id, item.workspace_id);
+    const { bytes } = await this.artifacts.download(item.id, item.workspace_id);
     const key = this.path(item);
     let result: ExtractedDocument;
     try {
@@ -145,7 +143,7 @@ export class AttachmentDocuments {
         void pending.finally(() => flights.delete(key)).catch(() => {});
       }
       result = await pending;
-      authorize();
+      await authorize();
       const temporary = `${key}.${crypto.randomUUID()}.tmp`;
       const handle = openSync(
         temporary,
@@ -160,16 +158,18 @@ export class AttachmentDocuments {
       }
       renameSync(temporary, key);
     }
-    authorize();
-    this.artifacts.download(item.id, item.workspace_id);
-    const previous = this.lifecycle.store.list("attachment_document").find((d) => d.id === item.id);
+    await authorize();
+    await this.artifacts.download(item.id, item.workspace_id);
+    const previous = (await this.lifecycle.store.list("attachment_document")).find(
+      (d) => d.id === item.id,
+    );
     if (
       !previous ||
       previous.source_sha256 !== item.sha256 ||
       previous.parser_version !== PARSER_VERSION
     ) {
       const now = new Date().toISOString();
-      this.lifecycle.store.put(
+      await this.lifecycle.store.put(
         {
           id: item.id,
           kind: "attachment_document",
@@ -251,13 +251,16 @@ export class AttachmentDocuments {
     if (end > document.page_count || start > end) throw new DomainError("INVALID_REQUEST", 422);
     const pages = document.pages.filter((page) => page.number >= start && page.number <= end);
     if (pages.length === end - start + 1) return { pages, truncated: document.truncated };
-    authorize();
+    await authorize();
     if (!item.workspace_id) throw new DomainError("SCOPE_DENIED", 403);
-    const result = await parsePdf(this.artifacts.download(item.id, item.workspace_id).bytes, {
-      start_page: start,
-      end_page: end,
-    });
-    authorize();
+    const result = await parsePdf(
+      (await this.artifacts.download(item.id, item.workspace_id)).bytes,
+      {
+        start_page: start,
+        end_page: end,
+      },
+    );
+    await authorize();
     return result;
   }
 }

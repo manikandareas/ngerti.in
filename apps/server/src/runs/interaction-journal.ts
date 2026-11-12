@@ -27,12 +27,12 @@ function redact<T>(value: T, text: (value: string) => string): T {
 /** App-owned observations and response fences, never a replay log for native effects. */
 export class InteractionJournal {
   constructor(readonly store: Store) {}
-  private run(runId: string) {
-    const run = this.store.get("run", runId);
+  private async run(runId: string) {
+    const run = await this.store.get("run", runId);
     if (run.owner_id !== this.store.ownerId) throw new DomainError("SCOPE_DENIED", 403);
     return run;
   }
-  private write(run: Entity<"run">, records: NativeInteraction[]) {
+  private async write(run: Entity<"run">, records: NativeInteraction[]) {
     const acknowledgementReserve =
       records.filter((record) => record.submission?.state === "submitting").length * 512;
     if (
@@ -41,7 +41,7 @@ export class InteractionJournal {
     )
       throw new HarnessError("PROTOCOL_ERROR");
     if (canonical(records) === canonical(run.native_interactions)) return run;
-    return this.store.put(
+    return await this.store.put(
       {
         ...run,
         native_interactions: records,
@@ -51,8 +51,8 @@ export class InteractionJournal {
       run.revision,
     );
   }
-  history(runId: string) {
-    const run = this.run(runId);
+  async history(runId: string) {
+    const run = await this.run(runId);
     return {
       run_id: run.id,
       run_status: run.status,
@@ -61,13 +61,17 @@ export class InteractionJournal {
       records: run.native_interactions,
     };
   }
-  observe(runId: string, raw: unknown, text: (value: string) => string): InteractionSnapshot {
+  async observe(
+    runId: string,
+    raw: unknown,
+    text: (value: string) => string,
+  ): Promise<InteractionSnapshot> {
     const snapshot = interactionSnapshot.parse(redact(interactionSnapshot.parse(raw), text));
     if (Buffer.byteLength(JSON.stringify(snapshot)) > 128 * 1024)
       throw new HarnessError("PROTOCOL_ERROR");
-    this.store.transaction(() => {
-      const run = this.run(runId);
-      const message = this.store.answer(run.id);
+    await this.store.transaction(async () => {
+      const run = await this.run(runId);
+      const message = await this.store.answer(run.id);
       const ownMessage =
         message &&
         message.thread_id === run.thread_id &&
@@ -132,7 +136,7 @@ export class InteractionJournal {
             submission: null,
           });
       }
-      this.write(
+      await this.write(
         run,
         records.map((record) =>
           record.observed_state === "pending" &&
@@ -144,9 +148,9 @@ export class InteractionJournal {
     });
     return snapshot;
   }
-  replay(runId: string, raw: unknown) {
+  async replay(runId: string, raw: unknown) {
     const answer = interactionAnswer.parse(raw);
-    const record = this.run(runId).native_interactions.find(
+    const record = (await this.run(runId)).native_interactions.find(
       (item) => identity(item.type, item.request_id, item.source_index) === answerIdentity(answer),
     );
     const submitted = record?.submission;
@@ -157,11 +161,11 @@ export class InteractionJournal {
     if (submitted.state === "unknown") throw new HarnessError("NATIVE_UNKNOWN", "unknown");
     throw new DomainError("CONFLICT");
   }
-  begin(runId: string, raw: unknown, text: (value: string) => string) {
+  async begin(runId: string, raw: unknown, text: (value: string) => string) {
     const answer = interactionAnswer.parse(raw);
-    return this.store.transaction(() => {
-      if (this.replay(runId, answer)) return null;
-      const run = this.run(runId);
+    return await this.store.transaction(async () => {
+      if (await this.replay(runId, answer)) return null;
+      const run = await this.run(runId);
       const index = run.native_interactions.findIndex(
         (item) =>
           identity(item.type, item.request_id, item.source_index) === answerIdentity(answer),
@@ -180,11 +184,11 @@ export class InteractionJournal {
       };
       const records = [...run.native_interactions];
       records[index] = { ...record, submission };
-      this.write(run, records);
+      await this.write(run, records);
       return { record_id: record.id, attempt_id: submission.attempt_id };
     });
   }
-  settle(
+  async settle(
     runId: string,
     recordId: string,
     attemptId: string,
@@ -192,8 +196,8 @@ export class InteractionJournal {
     problem: ReturnType<typeof diagnostic> | null = null,
   ) {
     if (this.store.closed) return;
-    this.store.transaction(() => {
-      const run = this.run(runId);
+    await this.store.transaction(async () => {
+      const run = await this.run(runId);
       const records = run.native_interactions.map((record) => {
         const current = record.submission;
         if (
@@ -214,14 +218,14 @@ export class InteractionJournal {
           },
         };
       });
-      this.write(run, records);
+      await this.write(run, records);
     });
   }
-  recover() {
-    for (const run of this.store.list("run"))
+  async recover() {
+    for (const run of await this.store.list("run"))
       for (const record of run.native_interactions)
         if (record.submission?.state === "submitting")
-          this.settle(
+          await this.settle(
             run.id,
             record.id,
             record.submission.attempt_id,

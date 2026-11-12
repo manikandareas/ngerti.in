@@ -6,18 +6,18 @@ import { Connections } from "../../src/harness/connections";
 import { ProductTools } from "../../src/harness/tools";
 import { fixture } from "../helpers";
 
-let f: ReturnType<typeof fixture>;
-afterEach(() => f?.close());
+let f: Awaited<ReturnType<typeof fixture>>;
+afterEach(async () => await f?.close());
 class Host implements BrowserHost {
   calls: string[] = [];
   detached = 0;
   closed = 0;
   resets = 0;
   url = "https://example.org/account";
-  before: (() => void) | null = null;
+  before: (() => void | Promise<void>) | null = null;
   effect: (() => Promise<void>) | null = null;
   async connect() {
-    this.before?.();
+    await this.before?.();
   }
   async call(_id: string, name: string) {
     this.calls.push(name);
@@ -51,25 +51,26 @@ class Host implements BrowserHost {
     return 12345;
   }
 }
-function setup(actions = true) {
-  f = fixture();
+async function setup(actions = true) {
+  f = await fixture();
   const connections = new Connections(f.lifecycle);
-  const connection = connections.get(f.store.get("agent", f.agent.id).connection_id);
-  connections.update(connection, {
+  const connection = await connections.get((await f.store.get("agent", f.agent.id)).connection_id);
+  await connections.update(connection, {
     capabilities: { ...connection.capabilities, product_tools: "supported" },
   });
   const host = new Host();
-  const tools = new ProductTools(f.lifecycle, undefined, host);
+  const tools = await ProductTools.open(f.lifecycle, undefined, host);
   const scope = { agent_id: f.agent.id, thread_id: f.thread.id };
-  const profile = tools.browsers.create({ name: "Account", grants: [{ ...scope, actions }] });
-  f.bind();
-  f.admit();
-  const run = f.lifecycle.claimNext(f.thread.id, f.agent.id) as Entity<"run">;
-  const lease = tools.issue(run);
-  const call = (name: string, input: unknown) => tools.call(lease.token, lease.scope, name, input);
+  const profile = await tools.browsers.create({ name: "Account", grants: [{ ...scope, actions }] });
+  await f.bind();
+  await f.admit();
+  const run = (await f.lifecycle.claimNext(f.thread.id, f.agent.id)) as Entity<"run">;
+  const lease = await tools.issue(run);
+  const call = async (name: string, input: unknown) =>
+    tools.call(lease.token, lease.scope, name, input);
   return { tools, host, scope, profile, run, lease, call, browsers: tools.browsers };
 }
-async function action(s: ReturnType<typeof setup>, fields: Record<string, unknown> = {}) {
+async function action(s: Awaited<ReturnType<typeof setup>>, fields: Record<string, unknown> = {}) {
   const session = await s.browsers.open(s.profile.id, s.scope);
   return {
     command_id: crypto.randomUUID(),
@@ -82,9 +83,12 @@ async function action(s: ReturnType<typeof setup>, fields: Record<string, unknow
 }
 
 test("browser grants are explicit per conversation and action permission is separate from viewing", async () => {
-  const s = setup(false);
-  const group = f.lifecycle.create("thread", { type: "group", member_agent_ids: [f.agent.id] });
-  expect(s.browsers.list({ ...s.scope, thread_id: group.id })).toEqual([]);
+  const s = await setup(false);
+  const group = await f.lifecycle.create("thread", {
+    type: "group",
+    member_agent_ids: [f.agent.id],
+  });
+  expect(await s.browsers.list({ ...s.scope, thread_id: group.id })).toEqual([]);
   await expect(s.browsers.open(s.profile.id, { ...s.scope, thread_id: group.id })).rejects.toThrow(
     "SCOPE_DENIED",
   );
@@ -96,10 +100,10 @@ test("browser grants are explicit per conversation and action permission is sepa
 });
 
 test("actions commit a receipt before dispatch and exact retry never repeats the native effect", async () => {
-  const s = setup();
+  const s = await setup();
   const input = await action(s);
   s.host.effect = async () =>
-    expect(f.store.get("browser_action", input.command_id).state).toBe("dispatched");
+    expect((await f.store.get("browser_action", input.command_id)).state).toBe("dispatched");
   const first = await s.call("ngertiin.browser_action", input);
   expect(first).toMatchObject({ receipt: { state: "succeeded" } });
   for (let i = 0; i < 5; i++) await s.call("ngertiin.browser_action", input);
@@ -107,48 +111,48 @@ test("actions commit a receipt before dispatch and exact retry never repeats the
   await expect(
     s.call("ngertiin.browser_action", { ...input, arguments: { url: "https://example.com" } }),
   ).rejects.toThrow("IDEMPOTENCY_CONFLICT");
-  const text = JSON.stringify(f.store.list("browser_action"));
+  const text = JSON.stringify(await f.store.list("browser_action"));
   expect(text).not.toContain("example.org");
 });
 
 test("revocation during connect fences final native action dispatch", async () => {
-  const s = setup();
-  s.host.before = () => {
+  const s = await setup();
+  s.host.before = async () => {
     s.host.before = null;
-    s.browsers.grant(s.profile.id, 1, {
+    await s.browsers.grant(s.profile.id, 1, {
       name: "Account",
       grants: [{ ...s.scope, actions: false }],
     });
   };
   await expect(s.browsers.open(s.profile.id, s.scope)).rejects.toThrow("STALE_DISPATCH");
-  expect(f.store.list("browser_action")).toHaveLength(0);
+  expect(await f.store.list("browser_action")).toHaveLength(0);
 });
 
 test("stop rejects late actions without dispatching browser effects", async () => {
-  const s = setup();
+  const s = await setup();
   const input = await action(s);
-  f.lifecycle.cancel(s.run.id);
+  await f.lifecycle.cancel(s.run.id);
   await expect(s.call("ngertiin.browser_action", input)).rejects.toThrow();
   expect(s.host.calls).toHaveLength(0);
 });
 
 test("unknown acknowledgements survive application restart without blind replay", async () => {
-  const s = setup();
+  const s = await setup();
   const input = await action(s);
   s.host.effect = async () => {
     throw new Error("Lost acknowledgement with private input");
   };
   await expect(s.call("ngertiin.browser_action", input)).rejects.toThrow("BROWSER_UNKNOWN");
-  expect(f.store.get("browser_action", input.command_id).state).toBe("unknown");
-  f.restart();
-  const browsers = new Browsers(f.lifecycle, s.host);
-  expect(browsers.receipts(input.session_id, s.scope)[0].state).toBe("unknown");
+  expect((await f.store.get("browser_action", input.command_id)).state).toBe("unknown");
+  await f.restart();
+  const browsers = await Browsers.open(f.lifecycle, s.host);
+  expect((await browsers.receipts(input.session_id, s.scope))[0].state).toBe("unknown");
   await expect(browsers.open(s.profile.id, s.scope)).rejects.toThrow("RECONCILIATION_REQUIRED");
   expect(s.host.calls.filter((n) => n === "browser_navigate")).toHaveLength(1);
 });
 
 test("foreign targets, stale generations, unlisted tools and local profile URLs are rejected", async () => {
-  const s = setup();
+  const s = await setup();
   const input = await action(s);
   await expect(
     s.call("ngertiin.browser_action", { ...input, expected_target_id: "foreign" }),
@@ -172,19 +176,21 @@ test("foreign targets, stale generations, unlisted tools and local profile URLs 
       arguments: { tab_id: "FFFF" },
     }),
   ).rejects.toThrow("SCOPE_DENIED");
-  expect(f.store.list("browser_action")).toHaveLength(0);
+  expect(await f.store.list("browser_action")).toHaveLength(0);
 });
 
 test("concurrent native calls serialize by profile, and unknown effects remain held after close", async () => {
-  const s = setup();
+  const s = await setup();
   const input = await action(s);
+  const entered = Promise.withResolvers<void>();
   let release = () => {};
   s.host.effect = () =>
     new Promise<void>((resolve) => {
       release = resolve;
+      entered.resolve();
     });
   const pending = s.call("ngertiin.browser_action", input);
-  await Bun.sleep(10);
+  await entered.promise;
   await expect(
     s.call("ngertiin.browser_action", { ...input, command_id: crypto.randomUUID() }),
   ).rejects.toThrow("CONFLICT");
@@ -198,20 +204,20 @@ test("concurrent native calls serialize by profile, and unknown effects remain h
 });
 
 test("cancellation during a dispatched effect holds unknown and suppresses returned page content", async () => {
-  const s = setup();
+  const s = await setup();
   const input = await action(s);
   s.host.effect = async () => {
-    f.lifecycle.cancel(s.run.id);
+    await f.lifecycle.cancel(s.run.id);
     await Bun.sleep(100);
     throw new Error("Aborted transport");
   };
   await expect(s.call("ngertiin.browser_action", input)).rejects.toThrow();
-  expect(f.store.get("browser_action", input.command_id).state).toBe("unknown");
+  expect((await f.store.get("browser_action", input.command_id)).state).toBe("unknown");
   expect(s.host.detached).toBeGreaterThan(0);
 });
 
 test("indexed input requires a fresh observation and exact native target", async () => {
-  const s = setup();
+  const s = await setup();
   const input = await action(s, { tool: "browser_get_state", arguments: {} });
   const observed = (await s.call("ngertiin.browser_action", input)) as {
     content: { type: string; text?: string }[];
@@ -233,15 +239,15 @@ test("indexed input requires a fresh observation and exact native target", async
   await expect(
     s.call("ngertiin.browser_action", { ...type, command_id: crypto.randomUUID() }),
   ).rejects.toThrow("STALE_DISPATCH");
-  expect(JSON.stringify(f.store.events(0, 1000))).not.toContain("PRIVATE_INPUT_123");
+  expect(JSON.stringify(await f.store.events(0, 1000))).not.toContain("PRIVATE_INPUT_123");
 });
 
 test("HTTP browser resources require owner authentication and explicit scoped grants", async () => {
   const { createApi } = await import("../../src/api");
   const { Background } = await import("../../src/background");
-  const s = setup();
+  const s = await setup();
   const token = "b".repeat(64);
-  const app = createApi(f.lifecycle, new Background(f.lifecycle, {}), token, {
+  const app = await createApi(f.lifecycle, new Background(f.lifecycle, {}), token, {
     connections: new Connections(f.lifecycle),
     tools: s.tools,
   });
@@ -270,7 +276,7 @@ test("HTTP browser resources require owner authentication and explicit scoped gr
 test("single-use view tickets reject foreign origins and existing viewers close on grant change", async () => {
   const { createServer } = await import("node:net");
   const { BrowserViews } = await import("../../src/browser/view");
-  const s = setup();
+  const s = await setup();
   const session = await s.browsers.open(s.profile.id, s.scope);
   const tcp = createServer((socket) => socket.write("RFB 003.008\n"));
   await new Promise<void>((resolve) => tcp.listen(0, "127.0.0.1", resolve));
@@ -298,7 +304,7 @@ test("single-use view tickets reject foreign origins and existing viewers close 
     const closed = new Promise<void>((resolve) => {
       if (ws) ws.onclose = () => resolve();
     });
-    s.browsers.grant(s.profile.id, 1, {
+    await s.browsers.grant(s.profile.id, 1, {
       name: "Changed",
       grants: [{ ...s.scope, actions: false }],
     });
@@ -339,8 +345,8 @@ test("callback credentials and raw browser errors are excluded from tool output"
 });
 
 test("explicit site authentication signals distinguish valid, expired and unknown sessions", async () => {
-  const s = setup();
-  s.browsers.grant(s.profile.id, 1, {
+  const s = await setup();
+  await s.browsers.grant(s.profile.id, 1, {
     name: "Account",
     grants: [{ ...s.scope, actions: true }],
     auth_policy: {
@@ -363,29 +369,29 @@ test("explicit site authentication signals distinguish valid, expired and unknow
 });
 
 test("removing the last grant revokes observation, screenshots, tools and subsequent reopen", async () => {
-  const s = setup();
+  const s = await setup();
   const input = await action(s);
-  s.browsers.grant(s.profile.id, 1, { name: "Revoked", grants: [] });
-  expect(s.browsers.list(s.scope)).toHaveLength(0);
+  await s.browsers.grant(s.profile.id, 1, { name: "Revoked", grants: [] });
+  expect(await s.browsers.list(s.scope)).toHaveLength(0);
   await expect(s.browsers.observe(input.session_id, s.scope)).rejects.toThrow("SCOPE_DENIED");
   await expect(s.browsers.open(s.profile.id, s.scope)).rejects.toThrow("SCOPE_DENIED");
   await expect(s.call("ngertiin.browser_action", input)).rejects.toThrow("SCOPE_DENIED");
-  expect(f.store.list("browser_action")).toHaveLength(0);
+  expect(await f.store.list("browser_action")).toHaveLength(0);
 });
 
 test("lost host-control acknowledgement persists an intent and prevents implicit restart or reset replay", async () => {
-  const s = setup();
+  const s = await setup();
   const session = await s.browsers.open(s.profile.id, s.scope);
   let dispatched = 0;
   s.host.close = async () => {
     dispatched++;
-    expect(f.store.get("browser_session", session.id).control_intent).toBe("close");
+    expect((await f.store.get("browser_session", session.id)).control_intent).toBe("close");
     throw new Error("Lost process-control acknowledgement");
   };
   await expect(s.browsers.control(session.id, s.scope, "close")).rejects.toThrow();
-  f.restart();
-  const browsers = new Browsers(f.lifecycle, s.host);
-  expect(f.store.get("browser_session", session.id)).toMatchObject({
+  await f.restart();
+  const browsers = await Browsers.open(f.lifecycle, s.host);
+  expect(await f.store.get("browser_session", session.id)).toMatchObject({
     state: "unknown",
     control_intent: "close",
   });

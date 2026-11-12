@@ -19,11 +19,11 @@ export class CodexAccounts {
   constructor(
     readonly connections: Connections,
     readonly credentials: CredentialContexts,
-    private readonly detect = () => detectHarness("codex"),
+    private readonly detect = async () => detectHarness("codex"),
   ) {}
   private async client(connectionId: string) {
     if (this.#closed) throw new HarnessError("ADAPTER_UNAVAILABLE");
-    const connection = this.connections.get(connectionId);
+    const connection = await this.connections.get(connectionId);
     if (connection.harness !== "codex" || connection.state !== "active")
       throw new DomainError("SCOPE_DENIED", 403);
     const available = requireAvailable(await this.detect());
@@ -55,9 +55,9 @@ export class CodexAccounts {
     const client = await this.client(connectionId);
     try {
       const observed = await client.inspect();
-      let current = this.connections.get(connectionId);
+      let current = await this.connections.get(connectionId);
       if (this.#closed || current.state !== "active") throw new DomainError("SCOPE_DENIED", 403);
-      current = this.connections.update(current, {
+      current = await this.connections.update(current, {
         login: observed.login,
         effective_billing_source:
           observed.login === "authenticated" ? observed.billing_source : "unknown",
@@ -67,13 +67,13 @@ export class CodexAccounts {
       if (observed.login !== "authenticated") return current;
       try {
         const models = await client.discoverModels();
-        current = this.connections.get(connectionId);
+        current = await this.connections.get(connectionId);
         if (this.#closed || current.state !== "active") throw new DomainError("SCOPE_DENIED", 403);
-        return this.connections.update(current, { models, discovery: "succeeded" });
+        return await this.connections.update(current, { models, discovery: "succeeded" });
       } catch (error) {
-        const latest = this.connections.get(connectionId);
+        const latest = await this.connections.get(connectionId);
         if (!this.#closed && latest.state === "active")
-          this.connections.update(latest, { discovery: "failed" });
+          await this.connections.update(latest, { discovery: "failed" });
         throw error;
       }
     } finally {
@@ -81,7 +81,7 @@ export class CodexAccounts {
     }
   }
   async login(connectionId: string) {
-    if (this.connections.get(connectionId).authentication.method !== "native_login")
+    if ((await this.connections.get(connectionId)).authentication.method !== "native_login")
       throw new HarnessError("BILLING_MISMATCH");
     if (this.#logins.has(connectionId) || this.#starting.has(connectionId))
       throw new DomainError("CONFLICT");
@@ -92,7 +92,7 @@ export class CodexAccounts {
       const login = z
         .object({ type: z.literal("chatgpt"), loginId: z.string(), authUrl: z.url() })
         .parse(await client.rpc.request("account/login/start", { type: "chatgpt" }));
-      if (this.#closed || this.connections.get(connectionId).state !== "active")
+      if (this.#closed || (await this.connections.get(connectionId)).state !== "active")
         throw new DomainError("SCOPE_DENIED", 403);
       const timer = setTimeout(() => {
         void this.cancel(connectionId).catch(() => {});
@@ -121,6 +121,6 @@ export class CodexAccounts {
     this.#closed = true;
     for (const login of this.#logins.values()) clearTimeout(login.timer);
     this.#logins.clear();
-    await Promise.allSettled([...this.#clients].map((client) => this.release(client)));
+    await Promise.allSettled([...this.#clients].map(async (client) => this.release(client)));
   }
 }

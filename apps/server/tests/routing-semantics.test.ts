@@ -10,22 +10,22 @@ import { productToolSchemas } from "../src/harness/product-tool-contracts";
 import { Lifecycle } from "../src/lifecycle";
 import { fixture } from "./helpers";
 
-let f: ReturnType<typeof fixture>;
+let f: Awaited<ReturnType<typeof fixture>>;
 let background: Background | undefined;
 afterEach(async () => {
   await background?.stop();
   background = undefined;
-  f?.close();
+  await f?.close();
 });
-function setup(router?: GroupRouter) {
-  f = fixture();
-  const lifecycle = new Lifecycle(f.store, router);
-  const peer = lifecycle.createAgent({
+async function setup(router?: GroupRouter) {
+  f = await fixture();
+  const lifecycle = await Lifecycle.open(f.store, router);
+  const peer = await lifecycle.createAgent({
     name: "Writer",
     harness: "codex",
-    connection_id: f.store.get("agent", f.agent.id).connection_id,
+    connection_id: (await f.store.get("agent", f.agent.id)).connection_id,
   });
-  const group = lifecycle.create("thread", {
+  const group = await lifecycle.create("thread", {
     type: "group",
     member_agent_ids: [f.agent.id, peer.id],
   });
@@ -139,14 +139,14 @@ test("a high-confidence downstream selection is not admitted when semantic role 
       usage: { input_tokens: 120, output_tokens: 20 },
     });
   }) as typeof fetch);
-  const { lifecycle, group, groups } = setup(router);
-  const route = groups.send(group.id, { text: "Ask the writer to greet me." });
+  const { lifecycle, group, groups } = await setup(router);
+  const route = await groups.send(group.id, { text: "Ask the writer to greet me." });
   background = new Background(lifecycle);
-  background.tick();
+  await background.tick();
   await background.idle();
-  background.tick();
+  await background.tick();
   await background.idle();
-  const saved = f.store.get("group_route", route.id);
+  const saved = await f.store.get("group_route", route.id);
   expect(saved.routing).toMatchObject({
     provider: "member",
     review_role: "unclear",
@@ -154,8 +154,8 @@ test("a high-confidence downstream selection is not admitted when semantic role 
     evidence: { reason: "review" },
   });
   expect(saved.router_run_id).not.toBeNull();
-  expect(f.store.list("peer_task")).toHaveLength(0);
-  expect(f.store.list("run")).toHaveLength(1);
+  expect(await f.store.list("peer_task")).toHaveLength(0);
+  expect(await f.store.list("run")).toHaveLength(1);
   expect(calls).toBe(2);
 });
 
@@ -186,25 +186,25 @@ test("a coherent relational judgment can resolve the initiator without a phrase 
       usage: { input_tokens: 100, output_tokens: 20 },
     });
   }) as typeof fetch);
-  const { lifecycle, group, groups, peer } = setup(router);
+  const { lifecycle, group, groups, peer } = await setup(router);
   const text = "Writer, ask Researcher to greet me.";
-  const route = groups.send(group.id, { text });
+  const route = await groups.send(group.id, { text });
   background = new Background(lifecycle);
-  background.tick();
+  await background.tick();
   await background.idle();
-  const selected = f.store.get("group_route", route.id);
+  const selected = await f.store.get("group_route", route.id);
   expect(selected).toMatchObject({
     state: "selected",
     selected_agent_id: peer.id,
     router_run_id: null,
   });
-  expect(f.store.get("message", route.message_id).text).toBe(text);
-  expect(f.store.list("peer_task")).toHaveLength(1);
+  expect((await f.store.get("message", route.message_id)).text).toBe(text);
+  expect(await f.store.list("peer_task")).toHaveLength(1);
   expect(calls).toBe(2);
 });
 
 test("observations remain in scoped owner diagnostics and survive restart without rerouting", async () => {
-  const { lifecycle, group, groups } = setup({
+  const { lifecycle, group, groups } = await setup({
     async choose(sample, _signal, observe) {
       observe?.({
         phase: "focused",
@@ -228,16 +228,16 @@ test("observations remain in scoped owner diagnostics and survive restart withou
       };
     },
   });
-  const route = groups.send(group.id, { text: "Read the shared request." });
+  const route = await groups.send(group.id, { text: "Read the shared request." });
   background = new Background(lifecycle);
-  background.tick();
+  await background.tick();
   await background.idle();
-  const before = f.store.cursor;
-  expect(JSON.stringify(new Conversations(lifecycle).snapshot(group.id))).not.toContain(
+  const before = await f.store.cursor;
+  expect(JSON.stringify(await new Conversations(lifecycle).snapshot(group.id))).not.toContain(
     "private_question_canary",
   );
   const ownerToken = "a".repeat(64);
-  const api = createApi(lifecycle, background, ownerToken);
+  const api = await createApi(lifecycle, background, ownerToken);
   const request = (path: string, token = ownerToken) =>
     api.handle(
       new Request(`http://localhost${path}`, { headers: { Authorization: `Bearer ${token}` } }),
@@ -249,34 +249,36 @@ test("observations remain in scoped owner diagnostics and survive restart withou
     (await request(`/v1/groups/${group.id}/routes/${route.id}/decision`, "wrong")).status,
   ).toBe(401);
   expect((await request(`/v1/groups/${f.thread.id}/routes/${route.id}/decision`)).status).toBe(403);
-  expect(f.store.cursor).toBe(before);
+  expect(await f.store.cursor).toBe(before);
   await background.stop();
   background = undefined;
-  f.restart();
-  expect(f.store.routingTrace(route.id)?.events).toHaveLength(2);
-  expect(f.store.get("group_route", route.id).state).toBe("selected");
+  await f.restart();
+  expect((await f.store.routingTrace(route.id))?.events).toHaveLength(2);
+  expect((await f.store.get("group_route", route.id)).state).toBe("selected");
 });
 
-test("queued classification never imports later messages or private DM history", () => {
-  const { groups, group } = setup({
+test("queued classification never imports later messages or private DM history", async () => {
+  const { groups, group } = await setup({
     async choose() {
       throw new Error("Not used");
     },
   });
-  f.admit("private-DM-canary");
-  const first = groups.send(group.id, { text: "Earlier request." });
-  groups.send(group.id, { text: "future-turn-canary" });
-  const firstPacket = groups.routingPacket(first.id);
+  await f.admit("private-DM-canary");
+  const first = await groups.send(group.id, { text: "Earlier request." });
+  await groups.send(group.id, { text: "future-turn-canary" });
+  const firstPacket = await groups.routingPacket(first.id);
   expect(JSON.stringify(firstPacket)).not.toContain("private-DM-canary");
   expect(JSON.stringify(firstPacket)).not.toContain("future-turn-canary");
   expect(firstPacket.origin).toMatchObject({ kind: "user_request", actor_id: null });
-  groups.rejectRouting(first.id, null, "ROUTING_UNAVAILABLE");
-  const rejected = f.store.get("group_route", first.id);
-  const refreshed = groups.retry(group.id, first.id, { expected_revision: rejected.revision });
-  expect(JSON.stringify(groups.routingPacket(refreshed.id))).toContain("future-turn-canary");
-  expect(f.store.list("message").filter((message) => message.thread_id === group.id)).toHaveLength(
-    2,
-  );
+  await groups.rejectRouting(first.id, null, "ROUTING_UNAVAILABLE");
+  const rejected = await f.store.get("group_route", first.id);
+  const refreshed = await groups.retry(group.id, first.id, {
+    expected_revision: rejected.revision,
+  });
+  expect(JSON.stringify(await groups.routingPacket(refreshed.id))).toContain("future-turn-canary");
+  expect(
+    (await f.store.list("message")).filter((message) => message.thread_id === group.id),
+  ).toHaveLength(2);
 });
 
 test("identity ambiguity is factual evidence while the model retains the semantic choice", () => {
@@ -288,27 +290,29 @@ test("identity ambiguity is factual evidence while the model retains the semanti
   expect(state.latest_request).toBe(sample.request);
 });
 
-test("member fallback can ask for clarification without assigning an arbitrary member", () => {
-  const { lifecycle, groups, group } = setup();
-  const route = groups.send(group.id, { text: "Ask Raka, but there are two possible people." });
-  const run = f.store.get("run", route.router_run_id);
-  lifecycle.bind(run.thread_id, run.agent_id, crypto.randomUUID());
-  const claimed = lifecycle.claimNext(run.thread_id, run.agent_id);
+test("member fallback can ask for clarification without assigning an arbitrary member", async () => {
+  const { lifecycle, groups, group } = await setup();
+  const route = await groups.send(group.id, {
+    text: "Ask Raka, but there are two possible people.",
+  });
+  const run = await f.store.get("run", route.router_run_id);
+  await lifecycle.bind(run.thread_id, run.agent_id, crypto.randomUUID());
+  const claimed = await lifecycle.claimNext(run.thread_id, run.agent_id);
   if (!claimed?.dispatch_token) throw new Error("Expected a router claim.");
-  lifecycle.started(claimed.id, claimed.dispatch_token, crypto.randomUUID());
-  lifecycle.appendAnswer(
+  await lifecycle.started(claimed.id, claimed.dispatch_token, crypto.randomUUID());
+  await lifecycle.appendAnswer(
     claimed.id,
     JSON.stringify({ unresolved: true, question: "Raka yang mana yang Anda maksud?" }),
   );
-  lifecycle.settle(claimed.id, claimed.dispatch_token, "succeeded");
-  groups.advance();
-  expect(f.store.get("group_route", route.id)).toMatchObject({
+  await lifecycle.settle(claimed.id, claimed.dispatch_token, "succeeded");
+  await groups.advance();
+  expect(await f.store.get("group_route", route.id)).toMatchObject({
     state: "rejected",
     error_code: "ROUTING_UNRESOLVED",
     clarification: "Raka yang mana yang Anda maksud?",
   });
-  expect(f.store.list("peer_task")).toHaveLength(0);
-  expect(f.store.list("message").filter((m) => m.thread_id === group.id)).toHaveLength(1);
+  expect(await f.store.list("peer_task")).toHaveLength(0);
+  expect((await f.store.list("message")).filter((m) => m.thread_id === group.id)).toHaveLength(1);
 });
 
 test("public handoff tools require an agent-authored announcement without prescribing its wording", () => {

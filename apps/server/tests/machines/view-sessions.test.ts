@@ -4,13 +4,13 @@ import { Machines } from "../../src/machines/service";
 import { MachineViews } from "../../src/machines/view";
 import { fixture } from "../helpers";
 
-let f: ReturnType<typeof fixture>;
+let f: Awaited<ReturnType<typeof fixture>>;
 let machine: Machines;
 let views: MachineViews;
 afterEach(async () => {
-  views?.close();
+  await views?.close();
   await machine?.close();
-  f?.close();
+  await f?.close();
 });
 class Host extends CuaMachine {
   override async tools() {
@@ -30,7 +30,7 @@ class Host extends CuaMachine {
   }
 }
 async function setup() {
-  f = fixture();
+  f = await fixture();
   const config = {
     id: crypto.randomUUID(),
     endpoint: "http://127.0.0.1:3211",
@@ -40,7 +40,7 @@ async function setup() {
     project: "ngertiin-machine-1234abcd",
   };
   const host = new Host(config);
-  machine = new Machines(f.lifecycle, config, host);
+  machine = await Machines.open(f.lifecycle, config, host);
   await machine.ready();
   views = new MachineViews(machine);
   return host;
@@ -49,13 +49,13 @@ test("viewer renewals keep the gateway identity and independent consumers cannot
   await setup();
   const card = await views.issue("http://localhost");
   const panel = await views.issue("http://localhost");
-  const original = views.authorize(new Request(`http://localhost${card.viewer_url}`));
+  const original = await views.authorize(new Request(`http://localhost${card.viewer_url}`));
   const ticket = original.ticket;
   const renewed = await views.renew(card.viewer_id, "http://localhost");
   expect(renewed.viewer_id).toBe(card.viewer_id);
   expect(original.ticket).not.toBe(ticket);
   await views.remove(panel.viewer_id);
-  expect(views.authorize(new Request(`http://localhost${card.viewer_url}`))).toBe(original);
+  expect(await views.authorize(new Request(`http://localhost${card.viewer_url}`))).toBe(original);
   await views.remove(card.viewer_id);
   await expect(views.renew(card.viewer_id, "http://localhost")).rejects.toThrow("UNAUTHORIZED");
 });
@@ -73,7 +73,7 @@ test("a renewal racing explicit revocation never resurrects the view", async () 
   await views.remove(view.viewer_id);
   proceed.resolve();
   expect((await renewing).message).toBe("UNAUTHORIZED");
-  expect(() => views.authorize(new Request(`http://localhost${view.viewer_url}`))).toThrow(
-    "UNAUTHORIZED",
-  );
+  await expect(
+    (async () => views.authorize(new Request(`http://localhost${view.viewer_url}`)))(),
+  ).rejects.toThrow("UNAUTHORIZED");
 });

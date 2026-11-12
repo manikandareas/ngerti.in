@@ -24,6 +24,7 @@ import { groupRouteView } from "./groups/contracts";
 import { routeView } from "./groups/projection";
 import { Connections } from "./harness/connections";
 import type { Lifecycle } from "./lifecycle";
+import { asyncFilter, asyncMap } from "./persistence/async-collections";
 
 export const historyQuery = z.object({
   before: id.optional(),
@@ -65,71 +66,78 @@ export const conversationSnapshot = z.strictObject({
 export class Conversations {
   constructor(readonly lifecycle: Lifecycle) {}
 
-  setup() {
+  async setup() {
     const { store } = this.lifecycle;
-    return store.command("development:tobi:v1", { operation: "setup_tobi", version: 1 }, () => {
-      const connection = new Connections(this.lifecycle).create({
-        harness: "codex",
-        authentication: { method: "native_login", billing_source: "subscription" },
-      });
-      const created = this.lifecycle.createAgent({
-        name: "Tobi",
-        handle: "tobi",
-        avatar_config: defaultAgentAvatar("tobi-circle", true),
-        soul: "A thoughtful generalist who helps the user turn conversations into useful work.",
-        instructions:
-          "Help the user configure agents through Ngertiin product tools when requested. Report actual results and respect each conversation's private context.",
-        harness: "codex",
-        connection_id: connection.id,
-      });
-      const tobi = store.put(
-        {
-          ...created,
-          revision: created.revision + 1,
-          system_role: "tobi",
-          configuration_access: "owner",
-        },
-        created.revision,
-      );
-      const dm = this.lifecycle.create("thread", { type: "dm", member_agent_ids: [tobi.id] });
-      const now = new Date().toISOString();
-      const welcome = store.put({
-        id: crypto.randomUUID(),
-        owner_id: store.ownerId,
-        revision: 1,
-        created_at: now,
-        updated_at: now,
-        kind: "message",
-        creation_operation_id: null,
-        purpose: "conversation",
-        source_run_id: null,
-        thread_id: dm.id,
-        author: "agent",
-        author_agent_id: tobi.id,
-        routine_id: null,
-        run_id: null,
-        state: "complete",
-        artifact_ids: [],
-        text: "Hi, I'm Tobi. Tell me what you'd like to work on. I can help you create and configure agents through our conversation.",
-      });
-      return { agent_id: tobi.id, thread_id: dm.id, welcome_message_id: welcome.id };
-    });
+    return await store.command(
+      "development:tobi:v1",
+      { operation: "setup_tobi", version: 1 },
+      async () => {
+        const connection = await new Connections(this.lifecycle).create({
+          harness: "codex",
+          authentication: { method: "native_login", billing_source: "subscription" },
+        });
+        const created = await this.lifecycle.createAgent({
+          name: "Tobi",
+          handle: "tobi",
+          avatar_config: defaultAgentAvatar("tobi-circle", true),
+          soul: "A thoughtful generalist who helps the user turn conversations into useful work.",
+          instructions:
+            "Help the user configure agents through Ngertiin product tools when requested. Report actual results and respect each conversation's private context.",
+          harness: "codex",
+          connection_id: connection.id,
+        });
+        const tobi = await store.put(
+          {
+            ...created,
+            revision: created.revision + 1,
+            system_role: "tobi",
+            configuration_access: "owner",
+          },
+          created.revision,
+        );
+        const dm = await this.lifecycle.create("thread", {
+          type: "dm",
+          member_agent_ids: [tobi.id],
+        });
+        const now = new Date().toISOString();
+        const welcome = await store.put({
+          id: crypto.randomUUID(),
+          owner_id: store.ownerId,
+          revision: 1,
+          created_at: now,
+          updated_at: now,
+          kind: "message",
+          creation_operation_id: null,
+          purpose: "conversation",
+          source_run_id: null,
+          thread_id: dm.id,
+          author: "agent",
+          author_agent_id: tobi.id,
+          routine_id: null,
+          run_id: null,
+          state: "complete",
+          artifact_ids: [],
+          text: "Hi, I'm Tobi. Tell me what you'd like to work on. I can help you create and configure agents through our conversation.",
+        });
+        return { agent_id: tobi.id, thread_id: dm.id, welcome_message_id: welcome.id };
+      },
+    );
   }
 
-  history(threadId: string, input: unknown = {}) {
+  async history(threadId: string, input: unknown = {}) {
     const { before, limit } = historyQuery.parse(input);
     const { store } = this.lifecycle;
-    store.get("thread", threadId);
-    const all = store
-      .list("message")
-      .filter((item) => item.thread_id === threadId && item.purpose !== "continuation");
+    await store.get("thread", threadId);
+    const all = (await store.list("message", { thread_id: threadId })).filter(
+      (item) => item.thread_id === threadId && item.purpose !== "continuation",
+    );
     const end = before === undefined ? all.length : all.findIndex((item) => item.id === before);
     if (end < 0) throw new DomainError("SCOPE_DENIED", 403);
     const start = Math.max(0, end - limit);
-    const messages = all
-      .slice(start, end)
-      .filter((item) => item.state !== "deleted")
-      .map((item) => conversationMessage(store, item));
+    const messages = await asyncMap(
+      all.slice(start, end).filter((item) => item.state !== "deleted"),
+      async (item) => await conversationMessage(store, item),
+    );
     return {
       messages,
       has_more: start > 0,
@@ -137,44 +145,65 @@ export class Conversations {
     };
   }
 
-  snapshot(threadId: string) {
+  async snapshot(threadId: string) {
     const { store } = this.lifecycle;
-    return store.transaction(() => {
-      const thread = store.get("thread", threadId);
+    return await store.transaction(async () => {
+      const thread = await store.get("thread", threadId);
       return conversationSnapshot.parse({
-        cursor: store.cursor,
+        cursor: await store.cursor,
         thread,
-        agents: thread.member_agent_ids.map((id) => store.get("agent", id)),
-        bindings: store.list("binding").filter((item) => item.thread_id === threadId),
-        runs: store.list("run").filter((item) => item.thread_id === threadId),
-        controls: store.list("control").filter((item) => item.thread_id === threadId),
-        workspaces: store.list("workspace").filter((item) => item.thread_id === threadId),
-        artifacts: store.list("artifact").filter((item) => item.thread_id === threadId),
-        attachment_documents: store
-          .list("attachment_document")
-          .filter((item) => item.thread_id === threadId),
-        routes: store
-          .list("group_route")
-          .filter((item) => item.thread_id === threadId)
-          .map((item) => routeView(store, item)),
-        tasks: store.list("peer_task").filter((item) => item.thread_id === threadId),
-        human_requests: store.list("human_request").filter((item) => item.thread_id === threadId),
-        goals: store.list("goal").filter((item) => item.thread_id === threadId),
-        routines: store.list("routine").filter((item) => item.thread_id === threadId),
-        occurrences: store
-          .list("occurrence")
-          .filter((item) => store.get("routine", item.routine_id).thread_id === threadId),
-        ...this.history(threadId),
-        timeline: this.timeline(threadId),
+        agents: await asyncMap(thread.member_agent_ids, async (id) => await store.get("agent", id)),
+        bindings: (await store.list("binding", { thread_id: threadId })).filter(
+          (item) => item.thread_id === threadId,
+        ),
+        runs: (await store.list("run", { thread_id: threadId })).filter(
+          (item) => item.thread_id === threadId,
+        ),
+        controls: (await store.list("control", { thread_id: threadId })).filter(
+          (item) => item.thread_id === threadId,
+        ),
+        workspaces: (await store.list("workspace", { thread_id: threadId })).filter(
+          (item) => item.thread_id === threadId,
+        ),
+        artifacts: (await store.list("artifact", { thread_id: threadId })).filter(
+          (item) => item.thread_id === threadId,
+        ),
+        attachment_documents: (
+          await store.list("attachment_document", { thread_id: threadId })
+        ).filter((item) => item.thread_id === threadId),
+        routes: await asyncMap(
+          (await store.list("group_route", { thread_id: threadId })).filter(
+            (item) => item.thread_id === threadId,
+          ),
+          async (item) => await routeView(store, item),
+        ),
+        tasks: (await store.list("peer_task", { thread_id: threadId })).filter(
+          (item) => item.thread_id === threadId,
+        ),
+        human_requests: (await store.list("human_request", { thread_id: threadId })).filter(
+          (item) => item.thread_id === threadId,
+        ),
+        goals: (await store.list("goal", { thread_id: threadId })).filter(
+          (item) => item.thread_id === threadId,
+        ),
+        routines: (await store.list("routine", { thread_id: threadId })).filter(
+          (item) => item.thread_id === threadId,
+        ),
+        occurrences: await asyncFilter(
+          await store.list("occurrence"),
+          async (item) => (await store.get("routine", item.routine_id)).thread_id === threadId,
+        ),
+        ...(await this.history(threadId)),
+        timeline: await this.timeline(threadId),
       });
     });
   }
-  timeline(threadId: string, input: unknown = {}) {
+  async timeline(threadId: string, input: unknown = {}) {
     const { before, limit } = timelineQuery.parse(input);
     const { store } = this.lifecycle;
-    store.get("thread", threadId);
-    return store.transaction(() => {
-      const page = store.journal.page(threadId, before, limit);
+    await store.get("thread", threadId);
+    return await store.transaction(async () => {
+      const page = await store.journal.page(threadId, before, limit);
       const ids = new Set(
         page.parts.flatMap((part) =>
           part.kind === "message" && part.message_id ? [part.message_id] : [],
@@ -182,7 +211,10 @@ export class Conversations {
       );
       return {
         ...page,
-        messages: [...ids].map((id) => conversationMessage(store, store.get("message", id))),
+        messages: await asyncMap(
+          [...ids],
+          async (id) => await conversationMessage(store, await store.get("message", id)),
+        ),
       };
     });
   }

@@ -4,15 +4,20 @@ import { id, kindSchema } from "../contracts";
 import { conversationEvent } from "../conversations/projection";
 import { eventStream } from "../event-stream";
 import type { Lifecycle } from "../lifecycle";
+import { asyncMap } from "../persistence/async-collections";
 
 export function registerEventRoutes(api: Elysia, lifecycle: Lifecycle) {
   return api
-    .get("/v1/entities/:kind", ({ params }) => lifecycle.store.list(params.kind), {
+    .get("/v1/entities/:kind", async ({ params }) => await lifecycle.store.list(params.kind), {
       params: z.object({ kind: kindSchema }),
     })
-    .get("/v1/entities/:kind/:id", ({ params }) => lifecycle.store.get(params.kind, params.id), {
-      params: z.object({ kind: kindSchema, id }),
-    })
+    .get(
+      "/v1/entities/:kind/:id",
+      async ({ params }) => await lifecycle.store.get(params.kind, params.id),
+      {
+        params: z.object({ kind: kindSchema, id }),
+      },
+    )
     .get(
       "/v1/events/stream",
       ({ request, query }) =>
@@ -29,10 +34,11 @@ export function registerEventRoutes(api: Elysia, lifecycle: Lifecycle) {
     )
     .get(
       "/v1/events",
-      ({ query }) => {
-        const events = lifecycle.store
-          .events(query.after, query.limit)
-          .map((event) => conversationEvent(lifecycle.store, event));
+      async ({ query }) => {
+        const events = await asyncMap(
+          await lifecycle.store.events(query.after, query.limit),
+          async (event) => await conversationEvent(lifecycle.store, event),
+        );
         return { events, next_cursor: events.at(-1)?.cursor ?? query.after };
       },
       {

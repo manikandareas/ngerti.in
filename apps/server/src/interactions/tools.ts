@@ -8,17 +8,17 @@ export function registerInteractionTools(tools: ProductTools) {
     tools.register(name, {
       schema: productToolSchemas[name],
       resources: () => [],
-      execute: (raw, access) => {
-        access.authorize();
+      execute: async (raw, access) => {
+        await access.authorize();
         const { command_id, ...input } = raw as { command_id: string } & Record<string, unknown>;
-        return tools.lifecycle.store.command(
+        return await tools.lifecycle.store.command(
           command_id,
           { operation: name, run_id: access.scope.run_id, input },
-          () => {
-            access.authorize();
+          async () => {
+            await access.authorize();
             return name === "ngertiin.ask_user"
-              ? interactions.ask(access.scope.run_id, input)
-              : interactions.resolve(access.scope.run_id, { command_id, ...input });
+              ? await interactions.ask(access.scope.run_id, input)
+              : await interactions.resolve(access.scope.run_id, { command_id, ...input });
           },
         );
       },

@@ -32,118 +32,32 @@ export type Resource = {
   kind: "agent" | "thread" | "run" | "message" | "goal" | "routine" | "artifact";
   id: string;
 };
-export type ToolAccess = { scope: Readonly<ToolScope>; authorize(): void };
+export type ToolAccess = { scope: Readonly<ToolScope>; authorize(): void | Promise<void> };
 type Tool = {
   schema: z.ZodType;
   resources(input: unknown): Resource[];
   execute(input: unknown, access: ToolAccess): unknown | Promise<unknown>;
 };
 export class ProductTools {
-  readonly #browsers: Browsers | undefined;
-  readonly machines: Machines | undefined;
-  readonly applications: Applications;
+  #browsers!: Browsers | undefined;
+  machines!: Machines | undefined;
+  applications!: Applications;
   readonly #leases = new Map<string, ToolScope>();
+  readonly #readiness = new Map<string, () => Promise<void>>();
   readonly #tools = new Map<string, Tool>();
   readonly #mcp = new ProductToolMcp({
-    scope: (token) => this.lease(token),
-    list: (scope) =>
-      (this.lifecycle.store.get("thread", scope.thread_id).purpose === "routing"
+    scope: async (token) => await this.lease(token),
+    list: async (scope) =>
+      ((await this.lifecycle.store.get("thread", scope.thread_id)).purpose === "routing"
         ? []
         : [...this.#tools]
       ).map(([name, tool]) => productToolDefinition(name, tool.schema)),
-    call: (token, scope, name, input) => this.call(token, scope, name, input),
+    call: async (token, scope, name, input) => this.call(token, scope, name, input),
   });
-  constructor(
+  private constructor(
     readonly lifecycle: Lifecycle,
-    private readonly completed: (scope: ToolScope, name: string) => void = () => {},
-    browserHost?: BrowserHost,
-    appHost?: AppHost,
-  ) {
-    this.applications = new Applications(lifecycle, appHost);
-    registerAppTools(this);
-    this.machines = machineFor(lifecycle);
-    if (this.machines) registerMachineTools(this, this.machines);
-    else {
-      this.#browsers = new Browsers(
-        lifecycle,
-        browserHost ??
-          new DockerBrowserHost(dirname(lifecycle.store.path), lifecycle.store.ownerId),
-      );
-      registerBrowserTools(this);
-    }
-    registerLearningTools(this);
-    registerGroupTools(this);
-    registerInteractionTools(this);
-    registerGoalTools(this);
-    this.register("ngertiin.cancel_run", {
-      schema: productToolSchemas["ngertiin.cancel_run"],
-      resources: () => [],
-      execute: (input, { scope, authorize }) => {
-        const { command_id } = input as { command_id: string };
-        authorize();
-        return lifecycle.store.command(
-          command_id,
-          { operation: "ngertiin.cancel_run", run_id: scope.run_id },
-          () => {
-            authorize();
-            return lifecycle.cancel(scope.run_id);
-          },
-        );
-      },
-    });
-    registerWorkspaceTools(this);
-    registerAttachmentTools(this);
-    this.register("ngertiin.read_run_context", {
-      schema: z.strictObject({}),
-      resources: () => [],
-      execute: (_input, { scope, authorize }) => {
-        authorize();
-        const run = lifecycle.store.get("run", scope.run_id);
-        const message = lifecycle.store.get("message", run.input_message_id);
-        return {
-          agent_id: run.agent_id,
-          thread_id: run.thread_id,
-          run_id: run.id,
-          input: message.text,
-          input_message_id: message.id,
-          goal_id: run.goal_id,
-          routine_id: run.routine_id,
-          workspace_id: run.workspace_id,
-          ...new Attachments(lifecycle).current(run),
-          agent_snapshot: run.agent_snapshot,
-          retry_context: run.retry_of_run_id
-            ? {
-                failed_run_id: run.retry_of_run_id,
-                native_tool_receipts: lifecycle.store.get("run", run.retry_of_run_id).native_tools,
-                app_receipts: lifecycle.store
-                  .list("app_effect")
-                  .filter((effect) => effect.run_id === run.retry_of_run_id),
-                machine_receipts: lifecycle.store
-                  .list("machine_operation")
-                  .filter((effect) => effect.run_id === run.retry_of_run_id),
-              }
-            : null,
-          task: run.task_id ? lifecycle.store.get("peer_task", run.task_id) : null,
-        };
-      },
-    });
-    this.register("ngertiin.describe_tools", {
-      schema: productToolSchemas["ngertiin.describe_tools"],
-      resources: () => [],
-      execute: (input, { authorize }) => {
-        authorize();
-        const { names } = productToolSchemas["ngertiin.describe_tools"].parse(input);
-        if (names?.some((name) => !this.#tools.has(name)))
-          throw new DomainError("INVALID_REQUEST", 422);
-        return {
-          tools: [...this.#tools]
-            .filter(([name]) => !names || names.includes(name))
-            .map(([name, tool]) => productToolDefinition(name, tool.schema)),
-        };
-      },
-    });
-    registerAgentTools(this);
-  }
+    private readonly completed: (scope: ToolScope, name: string) => void | Promise<void> = () => {},
+  ) {}
   get browsers() {
     if (!this.#browsers) throw new DomainError("BROWSER_UNAVAILABLE");
     return this.#browsers;
@@ -153,8 +67,8 @@ export class ProductTools {
       throw new Error("Invalid or duplicate product tool.");
     this.#tools.set(name, tool);
   }
-  issue(run: Entity<"run">) {
-    const { agent, connection } = new Connections(this.lifecycle).forAgent(
+  async issue(run: Entity<"run">, ready: () => Promise<void> = async () => {}) {
+    const { agent, connection } = await new Connections(this.lifecycle).forAgent(
       run.agent_id,
       run.thread_id,
     );
@@ -171,10 +85,12 @@ export class ProductTools {
     });
     const token = `${crypto.randomUUID()}${crypto.randomUUID()}`;
     this.#leases.set(token, scope);
+    this.#readiness.set(token, ready);
     try {
-      this.authorize(scope);
+      await this.authorize(scope);
     } catch (error) {
       this.#leases.delete(token);
+      this.#readiness.delete(token);
       throw error;
     }
     return {
@@ -182,26 +98,29 @@ export class ProductTools {
       scope: Object.freeze({ ...scope }),
       revoke: () => {
         this.#leases.delete(token);
+        this.#readiness.delete(token);
         this.#mcp.revoke(token);
         void this.machines?.releaseRun(run.id).catch(() => {});
       },
     };
   }
-  private lease(token: string) {
+  private async lease(token: string, waitForObservations = true) {
     // Constant-time token comparison, independent of caller-supplied scope fields.
     for (const [key, scope] of this.#leases) {
       const a = Buffer.from(key);
       const b = Buffer.from(token);
       if (a.length === b.length && timingSafeEqual(a, b)) {
-        this.authorize(scope);
+        if (waitForObservations) await this.#readiness.get(key)?.();
+        await this.authorize(scope);
         return scope;
       }
     }
     throw new DomainError("UNAUTHORIZED", 401);
   }
-  private authorize(scope: ToolScope, controlReceipt = false) {
+  private async authorize(scope: ToolScope, controlReceipt = false) {
     const store = this.lifecycle.store;
-    const run = store.get("run", scope.run_id);
+    await store.assertAuthority();
+    const run = await store.get("run", scope.run_id);
     if (!run.dispatch_token) throw new DomainError("SCOPE_DENIED", 403);
     if (controlReceipt) {
       if (
@@ -210,18 +129,18 @@ export class ProductTools {
         !["running", "cancel_requested"].includes(run.status)
       )
         throw new DomainError("STALE_DISPATCH");
-      const thread = store.get("thread", run.thread_id);
+      const thread = await store.get("thread", run.thread_id);
       if (
         !thread.member_agent_ids.includes(run.agent_id) ||
         (run.thread_revision !== null && run.thread_revision !== thread.revision)
       )
         throw new DomainError("SCOPE_DENIED", 403);
-    } else this.lifecycle.authorizeDispatch(run.id, run.dispatch_token);
-    const { agent, connection } = new Connections(this.lifecycle).forAgent(
+    } else await this.lifecycle.authorizeDispatch(run.id, run.dispatch_token);
+    const { agent, connection } = await new Connections(this.lifecycle).forAgent(
       scope.agent_id,
       scope.thread_id,
     );
-    const binding = store.get("binding", scope.binding_id);
+    const binding = await store.get("binding", scope.binding_id);
     if (
       scope.owner_id !== store.ownerId ||
       run.owner_id !== scope.owner_id ||
@@ -238,8 +157,8 @@ export class ProductTools {
     )
       throw new DomainError("SCOPE_DENIED", 403);
   }
-  private resource(scope: ToolScope, reference: Resource) {
-    const entity = this.lifecycle.store.get(reference.kind, reference.id);
+  private async resource(scope: ToolScope, reference: Resource) {
+    const entity = await this.lifecycle.store.get(reference.kind, reference.id);
     if (entity.kind === "agent") {
       if (entity.id === scope.agent_id) return;
     } else if (entity.kind === "thread") {
@@ -251,33 +170,37 @@ export class ProductTools {
       entity.thread_id === scope.thread_id &&
       entity.agent_id === null
     ) {
-      const run = this.lifecycle.store.get("run", scope.run_id);
+      const run = await this.lifecycle.store.get("run", scope.run_id);
       if (run.workspace_id && entity.workspace_id === run.workspace_id) {
         // The active run already revalidated group membership and workspace revision.
-        const workspace = this.lifecycle.store.get("workspace", run.workspace_id);
+        const workspace = await this.lifecycle.store.get("workspace", run.workspace_id);
         if (workspace.scope === "group" && workspace.state === "active") return;
       }
     } else if (entity.thread_id === scope.thread_id && entity.agent_id === scope.agent_id) return;
     throw new DomainError("SCOPE_DENIED", 403);
   }
   async call(token: string, claimedScope: unknown, name: string, input: unknown) {
-    const scope = this.lease(token);
-    if (this.lifecycle.store.get("thread", scope.thread_id).purpose === "routing")
+    const scope = await this.lease(token);
+    if ((await this.lifecycle.store.get("thread", scope.thread_id)).purpose === "routing")
       throw new DomainError("SCOPE_DENIED", 403);
     if (canonical(toolScope.parse(claimedScope)) !== canonical(scope))
       throw new DomainError("SCOPE_DENIED", 403);
     const tool = this.#tools.get(name);
     if (!tool) throw new DomainError("NOT_FOUND", 404);
     const parsed = tool.schema.parse(input);
-    const authorize = () => {
-      this.lease(token);
-      for (const ref of tool.resources(parsed)) this.resource(scope, ref);
-      new Interactions(this.lifecycle).guard(scope.run_id, name, parsed as Record<string, unknown>);
+    const authorize = async () => {
+      await this.lease(token, false);
+      for (const ref of tool.resources(parsed)) await this.resource(scope, ref);
+      await new Interactions(this.lifecycle).guard(
+        scope.run_id,
+        name,
+        parsed as Record<string, unknown>,
+      );
     };
-    authorize();
+    await authorize();
     // Asynchronous tools must call authorize immediately before committing their effect.
-    const before = this.lifecycle.store.get("run", scope.run_id);
-    const thread = this.lifecycle.store.get("thread", before.thread_id);
+    const before = await this.lifecycle.store.get("run", scope.run_id);
+    const thread = await this.lifecycle.store.get("thread", before.thread_id);
     const target =
       name === "ngertiin.group_handoff" ? (parsed as { agent_id: string }).agent_id : null;
     const operation = {
@@ -291,13 +214,20 @@ export class ProductTools {
           ? target
           : null,
     };
-    observeToolActivity(
+    await observeToolActivity(
       this.lifecycle,
       before.id,
       before.dispatch_token as string,
       operation,
       "started",
     );
+    const controlsScope = [
+      "ngertiin.cancel_run",
+      "ngertiin.assign_goal",
+      "ngertiin.control_goal",
+      "ngertiin.control_routine",
+    ].includes(name);
+    if (controlsScope) this.lifecycle.holdToolControl(before.id);
     let result: unknown;
     try {
       if (
@@ -306,36 +236,43 @@ export class ProductTools {
           name,
         )
       ) {
-        const machine = this.machines.snapshot();
+        const machine = await this.machines.snapshot();
         const activity = {
           machine_id: machine.id,
           generation: machine.generation,
           phase: "preparing" as const,
           started_at: before.computer_activity?.started_at ?? new Date().toISOString(),
         };
-        this.lifecycle.observe(before.id, before.dispatch_token as string, {
+        await this.lifecycle.observe(before.id, before.dispatch_token as string, {
           computer_activity: activity,
         });
         await this.machines.ready();
-        authorize();
-        this.lifecycle.observe(before.id, before.dispatch_token as string, {
+        await authorize();
+        await this.lifecycle.observe(before.id, before.dispatch_token as string, {
           computer_activity: { ...activity, phase: "active" },
         });
       }
-      new Interactions(this.lifecycle).claim(scope.run_id, name, parsed as Record<string, unknown>);
-      result = await tool.execute(parsed, { scope: Object.freeze({ ...scope }), authorize });
+      await new Interactions(this.lifecycle).claim(
+        scope.run_id,
+        name,
+        parsed as Record<string, unknown>,
+      );
+      result = await this.lifecycle.store.withAuthorization(authorize, () =>
+        tool.execute(parsed, { scope: Object.freeze({ ...scope }), authorize }),
+      );
     } catch (error) {
+      this.lifecycle.releaseToolControl(before.id);
       if (error instanceof DomainError) {
-        const current = this.lifecycle.store.get("run", scope.run_id);
+        const current = await this.lifecycle.store.get("run", scope.run_id);
         if (current.dispatch_token && ["running", "dispatching"].includes(current.status)) {
-          this.lifecycle.observe(current.id, current.dispatch_token, {
+          await this.lifecycle.observe(current.id, current.dispatch_token, {
             tool_errors: [
               ...current.tool_errors,
               { name, code: error.code, created_at: new Date().toISOString() },
             ].slice(-50),
           });
           if (name === "ngertiin.report_goal")
-            new Goals(this.lifecycle).recordReportFailure(
+            await new Goals(this.lifecycle).recordReportFailure(
               current.id,
               parsed as { goal_id: string; expected_revision: number },
               error.code,
@@ -344,12 +281,12 @@ export class ProductTools {
       }
       throw error;
     } finally {
-      const current = this.lifecycle.store.get("run", before.id);
+      const current = await this.lifecycle.store.get("run", before.id);
       if (
         current.dispatch_token === before.dispatch_token &&
         ["running", "dispatching", "cancel_requested"].includes(current.status)
       )
-        observeToolActivity(
+        await observeToolActivity(
           this.lifecycle,
           current.id,
           current.dispatch_token as string,
@@ -372,35 +309,136 @@ export class ProductTools {
           (before.goal_id === receipt.id ||
             receipt.current_run_id === before.id ||
             (before.task_id !== null &&
-              this.lifecycle.store
-                .get("peer_task", before.task_id)
-                .goal_ids.includes(receipt.id)))) ||
+              (await this.lifecycle.store.get("peer_task", before.task_id)).goal_ids.includes(
+                receipt.id,
+              )))) ||
         (name === "ngertiin.control_routine" &&
           receipt.kind === "routine" &&
           receipt.state !== "active" &&
           before.routine_id === receipt.id));
-    // A synchronous self-stop may return its committed receipt, but cannot authorize another tool.
+    if (!endsOwnScope) this.lifecycle.releaseToolControl(before.id);
+    // A self-stop returns its committed receipt before native control interrupts the transport.
     if (endsOwnScope) {
       if (!this.#leases.has(token)) throw new DomainError("UNAUTHORIZED", 401);
-      this.authorize(scope, true);
-    } else authorize();
-    const current = this.lifecycle.store.get("run", scope.run_id);
-    this.lifecycle.observe(current.id, current.dispatch_token as string, {
+      await this.authorize(scope, true);
+    } else await authorize();
+    const current = await this.lifecycle.store.get("run", scope.run_id);
+    await this.lifecycle.observe(current.id, current.dispatch_token as string, {
       product_tools: [...current.product_tools, name].slice(-200),
     });
-    this.completed(scope, name);
+    await this.completed(scope, name);
     return result;
   }
-  authenticate(token: string) {
-    this.lease(token);
+  async authenticate(token: string) {
+    await this.lease(token);
   }
   revokeAll() {
     for (const scope of this.#leases.values())
       void this.machines?.releaseRun(scope.run_id).catch(() => {});
     this.#leases.clear();
+    this.#readiness.clear();
     this.#mcp.clear();
   }
-  rpc(token: string, input: unknown) {
+  async rpc(token: string, input: unknown) {
     return this.#mcp.rpc(token, input);
+  }
+
+  private async initialize(lifecycle: Lifecycle, browserHost?: BrowserHost, appHost?: AppHost) {
+    this.applications = await Applications.open(lifecycle, appHost);
+    registerAppTools(this);
+    this.machines = machineFor(lifecycle);
+    if (this.machines) registerMachineTools(this, this.machines);
+    else {
+      this.#browsers = await Browsers.open(
+        lifecycle,
+        browserHost ??
+          new DockerBrowserHost(dirname(lifecycle.store.path), lifecycle.store.ownerId),
+      );
+      registerBrowserTools(this);
+    }
+    registerLearningTools(this);
+    registerGroupTools(this);
+    registerInteractionTools(this);
+    registerGoalTools(this);
+    this.register("ngertiin.cancel_run", {
+      schema: productToolSchemas["ngertiin.cancel_run"],
+      resources: () => [],
+      execute: async (input, { scope, authorize }) => {
+        const { command_id } = input as { command_id: string };
+        await authorize();
+        return await lifecycle.store.command(
+          command_id,
+          { operation: "ngertiin.cancel_run", run_id: scope.run_id },
+          async () => {
+            await authorize();
+            return await lifecycle.cancel(scope.run_id);
+          },
+        );
+      },
+    });
+    registerWorkspaceTools(this);
+    registerAttachmentTools(this);
+    this.register("ngertiin.read_run_context", {
+      schema: z.strictObject({}),
+      resources: () => [],
+      execute: async (_input, { scope, authorize }) => {
+        await authorize();
+        const run = await lifecycle.store.get("run", scope.run_id);
+        const message = await lifecycle.store.get("message", run.input_message_id);
+        return {
+          agent_id: run.agent_id,
+          thread_id: run.thread_id,
+          run_id: run.id,
+          input: message.text,
+          input_message_id: message.id,
+          goal_id: run.goal_id,
+          routine_id: run.routine_id,
+          workspace_id: run.workspace_id,
+          ...(await new Attachments(lifecycle).current(run)),
+          agent_snapshot: run.agent_snapshot,
+          retry_context: run.retry_of_run_id
+            ? {
+                failed_run_id: run.retry_of_run_id,
+                native_tool_receipts: (await lifecycle.store.get("run", run.retry_of_run_id))
+                  .native_tools,
+                app_receipts: (
+                  await lifecycle.store.list("app_effect", { run_id: run.retry_of_run_id })
+                ).filter((effect) => effect.run_id === run.retry_of_run_id),
+                machine_receipts: (
+                  await lifecycle.store.list("machine_operation", { run_id: run.retry_of_run_id })
+                ).filter((effect) => effect.run_id === run.retry_of_run_id),
+              }
+            : null,
+          task: run.task_id ? await lifecycle.store.get("peer_task", run.task_id) : null,
+        };
+      },
+    });
+    this.register("ngertiin.describe_tools", {
+      schema: productToolSchemas["ngertiin.describe_tools"],
+      resources: () => [],
+      execute: async (input, { authorize }) => {
+        await authorize();
+        const { names } = productToolSchemas["ngertiin.describe_tools"].parse(input);
+        if (names?.some((name) => !this.#tools.has(name)))
+          throw new DomainError("INVALID_REQUEST", 422);
+        return {
+          tools: [...this.#tools]
+            .filter(([name]) => !names || names.includes(name))
+            .map(([name, tool]) => productToolDefinition(name, tool.schema)),
+        };
+      },
+    });
+    registerAgentTools(this);
+  }
+
+  static async open(
+    lifecycle: Lifecycle,
+    completed: (scope: ToolScope, name: string) => void | Promise<void> = () => {},
+    browserHost?: BrowserHost,
+    appHost?: AppHost,
+  ): Promise<ProductTools> {
+    const instance = new ProductTools(lifecycle, completed);
+    await instance.initialize(lifecycle, browserHost, appHost);
+    return instance;
   }
 }

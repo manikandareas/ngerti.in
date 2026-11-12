@@ -1,49 +1,52 @@
-import type { Database } from "bun:sqlite";
 import { defaultAgentAvatar } from "@ngertiin/avatar/config";
+import type { QueryResultRow } from "pg";
 import type { Entity, Kind } from "../contracts";
+import { asyncMap } from "../persistence/async-collections";
 import { routineDisplayName } from "./labels";
 import { type ConversationPart, conversationPart } from "./parts";
 
-type Reader = <K extends Kind>(kind: K, id: string, cursor?: number) => Entity<K> | null;
+type Reader = <K extends Kind>(kind: K, id: string, cursor?: number) => Promise<Entity<K> | null>;
 type Draft = Omit<ConversationPart, "sequence">;
 
 /** Materialize public positions in the same transaction as their source domain event. */
 export class ConversationJournal {
   constructor(
-    private readonly db: Database,
+    private readonly db: {
+      query<R extends QueryResultRow = QueryResultRow>(
+        sql: string,
+        values?: unknown[],
+      ): Promise<{ rows: R[] }>;
+    },
     private readonly read: Reader,
-  ) {
-    db.exec(`
-      CREATE TABLE IF NOT EXISTS conversation_parts (
-        sequence INTEGER PRIMARY KEY AUTOINCREMENT, id TEXT NOT NULL UNIQUE,
-        thread_id TEXT NOT NULL, body TEXT NOT NULL CHECK(json_valid(body))
-      );
-      CREATE INDEX IF NOT EXISTS conversation_part_thread ON conversation_parts(thread_id, sequence);
-      CREATE TABLE IF NOT EXISTS conversation_projection (id INTEGER PRIMARY KEY CHECK(id=1), cursor INTEGER NOT NULL);
-      INSERT OR IGNORE INTO conversation_projection VALUES (1,0);
-    `);
-  }
+  ) {}
 
-  replay() {
-    const after =
-      this.db
-        .query<{ cursor: number }, []>("SELECT cursor FROM conversation_projection WHERE id=1")
-        .get()?.cursor ?? 0;
-    const rows = this.db
-      .query<{ cursor: number; body: string }, [number]>(
-        "SELECT cursor,body FROM events WHERE cursor>? ORDER BY cursor",
-      )
-      .all(after);
-    for (const row of rows) {
-      const event = JSON.parse(row.body) as { data: Entity };
-      const entity = event.data;
-      const previous = this.read(entity.kind, entity.id, row.cursor - 1);
-      this.record(entity, previous, row.cursor, true);
+  async replay() {
+    let after = Number(
+      (
+        await this.db.query<{ cursor: string }>(
+          "SELECT cursor FROM conversation_projection WHERE id=1",
+        )
+      ).rows[0]?.cursor ?? 0,
+    );
+    for (;;) {
+      const rows = (
+        await this.db.query<{ cursor: string; body: { data: Entity } }>(
+          "SELECT cursor,body FROM events WHERE cursor>$1 ORDER BY cursor LIMIT 500",
+          [after],
+        )
+      ).rows;
+      for (const row of rows) {
+        const entity = row.body.data;
+        const previous = await this.read(entity.kind, entity.id, Number(row.cursor) - 1);
+        await this.record(entity, previous, Number(row.cursor), true);
+        after = Number(row.cursor);
+      }
+      if (rows.length < 500) return;
     }
   }
 
-  private actor(id: string | null | undefined, cursor?: number) {
-    const agent = id ? this.read("agent", id, cursor) : null;
+  private async actor(id: string | null | undefined, cursor?: number) {
+    const agent = id ? await this.read("agent", id, cursor) : null;
     return agent
       ? [
           {
@@ -57,35 +60,37 @@ export class ConversationJournal {
       : [];
   }
 
-  private publish(part: Draft) {
-    this.db
-      .query("INSERT OR IGNORE INTO conversation_parts(id,thread_id,body) VALUES (?,?,?)")
-      .run(part.id, part.thread_id, JSON.stringify(part));
+  private async publish(part: Draft) {
+    await this.db.query(
+      "INSERT INTO conversation_parts(id,thread_id,body) VALUES ($1,$2,$3) ON CONFLICT(id) DO NOTHING",
+      [part.id, part.thread_id, JSON.stringify(part)],
+    );
   }
 
-  private visibleThread(id: string, cursor?: number) {
-    const thread = this.read("thread", id, cursor);
+  private async visibleThread(id: string, cursor?: number) {
+    const thread = await this.read("thread", id, cursor);
     return !!thread && (!thread.purpose || thread.purpose === "conversation");
   }
 
-  private runsAt(cursor?: number): Entity<"run">[] {
+  private async runsAt(threadId: string, cursor?: number): Promise<Entity<"run">[]> {
     const rows =
       cursor === undefined
-        ? this.db
-            .query<{ body: string }, []>("SELECT body FROM entities WHERE kind='run' ORDER BY seq")
-            .all()
-        : this.db
-            .query<
-              { body: string },
-              [number]
-            >(`SELECT json_extract(body,'$.data') AS body FROM events WHERE cursor IN (
-            SELECT MAX(cursor) FROM events WHERE cursor<=? AND json_extract(body,'$.entity_kind')='run' GROUP BY json_extract(body,'$.entity_id')
-          ) ORDER BY (SELECT MIN(first.cursor) FROM events AS first WHERE json_extract(first.body,'$.entity_id')=json_extract(events.body,'$.entity_id'))`)
-            .all(cursor);
-    return rows.map((row) => JSON.parse(row.body) as Entity<"run">);
+        ? (
+            await this.db.query<{ body: unknown }>(
+              "SELECT body FROM entities WHERE kind='run' AND body->>'thread_id'=$1 ORDER BY seq",
+              [threadId],
+            )
+          ).rows
+        : (
+            await this.db.query<{ body: unknown }>(
+              "SELECT body->'data' AS body FROM events WHERE cursor IN (\n            SELECT MAX(cursor) FROM events WHERE cursor<=$1 AND body->>'entity_kind'='run' AND body->'data'->>'thread_id'=$2 GROUP BY body->>'entity_id'\n          ) ORDER BY (SELECT MIN(first.cursor) FROM events AS first WHERE first.body->>'entity_id'=events.body->>'entity_id')",
+              [cursor, threadId],
+            )
+          ).rows;
+    return rows.map((row) => row.body as Entity<"run">);
   }
 
-  private message(
+  private async message(
     message: Entity<"message">,
     cursor: number,
     historical?: number,
@@ -94,12 +99,12 @@ export class ConversationJournal {
     if (
       message.state === "deleted" ||
       message.purpose === "continuation" ||
-      !this.visibleThread(message.thread_id, historical)
+      !(await this.visibleThread(message.thread_id, historical))
     )
       return;
     if (["handoff", "review"].includes(message.purpose)) return;
     if (!message.text && !message.artifact_ids.length) return;
-    this.publish({
+    await this.publish({
       id: `message:${message.id}`,
       source_cursor: cursor,
       thread_id: message.thread_id,
@@ -108,18 +113,18 @@ export class ConversationJournal {
       message_id: message.id,
       source_message_id: null,
       resource_id: null,
-      actors: this.actor(message.author_agent_id, historical),
+      actors: await this.actor(message.author_agent_id, historical),
       name: "",
       summary: null,
     });
   }
 
-  private input(run: Entity<"run">, cursor: number, historical?: number) {
-    const input = this.read("message", run.input_message_id, historical);
+  private async input(run: Entity<"run">, cursor: number, historical?: number) {
+    const input = await this.read("message", run.input_message_id, historical);
     if (input?.author !== "user" || input.purpose === "continuation") return;
     if (run.status === "queued") {
-      const runs = this.runsAt(historical);
-      const thread = this.read("thread", run.thread_id, historical);
+      const runs = await this.runsAt(run.thread_id, historical);
+      const thread = await this.read("thread", run.thread_id, historical);
       const position = runs.findIndex((other) => other.id === run.id);
       if (
         runs.some(
@@ -134,25 +139,25 @@ export class ConversationJournal {
         return;
     }
     if (["queued", "dispatching", "running", "steered", "failed", "cancelled"].includes(run.status))
-      this.message(input, cursor, historical, run.updated_at);
+      await this.message(input, cursor, historical, run.updated_at);
   }
 
-  record(entity: Entity, previous: Entity | null, cursor: number, replay = false) {
+  async record(entity: Entity, previous: Entity | null, cursor: number, replay = false) {
     const at = replay ? cursor : undefined;
     if (entity.kind === "message") {
       if (entity.author !== "user" || entity.purpose === "human_reply")
-        this.message(entity, cursor, at);
+        await this.message(entity, cursor, at);
     } else if (entity.kind === "run") {
-      this.input(entity, cursor, at);
+      await this.input(entity, cursor, at);
     } else if (
       entity.kind === "group_route" &&
       entity.state === "pending" &&
       !entity.selection_only
     ) {
-      const input = this.read("message", entity.message_id, at);
-      if (input) this.message(input, cursor, at);
+      const input = await this.read("message", entity.message_id, at);
+      if (input) await this.message(input, cursor, at);
     } else if (entity.kind === "goal" || entity.kind === "routine") {
-      if (this.visibleThread(entity.thread_id, at)) {
+      if (await this.visibleThread(entity.thread_id, at)) {
         const old = previous?.kind === entity.kind ? previous : null;
         let kind: ConversationPart["kind"] | null = null;
         if (!old) kind = entity.kind === "goal" ? "goal_created" : "routine_created";
@@ -172,7 +177,7 @@ export class ConversationJournal {
         )
           kind = "goal_blocked";
         if (kind)
-          this.publish({
+          await this.publish({
             id: `${kind}:${entity.id}:${cursor}`,
             source_cursor: cursor,
             thread_id: entity.thread_id,
@@ -192,18 +197,18 @@ export class ConversationJournal {
               kind === "goal_blocked" && entity.kind === "goal"
                 ? entity.progress.slice(0, 1000)
                 : null,
-            actors: this.actor(entity.created_by_agent_id ?? entity.agent_id, at),
+            actors: await this.actor(entity.created_by_agent_id ?? entity.agent_id, at),
           });
       }
     } else if (entity.kind === "peer_task" && entity.source_agent_id) {
-      const request = this.read("message", entity.request_message_id, at);
-      if (request && this.visibleThread(entity.thread_id, at)) {
+      const request = await this.read("message", entity.request_message_id, at);
+      if (request && (await this.visibleThread(entity.thread_id, at))) {
         const failed =
           ["failed", "cancelled", "unknown"].includes(entity.state) &&
           previous?.kind === "peer_task" &&
           previous.state !== entity.state;
         if (!previous || failed)
-          this.publish({
+          await this.publish({
             id: failed ? `handoff_failed:${entity.id}:${cursor}` : `handoff_requested:${entity.id}`,
             source_cursor: cursor,
             thread_id: entity.thread_id,
@@ -214,61 +219,66 @@ export class ConversationJournal {
             source_message_id: null,
             name: request.purpose === "review" ? "review" : "handoff",
             summary: entity.summary ?? null,
-            actors: [...this.actor(entity.source_agent_id, at), ...this.actor(entity.agent_id, at)],
+            actors: [
+              ...(await this.actor(entity.source_agent_id, at)),
+              ...(await this.actor(entity.agent_id, at)),
+            ],
           });
         if (replay && entity.summary) {
-          const row = this.db
-            .query<{ body: string }, [string]>("SELECT body FROM conversation_parts WHERE id=?")
-            .get(`handoff_requested:${entity.id}`);
+          const row = (
+            await this.db.query<{ body: unknown }>(
+              "SELECT body FROM conversation_parts WHERE id=$1",
+              [`handoff_requested:${entity.id}`],
+            )
+          ).rows[0];
           if (row) {
-            const part = JSON.parse(row.body) as Draft;
+            const part = row.body as Draft;
             if (part.summary === null)
-              this.db
-                .query("UPDATE conversation_parts SET body=? WHERE id=?")
-                .run(JSON.stringify({ ...part, summary: entity.summary }), part.id);
+              await this.db.query("UPDATE conversation_parts SET body=$1 WHERE id=$2", [
+                JSON.stringify({ ...part, summary: entity.summary }),
+                part.id,
+              ]);
           }
         }
       }
     }
-    this.db.query("UPDATE conversation_projection SET cursor=? WHERE id=1").run(cursor);
+    await this.db.query("UPDATE conversation_projection SET cursor=$1 WHERE id=1", [cursor]);
   }
 
-  page(threadId: string, before?: number, limit = 50) {
-    const rows = this.db
-      .query<{ sequence: number; body: string }, [string, number, number]>(
-        "SELECT sequence,body FROM conversation_parts WHERE thread_id=? AND sequence<? ORDER BY sequence DESC LIMIT ?",
+  async page(threadId: string, before?: number, limit = 50) {
+    const rows = (
+      await this.db.query<{ sequence: string; body: unknown }>(
+        "SELECT sequence,body FROM conversation_parts WHERE thread_id=$1 AND sequence<$2 ORDER BY sequence DESC LIMIT $3",
+        [threadId, before ?? Number.MAX_SAFE_INTEGER, limit + 1],
       )
-      .all(threadId, before ?? Number.MAX_SAFE_INTEGER, limit + 1);
+    ).rows;
     const more = rows.length > limit;
-    const parts = rows
-      .slice(0, limit)
-      .reverse()
-      .map((row) => {
-        const draft = JSON.parse(row.body) as Draft;
-        const routine =
-          draft.kind.startsWith("routine_") && draft.resource_id
-            ? this.read("routine", draft.resource_id, draft.source_cursor)
-            : null;
-        const name = routine ? routineDisplayName(routine.instruction, routine.name) : draft.name;
-        // Older receipts stored a null recipe; resolve their historical system identity, never today's profile.
-        const actors = draft.actors.map((actor) => ({
-          ...actor,
-          avatar_config:
-            actor.avatar_config ??
-            defaultAgentAvatar(
-              actor.id,
-              this.read("agent", actor.id, draft.source_cursor)?.system_role === "tobi",
-            ),
-        }));
-        // Historical handoff receipts can omit summary; keep the public field explicitly nullable.
-        return conversationPart.parse({
-          ...draft,
-          summary: draft.summary ?? null,
-          name,
-          actors,
-          sequence: row.sequence,
-        });
+    const parts = await asyncMap(rows.slice(0, limit).reverse(), async (row) => {
+      const draft = row.body as Draft;
+      const routine =
+        draft.kind.startsWith("routine_") && draft.resource_id
+          ? await this.read("routine", draft.resource_id, draft.source_cursor)
+          : null;
+      const name = routine ? routineDisplayName(routine.instruction, routine.name) : draft.name;
+      // Older receipts stored a null recipe; resolve their historical system identity, never today's profile.
+      const actors = await asyncMap(draft.actors, async (actor) => ({
+        ...actor,
+        avatar_config:
+          actor.avatar_config ??
+          defaultAgentAvatar(
+            actor.id,
+            (await this.read("agent", actor.id, draft.source_cursor))?.system_role === "tobi",
+          ),
+      }));
+      // Historical handoff receipts can omit summary; keep the public field explicitly nullable.
+      return conversationPart.parse({
+        ...draft,
+        summary: draft.summary ?? null,
+        name,
+        actors,
+        sequence: Number(row.sequence),
       });
+    });
     return { parts, has_more: more, next_before: more ? (parts[0]?.sequence ?? null) : null };
   }
 }

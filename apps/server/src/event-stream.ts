@@ -20,12 +20,12 @@ export function eventStream(store: Store, after: number, signal: AbortSignal) {
             controller.close();
             return;
           }
-          const event = store.events(cursor, 1)[0];
+          const event = (await store.events(cursor, 1))[0];
           if (event) {
             cursor = event.cursor;
             controller.enqueue(
               encoder.encode(
-                `id: ${cursor}\nevent: domain\ndata: ${JSON.stringify(conversationEvent(store, event))}\n\n`,
+                `id: ${cursor}\nevent: domain\ndata: ${JSON.stringify(await conversationEvent(store, event))}\n\n`,
               ),
             );
             return;

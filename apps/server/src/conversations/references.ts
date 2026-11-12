@@ -1,15 +1,15 @@
 import type { Entity } from "../contracts";
+import { asyncMap } from "../persistence/async-collections";
 import type { Store } from "../store";
 
 /** Refresh readable references per run, including sessions opened before these instructions. */
-export function publicReferences(store: Store, run: Entity<"run">) {
-  const thread = store.get("thread", run.thread_id);
-  const agents = thread.member_agent_ids.map((id) => {
-    const agent = store.get("agent", id);
+export async function publicReferences(store: Store, run: Entity<"run">) {
+  const thread = await store.get("thread", run.thread_id);
+  const agents = await asyncMap(thread.member_agent_ids, async (id) => {
+    const agent = await store.get("agent", id);
     return { name: agent.name, mention: `[@${agent.name}](ngertiin://agent/${agent.id})` };
   });
-  const files = store
-    .list("artifact")
+  const files = (await store.list("artifact", { thread_id: thread.id }))
     .filter((file) => file.thread_id === thread.id && file.materialization === "ready")
     .map((file) => ({
       name: file.name,

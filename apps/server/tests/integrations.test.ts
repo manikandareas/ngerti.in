@@ -11,8 +11,8 @@ import { Applications } from "../src/integrations/service";
 import { Interactions } from "../src/interactions/service";
 import { fixture } from "./helpers";
 
-let f: ReturnType<typeof fixture>;
-afterEach(() => f?.close());
+let f: Awaited<ReturnType<typeof fixture>>;
+afterEach(async () => await f?.close());
 class Host implements AppHost {
   calls = 0;
   sessions: AppSessionConfig[] = [];
@@ -50,7 +50,7 @@ class Host implements AppHost {
     authorize: () => void,
   ) {
     this.before?.();
-    authorize();
+    await authorize();
     this.calls++;
     await this.effect?.();
     return {
@@ -65,24 +65,25 @@ class Host implements AppHost {
   }
 }
 async function setup() {
-  f = fixture();
+  f = await fixture();
   const connections = new Connections(f.lifecycle),
-    c = connections.get(f.store.get("agent", f.agent.id).connection_id);
-  connections.update(c, { capabilities: { ...c.capabilities, product_tools: "supported" } });
+    c = await connections.get((await f.store.get("agent", f.agent.id)).connection_id);
+  await connections.update(c, { capabilities: { ...c.capabilities, product_tools: "supported" } });
   const host = new Host(),
-    tools = new ProductTools(f.lifecycle, undefined, undefined, host);
+    tools = await ProductTools.open(f.lifecycle, undefined, undefined, host);
   const apps = tools.applications;
   let { connection } = await apps.connect("github");
   connection = await apps.refresh(connection.id);
-  connection = apps.assign(connection.id, {
+  connection = await apps.assign(connection.id, {
     expected_revision: connection.revision,
     grants: [{ agent_id: f.agent.id, thread_id: f.thread.id, tools: ["GITHUB_READ_PROFILE"] }],
   });
-  f.bind();
-  f.admit();
-  const run = f.lifecycle.claimNext(f.thread.id, f.agent.id) as Entity<"run">;
-  const lease = tools.issue(run);
-  const call = (name: string, input: unknown) => tools.call(lease.token, lease.scope, name, input);
+  await f.bind();
+  await f.admit();
+  const run = (await f.lifecycle.claimNext(f.thread.id, f.agent.id)) as Entity<"run">;
+  const lease = await tools.issue(run);
+  const call = async (name: string, input: unknown) =>
+    tools.call(lease.token, lease.scope, name, input);
   const input = {
     command_id: crypto.randomUUID(),
     connection_id: connection.id,
@@ -95,7 +96,7 @@ async function setup() {
 test("application effects use the existing owner, exact account and durable sanitized receipts", async () => {
   const s = await setup();
   s.host.effect = async () => {
-    expect(f.store.get("app_effect", s.input.command_id).state).toBe("dispatched");
+    expect((await f.store.get("app_effect", s.input.command_id)).state).toBe("dispatched");
   };
   const first = await s.call("ngertiin.execute_app_tool", s.input);
   expect(first).toMatchObject({
@@ -112,7 +113,7 @@ test("application effects use the existing owner, exact account and durable sani
   expect(s.host.sessions).toEqual([
     { toolkit: "github", account_id: "ca-proof", tools: ["GITHUB_READ_PROFILE"] },
   ]);
-  expect(JSON.stringify(f.store.events(0, 1000))).not.toContain("private-provider-value");
+  expect(JSON.stringify(await f.store.events(0, 1000))).not.toContain("private-provider-value");
   await expect(
     s.call("ngertiin.execute_app_tool", { ...s.input, arguments: { changed: true } }),
   ).rejects.toThrow("IDEMPOTENCY_CONFLICT");
@@ -135,8 +136,11 @@ test("discovery filters foreign toolkits and agent execution cannot call unassig
 });
 test("DM assignment grants do not leak to a group or another owner resource", async () => {
   const s = await setup();
-  const group = f.lifecycle.create("thread", { type: "group", member_agent_ids: [f.agent.id] });
-  expect(s.apps.list({ agent_id: f.agent.id, thread_id: group.id })).toEqual([]);
+  const group = await f.lifecycle.create("thread", {
+    type: "group",
+    member_agent_ids: [f.agent.id],
+  });
+  expect(await s.apps.list({ agent_id: f.agent.id, thread_id: group.id })).toEqual([]);
   await expect(
     s.apps.search(
       { connection_id: s.connection.id, query: "profile" },
@@ -150,16 +154,19 @@ test("DM assignment grants do not leak to a group or another owner resource", as
 test("revoke or reassignment during final SDK preflight prevents the external request", async () => {
   for (const operation of ["revoke", "grant", "stop"]) {
     const s = await setup();
-    s.host.before = () => {
-      if (operation === "revoke") s.apps.revoke(s.connection.id);
+    s.host.before = async () => {
+      if (operation === "revoke") await s.apps.revoke(s.connection.id);
       else if (operation === "grant")
-        s.apps.assign(s.connection.id, { expected_revision: s.connection.revision, grants: [] });
-      else f.lifecycle.cancel(s.run.id);
+        await s.apps.assign(s.connection.id, {
+          expected_revision: s.connection.revision,
+          grants: [],
+        });
+      else await f.lifecycle.cancel(s.run.id);
     };
     await expect(s.call("ngertiin.execute_app_tool", s.input)).rejects.toThrow();
     expect(s.host.calls).toBe(0);
-    expect(f.store.list("app_effect")).toHaveLength(0);
-    f.close();
+    expect(await f.store.list("app_effect")).toHaveLength(0);
+    await f.close();
   }
 });
 test("remote expiry is checked before every execution and reconnect fences old sessions", async () => {
@@ -170,7 +177,7 @@ test("remote expiry is checked before every execution and reconnect fences old s
     s.call("ngertiin.execute_app_tool", { ...s.input, command_id: crypto.randomUUID() }),
   ).rejects.toThrow("APP_AUTH_REQUIRED");
   expect(s.host.calls).toBe(1);
-  const before = f.store.get("app_connection", s.connection.id);
+  const before = await f.store.get("app_connection", s.connection.id);
   await s.apps.connect("github", before.id);
   s.host.active = true;
   await s.apps.refresh(before.id);
@@ -202,13 +209,13 @@ test("lost acknowledgements survive restart, preserve unknown, and prohibit blin
     throw new Error("Lost acknowledgement with private credential");
   };
   await expect(s.call("ngertiin.execute_app_tool", s.input)).rejects.toThrow();
-  expect(f.store.get("app_effect", s.input.command_id).state).toBe("unknown");
-  f.restart();
-  const apps = new Applications(f.lifecycle, s.host);
+  expect((await f.store.get("app_effect", s.input.command_id)).state).toBe("unknown");
+  await f.restart();
+  const apps = await Applications.open(f.lifecycle, s.host);
   const access = { scope: s.lease.scope, authorize: () => {} };
   // A restarted run's old lease is invalid; receipts are available to the authenticated owner.
-  expect(apps.list()[0]?.id).toBe(s.connection.id);
-  expect(f.store.list("app_effect")[0]?.state).toBe("unknown");
+  expect((await apps.list())[0]?.id).toBe(s.connection.id);
+  expect((await f.store.list("app_effect"))[0]?.state).toBe("unknown");
   expect(access.scope.owner_id).toBe(f.owner);
   expect(s.host.calls).toBe(1);
 });
@@ -233,8 +240,8 @@ test("credential-like host output and signed URLs never reach tool results", () 
 
 test("invalid bridge fields return actionable validation without exposing the rejected input", async () => {
   const s = await setup();
-  const rpc = (method: string, params: unknown, notify = false) =>
-    s.tools.rpc(s.lease.token, {
+  const rpc = async (method: string, params: unknown, notify = false) =>
+    await s.tools.rpc(s.lease.token, {
       jsonrpc: "2.0",
       ...(notify ? {} : { id: crypto.randomUUID() }),
       method,
@@ -261,7 +268,7 @@ test("invalid bridge fields return actionable validation without exposing the re
 test("application management HTTP routes require owner authentication and idempotent assignment", async () => {
   const s = await setup();
   const token = "p".repeat(64),
-    app = createApi(f.lifecycle, new Background(f.lifecycle), token, {
+    app = await createApi(f.lifecycle, new Background(f.lifecycle), token, {
       tools: s.tools,
       connections: new Connections(f.lifecycle),
     });
@@ -286,11 +293,11 @@ test("application management HTTP routes require owner authentication and idempo
   const first = await (
     await request(`/v1/apps/connections/${s.connection.id}/assign`, body)
   ).json();
-  const cursor = f.store.cursor;
+  const cursor = await f.store.cursor;
   expect(
     await (await request(`/v1/apps/connections/${s.connection.id}/assign`, body)).json(),
   ).toEqual(first);
-  expect(f.store.cursor).toBe(cursor);
+  expect(await f.store.cursor).toBe(cursor);
   await expect(s.call("ngertiin.execute_app_tool", s.input)).rejects.toThrow("SCOPE_DENIED");
   expect((await request("/v1/apps/catalog?search=github")).status).toBe(200);
 });
@@ -358,7 +365,7 @@ test("product approval gates the actual scoped app dispatch and changed argument
   })) as Entity<"human_request">;
   await expect(s.call("ngertiin.execute_app_tool", s.input)).rejects.toThrow("APPROVAL_REQUIRED");
   expect(s.host.calls).toBe(0);
-  new Interactions(f.lifecycle).reply(request.id, {
+  await new Interactions(f.lifecycle).reply(request.id, {
     expected_revision: request.revision,
     decision: "approve",
   });

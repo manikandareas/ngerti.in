@@ -13,7 +13,7 @@ export type Inspection = {
   billing_source: Entity<"connection">["authentication"]["billing_source"];
   capabilities: Entity<"connection">["capabilities"];
 };
-export type ToolLease = ReturnType<ProductTools["issue"]>;
+export type ToolLease = Awaited<ReturnType<ProductTools["issue"]>>;
 export type RecoveryObservation = {
   native_session_id: string;
   native_run_id: string;
@@ -37,7 +37,7 @@ export interface HarnessClient {
     settings: Settings;
     tools: ToolLease;
     signal: AbortSignal;
-    onEvent(event: NativeEvent): void;
+    onEvent(event: NativeEvent): void | Promise<void>;
   }): Promise<unknown>;
   stop(identity: SessionIdentity, runId: string): Promise<{ confirmed: boolean }>;
   steer?(identity: SessionIdentity, runId: string, text: string): Promise<void>;

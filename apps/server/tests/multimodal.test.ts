@@ -5,12 +5,12 @@ import { Connections } from "../src/harness/connections";
 import { prepareVisualInputs } from "../src/multimodal";
 import { fixture } from "./helpers";
 
-let f: ReturnType<typeof fixture>;
-afterEach(() => f?.close());
+let f: Awaited<ReturnType<typeof fixture>>;
+afterEach(async () => await f?.close());
 async function setup(media = "image/png", bytes?: Buffer) {
-  f = fixture();
+  f = await fixture();
   const artifacts = new Artifacts(f.lifecycle);
-  const workspace = artifacts.workspaces.ensure(f.thread.id, f.agent.id);
+  const workspace = await artifacts.workspaces.ensure(f.thread.id, f.agent.id);
   const content =
     bytes ??
     (await sharp({ create: { width: 80, height: 40, channels: 3, background: "red" } })
@@ -21,18 +21,18 @@ async function setup(media = "image/png", bytes?: Buffer) {
     media_type: media,
     content_base64: content.toString("base64"),
   });
-  f.lifecycle.bind(f.thread.id, f.agent.id, "native", workspace);
-  f.lifecycle.admit({
+  await f.lifecycle.bind(f.thread.id, f.agent.id, "native", workspace);
+  await f.lifecycle.admit({
     thread_id: f.thread.id,
     agent_id: f.agent.id,
     text: "Describe the attachment",
     artifact_ids: [artifact.id],
   });
-  const run = f.lifecycle.claimNext(f.thread.id, f.agent.id);
+  const run = await f.lifecycle.claimNext(f.thread.id, f.agent.id);
   if (!run) throw new Error("Missing run");
   const connections = new Connections(f.lifecycle),
-    c = connections.get(f.store.get("agent", f.agent.id).connection_id);
-  const connection = connections.update(c, {
+    c = await connections.get((await f.store.get("agent", f.agent.id)).connection_id);
+  const connection = await connections.update(c, {
     capabilities: { ...c.capabilities, image_input: "supported", video_input: "unsupported" },
     models: [
       { id: "vision", reasoning: [], input_modalities: ["text", "image"] },

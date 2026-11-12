@@ -3,8 +3,10 @@ import { DomainError } from "../contracts";
 import type { ToolScope } from "./contracts";
 
 type ToolBridge = {
-  scope(token: string): ToolScope;
-  list(scope: ToolScope): { name: string; inputSchema: unknown }[];
+  scope(token: string): ToolScope | Promise<ToolScope>;
+  list(
+    scope: ToolScope,
+  ): { name: string; inputSchema: unknown }[] | Promise<{ name: string; inputSchema: unknown }[]>;
   call(token: string, scope: ToolScope, name: string, input: unknown): Promise<unknown>;
 };
 
@@ -33,7 +35,7 @@ export class ProductToolMcp {
         params: z.record(z.string(), z.unknown()).optional(),
       })
       .parse(input);
-    const scope = this.tools.scope(token);
+    const scope = await this.tools.scope(token);
     if (request.method === "notifications/initialized" && request.id === undefined) {
       if (!this.#negotiated.has(token)) throw new DomainError("CONFLICT");
       this.#initialized.add(token);
@@ -63,7 +65,7 @@ export class ProductToolMcp {
         break;
       case "tools/list":
         result = {
-          tools: this.tools.list(scope),
+          tools: await this.tools.list(scope),
         };
         break;
       case "tools/call": {

@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { DomainError, type Entity } from "../contracts";
 import type { Lifecycle } from "../lifecycle";
+import { asyncFilter } from "../persistence/async-collections";
 import type { CuaMachine } from "./cua";
 import type { MachineActor, MachineOperations } from "./operations";
 
@@ -18,45 +19,42 @@ type Actor = NonNullable<MachineActor>;
 export class MachineDesktop {
   #closed = false;
   #dirty = false;
-  #pending: Promise<void> | undefined;
-  #timer: ReturnType<typeof setTimeout> | undefined;
-  readonly #unsubscribe: () => void;
-  constructor(
+  #pending!: Promise<void> | undefined;
+  #timer!: ReturnType<typeof setTimeout> | undefined;
+  #unsubscribe!: () => void;
+  private constructor(
     readonly lifecycle: Lifecycle,
     readonly host: CuaMachine | null,
     readonly operations: MachineOperations,
-    readonly snapshot: () => Entity<"machine">,
+    readonly snapshot: () => Promise<Entity<"machine">>,
     readonly idleInput: (effect: () => Promise<void>) => Promise<void>,
-  ) {
-    for (const item of this.list())
-      if (["opening", "closing"].includes(item.state))
-        operations.update(item, { state: "unknown", error_code: "RECONCILIATION_REQUIRED" });
-    this.#unsubscribe = lifecycle.store.subscribe(() => this.schedule());
+  ) {}
+  async taskKey(runId: string): Promise<string> {
+    const run = await this.lifecycle.store.get("run", runId);
+    return run.task_id
+      ? (await this.lifecycle.store.get("peer_task", run.task_id)).root_task_id
+      : run.id;
   }
-  taskKey(runId: string): string {
-    const run = this.lifecycle.store.get("run", runId);
-    return run.task_id ? this.lifecycle.store.get("peer_task", run.task_id).root_task_id : run.id;
+  async list(actor?: Actor): Promise<ManagedWindow[]> {
+    return await asyncFilter(
+      await this.lifecycle.store.list("machine_window"),
+      async (item) =>
+        item.machine_id === this.operations.machineId &&
+        (!actor ||
+          (item.thread_id === actor.thread_id &&
+            item.task_key === (await this.taskKey(actor.run_id)))),
+    );
   }
-  list(actor?: Actor): ManagedWindow[] {
-    return this.lifecycle.store
-      .list("machine_window")
-      .filter(
-        (item) =>
-          item.machine_id === this.operations.machineId &&
-          (!actor ||
-            (item.thread_id === actor.thread_id && item.task_key === this.taskKey(actor.run_id))),
-      );
-  }
-  retain(resourceId: string, actor: Actor): ManagedWindow {
-    const item = this.list(actor).find((item) => item.id === resourceId);
+  async retain(resourceId: string, actor: Actor): Promise<ManagedWindow> {
+    const item = (await this.list(actor)).find((item) => item.id === resourceId);
     if (item?.state !== "open") throw new DomainError("SCOPE_DENIED", 403);
-    return item.keep_open ? item : this.operations.update(item, { keep_open: true });
+    return item.keep_open ? item : await this.operations.update(item, { keep_open: true });
   }
   /** Human input cannot be attributed to a particular tab; preserve potentially edited work. */
-  preserveForHuman(): void {
-    for (const item of this.list())
+  async preserveForHuman(): Promise<void> {
+    for (const item of await this.list())
       if (item.state === "open" && !item.keep_open)
-        this.operations.update(item, { keep_open: true });
+        await this.operations.update(item, { keep_open: true });
   }
   private async listNativeWindows(): Promise<NativeWindow[]> {
     if (!this.host) throw new DomainError("MACHINE_UNAVAILABLE", 503);
@@ -73,14 +71,14 @@ export class MachineDesktop {
   ): Promise<ManagedWindow> {
     if (!this.host) throw new DomainError("MACHINE_UNAVAILABLE", 503);
     const before = new Set((await this.listNativeWindows()).map((item) => item.ref.id));
-    authorize();
-    let item: ManagedWindow = this.lifecycle.store.put({
+    await authorize();
+    let item: ManagedWindow = await this.lifecycle.store.put({
       ...this.operations.base(),
       kind: "machine_window",
       machine_id: this.operations.machineId,
-      generation: this.snapshot().generation,
+      generation: (await this.snapshot()).generation,
       ...actor,
-      task_key: this.taskKey(actor.run_id),
+      task_key: await this.taskKey(actor.run_id),
       application,
       native_ref: null,
       pid: null,
@@ -90,7 +88,7 @@ export class MachineDesktop {
       error_code: null,
     });
     try {
-      authorize();
+      await authorize();
       // Fixed executable/argv, retained profile and native opaque window handles.
       // No shell command, raw CDP endpoint or arbitrary application launcher is exposed.
       await this.host.rpc("WindowsService/LaunchApp", {
@@ -122,46 +120,50 @@ export class MachineDesktop {
       );
       if (created.length !== 1) throw new DomainError("RECONCILIATION_REQUIRED");
       const window = created[0] as NativeWindow;
-      item = this.operations.update(item, {
+      item = await this.operations.update(item, {
         state: "open",
         native_ref: window.ref,
         pid: window.app.pid,
       });
       return item;
     } catch (error) {
-      this.operations.update(item, { state: "unknown", error_code: "RECONCILIATION_REQUIRED" });
+      await this.operations.update(item, {
+        state: "unknown",
+        error_code: "RECONCILIATION_REQUIRED",
+      });
       throw error;
     }
   }
-  private isTaskComplete(item: ManagedWindow): boolean {
+  private async isTaskComplete(item: ManagedWindow): Promise<boolean> {
     const store = this.lifecycle.store;
-    const runs = store.list("run").filter((run) => this.taskKey(run.id) === item.task_key);
+    const runs = await asyncFilter(
+      await store.list("run"),
+      async (run) => (await this.taskKey(run.id)) === item.task_key,
+    );
     if (!runs.length || runs.some((run) => run.status !== "succeeded")) return false;
     if (
-      store
-        .list("peer_task")
-        .some((task) => task.root_task_id === item.task_key && task.state !== "completed")
+      (await store.list("peer_task")).some(
+        (task) => task.root_task_id === item.task_key && task.state !== "completed",
+      )
     )
       return false;
     const runIds = new Set(runs.map((run) => run.id));
     if (
-      store
-        .list("machine_operation")
-        .some(
-          (operation) =>
-            operation.run_id &&
-            runIds.has(operation.run_id) &&
-            ["dispatched", "unknown"].includes(operation.state),
-        )
+      (await store.list("machine_operation")).some(
+        (operation) =>
+          operation.run_id &&
+          runIds.has(operation.run_id) &&
+          ["dispatched", "unknown"].includes(operation.state),
+      )
     )
       return false;
-    return !store
-      .list("machine_process")
-      .some((process) => runIds.has(process.run_id) && process.state !== "exited");
+    return !(await store.list("machine_process")).some(
+      (process) => runIds.has(process.run_id) && process.state !== "exited",
+    );
   }
-  private authorizeCleanup(item: ManagedWindow): void {
-    const machine = this.snapshot();
-    const current = this.lifecycle.store.get("machine_window", item.id);
+  private async authorizeCleanup(item: ManagedWindow): Promise<void> {
+    const machine = await this.snapshot();
+    const current = await this.lifecycle.store.get("machine_window", item.id);
     if (
       this.#closed ||
       machine.state !== "ready" ||
@@ -170,14 +172,14 @@ export class MachineDesktop {
       machine.lease.state !== "active" ||
       current.keep_open ||
       !["open", "closing"].includes(current.state) ||
-      !this.isTaskComplete(current)
+      !(await this.isTaskComplete(current))
     )
       throw new DomainError("MACHINE_INPUT_BUSY");
   }
   private async closeTemporaryWindow(item: ManagedWindow): Promise<void> {
     const host = this.host;
     if (!host) return;
-    this.authorizeCleanup(item);
+    await this.authorizeCleanup(item);
     const window = (await this.listNativeWindows()).find(
       (window) =>
         window.ref.id === item.native_ref?.id && window.ref.epoch === item.native_ref.epoch,
@@ -186,18 +188,21 @@ export class MachineDesktop {
       const changed = (await this.listNativeWindows()).some(
         (candidate) => candidate.app.pid === item.pid,
       );
-      this.operations.update(item, {
+      await this.operations.update(item, {
         state: changed ? "unknown" : "closed",
         error_code: changed ? "RECONCILIATION_REQUIRED" : null,
       });
       return;
     }
     if (window.app.pid !== item.pid) {
-      this.operations.update(item, { state: "unknown", error_code: "RECONCILIATION_REQUIRED" });
+      await this.operations.update(item, {
+        state: "unknown",
+        error_code: "RECONCILIATION_REQUIRED",
+      });
       return;
     }
-    this.authorizeCleanup(item);
-    item = this.operations.update(item, { state: "closing" });
+    await this.authorizeCleanup(item);
+    item = await this.operations.update(item, { state: "closing" });
     try {
       const result = (await this.operations.execute(
         item.close_operation_id,
@@ -205,15 +210,16 @@ export class MachineDesktop {
         null,
         "window.cleanup",
         { resource_id: item.id, window: item.native_ref },
-        () => this.authorizeCleanup(item),
-        () => host.rpc("WindowsService/CloseWindow", { window: item.native_ref, force: false }),
+        async () => await this.authorizeCleanup(item),
+        async () =>
+          host.rpc("WindowsService/CloseWindow", { window: item.native_ref, force: false }),
       )) as { closed?: boolean };
-      this.operations.update(this.lifecycle.store.get("machine_window", item.id), {
+      await this.operations.update(await this.lifecycle.store.get("machine_window", item.id), {
         state: result.closed ? "closed" : "blocked",
         error_code: result.closed ? null : "WINDOW_CLOSE_BLOCKED",
       });
     } catch (error) {
-      this.operations.update(this.lifecycle.store.get("machine_window", item.id), {
+      await this.operations.update(await this.lifecycle.store.get("machine_window", item.id), {
         state: "unknown",
         error_code: "RECONCILIATION_REQUIRED",
       });
@@ -224,7 +230,7 @@ export class MachineDesktop {
     if (this.#closed) return;
     this.#dirty = true;
     if (this.#pending || this.#timer) return;
-    this.#timer = setTimeout(() => {
+    this.#timer = setTimeout(async () => {
       this.#timer = undefined;
       void this.idle();
     }, 0);
@@ -238,9 +244,10 @@ export class MachineDesktop {
     this.#pending = (async () => {
       while (this.#dirty && !this.#closed && !this.lifecycle.store.closed) {
         this.#dirty = false;
-        for (const item of this.list()) {
-          if (item.state !== "open" || item.keep_open || !this.isTaskComplete(item)) continue;
-          await this.idleInput(() => this.closeTemporaryWindow(item)).catch(() => {});
+        for (const item of await this.list()) {
+          if (item.state !== "open" || item.keep_open || !(await this.isTaskComplete(item)))
+            continue;
+          await this.idleInput(async () => this.closeTemporaryWindow(item)).catch(() => {});
         }
       }
     })().finally(() => {
@@ -250,8 +257,27 @@ export class MachineDesktop {
   }
   async close(): Promise<void> {
     this.#closed = true;
-    this.#unsubscribe();
+    await this.#unsubscribe();
     if (this.#timer) clearTimeout(this.#timer);
     await this.#pending;
+  }
+
+  private async initialize(lifecycle: Lifecycle, operations: MachineOperations) {
+    for (const item of await this.list())
+      if (["opening", "closing"].includes(item.state))
+        await operations.update(item, { state: "unknown", error_code: "RECONCILIATION_REQUIRED" });
+    this.#unsubscribe = lifecycle.store.subscribe(async () => await this.schedule());
+  }
+
+  static async open(
+    lifecycle: Lifecycle,
+    host: CuaMachine | null,
+    operations: MachineOperations,
+    snapshot: () => Promise<Entity<"machine">>,
+    idleInput: (effect: () => Promise<void>) => Promise<void>,
+  ): Promise<MachineDesktop> {
+    const instance = new MachineDesktop(lifecycle, host, operations, snapshot, idleInput);
+    await instance.initialize(lifecycle, operations);
+    return instance;
   }
 }

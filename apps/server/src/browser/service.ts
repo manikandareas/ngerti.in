@@ -4,6 +4,7 @@ import { DomainError, type Entity } from "../contracts";
 import { authorizeResponsibilityWork } from "../goals/work-fence";
 import type { ToolAccess } from "../harness/tools";
 import type { Lifecycle } from "../lifecycle";
+import { asyncMap } from "../persistence/async-collections";
 import { canonical } from "../store";
 import {
   type BrowserResult,
@@ -29,19 +30,10 @@ export class Browsers {
     { id: string; target_id: string | null; fingerprint: string }
   >();
   #closed = false;
-  constructor(
+  private constructor(
     readonly lifecycle: Lifecycle,
     readonly host: BrowserHost,
-  ) {
-    for (const action of lifecycle.store.list("browser_action")) {
-      if (action.state === "dispatched")
-        this.update(action, { state: "unknown", error_code: "BROWSER_UNKNOWN" });
-    }
-    for (const session of lifecycle.store.list("browser_session")) {
-      if (session.state === "ready")
-        this.update(session, { state: "detached", active_run_id: null });
-    }
-  }
+  ) {}
   private base() {
     const now = new Date().toISOString();
     return {
@@ -52,11 +44,11 @@ export class Browsers {
       updated_at: now,
     };
   }
-  private update<T extends Entity<"browser_profile" | "browser_session" | "browser_action">>(
+  private async update<T extends Entity<"browser_profile" | "browser_session" | "browser_action">>(
     entity: T,
     fields: Partial<T>,
-  ): T {
-    return this.lifecycle.store.put(
+  ): Promise<T> {
+    return await this.lifecycle.store.put(
       {
         ...entity,
         ...fields,
@@ -66,16 +58,16 @@ export class Browsers {
       entity.revision,
     );
   }
-  private scope(scope: BrowserScope) {
-    const agent = this.lifecycle.store.get("agent", scope.agent_id);
-    const thread = this.lifecycle.store.get("thread", scope.thread_id);
+  private async scope(scope: BrowserScope) {
+    const agent = await this.lifecycle.store.get("agent", scope.agent_id);
+    const thread = await this.lifecycle.store.get("thread", scope.thread_id);
     if (!thread.member_agent_ids.includes(agent.id) || thread.purpose !== "conversation")
       throw new DomainError("SCOPE_DENIED", 403);
   }
-  authorize(profileId: string, scope: BrowserScope, actions = false) {
+  async authorize(profileId: string, scope: BrowserScope, actions = false) {
     if (this.#closed) throw new DomainError("BROWSER_UNAVAILABLE");
-    this.scope(scope);
-    const profile = this.lifecycle.store.get("browser_profile", profileId);
+    await this.scope(scope);
+    const profile = await this.lifecycle.store.get("browser_profile", profileId);
     if (
       profile.state !== "active" ||
       !profile.grants.some(
@@ -88,10 +80,10 @@ export class Browsers {
       throw new DomainError("SCOPE_DENIED", 403);
     return profile;
   }
-  create(input: unknown) {
+  async create(input: unknown) {
     const data = browserProfileInput.parse(input);
-    for (const grant of data.grants) this.scope(grant);
-    return this.lifecycle.store.put({
+    for (const grant of data.grants) await this.scope(grant);
+    return await this.lifecycle.store.put({
       ...this.base(),
       ...data,
       kind: "browser_profile",
@@ -99,33 +91,33 @@ export class Browsers {
       state: "active",
     });
   }
-  grant(profileId: string, expected: number, input: unknown) {
+  async grant(profileId: string, expected: number, input: unknown) {
     const data = browserProfileInput.parse(input);
-    for (const grant of data.grants) this.scope(grant);
-    const profile = this.lifecycle.store.get("browser_profile", profileId);
+    for (const grant of data.grants) await this.scope(grant);
+    const profile = await this.lifecycle.store.get("browser_profile", profileId);
     if (expected !== profile.revision) throw new DomainError("CONFLICT");
     this.host.detach(profileId);
-    return this.update(profile, { ...data, generation: profile.generation + 1 });
+    return await this.update(profile, { ...data, generation: profile.generation + 1 });
   }
-  list(scope: BrowserScope) {
-    this.scope(scope);
-    return this.lifecycle.store
-      .list("browser_profile")
-      .filter(
+  async list(scope: BrowserScope) {
+    await this.scope(scope);
+    return await asyncMap(
+      (await this.lifecycle.store.list("browser_profile", { state: "active" })).filter(
         (p) =>
           p.state === "active" &&
           p.grants.some((g) => g.agent_id === scope.agent_id && g.thread_id === scope.thread_id),
-      )
-      .map((profile) => ({
+      ),
+      async (profile) => ({
         profile,
-        sessions: this.lifecycle.store
-          .list("browser_session")
-          .filter((s) => s.profile_id === profile.id && s.generation === profile.generation),
-      }));
+        sessions: (await this.lifecycle.store.list("browser_session")).filter(
+          (s) => s.profile_id === profile.id && s.generation === profile.generation,
+        ),
+      }),
+    );
   }
-  session(id: string, scope: BrowserScope, generation?: number, actions = false) {
-    const session = this.lifecycle.store.get("browser_session", id);
-    const profile = this.authorize(session.profile_id, scope, actions);
+  async session(id: string, scope: BrowserScope, generation?: number, actions = false) {
+    const session = await this.lifecycle.store.get("browser_session", id);
+    const profile = await this.authorize(session.profile_id, scope, actions);
     if (
       session.generation !== profile.generation ||
       (generation !== undefined && generation !== session.generation) ||
@@ -139,33 +131,29 @@ export class Browsers {
     scope: BrowserScope,
     authorize = () => {},
   ): Promise<Entity<"browser_session">> {
-    const profile = this.authorize(profileId, scope);
+    const profile = await this.authorize(profileId, scope);
     if (
-      this.lifecycle.store
-        .list("browser_session")
-        .some(
-          (s) => s.profile_id === profileId && s.control_intent !== null && s.state === "unknown",
-        )
+      (await this.lifecycle.store.list("browser_session", { state: "unknown" })).some(
+        (s) => s.profile_id === profileId && s.control_intent !== null && s.state === "unknown",
+      )
     )
       throw new DomainError("RECONCILIATION_REQUIRED");
     const opening = this.#opening.get(profileId);
     if (opening) {
       await opening;
-      authorize();
+      await authorize();
       return this.open(profileId, scope, authorize);
     }
-    let current = this.lifecycle.store
-      .list("browser_session")
-      .find(
-        (s) =>
-          s.profile_id === profileId && s.generation === profile.generation && s.state !== "closed",
-      );
+    let current = (await this.lifecycle.store.list("browser_session")).find(
+      (s) =>
+        s.profile_id === profileId && s.generation === profile.generation && s.state !== "closed",
+    );
     if (current?.state === "unknown") throw new DomainError("RECONCILIATION_REQUIRED");
     if (current?.state === "ready") {
-      authorize();
+      await authorize();
       return current;
     }
-    current ??= this.lifecycle.store.put({
+    current ??= await this.lifecycle.store.put({
       ...this.base(),
       kind: "browser_session",
       profile_id: profileId,
@@ -176,13 +164,13 @@ export class Browsers {
     });
     const session = current;
     const pending = (async () => {
-      await this.host.connect(profileId, () => {
-        authorize();
-        this.session(session.id, scope, session.generation);
+      await this.host.connect(profileId, async () => {
+        await authorize();
+        await this.session(session.id, scope, session.generation);
       });
-      authorize();
-      const latest = this.session(session.id, scope, session.generation);
-      return this.update(latest, { state: "ready" });
+      await authorize();
+      const latest = await this.session(session.id, scope, session.generation);
+      return await this.update(latest, { state: "ready" });
     })();
     this.#opening.set(profileId, pending);
     try {
@@ -213,8 +201,11 @@ export class Browsers {
     delete parsed.screenshot_dimensions;
     return createHash("sha256").update(canonical(parsed)).digest("hex");
   }
-  private auth(profileId: string, result: BrowserResult): "authenticated" | "required" | "unknown" {
-    const policy = this.lifecycle.store.get("browser_profile", profileId).auth_policy;
+  private async auth(
+    profileId: string,
+    result: BrowserResult,
+  ): Promise<"authenticated" | "required" | "unknown"> {
+    const policy = (await this.lifecycle.store.get("browser_profile", profileId)).auth_policy;
     if (!policy) return "unknown";
     for (const item of result.content)
       if (item.type === "text") {
@@ -232,12 +223,12 @@ export class Browsers {
     return "unknown";
   }
   async observe(id: string, scope: BrowserScope) {
-    const initial = this.session(id, scope);
+    const initial = await this.session(id, scope);
     if (initial.control_intent !== null) throw new DomainError("RECONCILIATION_REQUIRED");
     if (this.#busy.has(initial.profile_id)) throw new DomainError("CONFLICT");
     return this.exclusive(initial.profile_id, async () => {
       await this.host.connect(initial.profile_id);
-      this.session(id, scope, initial.generation);
+      await this.session(id, scope, initial.generation);
       let result: BrowserResult;
       try {
         result = await this.host.call(initial.profile_id, "browser_get_state", {
@@ -247,12 +238,12 @@ export class Browsers {
         this.host.detach(initial.profile_id);
         throw error;
       }
-      this.session(id, scope, initial.generation);
+      await this.session(id, scope, initial.generation);
       return {
-        session: this.lifecycle.store.get("browser_session", id),
+        session: await this.lifecycle.store.get("browser_session", id),
         binding: this.binding(result),
         content: result.content,
-        auth: this.auth(initial.profile_id, result),
+        auth: await this.auth(initial.profile_id, result),
       };
     });
   }
@@ -274,9 +265,9 @@ export class Browsers {
       if (!["http:", "https:"].includes(url.protocol) || url.username || url.password)
         throw new DomainError("SCOPE_DENIED", 403);
     }
-    access.authorize();
-    authorizeResponsibilityWork(this.lifecycle, access.scope.run_id);
-    const initial = this.session(
+    await access.authorize();
+    await authorizeResponsibilityWork(this.lifecycle, access.scope.run_id);
+    const initial = await this.session(
       data.session_id,
       access.scope,
       data.generation,
@@ -285,9 +276,9 @@ export class Browsers {
     const fingerprint = createHash("sha256")
       .update(canonical({ ...data, arguments: args, run_id: access.scope.run_id }))
       .digest("hex");
-    const previous = this.lifecycle.store
-      .list("browser_action")
-      .find((a) => a.id === data.command_id);
+    const previous = (await this.lifecycle.store.list("browser_action")).find(
+      (a) => a.id === data.command_id,
+    );
     if (previous) {
       if (previous.fingerprint !== fingerprint) throw new DomainError("IDEMPOTENCY_CONFLICT");
       return {
@@ -301,22 +292,24 @@ export class Browsers {
       };
     }
     return this.exclusive(initial.profile_id, async () => {
-      access.authorize();
-      const profile = this.authorize(initial.profile_id, access.scope, !readOnly.has(data.tool));
+      await access.authorize();
+      const profile = await this.authorize(
+        initial.profile_id,
+        access.scope,
+        !readOnly.has(data.tool),
+      );
       if (
-        this.lifecycle.store
-          .list("browser_action")
-          .some(
-            (a) => a.profile_id === profile.id && ["unknown", "dispatched"].includes(a.state),
-          ) &&
+        (await this.lifecycle.store.list("browser_action")).some(
+          (a) => a.profile_id === profile.id && ["unknown", "dispatched"].includes(a.state),
+        ) &&
         !readOnly.has(data.tool)
       )
         throw new DomainError("RECONCILIATION_REQUIRED");
       await this.open(profile.id, access.scope, access.authorize);
-      const check = () => {
-        access.authorize();
-        authorizeResponsibilityWork(this.lifecycle, access.scope.run_id);
-        const latest = this.session(
+      const check = async () => {
+        await access.authorize();
+        await authorizeResponsibilityWork(this.lifecycle, access.scope.run_id);
+        const latest = await this.session(
           initial.id,
           access.scope,
           data.generation,
@@ -324,7 +317,7 @@ export class Browsers {
         );
         if (
           latest.state !== "ready" ||
-          profile.revision !== this.authorize(profile.id, access.scope).revision
+          profile.revision !== (await this.authorize(profile.id, access.scope)).revision
         )
           throw new DomainError("STALE_DISPATCH");
       };
@@ -333,18 +326,18 @@ export class Browsers {
         observed = await this.host.call(profile.id, "browser_get_state", {});
       } catch (error) {
         this.host.detach(profile.id);
-        const current = this.lifecycle.store.get("browser_session", initial.id);
-        this.update(current, { state: "detached" });
+        const current = await this.lifecycle.store.get("browser_session", initial.id);
+        await this.update(current, { state: "detached" });
         throw error;
       }
       const binding = this.binding(observed);
       if (
-        this.auth(profile.id, observed) === "required" &&
+        (await this.auth(profile.id, observed)) === "required" &&
         !readOnly.has(data.tool) &&
         data.tool !== "browser_navigate"
       )
         throw new DomainError("BROWSER_AUTH_REQUIRED");
-      check();
+      await check();
       if (data.expected_target_id && binding.target_id !== data.expected_target_id)
         throw new DomainError("STALE_DISPATCH");
       if (["browser_click", "browser_type"].includes(data.tool)) {
@@ -362,7 +355,7 @@ export class Browsers {
       if ("tab_id" in args && binding.tabs.filter((t) => t.tab_id === args.tab_id).length !== 1)
         throw new DomainError("SCOPE_DENIED", 403);
       const started = performance.now();
-      let receipt: Entity<"browser_action"> = this.lifecycle.store.put({
+      let receipt: Entity<"browser_action"> = await this.lifecycle.store.put({
         ...this.base(),
         id: data.command_id,
         kind: "browser_action",
@@ -382,27 +375,27 @@ export class Browsers {
       });
       // This commit precedes native dispatch. A crash or lost acknowledgement leaves a held receipt.
       let stopped = false;
-      const timer = setInterval(() => {
+      const timer = setInterval(async () => {
         try {
-          check();
+          await check();
         } catch {
           stopped = true;
           this.host.detach(profile.id);
         }
       }, 50);
       try {
-        check();
+        await check();
         const result = await this.host.call(profile.id, data.tool, args);
         const error =
           result.isError ||
           result.content.some((c) => c.type === "text" && c.text.startsWith("Error:"));
         // Upstream exceptions can occur after an effect. They are unknown, never safe to retry.
-        receipt = this.update(receipt, {
+        receipt = await this.update(receipt, {
           state: error ? "unknown" : "succeeded",
           error_code: error ? "BROWSER_ACTION_FAILED" : null,
           elapsed_ms: performance.now() - started,
         });
-        check();
+        await check();
         if (stopped) throw new DomainError("BROWSER_UNKNOWN");
         if (error) throw new DomainError("BROWSER_UNKNOWN");
         if (data.tool === "browser_get_state") {
@@ -425,17 +418,17 @@ export class Browsers {
         } else if (!readOnly.has(data.tool)) this.#snapshots.delete(initial.id);
         return { receipt, content: result.content };
       } catch (error) {
-        const latest = this.lifecycle.store.get("browser_action", receipt.id);
+        const latest = await this.lifecycle.store.get("browser_action", receipt.id);
         if (latest.state === "dispatched")
-          this.update(latest, {
+          await this.update(latest, {
             state: "unknown",
             error_code: "BROWSER_UNKNOWN",
             elapsed_ms: performance.now() - started,
           });
-        if (this.lifecycle.store.get("browser_action", receipt.id).state === "unknown") {
+        if ((await this.lifecycle.store.get("browser_action", receipt.id)).state === "unknown") {
           this.host.detach(profile.id);
-          const session = this.lifecycle.store.get("browser_session", initial.id);
-          this.update(session, { state: "unknown" });
+          const session = await this.lifecycle.store.get("browser_session", initial.id);
+          await this.update(session, { state: "unknown" });
         }
         throw error instanceof DomainError ? error : new DomainError("BROWSER_UNKNOWN");
       } finally {
@@ -443,22 +436,22 @@ export class Browsers {
       }
     });
   }
-  receipts(id: string, scope: BrowserScope) {
-    this.session(id, scope);
-    return this.lifecycle.store.list("browser_action").filter((a) => a.session_id === id);
+  async receipts(id: string, scope: BrowserScope) {
+    await this.session(id, scope);
+    return (await this.lifecycle.store.list("browser_action")).filter((a) => a.session_id === id);
   }
   async control(id: string, scope: BrowserScope, operation: "detach" | "close" | "reset") {
-    const session = this.session(id, scope);
+    const session = await this.session(id, scope);
     if (session.control_intent !== null) throw new DomainError("RECONCILIATION_REQUIRED");
     if (this.#busy.has(session.profile_id) || this.#opening.has(session.profile_id))
       throw new DomainError("CONFLICT");
     return this.exclusive(session.profile_id, async () => {
-      const authorize = () => {
-        this.session(id, scope, session.generation);
+      const authorize = async () => {
+        await this.session(id, scope, session.generation);
       };
-      authorize();
+      await authorize();
       // A lost process-control acknowledgement must not let an observation restart the host.
-      this.update(this.lifecycle.store.get("browser_session", id), {
+      await this.update(await this.lifecycle.store.get("browser_session", id), {
         state: "unknown",
         control_intent: operation,
       });
@@ -469,10 +462,10 @@ export class Browsers {
       } catch (error) {
         throw error instanceof DomainError ? error : new DomainError("BROWSER_UNKNOWN");
       }
-      this.session(id, scope, session.generation);
-      const profile = this.lifecycle.store.get("browser_profile", session.profile_id);
-      this.update(profile, { generation: profile.generation + 1 });
-      return this.update(this.lifecycle.store.get("browser_session", id), {
+      await this.session(id, scope, session.generation);
+      const profile = await this.lifecycle.store.get("browser_profile", session.profile_id);
+      await this.update(profile, { generation: profile.generation + 1 });
+      return await this.update(await this.lifecycle.store.get("browser_session", id), {
         state: "closed",
         control_intent: null,
       });
@@ -480,8 +473,25 @@ export class Browsers {
   }
   async shutdown() {
     this.#closed = true;
-    for (const profile of this.lifecycle.store.list("browser_profile"))
+    for (const profile of await this.lifecycle.store.list("browser_profile"))
       this.host.detach(profile.id);
     await Promise.allSettled([...this.#busy.values(), ...this.#opening.values()]);
+  }
+
+  private async initialize(lifecycle: Lifecycle) {
+    for (const action of await lifecycle.store.list("browser_action")) {
+      if (action.state === "dispatched")
+        await this.update(action, { state: "unknown", error_code: "BROWSER_UNKNOWN" });
+    }
+    for (const session of await lifecycle.store.list("browser_session")) {
+      if (session.state === "ready")
+        await this.update(session, { state: "detached", active_run_id: null });
+    }
+  }
+
+  static async open(lifecycle: Lifecycle, host: BrowserHost): Promise<Browsers> {
+    const instance = new Browsers(lifecycle, host);
+    await instance.initialize(lifecycle);
+    return instance;
   }
 }

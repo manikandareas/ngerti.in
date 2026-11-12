@@ -1,6 +1,6 @@
 # Central server, PostgreSQL and organizations implementation plan
 
-Date: 2026-11-12. Status: planned; implementation has not started. This is the main design and delivery document for [NMA-072–083](../backlog/README.md#server-organizations-plan). The owner requested this plan after agreeing to PostgreSQL. It records the session's product direction and identifies implementation defaults separately from verified capabilities.
+Date: 2026-11-12. Status: NMA-072 Done for its verified single-owner PostgreSQL/import scope; NMA-073–083 remain planned. This is the main design and delivery document for [NMA-072–083](../backlog/README.md#server-organizations-plan). The owner requested this plan after agreeing to PostgreSQL. It records the session's product direction and identifies implementation defaults separately from verified capabilities.
 
 The implementation targets `apps/server`, `apps/web-client` and the Tauri host in `apps/desktop`. Further `apps/desktop-rs` and GPUI experiment work is paused. Their historical Done milestones and evidence remain intact. This document does not authorize deployment, credential changes, database resets, or deletion of existing data.
 
@@ -10,7 +10,7 @@ One owner-operated server serves multiple organizations and many authenticated p
 
 | Decision | Direction and boundary |
 | --- | --- |
-| Server database | PostgreSQL is the target primary database for authentication and application metadata. SQLite remains the observed current implementation, not a claimed capacity failure. |
+| Server database | PostgreSQL is the target primary database for authentication and application metadata. NMA-072 implements the PostgreSQL store; its controlled import preserves the legacy owner until later binding. No SQLite capacity failure is claimed. |
 | Clients | Web and Tauri; a remote Tauri profile connects to the server without starting a local backend, harness or Cua machine. |
 | Organization | An application data, membership, administration and connection boundary. One account can join or create multiple organizations when permitted. |
 | Administrative roles | Owner, Admin and Member, scoped to one organization. Organization creation is a separate installation policy. |
@@ -23,13 +23,13 @@ One owner-operated server serves multiple organizations and many authenticated p
 | Network | HTTPS API, authenticated SSE and scoped HTTPS/WSS viewer transport. VPN/Tailscale is optional deployment infrastructure. |
 | Runtime | Codex App Server and Muse SDK/MSP run on the server. ACP remains an optional transport, not a prerequisite or a new runtime commitment. |
 
-**Planning defaults to validate:** Better Auth is the recommended authentication implementation; its Organization plugin maps Organizations to Ngertiin organizations and Teams to Workgroups. Browser-based public-client OAuth with PKCE is the Tauri login baseline. PostgreSQL 18 is the initial major-version candidate. Exact dependency versions, database patch/image digest, native runtime support and OS credential backend are pinned by their implementation milestones after compatibility checks.
+**Planning defaults to validate:** Better Auth is the recommended authentication implementation; its Organization plugin maps Organizations to Ngertiin organizations and Teams to Workgroups. Browser-based public-client OAuth with PKCE is the Tauri login baseline. NMA-072 pins PostgreSQL 18.1, `pg`/`@types/pg` 8.23.1 and Bun 1.3.10; its [persistence amendment](postgresql-persistence.md) records the image digest and verification boundary. Native runtime support, authentication dependencies and OS credential backends are pinned by their own implementation milestones after compatibility checks.
 
 Not included: client-hosted harness workers, remote enrollment of arbitrary machines, distributed schedulers, native Rust client development, a billing/resale platform, automatic credential pools/fallback, public marketplace publishing, and multi-human group-chat collaboration. Existing group chats remain one human plus authorized agents; shared-human conversations require a separate scope decision.
 
 ## 2. Observed baseline and change map
 
-Source baseline: `7c5e3bf7b7a65ef828c66ad49bec3881b55d9247`, inspected with the working tree on 2026-11-12. This planning task changes documentation only.
+Source baseline: `7c5e3bf7b7a65ef828c66ad49bec3881b55d9247`, inspected with the working tree on 2026-11-12. This section preserves the pre-implementation planning observations. The [NMA-072 persistence amendment](postgresql-persistence.md) describes the PostgreSQL implementation and current verification boundary.
 
 | Current source | Observation | Required change |
 | --- | --- | --- |
@@ -115,7 +115,7 @@ PostgreSQL Row-Level Security is an additional required tenant-boundary check fo
 
 ## 5. PostgreSQL persistence and cutover
 
-Use one PostgreSQL instance, optionally on the same physical server, with separate auth and application namespaces and explicit permissions. A `pg` pool is the planning driver baseline because Better Auth supports it directly; pin and prove its Bun behavior. Preserve existing service boundaries and evolve their database calls to async rather than adding a second lifecycle model. Initial deployment retains one backend lifecycle authority even though PostgreSQL supports concurrent transactions.
+Use one PostgreSQL instance, optionally on the same physical server, with separate auth and application namespaces and explicit permissions. NMA-072 implements a `pg` 8.23.1 pool with Bun 1.3.10 and PostgreSQL 18.1 verification. Its asynchronous services preserve the existing lifecycle model. The current single-owner clock is installation-wide; organization-qualified policies and clocks follow the verified mapping in NMA-075. Initial deployment retains one backend lifecycle authority even though PostgreSQL supports concurrent transactions.
 
 1. Inventory queries, JSON indexes, sequence/cursor semantics, nested transactions, projections, command reservations and filesystem receipts. Replace full-kind materialization such as `Store.list(kind)` with bounded scope-aware queries where required.
 2. Add schema migrations and transaction-bound persistence methods. Make organization/actor relationships queryable and constrained; JSONB may preserve payload flexibility but is not the sole tenant boundary.
@@ -290,7 +290,7 @@ Tauri remote mode keeps tokens in native transport/OS storage, restricts gateway
 
 ## 12. Delivery backlog and gates
 
-All new milestones begin **Backlog**. Dependencies are recorded in their files and [status.json](../backlog/status.json); dates and assignees are unset. Backend behavior precedes the new API gate, followed by web/Tauri consumption, deployment rehearsal and integrated acceptance. Existing NMA-060/061/062 and NMA-066–071 Done statuses retain their old scope. [NMA-063](../backlog/NMA-063.md) gains this plan's acceptance dependency; [NMA-064](../backlog/NMA-064.md) remains the separate fresh-device distribution gate.
+NMA-072 is **Done** for its [verified PostgreSQL/import scope](../verification/nma-072/README.md); NMA-073–083 remain **Backlog**. Dependencies are recorded in their files and [status.json](../backlog/status.json); dates and assignees are unset. Backend behavior precedes the new API gate, followed by web/Tauri consumption, deployment rehearsal and integrated acceptance. Existing NMA-060/061/062 and NMA-066–071 Done statuses retain their old scope. [NMA-063](../backlog/NMA-063.md) gains this plan's acceptance dependency; [NMA-064](../backlog/NMA-064.md) remains the separate fresh-device distribution gate.
 
 ```mermaid
 flowchart LR
@@ -339,7 +339,7 @@ Web acceptance uses real API browser desktop/mobile journeys. Tauri acceptance u
 | Item | Planning default | Resolution owner |
 | --- | --- | --- |
 | Auth library and native token mode | Better Auth + Organization/Teams + OAuth Provider PKCE; prove revocation/resource checks | NMA-073 |
-| PostgreSQL driver/version and SQL shape | `pg`, PostgreSQL 18 candidate; explicit tenant keys plus JSONB where useful | NMA-072 |
+| PostgreSQL driver/version and SQL shape | PostgreSQL 18.1, `pg`/`@types/pg` 8.23.1, Bun 1.3.10; JSONB with explicit identity and future scope columns, indexed bounded reads | NMA-072; tenant policy/RLS remains NMA-075 |
 | Personal scope | Per user within an organization; no global personal space in this delivery | NMA-074/075 |
 | Org creation and admin elevation | Operator policy grants creation; Owner grants Admin; protect last Owner | NMA-074 |
 | Machine deployment/capacity | Retained per-user/organization isolated Cua environments on the same server | NMA-076/082 |

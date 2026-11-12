@@ -2,11 +2,11 @@
 
 Ngertiin is a persistent agent workspace for one human owner, private DMs, groups, automatic goals and Routine. The repository owns [product scope](PRODUCT.md), [acceptance](docs/development/acceptance.md), and [the local backlog](docs/backlog/README.md). See [the documentation index](docs/README.md).
 
-The harness-first backend uses **Bun, TypeScript, Elysia and SQLite**. One application authority owns identity, admission, queue state, events, stop intent and recovery. Background scheduler and dispatcher modules run in that service. Codex App Server and the Muse SDK/MSP adapter supply native execution. Muse native interaction acceptance is verified; subscription remains unverified and is excluded from the explicitly accepted API-key billing scope. No Hermes executor or fallback is started.
+The harness-first backend uses **Bun, TypeScript, Elysia and PostgreSQL**. One application authority owns identity, admission, queue state, events, stop intent and recovery. Background scheduler and dispatcher modules run in that service. Codex App Server and the Muse SDK/MSP adapter supply native execution. Muse native interaction acceptance is verified; subscription remains unverified and is excluded from the explicitly accepted API-key billing scope. No Hermes executor or fallback is started.
 
 ## Development
 
-Requirements: Bun **1.3.10** and `make` for foundation startup. The shared Linux desktop also requires Docker. Run `bun run setup:machine` once, then `bun run dev:api` and `bun run dev:web-client`. See the [shared-machine setup and verification](docs/verification/shared-machine/README.md). PostgreSQL and Python are not required.
+Requirements: Bun **1.3.10**, PostgreSQL **18.1** and `make` for foundation startup. The shared Linux desktop also requires Docker. Run `bun run setup:machine` once, then `bun run dev:api` and `bun run dev:web-client`. See the [shared-machine setup and verification](docs/verification/shared-machine/README.md). Configure `NGERTIIN_DATABASE_URL` in the private environment before setup. See [PostgreSQL persistence and controlled import](docs/architecture/postgresql-persistence.md).
 
 ```sh
 make install
@@ -35,7 +35,7 @@ make build
 make docs-check
 ```
 
-`make check` lints and typechecks the active backend and `apps/web-client`, then runs backend contract/integration tests. The process probe starts `make dev` in temporary state, checks HTTP and scheduling, kills and restarts it, and removes only its own temporary directory. `make build` builds the shared web client used by Tauri; `bun run package:desktop` builds the native application.
+`make check` lints and typechecks the active backend and `apps/web-client`, then runs backend contract/integration tests. The foundation probes exercise PostgreSQL lifecycle, HTTP/bootstrap, commit-order races, authority loss/SIGKILL, SQLite import and verified restore. Backend tests provision and remove an isolated disposable PostgreSQL container unless `NGERTIIN_TEST_DATABASE_URL` explicitly supplies a disposable database. `make build` builds the shared web client used by Tauri; `bun run package:desktop` builds the native application.
 
 The [implementation ADR](docs/architecture/adr-0001-harness-first-foundation.md) records source provenance, runtime compatibility, storage choices and phase boundaries. [NMA-047 verification](docs/verification/nma-047/README.md) records foundation results. The [broker contract](docs/architecture/harness-broker-contract.md) and [NMA-048 verification](docs/verification/nma-048/README.md) describe executable policies, connection isolation and scoped product tools, with native adapter limitations.
 
@@ -43,7 +43,7 @@ The [implementation ADR](docs/architecture/adr-0001-harness-first-foundation.md)
 
 The retired `apps/backend` and `apps/engine` directories, obsolete V1 product/backlog mirrors, old runtime guides and scripts, and replaced design prototypes have been removed. Retired source and the removed archive can be inspected through [historical Git recovery](docs/development/history.md). The [retirement manifest](docs/verification/nma-060/completion/retirement.json) records the runtime source revision and backup hashes; [historical recovery](docs/development/history.md) identifies the pre-cleanup documentation and tooling snapshot. Raw evidence, contract snapshots, databases, Docker resources, `.env`, runtime state and provenance notices are preserved. The active server has no Hermes fallback.
 
-Development data does not require a migration from the historical runtime. A different `NGERTIIN_STATE_DIR` creates a fresh development installation. Existing new-runtime state must survive normal restarts; incompatible or foreign-owner databases are refused. Rollback uses a previous Git revision and verified backup, rather than a runtime fallback switch. The engine/API gate is complete; UI implementation and installation on other devices remain separate phases.
+Development data does not require a migration from the historical runtime. A fresh development installation requires both its own `NGERTIIN_STATE_DIR` and a fresh PostgreSQL schema. Existing SQLite state requires the explicit offline import procedure above; startup does not migrate or reset it. Existing new-runtime state must survive normal restarts; incompatible or foreign-owner databases are refused. Rollback uses a previous Git revision and verified backup, rather than a runtime fallback switch. The engine/API gate is complete; UI implementation and installation on other devices remain separate phases.
 
 ## Tauri development app
 

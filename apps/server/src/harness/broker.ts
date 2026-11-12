@@ -113,13 +113,13 @@ export class HarnessBroker {
     this.#recovery = new RunRecovery(
       lifecycle.store,
       (runId) =>
-        this.reconcile(runId).catch((error) => {
-          if (!this.#closed && this.lifecycle.store.get("run", runId).status === "unknown")
-            this.lifecycle.recordDiagnostic(runId, diagnostic(error));
+        this.reconcile(runId).catch(async (error) => {
+          if (!this.#closed && (await this.lifecycle.store.get("run", runId)).status === "unknown")
+            await this.lifecycle.recordDiagnostic(runId, diagnostic(error));
           throw error;
         }),
       recoveryPolicy,
-      (runId, error) => this.#recoveryError(runId, diagnostic(error).code),
+      async (runId, error) => await this.#recoveryError(runId, diagnostic(error).code),
     );
     for (const [id, adapter] of Object.entries(adapters))
       if (adapter?.harness !== id) throw new Error("Adapter identity mismatch.");
@@ -130,8 +130,9 @@ export class HarnessBroker {
         id,
         {
           preparationRevision: () => this.detect.fingerprint?.(id as HarnessId) ?? "",
-          prepare: (threadId: string, agentId: string) => this.openSession(threadId, agentId),
-          execute: (run: Entity<"run">, context: ExecutorContext) => this.execute(run, context),
+          prepare: async (threadId: string, agentId: string) => this.openSession(threadId, agentId),
+          execute: async (run: Entity<"run">, context: ExecutorContext) =>
+            this.execute(run, context),
         },
       ]),
     );
@@ -140,33 +141,36 @@ export class HarnessBroker {
     if (agent.model_id === null) throw new HarnessError("MODEL_UNAVAILABLE");
     return settings.parse({ model_id: agent.model_id, reasoning: agent.reasoning });
   }
-  private member(threadId: string, agentId: string) {
-    const thread = this.lifecycle.store.get("thread", threadId);
+  private async member(threadId: string, agentId: string) {
+    const thread = await this.lifecycle.store.get("thread", threadId);
     if (
       !thread.member_agent_ids.includes(agentId) ||
       (thread.purpose === "routing" &&
         thread.group_thread_id &&
-        !this.lifecycle.store
-          .get("thread", thread.group_thread_id)
-          .member_agent_ids.includes(agentId))
+        !(
+          await this.lifecycle.store.get("thread", thread.group_thread_id)
+        ).member_agent_ids.includes(agentId))
     )
       throw new DomainError("SCOPE_DENIED", 403);
-    return this.connections.forAgent(agentId, threadId);
+    return await this.connections.forAgent(agentId, threadId);
   }
   async openSession(threadId: string, agentId: string): Promise<Entity<"binding">> {
     return (await this.session(threadId, agentId)).binding;
   }
 
   /** Prepare only an idle DM. No prompt, tool lease or model run is admitted. */
-  prewarm(threadId: string, agentId: string): { state: "ready" | "preparing" | "skipped" } {
-    const thread = this.lifecycle.store.get("thread", threadId);
-    const { agent } = this.member(threadId, agentId);
+  async prewarm(
+    threadId: string,
+    agentId: string,
+  ): Promise<{ state: "ready" | "preparing" | "skipped" }> {
+    const thread = await this.lifecycle.store.get("thread", threadId);
+    const { agent } = await this.member(threadId, agentId);
     if (thread.type !== "dm" || !agent.model_id || this.#closed) return { state: "skipped" };
     const lane = `${threadId}:${agentId}`;
     const existing = this.#sessions.get(lane);
     if (existing) {
       try {
-        this.check(existing, threadId, agentId);
+        await this.check(existing, threadId, agentId);
         this.touch(lane, existing);
         return { state: "ready" };
       } catch (error) {
@@ -177,16 +181,14 @@ export class HarnessBroker {
     if (this.#opening.has(lane)) return { state: "preparing" };
     if (
       this.#warming ||
-      this.lifecycle.store
-        .list("run")
-        .some((run) =>
-          ["queued", "dispatching", "running", "cancel_requested", "unknown"].includes(run.status),
-        )
+      (await this.lifecycle.store.list("run")).some((run) =>
+        ["queued", "dispatching", "running", "cancel_requested", "unknown"].includes(run.status),
+      )
     )
       return { state: "skipped" };
     // Only idle transports can reach this point. Keep the selected DM warm within
     // the existing cap; native bindings and transcripts survive transport eviction.
-    if (!existing) this.retireIdleSessions(2);
+    if (!existing) await this.retireIdleSessions(2);
     this.#warming = true;
     void this.openSession(threadId, agentId)
       .catch(() => {})
@@ -199,20 +201,21 @@ export class HarnessBroker {
   private touch(lane: string, session: Session) {
     session.touched_at = Date.now();
     clearTimeout(this.#idleTimers.get(lane));
-    const timer = setTimeout(() => {
+    const timer = setTimeout(async () => {
       this.#idleTimers.delete(lane);
       if (this.#closed || this.lifecycle.store.closed || this.#sessions.get(lane) !== session)
         return;
-      const busy = this.lifecycle.store
-        .list("run")
-        .some(
-          (run) =>
-            run.thread_id === session.binding.thread_id &&
-            run.agent_id === session.binding.agent_id &&
-            ["queued", "dispatching", "running", "cancel_requested", "unknown"].includes(
-              run.status,
-            ),
-        );
+      const busy = (
+        await this.lifecycle.store.list("run", {
+          thread_id: session.binding.thread_id,
+          agent_id: session.binding.agent_id,
+        })
+      ).some(
+        (run) =>
+          run.thread_id === session.binding.thread_id &&
+          run.agent_id === session.binding.agent_id &&
+          ["queued", "dispatching", "running", "cancel_requested", "unknown"].includes(run.status),
+      );
       if (busy) {
         this.touch(lane, session);
         return;
@@ -225,10 +228,9 @@ export class HarnessBroker {
     this.#idleTimers.set(lane, timer);
   }
 
-  private retireIdleSessions(limit = 3) {
+  private async retireIdleSessions(limit = 3) {
     const busy = new Set(
-      this.lifecycle.store
-        .list("run")
+      (await this.lifecycle.store.list("run"))
         .filter((run) =>
           ["queued", "dispatching", "running", "cancel_requested", "unknown"].includes(run.status),
         )
@@ -254,15 +256,15 @@ export class HarnessBroker {
     const lane = `${threadId}:${agentId}`;
     const existing = this.#sessions.get(lane);
     if (existing) {
-      const current = this.member(threadId, agentId);
+      const current = await this.member(threadId, agentId);
       if (
         existing.agent_revision !== current.agent.revision &&
         existing.agent_config === executionConfiguration(current.agent) &&
         existing.connection_revision === current.connection.grant_revision
       ) {
-        const binding = this.lifecycle.store.get("binding", existing.binding.id);
+        const binding = await this.lifecycle.store.get("binding", existing.binding.id);
         if (binding.active && binding.revision === existing.binding.revision) {
-          existing.binding = this.lifecycle.store.put(
+          existing.binding = await this.lifecycle.store.put(
             {
               ...binding,
               agent_revision: current.agent.revision,
@@ -276,9 +278,9 @@ export class HarnessBroker {
       }
       if (
         existing.agent_revision === current.agent.revision &&
-        this.lifecycle.store.get("binding", existing.binding.id).active
+        (await this.lifecycle.store.get("binding", existing.binding.id)).active
       ) {
-        this.check(existing, threadId, agentId);
+        await this.check(existing, threadId, agentId);
         this.touch(lane, existing);
         return existing;
       }
@@ -286,10 +288,10 @@ export class HarnessBroker {
     const pending = this.#opening.get(lane);
     if (pending) return pending;
     const promise = this.serializedOpen(threadId, agentId)
-      .then((session) => {
+      .then(async (session) => {
         this.#sessions.set(lane, session);
         this.touch(lane, session);
-        this.retireIdleSessions();
+        await this.retireIdleSessions();
         return session;
       })
       .finally(() => this.#opening.delete(lane));
@@ -297,7 +299,7 @@ export class HarnessBroker {
     return promise;
   }
   private async serializedOpen(threadId: string, agentId: string) {
-    const connectionId = this.member(threadId, agentId).connection.id;
+    const connectionId = (await this.member(threadId, agentId)).connection.id;
     const previous = this.#connectionOpens.get(connectionId);
     let release: () => void = () => {};
     const current = new Promise<void>((resolve) => {
@@ -315,7 +317,7 @@ export class HarnessBroker {
     }
   }
   private async open(threadId: string, agentId: string): Promise<Session> {
-    const initial = this.member(threadId, agentId);
+    const initial = await this.member(threadId, agentId);
     const lane = `${threadId}:${agentId}`;
     const stale = this.#sessions.get(lane);
     if (stale) {
@@ -332,10 +334,10 @@ export class HarnessBroker {
     if (this.#closed) throw new HarnessError("ADAPTER_UNAVAILABLE");
     const controller = new AbortController();
     const workspaces = new Workspaces(this.lifecycle);
-    const workspace = workspaces.ensure(threadId, agentId);
+    const workspace = await workspaces.ensure(threadId, agentId);
     const launch: LaunchContext = {
       ...this.credentials.create(initial.connection),
-      purpose: this.lifecycle.store.get("thread", threadId).purpose,
+      purpose: (await this.lifecycle.store.get("thread", threadId)).purpose,
       signal: controller.signal,
       workspace: {
         id: workspace.id,
@@ -349,7 +351,7 @@ export class HarnessBroker {
         ? { machine: { id: workspace.machine_id, root: workspaces.path(workspace) } }
         : {}),
     };
-    const temporary = workspaces.temporary(workspace, agentId);
+    const temporary = await workspaces.temporary(workspace, agentId);
     launch.env = { ...launch.env, TMPDIR: temporary, TMP: temporary, TEMP: temporary };
     let client: HarnessClient | undefined;
     try {
@@ -378,7 +380,7 @@ export class HarnessBroker {
       client = await bounded(connecting, this.timeouts.request_ms);
       const observed = await bounded(client.inspect(), this.timeouts.request_ms);
       if (this.#closed) throw new HarnessError("ADAPTER_UNAVAILABLE");
-      let current = this.member(threadId, agentId).connection;
+      let current = (await this.member(threadId, agentId)).connection;
       if (current.grant_revision !== initial.connection.grant_revision)
         throw new DomainError("STALE_DISPATCH");
       if (
@@ -388,7 +390,7 @@ export class HarnessBroker {
         throw new HarnessError("BILLING_MISMATCH");
       if (observed.account_id && launch.redactor.text(observed.account_id) !== observed.account_id)
         throw new HarnessError("PROTOCOL_ERROR");
-      current = this.connections.update(current, {
+      current = await this.connections.update(current, {
         login: observed.login,
         effective_billing_source:
           observed.login === "authenticated" ? observed.billing_source : "unknown",
@@ -410,11 +412,11 @@ export class HarnessBroker {
           ? current.models
           : await bounded(client.discoverModels(), this.timeouts.request_ms);
         if (this.#closed) throw new HarnessError("ADAPTER_UNAVAILABLE");
-        current = this.member(threadId, agentId).connection;
+        current = (await this.member(threadId, agentId)).connection;
         if (current.grant_revision !== beforeDiscovery) throw new DomainError("STALE_DISPATCH");
         if (launch.redactor.text(JSON.stringify(models)) !== JSON.stringify(models))
           throw new HarnessError("PROTOCOL_ERROR");
-        current = this.connections.update(current, { discovery: "succeeded", models });
+        current = await this.connections.update(current, { discovery: "succeeded", models });
         this.#modelCatalogs.set(current.id, {
           at: fresh ? cached.at : Date.now(),
           grant: current.grant_revision,
@@ -422,8 +424,9 @@ export class HarnessBroker {
         });
       } catch (error) {
         if (!this.#closed) {
-          const latest = this.connections.get(current.id);
-          if (latest.state === "active") this.connections.update(latest, { discovery: "failed" });
+          const latest = await this.connections.get(current.id);
+          if (latest.state === "active")
+            await this.connections.update(latest, { discovery: "failed" });
         }
         throw error;
       }
@@ -433,19 +436,24 @@ export class HarnessBroker {
         (selected.reasoning !== null && !chosen.reasoning.includes(selected.reasoning))
       )
         throw new HarnessError("MODEL_UNAVAILABLE");
-      const previous = this.lifecycle.store
-        .list("binding")
-        .find(
-          (binding) =>
-            binding.active &&
-            binding.thread_id === threadId &&
-            binding.agent_id === agentId &&
-            binding.connection_id === current.id &&
-            binding.harness === current.harness &&
-            binding.agent_revision === initial.agent.revision &&
-            binding.workspace_id === workspace.id &&
-            binding.workspace_revision === workspace.revision,
-        );
+      const previous = (
+        await this.lifecycle.store.list("binding", {
+          thread_id: threadId,
+          agent_id: agentId,
+          connection_id: current.id,
+          workspace_id: workspace.id,
+        })
+      ).find(
+        (binding) =>
+          binding.active &&
+          binding.thread_id === threadId &&
+          binding.agent_id === agentId &&
+          binding.connection_id === current.id &&
+          binding.harness === current.harness &&
+          binding.agent_revision === initial.agent.revision &&
+          binding.workspace_id === workspace.id &&
+          binding.workspace_revision === workspace.revision,
+      );
       if (previous) this.requireCapability(current, "resume");
       let replaceUnused: Entity<"binding"> | undefined;
       let identity: { native_session_id: string };
@@ -464,7 +472,9 @@ export class HarnessBroker {
           !(error instanceof NativeSessionMissing) ||
           current.harness !== "codex" ||
           !previous ||
-          this.lifecycle.store.list("run").some((run) => run.binding_id === previous.id)
+          (await this.lifecycle.store.list("run", { binding_id: previous.id })).some(
+            (run) => run.binding_id === previous.id,
+          )
         )
           throw error;
         replaceUnused = previous;
@@ -477,7 +487,7 @@ export class HarnessBroker {
         throw new HarnessError("PROTOCOL_ERROR");
       if (this.#closed) throw new HarnessError("ADAPTER_UNAVAILABLE");
       const inherited = launch.purpose === "routing" ? undefined : await this.nativeSkills(client);
-      const latest = this.member(threadId, agentId);
+      const latest = await this.member(threadId, agentId);
       if (
         this.#closed ||
         latest.connection.grant_revision !== current.grant_revision ||
@@ -485,15 +495,15 @@ export class HarnessBroker {
         latest.agent.revision !== initial.agent.revision
       )
         throw new DomainError("STALE_DISPATCH");
-      workspaces.get(workspace.id);
-      const binding = this.lifecycle.bind(
+      await workspaces.get(workspace.id);
+      const binding = await this.lifecycle.bind(
         threadId,
         agentId,
         identity.native_session_id,
         workspace,
         replaceUnused,
       );
-      if (inherited) persistInheritedSkills(this.lifecycle, launch, binding.id, inherited);
+      if (inherited) await persistInheritedSkills(this.lifecycle, launch, binding.id, inherited);
       const session: Session = {
         client,
         launch,
@@ -506,14 +516,14 @@ export class HarnessBroker {
         touched_at: Date.now(),
         skills: inherited ? { at: Date.now(), value: inherited } : undefined,
       };
-      this.check(session, threadId, agentId);
+      await this.check(session, threadId, agentId);
       return session;
     } catch (error) {
       controller.abort();
       if (error instanceof HarnessError && error.code === "BILLING_MISMATCH") {
-        const latest = this.connections.get(initial.connection.id);
+        const latest = await this.connections.get(initial.connection.id);
         if (!this.#closed && latest.state === "active")
-          this.connections.update(latest, {
+          await this.connections.update(latest, {
             login: "rejected",
             effective_billing_source: "unknown",
           });
@@ -523,9 +533,9 @@ export class HarnessBroker {
       throw new HarnessError("PROTOCOL_ERROR");
     }
   }
-  private check(session: Session, threadId: string, agentId: string) {
-    const { agent, connection } = this.member(threadId, agentId);
-    const binding = this.lifecycle.store.get("binding", session.binding.id);
+  private async check(session: Session, threadId: string, agentId: string) {
+    const { agent, connection } = await this.member(threadId, agentId);
+    const binding = await this.lifecycle.store.get("binding", session.binding.id);
     if (
       !binding.active ||
       binding.revision !== session.binding.revision ||
@@ -538,33 +548,33 @@ export class HarnessBroker {
     )
       throw new DomainError("STALE_DISPATCH");
     if (binding.workspace_id) {
-      const workspace = new Workspaces(this.lifecycle).get(binding.workspace_id);
+      const workspace = await new Workspaces(this.lifecycle).get(binding.workspace_id);
       if (workspace.revision !== binding.workspace_revision)
         throw new DomainError("STALE_DISPATCH");
     }
     return connection;
   }
-  dispatchSteer(controlId: string): Promise<Entity<"control">> {
+  async dispatchSteer(controlId: string): Promise<Entity<"control">> {
     const pending = this.#controls.get(controlId);
     if (pending) return pending;
-    const control = this.lifecycle.store.get("control", controlId);
-    if (control.state !== "requested") return Promise.resolve(control);
-    const controls = new RunControls(this.lifecycle);
     const operation = (async () => {
+      const control = await this.lifecycle.store.get("control", controlId);
+      if (control.state !== "requested") return control;
+      const controls = new RunControls(this.lifecycle);
       try {
         await this.steer(
           control.run_id,
-          this.lifecycle.store.get("message", control.message_id).text,
+          (await this.lifecycle.store.get("message", control.message_id)).text,
           control.native_run_id,
         );
         if (this.#closed)
           return { ...control, state: "unknown" as const, error_code: "NATIVE_UNKNOWN" };
-        return controls.settleSteer(controlId, "accepted");
+        return await controls.settleSteer(controlId, "accepted");
       } catch (error) {
         if (this.#closed)
           return { ...control, state: "unknown" as const, error_code: "NATIVE_UNKNOWN" };
         const unknown = error instanceof HarnessError && error.outcome === "unknown";
-        return controls.settleSteer(
+        return await controls.settleSteer(
           controlId,
           unknown ? "unknown" : "rejected",
           error instanceof HarnessError || error instanceof DomainError
@@ -577,18 +587,18 @@ export class HarnessBroker {
     return operation;
   }
   async steer(runId: string, text: string, expectedNativeRunId?: string) {
-    const run = this.lifecycle.store.get("run", runId);
+    const run = await this.lifecycle.store.get("run", runId);
     if (
       !run.dispatch_token ||
       run.status !== "running" ||
       (expectedNativeRunId && expectedNativeRunId !== run.native_run_id)
     )
       throw new DomainError("CONFLICT");
-    this.lifecycle.authorizeDispatch(runId, run.dispatch_token);
+    await this.lifecycle.authorizeDispatch(runId, run.dispatch_token);
     const session = await this.session(run.thread_id, run.agent_id);
-    this.requireCapability(this.check(session, run.thread_id, run.agent_id), "steer");
+    this.requireCapability(await this.check(session, run.thread_id, run.agent_id), "steer");
     if (!session.client.steer) throw new HarnessError("CAPABILITY_UNSUPPORTED");
-    this.lifecycle.authorizeDispatch(runId, run.dispatch_token);
+    await this.lifecycle.authorizeDispatch(runId, run.dispatch_token);
     try {
       await bounded(
         session.client.steer({ native_session_id: session.binding.native_session_id }, runId, text),
@@ -608,29 +618,31 @@ export class HarnessBroker {
     return operation;
   }
   async recover() {
-    const runs = this.lifecycle.store.list("run").filter((run) => run.status === "unknown");
+    const runs = (await this.lifecycle.store.list("run", { status: "unknown" })).filter(
+      (run) => run.status === "unknown",
+    );
     // Bounded sequential native reads; never submit a prompt during recovery.
     for (const run of runs) {
       if (this.#closed) return;
-      await this.reconcile(run.id).catch((error) => {
-        if (!this.#closed) this.lifecycle.recordDiagnostic(run.id, diagnostic(error));
+      await this.reconcile(run.id).catch(async (error) => {
+        if (!this.#closed) await this.lifecycle.recordDiagnostic(run.id, diagnostic(error));
       });
     }
   }
-  startRecovery(report: (runId: string, code: string) => void = () => {}) {
+  async startRecovery(report: (runId: string, code: string) => void = () => {}) {
     this.#recoveryError = report;
-    this.#recovery.start();
+    await this.#recovery.start();
   }
   private async readReceipt(runId: string) {
-    const run = this.lifecycle.store.get("run", runId);
+    const run = await this.lifecycle.store.get("run", runId);
     if (run.status !== "unknown") return run;
     await this.closeWriter(runId);
     const receipt = await this.inspectReceipt(run);
-    const current = this.lifecycle.store.get("run", runId);
+    const current = await this.lifecycle.store.get("run", runId);
     if (!receipt || current.status !== "unknown") return current;
     if (receipt.status === "unknown") return current;
     if (receipt.status === "cancelled" && current.cancellation !== "requested") return current;
-    return this.lifecycle.reconcile(
+    return await this.lifecycle.reconcile(
       current.id,
       current.revision,
       receipt.status,
@@ -665,8 +677,8 @@ export class HarnessBroker {
   private async inspectReceipt(run: Entity<"run">): Promise<RecoveryObservation | null> {
     const nativeId = run.native_run_id ?? run.native_dispatch_id;
     if (!nativeId || !run.binding_id || !run.agent_snapshot) return null;
-    const binding = this.lifecycle.store.get("binding", run.binding_id);
-    const connection = this.connections.get(binding.connection_id);
+    const binding = await this.lifecycle.store.get("binding", run.binding_id);
+    const connection = await this.connections.get(binding.connection_id);
     if (connection.state !== "active") throw new DomainError("SCOPE_DENIED", 403);
     const adapter = this.adapters[binding.harness];
     if (!adapter) throw new HarnessError("ADAPTER_UNAVAILABLE");
@@ -714,7 +726,7 @@ export class HarnessBroker {
         this.timeouts.request_ms,
       );
       if (this.#closed) throw new HarnessError("ADAPTER_UNAVAILABLE");
-      const latest = this.connections.get(connection.id);
+      const latest = await this.connections.get(connection.id);
       if (latest.state !== "active" || latest.grant_revision !== connection.grant_revision)
         throw new DomainError("STALE_DISPATCH");
       if (
@@ -730,13 +742,16 @@ export class HarnessBroker {
     }
   }
   private async interactionSession(runId: string) {
-    const run = this.lifecycle.store.get("run", runId);
+    const run = await this.lifecycle.store.get("run", runId);
     if (!run.dispatch_token || run.status !== "running" || run.cancellation !== "none")
       throw new DomainError("CONFLICT");
-    this.lifecycle.authorizeDispatch(run.id, run.dispatch_token);
+    await this.lifecycle.authorizeDispatch(run.id, run.dispatch_token);
     const session = await this.session(run.thread_id, run.agent_id);
-    this.requireCapability(this.check(session, run.thread_id, run.agent_id), "permission_requests");
-    this.lifecycle.authorizeDispatch(run.id, run.dispatch_token);
+    this.requireCapability(
+      await this.check(session, run.thread_id, run.agent_id),
+      "permission_requests",
+    );
+    await this.lifecycle.authorizeDispatch(run.id, run.dispatch_token);
     return session;
   }
   async interactions(runId: string) {
@@ -747,12 +762,12 @@ export class HarnessBroker {
       this.timeouts.request_ms,
     );
     if ((await this.interactionSession(runId)) !== session) throw new DomainError("STALE_DISPATCH");
-    return this.#interactionJournal.observe(runId, snapshot, (text) =>
+    return await this.#interactionJournal.observe(runId, snapshot, (text) =>
       session.launch.redactor.text(text),
     );
   }
   async respond(runId: string, answer: unknown) {
-    const replay = this.#interactionJournal.replay(runId, answer);
+    const replay = await this.#interactionJournal.replay(runId, answer);
     if (replay) return replay;
     const session = await this.interactionSession(runId);
     if (!session.client.respond || !session.client.interactions)
@@ -760,15 +775,15 @@ export class HarnessBroker {
     // Reconcile native pending state, then recheck application grants after that asynchronous read.
     await this.interactions(runId);
     if ((await this.interactionSession(runId)) !== session) throw new DomainError("STALE_DISPATCH");
-    const attempt = this.#interactionJournal.begin(runId, answer, (text) =>
+    const attempt = await this.#interactionJournal.begin(runId, answer, (text) =>
       session.launch.redactor.text(text),
     );
     if (!attempt) return { status: "submitted" as const };
-    const settle = (
+    const settle = async (
       state: "submitted" | "not_dispatched" | "unknown",
       error: HarnessError | null = null,
     ) =>
-      this.#interactionJournal.settle(
+      await this.#interactionJournal.settle(
         runId,
         attempt.record_id,
         attempt.attempt_id,
@@ -777,13 +792,16 @@ export class HarnessBroker {
       );
     try {
       const observed = Promise.resolve(session.client.respond(runId, answer)).then(
-        () => {
-          settle("submitted");
+        async () => {
+          await settle("submitted");
         },
-        (error: unknown) => {
+        async (error: unknown) => {
           const failure =
             error instanceof HarnessError ? error : new HarnessError("NATIVE_UNKNOWN", "unknown");
-          settle(failure.outcome === "not_dispatched" ? "not_dispatched" : "unknown", failure);
+          await settle(
+            failure.outcome === "not_dispatched" ? "not_dispatched" : "unknown",
+            failure,
+          );
           throw failure;
         },
       );
@@ -792,7 +810,7 @@ export class HarnessBroker {
     } catch (error) {
       const failure =
         error instanceof HarnessError ? error : new HarnessError("NATIVE_UNKNOWN", "unknown");
-      settle(failure.outcome === "not_dispatched" ? "not_dispatched" : "unknown", failure);
+      await settle(failure.outcome === "not_dispatched" ? "not_dispatched" : "unknown", failure);
       throw failure;
     }
     // A native acknowledgement is not proof that the approved action completed.
@@ -823,9 +841,9 @@ export class HarnessBroker {
     if (state !== "supported")
       throw new HarnessError(state === "unknown" ? "CAPABILITY_UNKNOWN" : "CAPABILITY_UNSUPPORTED");
   }
-  private appendIfAuthorized(runId: string, text: string, state: "complete" | "partial") {
+  private async appendIfAuthorized(runId: string, text: string, state: "complete" | "partial") {
     try {
-      this.lifecycle.appendAnswer(runId, text, state);
+      await this.lifecycle.appendAnswer(runId, text, state);
       return true;
     } catch (error) {
       if (
@@ -852,9 +870,12 @@ export class HarnessBroker {
     let outcome: "succeeded" | "failed" | "cancelled" | "unknown" = "unknown";
     let text = "";
     let lastPublishedAt = 0;
+    let nativeEvents = Promise.resolve();
+    let nativeEventError: unknown;
+    let nativeEventPending = 0;
     try {
       const session = await this.session(run.thread_id, run.agent_id);
-      const connection = this.check(session, run.thread_id, run.agent_id);
+      const connection = await this.check(session, run.thread_id, run.agent_id);
       this.requireCapability(connection, "product_tools");
       if (run.binding_id !== session.binding.id || !run.dispatch_token)
         throw new DomainError("STALE_DISPATCH");
@@ -878,13 +899,13 @@ export class HarnessBroker {
         ),
         this.timeouts.request_ms,
       );
-      this.check(session, run.thread_id, run.agent_id);
-      this.lifecycle.authorizeDispatch(run.id, run.dispatch_token);
+      await this.check(session, run.thread_id, run.agent_id);
+      await this.lifecycle.authorizeDispatch(run.id, run.dispatch_token);
       if (run.workspace_id) await new Artifacts(this.lifecycle).verifyInputs(run);
       const attachments = new Attachments(this.lifecycle);
-      const authorizeAttachments = () => {
-        this.check(session, run.thread_id, run.agent_id);
-        this.lifecycle.authorizeDispatch(run.id, run.dispatch_token as string);
+      const authorizeAttachments = async () => {
+        await this.check(session, run.thread_id, run.agent_id);
+        await this.lifecycle.authorizeDispatch(run.id, run.dispatch_token as string);
       };
       const attachmentContext = await attachments.context(run, authorizeAttachments);
       const visual = await prepareVisualInputs(
@@ -893,26 +914,31 @@ export class HarnessBroker {
         connection,
         session.selected.model_id,
       );
-      this.check(session, run.thread_id, run.agent_id);
-      this.lifecycle.authorizeDispatch(run.id, run.dispatch_token);
+      await this.check(session, run.thread_id, run.agent_id);
+      await this.lifecycle.authorizeDispatch(run.id, run.dispatch_token);
       if (visual.receipts.length)
-        this.lifecycle.observe(run.id, run.dispatch_token, { visual_inputs: visual.receipts });
+        await this.lifecycle.observe(run.id, run.dispatch_token, {
+          visual_inputs: visual.receipts,
+        });
       const inherited =
         session.launch.purpose === "routing" ? undefined : await this.sessionSkills(session);
-      this.lifecycle.authorizeDispatch(run.id, run.dispatch_token);
-      this.check(session, run.thread_id, run.agent_id);
+      await this.lifecycle.authorizeDispatch(run.id, run.dispatch_token);
+      await this.check(session, run.thread_id, run.agent_id);
       if (inherited)
-        persistInheritedSkills(this.lifecycle, session.launch, session.binding.id, inherited);
-      lease = this.tools.issue(run);
+        await persistInheritedSkills(this.lifecycle, session.launch, session.binding.id, inherited);
+      lease = await this.tools.issue(run, async () => {
+        await nativeEvents;
+        if (nativeEventError) throw nativeEventError;
+      });
       session.launch.redactor.add(lease.token);
       let stopped: (result: unknown) => void = () => {};
       const stopResult = new Promise<unknown>((resolve) => {
         stopped = resolve;
       });
       const abort = () => {
-        stopTimer = setTimeout(() => {
+        stopTimer = setTimeout(async () => {
           if (!this.#closed)
-            this.lifecycle.recordDiagnostic(
+            await this.lifecycle.recordDiagnostic(
               run.id,
               diagnostic(new HarnessError("NATIVE_UNKNOWN", "unknown")),
             );
@@ -947,12 +973,12 @@ export class HarnessBroker {
         recovered = resolve;
       });
       const watch = this.#recovery.watch(run.id, async () => {
-        if (finished || this.#closed) return;
-        const current = this.lifecycle.store.get("run", run.id);
+        if (finished || this.#closed || nativeEventPending > 0) return;
+        const current = await this.lifecycle.store.get("run", run.id);
         if (!["running", "cancel_requested"].includes(current.status)) return;
         const receipt = await this.inspectReceipt(current);
         if (finished || this.#closed || !receipt || receipt.status === "unknown") return;
-        const latest = this.lifecycle.store.get("run", run.id);
+        const latest = await this.lifecycle.store.get("run", run.id);
         if (
           latest.dispatch_token !== run.dispatch_token ||
           !["running", "cancel_requested"].includes(latest.status) ||
@@ -975,118 +1001,140 @@ export class HarnessBroker {
           identity: { native_session_id: session.binding.native_session_id },
           run_id: run.id,
           images: visual.images,
-          text: this.lifecycle.store.get("message", run.input_message_id).text,
-          learning_context: [runLearningContext(this.lifecycle, run), attachmentContext.text]
+          text: (await this.lifecycle.store.get("message", run.input_message_id)).text,
+          learning_context: [await runLearningContext(this.lifecycle, run), attachmentContext.text]
             .filter(Boolean)
             .join("\n\n"),
           settings: { ...session.selected },
           tools: lease,
           signal: context.signal,
           onEvent: (raw) => {
-            if (finished || this.#closed) return;
-            const event = nativeEvent.parse(raw);
             watch.observe();
-            if (event.type === "accepted") {
-              if (
-                event.native_session_id !== session.binding.native_session_id ||
-                (accepted !== null && accepted !== event.native_run_id)
-              )
-                throw new HarnessError("PROTOCOL_ERROR", "unknown");
-              if (session.launch.redactor.text(event.native_run_id) !== event.native_run_id)
-                throw new HarnessError("PROTOCOL_ERROR", "unknown");
-              accepted = event.native_run_id;
-              context.started(event.native_run_id);
-              attachments.record(run.id, attachmentContext.observations, authorizeAttachments);
-            }
-            if (event.type === "text") {
-              text += event.text;
-              if (text.length > 100_000) throw new HarnessError("PROTOCOL_ERROR", "unknown");
-            } else if (event.type === "text_snapshot") text = event.text;
-            else if (event.type === "dispatch") {
-              if (session.launch.redactor.text(event.native_run_id) !== event.native_run_id)
-                throw new HarnessError("PROTOCOL_ERROR", "unknown");
-              this.lifecycle.observe(run.id, run.dispatch_token as string, {
-                native_dispatch_id: event.native_run_id,
-              });
-            } else if (event.type === "activity") {
-              const current = this.lifecycle.store.get("run", run.id);
-              this.lifecycle.observe(run.id, run.dispatch_token as string, {
-                activity: current.active_tools.length ? "tool_running" : event.activity,
-              });
-              if (event.activity === "generating") context.controlReady?.();
-            } else if (event.type === "tool_activity") {
-              observeToolActivity(
-                this.lifecycle,
-                run.id,
-                run.dispatch_token as string,
-                {
-                  call_id: event.call_id,
-                  kind: event.kind,
-                  target_agent_id: null,
-                },
-                event.state,
-              );
-            } else if (event.type === "web_source") {
-              const url = new URL(event.url);
-              if (
-                ["https:", "http:"].includes(url.protocol) &&
-                !url.username &&
-                !url.password &&
-                !url.search &&
-                !/token|secret|credential|(?:^|[&#])(?:code|key)=/i.test(url.hash) &&
-                session.launch.redactor.text(event.url) === event.url
-              ) {
-                const current = this.lifecycle.store.get("run", run.id);
-                const source = {
-                  url: event.url,
-                  title: session.launch.redactor.text(event.title),
-                  operation: event.operation,
-                };
-                this.lifecycle.observe(run.id, run.dispatch_token as string, {
-                  sources: [...current.sources.filter((s) => s.url !== source.url), source].slice(
-                    -100,
-                  ),
-                });
-              }
-            } else if (event.type === "native_tool") {
-              const current = this.lifecycle.store.get("run", run.id);
-              const tools = current.native_tools.filter((item) => item.item_id !== event.item_id);
-              tools.push({
-                item_id: event.item_id,
-                name: event.name,
-                command: event.command,
-                state: event.state,
-                exit_code: event.exit_code,
-              });
-              this.lifecycle.observe(run.id, run.dispatch_token as string, {
-                native_tools: tools.slice(-200),
-              });
-            } else if (event.type === "failure") {
-              this.lifecycle.observe(run.id, run.dispatch_token as string, {
-                diagnostic: { ...diagnostic(new HarnessError(event.code)), outcome: "failed" },
-              });
-              if (event.code === "LOGIN_REQUIRED" || event.code === "AUTH_REJECTED") {
-                const current = this.connections.get(connection.id);
-                if (current.state === "active")
-                  this.connections.update(current, {
-                    login: event.code === "LOGIN_REQUIRED" ? "required" : "rejected",
+            nativeEventPending++;
+            nativeEvents = nativeEvents
+              .then(async () => {
+                if (finished || this.#closed) return;
+                const event = nativeEvent.parse(raw);
+                watch.observe();
+                if (event.type === "accepted") {
+                  if (
+                    event.native_session_id !== session.binding.native_session_id ||
+                    (accepted !== null && accepted !== event.native_run_id)
+                  )
+                    throw new HarnessError("PROTOCOL_ERROR", "unknown");
+                  if (session.launch.redactor.text(event.native_run_id) !== event.native_run_id)
+                    throw new HarnessError("PROTOCOL_ERROR", "unknown");
+                  accepted = event.native_run_id;
+                  await context.started(event.native_run_id);
+                  await attachments.record(
+                    run.id,
+                    attachmentContext.observations,
+                    authorizeAttachments,
+                  );
+                }
+                if (event.type === "text") {
+                  text += event.text;
+                  if (text.length > 100_000) throw new HarnessError("PROTOCOL_ERROR", "unknown");
+                } else if (event.type === "text_snapshot") text = event.text;
+                else if (event.type === "dispatch") {
+                  if (session.launch.redactor.text(event.native_run_id) !== event.native_run_id)
+                    throw new HarnessError("PROTOCOL_ERROR", "unknown");
+                  await this.lifecycle.observe(run.id, run.dispatch_token as string, {
+                    native_dispatch_id: event.native_run_id,
                   });
-              }
-            } else this.publish(run.id, event);
-            if (
-              (event.type === "text" || event.type === "text_snapshot") &&
-              accepted &&
-              Date.now() - lastPublishedAt >= 100
-            ) {
-              const safe = session.launch.redactor.stream(text);
-              if (safe) {
-                this.appendIfAuthorized(run.id, safe, "partial");
-                lastPublishedAt = Date.now();
-              }
-            }
+                } else if (event.type === "activity") {
+                  const current = await this.lifecycle.store.get("run", run.id);
+                  await this.lifecycle.observe(run.id, run.dispatch_token as string, {
+                    activity: current.active_tools.length ? "tool_running" : event.activity,
+                  });
+                  if (event.activity === "generating") await context.controlReady?.();
+                } else if (event.type === "tool_activity") {
+                  await observeToolActivity(
+                    this.lifecycle,
+                    run.id,
+                    run.dispatch_token as string,
+                    {
+                      call_id: event.call_id,
+                      kind: event.kind,
+                      target_agent_id: null,
+                    },
+                    event.state,
+                  );
+                } else if (event.type === "web_source") {
+                  const url = new URL(event.url);
+                  if (
+                    ["https:", "http:"].includes(url.protocol) &&
+                    !url.username &&
+                    !url.password &&
+                    !url.search &&
+                    !/token|secret|credential|(?:^|[&#])(?:code|key)=/i.test(url.hash) &&
+                    session.launch.redactor.text(event.url) === event.url
+                  ) {
+                    const current = await this.lifecycle.store.get("run", run.id);
+                    const source = {
+                      url: event.url,
+                      title: session.launch.redactor.text(event.title),
+                      operation: event.operation,
+                    };
+                    await this.lifecycle.observe(run.id, run.dispatch_token as string, {
+                      sources: [
+                        ...current.sources.filter((s) => s.url !== source.url),
+                        source,
+                      ].slice(-100),
+                    });
+                  }
+                } else if (event.type === "native_tool") {
+                  const current = await this.lifecycle.store.get("run", run.id);
+                  const tools = current.native_tools.filter(
+                    (item) => item.item_id !== event.item_id,
+                  );
+                  tools.push({
+                    item_id: event.item_id,
+                    name: event.name,
+                    command: event.command,
+                    state: event.state,
+                    exit_code: event.exit_code,
+                  });
+                  await this.lifecycle.observe(run.id, run.dispatch_token as string, {
+                    native_tools: tools.slice(-200),
+                  });
+                } else if (event.type === "failure") {
+                  await this.lifecycle.observe(run.id, run.dispatch_token as string, {
+                    diagnostic: { ...diagnostic(new HarnessError(event.code)), outcome: "failed" },
+                  });
+                  if (event.code === "LOGIN_REQUIRED" || event.code === "AUTH_REJECTED") {
+                    const current = await this.connections.get(connection.id);
+                    if (current.state === "active")
+                      await this.connections.update(current, {
+                        login: event.code === "LOGIN_REQUIRED" ? "required" : "rejected",
+                      });
+                  }
+                } else await this.publish(run.id, event);
+                if (
+                  (event.type === "text" || event.type === "text_snapshot") &&
+                  accepted &&
+                  Date.now() - lastPublishedAt >= 100
+                ) {
+                  const safe = session.launch.redactor.stream(text);
+                  if (safe) {
+                    await this.appendIfAuthorized(run.id, safe, "partial");
+                    lastPublishedAt = Date.now();
+                  }
+                }
+              })
+              .catch((error) => {
+                nativeEventError ??= error;
+              })
+              .finally(() => {
+                nativeEventPending--;
+                watch.observe();
+              });
+            return nativeEvents;
           },
         }),
       ]);
+      await nativeEvents;
+      if (nativeEventError) throw nativeEventError;
       const result = terminal.parse(observation);
       if (
         result.native_session_id !== session.binding.native_session_id ||
@@ -1097,13 +1145,14 @@ export class HarnessBroker {
         throw new HarnessError("PROTOCOL_ERROR", "unknown");
       outcome = result.status;
     } catch (error) {
+      await nativeEvents;
       outcome = dispatched
         ? !accepted && error instanceof HarnessError && error.outcome === "not_dispatched"
           ? "failed"
           : "unknown"
         : "failed";
       if (!this.#closed && run.dispatch_token)
-        this.lifecycle.observe(run.id, run.dispatch_token, { diagnostic: diagnostic(error) });
+        await this.lifecycle.observe(run.id, run.dispatch_token, { diagnostic: diagnostic(error) });
     } finally {
       finished = true;
       removeWatch();
@@ -1111,7 +1160,7 @@ export class HarnessBroker {
       clearTimeout(stopTimer);
       lease?.revoke();
       const groupWorkspace = run.workspace_id
-        ? this.lifecycle.store.get("workspace", run.workspace_id).scope === "group"
+        ? (await this.lifecycle.store.get("workspace", run.workspace_id)).scope === "group"
         : false;
       if (groupWorkspace || recoveredNative) {
         const session = this.#sessions.get(`${run.thread_id}:${run.agent_id}`);
@@ -1124,26 +1173,29 @@ export class HarnessBroker {
           }
         }
       }
-      if (!this.#closed && (text || this.lifecycle.store.answer(run.id))) {
+      if (!this.#closed && (text || (await this.lifecycle.store.answer(run.id)))) {
         const session = this.#sessions.get(`${run.thread_id}:${run.agent_id}`);
         if (session && accepted) {
           const safe = session.launch.redactor.text(text);
-          const published = this.appendIfAuthorized(
+          const published = await this.appendIfAuthorized(
             run.id,
             safe,
             outcome === "succeeded" ? "complete" : "partial",
           );
-          if (published && this.lifecycle.store.get("run", run.id).publication === "immediate")
-            this.publish(run.id, { type: "text", text: safe }, outcome);
+          if (
+            published &&
+            (await this.lifecycle.store.get("run", run.id)).publication === "immediate"
+          )
+            await this.publish(run.id, { type: "text", text: safe }, outcome);
         }
       }
       if (!this.#closed && dispatched) {
-        const connection = this.connections.get(
+        const connection = await this.connections.get(
           lease?.scope.connection_id ??
-            this.lifecycle.store.get("agent", run.agent_id).connection_id,
+            (await this.lifecycle.store.get("agent", run.agent_id)).connection_id,
         );
         if (connection.state === "active")
-          this.connections.update(connection, {
+          await this.connections.update(connection, {
             inference: outcome,
           });
       }
@@ -1151,7 +1203,7 @@ export class HarnessBroker {
         !this.#closed &&
         (groupWorkspace ||
           recoveredNative ||
-          this.lifecycle.store.get("thread", run.thread_id).purpose === "routing")
+          (await this.lifecycle.store.get("thread", run.thread_id)).purpose === "routing")
       ) {
         const key = `${run.thread_id}:${run.agent_id}`;
         const session = this.#sessions.get(key);
@@ -1168,12 +1220,18 @@ export class HarnessBroker {
   }
   async close() {
     if (this.#closed) return;
-    this.#recovery.close();
-    this.#interactionJournal.recover();
-    for (const control of this.lifecycle.store.list("control"))
-      if (control.state === "requested")
-        new RunControls(this.lifecycle).settleSteer(control.id, "unknown", "NATIVE_UNKNOWN");
     this.#closed = true;
+    this.#recovery.close();
+    if (!this.lifecycle.store.closed) {
+      await this.#interactionJournal.recover();
+      for (const control of await this.lifecycle.store.list("control"))
+        if (control.state === "requested")
+          await new RunControls(this.lifecycle).settleSteer(
+            control.id,
+            "unknown",
+            "NATIVE_UNKNOWN",
+          );
+    }
     for (const timer of this.#idleTimers.values()) clearTimeout(timer);
     this.#idleTimers.clear();
     for (const controller of this.#recoveryControllers) controller.abort();
@@ -1186,7 +1244,7 @@ export class HarnessBroker {
       [
         ...[...this.#sessions.values()].map((session) => session.client),
         ...[...this.#closingWriters.values()].map((writer) => writer.client),
-      ].map((client) => bounded(client.close(), this.timeouts.close_ms)),
+      ].map(async (client) => bounded(client.close(), this.timeouts.close_ms)),
     );
     this.#sessions.clear();
     this.#closingWriters.clear();

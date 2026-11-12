@@ -19,15 +19,15 @@ import { ApplicationSkills } from "../../src/learning/application-skills";
 import { Memories } from "../../src/learning/memories";
 import { fixture } from "../helpers";
 
-let f: ReturnType<typeof fixture>;
-afterEach(() => f?.close());
+let f: Awaited<ReturnType<typeof fixture>>;
+afterEach(async () => await f?.close());
 const pkg = (text = "Use the attached checklist.") => ({
   description: "Write a clear report",
   instructions: text,
   assets: [{ path: "references/checklist.txt", text: "Verify facts before publishing." }],
 });
-function setup() {
-  f = fixture();
+async function setup() {
+  f = await fixture();
   return {
     context: { agent_id: f.agent.id, thread_id: f.thread.id },
     memories: new Memories(f.lifecycle),
@@ -40,302 +40,346 @@ const write = (text: string, visibility = "dm_private") => ({
   visibility,
   text,
 });
-function group() {
-  return f.lifecycle.create("thread", { type: "group", member_agent_ids: [f.agent.id] });
+async function group() {
+  return await f.lifecycle.create("thread", { type: "group", member_agent_ids: [f.agent.id] });
 }
-function toolLane(threadId = f.thread.id) {
+async function toolLane(threadId = f.thread.id) {
   const connections = new Connections(f.lifecycle);
-  const connection = connections.get(f.store.get("agent", f.agent.id).connection_id);
-  connections.update(connection, {
+  const connection = await connections.get((await f.store.get("agent", f.agent.id)).connection_id);
+  await connections.update(connection, {
     capabilities: { ...connection.capabilities, product_tools: "supported" },
   });
-  f.lifecycle.bind(threadId, f.agent.id, crypto.randomUUID());
-  f.lifecycle.admit({ thread_id: threadId, agent_id: f.agent.id, text: "Use learning tools" });
-  const run = f.lifecycle.claimNext(threadId, f.agent.id) as Entity<"run">;
-  const tools = new ProductTools(f.lifecycle);
-  return { tools, run, lease: tools.issue(run) };
+  await f.lifecycle.bind(threadId, f.agent.id, crypto.randomUUID());
+  await f.lifecycle.admit({
+    thread_id: threadId,
+    agent_id: f.agent.id,
+    text: "Use learning tools",
+  });
+  const run = (await f.lifecycle.claimNext(threadId, f.agent.id)) as Entity<"run">;
+  const tools = await ProductTools.open(f.lifecycle);
+  return { tools, run, lease: await tools.issue(run) };
 }
 
-test("scoped recall separates DM, each group, another agent and explicitly shared facts", () => {
-  const { context, memories } = setup();
-  const first = { ...context, thread_id: group().id };
-  const second = { ...context, thread_id: group().id };
-  memories.write(context, write("PRIVATE_DM"));
-  memories.write(first, write("FIRST_GROUP", "group"));
-  memories.write(second, write("SECOND_GROUP", "group"));
-  memories.write(context, write("SHARED_PREFERENCE", "shared"));
-  expect(memories.recall(context).memories.map((m) => m.text)).toEqual([
+test("scoped recall separates DM, each group, another agent and explicitly shared facts", async () => {
+  const { context, memories } = await setup();
+  const first = { ...context, thread_id: (await group()).id };
+  const second = { ...context, thread_id: (await group()).id };
+  await memories.write(context, write("PRIVATE_DM"));
+  await memories.write(first, write("FIRST_GROUP", "group"));
+  await memories.write(second, write("SECOND_GROUP", "group"));
+  await memories.write(context, write("SHARED_PREFERENCE", "shared"));
+  expect((await memories.recall(context)).memories.map((m) => m.text)).toEqual([
     "PRIVATE_DM",
     "SHARED_PREFERENCE",
   ]);
-  expect(memories.recall(first).memories.map((m) => m.text)).toEqual([
+  expect((await memories.recall(first)).memories.map((m) => m.text)).toEqual([
     "FIRST_GROUP",
     "SHARED_PREFERENCE",
   ]);
-  expect(memories.recall(second).memories.map((m) => m.text)).toEqual([
+  expect((await memories.recall(second)).memories.map((m) => m.text)).toEqual([
     "SECOND_GROUP",
     "SHARED_PREFERENCE",
   ]);
-  const other = f.lifecycle.createAgent({
+  const other = await f.lifecycle.createAgent({
     name: "Other",
     harness: "codex",
-    connection_id: f.store.get("agent", f.agent.id).connection_id,
+    connection_id: (await f.store.get("agent", f.agent.id)).connection_id,
   });
-  const dm = f.lifecycle.create("thread", { type: "dm", member_agent_ids: [other.id] });
-  expect(memories.recall({ agent_id: other.id, thread_id: dm.id }).memories).toEqual([]);
-  expect(() => memories.recall({ agent_id: other.id, thread_id: f.thread.id })).toThrow(
+  const dm = await f.lifecycle.create("thread", { type: "dm", member_agent_ids: [other.id] });
+  expect((await memories.recall({ agent_id: other.id, thread_id: dm.id })).memories).toEqual([]);
+  await expect(
+    (async () => memories.recall({ agent_id: other.id, thread_id: f.thread.id }))(),
+  ).rejects.toThrow("SCOPE_DENIED");
+  await expect((async () => memories.write(first, write("Wrong visibility")))()).rejects.toThrow(
     "SCOPE_DENIED",
   );
-  expect(() => memories.write(first, write("Wrong visibility"))).toThrow("SCOPE_DENIED");
 });
 
-test("identity/revision corrections, permanent tombstones and immutable command receipts survive restart", () => {
-  let { context, memories } = setup();
+test("identity/revision corrections, permanent tombstones and immutable command receipts survive restart", async () => {
+  let { context, memories } = await setup();
   const commandId = crypto.randomUUID();
   const input = write("Old preference");
-  const saved = f.store.command(commandId, { context, input }, () =>
-    memories.write(context, input),
+  const saved = await f.store.command(
+    commandId,
+    { context, input },
+    async () => await memories.write(context, input),
   );
-  const corrected = memories.write(context, {
+  const corrected = await memories.write(context, {
     ...input,
     text: "Correct preference",
     expected_revision: 1,
   });
   expect(corrected.id).toBe(saved.id);
-  expect(() => memories.write(context, { ...input, text: "Stale", expected_revision: 1 })).toThrow(
-    "CONFLICT",
-  );
-  memories.remove(context, { memory_id: saved.id, expected_revision: corrected.revision });
-  f.restart();
+  await expect(
+    (async () => memories.write(context, { ...input, text: "Stale", expected_revision: 1 }))(),
+  ).rejects.toThrow("CONFLICT");
+  await memories.remove(context, { memory_id: saved.id, expected_revision: corrected.revision });
+  await f.restart();
   memories = new Memories(f.lifecycle);
   expect(
-    f.store.command(commandId, { context, input }, () => memories.write(context, input)),
+    await f.store.command(
+      commandId,
+      { context, input },
+      async () => await memories.write(context, input),
+    ),
   ).toEqual(saved);
-  expect(memories.recall(context).memories).toEqual([]);
-  expect(memories.recall(context, { include_deleted: true }).memories[0]).toMatchObject({
+  expect((await memories.recall(context)).memories).toEqual([]);
+  expect((await memories.recall(context, { include_deleted: true })).memories[0]).toMatchObject({
     revision: 3,
     state: "deleted",
     text: "",
   });
-  expect(() => memories.write(context, input)).toThrow("CONFLICT");
-  expect(() => memories.write(context, { ...input, expected_revision: 3 })).toThrow("CONFLICT");
-  expect(() =>
-    f.store.command(commandId, { context, input: write("Different") }, () => null),
-  ).toThrow("IDEMPOTENCY_CONFLICT");
+  await expect((async () => memories.write(context, input))()).rejects.toThrow("CONFLICT");
+  await expect(
+    (async () => memories.write(context, { ...input, expected_revision: 3 }))(),
+  ).rejects.toThrow("CONFLICT");
+  await expect(
+    (async () => f.store.command(commandId, { context, input: write("Different") }, () => null))(),
+  ).rejects.toThrow("IDEMPOTENCY_CONFLICT");
 });
 
-test("memory transaction failure rolls back identity, event and receipt before retry", () => {
-  const { context, memories } = setup();
+test("memory transaction failure rolls back identity, event and receipt before retry", async () => {
+  const { context, memories } = await setup();
   const input = write("Atomic fact");
   const commandId = crypto.randomUUID();
-  const cursor = f.store.cursor;
-  expect(() =>
-    f.store.command(commandId, input, () => {
-      memories.write(context, input);
-      throw new Error("power boundary");
-    }),
-  ).toThrow("power boundary");
-  expect(f.store.cursor).toBe(cursor);
-  expect(memories.recall(context).memories).toEqual([]);
-  f.store.command(commandId, input, () => memories.write(context, input));
-  expect(memories.recall(context).memories).toHaveLength(1);
+  const cursor = await f.store.cursor;
+  await expect(
+    (async () =>
+      f.store.command(commandId, input, async () => {
+        await memories.write(context, input);
+        throw new Error("power boundary");
+      }))(),
+  ).rejects.toThrow("power boundary");
+  expect(await f.store.cursor).toBe(cursor);
+  expect((await memories.recall(context)).memories).toEqual([]);
+  await f.store.command(commandId, input, async () => await memories.write(context, input));
+  expect((await memories.recall(context)).memories).toHaveLength(1);
 });
 
-test("bounded recall has stable pagination and refuses a foreign cursor", () => {
-  const { context, memories } = setup();
-  for (let i = 0; i < 8; i++) memories.write(context, write(`${i} ${"x".repeat(7900)}`));
-  const first = memories.recall(context);
+test("bounded recall has stable pagination and refuses a foreign cursor", async () => {
+  const { context, memories } = await setup();
+  for (let i = 0; i < 8; i++) await memories.write(context, write(`${i} ${"x".repeat(7900)}`));
+  const first = await memories.recall(context);
   expect(first.memories.length).toBeLessThan(8);
   expect(Buffer.byteLength(JSON.stringify(first))).toBeLessThan(33_000);
-  const second = memories.recall(context, { after: first.next_after });
+  const second = await memories.recall(context, { after: first.next_after });
   expect(new Set([...first.memories, ...second.memories].map((m) => m.id)).size).toBe(
     first.memories.length + second.memories.length,
   );
-  const foreign = memories.write({ ...context, thread_id: group().id }, write("Foreign", "group"));
-  expect(() => memories.recall(context, { after: foreign.id })).toThrow("SCOPE_DENIED");
+  const foreign = await memories.write(
+    { ...context, thread_id: (await group()).id },
+    write("Foreign", "group"),
+  );
+  await expect((async () => memories.recall(context, { after: foreign.id }))()).rejects.toThrow(
+    "SCOPE_DENIED",
+  );
 });
 
-test("private skill assets and assignments do not travel to another thread; explicit shared packages do", () => {
-  const { context, skills } = setup();
-  const foreign = { ...context, thread_id: group().id };
-  const local = skills.create(context, {
+test("private skill assets and assignments do not travel to another thread; explicit shared packages do", async () => {
+  const { context, skills } = await setup();
+  const foreign = { ...context, thread_id: (await group()).id };
+  const local = await skills.create(context, {
     name: "private-report",
     visibility: "dm_private",
     package: pkg("DM_PRIVATE_ASSET"),
   });
-  skills.assign(context, {
+  await skills.assign(context, {
     skill_id: local.skill.id,
     version: 1,
     expected_revision: 0,
     enabled: true,
   });
-  expect(() => skills.read(foreign, { skill_id: local.skill.id, version: 1 })).toThrow(
-    "SCOPE_DENIED",
-  );
-  expect(() =>
-    skills.assign(foreign, {
-      skill_id: local.skill.id,
-      version: 1,
-      expected_revision: 0,
-      enabled: true,
-    }),
-  ).toThrow("SCOPE_DENIED");
-  expect(JSON.stringify(skills.inventory(foreign))).not.toContain("private-report");
-  const shared = skills.create(context, {
+  await expect(
+    (async () => skills.read(foreign, { skill_id: local.skill.id, version: 1 }))(),
+  ).rejects.toThrow("SCOPE_DENIED");
+  await expect(
+    (async () =>
+      skills.assign(foreign, {
+        skill_id: local.skill.id,
+        version: 1,
+        expected_revision: 0,
+        enabled: true,
+      }))(),
+  ).rejects.toThrow("SCOPE_DENIED");
+  expect(JSON.stringify(await skills.inventory(foreign))).not.toContain("private-report");
+  const shared = await skills.create(context, {
     name: "shared-report",
     visibility: "shared",
     package: pkg(),
   });
-  skills.assign(context, {
+  await skills.assign(context, {
     skill_id: shared.skill.id,
     version: 1,
     expected_revision: 0,
     enabled: true,
   });
-  expect(skills.inventory(foreign).application[0].assignment?.enabled).toBe(true);
-  const grouped = skills.create(foreign, {
+  expect((await skills.inventory(foreign)).application[0].assignment?.enabled).toBe(true);
+  const grouped = await skills.create(foreign, {
     name: "group-report",
     visibility: "group",
     package: pkg("GROUP_ONLY"),
   });
-  expect(() => skills.read(context, { skill_id: grouped.skill.id, version: 1 })).toThrow(
-    "SCOPE_DENIED",
-  );
+  await expect(
+    (async () => skills.read(context, { skill_id: grouped.skill.id, version: 1 }))(),
+  ).rejects.toThrow("SCOPE_DENIED");
 });
 
-test("skill revisions are immutable, assignment updates are explicit and pinned versions survive restart", () => {
-  let { context, skills } = setup();
-  const original = skills.create(context, {
+test("skill revisions are immutable, assignment updates are explicit and pinned versions survive restart", async () => {
+  let { context, skills } = await setup();
+  const original = await skills.create(context, {
     name: "research",
     visibility: "dm_private",
     package: pkg("Version one"),
   });
   const input = { skill_id: original.skill.id, version: 1, expected_revision: 0, enabled: true };
-  skills.assign(context, input);
-  const revised = skills.revise(context, {
+  await skills.assign(context, input);
+  const revised = await skills.revise(context, {
     skill_id: original.skill.id,
     expected_revision: 1,
     package: pkg("Version two"),
   });
-  expect(() => f.store.put({ ...original.revision, revision: 2 }, 1)).toThrow("CONFLICT");
-  expect(skills.inventory(context).application[0].assignment?.version).toBe(1);
-  expect(skills.read(context, { skill_id: original.skill.id, version: 1 }).revision).toEqual(
-    original.revision,
-  );
-  expect(() =>
-    skills.revise(context, { skill_id: original.skill.id, expected_revision: 1, package: pkg() }),
-  ).toThrow("CONFLICT");
-  f.restart();
-  skills = new ApplicationSkills(f.lifecycle);
-  expect(skills.read(context, { skill_id: original.skill.id, version: 2 }).revision).toEqual(
-    revised.revision,
-  );
-  expect(skills.assign(context, { ...input, version: 2, expected_revision: 1 }).version).toBe(2);
-  expect(() => skills.assign(context, input)).toThrow("CONFLICT");
+  await expect(
+    (async () => f.store.put({ ...original.revision, revision: 2 }, 1))(),
+  ).rejects.toThrow("CONFLICT");
+  expect((await skills.inventory(context)).application[0].assignment?.version).toBe(1);
   expect(
-    skills.assign(context, { ...input, version: 2, expected_revision: 2, enabled: false }).enabled,
+    (await skills.read(context, { skill_id: original.skill.id, version: 1 })).revision,
+  ).toEqual(original.revision);
+  await expect(
+    (async () =>
+      skills.revise(context, {
+        skill_id: original.skill.id,
+        expected_revision: 1,
+        package: pkg(),
+      }))(),
+  ).rejects.toThrow("CONFLICT");
+  await f.restart();
+  skills = new ApplicationSkills(f.lifecycle);
+  expect(
+    (await skills.read(context, { skill_id: original.skill.id, version: 2 })).revision,
+  ).toEqual(revised.revision);
+  expect(
+    (await skills.assign(context, { ...input, version: 2, expected_revision: 1 })).version,
+  ).toBe(2);
+  await expect((async () => skills.assign(context, input))()).rejects.toThrow("CONFLICT");
+  expect(
+    (await skills.assign(context, { ...input, version: 2, expected_revision: 2, enabled: false }))
+      .enabled,
   ).toBe(false);
 });
 
-test("duplicate names, asset path injection and ambiguous asset casing fail without partial revisions", () => {
-  const { context, skills } = setup();
+test("duplicate names, asset path injection and ambiguous asset casing fail without partial revisions", async () => {
+  const { context, skills } = await setup();
   const input = { name: "research", visibility: "dm_private", package: pkg() };
-  skills.create(context, input);
-  expect(() => skills.create(context, input)).toThrow("CONFLICT");
+  await skills.create(context, input);
+  await expect((async () => skills.create(context, input))()).rejects.toThrow("CONFLICT");
   for (const path of ["../../secret", "/tmp/host", "a/../b", "a\\b", "SKILL.md", "a//b", "a\0b"])
-    expect(() =>
+    await expect(
+      (async () =>
+        skills.create(context, {
+          ...input,
+          name: "invalid",
+          package: { ...pkg(), assets: [{ path, text: "bad" }] },
+        }))(),
+    ).rejects.toThrow();
+  await expect(
+    (async () =>
       skills.create(context, {
         ...input,
         name: "invalid",
-        package: { ...pkg(), assets: [{ path, text: "bad" }] },
-      }),
-    ).toThrow();
-  expect(() =>
-    skills.create(context, {
-      ...input,
-      name: "invalid",
-      package: {
-        ...pkg(),
-        assets: [
-          { path: "a.txt", text: "a" },
-          { path: "A.txt", text: "b" },
-        ],
-      },
-    }),
-  ).toThrow();
-  expect(f.store.list("skill_revision")).toHaveLength(1);
+        package: {
+          ...pkg(),
+          assets: [
+            { path: "a.txt", text: "a" },
+            { path: "A.txt", text: "b" },
+          ],
+        },
+      }))(),
+  ).rejects.toThrow();
+  expect(await f.store.list("skill_revision")).toHaveLength(1);
 });
 
-test("a new shared assignment cannot introduce a same-name conflict in another conversation", () => {
-  const { context, skills } = setup();
-  const privateSkill = skills.create(context, {
+test("a new shared assignment cannot introduce a same-name conflict in another conversation", async () => {
+  const { context, skills } = await setup();
+  const privateSkill = await skills.create(context, {
     name: "report",
     visibility: "dm_private",
     package: pkg(),
   });
-  skills.assign(context, {
+  await skills.assign(context, {
     skill_id: privateSkill.skill.id,
     version: 1,
     expected_revision: 0,
     enabled: true,
   });
-  const other = { ...context, thread_id: group().id };
-  const shared = skills.create(other, { name: "report", visibility: "shared", package: pkg() });
-  expect(() =>
-    skills.assign(other, {
-      skill_id: shared.skill.id,
-      version: 1,
-      expected_revision: 0,
-      enabled: true,
-    }),
-  ).toThrow("CONFLICT");
+  const other = { ...context, thread_id: (await group()).id };
+  const shared = await skills.create(other, {
+    name: "report",
+    visibility: "shared",
+    package: pkg(),
+  });
+  await expect(
+    (async () =>
+      skills.assign(other, {
+        skill_id: shared.skill.id,
+        version: 1,
+        expected_revision: 0,
+        enabled: true,
+      }))(),
+  ).rejects.toThrow("CONFLICT");
   expect(
-    skills.inventory(context).application.find((item) => item.id === shared.skill.id)?.assignment,
+    (await skills.inventory(context)).application.find((item) => item.id === shared.skill.id)
+      ?.assignment,
   ).toBeNull();
 });
 
-test("group members share group facts but retain separate private memory and skill write ownership", () => {
-  const { context, skills, memories } = setup();
-  const peer = f.lifecycle.createAgent({
+test("group members share group facts but retain separate private memory and skill write ownership", async () => {
+  const { context, skills, memories } = await setup();
+  const peer = await f.lifecycle.createAgent({
     name: "Peer",
     harness: "codex",
-    connection_id: f.store.get("agent", f.agent.id).connection_id,
+    connection_id: (await f.store.get("agent", f.agent.id)).connection_id,
   });
-  const thread = f.lifecycle.create("thread", {
+  const thread = await f.lifecycle.create("thread", {
     type: "group",
     member_agent_ids: [f.agent.id, peer.id],
   });
   const own = { ...context, thread_id: thread.id };
   const other = { agent_id: peer.id, thread_id: thread.id };
-  memories.write(context, write("PRIVATE_OWNER_FACT"));
-  memories.write(own, write("GROUP_FACT", "group"));
-  expect(memories.recall(other).memories.map((item) => item.text)).toEqual(["GROUP_FACT"]);
-  const created = skills.create(own, { name: "team-report", visibility: "group", package: pkg() });
-  expect(skills.read(other, { skill_id: created.skill.id, version: 1 }).revision.sha256).toBe(
-    created.revision.sha256,
-  );
-  expect(() =>
-    skills.revise(other, {
-      skill_id: created.skill.id,
-      expected_revision: 1,
-      package: pkg("Peer overwrite"),
-    }),
-  ).toThrow("SCOPE_DENIED");
-  const current = f.store.get("thread", thread.id);
-  f.store.put(
+  await memories.write(context, write("PRIVATE_OWNER_FACT"));
+  await memories.write(own, write("GROUP_FACT", "group"));
+  expect((await memories.recall(other)).memories.map((item) => item.text)).toEqual(["GROUP_FACT"]);
+  const created = await skills.create(own, {
+    name: "team-report",
+    visibility: "group",
+    package: pkg(),
+  });
+  expect(
+    (await skills.read(other, { skill_id: created.skill.id, version: 1 })).revision.sha256,
+  ).toBe(created.revision.sha256);
+  await expect(
+    (async () =>
+      skills.revise(other, {
+        skill_id: created.skill.id,
+        expected_revision: 1,
+        package: pkg("Peer overwrite"),
+      }))(),
+  ).rejects.toThrow("SCOPE_DENIED");
+  const current = await f.store.get("thread", thread.id);
+  await f.store.put(
     { ...current, revision: current.revision + 1, member_agent_ids: [f.agent.id] },
     current.revision,
   );
-  expect(() => skills.read(other, { skill_id: created.skill.id, version: 1 })).toThrow(
-    "SCOPE_DENIED",
-  );
-  expect(() => memories.recall(other)).toThrow("SCOPE_DENIED");
+  await expect(
+    (async () => skills.read(other, { skill_id: created.skill.id, version: 1 }))(),
+  ).rejects.toThrow("SCOPE_DENIED");
+  await expect((async () => memories.recall(other))()).rejects.toThrow("SCOPE_DENIED");
 });
 
-test("harness inventory is read-only, qualified name collisions are visible and app writes preserve native bytes", () => {
-  const { context, skills } = setup();
+test("harness inventory is read-only, qualified name collisions are visible and app writes preserve native bytes", async () => {
+  const { context, skills } = await setup();
   const launch = new CredentialContexts(f.dir).create(
-    f.store.get("connection", f.store.get("agent", f.agent.id).connection_id),
+    await f.store.get("connection", (await f.store.get("agent", f.agent.id)).connection_id),
   );
   const root = join(launch.env.HOME, ".agents/skills/research");
   mkdirSync(root, { recursive: true });
@@ -343,30 +387,33 @@ test("harness inventory is read-only, qualified name collisions are visible and 
   const bytes =
     "---\nname: research\ndescription: Native research skill\n---\nKeep native skills unchanged.\n";
   writeFileSync(file, bytes);
-  const binding = f.lifecycle.bind(context.thread_id, context.agent_id, "native");
-  persistInheritedSkills(f.lifecycle, launch, binding.id);
-  const app = skills.create(context, {
+  const binding = await f.lifecycle.bind(context.thread_id, context.agent_id, "native");
+  await persistInheritedSkills(f.lifecycle, launch, binding.id);
+  const app = await skills.create(context, {
     name: "research",
     visibility: "dm_private",
     package: pkg(),
   });
-  const inventory = skills.inventory(context);
+  const inventory = await skills.inventory(context);
   expect(inventory.collisions).toEqual(["research"]);
   expect(inventory.harness[0].writable).toBe(false);
-  const inherited = skills.readHarness(context, inventory.harness[0].key);
+  const inherited = await skills.readHarness(context, inventory.harness[0].key);
   expect(inherited.package.instructions).toContain("Keep native skills unchanged.");
-  skills.revise(context, {
+  await skills.revise(context, {
     skill_id: app.skill.id,
     expected_revision: 1,
     package: pkg("App-only revision"),
   });
   expect(readFileSync(file, "utf8")).toBe(bytes);
-  expect(() =>
-    skills.revise(context, { skill_id: inherited.key, expected_revision: 1, package: pkg() }),
-  ).toThrow();
-  const other = { ...context, thread_id: group().id };
-  expect(() => skills.readHarness(other, inherited.key)).toThrow("SCOPE_DENIED");
-  persistInheritedSkills(f.lifecycle, launch, binding.id, {
+  await expect(
+    (async () =>
+      skills.revise(context, { skill_id: inherited.key, expected_revision: 1, package: pkg() }))(),
+  ).rejects.toThrow();
+  const other = { ...context, thread_id: (await group()).id };
+  await expect((async () => skills.readHarness(other, inherited.key))()).rejects.toThrow(
+    "SCOPE_DENIED",
+  );
+  await persistInheritedSkills(f.lifecycle, launch, binding.id, {
     native_state: "supported",
     native_catalog: [
       {
@@ -378,14 +425,16 @@ test("harness inventory is read-only, qualified name collisions are visible and 
       },
     ],
   });
-  expect(skills.inventory(context).harness).toEqual([]);
-  expect(() => skills.readHarness(context, inherited.key)).toThrow("SCOPE_DENIED");
+  expect((await skills.inventory(context)).harness).toEqual([]);
+  await expect((async () => skills.readHarness(context, inherited.key))()).rejects.toThrow(
+    "SCOPE_DENIED",
+  );
 });
 
-test("native discovery refuses symlink ancestors and hardlinked content instead of exposing foreign assets", () => {
-  setup();
+test("native discovery refuses symlink ancestors and hardlinked content instead of exposing foreign assets", async () => {
+  await setup();
   const launch = new CredentialContexts(f.dir).create(
-    f.store.get("connection", f.store.get("agent", f.agent.id).connection_id),
+    await f.store.get("connection", (await f.store.get("agent", f.agent.id)).connection_id),
   );
   const root = join(launch.env.HOME, ".agents/skills/research");
   mkdirSync(root, { recursive: true });
@@ -399,7 +448,7 @@ test("native discovery refuses symlink ancestors and hardlinked content instead 
   expect(inheritedSkills(launch).rejected_packages).toBe(1);
   expect(JSON.stringify(inheritedSkills(launch))).not.toContain("FOREIGN_NATIVE_ASSET");
   const second = new CredentialContexts(join(realpathSync(f.dir), "other-state")).create(
-    f.store.get("connection", f.store.get("agent", f.agent.id).connection_id),
+    await f.store.get("connection", (await f.store.get("agent", f.agent.id)).connection_id),
   );
   mkdirSync(join(second.env.HOME, ".agents"), { recursive: true });
   symlinkSync(join(launch.env.HOME, ".agents/skills"), join(second.env.HOME, ".agents/skills"));
@@ -407,11 +456,11 @@ test("native discovery refuses symlink ancestors and hardlinked content instead 
 });
 
 test("learning tools bind command receipts to the lease context and deny effects after grant revocation", async () => {
-  const { context } = setup();
-  const lane = toolLane();
+  const { context } = await setup();
+  const lane = await toolLane();
   const payload = { ...write("Only this DM"), command_id: crypto.randomUUID() };
   await lane.tools.call(lane.lease.token, lane.lease.scope, "ngertiin.write_memory", payload);
-  const other = toolLane(group().id);
+  const other = await toolLane((await group()).id);
   await expect(
     other.tools.call(other.lease.token, other.lease.scope, "ngertiin.write_memory", {
       ...payload,
@@ -426,16 +475,16 @@ test("learning tools bind command receipts to the lease context and deny effects
       {},
     ),
   ).rejects.toThrow("SCOPE_DENIED");
-  new Connections(f.lifecycle).revoke(f.store.get("agent", f.agent.id).connection_id);
+  await new Connections(f.lifecycle).revoke((await f.store.get("agent", f.agent.id)).connection_id);
   await expect(
     lane.tools.call(lane.lease.token, lane.lease.scope, "ngertiin.write_memory", payload),
   ).rejects.toThrow("SCOPE_DENIED");
-  expect(new Memories(f.lifecycle).recall(context).memories).toHaveLength(1);
+  expect((await new Memories(f.lifecycle).recall(context)).memories).toHaveLength(1);
 });
 
 test("HTTP learning commands authenticate, deduplicate concurrent retries and expose reviewable revisions", async () => {
-  const { context } = setup();
-  const app = createApi(f.lifecycle, new Background(f.lifecycle), "t".repeat(64));
+  const { context } = await setup();
+  const app = await createApi(f.lifecycle, new Background(f.lifecycle), "t".repeat(64));
   const commandId = crypto.randomUUID();
   const input = { ...write("Prefer concise answers"), context };
   const request = (path: string, body?: unknown, key = commandId, token = "t".repeat(64)) =>
@@ -454,7 +503,7 @@ test("HTTP learning commands authenticate, deduplicate concurrent retries and ex
     Array.from({ length: 12 }, () => request("/v1/learning/memories/write", input)),
   );
   expect(responses.every((response) => response.status === 200)).toBe(true);
-  expect(f.store.list("memory")).toHaveLength(1);
+  expect(await f.store.list("memory")).toHaveLength(1);
   expect((await request("/v1/learning/memories/write", input, commandId, "wrong")).status).toBe(
     401,
   );

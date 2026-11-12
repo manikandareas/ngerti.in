@@ -8,11 +8,11 @@ export function registerAttachmentTools(tools: ProductTools) {
   tools.register("ngertiin.list_attachments", {
     schema: attachmentList,
     resources: () => [],
-    execute: (input, { scope, authorize }) => {
-      authorize();
+    execute: async (input, { scope, authorize }) => {
+      await authorize();
       const data = input as z.infer<typeof attachmentList>;
-      return attachments.list(
-        tools.lifecycle.store.get("run", scope.run_id),
+      return await attachments.list(
+        await tools.lifecycle.store.get("run", scope.run_id),
         data.after,
         data.limit,
       );
@@ -23,9 +23,9 @@ export function registerAttachmentTools(tools: ProductTools) {
     resources: (input) => [
       { kind: "artifact", id: (input as z.infer<typeof attachmentRead>).artifact_id },
     ],
-    execute: (input, { scope, authorize }) =>
+    execute: async (input, { scope, authorize }) =>
       attachments.read(
-        tools.lifecycle.store.get("run", scope.run_id),
+        await tools.lifecycle.store.get("run", scope.run_id),
         input as z.infer<typeof attachmentRead>,
         authorize,
       ),
@@ -35,9 +35,9 @@ export function registerAttachmentTools(tools: ProductTools) {
     resources: (input) => [
       { kind: "artifact", id: (input as z.infer<typeof attachmentSearch>).artifact_id },
     ],
-    execute: (input, { scope, authorize }) =>
+    execute: async (input, { scope, authorize }) =>
       attachments.search(
-        tools.lifecycle.store.get("run", scope.run_id),
+        await tools.lifecycle.store.get("run", scope.run_id),
         input as z.infer<typeof attachmentSearch>,
         authorize,
       ),

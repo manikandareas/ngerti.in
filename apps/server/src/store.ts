@@ -1,182 +1,293 @@
-import { Database } from "bun:sqlite";
+import { AsyncLocalStorage } from "node:async_hooks";
 import { createHash } from "node:crypto";
-import { chmodSync, mkdirSync } from "node:fs";
+import { existsSync, mkdirSync } from "node:fs";
 import { dirname } from "node:path";
+import { Client, Pool, type PoolClient, type QueryResultRow } from "pg";
 import { DomainError, type DomainEvent, type Entity, type Kind, schemas } from "./contracts";
 import { ConversationJournal } from "./conversations/journal";
 import { type RoutingDecisionTrace, routingDecisionTrace } from "./groups/decision-trace";
+import { schemaSql, schemaVersion } from "./persistence/schema";
 
-const APPLICATION_ID = 0x4e474831;
-const SCHEMA_VERSION = 1;
 export function canonical(value: unknown): string {
   if (Array.isArray(value)) return `[${value.map(canonical).join(",")}]`;
-  if (value !== null && typeof value === "object") {
+  if (value !== null && typeof value === "object")
     return `{${Object.entries(value)
       .sort(([a], [b]) => a.localeCompare(b))
       .map(([key, item]) => `${JSON.stringify(key)}:${canonical(item)}`)
       .join(",")}}`;
-  }
   return JSON.stringify(value);
 }
+type Transaction = {
+  client: PoolClient;
+  active: boolean;
+  changed: boolean;
+  tail: Promise<unknown>;
+  root?: Transaction;
+};
+export type StoreOptions = { connectionString?: string; schema?: string; max?: number };
+export type EntityQuery = {
+  after?: number;
+  limit?: number;
+  thread_id?: string | null;
+  agent_id?: string | null;
+  state?: string;
+  status?: string;
+  statuses?: string[];
+  run_id?: string | null;
+  workspace_id?: string | null;
+  connection_id?: string | null;
+  binding_id?: string | null;
+};
+const LOCK_CLASS = 0x4e474831;
+const pendingReceipt = { "@ngertiin/command": "pending" };
 
-/** A single writer owns both domain state and the durable event log. No provider imports. */
+/** Async SQL persistence; a dedicated session owns the sole application lifecycle authority. */
 export class Store {
-  readonly #db: Database;
-  readonly #lock: Database;
+  readonly #pool: Pool;
+  readonly #authority: Client;
+  readonly #transactions = new AsyncLocalStorage<Transaction>();
+  readonly #authorization = new AsyncLocalStorage<() => unknown | Promise<unknown>>();
+  readonly #listeners = new Set<() => unknown>();
+  readonly #pendingCommands = new Map<
+    string,
+    { fingerprint: string; verifiedFile: boolean; promise: Promise<unknown> }
+  >();
+  readonly #lost = new AbortController();
   readonly journal: ConversationJournal;
+  readonly schema: string;
+  epoch = 0;
+  authorityPid = 0;
+  #lockKey = 0;
   #closed = false;
-  #transactionDepth = 0;
   #notificationPending = false;
-  readonly #listeners = new Set<() => void>();
-  readonly #pendingCommands = new Map<string, Promise<unknown>>();
-  constructor(
+  #closing?: Promise<void>;
+  private constructor(
     readonly path: string,
     readonly ownerId: string,
+    options: StoreOptions,
   ) {
+    if (existsSync(path))
+      throw new Error(
+        "SQLite requires an explicit offline import; select a fresh PostgreSQL state path.",
+      );
+    const connectionString = options.connectionString ?? process.env.NGERTIIN_DATABASE_URL;
+    if (!connectionString || !/^postgres(?:ql)?:\/\//.test(connectionString))
+      throw new Error(
+        "NGERTIIN_DATABASE_URL must select PostgreSQL. SQLite requires an explicit offline import.",
+      );
+    this.schema = options.schema ?? "ngertiin_app";
+    if (!/^[a-z][a-z0-9_]{0,62}$/.test(this.schema)) throw new Error("Invalid application schema.");
     mkdirSync(dirname(path), { recursive: true, mode: 0o700 });
-    this.#lock = new Database(`${path}.authority`, { create: true, strict: true });
+    const config = {
+      connectionString,
+      options: `-c search_path=${this.schema},pg_catalog`,
+      connectionTimeoutMillis: 5000,
+      application_name: "ngertiin",
+    };
+    this.#pool = new Pool({ ...config, max: options.max ?? 8 });
+    this.#pool.on("error", () => {
+      /* A failed idle query connection never acquires authority. */
+    });
+    this.#authority = new Client({ ...config, application_name: "ngertiin-authority" });
+    this.#authority.on("error", () => this.loseAuthority());
+    this.#authority.on("end", () => this.loseAuthority());
+    this.journal = new ConversationJournal(this, (kind, id, cursor) =>
+      this.readAt(kind, id, cursor),
+    );
+  }
+  static async open(path: string, ownerId: string, options: StoreOptions = {}): Promise<Store> {
+    const store = new Store(path, ownerId, options);
     try {
-      // Held for the process lifetime in a separate database. The OS releases it on a crash.
-      this.#lock.exec("PRAGMA busy_timeout=0; BEGIN EXCLUSIVE");
-    } catch {
-      this.#lock.close();
+      await store.initialize();
+      return store;
+    } catch (error) {
+      await store.close();
+      throw error;
+    }
+  }
+  private async initialize() {
+    await this.#authority.connect();
+    const lock = await this.#authority.query<{ key: number; pid: number }>(
+      "SELECT hashtext(current_database() || ':' || $1) AS key,pg_backend_pid() AS pid",
+      [this.schema],
+    );
+    this.#lockKey = lock.rows[0].key;
+    this.authorityPid = lock.rows[0].pid;
+    const held = await this.#authority.query<{ held: boolean }>(
+      "SELECT pg_try_advisory_lock($1,$2) AS held",
+      [LOCK_CLASS, this.#lockKey],
+    );
+    if (!held.rows[0].held)
       throw new Error("Another application authority owns this state directory.");
-    }
+    await this.#authority.query("BEGIN");
     try {
-      this.#db = new Database(path, { create: true, strict: true });
-    } catch (error) {
-      this.#lock.close();
-      throw error;
-    }
-    try {
-      chmodSync(path, 0o600);
-      chmodSync(`${path}.authority`, 0o600);
-      this.#db.exec("PRAGMA busy_timeout=5000; PRAGMA foreign_keys=ON");
-      this.#db
-        .transaction(() => {
-          const version = this.#db
-            .query<{ user_version: number }, []>("PRAGMA user_version")
-            .get()?.user_version;
-          const app = this.#db
-            .query<{ application_id: number }, []>("PRAGMA application_id")
-            .get()?.application_id;
-          const tables = this.#db
-            .query<{ name: string }, []>("SELECT name FROM sqlite_master WHERE type='table'")
-            .all();
-          if (
-            (version !== 0 && version !== SCHEMA_VERSION) ||
-            (version !== 0 && app !== APPLICATION_ID) ||
-            (version === 0 && app !== 0) ||
-            (version === 0 && tables.length > 0)
+      await this.#authority.query(`CREATE SCHEMA IF NOT EXISTS "${this.schema}"`);
+      await this.#authority.query(
+        "CREATE TABLE IF NOT EXISTS schema_migrations(version integer PRIMARY KEY,sha256 text NOT NULL,applied_at timestamptz NOT NULL DEFAULT now())",
+      );
+      const migrations = (
+        await this.#authority.query<{ version: number; sha256: string }>(
+          "SELECT version,sha256 FROM schema_migrations ORDER BY version",
+        )
+      ).rows;
+      const checksum = createHash("sha256").update(schemaSql).digest("hex");
+      if (
+        migrations.some(
+          (migration) => migration.version !== schemaVersion || migration.sha256 !== checksum,
+        )
+      )
+        throw new Error("Unsupported or modified database migration.");
+      if (!migrations.length) {
+        await this.#authority.query(schemaSql);
+        await this.#authority.query("INSERT INTO schema_migrations(version,sha256) VALUES($1,$2)", [
+          schemaVersion,
+          checksum,
+        ]);
+      }
+      await this.#authority.query(
+        "INSERT INTO installation(id,owner_id,installation_id,schema_version) VALUES(1,$1,$2,$3) ON CONFLICT DO NOTHING",
+        [this.ownerId, crypto.randomUUID(), schemaVersion],
+      );
+      const row = (await this.#authority.query("SELECT * FROM installation WHERE id=1 FOR UPDATE"))
+        .rows[0];
+      if (row.owner_id !== this.ownerId) throw new Error("State belongs to another owner.");
+      if (row.schema_version !== schemaVersion)
+        throw new Error("Unsupported database schema version.");
+      this.epoch = Number(
+        (
+          await this.#authority.query(
+            "UPDATE installation SET authority_epoch=authority_epoch+1 WHERE id=1 RETURNING authority_epoch",
           )
-            throw new Error("Unsupported database. Use a new development state directory.");
-          this.#db.exec(`
-          CREATE TABLE IF NOT EXISTS installation (id INTEGER PRIMARY KEY CHECK(id=1), owner_id TEXT NOT NULL);
-          CREATE TABLE IF NOT EXISTS entities (
-            seq INTEGER PRIMARY KEY AUTOINCREMENT, kind TEXT NOT NULL, id TEXT NOT NULL,
-            body TEXT NOT NULL CHECK(json_valid(body))
-              CHECK(json_extract(body, '$.kind')=kind AND json_extract(body, '$.id')=id), UNIQUE(kind, id)
-          );
-          CREATE TABLE IF NOT EXISTS events (
-            cursor INTEGER PRIMARY KEY AUTOINCREMENT, body TEXT NOT NULL CHECK(json_valid(body))
-          );
-          CREATE TABLE IF NOT EXISTS commands (
-            id TEXT PRIMARY KEY, fingerprint TEXT NOT NULL, receipt TEXT NOT NULL
-          );
-          CREATE TABLE IF NOT EXISTS routing_traces (
-            seq INTEGER PRIMARY KEY AUTOINCREMENT, route_id TEXT NOT NULL, attempt_id TEXT NOT NULL UNIQUE,
-            body TEXT NOT NULL CHECK(json_valid(body))
-          );
-          CREATE UNIQUE INDEX IF NOT EXISTS active_lane ON entities (
-            json_extract(body, '$.thread_id'), json_extract(body, '$.agent_id')
-          ) WHERE kind='run' AND json_extract(body, '$.status') IN ('dispatching','running','cancel_requested','unknown');
-          CREATE UNIQUE INDEX IF NOT EXISTS native_session ON entities (
-            json_extract(body, '$.harness'), json_extract(body, '$.connection_id'), json_extract(body, '$.native_session_id')
-          ) WHERE kind='binding';
-          DROP INDEX IF EXISTS thread_binding;
-          CREATE UNIQUE INDEX thread_binding ON entities (
-            json_extract(body, '$.thread_id'), json_extract(body, '$.agent_id')
-          ) WHERE kind='binding' AND COALESCE(json_extract(body, '$.active'), 1)=1;
-          CREATE UNIQUE INDEX IF NOT EXISTS agent_handle ON entities (json_extract(body, '$.handle')) WHERE kind='agent';
-          CREATE UNIQUE INDEX IF NOT EXISTS system_agent ON entities (json_extract(body, '$.system_role')) WHERE kind='agent';
-          CREATE UNIQUE INDEX IF NOT EXISTS primary_dm ON entities (json_extract(body, '$.member_agent_ids[0]'))
-            WHERE kind='thread' AND json_extract(body, '$.type')='dm';
-          CREATE UNIQUE INDEX IF NOT EXISTS routine_occurrence ON entities (
-            json_extract(body, '$.routine_id'), json_extract(body, '$.routine_generation'), json_extract(body, '$.scheduled_for')
-          ) WHERE kind='occurrence';
-          DROP INDEX IF EXISTS run_answer;
-          CREATE UNIQUE INDEX run_answer ON entities (json_extract(body, '$.run_id'))
-            WHERE kind='message' AND json_extract(body, '$.author')='agent' AND json_extract(body, '$.run_id') IS NOT NULL AND COALESCE(json_extract(body, '$.purpose'), 'conversation')='conversation';
-          CREATE UNIQUE INDEX IF NOT EXISTS lane_workspace ON entities (json_extract(body, '$.thread_id'), json_extract(body, '$.agent_id')) WHERE kind='workspace' AND json_extract(body, '$.state')='active';
-          CREATE UNIQUE INDEX IF NOT EXISTS artifact_publication ON entities (json_extract(body, '$.run_id'), json_extract(body, '$.source_path'), json_extract(body, '$.sha256')) WHERE kind='artifact' AND json_extract(body, '$.origin')='native_output';
-          CREATE UNIQUE INDEX IF NOT EXISTS skill_name ON entities (json_extract(body, '$.visibility'), CASE WHEN json_extract(body, '$.visibility')='shared' THEN json_extract(body, '$.agent_id') ELSE json_extract(body, '$.thread_id') END, json_extract(body, '$.name')) WHERE kind='skill';
-          CREATE UNIQUE INDEX IF NOT EXISTS skill_version ON entities (json_extract(body, '$.skill_id'), json_extract(body, '$.version')) WHERE kind='skill_revision';
-          CREATE UNIQUE INDEX IF NOT EXISTS harness_inventory_binding ON entities (json_extract(body, '$.binding_id')) WHERE kind='harness_inventory';
-          PRAGMA application_id=${APPLICATION_ID}; PRAGMA user_version=${SCHEMA_VERSION};
-        `);
-          const saved = this.#db
-            .query<{ owner_id: string }, []>("SELECT owner_id FROM installation WHERE id=1")
-            .get();
-          if (saved && saved.owner_id !== ownerId)
-            throw new Error("State belongs to another owner.");
-          if (!saved) this.#db.query("INSERT INTO installation VALUES (1, ?)").run(ownerId);
-        })
-        .immediate();
-      this.#db.exec("PRAGMA journal_mode=WAL; PRAGMA synchronous=FULL");
-      this.journal = new ConversationJournal(this.#db, (kind, id, cursor) => {
-        const row =
-          cursor === undefined
-            ? this.#db
-                .query<{ body: string }, [string, string]>(
-                  "SELECT body FROM entities WHERE kind=? AND id=?",
-                )
-                .get(kind, id)
-            : this.#db
-                .query<{ body: string }, [string, string, number]>(
-                  "SELECT json_extract(body,'$.data') AS body FROM events WHERE json_extract(body,'$.entity_kind')=? AND json_extract(body,'$.entity_id')=? AND cursor<=? ORDER BY cursor DESC LIMIT 1",
-                )
-                .get(kind, id, cursor);
-        return row ? (JSON.parse(row.body) as Entity<typeof kind>) : null;
-      });
-      this.transaction(() => this.journal.replay());
+        ).rows[0].authority_epoch,
+      );
+      await this.#authority.query("COMMIT");
     } catch (error) {
-      this.close();
+      await this.#authority.query("ROLLBACK");
       throw error;
     }
+    await this.transaction(() => this.journal.replay());
   }
-
-  transaction<T>(fn: () => T): T {
-    const outer = this.#transactionDepth === 0;
-    const before = outer ? this.cursor : 0;
-    this.#transactionDepth++;
-    try {
-      const result = this.#db.transaction(fn).immediate();
-      if (outer && this.cursor > before) this.notify();
-      return result;
-    } finally {
-      this.#transactionDepth--;
+  get signal() {
+    return this.#lost.signal;
+  }
+  get closed() {
+    return this.#closed || this.#lost.signal.aborted;
+  }
+  private loseAuthority() {
+    if (!this.#lost.signal.aborted) this.#lost.abort();
+    this.emitListeners();
+  }
+  /** Check both the durable epoch and the original dedicated session's lock. Never reacquire. */
+  async assertAuthority() {
+    if (this.closed) throw new DomainError("STALE_DISPATCH");
+    const row = (
+      await this.query<{ valid: boolean }>(
+        `SELECT authority_epoch=$1 AND EXISTS(
+      SELECT 1 FROM pg_locks WHERE locktype='advisory' AND pid=$2 AND granted
+      AND classid=$3::oid AND objid=($4::bigint & 4294967295)::oid AND objsubid=2
+    ) AS valid FROM installation WHERE id=1`,
+        [this.epoch, this.authorityPid, LOCK_CLASS, this.#lockKey],
+      )
+    ).rows[0];
+    if (!row?.valid || this.closed) {
+      this.loseAuthority();
+      throw new DomainError("STALE_DISPATCH");
     }
   }
-
-  /** Notifications only follow the outer commit. The journal remains the source of truth. */
-  subscribe(listener: () => void) {
+  async query<R extends QueryResultRow = QueryResultRow>(text: string, values: unknown[] = []) {
+    const context = this.#transactions.getStore();
+    if (context && !context.active) throw new Error("Transaction context has expired.");
+    return (context?.client ?? this.#pool).query<R>(text, values);
+  }
+  async transaction<T>(fn: () => T | Promise<T>): Promise<T> {
+    if (this.closed) throw new DomainError("STALE_DISPATCH");
+    const parent = this.#transactions.getStore();
+    if (parent) {
+      const run = async () => {
+        if (!parent.active) throw new Error("Transaction context has expired.");
+        const name = `s_${crypto.randomUUID().replaceAll("-", "")}`;
+        await parent.client.query(`SAVEPOINT ${name}`);
+        const child: Transaction = {
+          client: parent.client,
+          active: true,
+          changed: false,
+          tail: Promise.resolve(),
+          root: parent.root ?? parent,
+        };
+        try {
+          const result = await this.#transactions.run(child, fn);
+          await child.tail;
+          await parent.client.query(`RELEASE SAVEPOINT ${name}`);
+          parent.changed ||= child.changed;
+          return result;
+        } catch (error) {
+          await child.tail;
+          await parent.client.query(`ROLLBACK TO SAVEPOINT ${name}`);
+          await parent.client.query(`RELEASE SAVEPOINT ${name}`);
+          throw error;
+        } finally {
+          child.active = false;
+        }
+      };
+      const result = parent.tail.then(run, run);
+      parent.tail = result.then(
+        () => {},
+        () => {},
+      );
+      return result;
+    }
+    const client = await this.#pool.connect();
+    const context: Transaction = { client, active: true, changed: false, tail: Promise.resolve() };
+    try {
+      await client.query("BEGIN");
+      const result = await this.#transactions.run(context, async () => {
+        // The clock row serializes writers through commit, including receipts and projections.
+        await client.query("SELECT event_clock FROM installation WHERE id=1 FOR UPDATE");
+        await this.assertAuthority();
+        const value = await fn();
+        await context.tail;
+        await this.assertAuthority();
+        await client.query("COMMIT");
+        return value;
+      });
+      if (context.changed) this.notify();
+      return result;
+    } catch (error) {
+      await context.tail;
+      await client.query("ROLLBACK").catch(() => {});
+      throw error;
+    } finally {
+      context.active = false;
+      client.release();
+    }
+  }
+  subscribe(listener: () => unknown) {
     this.#listeners.add(listener);
     return () => this.#listeners.delete(listener);
   }
-
+  private emitListeners() {
+    const failed = () => {
+      if (!this.closed) console.error(JSON.stringify({ event: "persistence.subscription_failed" }));
+    };
+    for (const listener of this.#listeners) {
+      try {
+        void Promise.resolve(listener()).catch(failed);
+      } catch {
+        failed();
+      }
+    }
+  }
   private notify() {
     if (this.#notificationPending) return;
     this.#notificationPending = true;
     queueMicrotask(() => {
       this.#notificationPending = false;
-      if (this.#closed) return;
-      for (const listener of this.#listeners) listener();
+      if (!this.closed) this.emitListeners();
     });
   }
-
-  waitForEvents(after: number, signal: AbortSignal, timeoutMs = 10_000): Promise<void> {
-    if (this.#closed || signal.aborted || this.cursor > after) return Promise.resolve();
-    return new Promise((resolve) => {
+  async waitForEvents(after: number, signal: AbortSignal, timeoutMs = 10000): Promise<void> {
+    if (this.closed || signal.aborted || (await this.cursor) > after) return;
+    await new Promise<void>((resolve) => {
       const finish = () => {
         clearTimeout(timer);
         unsubscribe();
@@ -186,160 +297,317 @@ export class Store {
       const unsubscribe = this.subscribe(finish);
       const timer = setTimeout(finish, timeoutMs);
       signal.addEventListener("abort", finish, { once: true });
-      // Close the race between the initial read and subscribing.
-      if (this.#closed || signal.aborted || this.cursor > after) finish();
+      void this.cursor.then((cursor) => {
+        if (this.closed || signal.aborted || cursor > after) finish();
+      }, finish);
     });
   }
-
-  command<T>(commandId: string, input: unknown, fn: () => T): T {
+  private commandScope(input: unknown) {
+    const value = input as {
+      organization_id?: string;
+      actor_id?: string;
+      method?: string;
+      path?: string;
+      operation?: string;
+    } | null;
+    return canonical([
+      this.ownerId,
+      value?.organization_id ?? null,
+      value?.actor_id ?? this.ownerId,
+      value?.method ?? value?.operation ?? null,
+      value?.path ?? null,
+    ]);
+  }
+  async withAuthorization<T>(
+    authorize: () => unknown | Promise<unknown>,
+    action: () => T | Promise<T>,
+  ): Promise<T> {
+    return this.#authorization.run(authorize, action);
+  }
+  private legacyCommandScope(input: unknown) {
+    const scope = input as { organization_id?: string; actor_id?: string } | null;
+    return scope?.organization_id || (scope?.actor_id && scope.actor_id !== this.ownerId)
+      ? this.commandScope(input)
+      : canonical([this.ownerId, null, this.ownerId, null, null]);
+  }
+  async command<T>(
+    commandId: string,
+    input: unknown,
+    fn: () => T | Promise<T>,
+    authorize: () => unknown | Promise<unknown> = this.#authorization.getStore() ?? (() => {}),
+  ): Promise<T> {
     const fingerprint = createHash("sha256").update(canonical(input)).digest("hex");
-    return this.transaction(() => {
-      const old = this.#db
-        .query<{ fingerprint: string; receipt: string }, [string]>(
-          "SELECT fingerprint, receipt FROM commands WHERE id=?",
+    const scope = this.commandScope(input);
+    return this.transaction(async () => {
+      await authorize();
+      const old = (
+        await this.query(
+          "SELECT fingerprint,receipt FROM commands WHERE (scope=$1 OR scope=$3) AND id=$2 ORDER BY (scope=$1) DESC LIMIT 1",
+          [scope, commandId, this.legacyCommandScope(input)],
         )
-        .get(commandId);
+      ).rows[0];
       if (old) {
         if (old.fingerprint !== fingerprint) throw new DomainError("IDEMPOTENCY_CONFLICT");
-        const receipt = JSON.parse(old.receipt);
-        if (receipt?.["@ngertiin/command"] === "pending")
+        if (old.receipt?.["@ngertiin/command"] === "pending")
           throw new DomainError("RECONCILIATION_REQUIRED");
-        return receipt as T;
+        return JSON.parse(canonical(old.receipt)) as T;
       }
-      const result = fn();
-      if (result && typeof (result as { then?: unknown }).then === "function")
-        throw new Error("Use asyncCommand for asynchronous command effects.");
-      this.#db
-        .query("INSERT INTO commands VALUES (?, ?, ?)")
-        .run(commandId, fingerprint, JSON.stringify(result));
-      return result;
+      const result = await fn();
+      await this.query("INSERT INTO commands VALUES($1,$2,$3,$4)", [
+        scope,
+        commandId,
+        fingerprint,
+        JSON.stringify(result),
+      ]);
+      return JSON.parse(canonical(result)) as T;
     });
   }
-
-  /** Only for reconcilable file projections: reserve, await I/O, then commit synchronously. */
+  /** External I/O stays outside SQL; ambiguous external reservations require reconciliation. */
   async asyncCommand<T, Prepared>(
     commandId: string,
     input: unknown,
     prepare: () => Promise<Prepared>,
-    commit: (prepared: Prepared) => T,
-    authorize: () => void = () => {},
+    commit: (prepared: Prepared) => T | Promise<T>,
+    authorize: () => unknown | Promise<unknown> = this.#authorization.getStore() ?? (() => {}),
   ): Promise<T> {
-    authorize();
+    return this.effectCommand(commandId, input, prepare, commit, authorize, false);
+  }
+  /** Only deterministic file projections with immutable byte verification may reconcile reservations. */
+  async fileCommand<T, Prepared>(
+    commandId: string,
+    input: unknown,
+    prepare: () => Promise<Prepared>,
+    commit: (prepared: Prepared) => T | Promise<T>,
+    authorize: () => unknown | Promise<unknown> = this.#authorization.getStore() ?? (() => {}),
+  ): Promise<T> {
+    return this.effectCommand(commandId, input, prepare, commit, authorize, true);
+  }
+  private async effectCommand<T, Prepared>(
+    commandId: string,
+    input: unknown,
+    prepare: () => Promise<Prepared>,
+    commit: (prepared: Prepared) => T | Promise<T>,
+    authorize: () => unknown | Promise<unknown>,
+    verifiedFile: boolean,
+  ): Promise<T> {
+    await authorize();
+    const scope = this.commandScope(input);
+    const key = `${scope}:${commandId}`;
     const fingerprint = createHash("sha256").update(canonical(input)).digest("hex");
-    const previous = this.transaction(() => {
-      const old = this.#db
-        .query<{ fingerprint: string; receipt: string }, [string]>(
-          "SELECT fingerprint, receipt FROM commands WHERE id=?",
-        )
-        .get(commandId);
-      if (old) {
-        if (old.fingerprint !== fingerprint) throw new DomainError("IDEMPOTENCY_CONFLICT");
-        return JSON.parse(old.receipt);
-      }
-      this.#db
-        .query("INSERT INTO commands VALUES (?, ?, ?)")
-        .run(commandId, fingerprint, JSON.stringify({ "@ngertiin/command": "pending" }));
-      return null;
-    });
-    if (previous && previous["@ngertiin/command"] !== "pending") return previous as T;
-    const active = this.#pendingCommands.get(commandId);
-    if (active) return active as Promise<T>;
-    const pending = Promise.resolve()
-      .then(async () => {
-        const prepared = await prepare();
-        return this.transaction(() => {
-          authorize();
-          const result = commit(prepared);
-          this.#db
-            .query("UPDATE commands SET receipt=? WHERE id=? AND fingerprint=?")
-            .run(JSON.stringify(result), commandId, fingerprint);
-          return result;
-        });
-      })
-      .finally(() => this.#pendingCommands.delete(commandId));
-    this.#pendingCommands.set(commandId, pending);
+    const active = this.#pendingCommands.get(key);
+    if (active) {
+      if (active.fingerprint !== fingerprint || active.verifiedFile !== verifiedFile)
+        throw new DomainError("IDEMPOTENCY_CONFLICT");
+      const result = (await active.promise) as T;
+      await authorize();
+      return result;
+    }
+    const pending = (async () => {
+      const previous = await this.transaction(async () => {
+        await authorize();
+        const old = (
+          await this.query(
+            "SELECT fingerprint,receipt FROM commands WHERE (scope=$1 OR scope=$3) AND id=$2 ORDER BY (scope=$1) DESC LIMIT 1",
+            [scope, commandId, this.legacyCommandScope(input)],
+          )
+        ).rows[0];
+        if (old) {
+          if (old.fingerprint !== fingerprint) throw new DomainError("IDEMPOTENCY_CONFLICT");
+          if (old.receipt?.["@ngertiin/command"] === "pending") {
+            if (!verifiedFile || old.receipt.effect_class !== "verified_file")
+              throw new DomainError("RECONCILIATION_REQUIRED");
+            return null;
+          }
+          return { receipt: JSON.parse(canonical(old.receipt)) as T };
+        }
+        await this.query("INSERT INTO commands VALUES($1,$2,$3,$4)", [
+          scope,
+          commandId,
+          fingerprint,
+          JSON.stringify({
+            ...pendingReceipt,
+            effect_class: verifiedFile ? "verified_file" : "external",
+          }),
+        ]);
+        return null;
+      });
+      if (previous) return previous.receipt;
+      const prepared = await prepare();
+      return this.transaction(async () => {
+        await authorize();
+        const result = await commit(prepared);
+        await this.query(
+          "UPDATE commands SET receipt=$1 WHERE scope=$2 AND id=$3 AND fingerprint=$4",
+          [JSON.stringify(result), scope, commandId, fingerprint],
+        );
+        return JSON.parse(canonical(result)) as T;
+      });
+    })().finally(() => this.#pendingCommands.delete(key));
+    this.#pendingCommands.set(key, { fingerprint, verifiedFile, promise: pending });
     return pending;
   }
-
-  receipt(commandId: string): unknown | null {
-    const row = this.#db
-      .query<{ receipt: string }, [string]>("SELECT receipt FROM commands WHERE id=?")
-      .get(commandId);
-    if (!row) return null;
-    const result = JSON.parse(row.receipt);
-    return result?.["@ngertiin/command"] === "pending" ? null : result;
+  async receipt(
+    commandId: string,
+    input: unknown = null,
+    authorize: () => unknown | Promise<unknown> = this.#authorization.getStore() ?? (() => {}),
+  ): Promise<unknown | null> {
+    await authorize();
+    const context = input as { organization_id?: string; actor_id?: string } | null;
+    const rows = (
+      await this.query(
+        "SELECT receipt FROM commands WHERE scope::jsonb->>0=$1 AND (scope::jsonb->>1) IS NOT DISTINCT FROM $2::text AND scope::jsonb->>2=$3 AND id=$4 LIMIT 2",
+        [
+          this.ownerId,
+          context?.organization_id ?? null,
+          context?.actor_id ?? this.ownerId,
+          commandId,
+        ],
+      )
+    ).rows;
+    if (rows.length > 1) throw new DomainError("IDEMPOTENCY_CONFLICT");
+    const row = rows[0];
+    return !row || row.receipt?.["@ngertiin/command"] === "pending" ? null : row.receipt;
   }
-
-  recordRoutingTrace(input: RoutingDecisionTrace) {
+  async recordRoutingTrace(input: RoutingDecisionTrace) {
     const trace = routingDecisionTrace.parse(input);
-    this.transaction(() => {
-      this.#db
-        .query(
-          "INSERT INTO routing_traces(route_id,attempt_id,body) VALUES(?,?,?) ON CONFLICT(attempt_id) DO UPDATE SET body=excluded.body",
-        )
-        .run(trace.route_id, trace.attempt_id, JSON.stringify(trace));
-      // Bound diagnostic retention without changing domain history or command receipts.
-      this.#db.exec(
+    await this.transaction(async () => {
+      await this.query(
+        "INSERT INTO routing_traces(route_id,attempt_id,body) VALUES($1,$2,$3) ON CONFLICT(attempt_id) DO UPDATE SET body=excluded.body",
+        [trace.route_id, trace.attempt_id, JSON.stringify(trace)],
+      );
+      await this.query(
         "DELETE FROM routing_traces WHERE seq NOT IN (SELECT seq FROM routing_traces ORDER BY seq DESC LIMIT 1000)",
       );
     });
   }
-
-  routingTrace(routeId: string): RoutingDecisionTrace | null {
-    const row = this.#db
-      .query<{ body: string }, [string]>(
-        "SELECT body FROM routing_traces WHERE route_id=? ORDER BY seq DESC LIMIT 1",
+  async routingTrace(routeId: string): Promise<RoutingDecisionTrace | null> {
+    const row = (
+      await this.query(
+        "SELECT body FROM routing_traces WHERE route_id=$1 ORDER BY seq DESC LIMIT 1",
+        [routeId],
       )
-      .get(routeId);
-    return row ? routingDecisionTrace.parse(JSON.parse(row.body)) : null;
+    ).rows[0];
+    return row ? routingDecisionTrace.parse(row.body) : null;
   }
-
-  get<K extends Kind>(kind: K, id: string | null): Entity<K> {
-    if (id === null) throw new DomainError("NOT_FOUND", 404);
-    const row = this.#db
-      .query<{ body: string }, [string, string]>("SELECT body FROM entities WHERE kind=? AND id=?")
-      .get(kind, id);
-    if (!row) throw new DomainError("NOT_FOUND", 404);
-    return schemas[kind].parse(JSON.parse(row.body)) as Entity<K>;
+  private async readAt<K extends Kind>(
+    kind: K,
+    id: string,
+    cursor?: number,
+  ): Promise<Entity<K> | null> {
+    const row =
+      cursor === undefined
+        ? (
+            await this.query("SELECT body FROM entities WHERE owner_id=$1 AND kind=$2 AND id=$3", [
+              this.ownerId,
+              kind,
+              id,
+            ])
+          ).rows[0]
+        : (
+            await this.query(
+              "SELECT body->'data' AS body FROM events WHERE owner_id=$1 AND body->>'entity_kind'=$2 AND body->>'entity_id'=$3 AND cursor<=$4 ORDER BY cursor DESC LIMIT 1",
+              [this.ownerId, kind, id, cursor],
+            )
+          ).rows[0];
+    return row ? (row.body as Entity<K>) : null;
   }
-
-  list<K extends Kind>(kind: K): Entity<K>[] {
-    return this.#db
-      .query<{ body: string }, [string]>("SELECT body FROM entities WHERE kind=? ORDER BY seq")
-      .all(kind)
-      .map((row) => schemas[kind].parse(JSON.parse(row.body)) as Entity<K>);
+  async get<K extends Kind>(kind: K, id: string | null): Promise<Entity<K>> {
+    if (!id) throw new DomainError("NOT_FOUND", 404);
+    const entity = await this.readAt(kind, id);
+    if (!entity) throw new DomainError("NOT_FOUND", 404);
+    return schemas[kind].parse(entity) as Entity<K>;
   }
-
-  answer(runId: string): Entity<"message"> | null {
-    const row = this.#db
-      .query<{ body: string }, [string]>(
-        "SELECT body FROM entities WHERE kind='message' AND json_extract(body,'$.author')='agent' AND json_extract(body,'$.run_id')=? AND COALESCE(json_extract(body,'$.purpose'), 'conversation')='conversation'",
+  async page<K extends Kind>(kind: K, query: EntityQuery = {}) {
+    const limit = Math.max(1, Math.min(query.limit ?? 200, 1000));
+    const values: unknown[] = [this.ownerId, kind, query.after ?? 0];
+    const filters = ["owner_id=$1", "kind=$2", "seq>$3"];
+    for (const field of [
+      "thread_id",
+      "agent_id",
+      "state",
+      "status",
+      "run_id",
+      "workspace_id",
+      "connection_id",
+      "binding_id",
+    ] as const)
+      if (query[field] !== undefined) {
+        if (query[field] === null) filters.push(`body->>'${field}' IS NULL`);
+        else {
+          values.push(query[field]);
+          filters.push(`body->>'${field}'=$${values.length}`);
+        }
+      }
+    if (query.statuses) {
+      values.push(query.statuses);
+      filters.push(`body->>'status'=ANY($${values.length}::text[])`);
+    }
+    values.push(limit + 1);
+    const rows = (
+      await this.query(
+        `SELECT seq,body FROM entities WHERE ${filters.join(" AND ")} ORDER BY seq LIMIT $${values.length}`,
+        values,
       )
-      .get(runId);
-    return row ? schemas.message.parse(JSON.parse(row.body)) : null;
+    ).rows;
+    return {
+      items: rows.slice(0, limit).map((row) => schemas[kind].parse(row.body) as Entity<K>),
+      next_after: rows.length > limit ? Number(rows[limit - 1].seq) : null,
+    };
   }
-
-  put<T extends Entity>(entity: T, expectedRevision: number | null = null): T {
+  /** Compatibility traversal for existing service algorithms; SQL reads are keyset-paged. */
+  async list<K extends Kind>(
+    kind: K,
+    query: Omit<EntityQuery, "after" | "limit"> = {},
+  ): Promise<Entity<K>[]> {
+    const items: Entity<K>[] = [];
+    let after = 0;
+    let more = true;
+    while (more) {
+      const page = await this.page(kind, { ...query, after });
+      items.push(...page.items);
+      more = page.next_after !== null;
+      after = page.next_after ?? after;
+    }
+    return items;
+  }
+  async answer(runId: string): Promise<Entity<"message"> | null> {
+    const row = (
+      await this.query(
+        "SELECT body FROM entities WHERE owner_id=$1 AND kind='message' AND body->>'author'='agent' AND body->>'run_id'=$2 AND COALESCE(body->>'purpose','conversation')='conversation' LIMIT 1",
+        [this.ownerId, runId],
+      )
+    ).rows[0];
+    return row ? schemas.message.parse(row.body) : null;
+  }
+  async put<T extends Entity>(entity: T, expectedRevision: number | null = null): Promise<T> {
     if (entity.kind === "skill_revision" && expectedRevision !== null)
       throw new DomainError("CONFLICT");
     const validated = schemas[entity.kind].parse(entity);
     if (validated.owner_id !== this.ownerId) throw new DomainError("SCOPE_DENIED", 403);
-    return this.transaction(() => {
-      const previous = expectedRevision === null ? null : this.get(entity.kind, entity.id);
-      const body = JSON.stringify(validated);
-      if (expectedRevision === null) {
-        this.#db
-          .query("INSERT INTO entities (kind,id,body) VALUES (?,?,?)")
-          .run(entity.kind, entity.id, body);
-      } else {
+    return this.transaction(async () => {
+      const previous = expectedRevision === null ? null : await this.get(entity.kind, entity.id);
+      if (expectedRevision === null)
+        await this.query("INSERT INTO entities(kind,id,owner_id,body) VALUES($1,$2,$3,$4)", [
+          entity.kind,
+          entity.id,
+          this.ownerId,
+          JSON.stringify(validated),
+        ]);
+      else {
         if (entity.revision !== expectedRevision + 1) throw new DomainError("CONFLICT");
-        const result = this.#db
-          .query(
-            "UPDATE entities SET body=? WHERE kind=? AND id=? AND json_extract(body,'$.revision')=?",
-          )
-          .run(body, entity.kind, entity.id, expectedRevision);
-        if (result.changes !== 1) throw new DomainError("CONFLICT");
+        const result = await this.query(
+          "UPDATE entities SET body=$1 WHERE owner_id=$2 AND kind=$3 AND id=$4 AND (body->>'revision')::int=$5",
+          [JSON.stringify(validated), this.ownerId, entity.kind, entity.id, expectedRevision],
+        );
+        if (result.rowCount !== 1) throw new DomainError("CONFLICT");
       }
+      const cursor = Number(
+        (
+          await this.query(
+            "UPDATE installation SET event_clock=event_clock+1 WHERE id=1 RETURNING event_clock",
+          )
+        ).rows[0].event_clock,
+      );
       const event = {
         schema_version: 1,
         owner_id: this.ownerId,
@@ -350,39 +618,60 @@ export class Store {
         created_at: entity.updated_at,
         data: validated,
       };
-      const inserted = this.#db
-        .query("INSERT INTO events (body) VALUES (?)")
-        .run(JSON.stringify(event));
-      this.journal.record(validated as Entity, previous, Number(inserted.lastInsertRowid));
+      await this.query("INSERT INTO events(cursor,owner_id,body) VALUES($1,$2,$3)", [
+        cursor,
+        this.ownerId,
+        JSON.stringify(event),
+      ]);
+      await this.journal.record(validated as Entity, previous, cursor);
+      const context = this.#transactions.getStore();
+      if (context) context.changed = true;
       return validated as T;
     });
   }
-
-  events(after: number, limit = 100): DomainEvent[] {
-    return this.#db
-      .query<{ cursor: number; body: string }, [number, number]>(
-        "SELECT cursor, body FROM events WHERE cursor>? ORDER BY cursor LIMIT ?",
-      )
-      .all(after, limit)
-      .map(({ cursor, body }) => ({ ...JSON.parse(body), cursor }));
+  async replay(after: number, options: { limit?: number; thread_id?: string } = {}) {
+    return this.transaction(async () => {
+      if (options.thread_id) await this.get("thread", options.thread_id);
+      const high = await this.cursor;
+      const limit = Math.max(1, Math.min(options.limit ?? 100, 1000));
+      const values: unknown[] = [this.ownerId, after, high, limit + 1];
+      const filter = options.thread_id
+        ? " AND (body->'data'->>'thread_id'=$5 OR (body->>'entity_kind'='thread' AND body->>'entity_id'=$5))"
+        : "";
+      if (options.thread_id) values.push(options.thread_id);
+      const rows = (
+        await this.query(
+          `SELECT cursor,body FROM events WHERE owner_id=$1 AND cursor>$2 AND cursor<=$3${filter} ORDER BY cursor LIMIT $4`,
+          values,
+        )
+      ).rows;
+      const events = rows
+        .slice(0, limit)
+        .map((row) => ({ ...row.body, cursor: Number(row.cursor) })) as DomainEvent[];
+      return { events, next_cursor: rows.length > limit ? events[events.length - 1].cursor : high };
+    });
   }
-
-  get cursor(): number {
+  async events(after: number, limit = 100): Promise<DomainEvent[]> {
     return (
-      this.#db
-        .query<{ cursor: number }, []>("SELECT COALESCE(MAX(cursor),0) AS cursor FROM events")
-        .get()?.cursor ?? 0
+      await this.query(
+        "SELECT cursor,body FROM events WHERE owner_id=$1 AND cursor>$2 ORDER BY cursor LIMIT $3",
+        [this.ownerId, after, Math.max(1, Math.min(limit, 1000))],
+      )
+    ).rows.map((row) => ({ ...row.body, cursor: Number(row.cursor) }));
+  }
+  get cursor(): Promise<number> {
+    return this.query("SELECT event_clock FROM installation WHERE id=1").then((result) =>
+      Number(result.rows[0].event_clock),
     );
   }
-
-  close() {
-    this.#closed = true;
-    for (const listener of this.#listeners) listener();
-    this.#listeners.clear();
-    this.#db.close();
-    this.#lock.close();
-  }
-  get closed() {
-    return this.#closed;
+  close(): Promise<void> {
+    this.#closing ??= (async () => {
+      this.#closed = true;
+      this.loseAuthority();
+      this.#listeners.clear();
+      await this.#pool.end();
+      await this.#authority.end();
+    })();
+    return this.#closing;
   }
 }

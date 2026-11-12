@@ -7,26 +7,26 @@ import type { MachineViews } from "../machines/view";
 import { fileQuery, relativePath } from "../workspaces/contracts";
 
 export function registerMachineRoutes(api: Elysia, machines: Machines, views: MachineViews) {
-  api.onStop(() => views.close());
+  api.onStop(async () => await views.close());
   return api
     .get("/v1/machine", async () => {
       await machines.refresh().catch(() => {});
-      return machines.snapshot();
+      return await machines.snapshot();
     })
-    .get("/v1/machine/operations", () => ({ operations: machines.operations.list() }))
-    .get("/v1/machine/processes", () => ({ processes: machines.processes.list() }))
-    .get("/v1/machine/windows", () => ({ windows: machines.desktop.list() }))
+    .get("/v1/machine/operations", async () => ({ operations: await machines.operations.list() }))
+    .get("/v1/machine/processes", async () => ({ processes: await machines.processes.list() }))
+    .get("/v1/machine/windows", async () => ({ windows: await machines.desktop.list() }))
     .post(
       "/v1/machine/processes/control",
-      ({ body }) => machines.processes.control(body, null, () => {}),
+      async ({ body }) => machines.processes.control(body, null, () => {}),
       { body: machineProcessInput },
     )
-    .post("/v1/machine/control", ({ body }) => machines.control(body, null), {
+    .post("/v1/machine/control", async ({ body }) => machines.control(body, null), {
       body: machineControl,
     })
     .post(
       "/v1/machine/view",
-      ({ body, request }) =>
+      async ({ body, request }) =>
         views.issue(
           request.headers.get("Origin") ?? new URL(request.url).origin,
           body.interactive,
@@ -36,11 +36,11 @@ export function registerMachineRoutes(api: Elysia, machines: Machines, views: Ma
     )
     .post(
       "/v1/machine/views/:viewerId/renew",
-      ({ params, request }) =>
+      async ({ params, request }) =>
         views.renew(params.viewerId, request.headers.get("Origin") ?? new URL(request.url).origin),
       { body: z.strictObject({}) },
     )
-    .delete("/v1/machine/views/:viewerId", ({ params }) => views.remove(params.viewerId))
+    .delete("/v1/machine/views/:viewerId", async ({ params }) => views.remove(params.viewerId))
     .get(
       "/v1/machine/files",
       async ({ query }) => {
@@ -65,5 +65,5 @@ export function registerMachineRoutes(api: Elysia, machines: Machines, views: Ma
       },
       { query: z.strictObject({ path: relativePath }) },
     )
-    .all("/v1/machine/viewer/:viewerId/*", ({ request }) => views.proxy(request));
+    .all("/v1/machine/viewer/:viewerId/*", async ({ request }) => views.proxy(request));
 }

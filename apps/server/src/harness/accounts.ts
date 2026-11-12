@@ -13,18 +13,18 @@ export class HarnessAccounts implements AccountService {
     private readonly connections: Connections,
     private readonly services: Partial<Record<"codex" | "muse", AccountService>>,
   ) {}
-  private service(id: string) {
-    const service = this.services[this.connections.get(id).harness];
+  private async service(id: string) {
+    const service = this.services[(await this.connections.get(id)).harness];
     if (!service) throw new HarnessError("ADAPTER_UNAVAILABLE");
     return service;
   }
-  inspect(id: string) {
-    return this.service(id).inspect(id);
+  async inspect(id: string) {
+    return (await this.service(id)).inspect(id);
   }
-  login(id: string) {
-    return this.service(id).login(id);
+  async login(id: string) {
+    return (await this.service(id)).login(id);
   }
-  cancel(id: string) {
-    return this.service(id).cancel(id);
+  async cancel(id: string) {
+    return (await this.service(id)).cancel(id);
   }
 }

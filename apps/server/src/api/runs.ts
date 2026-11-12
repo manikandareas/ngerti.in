@@ -22,10 +22,12 @@ export function registerRunRoutes(
       "/v1/runs/:id/steer",
       async ({ request, params, body }) => {
         if (!services.broker) throw new HarnessError("ADAPTER_UNAVAILABLE");
-        const control = command(request, body, () =>
-          controls.requestSteer(params.id, body),
-        ) as ReturnType<RunControls["requestSteer"]>;
-        return services.broker.dispatchSteer(control.id);
+        const control = (await command(
+          request,
+          body,
+          async () => await controls.requestSteer(params.id, body),
+        )) as Awaited<ReturnType<RunControls["requestSteer"]>>;
+        return await services.broker.dispatchSteer(control.id);
       },
       { params: z.object({ id }), body: steerInput },
     )
@@ -39,22 +41,24 @@ export function registerRunRoutes(
     )
     .post(
       "/v1/messages/:id/edit",
-      ({ request, params, body }) => command(request, body, () => controls.edit(params.id, body)),
+      async ({ request, params, body }) =>
+        await command(request, body, async () => await controls.edit(params.id, body)),
       { params: z.object({ id }), body: queueEdit },
     )
     .post(
       "/v1/messages/:id/delete",
-      ({ request, params, body }) => command(request, body, () => controls.remove(params.id, body)),
+      async ({ request, params, body }) =>
+        await command(request, body, async () => await controls.remove(params.id, body)),
       { params: z.object({ id }), body: queueDelete },
     )
     .get(
       "/v1/runs/:id/interactions/history",
-      ({ params }) => new InteractionJournal(lifecycle.store).history(params.id),
+      async ({ params }) => await new InteractionJournal(lifecycle.store).history(params.id),
       { params: z.object({ id }) },
     )
     .get(
       "/v1/runs/:id/interactions",
-      ({ params }) => {
+      async ({ params }) => {
         if (!services.broker) throw new HarnessError("ADAPTER_UNAVAILABLE");
         return services.broker.interactions(params.id);
       },
@@ -62,7 +66,7 @@ export function registerRunRoutes(
     )
     .post(
       "/v1/runs/:id/interactions",
-      ({ params, body }) => {
+      async ({ params, body }) => {
         if (!services.broker) throw new HarnessError("ADAPTER_UNAVAILABLE");
         return services.broker.respond(params.id, body);
       },
@@ -70,15 +74,15 @@ export function registerRunRoutes(
     )
     .post(
       "/v1/runs",
-      ({ request, body }) => {
+      async ({ request, body }) => {
         const submissions = new AttachmentSubmissions(lifecycle);
-        const result = command(request, body, () =>
+        const result = await command(request, body, async () =>
           body.submission_id
-            ? submissions.commit(body, id.parse(request.headers.get("Idempotency-Key")))
-            : controls.send(body),
+            ? await submissions.commit(body, id.parse(request.headers.get("Idempotency-Key")))
+            : await controls.send(body),
         );
         void submissions.materialize(result.message).catch(() => {});
-        background.notifyControls();
+        await background.notifyControls();
         return result;
       },
       {
@@ -87,21 +91,29 @@ export function registerRunRoutes(
     )
     .post(
       "/v1/runs/:id/retry",
-      ({ request, params, body }) =>
-        command(request, body, () => controls.retry(params.id, body.expected_revision)),
+      async ({ request, params, body }) =>
+        await command(
+          request,
+          body,
+          async () => await controls.retry(params.id, body.expected_revision),
+        ),
       { params: z.object({ id }), body: z.strictObject({ expected_revision: z.int().positive() }) },
     )
     .post(
       "/v1/runs/:id/retry-preparation",
-      ({ request, params, body }) =>
-        command(request, body, () => lifecycle.retryPreparation(params.id, body.expected_revision)),
+      async ({ request, params, body }) =>
+        await command(
+          request,
+          body,
+          async () => await lifecycle.retryPreparation(params.id, body.expected_revision),
+        ),
       { params: z.object({ id }), body: z.strictObject({ expected_revision: z.int().positive() }) },
     )
     .post(
       "/v1/runs/:id/cancel",
-      ({ request, params }) => {
-        const result = command(request, {}, () => lifecycle.cancel(params.id));
-        background.notifyControls();
+      async ({ request, params }) => {
+        const result = await command(request, {}, async () => await lifecycle.cancel(params.id));
+        await background.notifyControls();
         return result;
       },
       { params: z.object({ id }) },

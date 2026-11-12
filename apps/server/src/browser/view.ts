@@ -22,7 +22,7 @@ export class BrowserViews {
       hostname: "127.0.0.1",
       port: 0,
       maxRequestBodySize: 65536,
-      fetch: (request, server) => {
+      fetch: async (request, server) => {
         const url = new URL(request.url);
         const ticket = url.searchParams.get("ticket") ?? "";
         const view = this.#tickets.get(ticket);
@@ -36,7 +36,7 @@ export class BrowserViews {
               request.headers.get("Origin") !== view.origin)
           )
             return new Response(null, { status: 403 });
-          this.browsers.session(view.session_id, view.scope, view.generation);
+          await this.browsers.session(view.session_id, view.scope, view.generation);
           if (server.upgrade(request, { data: { view } })) return;
         } catch {
           return new Response(null, { status: 403 });
@@ -46,10 +46,10 @@ export class BrowserViews {
       websocket: {
         open: (ws) => {
           this.#peers.add(ws);
-          const check = () => {
+          const check = async () => {
             try {
               if (Date.now() > ws.data.view.expires) throw new DomainError("UNAUTHORIZED");
-              this.browsers.session(
+              await this.browsers.session(
                 ws.data.view.session_id,
                 ws.data.view.scope,
                 ws.data.view.generation,
@@ -63,8 +63,8 @@ export class BrowserViews {
           };
           ws.data.timer = setInterval(check, 100);
           ws.data.tcp = connect({ host: "127.0.0.1", port: ws.data.view.port });
-          ws.data.tcp.on("data", (bytes) => {
-            if (check()) {
+          ws.data.tcp.on("data", async (bytes) => {
+            if (await check()) {
               const sent = ws.send(bytes);
               if (sent <= 0) {
                 ws.close(1013);
@@ -75,9 +75,9 @@ export class BrowserViews {
           ws.data.tcp.on("error", () => ws.close(1011, "Browser unavailable."));
           ws.data.tcp.on("close", () => ws.close());
         },
-        message: (ws, bytes) => {
+        message: async (ws, bytes) => {
           try {
-            this.browsers.session(
+            await this.browsers.session(
               ws.data.view.session_id,
               ws.data.view.scope,
               ws.data.view.generation,
@@ -100,9 +100,9 @@ export class BrowserViews {
     });
   }
   async issue(sessionId: string, scope: BrowserScope, origin: string) {
-    const session = this.browsers.session(sessionId, scope);
+    const session = await this.browsers.session(sessionId, scope);
     const port = await this.browsers.host.vncPort(session.profile_id);
-    this.browsers.session(sessionId, scope, session.generation);
+    await this.browsers.session(sessionId, scope, session.generation);
     for (const [key, ticket] of this.#tickets)
       if (ticket.expires < Date.now()) this.#tickets.delete(key);
     if (this.#tickets.size >= 100) throw new DomainError("CONFLICT");
@@ -128,9 +128,9 @@ export class BrowserViews {
       expires_at: new Date(expires).toISOString(),
     };
   }
-  close() {
+  async close() {
     this.#tickets.clear();
     for (const peer of this.#peers) peer.close();
-    this.server.stop(true);
+    await this.server.stop(true);
   }
 }

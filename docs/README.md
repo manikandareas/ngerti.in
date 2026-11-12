@@ -4,7 +4,7 @@ This repository is the authority for product decisions, local backlog, implement
 
 ## Product and work
 
-- [Central server, PostgreSQL and organizations plan](architecture/server-organizations-plan-2026-11-12.md): the main November 12 design and diagrams, with [NMA-072–083](backlog/README.md#server-organizations-plan) covering auth, roles/Workgroups, private/Team agents, scoped data/execution/connections and web/Tauri delivery. All new implementation is Backlog. Further desktop-rs work is paused.
+- [Central server, PostgreSQL and organizations plan](architecture/server-organizations-plan-2026-11-12.md): the main November 12 design and diagrams, with [NMA-072–083](backlog/README.md#server-organizations-plan) covering auth, roles/Workgroups, private/Team agents, scoped data/execution/connections and web/Tauri delivery. NMA-072 is Done for its [verified single-owner PostgreSQL/import scope](verification/nma-072/README.md); the other new milestones remain Backlog. Further desktop-rs work is paused.
 
 - [All 83 feature decisions](product/feature-decisions.md), [agents/conversations/groups](product/conversations.md), [Goals and Routine](product/goals-routine.md), and [current interface](product/interface.md).
 - [Local backlog and delivery status](backlog/README.md), [feature ownership](backlog/feature-coverage.md), and [acceptance/readiness gates](development/acceptance.md).
@@ -15,6 +15,8 @@ This repository is the authority for product decisions, local backlog, implement
 The handoff reconciled eleven decision documents and nineteen milestone records, including the deferred runtime reference. Six Desktop Rust planning milestones were added on 2026-11-07. Current implementation amendments take precedence over the older planning sections they replace. The provenance record identifies the captured source/version and reconciliation boundaries; ongoing work updates this repository directly.
 
 ## Architecture and API
+
+- [PostgreSQL persistence and offline import](architecture/postgresql-persistence.md): async transaction/authority model, schema, backups and controlled SQLite import.
 
 - [Current architecture and trust boundaries](architecture/overview.md).
 - [Foundation ADR](architecture/adr-0001-harness-first-foundation.md), [lifecycle contract](architecture/harness-first-contract.md), and [consumer contract](architecture/api-consumer-contract.md).
@@ -33,6 +35,6 @@ The handoff reconciled eleven decision documents and nineteen milestone records,
 - [Working files tree, local file icons and source viewer](verification/working-files-tree-2026-11-07/README.md).
 - [Research index](research/README.md), [initial NMA-060 API gate](verification/nma-060/final-cohort/README.md), [NMA-061 UI](verification/nma-061/README.md), and [NMA-062 UI](verification/nma-062/README.md).
 
-Sixteen earlier active milestones and six Desktop Rust milestones are Done for their recorded scope. NMA-072–083 are the planned server-organizations sequence; NMA-063 full-product acceptance now depends on its focused acceptance, and NMA-064 remains distribution. Further desktop-rs work is paused. Native/provider, billing, API, browser/Tauri and installation claims retain separate evidence boundaries.
+Sixteen earlier active milestones and six Desktop Rust milestones are Done for their recorded scope. NMA-072 adds the verified PostgreSQL/import foundation; NMA-073–083 remain the planned server-organizations sequence; NMA-063 full-product acceptance now depends on its focused acceptance, and NMA-064 remains distribution. Further desktop-rs work is paused. Native/provider, billing, API, browser/Tauri and installation claims retain separate evidence boundaries.
 
 Run `make docs-check` or `bun run docs:check` to validate local links and backlog consistency. Only byte-identical registered historical captures may resolve missing targets in pinned Git trees. Current guides resolve against the working tree.

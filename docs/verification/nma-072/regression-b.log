@@ -1,0 +1,191 @@
+bun test v1.3.10 (30e609e0)
+
+tests/bootstrap.test.ts:
+{"event":"foundation.started","url":"http://127.0.0.1:52869","credentials_file":"/var/folders/j1/p1582yhj20z58phnf_zrzy7w0000gn/T/ngertiin-bootstrap-TISGA7/installation.json","registered_executors":2,"api_readiness_gate":"ready"}
+{"event":"foundation.started","url":"http://127.0.0.1:52875","credentials_file":"/var/folders/j1/p1582yhj20z58phnf_zrzy7w0000gn/T/ngertiin-bootstrap-TISGA7/installation.json","registered_executors":2,"api_readiness_gate":"ready"}
+(pass) bootstrap exposes discovery, enforces one authority, and preserves state across restart [1416.78ms]
+
+tests/goals/domain.test.ts:
+(pass) multiple responsibilities retain their own source/objective/progress and correction identity after restart [922.74ms]
+(pass) capture rejects foreign, deleted and automatic trigger source identities [929.62ms]
+(pass) continuation admission is durable and repeated ticks/restart do not create another run [1163.45ms]
+(pass) unknown native outcome never becomes a retry, completion or second scheduled effect [888.74ms]
+(pass) wait has no busy-loop, even with an associated heartbeat and after restart [1028.44ms]
+(pass) blocked has no busy-loop, even with an associated heartbeat and after restart [1097.85ms]
+(pass) completion requires verified nonempty produced bytes and successful native settlement [1337.91ms]
+(pass) failed or stopped runs cannot finalize pending completion or publish deferred late results [1235.74ms]
+(pass) calendar schedules honor IANA wall time and skip DST gaps and repeated fall-back instants [19.31ms]
+(pass) heartbeat coalesces missed occurrences and changed schedules invalidate old queued generation [1394.20ms]
+(pass) quiet scheduled output has no streamed or final bubble, while relevant output publishes once [2056.66ms]
+(pass) quiet cannot hide a result artifact, human request or explicit blocker [1236.15ms]
+(pass) stop run preserves future Routine responsibility without replaying the cancelled run [1001.34ms]
+(pass) pause/resume preserves an independently paused Routine; stop fences queued work across restart [1921.51ms]
+(pass) goal handoff/HITL retains one task owner; stop invalidates descendant tasks and replies [1687.89ms]
+(pass) scoped structured capture retries commit once and self-stop returns its receipt then revokes tools [4617.68ms]
+(pass) HTTP contracts expose goal/Routine commands, snapshot/replay and authenticated idempotent updates [892.35ms]
+(pass) an active linked Routine owns its wakeups and cannot race a second continuation [1505.35ms]
+(pass) completion from an unsuccessful native run remains blocked with evidence retained [1321.00ms]
+(pass) explicit resume continues a stopped known run while unknown source receipts remain fenced [911.60ms]
+(pass) membership removal preserves group responsibilities and invalidates the removed assignment [902.54ms]
+(pass) completion rechecks evidence bytes after reporting and blocks a tampered artifact [1099.33ms]
+(pass) a meaningful artifact after a quiet decision restores final publication [1627.44ms]
+(pass) a source run cannot undo its yield, publish future result bytes or complete the deferred goal [1856.33ms]
+(pass) a later conversational schedule edit binds its source run before allowing another occurrence [617.58ms]
+
+tests/goals/adapters.test.ts:
+(pass) codex structured goal capture and quiet Routine round trip survive native-client restart [2921.19ms]
+(pass) muse structured goal capture and quiet Routine round trip survive native-client restart [3284.63ms]
+
+tests/goals/tool-discovery.test.ts:
+(pass) responsibility guidance reaches MCP, exact-schema discovery and the Muse native catalog [1047.42ms]
+
+tests/learning/domain.test.ts:
+(pass) scoped recall separates DM, each group, another agent and explicitly shared facts [342.86ms]
+(pass) identity/revision corrections, permanent tombstones and immutable command receipts survive restart [282.27ms]
+(pass) memory transaction failure rolls back identity, event and receipt before retry [163.14ms]
+(pass) bounded recall has stable pagination and refuses a foreign cursor [387.57ms]
+(pass) private skill assets and assignments do not travel to another thread; explicit shared packages do [408.64ms]
+(pass) skill revisions are immutable, assignment updates are explicit and pinned versions survive restart [389.67ms]
+(pass) duplicate names, asset path injection and ambiguous asset casing fail without partial revisions [232.11ms]
+(pass) a new shared assignment cannot introduce a same-name conflict in another conversation [468.16ms]
+(pass) group members share group facts but retain separate private memory and skill write ownership [1117.50ms]
+(pass) harness inventory is read-only, qualified name collisions are visible and app writes preserve native bytes [437.37ms]
+(pass) native discovery refuses symlink ancestors and hardlinked content instead of exposing foreign assets [261.19ms]
+(pass) learning tools bind command receipts to the lease context and deny effects after grant revocation [1287.89ms]
+(pass) HTTP learning commands authenticate, deduplicate concurrent retries and expose reviewable revisions [390.73ms]
+
+tests/learning/adapters.test.ts:
+(pass) codex protocol fixture uses the trusted learning bridge and resumes pinned assets after restart [19379.38ms]
+(pass) muse protocol fixture uses the trusted learning bridge and resumes pinned assets after restart [18394.44ms]
+
+tests/groups/attachments.test.ts:
+(pass) group members share one workspace and have separate DM, routing and temporary resources [300.57ms]
+131 |   } finally {
+132 |     reader.releaseLock();
+133 |   }
+134 |   await owned.close();
+135 |   await Bun.sleep(650);
+136 |   expect(existsSync(marker)).toBe(false);
+                                   ^
+error: expect(received).toBe(expected)
+
+Expected: false
+Received: true
+
+      at <anonymous> (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/tests/groups/attachments.test.ts:136:30)
+(fail) a shared native writer closes its owned background descendants before releasing the workspace [1422.14ms]
+(pass) group submission is atomic and exact HTTP retries reconcile one message, route and artifact after restart [651.70ms]
+(pass) handoff and follow-up use the same source, serialize writers and retain access after restart [2102.78ms]
+(pass) unknown group work retains the workspace lease across restart until native reconciliation [655.17ms]
+(pass) foreign attachment admission and removed-member access fail without publishing a message [722.85ms]
+(pass) image routing exposes only capable members and rejects unsupported targets before publication [955.60ms]
+(pass) retrying rejected routing keeps the original source message and cannot duplicate the selected task [761.25ms]
+(pass) existing group lanes are preserved beneath stable directories and retain artifact identity [504.11ms]
+
+tests/groups/domain.test.ts:
+(pass) mention selects exactly one valid member and invalid addresses create no work [362.96ms]
+(pass) model routing uses the scoped packet, validates output and never writes selection bubbles [593.82ms]
+(pass) invalid model route fails closed: not JSON [493.47ms]
+(pass) invalid model route fails closed: [] [579.34ms]
+(pass) invalid model route fails closed: {"agent_id":"bad"} [521.86ms]
+(pass) invalid model route fails closed: {"agent_id":"77ad5808-eb1c-4512-a948-49b54c3b99c7"} [521.43ms]
+(pass) invalid model route fails closed: {"agent_id":"6c1300a7-a4d8-4ee2-9903-60b8d74eb4fc","extra":true} [625.98ms]
+(pass) membership edits fence stale routing and revoke queued work even after readding the member [638.43ms]
+(pass) cross-harness child review, lineage and atomic parent continuation survive repeated restart reconciliation [1143.88ms]
+(pass) human reply stays bound to its request across restart and duplicate/stale replies cannot resume another task [978.53ms]
+(pass) unknown source or child remains held and only native reconciliation can release the exact continuation [1626.75ms]
+(pass) revocation between claim and tool/dispatch denies new peer effects [903.37ms]
+(pass) self/ancestor handoff cycles and a second unrelated HITL request are rejected [1704.59ms]
+(pass) HTTP exact retries, schemas, authored scope and request conflicts remain explicit [1800.96ms]
+(pass) a pending human request remains answerable while native outcome is unknown, without blind replay [1283.64ms]
+(pass) routing leases cannot call product tools and revoked router work never dispatches after readd [872.25ms]
+(pass) task result retrieval remains group scoped and bounded, including long peer results [851.11ms]
+(pass) a failed collaboration transaction leaves no task, authored request, event or parent hold [379.31ms]
+
+tests/groups/adapters.test.ts:
+(pass) codex routing and cross-harness peer/HITL use real protocol fixtures and durable tool receipts [6338.57ms]
+(pass) muse routing and cross-harness peer/HITL use real protocol fixtures and durable tool receipts [6143.89ms]
+
+tests/groups/responsibilities.test.ts:
+(pass) shared goals accept exact parent/child evidence after restart and finalize once without a duplicate answer [1950.35ms]
+(pass) a definitive report failure is durable through the actual tool transaction and does not start another finalizer [810.58ms]
+(pass) artifact evidence cannot cross an objective generation even when the producer identity is retained [695.65ms]
+(pass) friendly history and event projections preserve technical requests only in owner diagnostics [1012.97ms]
+(pass) automatic Routine selection persists one occurrence before routing and one group execution across restart [2156.93ms]
+(pass) fixed Routine keeps its group identity when a target leaves and never overlaps unknown work [765.51ms]
+(pass) removing an unknown coordinator holds reassignment until a native receipt resolves the old execution [617.63ms]
+(pass) legacy agent-owned group goals normalize once while original identity and execution provenance survive [667.55ms]
+(pass) pausing a Routine retains an unknown native occurrence without event polling or false stop confirmation [774.13ms]
+(pass) coordinator reassignment returns the committed self-stop receipt and continues only after native stop [941.96ms]
+(pass) owner recovery restores legacy child evidence when the latest goal continuation had no task [1974.65ms]
+(pass) an automatic occurrence cannot apply a selected result after membership changes [817.00ms]
+(pass) a coordinator selection that became stale blocks without retrying or admitting work [1034.59ms]
+
+tests/browser/domain.test.ts:
+(pass) browser grants are explicit per conversation and action permission is separate from viewing [812.29ms]
+(pass) actions commit a receipt before dispatch and exact retry never repeats the native effect [3528.61ms]
+(pass) revocation during connect fences final native action dispatch [446.03ms]
+(pass) stop rejects late actions without dispatching browser effects [505.94ms]
+(pass) unknown acknowledgements survive application restart without blind replay [1125.02ms]
+(pass) foreign targets, stale generations, unlisted tools and local profile URLs are rejected [1969.68ms]
+(pass) concurrent native calls serialize by profile, and unknown effects remain held after close [4823.65ms]
+(pass) cancellation during a dispatched effect holds unknown and suppresses returned page content [1772.68ms]
+(pass) indexed input requires a fresh observation and exact native target [3076.62ms]
+(pass) HTTP browser resources require owner authentication and explicit scoped grants [399.36ms]
+(pass) single-use view tickets reject foreign origins and existing viewers close on grant change [665.87ms]
+(pass) callback credentials and raw browser errors are excluded from tool output [9.32ms]
+(pass) explicit site authentication signals distinguish valid, expired and unknown sessions [708.47ms]
+(pass) removing the last grant revokes observation, screenshots, tools and subsequent reopen [624.04ms]
+(pass) lost host-control acknowledgement persists an intent and prevents implicit restart or reset replay [797.47ms]
+
+tests/machines/domain.test.ts:
+(pass) DM and group contexts bind one machine while retaining distinct logical workspaces [608.96ms]
+(pass) multi-step input has one owner; human takeover waits for in-flight input and fences agents [5706.64ms]
+(pass) unknown input survives restart, cannot replay, and can be reconciled by a fresh observation [2150.38ms]
+(pass) server-owned session identity and current grants cannot be supplied or bypassed by tool arguments [1501.13ms]
+(pass) simultaneous native command retries share admission and retain one dispatched effect [222.84ms]
+(pass) async file commands commit independently while I/O waits and coalesce exact concurrent retries [204.10ms]
+(pass) interrupted file projection retains its reservation across restart and rechecks scope before commit [328.88ms]
+(pass) human handback waits for media quiescence and disconnected control expires [2365.52ms]
+
+tests/machines/cleanup.test.ts:
+(pass) successful task closes only its explicit temporary window, retaining the browser profile and user window [1820.91ms]
+(pass) whole handoff chain owns the window until the peer delivers its result [3094.93ms]
+(pass) result previews and explicit retention remain available [2507.35ms]
+(pass) a failed task does not dispose of its debugging context [1303.00ms]
+(pass) human takeover preserves potentially edited task windows and never races cleanup [1124.63ms]
+(pass) save prompts block graceful cleanup without force-close or retries [1585.77ms]
+(pass) lost close acknowledgement survives restart without repeating the effect [1622.77ms]
+(pass) owner API exports managed window state and its versioned schema [1225.01ms]
+(pass) a task-owned terminal stays open until its attributed process exits [2058.82ms]
+(pass) deferred successful cleanup resumes after restart without reopening a window [1689.07ms]
+(pass) human takeover waits for an in-flight cleanup before granting interactive input [1322.59ms]
+(pass) another request cannot retain this task's windows or prevent its independent cleanup [1516.91ms]
+(pass) window commands reject missing mutation identities and unsupported URL schemes [544.95ms]
+(pass) existing native sessions receive current cleanup policy in every turn context [509.71ms]
+(pass) observations made during cleanup cannot authorize a subsequent agent click [3577.30ms]
+
+tests/machines/view-sessions.test.ts:
+(pass) viewer renewals keep the gateway identity and independent consumers cannot revoke each other [716.17ms]
+(pass) a renewal racing explicit revocation never resurrects the view [397.70ms]
+
+tests/persistence/postgres.test.ts:
+(pass) nested failure restores its savepoint while an outer command commits one receipt [327.99ms]
+(pass) concurrent duplicate commands and lost acknowledgements retain one admission [409.31ms]
+(pass) commit-ordered clocks prevent a blocked lower cursor from disappearing behind replay [435.94ms]
+(pass) authority session loss fences an in-flight publication and a pooled reconnect never owns its lock [430.98ms]
+(pass) receipt replay reauthorizes, and interrupted external reservations retain unknown identity [447.28ms]
+(pass) bounded indexed reads retain keyset order across pages [490.31ms]
+(pass) offline import reconciles IDs, events, receipts and native bindings and rehearses verified rollback [605.09ms]
+(pass) filtered replay advances through hidden events and retains a consistent high watermark [270.80ms]
+(pass) a killed authority releases its session and restart preserves unknown native work without dispatching it twice [905.19ms]
+(pass) loss of the authority session aborts active native work and leaves recovery unknown [450.55ms]
+(pass) a changed applied migration refuses startup without changing domain history or retaining its authority lock [264.98ms]
+
+1 tests failed:
+(fail) a shared native writer closes its owned background descendants before releasing the workspace [1422.14ms]
+
+ 136 pass
+ 1 fail
+ 834 expect() calls
+Ran 137 tests across 15 files. [203.54s]

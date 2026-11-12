@@ -6,11 +6,11 @@ import { BrowserMcp } from "./mcp";
 import { safeBrowserOutput } from "./output";
 
 export interface BrowserHost {
-  connect(profileId: string, authorize?: () => void): Promise<void>;
+  connect(profileId: string, authorize?: () => void | Promise<void>): Promise<void>;
   call(profileId: string, tool: string, args: unknown): Promise<BrowserResult>;
   detach(profileId: string): void;
-  close(profileId: string, authorize?: () => void): Promise<void>;
-  reset(profileId: string, authorize?: () => void): Promise<void>;
+  close(profileId: string, authorize?: () => void | Promise<void>): Promise<void>;
+  reset(profileId: string, authorize?: () => void | Promise<void>): Promise<void>;
   vncPort(profileId: string): Promise<number>;
 }
 export class DockerBrowserHost implements BrowserHost {
@@ -77,12 +77,12 @@ export class DockerBrowserHost implements BrowserHost {
       this.#opening.delete(id);
     }
   }
-  private async open(id: string, authorize: () => void) {
+  private async open(id: string, authorize: () => void | Promise<void>) {
     const image = await this.image();
-    authorize();
+    await authorize();
     const name = this.name(id);
     let info = await this.inspect(id);
-    authorize();
+    await authorize();
     if (info && info.Image !== image) throw new DomainError("BROWSER_UNAVAILABLE");
     if (!info) {
       const path = join(this.root, id);
@@ -111,13 +111,13 @@ export class DockerBrowserHost implements BrowserHost {
         image,
       ]);
     } else if (!info.State.Running) {
-      authorize();
+      await authorize();
       await this.docker(["start", name]);
     }
     // The host reports readiness by accepting RFB; no model or navigation is used as a health check.
     for (let attempt = 0; attempt < 100; attempt++) {
       info = await this.inspect(id);
-      authorize();
+      await authorize();
       if (!info?.State.Running) throw new DomainError("BROWSER_UNAVAILABLE");
       const ready = await this.docker(
         [
@@ -145,7 +145,7 @@ export class DockerBrowserHost implements BrowserHost {
       if (attempt === 99) throw new DomainError("BROWSER_UNAVAILABLE");
       await Bun.sleep(100);
     }
-    authorize();
+    await authorize();
     const client = new BrowserMcp([
       "docker",
       "exec",
@@ -173,10 +173,10 @@ export class DockerBrowserHost implements BrowserHost {
     this.#clients.delete(id);
   }
   async close(id: string, authorize = () => {}) {
-    authorize();
+    await authorize();
     this.detach(id);
     const info = await this.inspect(id);
-    authorize();
+    await authorize();
     if (info) await this.docker(["stop", "--time=15", this.name(id)]);
   }
   async reset(id: string, authorize = () => {}) {
@@ -186,10 +186,10 @@ export class DockerBrowserHost implements BrowserHost {
     const path = join(this.root, id);
     if (dirname(path) !== this.root || lstatSync(path).isSymbolicLink())
       throw new DomainError("SCOPE_DENIED", 403);
-    authorize();
+    await authorize();
     rmSync(path, { recursive: true });
     const info = await this.inspect(id);
-    authorize();
+    await authorize();
     if (info) await this.docker(["rm", this.name(id)]);
   }
   async vncPort(id: string) {

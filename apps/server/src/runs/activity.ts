@@ -44,15 +44,15 @@ export function toolActivityKind(name: string): z.infer<typeof activityKind> {
 }
 
 /** Call identities keep overlapping operations from clearing each other's activity. */
-export function observeToolActivity(
+export async function observeToolActivity(
   lifecycle: Lifecycle,
   runId: string,
   token: string,
   operation: ActiveTool,
   state: "started" | "completed" | "failed",
 ) {
-  return lifecycle.store.transaction(() => {
-    const run = lifecycle.store.get("run", runId);
+  return await lifecycle.store.transaction(async () => {
+    const run = await lifecycle.store.get("run", runId);
     const existing = run.active_tools.find((tool) => tool.call_id === operation.call_id);
     if (state !== "started" && !existing) return;
     if (
@@ -69,7 +69,7 @@ export function observeToolActivity(
           )
         : run.active_tools.filter((tool) => tool.call_id !== operation.call_id);
     if (state === "started" && !existing) tools.push(activeTool.parse(operation));
-    lifecycle.observe(runId, token, {
+    await lifecycle.observe(runId, token, {
       active_tools: tools.slice(-200),
       activity:
         run.cancellation === "requested"

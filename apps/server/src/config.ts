@@ -55,7 +55,12 @@ export function developmentConfig() {
     ...installation,
     stateDir,
     installationFile,
-    database: resolve(stateDir, "ngertiin.sqlite"),
+    database: resolve(stateDir, "ngertiin.postgres"),
+    databaseUrl: process.env.NGERTIIN_DATABASE_URL ?? rootEnvironment.NGERTIIN_DATABASE_URL,
+    databaseSchema:
+      process.env.NGERTIIN_DATABASE_SCHEMA ??
+      rootEnvironment.NGERTIIN_DATABASE_SCHEMA ??
+      "ngertiin_app",
     port,
     groupRouter,
     typesafeApiKey,

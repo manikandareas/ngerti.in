@@ -19,7 +19,7 @@ The [main plan](server-organizations-plan-2026-11-12.md) and NMA-072–083 promo
 | GPUI experiment | Separate native visual/interactivity prototype with fixture state and optional read-only Computer viewing; no domain lifecycle or active-client replacement authority. |
 | Cua machine | Shared Linux browser, desktop, terminal processes and working files. |
 
-The active workspaces are `apps/server`, `apps/web-client`, `apps/desktop`, and `packages/avatar`. Backend composition, scheduler and dispatcher run under one Bun application authority backed by owner-bound SQLite. Native operations run outside short database transactions. There is no parallel Hermes scheduler or second application model loop.
+The active workspaces are `apps/server`, `apps/web-client`, `apps/desktop`, and `packages/avatar`. Backend composition, scheduler and dispatcher run under one Bun application authority backed by owner-bound PostgreSQL. Native operations run outside short database transactions. There is no parallel Hermes scheduler or second application model loop.
 
 The separately planned [desktop-rs client](desktop-rs-plan-2026-11-07.md) targets GPUI presentation parity through NMA-066–071. NMA-066/NMA-067 are **Done** under the [2026-11-08 owner decision](../development/nma-066-067-closure-2026-11-08.md), accepting implemented foundation/components with remaining technical verification non-blocking. NMA-068 is Done for the implemented native workspace/conversation with bounded native/API evidence; NMA-069 is Done for native contextual workflows; NMA-070 is Done for native Computer/host lifecycle with [bounded evidence](../verification/nma-070/README.md); NMA-071 is Done for integrated native development acceptance under the focused November 9 scope. The independent Cargo workspace contains `desktop`, `client` and `avatar` crates separating GPUI UI/host integration, version-checked API consumption and renderer-independent avatar logic. [Foundation](../verification/nma-066/README.md) and [component evidence](../verification/nma-067/README.md) preserve actual native results and limitations. Tauri remains active; later native API integration consumes the existing backend without becoming another domain lifecycle authority.
 
@@ -35,6 +35,8 @@ Structured product tools expose configuration, Goals/Routine, memory, app-owned 
 
 ## Durable data and recovery
 
+NMA-072 supplies [async PostgreSQL persistence](postgresql-persistence.md), commit-ordered events, savepoints and a dedicated authority session with durable epochs. Its [verification](../verification/nma-072/README.md) retains the single-owner boundary; authentication, organization binding and RLS follow separately.
+
 Stable identities bind conversations, messages, native sessions, runs, Goals, Routine occurrences, interactions, handoffs, memory revisions, skill revisions and artifacts. Domain mutations, idempotency receipts and published events commit together. Repeated operation keys replay the original result; changed input conflicts.
 
 A native acknowledgement is not completion. Cancellation intent is not native stop confirmation. Unknown side effects or lost acknowledgements block unsafe replay until authoritative receipts reconcile them. Membership/grant changes fence queued or late work. Recovery can replace a native session while retaining product identity/history.
@@ -47,7 +49,7 @@ The active path is Ngertiin → `@trycua/cua` 0.10.1 → pinned Linux image with
 
 Harnesses run on the host with a private control working directory. Machine sessions use scoped product tools for actual work, with native host shell/file writes disabled as documented by adapter evidence. Private native history, credentials and immutable saved-artifact bytes remain in backend storage. Shared working files and attachment copies are visible to authorized agents on the common OS; logical workspace scope does not provide OS filesystem isolation.
 
-Foreground mutations use a durable agent-or-human input lease. Transfer waits for in-flight input and media closure. Read-only Cua tickets enforce observation; interactive tickets bind to a lease revision, expire on disconnect and revoke on handback. Unknown outcomes hold the input gate until reconciliation. Attributed terminal processes can run concurrently; cancelling a run does not kill the machine. File I/O runs outside SQLite transactions and publication rechecks scope before persisting immutable bytes.
+Foreground mutations use a durable agent-or-human input lease. Transfer waits for in-flight input and media closure. Read-only Cua tickets enforce observation; interactive tickets bind to a lease revision, expire on disconnect and revoke on handback. Unknown outcomes hold the input gate until reconciliation. Attributed terminal processes can run concurrently; cancelling a run does not kill the machine. File I/O runs outside database transactions and publication rechecks scope before persisting immutable bytes.
 
 The tested stock Cua image is a cooperative shared device with sudo access. Its explicit unrestricted Driver startup is required by the recorded retained-profile/arbitrary-desktop limitations of bounded manifests. Gateway scoping is not adversarial isolation against shell administrators. Remote/VPS attachment and multi-machine enrollment remain unimplemented.
 

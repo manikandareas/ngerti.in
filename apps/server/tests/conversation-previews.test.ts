@@ -6,39 +6,41 @@ import { type Entity, thread } from "../src/contracts";
 import { readConversationPreviews } from "../src/conversations/previews";
 import { fixture } from "./helpers";
 
-let f: ReturnType<typeof fixture>;
-afterEach(() => f?.close());
+let f: Awaited<ReturnType<typeof fixture>>;
+afterEach(async () => await f?.close());
 
-test("conversation previews return bounded visible excerpts for DMs and groups without side effects", () => {
-  f = fixture();
+test("conversation previews return bounded visible excerpts for DMs and groups without side effects", async () => {
+  f = await fixture();
   const group = thread.parse(
-    f.lifecycle.create("thread", { type: "group", member_agent_ids: [f.agent.id] }),
+    await f.lifecycle.create("thread", { type: "group", member_agent_ids: [f.agent.id] }),
   );
-  const peer = f.lifecycle.create("agent", {
+  const peer = await f.lifecycle.create("agent", {
     name: "Empty conversation",
     harness: "codex",
     connection_id: null,
   });
-  const empty = f.lifecycle.create("thread", { type: "dm", member_agent_ids: [peer.id] });
-  const first = f.admit("First message").message;
-  const put = (changes: Partial<Entity<"message">>) =>
-    f.store.put<Entity<"message">>({ ...first, id: crypto.randomUUID(), ...changes });
-  const latest = put({ text: "Latest\n\tmessage", thread_id: group.id });
-  put({ text: "Deleted message", state: "deleted", thread_id: group.id });
-  put({ text: "PRIVATE_CONTINUATION", purpose: "continuation", thread_id: group.id });
-  put({ text: "", author: "agent", author_agent_id: f.agent.id, thread_id: group.id });
-  const internal = f.store.put({
+  const empty = await f.lifecycle.create("thread", { type: "dm", member_agent_ids: [peer.id] });
+  const first = (await f.admit("First message")).message;
+  const put = async (changes: Partial<Entity<"message">>) =>
+    await f.store.put<Entity<"message">>({ ...first, id: crypto.randomUUID(), ...changes });
+  const latest = await put({ text: "Latest\n\tmessage", thread_id: group.id });
+  await put({ text: "Deleted message", state: "deleted", thread_id: group.id });
+  await put({ text: "PRIVATE_CONTINUATION", purpose: "continuation", thread_id: group.id });
+  await put({ text: "", author: "agent", author_agent_id: f.agent.id, thread_id: group.id });
+  const internal = await f.store.put({
     ...group,
     id: crypto.randomUUID(),
     purpose: "routing",
     group_thread_id: group.id,
   });
-  put({ text: "PRIVATE_ROUTER_CONTEXT", thread_id: internal.id });
-  const long = put({ text: "Long message ".repeat(100), thread_id: f.thread.id });
-  const cursor = f.store.cursor;
-  const result = responseSchemas.conversation_previews.parse(readConversationPreviews(f.store));
+  await put({ text: "PRIVATE_ROUTER_CONTEXT", thread_id: internal.id });
+  const long = await put({ text: "Long message ".repeat(100), thread_id: f.thread.id });
+  const cursor = await f.store.cursor;
+  const result = responseSchemas.conversation_previews.parse(
+    await readConversationPreviews(f.store),
+  );
   expect(result.cursor).toBe(cursor);
-  expect(f.store.cursor).toBe(cursor);
+  expect(await f.store.cursor).toBe(cursor);
   expect(result.items).toHaveLength(3);
   expect(result.items.find((item) => item.thread_id === empty.id)?.latest_message).toBeNull();
   expect(result.items.find((item) => item.thread_id === group.id)?.latest_message).toEqual({
@@ -58,17 +60,17 @@ test("conversation previews return bounded visible excerpts for DMs and groups w
 });
 
 test("authenticated preview reads reflect edits, deletions and restart through the published API", async () => {
-  f = fixture();
+  f = await fixture();
   const token = "d".repeat(64);
   const request = (authorized = true) =>
     new Request("http://localhost/v1/conversations/previews", {
       headers: authorized ? { Authorization: `Bearer ${token}` } : {},
     });
-  let app = createApi(f.lifecycle, new Background(f.lifecycle), token);
+  let app = await createApi(f.lifecycle, new Background(f.lifecycle), token);
   expect((await app.handle(request(false))).status).toBe(401);
-  const first = f.admit("Earlier message").message;
-  const latest = f.admit("Before edit").message;
-  const edited = f.store.put(
+  const first = (await f.admit("Earlier message")).message;
+  const latest = (await f.admit("Before edit")).message;
+  const edited = await f.store.put(
     { ...latest, revision: latest.revision + 1, text: "After edit" },
     latest.revision,
   );
@@ -79,10 +81,13 @@ test("authenticated preview reads reflect edits, deletions and restart through t
       ?.latest_message;
   };
   expect(await read()).toMatchObject({ id: edited.id, text: "After edit" });
-  f.store.put({ ...edited, revision: edited.revision + 1, state: "deleted" }, edited.revision);
+  await f.store.put(
+    { ...edited, revision: edited.revision + 1, state: "deleted" },
+    edited.revision,
+  );
   expect(await read()).toMatchObject({ id: first.id, text: first.text });
-  f.restart();
-  app = createApi(f.lifecycle, new Background(f.lifecycle), token);
+  await f.restart();
+  app = await createApi(f.lifecycle, new Background(f.lifecycle), token);
   expect(await read()).toMatchObject({ id: first.id, text: first.text });
   const contract = await app
     .handle(

@@ -8,19 +8,19 @@ import { HarnessError, unknownCapabilities } from "../src/harness/contracts";
 import { ProductTools } from "../src/harness/tools";
 import { fixture } from "./helpers";
 
-let f: ReturnType<typeof fixture>;
+let f: Awaited<ReturnType<typeof fixture>>;
 let broker: HarnessBroker;
 let background: Background;
 afterEach(async () => {
   await background?.stop(100);
   await broker?.close();
-  f?.close();
+  await f?.close();
 });
 
-async function until(predicate: () => boolean) {
+async function until(predicate: () => boolean | Promise<boolean>) {
   const deadline = Date.now() + 2000;
-  while (!predicate() && Date.now() < deadline) await Bun.sleep(5);
-  expect(predicate()).toBe(true);
+  while (!(await predicate()) && Date.now() < deadline) await Bun.sleep(5);
+  expect(await predicate()).toBe(true);
 }
 
 async function setup(
@@ -28,8 +28,8 @@ async function setup(
   group = false,
   holdClose = false,
 ) {
-  f = fixture();
-  f.lifecycle.updateAgent(f.agent.id, {
+  f = await fixture();
+  await f.lifecycle.updateAgent(f.agent.id, {
     expected_revision: f.agent.revision,
     changes: { model_id: "model-a", reasoning: "high" },
   });
@@ -101,7 +101,7 @@ async function setup(
   broker = new HarnessBroker(
     f.lifecycle,
     new CredentialContexts(f.dir),
-    new ProductTools(f.lifecycle),
+    await ProductTools.open(f.lifecycle),
     {
       codex: {
         harness: "codex",
@@ -122,20 +122,21 @@ async function setup(
     { interval_ms: 5, stale_ms: 30, retry_ms: 10, max_retry_ms: 40 },
   );
   const thread = group
-    ? f.lifecycle.create("thread", { type: "group", member_agent_ids: [f.agent.id] })
+    ? await f.lifecycle.create("thread", { type: "group", member_agent_ids: [f.agent.id] })
     : f.thread;
   await broker.openSession(thread.id, f.agent.id);
   background = new Background(f.lifecycle, broker.executors());
-  const { run } = f.lifecycle.admit({
+  const { run } = await f.lifecycle.admit({
     thread_id: thread.id,
     agent_id: f.agent.id,
     text: "Inspect this project.",
   });
-  background.tick();
+  await background.tick();
   await until(
-    () => f.store.get("run", run.id).status === (mode === "silent" ? "running" : "unknown"),
+    async () =>
+      (await f.store.get("run", run.id)).status === (mode === "silent" ? "running" : "unknown"),
   );
-  broker.startRecovery();
+  await broker.startRecovery();
   return {
     run,
     prompts,
@@ -155,40 +156,40 @@ async function setup(
 test("unknown work is reconciled automatically with backoff and no prompt replay", async () => {
   const state = await setup();
   await until(() => state.reads() >= 2);
-  expect(f.store.get("run", state.run.id).status).toBe("unknown");
+  expect((await f.store.get("run", state.run.id)).status).toBe("unknown");
   expect(state.reads()).toBeLessThan(8);
-  const queued = f.admit("Next ordinary input.").run;
-  background.tick();
-  expect(f.store.get("run", queued.id).status).toBe("queued");
+  const queued = (await f.admit("Next ordinary input.")).run;
+  await background.tick();
+  expect((await f.store.get("run", queued.id)).status).toBe("queued");
   state.complete();
-  await until(() => f.store.get("run", state.run.id).status === "succeeded");
-  expect(f.store.answer(state.run.id)?.text).toBe("The durable final answer.");
+  await until(async () => (await f.store.get("run", state.run.id)).status === "succeeded");
+  expect((await f.store.answer(state.run.id))?.text).toBe("The durable final answer.");
   expect(state.prompts).toEqual([state.run.id]);
-  expect(f.lifecycle.claimNext(f.thread.id, f.agent.id)?.id).toBe(queued.id);
+  expect((await f.lifecycle.claimNext(f.thread.id, f.agent.id))?.id).toBe(queued.id);
 });
 
 test("a lost native completion is recovered through the executing owner and fences late output", async () => {
   const state = await setup("silent");
   state.complete();
-  await until(() => f.store.get("run", state.run.id).status === "succeeded");
+  await until(async () => (await f.store.get("run", state.run.id)).status === "succeeded");
   await background.idle();
   expect(state.closes()).toBeGreaterThan(0);
   expect(state.prompts).toEqual([state.run.id]);
-  expect(f.store.answer(state.run.id)?.text).toBe("The durable final answer.");
+  expect((await f.store.answer(state.run.id))?.text).toBe("The durable final answer.");
   state.event({ type: "text", text: "Late stale answer." });
-  expect(f.store.answer(state.run.id)?.text).toBe("The durable final answer.");
+  expect((await f.store.answer(state.run.id))?.text).toBe("The durable final answer.");
 });
 
 test("silence with no terminal receipt preserves running work and its tools", async () => {
   const state = await setup("silent");
   await until(() => state.reads() >= 2);
-  expect(f.store.get("run", state.run.id)).toMatchObject({
+  expect(await f.store.get("run", state.run.id)).toMatchObject({
     status: "running",
     cancellation: "none",
   });
   expect(state.prompts).toEqual([state.run.id]);
   state.complete();
-  await until(() => f.store.get("run", state.run.id).status === "succeeded");
+  await until(async () => (await f.store.get("run", state.run.id)).status === "succeeded");
 });
 
 test("current native observations postpone stale checks during a long valid run", async () => {
@@ -198,9 +199,9 @@ test("current native observations postpone stale checks during a long valid run"
     await Bun.sleep(5);
   }
   expect(state.reads()).toBe(0);
-  expect(f.store.get("run", state.run.id).status).toBe("running");
+  expect((await f.store.get("run", state.run.id)).status).toBe("running");
   state.complete();
-  await until(() => f.store.get("run", state.run.id).status === "succeeded");
+  await until(async () => (await f.store.get("run", state.run.id)).status === "succeeded");
 });
 
 test("foreign receipts and unexpected cancellation cannot release an unknown lane", async () => {
@@ -208,8 +209,8 @@ test("foreign receipts and unexpected cancellation cannot release an unknown lan
   state.foreign();
   state.complete();
   await until(() => state.reads() >= 2);
-  expect(f.store.get("run", state.run.id).status).toBe("unknown");
-  expect(f.store.answer(state.run.id)).toBeNull();
+  expect((await f.store.get("run", state.run.id)).status).toBe("unknown");
+  expect(await f.store.answer(state.run.id)).toBeNull();
   expect(state.prompts).toEqual([state.run.id]);
 });
 
@@ -217,12 +218,12 @@ test("an unrequested native interruption remains unresolved", async () => {
   const state = await setup("silent");
   state.complete("cancelled");
   await until(() => state.reads() >= 2);
-  expect(f.store.get("run", state.run.id)).toMatchObject({
+  expect(await f.store.get("run", state.run.id)).toMatchObject({
     status: "running",
     cancellation: "none",
   });
   state.complete();
-  await until(() => f.store.get("run", state.run.id).status === "succeeded");
+  await until(async () => (await f.store.get("run", state.run.id)).status === "succeeded");
 });
 
 test("closing recovery cancels timers and prevents further receipt reads", async () => {
@@ -232,20 +233,20 @@ test("closing recovery cancels timers and prevents further receipt reads", async
   const reads = state.reads();
   await Bun.sleep(70);
   expect(state.reads()).toBe(reads);
-  expect(f.store.get("run", state.run.id).status).toBe("unknown");
+  expect((await f.store.get("run", state.run.id)).status).toBe("unknown");
 });
 
 test("automatic group recovery keeps the writer fenced until its owned transport is quiescent", async () => {
   const state = await setup("silent", true, true);
   try {
     state.complete();
-    await until(() => f.store.get("run", state.run.id).status === "unknown");
+    await until(async () => (await f.store.get("run", state.run.id)).status === "unknown");
     await Bun.sleep(100);
-    expect(f.store.get("run", state.run.id).status).toBe("unknown");
+    expect((await f.store.get("run", state.run.id)).status).toBe("unknown");
     expect(state.prompts).toEqual([state.run.id]);
     state.releaseClose();
-    await until(() => f.store.get("run", state.run.id).status === "succeeded");
-    expect(f.store.answer(state.run.id)?.state).toBe("complete");
+    await until(async () => (await f.store.get("run", state.run.id)).status === "succeeded");
+    expect((await f.store.answer(state.run.id))?.state).toBe("complete");
   } finally {
     state.releaseClose();
   }

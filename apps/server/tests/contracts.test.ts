@@ -6,13 +6,13 @@ import { Background } from "../src/background";
 import { contractDocument, domainEvent, type Entity } from "../src/contracts";
 import { fixture } from "./helpers";
 
-let f: ReturnType<typeof fixture>;
-afterEach(() => f?.close());
+let f: Awaited<ReturnType<typeof fixture>>;
+afterEach(async () => await f?.close());
 
 test("every registered domain route retains the shared authentication guard", async () => {
-  f = fixture();
-  const app = createApi(f.lifecycle, new Background(f.lifecycle), "a".repeat(64));
-  const cursor = f.store.cursor;
+  f = await fixture();
+  const app = await createApi(f.lifecycle, new Background(f.lifecycle), "a".repeat(64));
+  const cursor = await f.store.cursor;
   for (const route of app.routes) {
     if (route.path === "/health/live") continue;
     const path = route.path.replace(/:[a-z_]+/g, crypto.randomUUID());
@@ -21,11 +21,11 @@ test("every registered domain route retains the shared authentication guard", as
     );
     expect(response.status, `${route.method} ${route.path}`).toBe(401);
   }
-  expect(f.store.cursor).toBe(cursor);
+  expect(await f.store.cursor).toBe(cursor);
 });
 
-test("published replay schema accepts browser and application receipts across restart", () => {
-  f = fixture();
+test("published replay schema accepts browser and application receipts across restart", async () => {
+  f = await fixture();
   const uuid = () => crypto.randomUUID();
   const scope = { agent_id: f.agent.id, thread_id: f.thread.id };
   const profile = uuid(),
@@ -102,7 +102,7 @@ test("published replay schema accepts browser and application receipts across re
   ];
   for (const record of records) {
     const now = new Date().toISOString();
-    f.store.put({
+    await f.store.put({
       ...record,
       owner_id: f.owner,
       revision: 1,
@@ -110,9 +110,9 @@ test("published replay schema accepts browser and application receipts across re
       updated_at: now,
     } as Entity);
   }
-  const before = f.store.events(0, 1000);
-  f.restart();
-  expect(f.store.events(0, 1000)).toEqual(before);
+  const before = await f.store.events(0, 1000);
+  await f.restart();
+  expect(await f.store.events(0, 1000)).toEqual(before);
   const published = z.fromJSONSchema(contractDocument().event);
   for (const event of before) {
     expect(domainEvent.safeParse(event).success).toBe(true);
@@ -125,8 +125,8 @@ test("published replay schema accepts browser and application receipts across re
   ).toBe(true);
 });
 
-test("published command schemas retain optional defaulted admission fields", () => {
-  f = fixture();
+test("published command schemas retain optional defaulted admission fields", async () => {
+  f = await fixture();
   const schema = z.fromJSONSchema(contractDocument().commands.admit);
   expect(
     schema.safeParse({ thread_id: f.thread.id, agent_id: f.agent.id, text: "Hello" }).success,
@@ -135,9 +135,9 @@ test("published command schemas retain optional defaulted admission fields", () 
 });
 
 test("consumer contract describes actual routes without executing native operations", async () => {
-  f = fixture();
-  const app = createApi(f.lifecycle, new Background(f.lifecycle), "a".repeat(64));
-  const cursor = f.store.cursor;
+  f = await fixture();
+  const app = await createApi(f.lifecycle, new Background(f.lifecycle), "a".repeat(64));
+  const cursor = await f.store.cursor;
   const response = await app.handle(
     new Request("http://localhost/v1/contracts", {
       headers: { Authorization: `Bearer ${"a".repeat(64)}` },
@@ -157,16 +157,16 @@ test("consumer contract describes actual routes without executing native operati
     contract.http.filter((r: { authentication: string }) => r.authentication === "run_lease"),
   ).toHaveLength(2);
   expect(contract.readiness.state).toBe("ready");
-  expect(f.store.cursor).toBe(cursor);
-  expect(f.store.list("run")).toHaveLength(0);
+  expect(await f.store.cursor).toBe(cursor);
+  expect(await f.store.list("run")).toHaveLength(0);
   expect(() => httpContract([{ method: "POST", path: "/v1/unclassified", hooks: {} }])).toThrow(
     "semantics are missing",
   );
 });
 
 test("published response schemas validate admission, control, history, snapshots and safe errors", async () => {
-  f = fixture();
-  const app = createApi(f.lifecycle, new Background(f.lifecycle), "a".repeat(64));
+  f = await fixture();
+  const app = await createApi(f.lifecycle, new Background(f.lifecycle), "a".repeat(64));
   async function read(path: string, body?: unknown) {
     const response = await app.handle(
       new Request(`http://localhost${path}`, {

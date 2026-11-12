@@ -1,0 +1,25 @@
+{
+  "verified_at": "2026-11-12T14:05:47.980Z",
+  "image": "postgres:18.1-alpine@sha256:aa6eb304ddb6dd26df23d05db4e5cb05af8951cda3e0dc57731b771e0ef4ab29",
+  "bun": "1.3.10",
+  "postgres": "PostgreSQL 18.1 on aarch64-unknown-linux-musl, compiled by gcc (Alpine 15.2.0) 15.2.0, 64-bit",
+  "settings": {
+    "fsync": "on",
+    "synchronous_commit": "on"
+  },
+  "checks": {
+    "database_restarted": true,
+    "receipt_identity": true,
+    "event_prefix": true,
+    "native_work_unknown": true,
+    "epoch_advanced": true,
+    "immutable_artifact": true,
+    "unknown_lane_fenced": true
+  },
+  "pass": 7,
+  "fail": 0,
+  "limitations": [
+    "Disposable PostgreSQL container restart with an owned disk volume; not a power-loss or production restore proof.",
+    "No provider login, inference, credential restore or multi-user acceptance."
+  ]
+}

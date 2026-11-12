@@ -3,6 +3,7 @@ import { admissionInput, DomainError, type Entity } from "../contracts";
 import { groupMessage } from "../groups/contracts";
 import { Groups } from "../groups/service";
 import type { Lifecycle } from "../lifecycle";
+import { asyncMap } from "../persistence/async-collections";
 import { RunControls } from "../run-controls";
 import { allowedPath } from "../workspaces/files";
 import { stagedUploadInput } from "./contracts";
@@ -15,8 +16,8 @@ export class AttachmentSubmissions {
   constructor(readonly lifecycle: Lifecycle) {
     this.artifacts = new Artifacts(lifecycle);
   }
-  private scope(threadId: string, agentId: string | null) {
-    const thread = this.lifecycle.store.get("thread", threadId);
+  private async scope(threadId: string, agentId: string | null) {
+    const thread = await this.lifecycle.store.get("thread", threadId);
     if (
       thread.purpose !== "conversation" ||
       (agentId === null ? thread.type !== "group" : !thread.member_agent_ids.includes(agentId))
@@ -24,24 +25,24 @@ export class AttachmentSubmissions {
       throw new DomainError("SCOPE_DENIED", 403);
     return thread.type === "group" ? null : agentId;
   }
-  stage(id: string, input: unknown) {
+  async stage(id: string, input: unknown) {
     const data = stagedUploadInput.parse(input);
-    const agentId = this.scope(data.thread_id, data.agent_id);
+    const agentId = await this.scope(data.thread_id, data.agent_id);
     allowedPath(`inputs/${id}/${data.name}`);
-    this.sweep();
-    return this.lifecycle.store.command(
+    await this.sweep();
+    const fields = this.artifacts.reserveUpload(id, {
+      name: data.name,
+      media_type: data.media_type,
+      content_base64: data.content_base64,
+    });
+    return await this.lifecycle.store.command(
       id,
       { operation: "stage_message_attachment", ...data },
-      () => {
-        if (this.lifecycle.store.list("artifact").some((item) => item.id === id))
+      async () => {
+        if ((await this.lifecycle.store.list("artifact")).some((item) => item.id === id))
           throw new DomainError("CONFLICT");
-        const fields = this.artifacts.reserveUpload(id, {
-          name: data.name,
-          media_type: data.media_type,
-          content_base64: data.content_base64,
-        });
         const now = new Date();
-        return this.lifecycle.store.put({
+        return await this.lifecycle.store.put({
           id,
           kind: "attachment_upload",
           owner_id: this.lifecycle.store.ownerId,
@@ -58,31 +59,31 @@ export class AttachmentSubmissions {
       },
     );
   }
-  commit(input: unknown, commandId: string) {
+  async commit(input: unknown, commandId: string) {
     const data = admissionInput.parse(input);
-    if (this.lifecycle.store.get("thread", data.thread_id).type !== "dm")
+    if ((await this.lifecycle.store.get("thread", data.thread_id)).type !== "dm")
       throw new DomainError("SCOPE_DENIED", 403);
-    this.scope(data.thread_id, data.agent_id);
-    return this.lifecycle.store.transaction(() => {
-      this.commitFiles(
+    await this.scope(data.thread_id, data.agent_id);
+    return await this.lifecycle.store.transaction(async () => {
+      await this.commitFiles(
         data.thread_id,
         data.agent_id,
         data.artifact_ids,
         data.submission_id ?? null,
         commandId,
       );
-      return new RunControls(this.lifecycle).send(data);
+      return await new RunControls(this.lifecycle).send(data);
     });
   }
-  commitGroup(threadId: string, input: unknown, commandId: string) {
+  async commitGroup(threadId: string, input: unknown, commandId: string) {
     const data = groupMessage.parse(input);
-    this.scope(threadId, null);
-    return this.lifecycle.store.transaction(() => {
-      this.commitFiles(threadId, null, data.artifact_ids, data.submission_id, commandId);
-      return new Groups(this.lifecycle).send(threadId, data);
+    await this.scope(threadId, null);
+    return await this.lifecycle.store.transaction(async () => {
+      await this.commitFiles(threadId, null, data.artifact_ids, data.submission_id, commandId);
+      return await new Groups(this.lifecycle).send(threadId, data);
     });
   }
-  private commitFiles(
+  private async commitFiles(
     threadId: string,
     agentId: string | null,
     ids: string[],
@@ -91,11 +92,11 @@ export class AttachmentSubmissions {
   ) {
     if (submissionId !== commandId || new Set(ids).size !== ids.length)
       throw new DomainError("INVALID_REQUEST", 422);
-    const existing = new Set(this.lifecycle.store.list("artifact").map((a) => a.id));
-    const pending = ids
-      .filter((id) => !existing.has(id))
-      .map((id) => {
-        const upload = this.lifecycle.store.get("attachment_upload", id);
+    const existing = new Set((await this.lifecycle.store.list("artifact")).map((a) => a.id));
+    const pending = await asyncMap(
+      ids.filter((id) => !existing.has(id)),
+      async (id) => {
+        const upload = await this.lifecycle.store.get("attachment_upload", id);
         if (
           upload.thread_id !== threadId ||
           upload.agent_id !== agentId ||
@@ -105,12 +106,13 @@ export class AttachmentSubmissions {
         if (upload.state !== "staged" || upload.expires_at <= new Date().toISOString())
           throw new DomainError("CONFLICT");
         return upload;
-      });
+      },
+    );
     if (pending.length) {
-      const workspace = this.artifacts.workspaces.ensure(threadId, agentId);
+      const workspace = await this.artifacts.workspaces.ensure(threadId, agentId);
       for (const upload of pending) {
-        this.artifacts.commitUpload(upload, workspace);
-        this.lifecycle.store.put(
+        await this.artifacts.commitUpload(upload, workspace);
+        await this.lifecycle.store.put(
           {
             ...upload,
             state: "committed",
@@ -133,8 +135,8 @@ export class AttachmentSubmissions {
     }
   }
   async recover() {
-    this.sweep();
-    for (const item of this.lifecycle.store.list("artifact")) {
+    await this.sweep();
+    for (const item of await this.lifecycle.store.list("artifact")) {
       if (item.materialization !== "pending") continue;
       try {
         await this.artifacts.materialize(item.id);
@@ -143,11 +145,11 @@ export class AttachmentSubmissions {
       }
     }
   }
-  sweep(now = new Date()) {
-    for (const upload of this.lifecycle.store.list("attachment_upload")) {
+  async sweep(now = new Date()) {
+    for (const upload of await this.lifecycle.store.list("attachment_upload")) {
       if (upload.state === "committed" || upload.expires_at > now.toISOString()) continue;
       if (upload.state === "staged")
-        this.lifecycle.store.put(
+        await this.lifecycle.store.put(
           {
             ...upload,
             state: "expired",
@@ -156,7 +158,7 @@ export class AttachmentSubmissions {
           },
           upload.revision,
         );
-      this.artifacts.discardReserved(upload);
+      await this.artifacts.discardReserved(upload);
     }
   }
 }

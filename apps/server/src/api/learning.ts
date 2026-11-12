@@ -20,8 +20,8 @@ export function registerLearningRoutes(api: Elysia, lifecycle: Lifecycle, comman
   return api
     .get(
       "/v1/learning/memories",
-      ({ query }) =>
-        memories.recall(
+      async ({ query }) =>
+        await memories.recall(
           { agent_id: query.agent_id, thread_id: query.thread_id },
           {
             query: query.query ?? "",
@@ -41,56 +41,58 @@ export function registerLearningRoutes(api: Elysia, lifecycle: Lifecycle, comman
     )
     .post(
       "/v1/learning/memories/write",
-      ({ request, body }) =>
-        command(request, body, () => {
+      async ({ request, body }) =>
+        await command(request, body, async () => {
           const { context, ...input } = body;
-          return memories.write(context, input);
+          return await memories.write(context, input);
         }),
       { body: memoryWrite.extend({ context: learningContext }) },
     )
     .post(
       "/v1/learning/memories/delete",
-      ({ request, body }) =>
-        command(request, body, () => {
+      async ({ request, body }) =>
+        await command(request, body, async () => {
           const { context, ...input } = body;
-          return memories.remove(context, input);
+          return await memories.remove(context, input);
         }),
       { body: memoryDelete.extend({ context: learningContext }) },
     )
     .get(
       "/v1/learning/skills",
-      ({ query }) => skills.inventory({ agent_id: query.agent_id, thread_id: query.thread_id }),
+      async ({ query }) =>
+        await skills.inventory({ agent_id: query.agent_id, thread_id: query.thread_id }),
       { query: learningContext },
     )
     .post(
       "/v1/learning/skills/read",
-      ({ body }) => skills.read(body.context, { skill_id: body.skill_id, version: body.version }),
+      async ({ body }) =>
+        await skills.read(body.context, { skill_id: body.skill_id, version: body.version }),
       { body: skillRead.extend({ context: learningContext }) },
     )
     .post(
       "/v1/learning/skills/create",
-      ({ request, body }) =>
-        command(request, body, () => {
+      async ({ request, body }) =>
+        await command(request, body, async () => {
           const { context, ...input } = body;
-          return skills.create(context, input);
+          return await skills.create(context, input);
         }),
       { body: skillCreate.extend({ context: learningContext }) },
     )
     .post(
       "/v1/learning/skills/revise",
-      ({ request, body }) =>
-        command(request, body, () => {
+      async ({ request, body }) =>
+        await command(request, body, async () => {
           const { context, ...input } = body;
-          return skills.revise(context, input);
+          return await skills.revise(context, input);
         }),
       { body: skillRevise.extend({ context: learningContext }) },
     )
     .post(
       "/v1/learning/skills/assign",
-      ({ request, body }) =>
-        command(request, body, () => {
+      async ({ request, body }) =>
+        await command(request, body, async () => {
           const { context, ...input } = body;
-          return skills.assign(context, input);
+          return await skills.assign(context, input);
         }),
       { body: skillAssign.extend({ context: learningContext }) },
     );

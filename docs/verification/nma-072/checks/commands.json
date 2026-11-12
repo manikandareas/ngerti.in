@@ -1,0 +1,43 @@
+[
+  {
+    "check": "lint",
+    "command": [
+      "bun",
+      "run",
+      "lint"
+    ],
+    "exit_code": 0,
+    "log": "checks/lint.log"
+  },
+  {
+    "check": "typecheck",
+    "command": [
+      "bun",
+      "run",
+      "typecheck"
+    ],
+    "exit_code": 0,
+    "log": "checks/typecheck.log"
+  },
+  {
+    "check": "verification-tools",
+    "command": [
+      "bunx",
+      "tsc",
+      "-p",
+      "/tmp/ngertiin-nma072-codemod/tools-tsconfig.json"
+    ],
+    "exit_code": 0,
+    "log": "checks/verification-tools.log"
+  },
+  {
+    "check": "docs-check",
+    "command": [
+      "bun",
+      "run",
+      "docs:check"
+    ],
+    "exit_code": 1,
+    "log": "checks/docs-check.log"
+  }
+]

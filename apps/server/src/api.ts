@@ -15,7 +15,7 @@ import type { ApiServices } from "./api/services";
 import { registerWorkspaceRoutes } from "./api/workspaces";
 import { consumerContract, httpContract } from "./api-contract";
 import type { Background } from "./background";
-import { API_READINESS_GATE, CONTRACT_VERSION, contractDocument } from "./contracts";
+import { API_READINESS_GATE, CONTRACT_VERSION, contractDocument, DomainError } from "./contracts";
 import { detectHarness } from "./harness/availability";
 import { Connections } from "./harness/connections";
 import { CredentialStorage } from "./harness/credential-storage";
@@ -23,68 +23,77 @@ import { ProductTools } from "./harness/tools";
 import type { Lifecycle } from "./lifecycle";
 import { MachineViews } from "./machines/view";
 
-export function createApi(
+export async function createApi(
   lifecycle: Lifecycle,
   background: Background,
   token: string,
-  services: ApiServices = {
-    connections: new Connections(lifecycle),
-    tools: new ProductTools(lifecycle),
-    credentialStorage: new CredentialStorage(dirname(lifecycle.store.path)),
-  },
+  services?: ApiServices,
 ) {
+  services ??= {
+    connections: new Connections(lifecycle),
+    tools: await ProductTools.open(lifecycle),
+    credentialStorage: new CredentialStorage(dirname(lifecycle.store.path)),
+  };
   if (token.length < 32) throw new Error("A private development token is required.");
   const command = createCommand(lifecycle);
   const views = services.tools.machines ? new MachineViews(services.tools.machines) : undefined;
-  const api = createHttp(
+  const api = await createHttp(
     token,
     services.tools,
-    views ? (request) => views.authorize(request) : undefined,
+    views ? async (request) => await views.authorize(request) : undefined,
   );
   api
-    .get("/health/ready", async () => ({
-      status: "foundation_ready",
-      contract_version: CONTRACT_VERSION,
-      persistence: "ready",
-      scheduler: "running",
-      dispatcher: "running",
-      registered_executors: background.executorCount,
-      api_readiness_gate: API_READINESS_GATE,
-      group_routing: lifecycle.groupRouter ? "jev" : "member",
-      harnesses: await Promise.all(
-        (["codex", "muse"] as const).map(async (id) => {
-          const value = await (services.detect ?? detectHarness)(id);
-          return {
-            harness: id,
-            state: value.state,
-            version: value.version,
-            executable: value.executable,
-            minimum_version: value.manifest.minimum_version,
-          };
-        }),
-      ),
-    }))
+    .get("/health/ready", async () => {
+      try {
+        await lifecycle.store.assertAuthority();
+      } catch {
+        throw new DomainError("STALE_DISPATCH", 503);
+      }
+      return {
+        status: "foundation_ready",
+        contract_version: CONTRACT_VERSION,
+        persistence: "ready",
+        scheduler: "running",
+        dispatcher: "running",
+        registered_executors: background.executorCount,
+        api_readiness_gate: API_READINESS_GATE,
+        group_routing: lifecycle.groupRouter ? "jev" : "member",
+        harnesses: await Promise.all(
+          (["codex", "muse"] as const).map(async (id) => {
+            const value = await (services.detect ?? detectHarness)(id);
+            return {
+              harness: id,
+              state: value.state,
+              version: value.version,
+              executable: value.executable,
+              minimum_version: value.manifest.minimum_version,
+            };
+          }),
+        ),
+      };
+    })
     .get("/v1/contracts", () => ({
       ...contractDocument(),
       ...consumerContract(services.tools.machines !== undefined),
       http: httpContract(api.routes),
     }));
-  registerConversationRoutes(api, lifecycle, command);
-  registerIntegrationRoutes(api, lifecycle, services, command);
-  registerHarnessRoutes(api, services, command);
-  registerEventRoutes(api, lifecycle);
-  registerLearningRoutes(api, lifecycle, command);
-  registerGroupRoutes(api, lifecycle, background, command);
-  registerGoalRoutes(api, lifecycle, background, command);
-  registerWorkspaceRoutes(api, lifecycle, background, command);
-  registerAttachmentRoutes(api, lifecycle);
-  registerBrowserRoutes(api, services, command);
-  if (services.tools.machines && views) registerMachineRoutes(api, services.tools.machines, views);
-  registerRunRoutes(api, lifecycle, background, services, command);
+  await registerConversationRoutes(api, lifecycle, command);
+  await registerIntegrationRoutes(api, lifecycle, services, command);
+  await registerHarnessRoutes(api, services, command);
+  await registerEventRoutes(api, lifecycle);
+  await registerLearningRoutes(api, lifecycle, command);
+  await registerGroupRoutes(api, lifecycle, background, command);
+  await registerGoalRoutes(api, lifecycle, background, command);
+  await registerWorkspaceRoutes(api, lifecycle, background, command);
+  await registerAttachmentRoutes(api, lifecycle);
+  await registerBrowserRoutes(api, services, command);
+  if (services.tools.machines && views)
+    await registerMachineRoutes(api, services.tools.machines, views);
+  await registerRunRoutes(api, lifecycle, background, services, command);
   // Abort upstream streaming bodies before Bun waits for the HTTP server to drain.
   const stop = api.stop.bind(api);
-  api.stop = (closeActiveConnections) => {
-    views?.close();
+  api.stop = async (closeActiveConnections) => {
+    await views?.close();
     return stop(closeActiveConnections);
   };
   return api;

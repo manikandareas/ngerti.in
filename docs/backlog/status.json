@@ -283,7 +283,7 @@
     "ticket": "NMA-072",
     "title": "PostgreSQL persistence and controlled SQLite cutover",
     "plan": "Harness-first",
-    "status": "Backlog",
+    "status": "Done",
     "order": 16.7,
     "layer": "Engine / Backend",
     "depends_on": [

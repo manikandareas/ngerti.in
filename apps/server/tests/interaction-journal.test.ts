@@ -47,11 +47,11 @@ const approvalAnswer = {
   source_index: 2,
   choice_id: "deny",
 };
-let f: ReturnType<typeof fixture>;
+let f: Awaited<ReturnType<typeof fixture>>;
 let broker: HarnessBroker;
 afterEach(async () => {
   await broker?.close();
-  f?.close();
+  await f?.close();
 });
 async function setup(
   options: {
@@ -60,7 +60,7 @@ async function setup(
     timeout?: number;
   } = {},
 ) {
-  f = fixture();
+  f = await fixture();
   let snapshots: unknown = { approvals: [approval], user_inputs: [question] };
   let calls = 0;
   const caps = {
@@ -103,20 +103,20 @@ async function setup(
       return options.respond?.(runId, answer);
     },
   };
-  const agent = f.lifecycle.create("agent", {
+  const agent = (await f.lifecycle.create("agent", {
     name: "Native history",
     harness: "codex",
     connection_id: (f.agent as Entity<"agent">).connection_id,
     model_id: "model-a",
-  }) as Entity<"agent">;
-  const thread = f.lifecycle.create("thread", {
+  })) as Entity<"agent">;
+  const thread = (await f.lifecycle.create("thread", {
     type: "dm",
     member_agent_ids: [agent.id],
-  }) as Entity<"thread">;
+  })) as Entity<"thread">;
   broker = new HarnessBroker(
     f.lifecycle,
     new CredentialContexts(f.dir),
-    new ProductTools(f.lifecycle),
+    await ProductTools.open(f.lifecycle),
     {
       codex: {
         harness: "codex",
@@ -136,16 +136,16 @@ async function setup(
     { request_ms: options.timeout ?? 1000, close_ms: 100 },
   );
   await broker.openSession(thread.id, agent.id);
-  const admitted = f.lifecycle.admit({
+  const admitted = await f.lifecycle.admit({
     thread_id: thread.id,
     agent_id: agent.id,
     text: "Inspect the private request.",
   });
-  const claimed = f.lifecycle.claimNext(thread.id, agent.id);
+  const claimed = await f.lifecycle.claimNext(thread.id, agent.id);
   if (!claimed?.dispatch_token) throw new Error("Fixture dispatch was not claimed.");
-  f.lifecycle.started(claimed.id, claimed.dispatch_token, "native-run");
+  await f.lifecycle.started(claimed.id, claimed.dispatch_token, "native-run");
   return {
-    run: f.store.get("run", admitted.run.id),
+    run: await f.store.get("run", admitted.run.id),
     thread,
     agent,
     native,
@@ -156,15 +156,15 @@ async function setup(
     },
   };
 }
-function api(active = false) {
-  return createApi(f.lifecycle, new Background(f.lifecycle), token, {
+async function api(active = false) {
+  return await createApi(f.lifecycle, new Background(f.lifecycle), token, {
     connections: new Connections(f.lifecycle),
-    tools: new ProductTools(f.lifecycle),
+    tools: await ProductTools.open(f.lifecycle),
     ...(active ? { broker } : {}),
   });
 }
 async function call(
-  app: ReturnType<typeof createApi>,
+  app: Awaited<ReturnType<typeof createApi>>,
   path: string,
   body?: unknown,
   authorization = `Bearer ${token}`,
@@ -182,23 +182,23 @@ test("normalized observations persist once, redact key shapes and remain convers
   const lane = await setup();
   const pending = await broker.interactions(lane.run.id);
   expect(pending.approvals[0]?.rawArgs).toBe("[REDACTED]");
-  expect(lane.journal.history(lane.run.id).records).toHaveLength(2);
-  const cursor = f.store.cursor;
+  expect((await lane.journal.history(lane.run.id)).records).toHaveLength(2);
+  const cursor = await f.store.cursor;
   await broker.interactions(lane.run.id);
-  expect(f.store.cursor).toBe(cursor);
+  expect(await f.store.cursor).toBe(cursor);
   expect(
-    JSON.stringify(await (await call(api(), `/v1/threads/${f.thread.id}/snapshot`)).json()),
+    JSON.stringify(await (await call(await api(), `/v1/threads/${f.thread.id}/snapshot`)).json()),
   ).not.toContain(question.questions[0]?.question);
-  expect(JSON.stringify(f.store.events(0, 1000))).not.toContain("sk-fixture-secret");
+  expect(JSON.stringify(await f.store.events(0, 1000))).not.toContain("sk-fixture-secret");
 });
 for (const answer of [questionAnswer, approvalAnswer])
   test(`${answer.type} acknowledgement survives completion/restart without asserting action completion`, async () => {
     const lane = await setup();
     expect(await broker.respond(lane.run.id, answer)).toEqual({ status: "submitted" });
-    expect(f.store.get("run", lane.run.id).status).toBe("running");
-    const record = lane.journal
-      .history(lane.run.id)
-      .records.find((entry) => entry.type === answer.type);
+    expect((await f.store.get("run", lane.run.id)).status).toBe("running");
+    const record = (await lane.journal.history(lane.run.id)).records.find(
+      (entry) => entry.type === answer.type,
+    );
     expect(record).toMatchObject({
       observed_state: "pending",
       submission: { state: "submitted", answer },
@@ -206,13 +206,15 @@ for (const answer of [questionAnswer, approvalAnswer])
     lane.snapshots({ approvals: [], user_inputs: [] });
     await broker.interactions(lane.run.id);
     expect(
-      lane.journal.history(lane.run.id).records.find((entry) => entry.id === record?.id),
+      (await lane.journal.history(lane.run.id)).records.find((entry) => entry.id === record?.id),
     ).toMatchObject({ observed_state: "not_pending", submission: { state: "submitted" } });
-    expect(f.store.get("run", lane.run.id).outcome).toBe("none");
-    f.lifecycle.settle(lane.run.id, lane.run.dispatch_token as string, "succeeded");
+    expect((await f.store.get("run", lane.run.id)).outcome).toBe("none");
+    await f.lifecycle.settle(lane.run.id, lane.run.dispatch_token as string, "succeeded");
     await broker.close();
-    f.restart();
-    const value = await (await call(api(), `/v1/runs/${lane.run.id}/interactions/history`)).json();
+    await f.restart();
+    const value = await (
+      await call(await api(), `/v1/runs/${lane.run.id}/interactions/history`)
+    ).json();
     expect(value).toMatchObject({
       run_status: "succeeded",
       cancellation: "none",
@@ -232,18 +234,26 @@ test("lost HTTP acknowledgement and concurrent retries dispatch once; changed an
   const waiting = new Promise<void>((resolve) => {
     release = resolve;
   });
-  const lane = await setup({ respond: async () => waiting });
-  const app = api(true);
+  const entered = Promise.withResolvers<void>();
+  const lane = await setup({
+    respond: async () => {
+      entered.resolve();
+      return waiting;
+    },
+  });
+  const app = await api(true);
   const first = call(app, `/v1/runs/${lane.run.id}/interactions`, questionAnswer);
-  for (let index = 0; index < 100 && !lane.calls(); index++) await Bun.sleep(1);
+  await entered.promise;
   expect(lane.calls()).toBe(1);
-  expect(lane.journal.history(lane.run.id).records[1]?.submission?.state).toBe("submitting");
+  expect((await lane.journal.history(lane.run.id)).records[1]?.submission?.state).toBe(
+    "submitting",
+  );
   expect((await call(app, `/v1/runs/${lane.run.id}/interactions`, questionAnswer)).status).toBe(
     409,
   );
   release();
   expect((await first).status).toBe(200); // Deliberately discard the acknowledgement body.
-  f.lifecycle.settle(lane.run.id, lane.run.dispatch_token as string, "succeeded");
+  await f.lifecycle.settle(lane.run.id, lane.run.dispatch_token as string, "succeeded");
   expect(
     await (await call(app, `/v1/runs/${lane.run.id}/interactions`, questionAnswer)).json(),
   ).toEqual({ status: "submitted" });
@@ -256,8 +266,14 @@ test("lost HTTP acknowledgement and concurrent retries dispatch once; changed an
     ).status,
   ).toBe(409);
   expect(
-    (await call(api(), `/v1/runs/${lane.run.id}/interactions/history`, undefined, "Bearer invalid"))
-      .status,
+    (
+      await call(
+        await api(),
+        `/v1/runs/${lane.run.id}/interactions/history`,
+        undefined,
+        "Bearer invalid",
+      )
+    ).status,
   ).toBe(401);
   expect(lane.calls()).toBe(1);
 });
@@ -276,11 +292,11 @@ test("ambiguous errors fence retries and do not store opaque native failures", a
     outcome: "unknown",
   });
   expect(lane.calls()).toBe(1);
-  expect(lane.journal.history(lane.run.id).records[1]?.submission).toMatchObject({
+  expect((await lane.journal.history(lane.run.id)).records[1]?.submission).toMatchObject({
     state: "unknown",
     diagnostic: { code: "NATIVE_UNKNOWN", outcome: "unknown" },
   });
-  expect(JSON.stringify(f.store.events(0, 1000))).not.toContain("private raw native failure");
+  expect(JSON.stringify(await f.store.events(0, 1000))).not.toContain("private raw native failure");
 });
 test("timeout stays unknown until the same attempt receives a late acknowledgement without retransmission", async () => {
   let release: () => void = () => {};
@@ -292,13 +308,18 @@ test("timeout stays unknown until the same attempt receives a late acknowledgeme
     code: "NATIVE_UNKNOWN",
     outcome: "unknown",
   });
-  const attempt = lane.journal.history(lane.run.id).records[1]?.submission?.attempt_id;
+  const attempt = (await lane.journal.history(lane.run.id)).records[1]?.submission?.attempt_id;
   await expect(broker.respond(lane.run.id, questionAnswer)).rejects.toMatchObject({
     code: "NATIVE_UNKNOWN",
   });
   release();
-  await Bun.sleep(0);
-  expect(lane.journal.history(lane.run.id).records[1]?.submission).toMatchObject({
+  const deadline = Date.now() + 2000;
+  while (
+    (await lane.journal.history(lane.run.id)).records[1]?.submission?.state !== "submitted" &&
+    Date.now() < deadline
+  )
+    await Bun.sleep(5);
+  expect((await lane.journal.history(lane.run.id)).records[1]?.submission).toMatchObject({
     attempt_id: attempt,
     state: "submitted",
   });
@@ -308,22 +329,27 @@ test("timeout stays unknown until the same attempt receives a late acknowledgeme
 test("restart turns persisted in-flight responses unknown even with no live broker", async () => {
   const lane = await setup();
   await broker.interactions(lane.run.id);
-  lane.journal.begin(lane.run.id, questionAnswer, (value) => value);
+  await lane.journal.begin(lane.run.id, questionAnswer, (value) => value);
   await broker.close();
-  const run = f.store.get("run", lane.run.id);
+  const run = await f.store.get("run", lane.run.id);
   // Model abrupt exit before graceful close could fence the persisted attempt.
   const records = run.native_interactions.map((record) =>
     record.submission
       ? { ...record, submission: { ...record.submission, state: "submitting" as const } }
       : record,
   );
-  f.store.put({ ...run, revision: run.revision + 1, native_interactions: records }, run.revision);
-  f.restart();
+  await f.store.put(
+    { ...run, revision: run.revision + 1, native_interactions: records },
+    run.revision,
+  );
+  await f.restart();
   const journal = new InteractionJournal(f.store);
-  expect(journal.history(run.id)).toMatchObject({ run_status: "unknown" });
-  expect(journal.history(run.id).records[1]?.submission?.state).toBe("unknown");
-  expect(() => journal.replay(run.id, questionAnswer)).toThrow("NATIVE_UNKNOWN");
-  expect((await call(api(), `/v1/runs/${run.id}/interactions/history`)).status).toBe(200);
+  expect(await journal.history(run.id)).toMatchObject({ run_status: "unknown" });
+  expect((await journal.history(run.id)).records[1]?.submission?.state).toBe("unknown");
+  await expect((async () => journal.replay(run.id, questionAnswer))()).rejects.toThrow(
+    "NATIVE_UNKNOWN",
+  );
+  expect((await call(await api(), `/v1/runs/${run.id}/interactions/history`)).status).toBe(200);
   expect(lane.calls()).toBe(0);
 });
 test("definitive non-dispatch may retry; run cancellation remains a separate observation", async () => {
@@ -336,16 +362,18 @@ test("definitive non-dispatch may retry; run cancellation remains a separate obs
   await expect(broker.respond(lane.run.id, questionAnswer)).rejects.toMatchObject({
     code: "NATIVE_REJECTED",
   });
-  expect(lane.journal.history(lane.run.id).records[1]?.submission?.state).toBe("not_dispatched");
+  expect((await lane.journal.history(lane.run.id)).records[1]?.submission?.state).toBe(
+    "not_dispatched",
+  );
   rejected = false;
   expect(await broker.respond(lane.run.id, questionAnswer)).toEqual({ status: "submitted" });
-  f.lifecycle.cancel(lane.run.id);
-  f.lifecycle.settle(lane.run.id, lane.run.dispatch_token as string, "cancelled");
-  expect(lane.journal.history(lane.run.id)).toMatchObject({
+  await f.lifecycle.cancel(lane.run.id);
+  await f.lifecycle.settle(lane.run.id, lane.run.dispatch_token as string, "cancelled");
+  expect(await lane.journal.history(lane.run.id)).toMatchObject({
     run_status: "cancelled",
     cancellation: "confirmed",
   });
-  expect(lane.journal.history(lane.run.id).records[1]).toMatchObject({
+  expect((await lane.journal.history(lane.run.id)).records[1]).toMatchObject({
     observed_state: "pending",
     submission: { state: "submitted" },
   });
@@ -358,11 +386,11 @@ test("revocation during a pending read fences observation persistence and respon
   const lane = await setup({ pending: () => waiting });
   const result = broker.respond(lane.run.id, questionAnswer);
   await Bun.sleep(0);
-  new Connections(f.lifecycle).revoke(lane.agent.connection_id as string);
+  await new Connections(f.lifecycle).revoke(lane.agent.connection_id as string);
   finish({ approvals: [], user_inputs: [question] });
   await expect(result).rejects.toMatchObject({ code: "SCOPE_DENIED" });
   expect(lane.calls()).toBe(0);
-  expect(lane.journal.history(lane.run.id).records).toHaveLength(0);
+  expect((await lane.journal.history(lane.run.id)).records).toHaveLength(0);
 });
 test("approval stages are distinct; disappearance without a response never means completion", async () => {
   const lane = await setup();
@@ -375,19 +403,21 @@ test("approval stages are distinct; disappearance without a response never means
   });
   await broker.interactions(lane.run.id);
   expect(
-    lane.journal.history(lane.run.id).records.filter((record) => record.type === "approval"),
+    (await lane.journal.history(lane.run.id)).records.filter(
+      (record) => record.type === "approval",
+    ),
   ).toHaveLength(2);
   expect(await broker.respond(lane.run.id, approvalAnswer)).toEqual({ status: "submitted" });
   lane.snapshots({ approvals: [], user_inputs: [] });
   await broker.interactions(lane.run.id);
   expect(
-    lane.journal.history(lane.run.id).records.find((record) => record.source_index === 3),
+    (await lane.journal.history(lane.run.id)).records.find((record) => record.source_index === 3),
   ).toMatchObject({ observed_state: "not_pending", submission: null });
   await expect(
     broker.respond(lane.run.id, { ...approvalAnswer, source_index: 3 }),
   ).rejects.toMatchObject({ code: "NATIVE_REJECTED" });
   expect(lane.calls()).toBe(1);
-  expect(f.store.get("run", lane.run.id).status).toBe("running");
+  expect((await f.store.get("run", lane.run.id)).status).toBe("running");
 });
 
 test("response fingerprints use original input while persisted answer displays redact secrets", async () => {
@@ -404,20 +434,20 @@ test("response fingerprints use original input while persisted answer displays r
   };
   await broker.respond(lane.run.id, answer);
   expect(nativeAnswer).toEqual(answer);
-  const submission = lane.journal.history(lane.run.id).records[1]?.submission;
+  const submission = (await lane.journal.history(lane.run.id)).records[1]?.submission;
   expect(submission).toMatchObject({
     answer: { answers: [{ freeText: "[REDACTED]" }] },
     state: "submitted",
   });
   expect(await broker.respond(lane.run.id, answer)).toEqual({ status: "submitted" });
   expect(lane.calls()).toBe(1);
-  expect(JSON.stringify(f.store.events(0, 1000))).not.toContain("sk-private-fixture-answer");
+  expect(JSON.stringify(await f.store.events(0, 1000))).not.toContain("sk-private-fixture-answer");
 });
 
 test("oversized observations fail explicitly without truncating retained history or dispatching", async () => {
   const lane = await setup();
   await broker.interactions(lane.run.id);
-  const before = lane.journal.history(lane.run.id);
+  const before = await lane.journal.history(lane.run.id);
   const options = Array.from({ length: 100 }, (_, index) => ({
     label: `${index}`.padEnd(1000, "x"),
   }));
@@ -434,7 +464,7 @@ test("oversized observations fail explicitly without truncating retained history
     ],
   });
   await expect(broker.interactions(lane.run.id)).rejects.toMatchObject({ code: "PROTOCOL_ERROR" });
-  expect(lane.journal.history(lane.run.id)).toEqual(before);
+  expect(await lane.journal.history(lane.run.id)).toEqual(before);
   expect(lane.calls()).toBe(0);
 });
 
@@ -454,7 +484,7 @@ test("a changed request payload cannot overwrite the question associated with a 
     code: "PROTOCOL_ERROR",
     outcome: "unknown",
   });
-  expect(lane.journal.history(lane.run.id).records[1]).toMatchObject({
+  expect((await lane.journal.history(lane.run.id)).records[1]).toMatchObject({
     request: question,
     submission: { state: "submitted" },
   });
@@ -464,10 +494,10 @@ test("a changed request payload cannot overwrite the question associated with a 
 test("first observed transcript anchor uses UTF-16 offset and immutable prefix hash through append, replacement and restart", async () => {
   const lane = await setup();
   const prefix = "Before the 🧠 question. ";
-  f.lifecycle.appendAnswer(lane.run.id, prefix, "partial");
-  const message = f.store.answer(lane.run.id);
+  await f.lifecycle.appendAnswer(lane.run.id, prefix, "partial");
+  const message = await f.store.answer(lane.run.id);
   await broker.interactions(lane.run.id);
-  const first = lane.journal.history(lane.run.id).records[1];
+  const first = (await lane.journal.history(lane.run.id)).records[1];
   const anchor = {
     anchor_message_id: message?.id,
     anchor_text_offset: prefix.length,
@@ -475,24 +505,24 @@ test("first observed transcript anchor uses UTF-16 offset and immutable prefix h
   };
   expect(prefix.length).toBeGreaterThan(Array.from(prefix).length);
   expect(first).toMatchObject(anchor);
-  f.lifecycle.appendAnswer(lane.run.id, `${prefix}Continued after observation.`, "partial");
+  await f.lifecycle.appendAnswer(lane.run.id, `${prefix}Continued after observation.`, "partial");
   await broker.respond(lane.run.id, questionAnswer);
-  expect(lane.journal.history(lane.run.id).records[1]).toMatchObject(anchor);
-  const appended = f.store.answer(lane.run.id)?.text ?? "";
+  expect((await lane.journal.history(lane.run.id)).records[1]).toMatchObject(anchor);
+  const appended = (await f.store.answer(lane.run.id))?.text ?? "";
   expect(createHash("sha256").update(appended.slice(0, prefix.length)).digest("hex")).toBe(
     anchor.anchor_prefix_sha256,
   );
   const replaced = `X${appended.slice(1)}`;
-  f.lifecycle.appendAnswer(lane.run.id, replaced, "complete");
+  await f.lifecycle.appendAnswer(lane.run.id, replaced, "complete");
   await broker.interactions(lane.run.id);
-  expect(lane.journal.history(lane.run.id).records[1]).toMatchObject(anchor);
+  expect((await lane.journal.history(lane.run.id)).records[1]).toMatchObject(anchor);
   expect(createHash("sha256").update(replaced.slice(0, prefix.length)).digest("hex")).not.toBe(
     anchor.anchor_prefix_sha256,
   );
-  f.lifecycle.settle(lane.run.id, lane.run.dispatch_token as string, "succeeded");
+  await f.lifecycle.settle(lane.run.id, lane.run.dispatch_token as string, "succeeded");
   await broker.close();
-  f.restart();
-  expect(new InteractionJournal(f.store).history(lane.run.id).records[1]).toMatchObject({
+  await f.restart();
+  expect((await new InteractionJournal(f.store).history(lane.run.id)).records[1]).toMatchObject({
     ...anchor,
     submission: { state: "submitted" },
   });
@@ -506,56 +536,60 @@ test("a request observed before agent output stays anchored to input with no inv
     anchor_text_offset: null,
     anchor_prefix_sha256: null,
   };
-  expect(lane.journal.history(lane.run.id).records[1]).toMatchObject(fallback);
-  f.lifecycle.appendAnswer(lane.run.id, "Agent output arrived later.", "partial");
+  expect((await lane.journal.history(lane.run.id)).records[1]).toMatchObject(fallback);
+  await f.lifecycle.appendAnswer(lane.run.id, "Agent output arrived later.", "partial");
   await broker.interactions(lane.run.id);
   await broker.respond(lane.run.id, questionAnswer);
-  expect(lane.journal.history(lane.run.id).records[1]).toMatchObject(fallback);
+  expect((await lane.journal.history(lane.run.id)).records[1]).toMatchObject(fallback);
   lane.snapshots({ approvals: [], user_inputs: [{ ...question, userInputId: "question-later" }] });
   await broker.interactions(lane.run.id);
   expect(
-    lane.journal
-      .history(lane.run.id)
-      .records.find((record) => record.request_id === "question-later"),
+    (await lane.journal.history(lane.run.id)).records.find(
+      (record) => record.request_id === "question-later",
+    ),
   ).toMatchObject({
-    anchor_message_id: f.store.answer(lane.run.id)?.id,
+    anchor_message_id: (await f.store.answer(lane.run.id))?.id,
     anchor_text_offset: "Agent output arrived later.".length,
   });
 });
 
 test("a later message in another conversation is never selected as this run's question anchor", async () => {
   const lane = await setup();
-  f.bind();
-  const other = f.admit("A different private conversation.");
-  const claimed = f.lifecycle.claimNext(f.thread.id, f.agent.id);
+  await f.bind();
+  const other = await f.admit("A different private conversation.");
+  const claimed = await f.lifecycle.claimNext(f.thread.id, f.agent.id);
   if (!claimed?.dispatch_token) throw new Error("Other fixture dispatch was not claimed.");
-  f.lifecycle.started(claimed.id, claimed.dispatch_token, "native-other");
-  f.lifecycle.appendAnswer(other.run.id, "Other-thread private output.", "partial");
+  await f.lifecycle.started(claimed.id, claimed.dispatch_token, "native-other");
+  await f.lifecycle.appendAnswer(other.run.id, "Other-thread private output.", "partial");
   await broker.interactions(lane.run.id);
-  const history = lane.journal.history(lane.run.id);
+  const history = await lane.journal.history(lane.run.id);
   expect(history.records[1]).toMatchObject({
     anchor_message_id: lane.run.input_message_id,
     anchor_text_offset: null,
     anchor_prefix_sha256: null,
   });
-  expect(history.records[1]?.anchor_message_id).not.toBe(f.store.answer(other.run.id)?.id);
+  expect(history.records[1]?.anchor_message_id).not.toBe((await f.store.answer(other.run.id))?.id);
   expect(JSON.stringify(history)).not.toContain("Other-thread private output.");
 });
 
 test("old journal records default anchor metadata to null and are never retroactively positioned", async () => {
   const lane = await setup();
   await broker.interactions(lane.run.id);
-  const run = f.store.get("run", lane.run.id);
+  const run = await f.store.get("run", lane.run.id);
   const old = JSON.parse(JSON.stringify(run.native_interactions));
   for (const record of old) {
     delete record.anchor_message_id;
     delete record.anchor_text_offset;
     delete record.anchor_prefix_sha256;
   }
-  f.store.put({ ...run, native_interactions: old, revision: run.revision + 1 }, run.revision);
-  f.lifecycle.appendAnswer(lane.run.id, "New output after an older journal record.", "partial");
+  await f.store.put({ ...run, native_interactions: old, revision: run.revision + 1 }, run.revision);
+  await f.lifecycle.appendAnswer(
+    lane.run.id,
+    "New output after an older journal record.",
+    "partial",
+  );
   await broker.interactions(lane.run.id);
-  expect(lane.journal.history(lane.run.id).records[1]).toMatchObject({
+  expect((await lane.journal.history(lane.run.id)).records[1]).toMatchObject({
     anchor_message_id: null,
     anchor_text_offset: null,
     anchor_prefix_sha256: null,

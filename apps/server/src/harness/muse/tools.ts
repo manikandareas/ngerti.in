@@ -14,7 +14,12 @@ const toolCall = z.object({
 export class MuseTools {
   readonly token = `${crypto.randomUUID()}${crypto.randomUUID()}`;
   readonly server;
-  active: { lease: ToolLease; signal: AbortSignal; accepted: () => boolean } | null = null;
+  active: {
+    lease: ToolLease;
+    signal: AbortSignal;
+    accepted: () => boolean;
+    delivered?: () => void;
+  } | null = null;
   constructor(
     private readonly endpoint: () => string,
     private readonly enabled = true,
@@ -67,7 +72,24 @@ export class MuseTools {
               id,
               error: { code: -32601, message: "Method unavailable." },
             });
-          return Response.json({ jsonrpc: "2.0", id, result });
+          if (frame.method !== "tools/call") return Response.json({ jsonrpc: "2.0", id, result });
+          const active = this.active;
+          const bytes = new TextEncoder().encode(JSON.stringify({ jsonrpc: "2.0", id, result }));
+          // Release self-stop only after Bun consumes the response body for the native transport.
+          return new Response(
+            new ReadableStream<Uint8Array>({
+              start(controller) {
+                controller.enqueue(bytes);
+              },
+              pull: (controller) => {
+                controller.close();
+                setTimeout(() => {
+                  if (this.active === active) active?.delivered?.();
+                }, 0);
+              },
+            }),
+            { headers: { "Content-Type": "application/json" } },
+          );
         } catch (error) {
           const code =
             error instanceof HarnessError
@@ -138,8 +160,8 @@ export class MuseTools {
       .parse(await rpc("tools/call", params));
     return value.result;
   }
-  close() {
+  async close() {
     this.active = null;
-    this.server.stop(true);
+    await this.server.stop(true);
   }
 }

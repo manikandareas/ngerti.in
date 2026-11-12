@@ -12,36 +12,36 @@ export class GroupSchedules {
   private get store() {
     return this.lifecycle.store;
   }
-  private update<T extends Entity>(entity: T, fields: Partial<T>): T {
-    return this.store.put(
+  private async update<T extends Entity>(entity: T, fields: Partial<T>): Promise<T> {
+    return await this.store.put(
       { ...entity, ...fields, revision: entity.revision + 1, updated_at: new Date().toISOString() },
       entity.revision,
     );
   }
-  advance() {
-    for (const occurrence of this.store.list("occurrence")) {
-      const routine = this.store.get("routine", occurrence.routine_id);
+  async advance() {
+    for (const occurrence of await this.store.list("occurrence")) {
+      const routine = await this.store.get("routine", occurrence.routine_id);
       if (routine.scope !== "group" || finished.has(occurrence.state)) continue;
       if (routine.state !== "active" || routine.generation !== occurrence.routine_generation) {
-        if (occurrence.run_id) this.lifecycle.cancel(occurrence.run_id);
+        if (occurrence.run_id) await this.lifecycle.cancel(occurrence.run_id);
         let unresolved = occurrence.run_id
-          ? !terminal.has(this.store.get("run", occurrence.run_id).status)
+          ? !terminal.has((await this.store.get("run", occurrence.run_id)).status)
           : false;
         if (occurrence.route_id) {
-          const route = this.store.get("group_route", occurrence.route_id);
+          const route = await this.store.get("group_route", occurrence.route_id);
           if (route.router_run_id) {
-            this.lifecycle.cancel(route.router_run_id);
-            unresolved ||= !terminal.has(this.store.get("run", route.router_run_id).status);
+            await this.lifecycle.cancel(route.router_run_id);
+            unresolved ||= !terminal.has((await this.store.get("run", route.router_run_id)).status);
           }
         }
         const state = unresolved ? "unknown" : "cancelled";
-        if (occurrence.state !== state) this.update(occurrence, { state });
+        if (occurrence.state !== state) await this.update(occurrence, { state });
       } else if (occurrence.run_id) {
-        const run = this.store.get("run", occurrence.run_id);
-        const task = run.task_id ? this.store.get("peer_task", run.task_id) : null;
+        const run = await this.store.get("run", occurrence.run_id);
+        const task = run.task_id ? await this.store.get("peer_task", run.task_id) : null;
         // A settled parent waiting for a peer is still the same occurrence.
         if (task && task.current_run_id !== run.id)
-          this.update(occurrence, { run_id: task.current_run_id, state: "running" });
+          await this.update(occurrence, { run_id: task.current_run_id, state: "running" });
         else {
           const state =
             run.status === "succeeded"
@@ -53,32 +53,30 @@ export class GroupSchedules {
                 : run.status === "dispatching" || run.status === "cancel_requested"
                   ? "running"
                   : run.status;
-          if (state !== occurrence.state) this.update(occurrence, { state });
+          if (state !== occurrence.state) await this.update(occurrence, { state });
         }
       }
     }
   }
-  fire(routine: Entity<"routine">, now: Date) {
+  async fire(routine: Entity<"routine">, now: Date) {
     if (routine.state !== "active") return null;
-    const thread = this.store.get("thread", routine.thread_id);
-    let occurrence = this.store
-      .list("occurrence")
-      .find(
-        (o) =>
-          o.routine_id === routine.id &&
-          o.routine_generation === routine.generation &&
-          !finished.has(o.state),
-      );
+    const thread = await this.store.get("thread", routine.thread_id);
+    let occurrence = (await this.store.list("occurrence")).find(
+      (o) =>
+        o.routine_id === routine.id &&
+        o.routine_generation === routine.generation &&
+        !finished.has(o.state),
+    );
     if (!occurrence) {
       if (!routine.next_run_at || Date.parse(routine.next_run_at) > now.getTime()) return null;
       if (routine.goal_id) {
-        const goal = this.store.get("goal", routine.goal_id);
+        const goal = await this.store.get("goal", routine.goal_id);
         if (goal.state !== "active" || goal.work_state !== "ready") return null;
         if (goal.current_run_id) {
-          const run = this.store.get("run", goal.current_run_id);
+          const run = await this.store.get("run", goal.current_run_id);
           if (
             !terminal.has(run.status) ||
-            (run.task_id && !finished.has(this.store.get("peer_task", run.task_id).state))
+            (run.task_id && !finished.has((await this.store.get("peer_task", run.task_id)).state))
           )
             return null;
         }
@@ -89,12 +87,12 @@ export class GroupSchedules {
         routine.next_run_at,
         now,
       );
-      occurrence = this.store.command(
+      occurrence = await this.store.command(
         `routine:${routine.id}:${routine.generation}:${scheduled_for}`,
         { scheduled_for },
-        () => {
+        async () => {
           const stamp = new Date().toISOString();
-          const saved = this.store.put({
+          const saved = await this.store.put({
             kind: "occurrence",
             id: crypto.randomUUID(),
             owner_id: this.store.ownerId,
@@ -109,7 +107,7 @@ export class GroupSchedules {
             selected_agent_id: null,
             state: "pending",
           });
-          this.update(routine, { next_run_at: next });
+          await this.update(routine, { next_run_at: next });
           return saved;
         },
       );
@@ -119,56 +117,56 @@ export class GroupSchedules {
       routine.execution_target?.type === "agent" ? routine.execution_target.agent_id : null;
     if (!selected) {
       if (!occurrence.route_id) {
-        const route = new Groups(this.lifecycle).selectMember(
+        const route = await new Groups(this.lifecycle).selectMember(
           thread.id,
           `Choose the executor for this scheduled group responsibility.\n${routine.instruction}`,
         );
-        return this.update(occurrence, { route_id: route.id, state: "routing" });
+        return await this.update(occurrence, { route_id: route.id, state: "routing" });
       }
-      const route = this.store.get("group_route", occurrence.route_id);
+      const route = await this.store.get("group_route", occurrence.route_id);
       if (route.state === "unknown")
         return occurrence.state === "unknown"
           ? occurrence
-          : this.update(occurrence, { state: "unknown" });
+          : await this.update(occurrence, { state: "unknown" });
       if (route.state === "rejected") {
-        this.update(this.store.get("routine", routine.id), {
+        await this.update(await this.store.get("routine", routine.id), {
           assignment_state: "blocked",
           error_code: route.error_code,
         });
-        return this.update(occurrence, { state: "blocked" });
+        return await this.update(occurrence, { state: "blocked" });
       }
       if (route.state !== "selected") return occurrence;
       try {
-        selected = new Groups(this.lifecycle).selectedMember(route.id);
+        selected = await new Groups(this.lifecycle).selectedMember(route.id);
       } catch (error) {
         if (!(error instanceof DomainError)) throw error;
-        this.update(this.store.get("routine", routine.id), {
+        await this.update(await this.store.get("routine", routine.id), {
           assignment_state: "blocked",
           error_code: error.code,
         });
-        return this.update(occurrence, { state: "blocked" });
+        return await this.update(occurrence, { state: "blocked" });
       }
     }
     if (!selected || !thread.member_agent_ids.includes(selected)) {
-      const current = this.store.get("routine", routine.id);
+      const current = await this.store.get("routine", routine.id);
       if (current.assignment_state !== "waiting_assignment")
-        this.update(current, {
+        await this.update(current, {
           assignment_state: "waiting_assignment",
           error_code: "ASSIGNEE_UNAVAILABLE",
         });
       return occurrence.state === "waiting_assignment"
         ? occurrence
-        : this.update(occurrence, { state: "waiting_assignment" });
+        : await this.update(occurrence, { state: "waiting_assignment" });
     }
     const actor = selected;
-    return this.store.command(
+    return await this.store.command(
       `occurrence:${occurrence.id}:execution`,
       { occurrence_id: occurrence.id, agent_id: actor },
-      () => {
-        const current = this.store.get("routine", routine.id);
+      async () => {
+        const current = await this.store.get("routine", routine.id);
         if (current.state !== "active" || current.generation !== occurrence.routine_generation)
           throw new DomainError("CONFLICT");
-        const receipt = this.lifecycle.admit(
+        const receipt = await this.lifecycle.admit(
           {
             thread_id: thread.id,
             agent_id: actor,
@@ -178,18 +176,18 @@ export class GroupSchedules {
           },
           "routine",
         );
-        const task = new Groups(this.lifecycle).attachScheduled(receipt.run);
+        const task = await new Groups(this.lifecycle).attachScheduled(receipt.run);
         if (routine.goal_id) {
-          const goal = this.store.get("goal", routine.goal_id);
-          this.update(goal, {
+          const goal = await this.store.get("goal", routine.goal_id);
+          await this.update(goal, {
             current_run_id: receipt.run.id,
             root_task_id: task.id,
             source_run_ids: [...new Set([...goal.source_run_ids, receipt.run.id])].slice(-200),
           });
         }
         if (current.assignment_state !== "ready" || current.error_code)
-          this.update(current, { assignment_state: "ready", error_code: null });
-        return this.update(occurrence, {
+          await this.update(current, { assignment_state: "ready", error_code: null });
+        return await this.update(occurrence, {
           run_id: receipt.run.id,
           selected_agent_id: actor,
           state: "queued",

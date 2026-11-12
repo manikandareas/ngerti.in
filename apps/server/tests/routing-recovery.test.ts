@@ -17,21 +17,21 @@ function present<T>(value: T | null | undefined): T {
   return value;
 }
 
-let f: ReturnType<typeof fixture>;
+let f: Awaited<ReturnType<typeof fixture>>;
 let background: Background | undefined;
 afterEach(async () => {
   await background?.stop();
   background = undefined;
-  f?.close();
+  await f?.close();
 });
-async function until(predicate: () => boolean) {
+async function until(predicate: () => boolean | Promise<boolean>) {
   const deadline = Date.now() + 2000;
-  while (!predicate() && Date.now() < deadline) await Bun.sleep(5);
-  expect(predicate()).toBe(true);
+  while (!(await predicate()) && Date.now() < deadline) await Bun.sleep(5);
+  expect(await predicate()).toBe(true);
 }
-function setup() {
-  f = fixture();
-  const lifecycle = new Lifecycle(f.store, {
+async function setup() {
+  f = await fixture();
+  const lifecycle = await Lifecycle.open(f.store, {
     async choose() {
       return {
         agent_id: null,
@@ -42,12 +42,12 @@ function setup() {
       };
     },
   });
-  const peer = lifecycle.createAgent({
+  const peer = await lifecycle.createAgent({
     name: "Peer",
     harness: "codex",
-    connection_id: f.store.get("agent", f.agent.id).connection_id,
+    connection_id: (await f.store.get("agent", f.agent.id)).connection_id,
   });
-  const group = lifecycle.create("thread", {
+  const group = await lifecycle.create("thread", {
     type: "group",
     member_agent_ids: [f.agent.id, peer.id],
   });
@@ -60,7 +60,7 @@ function executable(path: string, version: string) {
 }
 
 test("the shared runtime discovers an installed executable and coalesces cached probes", async () => {
-  f = fixture();
+  f = await fixture();
   const path = join(f.dir, "codex");
   const runtime = new HarnessRuntime({ codex: path });
   expect((await runtime.detect("codex")).state).toBe("missing");
@@ -77,7 +77,7 @@ test("the shared runtime discovers an installed executable and coalesces cached 
 });
 
 test("a blocked fallback is visible on its parent group without exposing routing instructions", async () => {
-  const { lifecycle, group, groups } = setup();
+  const { lifecycle, group, groups } = await setup();
   background = new Background(lifecycle, {
     codex: {
       async prepare() {
@@ -88,15 +88,16 @@ test("a blocked fallback is visible on its parent group without exposing routing
       },
     },
   });
-  background.start(60_000);
-  const route = groups.send(group.id, { text: "Ask the peer to say hi." });
-  await until(() => {
-    const r = f.store.get("group_route", route.id);
+  await background.start(60_000);
+  const route = await groups.send(group.id, { text: "Ask the peer to say hi." });
+  await until(async () => {
+    const r = await f.store.get("group_route", route.id);
     return (
-      !!r.router_run_id && f.store.get("run", r.router_run_id).preparation?.state === "blocked"
+      !!r.router_run_id &&
+      (await f.store.get("run", r.router_run_id)).preparation?.state === "blocked"
     );
   });
-  const snapshot = new Conversations(lifecycle).snapshot(group.id);
+  const snapshot = await new Conversations(lifecycle).snapshot(group.id);
   expect(snapshot.routes[0]?.execution).toMatchObject({
     stage: "blocked",
     retry_preparation: true,
@@ -106,27 +107,27 @@ test("a blocked fallback is visible on its parent group without exposing routing
   expect(snapshot.messages).toHaveLength(1);
   expect(snapshot.messages[0]?.text).toBe("Ask the peer to say hi.");
   expect(
-    readAgentActivities(f.store).items.find((item) => item.thread_id === group.id)?.preparation
-      ?.state,
+    (await readAgentActivities(f.store)).items.find((item) => item.thread_id === group.id)
+      ?.preparation?.state,
   ).toBe("blocked");
-  const routerRun = f.store.get("run", present(f.store.get("group_route", route.id).router_run_id));
+  const routerRun = await f.store.get(
+    "run",
+    present((await f.store.get("group_route", route.id)).router_run_id),
+  );
   const event = present(
-    f.store
-      .events(0, 1000)
-      .filter((item) => item.entity_id === routerRun.id)
-      .at(-1),
+    (await f.store.events(0, 1000)).filter((item) => item.entity_id === routerRun.id).at(-1),
   );
-  expect(conversationEvent(f.store, event).conversation_thread_id).toBe(group.id);
+  expect((await conversationEvent(f.store, event)).conversation_thread_id).toBe(group.id);
   const inputEvent = present(
-    f.store.events(0, 1000).find((item) => item.entity_id === routerRun.input_message_id),
+    (await f.store.events(0, 1000)).find((item) => item.entity_id === routerRun.input_message_id),
   );
-  expect(conversationEvent(f.store, inputEvent).data).toMatchObject({
+  expect((await conversationEvent(f.store, inputEvent)).data).toMatchObject({
     text: "[Internal execution input]",
   });
 });
 
 test("replacing the pinned executable resumes the original undispatched fallback once", async () => {
-  const { lifecycle, group, groups } = setup();
+  const { lifecycle, group, groups } = await setup();
   const path = join(f.dir, "codex");
   executable(path, "0.136.0");
   const runtime = new HarnessRuntime({ codex: path });
@@ -136,59 +137,61 @@ test("replacing the pinned executable resumes the original undispatched fallback
       preparationRevision: () => runtime.fingerprint("codex"),
       async prepare(threadId, agentId) {
         requireAvailable(await runtime.detect("codex"));
-        lifecycle.bind(threadId, agentId, crypto.randomUUID());
+        await lifecycle.bind(threadId, agentId, crypto.randomUUID());
       },
       async execute(run, context) {
         executions++;
-        context.started(run.id);
-        lifecycle.appendAnswer(run.id, JSON.stringify({ agent_id: f.agent.id }));
+        await context.started(run.id);
+        await lifecycle.appendAnswer(run.id, JSON.stringify({ agent_id: f.agent.id }));
         return "succeeded";
       },
     },
   });
-  const route = groups.send(group.id, { text: "Ask the peer to say hi." });
-  background.start(60_000);
-  await until(() => {
-    const r = f.store.get("group_route", route.id);
+  const route = await groups.send(group.id, { text: "Ask the peer to say hi." });
+  await background.start(60_000);
+  await until(async () => {
+    const r = await f.store.get("group_route", route.id);
     return (
-      !!r.router_run_id && f.store.get("run", r.router_run_id).preparation?.state === "blocked"
+      !!r.router_run_id &&
+      (await f.store.get("run", r.router_run_id)).preparation?.state === "blocked"
     );
   });
-  const originalRunId = present(f.store.get("group_route", route.id).router_run_id);
+  const originalRunId = present((await f.store.get("group_route", route.id)).router_run_id);
   const fingerprint = runtime.fingerprint("codex");
   executable(path, "0.166.0");
   expect(runtime.fingerprint("codex")).not.toBe(fingerprint);
-  background.tick();
-  await until(() => f.store.get("group_route", route.id).state === "selected");
-  expect(f.store.get("group_route", route.id).router_run_id).toBe(originalRunId);
-  expect(f.store.get("run", originalRunId).status).toBe("succeeded");
+  await background.tick();
+  await until(async () => (await f.store.get("group_route", route.id)).state === "selected");
+  expect((await f.store.get("group_route", route.id)).router_run_id).toBe(originalRunId);
+  expect((await f.store.get("run", originalRunId)).status).toBe("succeeded");
   expect(
-    f.store
-      .list("message")
-      .filter((message) => message.author === "user" && message.thread_id === group.id),
+    (await f.store.list("message")).filter(
+      (message) => message.author === "user" && message.thread_id === group.id,
+    ),
   ).toHaveLength(1);
   // The chosen member may immediately execute; the original router itself ran exactly once.
-  expect(f.store.list("run").filter((run) => run.thread_id !== group.id)).toHaveLength(1);
+  expect((await f.store.list("run")).filter((run) => run.thread_id !== group.id)).toHaveLength(1);
   expect(executions).toBeGreaterThanOrEqual(1);
 });
 
 test("unknown native fallback remains fenced and never exposes preparation retry", async () => {
-  const { lifecycle, group, groups } = setup();
-  const route = groups.send(group.id, { text: "Resolve the request." });
+  const { lifecycle, group, groups } = await setup();
+  const route = await groups.send(group.id, { text: "Resolve the request." });
   background = new Background(lifecycle);
-  background.tick();
+  await background.tick();
   await background.idle();
-  const current = f.store.get("group_route", route.id);
-  const run = f.store.get("run", present(current.router_run_id));
-  lifecycle.bind(run.thread_id, run.agent_id, crypto.randomUUID());
-  const claimed = present(lifecycle.claimNext(run.thread_id, run.agent_id));
-  lifecycle.started(claimed.id, present(claimed.dispatch_token));
-  lifecycle.settle(claimed.id, present(claimed.dispatch_token), "unknown");
-  groups.advance();
-  const view = present(new Conversations(lifecycle).snapshot(group.id).routes[0]);
+  const current = await f.store.get("group_route", route.id);
+  const run = await f.store.get("run", present(current.router_run_id));
+  await lifecycle.bind(run.thread_id, run.agent_id, crypto.randomUUID());
+  const claimed = present(await lifecycle.claimNext(run.thread_id, run.agent_id));
+  await lifecycle.started(claimed.id, present(claimed.dispatch_token));
+  await lifecycle.settle(claimed.id, present(claimed.dispatch_token), "unknown");
+  await groups.advance();
+  const view = present((await new Conversations(lifecycle).snapshot(group.id)).routes[0]);
   expect(view.execution.stage).toBe("reconcile");
   expect(view.execution.retry_preparation).toBe(false);
-  expect(() =>
-    lifecycle.retryPreparation(claimed.id, f.store.get("run", claimed.id).revision),
-  ).toThrow("CONFLICT");
+  await expect(
+    (async () =>
+      lifecycle.retryPreparation(claimed.id, (await f.store.get("run", claimed.id)).revision))(),
+  ).rejects.toThrow("CONFLICT");
 });

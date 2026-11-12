@@ -1,0 +1,15 @@
+# Disposable verification database only. The password is a public test fixture.
+services:
+  postgres:
+    image: postgres:18.1-alpine@sha256:aa6eb304ddb6dd26df23d05db4e5cb05af8951cda3e0dc57731b771e0ef4ab29
+    environment:
+      POSTGRES_DB: ngertiin_test
+      POSTGRES_PASSWORD: nma072-disposable
+    ports:
+      - "127.0.0.1:55472:5432"
+    tmpfs:
+      - /var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -U postgres -d ngertiin_test"]
+      interval: 1s
+      retries: 30

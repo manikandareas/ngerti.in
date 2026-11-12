@@ -1,4 +1,4 @@
-import { Cancel01Icon, Folder01Icon } from "@hugeicons/core-free-icons";
+import { Cancel01Icon, Folder01Icon, PencilEdit01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -8,6 +8,7 @@ import type { Artifact } from "@/types/work";
 import type { Agent, Snapshot, Thread } from "@/types/workspace";
 import { savedFileTarget, useContentViewer } from "../lib/content-viewer";
 import { DetailOverview } from "./detail-overview";
+import { EditGroup } from "./edit-group";
 import { FilesPanel } from "./files-panel";
 import { GroupPanel } from "./group-panel";
 import { AgentAvatar } from "./identity";
@@ -52,6 +53,8 @@ export function ContextPanel({
   attach: (a: Artifact) => void;
 }) {
   const [headerSlot, setHeaderSlot] = useState<HTMLDivElement | null>(null);
+  const [editGroupOpen, setEditGroupOpen] = useState(false);
+  const editGroupButton = useRef<HTMLButtonElement>(null);
   const agent = snapshot.agents[0];
   const filesOpen = location.workingFiles === true;
   const responsibility =
@@ -100,8 +103,6 @@ export function ContextPanel({
       initialMember={location.id}
       selectMember={(id) => locate({ tab: "detail", id })}
       snapshot={snapshot}
-      agents={agents}
-      refresh={refresh}
     />
   );
   return (
@@ -194,15 +195,43 @@ export function ContextPanel({
         <div hidden={nested}>
           <div className="context-hero mt-3.5 flex flex-col items-center px-5 text-center">
             {snapshot.thread.type === "group" ? (
-              <div className="mt-0.5 flex -space-x-3">
-                {snapshot.agents.slice(0, 3).map((member) => (
-                  <AgentAvatar
-                    showActivityLabel={false}
-                    key={member.id}
-                    agent={member}
-                    className="size-16 rounded-[20px]"
-                  />
-                ))}
+              <div className="relative mt-0.5">
+                <div className="flex -space-x-3">
+                  {snapshot.agents.slice(0, 3).map((member) => (
+                    <button
+                      key={member.id}
+                      type="button"
+                      data-panel-nav={`member:${member.id}`}
+                      aria-label={`Member profile ${member.name}`}
+                      className="relative rounded-[20px] focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-ring"
+                      onClick={() => locate({ tab: "detail", id: member.id })}
+                    >
+                      <AgentAvatar
+                        showActivityLabel={false}
+                        agent={member}
+                        className="size-16 rounded-[20px]"
+                      />
+                    </button>
+                  ))}
+                </div>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      ref={editGroupButton}
+                      type="button"
+                      variant="ghost"
+                      size="icon-sm"
+                      aria-label="Edit group"
+                      onClick={() => setEditGroupOpen(true)}
+                      className="absolute left-full top-1/2 ml-2 -translate-y-1/2 rounded-full text-muted-foreground"
+                    >
+                      <HugeiconsIcon icon={PencilEdit01Icon} size={17} strokeWidth={1.5} />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent side="bottom" sideOffset={6}>
+                    Edit group
+                  </TooltipContent>
+                </Tooltip>
               </div>
             ) : (
               <AgentAvatar
@@ -284,6 +313,15 @@ export function ContextPanel({
           />
         )}
       </Tabs>
+      {snapshot.thread.type === "group" && editGroupOpen && (
+        <EditGroup
+          thread={snapshot.thread}
+          agents={agents}
+          onOpenChange={setEditGroupOpen}
+          refresh={refresh}
+          returnFocus={() => editGroupButton.current?.focus()}
+        />
+      )}
     </PanelHeaderSlot.Provider>
   );
 }

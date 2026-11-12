@@ -489,7 +489,7 @@ test("group creation recovers a lost acknowledgement, routes messages and keeps 
     page.getByText("Private member memory must stay in its DM.", { exact: true }),
   ).toHaveCount(0);
   await expect(page.getByRole("button", { name: "Delete memory", exact: true })).toHaveCount(0);
-  await page.getByRole("button", { name: "Back to Members", exact: true }).click();
+  await page.getByRole("button", { name: "Back to Details", exact: true }).click();
   const close = page.getByRole("button", { name: "Tutup detail", exact: true });
   if (await close.isVisible()) await close.click();
   else await page.getByRole("button", { name: "Close", exact: true }).click();
@@ -1328,6 +1328,132 @@ test("an unconfirmed option reply reuses the same decision across reload", async
   ).toHaveLength(1);
 });
 
+test("group editing reuses the creation form, saves the existing group and cancels without changes", async ({
+  page,
+}, info) => {
+  const { a, b } = await start(page);
+  const bootstrap = await post(page, "/v1/setup", {});
+  const group = await newGroup(page, `Edit group ${crypto.randomUUID().slice(0, 8)}`, [
+    a.agent.id,
+    b.agent.id,
+    bootstrap.agent_id,
+  ]);
+  await chooseGroup(page, group.name);
+  await page.getByRole("button", { name: `Detail ${group.name}`, exact: true }).click();
+  const edit = page.getByRole("button", { name: "Edit group", exact: true });
+  const hero = page.locator(".context-hero");
+  await expect(hero.locator(".ngertiin-avatar")).toHaveCount(3);
+  const editBounds = await edit.boundingBox();
+  const heroBounds = await hero.boundingBox();
+  const avatarBounds = await hero.locator(".ngertiin-avatar").last().boundingBox();
+  expect((editBounds?.x ?? 0) + (editBounds?.width ?? 0)).toBeLessThanOrEqual(
+    (heroBounds?.x ?? 0) + (heroBounds?.width ?? 0),
+  );
+  expect(editBounds?.x).toBeGreaterThanOrEqual((avatarBounds?.x ?? 0) + (avatarBounds?.width ?? 0));
+  await capture(page, info.outputPath("group-panel.png"));
+  await expect(page.getByText("Manage members", { exact: true })).toHaveCount(0);
+  await edit.click();
+  const dialog = page.getByRole("dialog", { name: "Edit group", exact: true });
+  await expect(dialog.getByRole("textbox", { name: "Nama grup", exact: true })).toHaveValue(
+    group.name,
+  );
+  await expect(dialog.getByRole("checkbox", { name: a.agent.name, exact: true })).toBeChecked();
+  await expect(dialog.getByRole("checkbox", { name: b.agent.name, exact: true })).toBeChecked();
+  await dialog.getByRole("textbox", { name: "Nama grup", exact: true }).fill("Discard this name");
+  await page.keyboard.press("Escape");
+  await expect(dialog).toBeHidden();
+  await expect(edit).toBeFocused();
+  expect(
+    (await (await page.request.get(`/v1/threads/${group.id}/snapshot`)).json()).thread.revision,
+  ).toBe(group.revision);
+  await edit.click();
+  const name = `${group.name} updated`;
+  await dialog.getByRole("textbox", { name: "Nama grup", exact: true }).fill(name);
+  await dialog.getByRole("checkbox", { name: a.agent.name, exact: true }).uncheck();
+  await dialog.getByRole("checkbox", { name: b.agent.name, exact: true }).uncheck();
+  await dialog.getByRole("checkbox", { name: "Tobi", exact: true }).uncheck();
+  await expect(dialog.getByRole("button", { name: "Save changes", exact: true })).toBeDisabled();
+  await dialog.getByRole("checkbox", { name: a.agent.name, exact: true }).check();
+  await dialog.getByRole("checkbox", { name: "Tobi", exact: true }).check();
+  await capture(page, info.outputPath("edit-group.png"));
+  let creations = 0;
+  page.on("request", (request) => {
+    if (request.method() === "POST" && request.url().endsWith("/v1/creation/groups")) creations++;
+  });
+  await dialog.getByRole("button", { name: "Save changes", exact: true }).click();
+  await expect(dialog).toBeHidden();
+  await expect(page.locator(".context-hero h2")).toHaveText(name);
+  const saved = await (await page.request.get(`/v1/threads/${group.id}/snapshot`)).json();
+  const tobi = saved.agents.find((agent: { name: string }) => agent.name === "Tobi");
+  expect(saved.thread.id).toBe(group.id);
+  expect(saved.thread.member_agent_ids).toEqual([a.agent.id, tobi.id]);
+  expect(saved.thread.revision).toBe(group.revision + 2);
+  expect(saved.messages).toHaveLength(0);
+  expect(creations).toBe(0);
+  await capture(page, info.outputPath("edited-group-panel.png"));
+  await page.reload();
+  await page.getByRole("button", { name: `Detail ${name}`, exact: true }).click();
+  await edit.click();
+  await expect(dialog.getByRole("textbox", { name: "Nama grup", exact: true })).toHaveValue(name);
+  await expect(dialog.getByRole("checkbox", { name: b.agent.name, exact: true })).not.toBeChecked();
+  await expect(dialog.getByRole("checkbox", { name: "Tobi", exact: true })).toBeChecked();
+});
+
+for (const step of ["membership", "configuration"] as const) {
+  test(`group editing resumes a lost ${step} acknowledgement without repeating confirmed changes`, async ({
+    page,
+  }, info) => {
+    await page.emulateMedia({ colorScheme: "dark" });
+    const { a, b } = await start(page);
+    const group = await newGroup(page, `Recover edit ${crypto.randomUUID().slice(0, 8)}`, [
+      a.agent.id,
+      b.agent.id,
+    ]);
+    await chooseGroup(page, group.name);
+    await page.getByRole("button", { name: `Detail ${group.name}`, exact: true }).click();
+    await page.getByRole("button", { name: "Edit group", exact: true }).click();
+    const dialog = page.getByRole("dialog", { name: "Edit group", exact: true });
+    const name = `${group.name} recovered`;
+    await dialog.getByRole("textbox", { name: "Nama grup", exact: true }).fill(name);
+    await dialog.getByRole("checkbox", { name: b.agent.name, exact: true }).uncheck();
+    const keys: string[] = [];
+    const revisions: number[] = [];
+    const pattern = `**/v1/groups/${group.id}/${step}`;
+    await page.route(pattern, async (route) => {
+      keys.push(route.request().headers()["idempotency-key"]);
+      revisions.push(route.request().postDataJSON().expected_revision);
+      const response = await route.fetch();
+      if (keys.length === 1) await route.abort("failed");
+      else await route.fulfill({ response });
+    });
+    await dialog.getByRole("button", { name: "Save changes", exact: true }).click();
+    await expect(dialog.getByRole("button", { name: "Check save", exact: true })).toBeVisible();
+    await expect(dialog.getByRole("textbox", { name: "Nama grup", exact: true })).toBeDisabled();
+    await page.reload();
+    const current = await (await page.request.get(`/v1/threads/${group.id}/snapshot`)).json();
+    await page.getByRole("button", { name: `Detail ${current.thread.name}`, exact: true }).click();
+    await page.getByRole("button", { name: "Edit group", exact: true }).click();
+    await expect(dialog.getByRole("textbox", { name: "Nama grup", exact: true })).toHaveValue(name);
+    await expect(
+      dialog.getByRole("checkbox", { name: b.agent.name, exact: true }),
+    ).not.toBeChecked();
+    await capture(page, info.outputPath(`edit-${step}-pending.png`));
+    await dialog.getByRole("button", { name: "Check save", exact: true }).click();
+    await expect(dialog).toBeHidden();
+    expect(keys).toHaveLength(2);
+    expect(keys[1]).toBe(keys[0]);
+    expect(revisions[1]).toBe(revisions[0]);
+    const saved = await (await page.request.get(`/v1/threads/${group.id}/snapshot`)).json();
+    expect(saved.thread.name).toBe(name);
+    expect(saved.thread.member_agent_ids).toEqual([a.agent.id]);
+    expect(saved.thread.revision).toBe(group.revision + 2);
+    expect(saved.messages).toHaveLength(0);
+    expect(
+      await page.evaluate((id) => localStorage.getItem(`ngertiin:group-edit:${id}`), group.id),
+    ).toBeNull();
+  });
+}
+
 test("membership editing keeps its original revision and cannot overwrite a concurrent change", async ({
   page,
 }) => {
@@ -1338,23 +1464,24 @@ test("membership editing keeps its original revision and cannot overwrite a conc
   ]);
   await chooseGroup(page, group.name);
   await page.getByRole("button", { name: `Detail ${group.name}`, exact: true }).click();
-  await page.getByText("Manage members", { exact: true }).click();
+  await page.getByRole("button", { name: "Edit group", exact: true }).click();
+  const dialog = page.getByRole("dialog", { name: "Edit group", exact: true });
+  await dialog.getByRole("checkbox", { name: a.agent.name, exact: true }).uncheck();
   await post(page, `/v1/groups/${group.id}/membership`, {
     expected_revision: group.revision,
     member_agent_ids: [a.agent.id],
   });
-  await expect(page.getByRole("heading", { name: "Members · 1", exact: true })).toBeVisible();
+  await expect(page.locator(".context-hero .ngertiin-avatar")).toHaveCount(1);
+  await expect(dialog.getByRole("checkbox", { name: b.agent.name, exact: true })).toBeChecked();
   const response = page.waitForResponse(
     (r) => r.url().endsWith(`/v1/groups/${group.id}/membership`) && r.request().method() === "POST",
   );
-  await page.getByRole("button", { name: "Save members", exact: true }).click();
+  await dialog.getByRole("button", { name: "Save changes", exact: true }).click();
   expect((await response).status()).toBe(409);
   const snapshot = await (await page.request.get(`/v1/threads/${group.id}/snapshot`)).json();
   expect(snapshot.thread.member_agent_ids).toEqual([a.agent.id]);
-  await page.getByRole("button", { name: "Reload members", exact: true }).click();
-  await expect(
-    page.getByRole("checkbox", { name: `Members ${b.agent.name}`, exact: true }),
-  ).not.toBeChecked();
+  await dialog.getByRole("button", { name: "Reload group", exact: true }).click();
+  await expect(dialog.getByRole("checkbox", { name: b.agent.name, exact: true })).not.toBeChecked();
 });
 
 test("four ordinary file attachments still allow a supported image", async ({ page }) => {

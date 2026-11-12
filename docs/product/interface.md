@@ -45,6 +45,10 @@ Use the chosen connection/model/billing defaults and default avatar. No mandator
 
 Other members stay silent. Personalization updates shared purpose/directions through scoped tools, not all private member profiles. Invalid membership and creation failures retain useful input; repeated operations do not duplicate entities/openers/admission.
 
+The November 12 web/Tauri group-panel refinement removes the separate Members card and Manage members section. An accessible pencil button beside the hero's agent avatars opens **Edit group**, reusing the Create group dialog's name field and selectable agent list. It starts with the current group name and membership. Cancel leaves the group unchanged; Save changes edits the same group and creates no conversation or automatic opener. Clicking a displayed hero avatar still opens that member's scoped group profile, with Back returning to Details.
+
+Membership and name use the existing expected-revision APIs in that order; these are two separately committed operations. The client retains the complete desired edit and each exact command identity until confirmed, so **Check save** can continue after a lost acknowledgement or reload without replaying a confirmed step. A concurrent edit stops the remaining save and requires an explicit **Reload group**; it never silently adopts a newer revision to overwrite another change. When the second operation fails, already-confirmed membership remains authoritative and reloading shows the actual saved state. [Group edit verification](../verification/group-edit-dialog-2026-11-12/README.md) records browser and persistence coverage.
+
 ## Personalization and work
 
 Ask one necessary question, work immediately on a clear request, and offer brief optional choices when helpful. Name, persona, role, Goals and working style are possibilities, not a checklist. Request an app connection, folder or schedule when relevant and explain its purpose. Only successful backend receipts/revisions update profile/sidebar state.

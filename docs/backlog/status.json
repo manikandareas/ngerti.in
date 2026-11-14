@@ -349,7 +349,7 @@
     "ticket": "NMA-078",
     "title": "Scoped MCP accounts and published agent skills",
     "plan": "Harness-first",
-    "status": "Backlog",
+    "status": "Done",
     "order": 16.76,
     "layer": "Engine / Backend",
     "depends_on": [

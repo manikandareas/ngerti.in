@@ -87,8 +87,21 @@ export const skillAssign = z.strictObject({
   expected_revision: z.int().min(0),
   enabled: z.boolean(),
 });
-export const skillFields = { ...scopeFields, name: skillName, source: z.literal("application") };
+export const teamSkillPublication = z.strictObject({
+  skill_id: z.uuid().nullable().default(null),
+  expected_revision: z.int().nonnegative(),
+  name: skillName,
+  package: skillPackage,
+  enabled: z.boolean().default(true),
+});
+export const skillFields = {
+  ...scopeFields,
+  thread_id: z.uuid().nullable(),
+  name: skillName,
+  source: z.literal("application"),
+};
 export const skillRevisionFields = {
+  agent_id: z.uuid().optional(),
   skill_id: z.uuid(),
   version: z.int().positive(),
   package: skillPackage,
@@ -97,6 +110,7 @@ export const skillRevisionFields = {
 };
 export const skillAssignmentFields = {
   ...scopeFields,
+  thread_id: z.uuid().nullable(),
   skill_id: z.uuid(),
   version: z.int().positive(),
   enabled: z.boolean(),

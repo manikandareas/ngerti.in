@@ -1,0 +1,17 @@
+{
+  "evidence_type": "summary_of_observed_intermediate_test_output",
+  "tests": 40,
+  "pass": 39,
+  "fail": 1,
+  "assertions": 204,
+  "failed_test": "membership revocation suppresses the result while retaining a known completed external effect",
+  "expected_receipt_state": "succeeded",
+  "observed_receipt_state": "dispatched",
+  "cause": "The authority check used actor-scoped query authorization after membership revocation.",
+  "correction": "Use the existing administrative settlement transaction for the same epoch/lock check, retaining normal writer lock order.",
+  "final_affected_tests": {
+    "pass": 40,
+    "fail": 0,
+    "assertions": 206
+  }
+}

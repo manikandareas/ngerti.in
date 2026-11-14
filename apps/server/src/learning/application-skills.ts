@@ -1,5 +1,6 @@
 import { createHash } from "node:crypto";
 import { DomainError, type Entity } from "../contracts";
+import { Connections } from "../harness/connections";
 import { asyncFilter, asyncFind } from "../persistence/async-collections";
 import { canonical } from "../store";
 import {
@@ -8,6 +9,7 @@ import {
   skillCreate,
   skillRead,
   skillRevise,
+  teamSkillPublication,
 } from "./contracts";
 import { LearningScope } from "./scope";
 
@@ -42,6 +44,7 @@ export class ApplicationSkills extends LearningScope {
     return await this.lifecycle.store.put({
       ...this.base(),
       kind: "skill_revision",
+      agent_id: skill.agent_id,
       skill_id: skill.id,
       version: skill.revision,
       package: value,
@@ -53,7 +56,13 @@ export class ApplicationSkills extends LearningScope {
     const data = skillCreate.parse(input);
     await this.validate(context, data.visibility);
     return await this.lifecycle.store.transaction(async () => {
-      if ((await this.list(context)).some((item) => item.name === data.name))
+      if (
+        (await this.list(context)).some(
+          (item) =>
+            item.name === data.name &&
+            (!this.lifecycle.store.dataContext || item.actor_id !== null),
+        )
+      )
         throw new DomainError("CONFLICT");
       const skill = await this.lifecycle.store.put({
         ...this.base(),
@@ -71,6 +80,8 @@ export class ApplicationSkills extends LearningScope {
     return await this.lifecycle.store.transaction(async () => {
       const current = await this.lifecycle.store.get("skill", data.skill_id);
       await this.require(context, current);
+      if (current.organization_id && current.actor_id === null)
+        throw new DomainError("SCOPE_DENIED", 403);
       if (current.agent_id !== context.agent_id) throw new DomainError("SCOPE_DENIED", 403);
       if (current.revision !== data.expected_revision) throw new DomainError("CONFLICT");
       const skill = await this.update(current, {});
@@ -91,6 +102,8 @@ export class ApplicationSkills extends LearningScope {
         skill_id: data.skill_id,
         version: data.version,
       });
+      if (skill.organization_id && skill.actor_id === null)
+        throw new DomainError("SCOPE_DENIED", 403);
       const existing = (await this.assignments(context)).find((item) => item.skill_id === skill.id);
       if ((existing?.revision ?? 0) !== data.expected_revision) throw new DomainError("CONFLICT");
       if (data.enabled) {
@@ -123,6 +136,116 @@ export class ApplicationSkills extends LearningScope {
       });
     });
   }
+  private async team(agentId: string) {
+    const scope = this.lifecycle.store.dataContext;
+    await scope?.validate();
+    if (!scope?.canManage || !scope.managedAgents.includes(agentId))
+      throw new DomainError("SCOPE_DENIED", 403);
+    const agent = await this.lifecycle.store.get("agent", agentId);
+    if (agent.ownership !== "organization") throw new DomainError("SCOPE_DENIED", 403);
+  }
+  /** Only this management API can promote an authored package to an organization revision. */
+  async publishTeam(agentId: string, input: unknown) {
+    const data = teamSkillPublication.parse(input);
+    await this.team(agentId);
+    return this.lifecycle.store.publishShared(() =>
+      this.lifecycle.store.transaction(async () => {
+        const current = data.skill_id
+          ? await this.lifecycle.store.get("skill", data.skill_id)
+          : null;
+        if (
+          current &&
+          (current.actor_id !== null || current.agent_id !== agentId || current.name !== data.name)
+        )
+          throw new DomainError("SCOPE_DENIED", 403);
+        if ((current?.revision ?? 0) !== data.expected_revision) throw new DomainError("CONFLICT");
+        if (
+          !current &&
+          (await this.lifecycle.store.list("skill", { agent_id: agentId })).some(
+            (skill) => skill.actor_id === null && skill.name === data.name,
+          )
+        )
+          throw new DomainError("CONFLICT");
+        const skill = current
+          ? await this.update(current, {})
+          : await this.lifecycle.store.put({
+              ...this.base(),
+              kind: "skill",
+              agent_id: agentId,
+              thread_id: null,
+              visibility: "shared",
+              name: data.name,
+              source: "application",
+            });
+        const revision = await this.publish(skill, data.package, null);
+        const old = (
+          await this.lifecycle.store.list("skill_assignment", { agent_id: agentId })
+        ).find((item) => item.actor_id === null && item.skill_id === skill.id);
+        const assignment = await this.assignTeam(agentId, {
+          skill_id: skill.id,
+          version: revision.version,
+          enabled: data.enabled,
+          expected_revision: old?.revision ?? 0,
+        });
+        return { skill, revision, assignment };
+      }),
+    );
+  }
+  async assignTeam(agentId: string, input: unknown) {
+    const data = skillAssign.parse(input);
+    await this.team(agentId);
+    return this.lifecycle.store.publishShared(() =>
+      this.lifecycle.store.transaction(async () => {
+        const skill = await this.lifecycle.store.get("skill", data.skill_id);
+        if (skill.actor_id !== null || skill.agent_id !== agentId)
+          throw new DomainError("SCOPE_DENIED", 403);
+        const revision = (await this.lifecycle.store.list("skill_revision")).find(
+          (item) => item.skill_id === skill.id && item.version === data.version,
+        );
+        if (!revision || packageHash(revision.package) !== revision.sha256)
+          throw new DomainError("NOT_FOUND", 404);
+        const existing = (
+          await this.lifecycle.store.list("skill_assignment", { agent_id: agentId })
+        ).find((item) => item.actor_id === null && item.skill_id === skill.id);
+        if ((existing?.revision ?? 0) !== data.expected_revision) throw new DomainError("CONFLICT");
+        return existing
+          ? this.update(existing, { version: data.version, enabled: data.enabled })
+          : this.lifecycle.store.put({
+              ...this.base(),
+              kind: "skill_assignment",
+              agent_id: agentId,
+              thread_id: null,
+              visibility: "shared",
+              skill_id: skill.id,
+              version: data.version,
+              enabled: data.enabled,
+            });
+      }),
+    );
+  }
+  private async selectedBinding(context: LearningContext) {
+    const store = this.lifecycle.store;
+    // Scoped selection belongs to this actor/conversation, rather than the Team profile.
+    const agent = store.dataContext
+      ? await this.lifecycle.executionAgent(context.thread_id, context.agent_id)
+      : await store.get("agent", context.agent_id);
+    if (!agent.connection_id) return null;
+    const connection = await new Connections(this.lifecycle).get(agent.connection_id);
+    if (connection.state !== "active") return null;
+    return (
+      (
+        await store.list("binding", {
+          agent_id: context.agent_id,
+          thread_id: context.thread_id,
+          connection_id: connection.id,
+        })
+      ).find(
+        (binding) =>
+          binding.active &&
+          (!store.dataContext || binding.connection_generation === connection.grant_revision),
+      ) ?? null
+    );
+  }
   async inventory(context: LearningContext) {
     const assignments = await this.assignments(context);
     const application = (await this.list(context)).map((skill) => ({
@@ -131,19 +254,7 @@ export class ApplicationSkills extends LearningScope {
       assignment: assignments.find((item) => item.skill_id === skill.id) ?? null,
     }));
     const agent = await this.lifecycle.store.get("agent", context.agent_id);
-    const binding = (
-      await this.lifecycle.store.list("binding", {
-        agent_id: context.agent_id,
-        thread_id: context.thread_id,
-        connection_id: agent.connection_id,
-      })
-    ).find(
-      (item) =>
-        item.active &&
-        item.agent_id === context.agent_id &&
-        item.thread_id === context.thread_id &&
-        item.connection_id === agent.connection_id,
-    );
+    const binding = await this.selectedBinding(context);
     const native = (
       await this.lifecycle.store.list("harness_inventory", { binding_id: binding?.id })
     ).find((item) => item.binding_id === binding?.id);
@@ -189,20 +300,7 @@ export class ApplicationSkills extends LearningScope {
     const inventory = await this.inventory(context);
     if (!inventory.harness.some((item) => item.key === key))
       throw new DomainError("SCOPE_DENIED", 403);
-    const agent = (await this.context(context)).agent;
-    const binding = (
-      await this.lifecycle.store.list("binding", {
-        agent_id: agent.id,
-        thread_id: context.thread_id,
-        connection_id: agent.connection_id,
-      })
-    ).find(
-      (item) =>
-        item.active &&
-        item.agent_id === agent.id &&
-        item.thread_id === context.thread_id &&
-        item.connection_id === agent.connection_id,
-    );
+    const binding = await this.selectedBinding(context);
     const item = (await this.lifecycle.store.list("harness_inventory", { binding_id: binding?.id }))
       .find((item) => item.binding_id === binding?.id)
       ?.skills.find((item) => item.key === key);

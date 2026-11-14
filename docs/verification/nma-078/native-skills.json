@@ -1,0 +1,46 @@
+{
+  "scope": "real native skill catalogs and application bounded package reads; no model inference or production admission",
+  "lanes": [
+    {
+      "harness": "codex",
+      "actor": "alice",
+      "version": "0.169.0",
+      "native_catalog": true,
+      "native_package_discovery": true,
+      "application_package_read": true,
+      "foreign_package_absent": true,
+      "package_sha256": "b8f090285f4390078ee095bca4b2af88956969ce0d50ba029c3e65bb5a0cb938"
+    },
+    {
+      "harness": "codex",
+      "actor": "bob",
+      "version": "0.169.0",
+      "native_catalog": true,
+      "native_package_discovery": true,
+      "application_package_read": true,
+      "foreign_package_absent": true,
+      "package_sha256": "941b3ae490e5b869f0c9e9e1e94665213d5b1f0c8af6d50ad701f794182520f1"
+    },
+    {
+      "harness": "muse",
+      "actor": "alice",
+      "version": "1.4.14-R7309.1",
+      "native_catalog": true,
+      "native_package_discovery": false,
+      "application_package_read": true,
+      "foreign_package_absent": true,
+      "package_sha256": "22f636538e63462de8b8a5a13018c5a7b00c83fd26dbe0724429f5b0b8fe7a27"
+    },
+    {
+      "harness": "muse",
+      "actor": "bob",
+      "version": "1.4.14-R7309.1",
+      "native_catalog": true,
+      "native_package_discovery": false,
+      "application_package_read": true,
+      "foreign_package_absent": true,
+      "package_sha256": "0b5b4d35a92722ea16694ce39f9fb607e8365ba2af81fd0e7af503b92a1e7ed5"
+    }
+  ],
+  "completed": true
+}

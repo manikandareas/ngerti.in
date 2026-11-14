@@ -1,0 +1,10 @@
+bun test v1.3.10 (30e609e0)
+
+../../scripts/verification/nma078/contract.test.ts:
+{"version":"1.35.0","routes":145,"scoped_readiness":"pending_nma_079"}
+(pass) export the installed scoped applications and published skills API contract [2549.65ms]
+
+ 1 pass
+ 0 fail
+ 10 expect() calls
+Ran 1 test across 1 file. [5.25s]

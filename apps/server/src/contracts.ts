@@ -106,7 +106,7 @@ export {
   workspace,
 };
 
-export const CONTRACT_VERSION = "1.34.0";
+export const CONTRACT_VERSION = "1.35.0";
 export const API_READINESS_GATE = "ready" as const;
 
 export const schemas = {

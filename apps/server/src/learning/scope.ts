@@ -23,7 +23,7 @@ export class LearningScope {
   }
   async visible(
     context: LearningContext,
-    item: { agent_id: string; thread_id: string; visibility: string },
+    item: { agent_id: string; thread_id: string | null; visibility: string },
   ) {
     await this.context(context);
     return item.visibility === "shared"
@@ -33,7 +33,7 @@ export class LearningScope {
   }
   async require(
     context: LearningContext,
-    item: { agent_id: string; thread_id: string; visibility: string },
+    item: { agent_id: string; thread_id: string | null; visibility: string },
   ) {
     if (!(await this.visible(context, item))) throw new DomainError("SCOPE_DENIED", 403);
   }

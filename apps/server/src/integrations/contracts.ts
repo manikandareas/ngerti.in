@@ -8,10 +8,23 @@ export const appToolSlug = z
   .refine((s) => !s.startsWith("COMPOSIO_"));
 export const appGrant = z.strictObject({
   agent_id: z.uuid(),
-  thread_id: z.uuid(),
+  thread_id: z.uuid().nullable().default(null),
   tools: z.array(appToolSlug).max(100),
+  resources: z
+    .record(
+      z.string().regex(/^[a-zA-Z][a-zA-Z0-9_]*(\.[a-zA-Z][a-zA-Z0-9_]*)*$/),
+      z
+        .array(z.union([z.string().max(1000), z.number().finite(), z.boolean()]))
+        .min(1)
+        .max(100),
+    )
+    .default({}),
 });
 export const appConnectionFields = {
+  ownership: z.enum(["personal", "organization"]).default("personal"),
+  audience_id: z.uuid().nullable().default(null),
+  integration_identity: z.string().min(1).max(200).nullable().default(null),
+  initiated_by: z.uuid().nullable().default(null),
   toolkit: toolkitSlug,
   account_id: z.string().min(1).max(200),
   state: z.enum(["pending", "active", "revoked", "auth_required"]),
@@ -19,6 +32,7 @@ export const appConnectionFields = {
   grants: z.array(appGrant).max(100),
 };
 export const appSessionFields = {
+  integration_identity: z.string().min(1).max(200).nullable().default(null),
   connection_id: z.uuid(),
   agent_id: z.uuid(),
   thread_id: z.uuid(),
@@ -51,7 +65,11 @@ export const appExecute = z.strictObject({
   tool: appToolSlug,
   arguments: z.record(z.string(), z.unknown()),
 });
-export const appAuthorize = z.strictObject({ toolkit: toolkitSlug });
+export const appAuthorize = z.strictObject({
+  toolkit: toolkitSlug,
+  ownership: z.enum(["personal", "organization"]).default("personal"),
+  audience_id: z.uuid().nullable().default(null),
+});
 export const appAssignment = z.strictObject({
   expected_revision: z.int().positive(),
   grants: z.array(appGrant).max(100),

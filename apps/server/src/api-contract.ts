@@ -50,6 +50,8 @@ const durablePaths = new Set([
   "/v1/data/provision",
   "/v1/data/team-agents",
   "/v1/data/team-agents/:id/configuration",
+  "/v1/data/team-agents/:id/skills/publish",
+  "/v1/data/team-agents/:id/skills/assign",
   "/v1/data/agents/:id/preferences",
   "/v1/data/agents/:id/knowledge",
   "/v1/message-uploads",

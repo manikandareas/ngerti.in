@@ -1,4 +1,5 @@
 import { MspError, type SpawnedMspConnection, spawnMspConnection } from "@muse-code/sdk";
+import { assertScopedCatalog } from "../catalog-policy";
 import { Diagnostics, type LaunchContext } from "../context";
 import { HarnessError } from "../contracts";
 
@@ -13,6 +14,7 @@ export class MuseTransport {
     args: string[] = [],
     modelId?: string,
   ) {
+    assertScopedCatalog(context);
     const diagnostics = new Diagnostics(context.redactor, () => {});
     this.handshake = spawnMspConnection({
       command: executable,

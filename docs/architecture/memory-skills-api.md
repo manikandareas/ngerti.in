@@ -1,5 +1,7 @@
 # Scoped memory and skills API
 
+NMA-078 amendment: [management-published Team skill revisions and private overlays](scoped-apps-skills.md#published-and-private-skills) extend this API at contract 1.35.0. Team publication uses its separate management endpoints; ordinary learning/chat edits remain private. Inherited inventories resolve the acting user's selected provider binding and generation. See [verification](../verification/nma-078/README.md) for separate native-catalog and package-read observations.
+
 Planned November 12 amendment: [the server-organizations plan](server-organizations-plan-2026-11-12.md) and NMA-072–083 define PostgreSQL, authenticated organization/user scope, private Team-agent interactions and explicit connections. This guide retains its current/recorded implementation boundary until the new NMA-079 API gate verifies the changed contract; its owner-only examples do not establish multi-user authorization.
 
 Application contract **1.6.0**. This is the backend boundary for [NMA-055](../backlog/NMA-055.md), after NMA-054. The [verification report](../verification/nma-055/README.md) distinguishes fixtures, native inference and recovery evidence. The API gate subsequently passed; later UI and distribution status remains separately recorded in [the local backlog](../backlog/README.md).

@@ -8,6 +8,7 @@ import { ConversationJournal } from "./conversations/journal";
 import { type RoutingDecisionTrace, routingDecisionTrace } from "./groups/decision-trace";
 import type { DataContext } from "./persistence/access-context";
 import { executionSchemaSql, executionSchemaVersion } from "./persistence/execution-schema";
+import { integrationSchemaSql, integrationSchemaVersion } from "./persistence/integration-schema";
 import { providerSchemaSql, providerSchemaVersion } from "./persistence/provider-schema";
 import { schemaSql, schemaVersion } from "./persistence/schema";
 import { scopedSchemaSql, scopedSchemaVersion } from "./persistence/scoped-schema";
@@ -162,12 +163,16 @@ export class Store {
       const executionChecksum = createHash("sha256").update(executionSql).digest("hex");
       const providerSql = providerSchemaSql(this.schema);
       const providerChecksum = createHash("sha256").update(providerSql).digest("hex");
+      const integrationSql = integrationSchemaSql();
+      const integrationChecksum = createHash("sha256").update(integrationSql).digest("hex");
       if (
         migrations.some(
           (migration) =>
             !(
               (migration.version === schemaVersion && migration.sha256 === checksum) ||
               (migration.version === scopedSchemaVersion && migration.sha256 === scopedChecksum) ||
+              (migration.version === integrationSchemaVersion &&
+                migration.sha256 === integrationChecksum) ||
               (migration.version === providerSchemaVersion &&
                 migration.sha256 === providerChecksum) ||
               (migration.version === executionSchemaVersion &&
@@ -202,6 +207,13 @@ export class Store {
         await this.#authority.query("INSERT INTO schema_migrations(version,sha256) VALUES($1,$2)", [
           providerSchemaVersion,
           providerChecksum,
+        ]);
+      }
+      if (!migrations.some((migration) => migration.version === integrationSchemaVersion)) {
+        await this.#authority.query(integrationSql);
+        await this.#authority.query("INSERT INTO schema_migrations(version,sha256) VALUES($1,$2)", [
+          integrationSchemaVersion,
+          integrationChecksum,
         ]);
       }
       await this.#authority.query(
@@ -239,15 +251,21 @@ export class Store {
   }
   /** Check both the durable epoch and the original dedicated session's lock. Never reacquire. */
   async assertAuthority() {
+    await this.checkAuthority();
+  }
+  private async checkAuthority(client?: PoolClient) {
     if (this.closed) throw new DomainError("STALE_DISPATCH");
-    const row = (
-      await this.query<{ valid: boolean }>(
-        `SELECT authority_epoch=$1 AND EXISTS(
+    const sql = `SELECT authority_epoch=$1 AND EXISTS(
       SELECT 1 FROM pg_locks WHERE locktype='advisory' AND pid=$2 AND granted
       AND classid=$3::oid AND objid=($4::bigint & 4294967295)::oid AND objsubid=2
-    ) AS valid FROM installation WHERE id=1`,
-        [this.epoch, this.authorityPid, LOCK_CLASS, this.#lockKey],
-      )
+    ) AS valid FROM installation WHERE id=1`;
+    const values = [this.epoch, this.authorityPid, LOCK_CLASS, this.#lockKey];
+    // Receipt settlement needs application authority after the requesting member loses
+    // access. Its bounded administrative transaction must not re-enter actor authorization.
+    const row = (
+      client
+        ? await client.query<{ valid: boolean }>(sql, values)
+        : await this.query<{ valid: boolean }>(sql, values)
     ).rows[0];
     if (!row?.valid || this.closed) {
       this.loseAuthority();
@@ -328,11 +346,12 @@ export class Store {
   }
   async connectionGrants(
     organizationId: string,
+    kind: "connection" | "app_connection" = "connection",
   ): Promise<{ id: string; audience_id: string | null }[]> {
     return (
       await this.#administration.query(
-        "SELECT id,body->>'audience_id' AS audience_id FROM entities WHERE organization_id=$1 AND actor_id IS NULL AND kind='connection'",
-        [organizationId],
+        "SELECT id,body->>'audience_id' AS audience_id FROM entities WHERE organization_id=$1 AND actor_id IS NULL AND kind=$2",
+        [organizationId, kind],
       )
     ).rows;
   }
@@ -340,6 +359,109 @@ export class Store {
     return Boolean(
       (await this.#administration.query("SELECT 1 FROM legacy_scope_binding WHERE id=1")).rowCount,
     );
+  }
+  /** Only a previously reserved app effect can be settled after its actor is revoked.
+   * This narrow authority retains the real outcome without returning it to that actor. */
+  async settleAppEffect(
+    effect: Entity<"app_effect">,
+    fields: Pick<
+      Entity<"app_effect">,
+      "state" | "log_id" | "request_id" | "sdk_error" | "error_code" | "result"
+    >,
+  ) {
+    const client = await this.#administration.connect();
+    try {
+      await client.query("BEGIN");
+      // Match ordinary writer lock order and fence stale application authorities.
+      await client.query("SELECT event_clock FROM installation WHERE id=1 FOR UPDATE");
+      await this.checkAuthority(client);
+      const row = (
+        await client.query(
+          "SELECT body FROM entities WHERE owner_id=$1 AND kind='app_effect' AND id=$2 FOR UPDATE",
+          [this.ownerId, effect.id],
+        )
+      ).rows[0];
+      const current = row ? schemas.app_effect.parse(row.body) : null;
+      if (
+        !current ||
+        current.fingerprint !== effect.fingerprint ||
+        current.account_id !== effect.account_id ||
+        current.generation !== effect.generation ||
+        !["dispatched", "unknown"].includes(current.state)
+      )
+        throw new DomainError("CONFLICT");
+      const receipt = schemas.app_effect.parse({
+        ...current,
+        state: fields.state,
+        log_id: fields.log_id,
+        request_id: fields.request_id,
+        sdk_error: fields.sdk_error,
+        error_code: fields.error_code,
+        result: fields.result,
+        revision: current.revision + 1,
+        updated_at: new Date().toISOString(),
+      });
+      await client.query("UPDATE entities SET body=$1 WHERE kind='app_effect' AND id=$2", [
+        JSON.stringify(receipt),
+        receipt.id,
+      ]);
+      const cursor = Number(
+        (
+          await client.query(
+            "UPDATE installation SET event_clock=event_clock+1 WHERE id=1 RETURNING event_clock",
+          )
+        ).rows[0].event_clock,
+      );
+      await client.query(
+        "INSERT INTO events(cursor,owner_id,body,organization_id,actor_id) VALUES($1,$2,$3,$4,$5)",
+        [
+          cursor,
+          this.ownerId,
+          JSON.stringify({
+            schema_version: 1,
+            owner_id: this.ownerId,
+            type: "app_effect.updated",
+            entity_kind: "app_effect",
+            entity_id: receipt.id,
+            revision: receipt.revision,
+            created_at: receipt.updated_at,
+            data: receipt,
+          }),
+          receipt.organization_id ?? null,
+          receipt.actor_id ?? null,
+        ],
+      );
+      if (["succeeded", "failed"].includes(receipt.state))
+        await client.query(
+          "DELETE FROM app_account_holds WHERE owner_id=$1 AND account_id=$2 AND effect_id=$3",
+          [this.ownerId, receipt.account_id, receipt.id],
+        );
+      await this.checkAuthority(client);
+      await client.query("COMMIT");
+      this.notify();
+      return receipt;
+    } catch (error) {
+      await client.query("ROLLBACK");
+      throw error;
+    } finally {
+      client.release();
+    }
+  }
+  async recoverAppEffects() {
+    const rows = (
+      await this.#administration.query(
+        "SELECT body FROM entities WHERE owner_id=$1 AND kind='app_effect' AND body->>'state'='dispatched'",
+        [this.ownerId],
+      )
+    ).rows;
+    for (const row of rows) {
+      const effect = schemas.app_effect.parse(row.body);
+      await this.settleAppEffect(effect, {
+        ...effect,
+        state: "unknown",
+        error_code: "APP_UNKNOWN",
+      });
+    }
   }
   async legacyScopeReady() {
     return !(
@@ -455,7 +577,7 @@ export class Store {
     await context?.validate();
     await client.query("SET LOCAL ROLE ngertiin_runtime");
     await client.query(
-      "SELECT set_config('ngertiin.mode',$1,true),set_config('ngertiin.organization_id',$2,true),set_config('ngertiin.actor_id',$3,true),set_config('ngertiin.agents',$4,true),set_config('ngertiin.managed',$5,true),set_config('ngertiin.publish',$6,true),set_config('ngertiin.manage',$7,true),set_config('ngertiin.membership_generation',$8,true),set_config('ngertiin.connections',$9,true)",
+      "SELECT set_config('ngertiin.mode',$1,true),set_config('ngertiin.organization_id',$2,true),set_config('ngertiin.actor_id',$3,true),set_config('ngertiin.agents',$4,true),set_config('ngertiin.managed',$5,true),set_config('ngertiin.publish',$6,true),set_config('ngertiin.manage',$7,true),set_config('ngertiin.membership_generation',$8,true),set_config('ngertiin.connections',$9,true),set_config('ngertiin.app_connections',$10,true)",
       [
         context ? "scoped" : "legacy",
         context?.organizationId ?? "",
@@ -466,6 +588,7 @@ export class Store {
         context?.canManage ? "yes" : "no",
         String(context?.membershipGeneration ?? ""),
         context?.allowedConnections?.join(",") ?? "",
+        context?.allowedAppConnections?.join(",") ?? "",
       ],
     );
   }
@@ -915,7 +1038,11 @@ export class Store {
       (entity.kind === "agent" ||
         entity.kind === "published_knowledge" ||
         entity.kind === "connection" ||
-        entity.kind === "ai_selection");
+        entity.kind === "ai_selection" ||
+        entity.kind === "app_connection" ||
+        entity.kind === "skill" ||
+        entity.kind === "skill_revision" ||
+        entity.kind === "skill_assignment");
     const actor = shared ? null : (scope?.userId ?? null);
     const validated = schemas[entity.kind].parse(
       scope ? { ...entity, organization_id: scope.organizationId, actor_id: actor } : entity,

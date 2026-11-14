@@ -1,3 +1,4 @@
+import { assertScopedCatalog } from "../catalog-policy";
 import type { LaunchContext } from "../context";
 import { HarnessError, NativeSessionMissing } from "../contracts";
 import { OwnedProcess } from "../process";
@@ -25,6 +26,7 @@ export class CodexRpc {
   onMessage: (message: RpcMessage) => void = () => {};
   onFailure: () => void = () => {};
   constructor(executable: string, context: LaunchContext, args: string[] = []) {
+    assertScopedCatalog(context);
     this.process = new OwnedProcess(
       executable,
       [
@@ -50,6 +52,16 @@ export class CodexRpc {
         "browser_use",
         "--disable",
         "multi_agent",
+        ...(context.scoped
+          ? [
+              "--disable",
+              "apps",
+              "--disable",
+              "plugins",
+              "--disable",
+              "skill_mcp_dependency_install",
+            ]
+          : []),
       ],
       context,
     );

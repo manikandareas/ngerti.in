@@ -40,9 +40,23 @@ export function scopedDataContract() {
       selection: "conversation_then_user_then_allowed_organization_only_when_unset",
       admission: "immutable_connection_generation_account_model_billing_snapshot",
       credentials: "server_only_encrypted_keys_actor_private_native_homes",
-      native_execution: "closed_pending_nma_078",
+      native_execution: "closed_pending_nma_079",
     },
-    native_execution: "requires_nma_078_scoped_apps",
+    native_execution: "closed_pending_nma_079",
+    applications: {
+      version: "nma-078.1",
+      ownership: ["personal", "organization"],
+      organization_access: "audience_and_agent_tool_resource_grants",
+      routing: "backend_identity_and_exact_connected_account_no_fallback",
+      effects: "actor_private_receipts_and_durable_connected_account_holds",
+      native_catalog: "scoped_product_gateway_only_no_ambient_native_configuration",
+    },
+    skills: {
+      version: "nma-078.1",
+      team: "management_published_immutable_revision_and_explicit_pinned_assignment",
+      personal: "private_application_packages_and_preferences",
+      inherited: "read_only_selected_actor_provider_binding",
+    },
     switching: "explicit_request_scope_preserved_by_retry_no_session_active_organization",
   };
 }

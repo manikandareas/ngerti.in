@@ -1,0 +1,16 @@
+{
+  "scope": "real Composio through backend service with authenticated fixture principals and a synthetic accepted-run seam",
+  "sdk": "@composio/core@0.27.0",
+  "api": "v3.1",
+  "lanes": [
+    {
+      "ownership": "organization",
+      "tool": "GITHUB_GET_THE_AUTHENTICATED_USER",
+      "identity_sha256": "fc8e76e40dd7df6eb290621672c110f2aa59f8c7a641c602f4cee944c88980d6",
+      "state": "succeeded",
+      "log_id": "log_hhYNZDsP2iAi",
+      "actor_attributed": true
+    }
+  ],
+  "completed": false
+}

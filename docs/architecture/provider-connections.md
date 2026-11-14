@@ -1,6 +1,6 @@
 # Personal and organization AI connections
 
-Contract **1.34.0**, scoped provider contract **nma-077.1**. [NMA-077](../backlog/NMA-077.md) is Done for its verified provider-connection scope, including two distinct live ChatGPT accounts, one Free. [Verification](../verification/nma-077/README.md) distinguishes HTTP/PostgreSQL, protocol fixtures, native Codex and native Muse. Production organization native admission remains closed pending NMA-078 app/MCP/skill isolation. Web/Tauri presentation and the complete API gate retain NMA-079–081.
+Contract **1.34.0**, scoped provider contract **nma-077.1**. [NMA-077](../backlog/NMA-077.md) is Done for its verified provider-connection scope, including two distinct live ChatGPT accounts, one Free. [Verification](../verification/nma-077/README.md) distinguishes HTTP/PostgreSQL, protocol fixtures, native Codex and native Muse. NMA-078 implements [app/MCP/skill isolation](scoped-apps-skills.md) at contract 1.35.0; this guide retains the 1.34.0 provider boundary. Production organization native admission remains closed for the complete NMA-079 API/isolation readiness gate. Web/Tauri presentation and the complete API gate retain NMA-079–081.
 
 ## Ownership and access
 

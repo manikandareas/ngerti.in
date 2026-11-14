@@ -1,5 +1,7 @@
 # Applications, web research and visual input API
 
+NMA-078 amendment: account-mode connections use [scoped organization/personal app identities, grants and effect reservation](scoped-apps-skills.md) at contract 1.35.0. The installation-owner API below retains its original single-owner compatibility scope. Organization members never inherit that legacy Composio identity. [Verification](../verification/nma-078/README.md) separates live application calls from native catalogs and fixtures.
+
 Planned November 12 amendment: [the server-organizations plan](server-organizations-plan-2026-11-12.md) and NMA-072–083 define PostgreSQL, authenticated organization/user scope, private Team-agent interactions and explicit connections. This guide retains its current/recorded implementation boundary until the new NMA-079 API gate verifies the changed contract; its owner-only examples do not establish multi-user authorization.
 
 Application integration introduced in contract **1.10.0**, with catalog metadata added in **1.32.0**; harness broker **1.5.0**. This is a backend contract; API readiness, UI and installation remain separate gates.

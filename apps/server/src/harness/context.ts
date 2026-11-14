@@ -69,6 +69,7 @@ export class Diagnostics {
   }
 }
 export type LaunchContext = {
+  scoped?: boolean;
   ephemeralAuth?: boolean;
   codexAuth?: (
     refresh?: boolean,
@@ -171,6 +172,7 @@ export class CredentialContexts {
       if (!provider || process.env.NGERTIIN_PROVIDER_NATIVE_STORAGE !== "encrypted-volume")
         throw new HarnessError("CAPABILITY_UNSUPPORTED");
       return {
+        scoped: !!binding,
         env,
         ephemeralAuth: true,
         state_directory: directory,
@@ -183,6 +185,7 @@ export class CredentialContexts {
       };
     }
     return {
+      scoped: !!binding,
       env,
       state_directory: directory,
       redactor,

@@ -355,6 +355,55 @@ test("SDK uncertainty retains a safe request ID without exposing exception bodie
   expect(JSON.stringify(result)).not.toContain("private-provider-body");
 });
 
+test("SDK search and execution reject a mismatched session identity before schemas or dispatch", async () => {
+  let searches = 0;
+  let dispatched = 0;
+  const host = new ComposioHost({
+    sessions: {
+      use: async () => ({
+        config: { user_id: "other-principal", connected_accounts: { github: ["ca-exact"] } },
+        search: async () => {
+          searches++;
+          return {};
+        },
+        execute: async () => {
+          dispatched++;
+          return {};
+        },
+      }),
+    },
+  } as unknown as Composio);
+  const expected = { user: "authorized-principal", account: "ca-exact" };
+  await expect(host.search("private-session", "profile", expected)).rejects.toThrow("SCOPE_DENIED");
+  await expect(
+    host.execute("private-session", "ca-exact", "GITHUB_READ_PROFILE", {}, () => {}, expected),
+  ).rejects.toThrow("SCOPE_DENIED");
+  expect(searches).toBe(0);
+  expect(dispatched).toBe(0);
+});
+
+test("late app settlement cannot bypass a lost authority lock and recovery retains the unknown hold", async () => {
+  const s = await setup();
+  s.host.effect = async () => {
+    await f.administrativeQuery("SELECT pg_terminate_backend($1)", [f.store.authorityPid]);
+  };
+  await expect(s.call("ngertiin.execute_app_tool", s.input)).rejects.toMatchObject({
+    code: "STALE_DISPATCH",
+  });
+  expect(s.host.calls).toBe(1);
+  await f.restart();
+  await Applications.open(f.lifecycle, s.host);
+  expect((await f.store.get("app_effect", s.input.command_id)).state).toBe("unknown");
+  expect(
+    (
+      await f.store.query(
+        "SELECT effect_id FROM app_account_holds WHERE owner_id=$1 AND account_id=$2",
+        [f.owner, s.connection.account_id],
+      )
+    ).rowCount,
+  ).toBe(1);
+});
+
 test("product approval gates the actual scoped app dispatch and changed arguments never reuse a decision", async () => {
   const s = await setup();
   const request = (await s.call("ngertiin.ask_user", {

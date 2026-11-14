@@ -1,0 +1,22 @@
+bun test v1.3.10 (30e609e0)
+
+../../scripts/verification/nma078/native-skills.test.ts:
+226 |         .parse(await this.transport.read("session/read", { sessionId: this.#session }));
+227 |       if (
+228 |         result.session.sessionId !== this.#session ||
+229 |         result.session.modelId !== settings.model_id
+230 |       )
+231 |         throw new HarnessError("PROTOCOL_ERROR");
+                    ^
+error: PROTOCOL_ERROR
+ outcome: "not_dispatched",
+    code: "PROTOCOL_ERROR"
+
+      at settings (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/src/harness/muse/client.ts:231:15)
+      at async open (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/src/harness/muse/client.ts:207:16)
+(fail) real native catalogs and bounded package reads stay inside each actor home [5951.26ms]
+
+ 0 pass
+ 1 fail
+ 12 expect() calls
+Ran 1 test across 1 file. [6.23s]

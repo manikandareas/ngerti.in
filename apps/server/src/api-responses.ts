@@ -322,6 +322,12 @@ routes(
   skillResult,
 );
 routes("POST", ["/v1/learning/skills/assign"], schemas.skill_assignment);
+routes(
+  "POST",
+  ["/v1/data/team-agents/:id/skills/publish"],
+  skillResult.extend({ assignment: schemas.skill_assignment }),
+);
+routes("POST", ["/v1/data/team-agents/:id/skills/assign"], schemas.skill_assignment);
 routes("POST", ["/v1/workspaces", "/v1/workspaces/:id/revoke"], schemas.workspace);
 routes("GET", ["/v1/threads/:id/workspace"], schemas.workspace.nullable());
 routes("GET", ["/v1/workspaces/:id/files"], operationSchemas.files);

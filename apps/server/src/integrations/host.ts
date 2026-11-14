@@ -3,6 +3,7 @@ import { DomainError } from "../contracts";
 import { appOutput } from "./output";
 
 export type AppSessionConfig = { toolkit: string; account_id?: string; tools?: string[] };
+export type AppSessionIdentity = { user: string; account: string };
 export type AppTool = {
   slug: string;
   toolkit: string;
@@ -40,13 +41,14 @@ export interface AppHost {
   connect(user: string, toolkit: string): Promise<{ account_id: string; connect_url: string }>;
   accounts(user: string): Promise<{ id: string; toolkit: string; active: boolean }[]>;
   session(user: string, config: AppSessionConfig): Promise<string>;
-  search(session: string, query: string): Promise<AppTool[]>;
+  search(session: string, query: string, expected?: AppSessionIdentity): Promise<AppTool[]>;
   execute(
     session: string,
     account: string,
     tool: string,
     args: Record<string, unknown>,
-    authorize: () => void,
+    authorize: () => void | Promise<void>,
+    expected?: AppSessionIdentity,
   ): Promise<{
     data: unknown;
     state: "succeeded" | "failed" | "unknown";
@@ -193,9 +195,19 @@ export class ComposioHost implements AppHost {
         ).sessionId,
     );
   }
-  async search(id: string, query: string) {
+  async search(id: string, query: string, expected?: AppSessionIdentity) {
     return this.safe(async () => {
-      const result = await (await this.client().sessions.use(id)).search({ query });
+      const session = await this.client().sessions.use(id);
+      if (expected) {
+        const selected = Object.values(session.config.connected_accounts ?? {}).flat();
+        if (
+          session.config.user_id !== expected.user ||
+          selected.length !== 1 ||
+          selected[0] !== expected.account
+        )
+          throw new DomainError("SCOPE_DENIED", 403);
+      }
+      const result = await session.search({ query });
       if (!result.success) throw new DomainError("APP_UNAVAILABLE");
       return Object.values(result.toolSchemas)
         .filter((t) => t.hasFullSchema && t.inputSchema)
@@ -212,13 +224,18 @@ export class ComposioHost implements AppHost {
     account: string,
     tool: string,
     args: Record<string, unknown>,
-    authorize: () => void,
+    authorize: () => void | Promise<void>,
+    expected?: AppSessionIdentity,
   ) {
     // Attach/read is a preflight. A failure here proves execute was never submitted.
     const request = { signal: AbortSignal.timeout(25_000) };
     const session = await this.safe(() => this.client().sessions.use(id, undefined, request));
     const selected = Object.values(session.config.connected_accounts ?? {}).flat();
-    if (selected.length !== 1 || selected[0] !== account)
+    if (
+      selected.length !== 1 ||
+      selected[0] !== account ||
+      (expected && session.config.user_id !== expected.user)
+    )
       throw new DomainError("SCOPE_DENIED", 403);
     request.signal.throwIfAborted();
     await authorize();

@@ -39,6 +39,7 @@ export class ScopedData {
     const grants = await this.lifecycle.store.teamGrants(organizationId);
     const invocable: string[] = [];
     const allowedConnections: string[] = [];
+    const allowedAppConnections: string[] = [];
     const tx = await this.auth.pool.connect();
     try {
       for (const grant of await this.lifecycle.store.connectionGrants(organizationId))
@@ -47,6 +48,15 @@ export class ScopedData {
           (await audienceAllows(tx, organizationId, access.user_id, grant.audience_id))
         )
           allowedConnections.push(grant.id);
+      for (const grant of await this.lifecycle.store.connectionGrants(
+        organizationId,
+        "app_connection",
+      ))
+        if (
+          grant.audience_id &&
+          (await audienceAllows(tx, organizationId, access.user_id, grant.audience_id))
+        )
+          allowedAppConnections.push(grant.id);
       for (const grant of grants)
         if (await audienceAllows(tx, organizationId, access.user_id, grant.audience_id))
           invocable.push(grant.agent_id);
@@ -86,6 +96,7 @@ export class ScopedData {
       managedAgents: managed,
       canManage: access.role !== "member",
       allowedConnections,
+      allowedAppConnections,
       validateAudience: async (id) => {
         if (
           !(
@@ -397,7 +408,7 @@ export class ScopedData {
           const context = await this.context(request);
           // Until their resource isolation milestones, native/provider and machine control stay closed.
           if (
-            /^\/v1\/(apps|browser|harness)(\/|$)/.test(path) ||
+            /^\/v1\/(browser|harness)(\/|$)/.test(path) ||
             /\/(sessions|prepare|reconcile|interactions|steer)$/.test(path)
           )
             throw deny();

@@ -9,6 +9,7 @@ import {
   skillCreate,
   skillRead,
   skillRevise,
+  teamSkillPublication,
 } from "../learning/contracts";
 import { Memories } from "../learning/memories";
 import type { Lifecycle } from "../lifecycle";
@@ -18,6 +19,18 @@ export function registerLearningRoutes(api: Elysia, lifecycle: Lifecycle, comman
   const memories = new Memories(lifecycle);
   const skills = new ApplicationSkills(lifecycle);
   return api
+    .post(
+      "/v1/data/team-agents/:id/skills/publish",
+      async ({ request, params, body }) =>
+        command(request, body, () => skills.publishTeam(params.id, body)),
+      { params: z.object({ id: z.uuid() }), body: teamSkillPublication },
+    )
+    .post(
+      "/v1/data/team-agents/:id/skills/assign",
+      async ({ request, params, body }) =>
+        command(request, body, () => skills.assignTeam(params.id, body)),
+      { params: z.object({ id: z.uuid() }), body: skillAssign },
+    )
     .get(
       "/v1/learning/memories",
       async ({ query }) =>

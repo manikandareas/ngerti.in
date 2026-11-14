@@ -98,7 +98,8 @@ export class Background {
         await new GroupSchedules(this.lifecycle).advance();
         for (const routine of await this.lifecycle.store.list("routine"))
           await this.lifecycle.fireRoutine(routine.id, now);
-        // Scoped jobs retain durable queue identity. Native preparation/dispatch awaits NMA-076–078.
+        // Scoped jobs retain durable queue identity. Production native admission remains
+        // closed until the integrated NMA-079 API/isolation readiness gate.
       });
     })().finally(() => {
       this.#ticking = undefined;

@@ -92,7 +92,9 @@ for (const harness of ["codex", "muse"] as const) {
       });
       await background.start(100);
       if (harness === "codex") {
-        const deadline = Date.now() + 3000;
+        // Native preparation includes catalog and private binding reads. Bound setup
+        // separately from the cancellation-confirmation deadline below.
+        const deadline = Date.now() + 10_000;
         while (
           (await f.store.get("run", admitted.run.id)).status !== "running" &&
           Date.now() < deadline

@@ -24,9 +24,14 @@ export function registerIntegrationRoutes(
       },
     )
     .get("/v1/apps/connections", async () => await applications.list())
-    .post("/v1/apps/connect", async ({ body }) => applications.connect(body.toolkit), {
-      body: appAuthorize,
-    })
+    .post(
+      "/v1/apps/connect",
+      async ({ body }) =>
+        applications.connect(body.toolkit, undefined, body.ownership, body.audience_id),
+      {
+        body: appAuthorize,
+      },
+    )
     .post(
       "/v1/apps/connections/:id/reconnect",
       async ({ params }) => {

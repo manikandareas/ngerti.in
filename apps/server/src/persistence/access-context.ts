@@ -8,6 +8,7 @@ export type DataContext = {
   managedAgents: string[];
   canManage: boolean;
   allowedConnections?: string[];
+  allowedAppConnections?: string[];
   acquire?(): Promise<() => Promise<void>>;
   acquireResources?(): Promise<() => Promise<void>>;
   validate(privateWork?: boolean): Promise<unknown>;

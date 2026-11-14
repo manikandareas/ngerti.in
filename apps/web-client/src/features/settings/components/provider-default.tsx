@@ -30,7 +30,7 @@ export function ProviderDefault({
   const requestedBilling = billingLabel(agent?.billing_source ?? "unknown");
   return (
     <>
-      <SettingsSection title="Tobi dan agent baru">
+      <SettingsSection title="Agent awal dan agent baru">
         <div className="settings-default-control">
           <ModelPicker
             contained

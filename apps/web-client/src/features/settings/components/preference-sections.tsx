@@ -70,7 +70,7 @@ export function GeneralSettings() {
             value={preferences.startup}
             options={[
               { value: "last", label: "Percakapan terakhir" },
-              { value: "tobi", label: "Tobi" },
+              { value: "tobi", label: "Agent awal" },
             ]}
             onChange={(value) => update("startup", value)}
           />

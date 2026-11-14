@@ -336,6 +336,7 @@ test("event cursor pagination is stable and contracts expose all domain entities
   expect([...page, ...remainder]).toEqual(await f.store.events(0));
   expect(Object.keys(contractDocument().entities).sort()).toEqual([
     "agent",
+    "agent_preference",
     "app_connection",
     "app_effect",
     "app_session",
@@ -361,6 +362,7 @@ test("event cursor pagination is stable and contracts expose all domain entities
     "message",
     "occurrence",
     "peer_task",
+    "published_knowledge",
     "routine",
     "run",
     "skill",

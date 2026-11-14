@@ -24,6 +24,20 @@ afterEach(async () => {
   await f?.close();
 });
 
+test("an empty optional application database URL retains the configured database and restricted statement role", async () => {
+  const previous = process.env.NGERTIIN_APPLICATION_DATABASE_URL;
+  try {
+    process.env.NGERTIIN_APPLICATION_DATABASE_URL = " ";
+    f = await fixture();
+    expect((await f.store.query("SELECT current_user AS role")).rows[0].role).toBe(
+      "ngertiin_runtime",
+    );
+  } finally {
+    if (previous === undefined) delete process.env.NGERTIIN_APPLICATION_DATABASE_URL;
+    else process.env.NGERTIIN_APPLICATION_DATABASE_URL = previous;
+  }
+});
+
 test("nested failure restores its savepoint while an outer command commits one receipt", async () => {
   f = await fixture();
   const id = crypto.randomUUID();
@@ -124,7 +138,7 @@ test("authority session loss fences an in-flight publication and a pooled reconn
   });
   const rejected = pending.catch((error) => error);
   await entered.promise;
-  await f.store.query("SELECT pg_terminate_backend($1)", [f.store.authorityPid]);
+  await f.administrativeQuery("SELECT pg_terminate_backend($1)", [f.store.authorityPid]);
   release.resolve();
   expect((await rejected)?.message).toBe("STALE_DISPATCH");
   expect(await f.store.cursor).toBe(before);
@@ -368,7 +382,7 @@ test("loss of the authority session aborts active native work and leaves recover
     const api = await createApi(f.lifecycle, background, "authority-test-".repeat(4));
     await background.tick();
     await entered.promise;
-    await f.store.query("SELECT pg_terminate_backend($1)", [f.store.authorityPid]);
+    await f.administrativeQuery("SELECT pg_terminate_backend($1)", [f.store.authorityPid]);
     await aborted.promise;
     expect(
       (
@@ -393,9 +407,13 @@ test("a changed applied migration refuses startup without changing domain histor
   f = await fixture();
   const before = await f.store.cursor;
   const checksum = String(
-    (await f.store.query("SELECT sha256 FROM schema_migrations WHERE version=1")).rows[0].sha256,
+    (await f.administrativeQuery("SELECT sha256 FROM schema_migrations WHERE version=1")).rows[0]
+      .sha256,
   );
-  await f.store.query("UPDATE schema_migrations SET sha256='modified'");
+  await expect(
+    f.store.query("UPDATE schema_migrations SET sha256='modified'"),
+  ).rejects.toMatchObject({ code: "42501" });
+  await f.administrativeQuery("UPDATE schema_migrations SET sha256='modified' WHERE version=1");
   await f.store.close();
   await expect(Store.open(f.store.path, f.owner, f.options)).rejects.toThrow(
     "modified database migration",
@@ -403,7 +421,10 @@ test("a changed applied migration refuses startup without changing domain histor
   const client = new Client({ connectionString: f.options.connectionString });
   await client.connect();
   try {
-    await client.query(`UPDATE "${f.options.schema}".schema_migrations SET sha256=$1`, [checksum]);
+    await client.query(
+      `UPDATE "${f.options.schema}".schema_migrations SET sha256=$1 WHERE version=1`,
+      [checksum],
+    );
   } finally {
     await client.end();
   }

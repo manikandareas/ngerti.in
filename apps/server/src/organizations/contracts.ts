@@ -107,11 +107,12 @@ export function organizationsContract() {
     administrative_elevation: "owner_only_last_owner_protected",
     invitations: "verified_email_bound_48_hours_current_inviter_generation_and_workgroups",
     commands: "required_uuid_idempotency_key_actor_bound_receipt_reauthorized_before_replay",
-    provisioning: "durable_user_organization_intent_nma_075_materializes_tobi_dm",
+    provisioning:
+      "durable_user_organization_intent_nma_075_materializes_random_named_default_agent_dm",
     offboarding:
       "retained_tombstone_and_attribution_private_work_principal_suspended_no_automatic_reassignment",
     organization_deletion: "disabled",
-    private_application_data: "bootstrap_owner_only_until_nma_075",
+    private_application_data: "explicit_organization_user_context_guarded_legacy_binding_nma_075",
     export: "owner_only_administrative_metadata_no_private_context_or_credentials",
   };
 }

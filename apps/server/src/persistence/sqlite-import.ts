@@ -252,10 +252,11 @@ function rowsFor(snapshot: ImportSnapshot, table: Table): Row[] {
       return {
         ...row,
         scope: canonical([snapshot.owner_id, null, snapshot.owner_id, null, null]),
+        membership_generation: null,
         receipt: JSON.parse(String(row.receipt)),
       };
     if (table === "routing_traces" || table === "conversation_parts")
-      return { ...row, body: JSON.parse(String(row.body)) };
+      return { ...row, organization_id: null, actor_id: null, body: JSON.parse(String(row.body)) };
     return row;
   });
 }
@@ -354,16 +355,7 @@ export async function importSQLite(
     store = await Store.open(statePath, snapshot.owner_id, options);
     const target = store;
     const comparison = await target.transaction(async () => {
-      if (
-        Number(
-          (
-            await target.query(
-              "SELECT (SELECT count(*) FROM entities)+(SELECT count(*) FROM events)+(SELECT count(*) FROM commands) AS count",
-            )
-          ).rows[0].count,
-        ) !== 0
-      )
-        throw new Error("Import requires an empty PostgreSQL target.");
+      await target.assertEmptyImportTarget();
       await target.query("DELETE FROM conversation_projection");
       for (const table of tables)
         for (const row of rowsFor(snapshot, table)) {
@@ -378,14 +370,7 @@ export async function importSQLite(
             values,
           );
         }
-      for (const [table, column] of [
-        ["entities", "seq"],
-        ["routing_traces", "seq"],
-        ["conversation_parts", "sequence"],
-      ] as const)
-        await target.query(
-          `SELECT setval(pg_get_serial_sequence('${table}','${column}'),GREATEST(COALESCE(MAX(${column}),0),1),COALESCE(MAX(${column}),0)>0) FROM ${table}`,
-        );
+      await target.restoreLegacySequences();
       await target.query(
         "UPDATE installation SET event_clock=(SELECT COALESCE(MAX(cursor),0) FROM events) WHERE id=1",
       );

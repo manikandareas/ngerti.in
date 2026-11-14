@@ -1,5 +1,6 @@
 import { defaultAgentAvatar } from "@ngertiin/avatar/config";
 import { z } from "zod";
+import { randomAgentName } from "./agents/names";
 import {
   agent,
   artifact,
@@ -72,13 +73,14 @@ export class Conversations {
       "development:tobi:v1",
       { operation: "setup_tobi", version: 1 },
       async () => {
+        const name = randomAgentName((await store.list("agent")).map((agent) => agent.name));
         const connection = await new Connections(this.lifecycle).create({
           harness: "codex",
           authentication: { method: "native_login", billing_source: "subscription" },
         });
         const created = await this.lifecycle.createAgent({
-          name: "Tobi",
-          handle: "tobi",
+          name,
+          handle: "default",
           avatar_config: defaultAgentAvatar("tobi-circle", true),
           soul: "A thoughtful generalist who helps the user turn conversations into useful work.",
           instructions:
@@ -117,7 +119,7 @@ export class Conversations {
           run_id: null,
           state: "complete",
           artifact_ids: [],
-          text: "Hi, I'm Tobi. Tell me what you'd like to work on. I can help you create and configure agents through our conversation.",
+          text: `Hi, I'm ${name}. Tell me what you'd like to work on. I can help you create and configure agents through our conversation.`,
         });
         return { agent_id: tobi.id, thread_id: dm.id, welcome_message_id: welcome.id };
       },

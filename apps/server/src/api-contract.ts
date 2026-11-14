@@ -46,6 +46,11 @@ export const responseSchemas = {
 
 // These paths call the common durable command store, or artifact receipt store.
 const durablePaths = new Set([
+  "/v1/data/provision",
+  "/v1/data/team-agents",
+  "/v1/data/team-agents/:id/configuration",
+  "/v1/data/agents/:id/preferences",
+  "/v1/data/agents/:id/knowledge",
   "/v1/message-uploads",
   "/v1/setup",
   "/v1/creation/agents",
@@ -95,6 +100,7 @@ const durablePaths = new Set([
   "/v1/apps/connections/:id/assign",
 ]);
 const operationPaths = new Set([
+  "/v1/data/legacy-binding",
   "/v1/machine/views/:viewerId/renew",
   "/v1/connections/:id/inspect",
   "/v1/connections/:id/login",

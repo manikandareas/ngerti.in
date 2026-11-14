@@ -59,8 +59,7 @@ test("DM publication keeps queued intake behind the answer, survives replay, and
   await f.restart();
   expect(await conversations().timeline(f.thread.id)).toEqual(before);
   // Rebuild the projection from the unchanged domain log, including initial queued order.
-  const db = f.store;
-  await db.query(
+  await f.administrativeQuery(
     "TRUNCATE conversation_parts RESTART IDENTITY; UPDATE conversation_projection SET cursor=0",
   );
 
@@ -155,11 +154,11 @@ test.each(["persisted", "replayed"])(
     if (source === "persisted") {
       await db.query("UPDATE conversation_parts SET body=body-'summary' WHERE id=$1", [partId]);
     } else {
-      await db.query(
+      await f.administrativeQuery(
         "UPDATE events SET body=body #- '{data,summary}' WHERE body->>'entity_id'=$1",
         [task.id],
       );
-      await db.query(
+      await f.administrativeQuery(
         "TRUNCATE conversation_parts RESTART IDENTITY; UPDATE conversation_projection SET cursor=0",
       );
     }

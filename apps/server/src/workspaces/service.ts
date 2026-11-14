@@ -38,7 +38,7 @@ export class Workspaces {
   }
   async ensure(threadId: string, agentId: string | null) {
     const current = await this.current(threadId, agentId);
-    const machine = machineFor(this.lifecycle);
+    const machine = this.lifecycle.store.dataContext ? undefined : machineFor(this.lifecycle);
     if (current && machine && current.machine_id !== (await machine.snapshot()).id) {
       if (
         (await this.lifecycle.store.list("run", { workspace_id: current.id })).some(
@@ -68,6 +68,8 @@ export class Workspaces {
   }
   async bind(input: unknown): Promise<Entity<"workspace">> {
     const data = workspaceInput.parse(input);
+    if (this.lifecycle.store.dataContext && data.project_path !== null)
+      throw new DomainError("SCOPE_DENIED", 403);
     return await this.lifecycle.store.transaction(async () => {
       const { shared } = await this.scope(data.thread_id, data.agent_id);
       if (
@@ -80,7 +82,7 @@ export class Workspaces {
       )
         throw new DomainError("CONFLICT");
       const id = crypto.randomUUID();
-      const machine = machineFor(this.lifecycle);
+      const machine = this.lifecycle.store.dataContext ? undefined : machineFor(this.lifecycle);
       if (machine) {
         if (data.project_path !== null) throw new DomainError("SCOPE_DENIED", 403);
         const current = await this.current(data.thread_id, data.agent_id);
@@ -237,12 +239,13 @@ export class Workspaces {
     return new WorkspaceFiles(this.path(w), w.root_device, w.root_inode);
   }
   async workingFiles(workspaceId: string) {
+    if (this.lifecycle.store.dataContext) throw new DomainError("SCOPE_DENIED", 403);
     const workspace = await this.get(workspaceId);
     if (workspace.machine_id === null) {
       if (machineFor(this.lifecycle)) throw new DomainError("STALE_DISPATCH");
       return await this.files(workspace.id);
     }
-    const machine = machineFor(this.lifecycle);
+    const machine = this.lifecycle.store.dataContext ? undefined : machineFor(this.lifecycle);
     if (!machine || (await machine.snapshot()).id !== workspace.machine_id)
       throw new DomainError("MACHINE_UNAVAILABLE", 503);
     return machine.files();

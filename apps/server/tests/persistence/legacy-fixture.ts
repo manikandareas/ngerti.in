@@ -26,7 +26,14 @@ export async function exportLegacyFixture(store: Store, path: string) {
         const rows = (await store.query(`SELECT * FROM ${table}`)).rows;
         for (const row of rows) {
           const columns = Object.keys(row).filter(
-            (key) => !["scope", "owner_id", "organization_id", "actor_id"].includes(key),
+            (key) =>
+              ![
+                "scope",
+                "owner_id",
+                "organization_id",
+                "actor_id",
+                "membership_generation",
+              ].includes(key),
           );
           db.query(
             `INSERT INTO ${table}(${columns.join(",")}) VALUES(${columns.map(() => "?").join(",")})`,

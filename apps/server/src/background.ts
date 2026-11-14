@@ -83,12 +83,24 @@ export class Background {
   }
 
   tick(now = new Date(), checkControls = true): Promise<void> {
+    if (this.lifecycle.store.dataContext)
+      return this.lifecycle.store.outsideDataContext(() => this.tick(now, checkControls));
     if (this.#stopping || this.lifecycle.store.closed) return Promise.resolve();
     if (this.#ticking) {
       this.#tickAgain = true;
       return this.#ticking;
     }
-    this.#ticking = this.dispatchTick(now, checkControls).finally(() => {
+    this.#ticking = (async () => {
+      await this.dispatchTick(now, checkControls);
+      await this.lifecycle.store.scopeRunner?.(async () => {
+        await this.lifecycle.store.dataContext?.validate(true);
+        await new Goals(this.lifecycle).advance(now);
+        await new GroupSchedules(this.lifecycle).advance();
+        for (const routine of await this.lifecycle.store.list("routine"))
+          await this.lifecycle.fireRoutine(routine.id, now);
+        // Scoped jobs retain durable queue identity. Native preparation/dispatch awaits NMA-076–078.
+      });
+    })().finally(() => {
       this.#ticking = undefined;
       if (this.#tickAgain) {
         this.#tickAgain = false;
@@ -229,6 +241,10 @@ export class Background {
 
   /** Control requests bypass ordinary work and do not wait for the next scheduler tick. */
   async notifyControls() {
+    if (this.lifecycle.store.dataContext) {
+      await this.wake();
+      return;
+    }
     await this.wake();
     for (const work of this.#work.values())
       if ((await this.lifecycle.store.get("run", work.run.id)).cancellation === "requested")

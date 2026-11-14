@@ -78,7 +78,7 @@ try {
     [process.execPath, "test", "--timeout", "45000", ...(paths.length ? paths : ["tests"])],
     {
       cwd: resolve(root, "apps/server"),
-      env: { ...process.env, NGERTIIN_TEST_DATABASE_URL: database },
+      env: { ...process.env, NGERTIIN_TEST_DATABASE_URL: database,NGERTIIN_APPLICATION_DATABASE_URL:database },
       stdout: "inherit",
       stderr: "inherit",
       stdin: "inherit",

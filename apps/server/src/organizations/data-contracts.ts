@@ -1,0 +1,40 @@
+import { z } from "zod";
+import { base, id } from "../contracts/base";
+
+export const preferenceChanges = z.strictObject({
+  instructions: z.string().max(100_000).default(""),
+  soul: z.string().max(100_000).default(""),
+});
+export const agentPreference = z.strictObject({
+  ...base,
+  kind: z.literal("agent_preference"),
+  agent_id: id,
+  changes: preferenceChanges,
+});
+export const publishedKnowledge = z.strictObject({
+  ...base,
+  kind: z.literal("published_knowledge"),
+  agent_id: id,
+  text: z.string().min(1).max(100_000),
+  state: z.enum(["active", "deleted"]),
+});
+export const teamAgentWrite = z.strictObject({
+  name: z.string().trim().min(1).max(200),
+  harness: z.enum(["codex", "muse"]),
+  instructions: z.string().max(100_000).default(""),
+  soul: z.string().max(100_000).default(""),
+  audience_id: id,
+});
+export function scopedDataContract() {
+  return {
+    version: "nma-075.1",
+    readiness_gate: "pending_nma_079",
+    organization_header: "X-Ngertiin-Organization",
+    cursor_header: "X-Ngertiin-Event-Context",
+    cursors: "server_signed_user_organization_membership_and_authorization_generation",
+    private_data: "organization_and_user_never_administrator_inheritance",
+    default_agent: "idempotent_library_generated_single_syllable_name",
+    native_execution: "requires_nma_076_078_isolated_resources",
+    switching: "explicit_request_scope_preserved_by_retry_no_session_active_organization",
+  };
+}

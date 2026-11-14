@@ -173,6 +173,7 @@ export class Artifacts {
     );
   }
   async materialize(artifactId: string) {
+    if (this.lifecycle.store.dataContext) return this.lifecycle.store.get("artifact", artifactId);
     const item = await this.lifecycle.store.get("artifact", artifactId);
     if (!item.workspace_id || !item.source_path) throw new DomainError("SCOPE_DENIED", 403);
     const workspace = await this.workspaces.get(item.workspace_id);

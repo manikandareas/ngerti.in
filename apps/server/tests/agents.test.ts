@@ -114,7 +114,7 @@ async function run(threadId: string, agentId: string, text: string) {
   return { run, answer: JSON.parse(answer?.text ?? "null") };
 }
 
-test("concurrent HTTP setup and distinct retry keys produce one Tobi, primary DM and authored welcome without runs", async () => {
+test("concurrent HTTP setup and distinct retry keys produce one default agent, primary DM and authored welcome without runs", async () => {
   f = await fixture();
   await compose();
   const receipts = await Promise.all(Array.from({ length: 32 }, async () => api("/v1/setup", {})));
@@ -303,7 +303,9 @@ for (const harness of ["codex", "muse"] as const) {
     expect((await f.store.get("run", active.id)).agent_snapshot?.revision).toBe(
       lane.agent.revision,
     );
-    expect((await f.lifecycle.executionAgent(lane.thread_id, lane.agent_id)).name).toBe("Tobi");
+    expect((await f.lifecycle.executionAgent(lane.thread_id, lane.agent_id)).name).toBe(
+      lane.agent.name,
+    );
     if (harness === "codex")
       await api(`/v1/runs/${active.id}/steer`, { text: "Finish active work" });
     else await api(`/v1/runs/${active.id}/cancel`, {});
@@ -443,7 +445,7 @@ test("concurrent configuration writes admit one expected revision and reject dup
     (
       await request("/v1/agents", {
         name: "Duplicate",
-        handle: "tobi",
+        handle: lane.agent.handle,
         harness: "codex",
         connection_id: lane.connection.id,
       })

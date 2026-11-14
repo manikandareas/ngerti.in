@@ -141,6 +141,7 @@ export class Lifecycle {
   }
 
   private async scope(threadId: string, agentId: string) {
+    await this.store.assertInvocation(agentId);
     const thread = await this.store.get("thread", threadId);
     const agent = await this.store.get("agent", agentId);
     if (!thread.member_agent_ids.includes(agent.id)) throw new DomainError("SCOPE_DENIED", 403);
@@ -164,7 +165,10 @@ export class Lifecycle {
           return await this.createAgent(input);
         case "thread": {
           const data = threadInput.parse(input);
-          for (const agentId of data.member_agent_ids) await this.store.get("agent", agentId);
+          for (const agentId of data.member_agent_ids) {
+            await this.store.assertInvocation(agentId);
+            await this.store.get("agent", agentId);
+          }
           if (data.type === "dm") {
             const existing = (await this.store.list("thread")).find(
               (item) => item.type === "dm" && item.member_agent_ids[0] === data.member_agent_ids[0],
@@ -287,6 +291,9 @@ export class Lifecycle {
       handle,
       avatar_config: data.avatar_config ?? defaultAgentAvatar(base.id),
       kind: "agent",
+      ...(this.store.dataContext
+        ? { ownership: this.store.publishing ? ("organization" as const) : ("personal" as const) }
+        : {}),
       grant_revision: 1,
       system_role: null,
       configuration_access: "self",
@@ -327,7 +334,27 @@ export class Lifecycle {
 
   /** Active work keeps its dispatch snapshot; configuration edits affect the next claim. */
   async executionAgent(threadId: string, agentId: string): Promise<Entity<"agent">> {
-    const current = await this.store.get("agent", agentId);
+    let current = await this.store.get("agent", agentId);
+    const knowledge = await this.store.list("published_knowledge", {
+      agent_id: agentId,
+      state: "active",
+    });
+    if (knowledge.length)
+      current = {
+        ...current,
+        instructions: [current.instructions, ...knowledge.map((item) => item.text)]
+          .filter(Boolean)
+          .join("\n\n"),
+      };
+    const preference = (await this.store.list("agent_preference", { agent_id: agentId }))[0];
+    if (preference)
+      current = {
+        ...current,
+        instructions: [current.instructions, preference.changes.instructions]
+          .filter(Boolean)
+          .join("\n\n"),
+        soul: preference.changes.soul || current.soul,
+      };
     const running = (await this.store.list("run", { thread_id: threadId, agent_id: agentId })).find(
       (item) =>
         item.thread_id === threadId &&
@@ -548,6 +575,8 @@ export class Lifecycle {
 
   /** Adapter seam only; no executor is registered by this foundation. */
   async claimNext(threadId: string, agentId: string): Promise<Entity<"run"> | null> {
+    // New tenants cannot execute against the historical shared machine/provider homes.
+    if (this.store.dataContext) throw new DomainError("SCOPE_DENIED", 403);
     return await this.store.transaction(async () => {
       const { agent, thread } = await this.scope(threadId, agentId);
       // Every current group adapter can mutate files. The durable run is the exclusive lease;
@@ -635,6 +664,7 @@ export class Lifecycle {
   }
 
   async authorizeDispatch(runId: string, token: string) {
+    if (this.store.dataContext) throw new DomainError("SCOPE_DENIED", 403);
     return await this.store.transaction(async () => {
       const run = await this.dispatch(runId, token);
       const { thread } = await this.scope(run.thread_id, run.agent_id);

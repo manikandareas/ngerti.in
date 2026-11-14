@@ -7,7 +7,9 @@ import { DomainError, id } from "../contracts";
 import { HarnessError } from "../harness/contracts";
 import type { ProductTools } from "../harness/tools";
 import type { Lifecycle } from "../lifecycle";
+import type { ScopedData } from "../organizations/data";
 import { isOrganizationPath } from "../organizations/paths";
+import { databaseDomainError } from "../persistence/errors";
 
 export function createCommand(lifecycle: Lifecycle, authentication?: Authentication) {
   return async function command<T>(request: Request, body: unknown, action: () => T): Promise<T> {
@@ -16,7 +18,12 @@ export function createCommand(lifecycle: Lifecycle, authentication?: Authenticat
       commandId,
       { method: request.method, path: new URL(request.url).pathname, body },
       action,
-      authentication ? () => authentication.assertOwner(request) : undefined,
+      authentication
+        ? () =>
+            lifecycle.store.dataContext
+              ? lifecycle.store.dataContext.validate()
+              : authentication.assertOwner(request)
+        : undefined,
     );
   };
 }
@@ -26,13 +33,15 @@ export function createHttp(
   tools: ProductTools,
   viewerAccess?: (request: Request) => unknown,
   authentication?: Authentication,
+  scoped?: ScopedData,
 ) {
   const api = new Elysia({
     name: "ngertiin-foundation",
     serve: { maxRequestBodySize: 24 * 1024 * 1024 },
   });
   api
-    .onError(({ error, code, set }) => {
+    .onError(({ error: source, code, set }) => {
+      const error = databaseDomainError(source) ?? source;
       if (error instanceof HarnessError) {
         set.status = 409;
         return { error: { code: error.code, message: error.message, outcome: error.outcome } };
@@ -94,7 +103,11 @@ export function createHttp(
       if (authentication) {
         if (isPublicAuthenticationRoute(request)) return;
         await authentication.authenticate(request);
-        if (!isAuthenticationRoute(request) && !isOrganizationPath(new URL(request.url).pathname))
+        if (
+          !isAuthenticationRoute(request) &&
+          !isOrganizationPath(new URL(request.url).pathname) &&
+          !scoped?.requests.has(request)
+        )
           await authentication.assertOwner(request);
         return;
       }

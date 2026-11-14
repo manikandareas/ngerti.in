@@ -7,6 +7,7 @@ export class LearningScope {
   constructor(readonly lifecycle: Lifecycle) {}
   async context(input: LearningContext) {
     const context = learningContext.parse(input);
+    await this.lifecycle.store.assertInvocation(context.agent_id);
     const agent = await this.lifecycle.store.get("agent", context.agent_id);
     const thread = await this.lifecycle.store.get("thread", context.thread_id);
     if (!thread.member_agent_ids.includes(agent.id)) throw new DomainError("SCOPE_DENIED", 403);

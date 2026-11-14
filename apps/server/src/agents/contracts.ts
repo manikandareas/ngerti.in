@@ -62,6 +62,7 @@ export const agentInput = z.strictObject({
 export const agent = agentInput.extend({
   ...base,
   kind: z.literal("agent"),
+  ownership: z.enum(["personal", "organization"]).optional(),
   grant_revision: z.int().positive(),
   system_role: z.literal("tobi").nullable().default(null),
   configuration_access: z.enum(["self", "owner"]).default("self"),

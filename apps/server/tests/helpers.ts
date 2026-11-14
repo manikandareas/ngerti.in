@@ -39,6 +39,19 @@ export async function fixture() {
     get lifecycle() {
       return lifecycle;
     },
+    /** Test-only fault injection uses the migration role, never the application pool. */
+    async administrativeQuery(sql: string, values: unknown[] = []) {
+      const client = new Client({
+        connectionString: options.connectionString,
+        options: `-c search_path=${options.schema},pg_catalog`,
+      });
+      await client.connect();
+      try {
+        return await client.query(sql, values);
+      } finally {
+        await client.end();
+      }
+    },
     async admit(text = "Please inspect this project.") {
       return await lifecycle.admit({ thread_id: thread.id, agent_id: agent.id, text });
     },

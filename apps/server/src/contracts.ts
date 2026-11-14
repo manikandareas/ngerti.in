@@ -42,6 +42,7 @@ import {
   machineTarget,
   machineWindow,
 } from "./machines/contracts";
+import { agentPreference, publishedKnowledge } from "./organizations/data-contracts";
 import {
   admissionInput,
   control,
@@ -107,6 +108,8 @@ export const CONTRACT_VERSION = "1.32.0";
 export const API_READINESS_GATE = "ready" as const;
 
 export const schemas = {
+  agent_preference: agentPreference,
+  published_knowledge: publishedKnowledge,
   attachment_upload: stagedUpload,
   attachment_document: attachmentDocument,
   app_connection: appConnection,

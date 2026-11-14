@@ -1,5 +1,5 @@
-import { adjectives, animals, uniqueNamesGenerator } from "unique-names-generator";
 import { z } from "zod";
+import { randomAgentName } from "../agents/names";
 import { DomainError, id } from "../contracts";
 import { Groups } from "../groups/service";
 import type { Lifecycle } from "../lifecycle";
@@ -38,12 +38,7 @@ export const groupConfiguration = z.strictObject({
 export class Creation {
   constructor(
     readonly lifecycle: Lifecycle,
-    readonly generateName = () =>
-      uniqueNamesGenerator({
-        dictionaries: [adjectives, animals],
-        separator: " ",
-        style: "capital",
-      }),
+    readonly generateName?: () => string,
   ) {}
 
   async agent(operationId: string, input: unknown) {
@@ -62,7 +57,7 @@ export class Creation {
         const names = new Set(
           (await store.list("agent")).map((a) => a.name.toLocaleLowerCase("en")),
         );
-        const base = this.generateName();
+        const base = this.generateName?.() ?? randomAgentName(names);
         let name = base;
         for (let suffix = 2; names.has(name.toLocaleLowerCase("en")); suffix++)
           name = `${base} ${suffix}`;

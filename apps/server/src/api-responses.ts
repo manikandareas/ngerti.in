@@ -521,6 +521,21 @@ routes(
 );
 
 /** Fail closed when an added route has no reviewed response contract. */
+routes(
+  "POST",
+  ["/v1/data/provision"],
+  z.strictObject({ agent_id: id, thread_id: id, welcome_message_id: id }),
+);
+routes("POST", ["/v1/data/team-agents", "/v1/data/team-agents/:id/configuration"], schemas.agent);
+routes("POST", ["/v1/data/agents/:id/preferences"], schemas.agent_preference);
+routes("POST", ["/v1/data/agents/:id/knowledge"], schemas.published_knowledge);
+routes(
+  "POST",
+  ["/v1/organizations/:organizationId/agent-access/:id"],
+  z.strictObject({ updated: z.boolean() }),
+);
+routes("POST", ["/v1/data/legacy-binding"], z.strictObject({ organization_id: id, user_id: id }));
+
 export function operationResponse(method: string, path: string) {
   if (method === "DELETE" && path === "/v1/organizations/:organizationId")
     return { status: 403, reference: "error", reason: "organization_deletion_disabled" };

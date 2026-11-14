@@ -6,7 +6,9 @@ import { Client, Pool, type PoolClient, type QueryResultRow } from "pg";
 import { DomainError, type DomainEvent, type Entity, type Kind, schemas } from "./contracts";
 import { ConversationJournal } from "./conversations/journal";
 import { type RoutingDecisionTrace, routingDecisionTrace } from "./groups/decision-trace";
+import type { DataContext } from "./persistence/access-context";
 import { schemaSql, schemaVersion } from "./persistence/schema";
+import { scopedSchemaSql, scopedSchemaVersion } from "./persistence/scoped-schema";
 
 export function canonical(value: unknown): string {
   if (Array.isArray(value)) return `[${value.map(canonical).join(",")}]`;
@@ -24,7 +26,12 @@ type Transaction = {
   tail: Promise<unknown>;
   root?: Transaction;
 };
-export type StoreOptions = { connectionString?: string; schema?: string; max?: number };
+export type StoreOptions = {
+  connectionString?: string;
+  runtimeConnectionString?: string;
+  schema?: string;
+  max?: number;
+};
 export type EntityQuery = {
   after?: number;
   limit?: number;
@@ -44,9 +51,13 @@ const pendingReceipt = { "@ngertiin/command": "pending" };
 /** Async SQL persistence; a dedicated session owns the sole application lifecycle authority. */
 export class Store {
   readonly #pool: Pool;
+  readonly #administration: Pool;
   readonly #authority: Client;
   readonly #transactions = new AsyncLocalStorage<Transaction>();
   readonly #authorization = new AsyncLocalStorage<() => unknown | Promise<unknown>>();
+  readonly #data = new AsyncLocalStorage<DataContext>();
+  readonly #publication = new AsyncLocalStorage<DataContext>();
+  scopeRunner?: (action: () => Promise<void>) => Promise<void>;
   readonly #listeners = new Set<() => unknown>();
   readonly #pendingCommands = new Map<
     string,
@@ -84,7 +95,19 @@ export class Store {
       connectionTimeoutMillis: 5000,
       application_name: "ngertiin",
     };
-    this.#pool = new Pool({ ...config, max: options.max ?? 8 });
+    this.#pool = new Pool({
+      ...config,
+      connectionString:
+        options.runtimeConnectionString ??
+        (process.env.NGERTIIN_APPLICATION_DATABASE_URL?.trim() || connectionString),
+      max: options.max ?? 8,
+    });
+    this.#administration = new Pool({
+      ...config,
+      max: 2,
+      application_name: "ngertiin-scope-administration",
+    });
+    this.#administration.on("error", () => {});
     this.#pool.on("error", () => {
       /* A failed idle query connection never acquires authority. */
     });
@@ -131,9 +154,15 @@ export class Store {
         )
       ).rows;
       const checksum = createHash("sha256").update(schemaSql).digest("hex");
+      const scopedSql = scopedSchemaSql(this.schema);
+      const scopedChecksum = createHash("sha256").update(scopedSql).digest("hex");
       if (
         migrations.some(
-          (migration) => migration.version !== schemaVersion || migration.sha256 !== checksum,
+          (migration) =>
+            !(
+              (migration.version === schemaVersion && migration.sha256 === checksum) ||
+              (migration.version === scopedSchemaVersion && migration.sha256 === scopedChecksum)
+            ),
         )
       )
         throw new Error("Unsupported or modified database migration.");
@@ -142,6 +171,13 @@ export class Store {
         await this.#authority.query("INSERT INTO schema_migrations(version,sha256) VALUES($1,$2)", [
           schemaVersion,
           checksum,
+        ]);
+      }
+      if (!migrations.some((migration) => migration.version === scopedSchemaVersion)) {
+        await this.#authority.query(scopedSql);
+        await this.#authority.query("INSERT INTO schema_migrations(version,sha256) VALUES($1,$2)", [
+          scopedSchemaVersion,
+          scopedChecksum,
         ]);
       }
       await this.#authority.query(
@@ -195,9 +231,196 @@ export class Store {
     }
   }
   async query<R extends QueryResultRow = QueryResultRow>(text: string, values: unknown[] = []) {
+    await this.dataContext?.validate();
     const context = this.#transactions.getStore();
     if (context && !context.active) throw new Error("Transaction context has expired.");
-    return (context?.client ?? this.#pool).query<R>(text, values);
+    if (context) return context.client.query<R>(text, values);
+    const release = await this.dataContext?.acquire?.();
+    let client: PoolClient;
+    try {
+      client = await this.#pool.connect();
+    } catch (error) {
+      await release?.();
+      throw error;
+    }
+    try {
+      await client.query("BEGIN");
+      await this.configureScope(client);
+      const result = await client.query<R>(text, values);
+      await this.dataContext?.validate();
+      await client.query("COMMIT");
+      return result;
+    } catch (error) {
+      await client.query("ROLLBACK");
+      throw error;
+    } finally {
+      client.release();
+      await release?.();
+    }
+  }
+  outsideDataContext<T>(action: () => T): T {
+    return this.#data.exit(action);
+  }
+  get publishing() {
+    return this.dataContext !== undefined && this.#publication.getStore() === this.dataContext;
+  }
+  get dataContext() {
+    return this.#data.getStore();
+  }
+  withDataContext<T>(context: DataContext, action: () => T): T {
+    if (this.#transactions.getStore())
+      throw new Error("Data scope must be selected before a transaction.");
+    return this.#data.run(context, action);
+  }
+  async publishShared<T>(action: () => Promise<T>): Promise<T> {
+    if (!this.dataContext?.canManage) throw new DomainError("SCOPE_DENIED", 403);
+    return this.#publication.run(this.dataContext, action);
+  }
+  async assertInvocation(agentId: string) {
+    const context = this.dataContext;
+    if (!context) return;
+    await context.validate(true);
+    const agent = await this.get("agent", agentId);
+    if (agent.ownership === "organization" && !context.invocableAgents.includes(agentId))
+      throw new DomainError("SCOPE_DENIED", 403);
+  }
+  /** Bounded service read used only after account membership has been authenticated. */
+  async teamGrants(organizationId: string): Promise<{ agent_id: string; audience_id: string }[]> {
+    return (
+      await this.#administration.query(
+        "SELECT agent_id,audience_id FROM team_agent_grants WHERE organization_id=$1",
+        [organizationId],
+      )
+    ).rows;
+  }
+  async legacyScopeMapped() {
+    return Boolean(
+      (await this.#administration.query("SELECT 1 FROM legacy_scope_binding WHERE id=1")).rowCount,
+    );
+  }
+  async legacyScopeReady() {
+    return !(
+      await this.#administration.query(
+        "SELECT 1 FROM entities WHERE organization_id IS NULL LIMIT 1",
+      )
+    ).rowCount;
+  }
+  /** Offline import only: sequence maintenance never broadens application-role privileges. */
+  async assertEmptyImportTarget() {
+    if (this.dataContext || !this.#transactions.getStore())
+      throw new DomainError("SCOPE_DENIED", 403);
+    const result = await this.#administration.query(
+      "SELECT (SELECT count(*) FROM entities)+(SELECT count(*) FROM events)+(SELECT count(*) FROM commands)+(SELECT count(*) FROM legacy_scope_binding) AS count",
+    );
+    if (Number(result.rows[0].count) !== 0)
+      throw new Error("Import requires an empty PostgreSQL target.");
+  }
+  async restoreLegacySequences() {
+    if (this.dataContext || !this.#transactions.getStore())
+      throw new DomainError("SCOPE_DENIED", 403);
+    for (const [table, column] of [
+      ["entities", "seq"],
+      ["routing_traces", "seq"],
+      ["conversation_parts", "sequence"],
+    ] as const) {
+      const maximum = (
+        await this.query(`SELECT COALESCE(MAX(${column}),0)::text AS maximum FROM ${table}`)
+      ).rows[0].maximum;
+      await this.#administration.query(
+        "SELECT setval(pg_get_serial_sequence($1,$2),GREATEST($3::bigint,1),$3::bigint>0)",
+        [`${this.schema}.${table}`, column, maximum],
+      );
+    }
+  }
+  /** Caller must prove the guarded owner binding and current organization Owner role. */
+  async bindLegacyScope(organizationId: string, userId: string, membershipGeneration: number) {
+    if (this.dataContext || this.#transactions.getStore())
+      throw new Error("Legacy binding requires the administrative boundary.");
+    const client = await this.#administration.connect();
+    try {
+      await client.query("BEGIN");
+      await client.query("SELECT event_clock FROM installation WHERE id=1 FOR UPDATE");
+      await this.assertAuthority();
+      const previous = (
+        await client.query("SELECT organization_id,user_id FROM legacy_scope_binding WHERE id=1")
+      ).rows[0];
+      if (previous) {
+        if (previous.organization_id !== organizationId || previous.user_id !== userId)
+          throw new DomainError("SCOPE_DENIED", 403);
+      } else {
+        if (
+          (
+            await client.query(
+              "SELECT 1 FROM entities WHERE organization_id IS NULL AND kind='run' AND body->>'status' IN ('dispatching','running','cancel_requested','unknown') LIMIT 1",
+            )
+          ).rowCount
+        )
+          throw new DomainError("RECONCILIATION_REQUIRED");
+        await client.query("ALTER TABLE entities DISABLE TRIGGER entity_scope_guard");
+        await client.query(
+          "UPDATE entities SET organization_id=$1::uuid,actor_id=$2::uuid,body=body || jsonb_build_object('organization_id',$1::text,'actor_id',$2::text) WHERE organization_id IS NULL",
+          [organizationId, userId],
+        );
+        await client.query("ALTER TABLE entities ENABLE TRIGGER entity_scope_guard");
+        await client.query(
+          "UPDATE events SET organization_id=$1::uuid,actor_id=$2::uuid,body=jsonb_set(body,'{data}',(body->'data') || jsonb_build_object('organization_id',$1::text,'actor_id',$2::text)) WHERE organization_id IS NULL",
+          [organizationId, userId],
+        );
+        for (const table of ["conversation_parts", "routing_traces"])
+          await client.query(
+            `UPDATE ${table} SET organization_id=$1,actor_id=$2 WHERE organization_id IS NULL`,
+            [organizationId, userId],
+          );
+        for (const row of (
+          await client.query(
+            "SELECT scope,id,fingerprint,receipt FROM commands WHERE scope::jsonb->>1 IS NULL",
+          )
+        ).rows) {
+          const previous = JSON.parse(row.scope);
+          const mapped = canonical([
+            this.ownerId,
+            organizationId,
+            userId,
+            previous[3],
+            previous[4],
+          ]);
+          const inserted = await client.query(
+            "INSERT INTO commands(scope,id,fingerprint,receipt,membership_generation) VALUES($1,$2,$3,$4,$5) ON CONFLICT(scope,id) DO UPDATE SET scope=excluded.scope WHERE commands.fingerprint=excluded.fingerprint AND commands.receipt=excluded.receipt RETURNING scope",
+            [mapped, row.id, row.fingerprint, JSON.stringify(row.receipt), membershipGeneration],
+          );
+          if (!inserted.rowCount) throw new DomainError("IDEMPOTENCY_CONFLICT");
+        }
+        await client.query("INSERT INTO legacy_scope_binding VALUES(1,$1,$2,now())", [
+          organizationId,
+          userId,
+        ]);
+      }
+      await client.query("COMMIT");
+      return { organization_id: organizationId, user_id: userId };
+    } catch (error) {
+      await client.query("ROLLBACK");
+      throw error;
+    } finally {
+      client.release();
+    }
+  }
+  private async configureScope(client: PoolClient) {
+    const context = this.dataContext;
+    await context?.validate();
+    await client.query("SET LOCAL ROLE ngertiin_runtime");
+    await client.query(
+      "SELECT set_config('ngertiin.mode',$1,true),set_config('ngertiin.organization_id',$2,true),set_config('ngertiin.actor_id',$3,true),set_config('ngertiin.agents',$4,true),set_config('ngertiin.managed',$5,true),set_config('ngertiin.publish',$6,true),set_config('ngertiin.manage',$7,true),set_config('ngertiin.membership_generation',$8,true)",
+      [
+        context ? "scoped" : "legacy",
+        context?.organizationId ?? "",
+        context?.userId ?? "",
+        context?.readableAgents.join(",") ?? "",
+        context?.managedAgents.join(",") ?? "",
+        this.publishing ? "yes" : "no",
+        context?.canManage ? "yes" : "no",
+        String(context?.membershipGeneration ?? ""),
+      ],
+    );
   }
   async transaction<T>(fn: () => T | Promise<T>): Promise<T> {
     if (this.closed) throw new DomainError("STALE_DISPATCH");
@@ -236,10 +459,18 @@ export class Store {
       );
       return result;
     }
-    const client = await this.#pool.connect();
+    const release = await this.dataContext?.acquire?.();
+    let client: PoolClient;
+    try {
+      client = await this.#pool.connect();
+    } catch (error) {
+      await release?.();
+      throw error;
+    }
     const context: Transaction = { client, active: true, changed: false, tail: Promise.resolve() };
     try {
       await client.query("BEGIN");
+      await this.configureScope(client);
       const result = await this.#transactions.run(context, async () => {
         // The clock row serializes writers through commit, including receipts and projections.
         await client.query("SELECT event_clock FROM installation WHERE id=1 FOR UPDATE");
@@ -259,6 +490,7 @@ export class Store {
     } finally {
       context.active = false;
       client.release();
+      await release?.();
     }
   }
   subscribe(listener: () => unknown) {
@@ -312,8 +544,8 @@ export class Store {
     } | null;
     return canonical([
       this.ownerId,
-      value?.organization_id ?? null,
-      value?.actor_id ?? this.ownerId,
+      this.dataContext?.organizationId ?? value?.organization_id ?? null,
+      this.dataContext?.userId ?? value?.actor_id ?? this.ownerId,
       value?.method ?? value?.operation ?? null,
       value?.path ?? null,
     ]);
@@ -325,10 +557,38 @@ export class Store {
     return this.#authorization.run(authorize, action);
   }
   private legacyCommandScope(input: unknown) {
+    if (this.dataContext) return this.commandScope(input);
     const scope = input as { organization_id?: string; actor_id?: string } | null;
     return scope?.organization_id || (scope?.actor_id && scope.actor_id !== this.ownerId)
       ? this.commandScope(input)
       : canonical([this.ownerId, null, this.ownerId, null, null]);
+  }
+  /** Immutable receipts never restore access to an agent whose audience was revoked. */
+  private async authorizeReceipt(receipt: unknown) {
+    if (!this.dataContext) return;
+    const pending: unknown[] = [receipt];
+    while (pending.length) {
+      const value = pending.pop();
+      if (!value || typeof value !== "object") continue;
+      if (Array.isArray(value)) {
+        pending.push(...value);
+        continue;
+      }
+      const item = value as Record<string, unknown>;
+      if (
+        typeof item.kind === "string" &&
+        typeof item.id === "string" &&
+        Object.hasOwn(schemas, item.kind)
+      ) {
+        const current = await this.get(item.kind as Kind, item.id);
+        if (current.actor_id === null && this.publishing) continue;
+        if (current.kind === "thread")
+          for (const agentId of current.member_agent_ids) await this.assertInvocation(agentId);
+        else if ("agent_id" in current && typeof current.agent_id === "string")
+          await this.assertInvocation(current.agent_id);
+      }
+      pending.push(...Object.values(item));
+    }
   }
   async command<T>(
     commandId: string,
@@ -350,15 +610,20 @@ export class Store {
         if (old.fingerprint !== fingerprint) throw new DomainError("IDEMPOTENCY_CONFLICT");
         if (old.receipt?.["@ngertiin/command"] === "pending")
           throw new DomainError("RECONCILIATION_REQUIRED");
+        await this.authorizeReceipt(old.receipt);
         return JSON.parse(canonical(old.receipt)) as T;
       }
       const result = await fn();
-      await this.query("INSERT INTO commands VALUES($1,$2,$3,$4)", [
-        scope,
-        commandId,
-        fingerprint,
-        JSON.stringify(result),
-      ]);
+      await this.query(
+        "INSERT INTO commands(scope,id,fingerprint,receipt,membership_generation) VALUES($1,$2,$3,$4,$5)",
+        [
+          scope,
+          commandId,
+          fingerprint,
+          JSON.stringify(result),
+          this.dataContext?.membershipGeneration ?? null,
+        ],
+      );
       return JSON.parse(canonical(result)) as T;
     });
   }
@@ -400,6 +665,7 @@ export class Store {
         throw new DomainError("IDEMPOTENCY_CONFLICT");
       const result = (await active.promise) as T;
       await authorize();
+      await this.authorizeReceipt(result);
       return result;
     }
     const pending = (async () => {
@@ -420,18 +686,25 @@ export class Store {
           }
           return { receipt: JSON.parse(canonical(old.receipt)) as T };
         }
-        await this.query("INSERT INTO commands VALUES($1,$2,$3,$4)", [
-          scope,
-          commandId,
-          fingerprint,
-          JSON.stringify({
-            ...pendingReceipt,
-            effect_class: verifiedFile ? "verified_file" : "external",
-          }),
-        ]);
+        await this.query(
+          "INSERT INTO commands(scope,id,fingerprint,receipt,membership_generation) VALUES($1,$2,$3,$4,$5)",
+          [
+            scope,
+            commandId,
+            fingerprint,
+            JSON.stringify({
+              ...pendingReceipt,
+              effect_class: verifiedFile ? "verified_file" : "external",
+            }),
+            this.dataContext?.membershipGeneration ?? null,
+          ],
+        );
         return null;
       });
-      if (previous) return previous.receipt;
+      if (previous) {
+        await this.authorizeReceipt(previous.receipt);
+        return previous.receipt;
+      }
       const prepared = await prepare();
       return this.transaction(async () => {
         await authorize();
@@ -458,15 +731,17 @@ export class Store {
         "SELECT receipt FROM commands WHERE scope::jsonb->>0=$1 AND (scope::jsonb->>1) IS NOT DISTINCT FROM $2::text AND scope::jsonb->>2=$3 AND id=$4 LIMIT 2",
         [
           this.ownerId,
-          context?.organization_id ?? null,
-          context?.actor_id ?? this.ownerId,
+          this.dataContext?.organizationId ?? context?.organization_id ?? null,
+          this.dataContext?.userId ?? context?.actor_id ?? this.ownerId,
           commandId,
         ],
       )
     ).rows;
     if (rows.length > 1) throw new DomainError("IDEMPOTENCY_CONFLICT");
     const row = rows[0];
-    return !row || row.receipt?.["@ngertiin/command"] === "pending" ? null : row.receipt;
+    if (!row || row.receipt?.["@ngertiin/command"] === "pending") return null;
+    await this.authorizeReceipt(row.receipt);
+    return row.receipt;
   }
   async recordRoutingTrace(input: RoutingDecisionTrace) {
     const trace = routingDecisionTrace.parse(input);
@@ -582,17 +857,34 @@ export class Store {
   async put<T extends Entity>(entity: T, expectedRevision: number | null = null): Promise<T> {
     if (entity.kind === "skill_revision" && expectedRevision !== null)
       throw new DomainError("CONFLICT");
-    const validated = schemas[entity.kind].parse(entity);
+    const scope = this.dataContext;
+    if (scope && "agent_id" in entity && typeof entity.agent_id === "string" && !this.publishing)
+      await this.assertInvocation(entity.agent_id);
+    if (scope && entity.kind === "agent" && entity.ownership === "organization" && !this.publishing)
+      throw new DomainError("SCOPE_DENIED", 403);
+    const shared =
+      scope &&
+      this.publishing &&
+      (entity.kind === "agent" || entity.kind === "published_knowledge");
+    const actor = shared ? null : (scope?.userId ?? null);
+    const validated = schemas[entity.kind].parse(
+      scope ? { ...entity, organization_id: scope.organizationId, actor_id: actor } : entity,
+    );
     if (validated.owner_id !== this.ownerId) throw new DomainError("SCOPE_DENIED", 403);
     return this.transaction(async () => {
       const previous = expectedRevision === null ? null : await this.get(entity.kind, entity.id);
       if (expectedRevision === null)
-        await this.query("INSERT INTO entities(kind,id,owner_id,body) VALUES($1,$2,$3,$4)", [
-          entity.kind,
-          entity.id,
-          this.ownerId,
-          JSON.stringify(validated),
-        ]);
+        await this.query(
+          "INSERT INTO entities(kind,id,owner_id,body,organization_id,actor_id) VALUES($1,$2,$3,$4,$5,$6)",
+          [
+            entity.kind,
+            entity.id,
+            this.ownerId,
+            JSON.stringify(validated),
+            scope?.organizationId ?? null,
+            actor,
+          ],
+        );
       else {
         if (entity.revision !== expectedRevision + 1) throw new DomainError("CONFLICT");
         const result = await this.query(
@@ -618,11 +910,10 @@ export class Store {
         created_at: entity.updated_at,
         data: validated,
       };
-      await this.query("INSERT INTO events(cursor,owner_id,body) VALUES($1,$2,$3)", [
-        cursor,
-        this.ownerId,
-        JSON.stringify(event),
-      ]);
+      await this.query(
+        "INSERT INTO events(cursor,owner_id,body,organization_id,actor_id) VALUES($1,$2,$3,$4,$5)",
+        [cursor, this.ownerId, JSON.stringify(event), scope?.organizationId ?? null, actor],
+      );
       await this.journal.record(validated as Entity, previous, cursor);
       const context = this.#transactions.getStore();
       if (context) context.changed = true;
@@ -670,6 +961,7 @@ export class Store {
       this.loseAuthority();
       this.#listeners.clear();
       await this.#pool.end();
+      await this.#administration.end();
       await this.#authority.end();
     })();
     return this.#closing;

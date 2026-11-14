@@ -41,11 +41,12 @@ export function registerEventRoutes(
     .get(
       "/v1/events",
       async ({ query }) => {
+        const page = await lifecycle.store.replay(query.after, { limit: query.limit });
         const events = await asyncMap(
-          await lifecycle.store.events(query.after, query.limit),
+          page.events,
           async (event) => await conversationEvent(lifecycle.store, event),
         );
-        return { events, next_cursor: events.at(-1)?.cursor ?? query.after };
+        return { events, next_cursor: page.next_cursor };
       },
       {
         query: z.object({

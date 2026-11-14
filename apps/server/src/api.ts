@@ -25,6 +25,8 @@ import { ProductTools } from "./harness/tools";
 import type { Lifecycle } from "./lifecycle";
 import { MachineViews } from "./machines/view";
 import { organizationsContract } from "./organizations/contracts";
+import { ScopedData } from "./organizations/data";
+import { scopedDataContract } from "./organizations/data-contracts";
 import { registerOrganizationRoutes } from "./organizations/http";
 import { Organizations } from "./organizations/service";
 
@@ -40,6 +42,9 @@ export async function createApi(
     credentialStorage: new CredentialStorage(dirname(lifecycle.store.path)),
   };
   if (token.length < 32) throw new Error("A private development token is required.");
+  const scoped = services.authentication
+    ? new ScopedData(lifecycle, services.authentication)
+    : undefined;
   const command = createCommand(lifecycle, services.authentication);
   const views = services.tools.machines ? new MachineViews(services.tools.machines) : undefined;
   const api = await createHttp(
@@ -47,10 +52,12 @@ export async function createApi(
     services.tools,
     views ? async (request) => await views.authorize(request) : undefined,
     services.authentication,
+    scoped,
   );
   if (services.authentication) {
     registerAuthenticationRoutes(api, services.authentication);
     registerOrganizationRoutes(api, new Organizations(services.authentication));
+    scoped?.register(api);
   }
   api
     .get("/health/ready", async () => {
@@ -90,6 +97,7 @@ export async function createApi(
         ? {
             authentication: authenticationContract(services.authentication.config.origin),
             organizations: organizationsContract(),
+            scoped_data: scopedDataContract(),
           }
         : {}),
     }));
@@ -110,7 +118,7 @@ export async function createApi(
   const stop = api.stop.bind(api);
   api.stop = async (closeActiveConnections) => {
     await views?.close();
-    return stop(closeActiveConnections);
+    return api.server ? stop(closeActiveConnections) : api;
   };
-  return api;
+  return scoped ? scoped.wrap(api) : api;
 }

@@ -1,0 +1,22 @@
+bun test v1.3.10 (30e609e0)
+
+../../scripts/verification/nma079/native.test.ts:
+107 |         const current = await f.success(request(cookie, `/v1/entities/run/${admission.run.id}`));
+108 |         expect(current.status, JSON.stringify(current.diagnostic)).toBe("succeeded");
+109 |         expect(current.product_tools).toContain("ngertiin.read_run_context");
+110 |         const snapshot = await f.success(request(cookie, `/v1/threads/${thread.id}/snapshot`));
+111 |         const answer = snapshot.messages.filter((message: { author: string }) => message.author === "agent").map((message: { text: string }) => message.text).join("\n");
+112 |         expect(answer).toContain(marker); expect(answer).toContain(thread.id);
+                             ^
+error: expect(received).toContain(expected)
+
+Expected to contain: "8e6d592b-7083-4e6e-ba05-43558a734d8d"
+Received: ""
+
+      at <anonymous> (/Users/vitoandareasmanik/Development/project/ngertiin/scripts/verification/nma079/native.test.ts:112:24)
+(fail) real account-mode admission executes both native harnesses through private Cua domains [24154.21ms]
+
+ 0 pass
+ 1 fail
+ 4 expect() calls
+Ran 1 test across 1 file. [24.88s]

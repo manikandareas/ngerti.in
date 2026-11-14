@@ -1,0 +1,20 @@
+{
+  "excluded_unchanged_files": [
+    {
+      "path": ".agents/skills/gpui-kit-design-guides/references/design-guides.md",
+      "unchanged_from_head": true,
+      "sha256": "44fbafdacc89bd5c250db23afd18f1b427b5a1babd3454122b5600e6fd146635"
+    },
+    {
+      "path": ".agents/skills/gpui-kit/references/coding-guides.md",
+      "unchanged_from_head": true,
+      "sha256": "3bc34cc84dd9e1f98586968656a805bc018a30213fb012a913566bbce5e3d5df"
+    },
+    {
+      "path": ".agents/skills/gpui-kit/references/usage.md",
+      "unchanged_from_head": true,
+      "sha256": "9b9b9f77d1774cbc766e52fa00ccda00828552f008e0352740bca50e03a0b303"
+    }
+  ],
+  "full_check_known_broken_links": 8
+}

@@ -1,5 +1,7 @@
 # Organizations, roles and Workgroups
 
+NMA-079 amendment: the [2.0.0 server-organizations consumer contract](server-organizations-api.md) and [verification report](../verification/nma-079/README.md) own current account-mode authentication, scope, normal native dispatch and readiness. Earlier versioned examples and pending-gate statements below retain their captured scope. Web/Tauri UI and deployment remain later milestones.
+
 [NMA-074](../backlog/NMA-074.md) adds organization administration on the account authentication boundary from [NMA-073](user-authentication.md). The [main plan](server-organizations-plan-2026-11-12.md) owns the product model. This guide describes contract `nma-074.1`; [verification](../verification/nma-074/README.md) records its actual evidence.
 
 ## Scope and authority

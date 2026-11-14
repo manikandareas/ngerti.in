@@ -1,0 +1,30 @@
+bun test v1.3.10 (30e609e0)
+
+tests/organizations/readiness.test.ts:
+(pass) every installed account surface declares authentication/scope and rejects missing credentials before input validation [1442.84ms]
+90 |     await fixture.background.idle();
+91 |     for (const { lane, run } of admitted) {
+92 |       const current = await fixture.success(
+93 |         fixture.request(lane.cookie, `/v1/entities/run/${run.id}`),
+94 |       );
+95 |       expect(current.status, JSON.stringify(current.diagnostic)).toBe("succeeded");
+                                                                      ^
+error: {"code":"NATIVE_UNKNOWN","category":"unknown","outcome":"unknown"}
+
+Expected: "succeeded"
+Received: "unknown"
+
+      at <anonymous> (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/tests/organizations/readiness.test.ts:95:66)
+(fail) normal HTTP admission and both broker executors keep two users of one Team agent private [7170.08ms]
+{"event":"persistence.subscription_failed"}
+(pass) revoking membership during native work retains the matching cancelled outcome without late publication [5217.49ms]
+{"event":"persistence.subscription_failed"}
+(pass) revoking membership during native work retains the matching unknown outcome without late publication [5284.25ms]
+(pass) authority replacement fences accepted scoped work and preserves the queued lane without resubmitting [3810.90ms]
+(pass) generic entity inventory and organization switches never grant another actor's private data [4374.74ms]
+(pass) concurrent scoped queries reuse their authorization fence without exhausting the auth pool [1496.21ms]
+
+ 6 pass
+ 1 fail
+ 605 expect() calls
+Ran 7 tests across 1 file. [29.99s]

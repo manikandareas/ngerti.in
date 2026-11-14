@@ -1,5 +1,7 @@
 # User authentication and device sessions
 
+NMA-079 amendment: the [2.0.0 server-organizations consumer contract](server-organizations-api.md) and [verification report](../verification/nma-079/README.md) own current account-mode authentication, scope, normal native dispatch and readiness. Earlier versioned examples and pending-gate statements below retain their captured scope. Web/Tauri UI and deployment remain later milestones.
+
 [NMA-073](../backlog/NMA-073.md) implements account authentication in the server on Bun 1.3.10, Better Auth 1.7.23, `@better-auth/oauth-provider` 1.7.23, Elysia 1.4.30 and `pg` 8.23.1. [Evidence](../verification/nma-073/README.md) distinguishes HTTP/PostgreSQL and headless native-client proof from product UI, real email-provider delivery and deployment.
 
 ## Modes and installation boundary

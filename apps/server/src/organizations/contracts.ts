@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { SCOPED_API_READINESS_GATE } from "../contracts";
 
 export const role = z.enum(["owner", "admin", "member"]);
 export type Role = z.infer<typeof role>;
@@ -97,7 +98,7 @@ export const auditView = z.strictObject({
 export function organizationsContract() {
   return {
     version: "nma-074.1",
-    readiness_gate: "pending_nma_079",
+    readiness_gate: SCOPED_API_READINESS_GATE,
     base_path: "/v1/organizations",
     organization_context: "explicit_path_and_current_membership_never_session_active_organization",
     creation_policy: "operator_entitlement_default_bootstrap_one_other_accounts_zero",

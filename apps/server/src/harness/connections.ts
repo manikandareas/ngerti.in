@@ -105,7 +105,7 @@ export class Connections {
   }
   async authorize(connection: Entity<"connection">) {
     const scope = this.lifecycle.store.dataContext;
-    await scope?.validate(true);
+    await this.lifecycle.store.validateDataContext(true);
     if (scope && connection.actor_id === null && !scope.allowedConnections?.includes(connection.id))
       throw new DomainError("SCOPE_DENIED", 403);
     if (connection.state !== "active") throw new DomainError("SCOPE_DENIED", 403);

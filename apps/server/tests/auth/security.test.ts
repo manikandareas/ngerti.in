@@ -289,13 +289,13 @@ test("password recovery revokes native offline credentials and leaves no auth se
     expect(records.includes(secret)).toBe(false);
 });
 
-test("account-mode export identifies auth classes and keeps the multi-user API gate pending", async () => {
+test("account-mode export identifies auth classes and the verified multi-user API gate", async () => {
   f = await authFixture();
   const owner = await f.owner();
   const response = await f.http("/v1/contracts", undefined, owner.cookie);
   expect(response.status).toBe(200);
   const contract = await response.json();
-  expect(contract.authentication.readiness_gate).toBe("pending_nma_079");
+  expect(contract.authentication.readiness_gate).toBe("ready");
   expect(
     contract.http.find((route: { path: string }) => route.path === "/v1/events").authentication,
   ).toBe("user_session_or_oauth_access_token");

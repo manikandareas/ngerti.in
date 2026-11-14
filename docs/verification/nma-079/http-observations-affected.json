@@ -1,0 +1,5441 @@
+{
+  "observer": "verification_only_handle_wrapper",
+  "observations": [
+    {
+      "method": "POST",
+      "path": "/v1/connections",
+      "mode": "legacy",
+      "status": 200,
+      "actor": "ef97eeef1ca1",
+      "organization": null,
+      "count": 2
+    },
+    {
+      "method": "POST",
+      "path": "/v1/connections",
+      "mode": "legacy",
+      "status": 422,
+      "actor": "ef97eeef1ca1",
+      "organization": null,
+      "count": 3
+    },
+    {
+      "method": "POST",
+      "path": "/v1/connections/:id/revoke",
+      "mode": "legacy",
+      "status": 200,
+      "actor": "fed3803c0db6",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/harness/tools",
+      "mode": "legacy",
+      "status": 401,
+      "actor": "ef97eeef1ca1",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/harness/tools",
+      "mode": "legacy",
+      "status": 200,
+      "actor": "9d0a0fbce5ad",
+      "organization": null,
+      "count": 3
+    },
+    {
+      "method": "POST",
+      "path": "/v1/harness/tools",
+      "mode": "legacy",
+      "status": 401,
+      "actor": "9d0a0fbce5ad",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/harnesses",
+      "mode": "legacy",
+      "status": 200,
+      "actor": "ef97eeef1ca1",
+      "organization": null,
+      "count": 5
+    },
+    {
+      "method": "POST",
+      "path": "/v1/harness/tools",
+      "mode": "legacy",
+      "status": 409,
+      "actor": "15b77933b8fd",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/harness/tools",
+      "mode": "legacy",
+      "status": 403,
+      "actor": "15b77933b8fd",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/harness/tools",
+      "mode": "legacy",
+      "status": 400,
+      "actor": "15b77933b8fd",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/harness/tools",
+      "mode": "legacy",
+      "status": 405,
+      "actor": "15b77933b8fd",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/harness/tools",
+      "mode": "legacy",
+      "status": 200,
+      "actor": "15b77933b8fd",
+      "organization": null,
+      "count": 2
+    },
+    {
+      "method": "POST",
+      "path": "/v1/harness/tools",
+      "mode": "legacy",
+      "status": 202,
+      "actor": "15b77933b8fd",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "ALL",
+      "path": "/api/auth/*",
+      "mode": "accounts",
+      "status": 200,
+      "actor": null,
+      "organization": null,
+      "count": 107
+    },
+    {
+      "method": "ALL",
+      "path": "/api/auth/*",
+      "mode": "accounts",
+      "status": 302,
+      "actor": null,
+      "organization": null,
+      "count": 46
+    },
+    {
+      "method": "POST",
+      "path": "/v1/auth/bootstrap",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "1a37a0ef961f",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "1a37a0ef961f",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/data/legacy-binding",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "1a37a0ef961f",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/auth/session",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "9c368c77efc6",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId/invitations",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "1a37a0ef961f",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/invitations/:invitationId/accept",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "9c368c77efc6",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId/audiences",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "1a37a0ef961f",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/contracts",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "9c368c77efc6",
+      "organization": "0c1ed8f4a545",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/auth/session",
+      "mode": "accounts",
+      "status": 401,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/auth/sessions",
+      "mode": "accounts",
+      "status": 401,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/auth/sessions/:sessionId/revoke",
+      "mode": "accounts",
+      "status": 401,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/auth/logout",
+      "mode": "accounts",
+      "status": 401,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/auth/renew",
+      "mode": "accounts",
+      "status": 401,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/auth/bootstrap",
+      "mode": "accounts",
+      "status": 401,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/organizations",
+      "mode": "accounts",
+      "status": 401,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations",
+      "mode": "accounts",
+      "status": 401,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/organizations/:organizationId",
+      "mode": "accounts",
+      "status": 401,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId",
+      "mode": "accounts",
+      "status": 401,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/organizations/:organizationId",
+      "mode": "accounts",
+      "status": 401,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/organizations/:organizationId/members",
+      "mode": "accounts",
+      "status": 401,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId/members/:membershipId/role",
+      "mode": "accounts",
+      "status": 401,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId/members/:membershipId/remove",
+      "mode": "accounts",
+      "status": 401,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/organizations/:organizationId/provisioning",
+      "mode": "accounts",
+      "status": 401,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId/private-work/resume",
+      "mode": "accounts",
+      "status": 401,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/organizations/:organizationId/workgroups",
+      "mode": "accounts",
+      "status": 401,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId/workgroups",
+      "mode": "accounts",
+      "status": 401,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId/workgroups/:workgroupId",
+      "mode": "accounts",
+      "status": 401,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId/workgroups/:workgroupId/delete",
+      "mode": "accounts",
+      "status": 401,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId/workgroups/:workgroupId/members",
+      "mode": "accounts",
+      "status": 401,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/organizations/:organizationId/audiences",
+      "mode": "accounts",
+      "status": 401,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId/audiences",
+      "mode": "accounts",
+      "status": 401,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId/audiences/:audienceId",
+      "mode": "accounts",
+      "status": 401,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/organizations/:organizationId/audiences/:audienceId/access",
+      "mode": "accounts",
+      "status": 401,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/organizations/:organizationId/invitations",
+      "mode": "accounts",
+      "status": 401,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId/invitations",
+      "mode": "accounts",
+      "status": 401,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId/invitations/:invitationId/cancel",
+      "mode": "accounts",
+      "status": 401,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId/invitations/:invitationId/send",
+      "mode": "accounts",
+      "status": 401,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/invitations/:invitationId",
+      "mode": "accounts",
+      "status": 401,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/invitations/:invitationId/accept",
+      "mode": "accounts",
+      "status": 401,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/organizations/:organizationId/audit",
+      "mode": "accounts",
+      "status": 401,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/organizations/:organizationId/export",
+      "mode": "accounts",
+      "status": 401,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/data/provision",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/data/team-agents",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId/agent-access/:id",
+      "mode": "accounts",
+      "status": 401,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/data/team-agents/:id/configuration",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/data/agents/:id/preferences",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/data/agents/:id/knowledge",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/data/legacy-binding",
+      "mode": "accounts",
+      "status": 401,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/health/ready",
+      "mode": "accounts",
+      "status": 401,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/contracts",
+      "mode": "accounts",
+      "status": 401,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/agents/activity",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/conversations/previews",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/threads/:id/opening",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/threads/:id/opening/retry",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/creation/agents",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/creation/groups",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/setup",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/threads/:id/snapshot",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/threads/:id/history",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/threads/:id/timeline",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/agents",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/agents/:id/configuration",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/agents/:id/dm",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/threads",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/apps/catalog",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/apps/connections",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/apps/connect",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/apps/connections/:id/reconnect",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/apps/connections/:id/refresh",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/apps/connections/:id/revoke",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/apps/connections/:id/assign",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/apps/search",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/harness/contracts",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/harnesses",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/connections",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/ai/selections",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/connections/api-key",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/connections/:id/rotate-key",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/connections/:id/revoke",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/connections/:id/inspect",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/connections/:id/login",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/connections/:id/login/cancel",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/threads/:id/prepare",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/threads/:id/sessions",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/harness/tools",
+      "mode": "accounts",
+      "status": 401,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/harness/tools",
+      "mode": "accounts",
+      "status": 401,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/entities/:kind",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/entities/:kind/:id",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/events/stream",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/events",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/data/team-agents/:id/skills/publish",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/data/team-agents/:id/skills/assign",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/learning/memories",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/learning/memories/write",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/learning/memories/delete",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/learning/skills",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/learning/skills/read",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/learning/skills/create",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/learning/skills/revise",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/learning/skills/assign",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/groups/:id/routes/:routeId/decision",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/groups/:id/configuration",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/groups/:id/membership",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/groups/:id/messages",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/groups/:id/routes/:routeId/retry",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/human-requests/:id/reply",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/threads/:id/goals",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/goals/:id/assignment",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/goals/:id/recover-completion",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/goals/capture",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/goals/:id/progress",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/routines/write",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/routines/:id/control",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/goals",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/routines",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/goals/:id/control",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/workspaces",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/threads/:id/workspace",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/workspaces/:id/revoke",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/workspaces/:id/files",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/workspaces/:id/file",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/workspaces/:id/uploads",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/artifacts/:id/content",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/artifacts/:id/share",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/artifacts",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/message-uploads",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/message-submissions/:id",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/machine",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/machine/operations",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/machine/processes",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/machine/windows",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/machine/processes/control",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/machine/control",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/machine/view",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/machine/views/:viewerId/renew",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/machine/views/:viewerId",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/machine/files",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/machine/file",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "ALL",
+      "path": "/v1/machine/viewer/:viewerId/*",
+      "mode": "accounts",
+      "status": 401,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/runs/:id/steer",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/runs/:id/reconcile",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/messages/:id/edit",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/messages/:id/delete",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/runs/:id/interactions/history",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/runs/:id/interactions",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/runs/:id/interactions",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/runs",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/runs/:id/retry",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/runs/:id/retry-preparation",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/runs/:id/cancel",
+      "mode": "accounts",
+      "status": 403,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/health/ready",
+      "mode": "accounts",
+      "status": 403,
+      "actor": "9c368c77efc6",
+      "organization": "0c1ed8f4a545",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/health/live",
+      "mode": "accounts",
+      "status": 200,
+      "actor": null,
+      "organization": "60ec9bb7299d",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/auth/bootstrap",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "fba34b2e51ba",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "fba34b2e51ba",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/data/legacy-binding",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "fba34b2e51ba",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/auth/session",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "bc33ba3971c5",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId/invitations",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "fba34b2e51ba",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/invitations/:invitationId/accept",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "bc33ba3971c5",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId/audiences",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "fba34b2e51ba",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/data/team-agents",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "fba34b2e51ba",
+      "organization": "2abbe9d8b38a",
+      "count": 2
+    },
+    {
+      "method": "POST",
+      "path": "/v1/ai/selections",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "bc33ba3971c5",
+      "organization": "2abbe9d8b38a",
+      "count": 2
+    },
+    {
+      "method": "POST",
+      "path": "/v1/agents/:id/dm",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "bc33ba3971c5",
+      "organization": "2abbe9d8b38a",
+      "count": 2
+    },
+    {
+      "method": "POST",
+      "path": "/v1/ai/selections",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "fba34b2e51ba",
+      "organization": "2abbe9d8b38a",
+      "count": 2
+    },
+    {
+      "method": "POST",
+      "path": "/v1/agents/:id/dm",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "fba34b2e51ba",
+      "organization": "2abbe9d8b38a",
+      "count": 2
+    },
+    {
+      "method": "POST",
+      "path": "/v1/runs",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "bc33ba3971c5",
+      "organization": "2abbe9d8b38a",
+      "count": 4
+    },
+    {
+      "method": "POST",
+      "path": "/v1/runs",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "fba34b2e51ba",
+      "organization": "2abbe9d8b38a",
+      "count": 4
+    },
+    {
+      "method": "GET",
+      "path": "/v1/entities/:kind/:id",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "bc33ba3971c5",
+      "organization": "2abbe9d8b38a",
+      "count": 2
+    },
+    {
+      "method": "GET",
+      "path": "/v1/entities/:kind/:id",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "fba34b2e51ba",
+      "organization": "2abbe9d8b38a",
+      "count": 2
+    },
+    {
+      "method": "GET",
+      "path": "/v1/threads/:id/snapshot",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "fba34b2e51ba",
+      "organization": "2abbe9d8b38a",
+      "count": 2
+    },
+    {
+      "method": "POST",
+      "path": "/v1/threads/:id/sessions",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "fba34b2e51ba",
+      "organization": "2abbe9d8b38a",
+      "count": 2
+    },
+    {
+      "method": "GET",
+      "path": "/v1/entities/:kind/:id",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "fba34b2e51ba",
+      "organization": "2abbe9d8b38a",
+      "count": 2
+    },
+    {
+      "method": "GET",
+      "path": "/v1/entities/:kind/:id",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "bc33ba3971c5",
+      "organization": "2abbe9d8b38a",
+      "count": 2
+    },
+    {
+      "method": "GET",
+      "path": "/v1/threads/:id/snapshot",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "bc33ba3971c5",
+      "organization": "2abbe9d8b38a",
+      "count": 2
+    },
+    {
+      "method": "POST",
+      "path": "/v1/threads/:id/sessions",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "bc33ba3971c5",
+      "organization": "2abbe9d8b38a",
+      "count": 2
+    },
+    {
+      "method": "POST",
+      "path": "/v1/auth/bootstrap",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "39614766edfd",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "39614766edfd",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/data/legacy-binding",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "39614766edfd",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/auth/session",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "ea03b455c22b",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId/invitations",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "39614766edfd",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/invitations/:invitationId/accept",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "ea03b455c22b",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId/audiences",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "39614766edfd",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/data/team-agents",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "39614766edfd",
+      "organization": "20f956192ddc",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/ai/selections",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "ea03b455c22b",
+      "organization": "20f956192ddc",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/agents/:id/dm",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "ea03b455c22b",
+      "organization": "20f956192ddc",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/runs",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "ea03b455c22b",
+      "organization": "20f956192ddc",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId/members/:membershipId/remove",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "39614766edfd",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/runs",
+      "mode": "accounts",
+      "status": 403,
+      "actor": "ea03b455c22b",
+      "organization": "20f956192ddc",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/auth/bootstrap",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "afe7dd920a2d",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "afe7dd920a2d",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/data/legacy-binding",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "afe7dd920a2d",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/auth/session",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "8c365ffd77b8",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId/invitations",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "afe7dd920a2d",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/invitations/:invitationId/accept",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "8c365ffd77b8",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId/audiences",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "afe7dd920a2d",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/data/team-agents",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "afe7dd920a2d",
+      "organization": "9695452e010f",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/ai/selections",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "8c365ffd77b8",
+      "organization": "9695452e010f",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/agents/:id/dm",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "8c365ffd77b8",
+      "organization": "9695452e010f",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/runs",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "8c365ffd77b8",
+      "organization": "9695452e010f",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId/members/:membershipId/remove",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "afe7dd920a2d",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/runs",
+      "mode": "accounts",
+      "status": 403,
+      "actor": "8c365ffd77b8",
+      "organization": "9695452e010f",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/auth/bootstrap",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "040a7d449335",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "040a7d449335",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/data/legacy-binding",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "040a7d449335",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/auth/session",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "6d947c854528",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId/invitations",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "040a7d449335",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/invitations/:invitationId/accept",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "6d947c854528",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId/audiences",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "040a7d449335",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/data/team-agents",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "040a7d449335",
+      "organization": "01826af560ff",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/ai/selections",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "6d947c854528",
+      "organization": "01826af560ff",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/agents/:id/dm",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "6d947c854528",
+      "organization": "01826af560ff",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/runs",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "6d947c854528",
+      "organization": "01826af560ff",
+      "count": 2
+    },
+    {
+      "method": "POST",
+      "path": "/v1/threads/:id/sessions",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "6d947c854528",
+      "organization": "01826af560ff",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/auth/bootstrap",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "770e18d3b8b7",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "770e18d3b8b7",
+      "organization": null,
+      "count": 2
+    },
+    {
+      "method": "POST",
+      "path": "/v1/data/legacy-binding",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "770e18d3b8b7",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/auth/session",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "a38ff557cad7",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId/invitations",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "770e18d3b8b7",
+      "organization": null,
+      "count": 3
+    },
+    {
+      "method": "POST",
+      "path": "/v1/invitations/:invitationId/accept",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "a38ff557cad7",
+      "organization": null,
+      "count": 2
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId/audiences",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "770e18d3b8b7",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/auth/session",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "3c760a583d86",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/auth/session",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "d1b9f61e7669",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/invitations/:invitationId/accept",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "d1b9f61e7669",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId/workgroups",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "770e18d3b8b7",
+      "organization": null,
+      "count": 2
+    },
+    {
+      "method": "POST",
+      "path": "/v1/data/team-agents",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "770e18d3b8b7",
+      "organization": "feec6d86ef20",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/ai/selections",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "a38ff557cad7",
+      "organization": "feec6d86ef20",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/agents/:id/dm",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "a38ff557cad7",
+      "organization": "feec6d86ef20",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/entities/:kind",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "a38ff557cad7",
+      "organization": "feec6d86ef20",
+      "count": 37
+    },
+    {
+      "method": "GET",
+      "path": "/v1/entities/:kind",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "770e18d3b8b7",
+      "organization": "571cb3e67e29",
+      "count": 37
+    },
+    {
+      "method": "GET",
+      "path": "/v1/entities/:kind",
+      "mode": "accounts",
+      "status": 403,
+      "actor": "3c760a583d86",
+      "organization": "feec6d86ef20",
+      "count": 37
+    },
+    {
+      "method": "GET",
+      "path": "/v1/entities/:kind",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "d1b9f61e7669",
+      "organization": "feec6d86ef20",
+      "count": 37
+    },
+    {
+      "method": "GET",
+      "path": "/v1/entities/:kind/:id",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "770e18d3b8b7",
+      "organization": "feec6d86ef20",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/auth/bootstrap",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "2f3b2663a676",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "2f3b2663a676",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/data/legacy-binding",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "2f3b2663a676",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/auth/session",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "920964622f42",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId/invitations",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "2f3b2663a676",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/invitations/:invitationId/accept",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "920964622f42",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId/audiences",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "2f3b2663a676",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/data/team-agents",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "2f3b2663a676",
+      "organization": "23e03fa72565",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/ai/selections",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "920964622f42",
+      "organization": "23e03fa72565",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/agents/:id/dm",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "920964622f42",
+      "organization": "23e03fa72565",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/auth/bootstrap",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "eec969e8eb76",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "eec969e8eb76",
+      "organization": null,
+      "count": 2
+    },
+    {
+      "method": "POST",
+      "path": "/v1/data/legacy-binding",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "eec969e8eb76",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/auth/session",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "1a450e6b238d",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId/invitations",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "eec969e8eb76",
+      "organization": null,
+      "count": 2
+    },
+    {
+      "method": "POST",
+      "path": "/v1/invitations/:invitationId/accept",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "1a450e6b238d",
+      "organization": null,
+      "count": 2
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId/audiences",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "eec969e8eb76",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/auth/native",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "1a450e6b238d",
+      "organization": "da1f34dc414a",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "eec969e8eb76",
+      "organization": "da1f34dc414a",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId/workgroups",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "eec969e8eb76",
+      "organization": "da1f34dc414a",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId/workgroups/:workgroupId",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "eec969e8eb76",
+      "organization": "da1f34dc414a",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/organizations/:organizationId/audiences",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "eec969e8eb76",
+      "organization": "da1f34dc414a",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/organizations/:organizationId/invitations",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "eec969e8eb76",
+      "organization": "da1f34dc414a",
+      "count": 1
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/organizations/:organizationId",
+      "mode": "accounts",
+      "status": 403,
+      "actor": "eec969e8eb76",
+      "organization": "da1f34dc414a",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/health/ready",
+      "mode": "accounts",
+      "status": 403,
+      "actor": "1a450e6b238d",
+      "organization": "da1f34dc414a",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/health/ready",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "eec969e8eb76",
+      "organization": "da1f34dc414a",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/data/team-agents",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "eec969e8eb76",
+      "organization": "da1f34dc414a",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/ai/selections",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "1a450e6b238d",
+      "organization": "da1f34dc414a",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/agents/:id/dm",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "1a450e6b238d",
+      "organization": "da1f34dc414a",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/setup",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "1a450e6b238d",
+      "organization": "da1f34dc414a",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/agents/activity",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "1a450e6b238d",
+      "organization": "da1f34dc414a",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/conversations/previews",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "1a450e6b238d",
+      "organization": "da1f34dc414a",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/creation/agents",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "1a450e6b238d",
+      "organization": "da1f34dc414a",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/threads/:id/opening",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "eec969e8eb76",
+      "organization": "da1f34dc414a",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/threads/:id/opening",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "1a450e6b238d",
+      "organization": "0a0f2052f87e",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/threads/:id/opening",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "1a450e6b238d",
+      "organization": "da1f34dc414a",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/threads/:id/opening/retry",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "eec969e8eb76",
+      "organization": "da1f34dc414a",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/threads/:id/opening/retry",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "1a450e6b238d",
+      "organization": "0a0f2052f87e",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/threads/:id/opening/retry",
+      "mode": "accounts",
+      "status": 409,
+      "actor": "1a450e6b238d",
+      "organization": "da1f34dc414a",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/threads/:id/history",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "eec969e8eb76",
+      "organization": "da1f34dc414a",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/threads/:id/history",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "1a450e6b238d",
+      "organization": "0a0f2052f87e",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/threads/:id/history",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "1a450e6b238d",
+      "organization": "da1f34dc414a",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/threads/:id/timeline",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "eec969e8eb76",
+      "organization": "da1f34dc414a",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/threads/:id/timeline",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "1a450e6b238d",
+      "organization": "0a0f2052f87e",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/threads/:id/timeline",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "1a450e6b238d",
+      "organization": "da1f34dc414a",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/agents",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "1a450e6b238d",
+      "organization": "da1f34dc414a",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/agents/:id/configuration",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "eec969e8eb76",
+      "organization": "da1f34dc414a",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/agents/:id/configuration",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "1a450e6b238d",
+      "organization": "0a0f2052f87e",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/agents/:id/configuration",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "1a450e6b238d",
+      "organization": "da1f34dc414a",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/threads",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "1a450e6b238d",
+      "organization": "da1f34dc414a",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/learning/memories/write",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "eec969e8eb76",
+      "organization": "da1f34dc414a",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/learning/memories/write",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "1a450e6b238d",
+      "organization": "0a0f2052f87e",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/learning/memories/write",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "1a450e6b238d",
+      "organization": "da1f34dc414a",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/learning/memories",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "eec969e8eb76",
+      "organization": "da1f34dc414a",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/learning/memories",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "1a450e6b238d",
+      "organization": "0a0f2052f87e",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/learning/memories",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "1a450e6b238d",
+      "organization": "da1f34dc414a",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/learning/memories/delete",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "eec969e8eb76",
+      "organization": "da1f34dc414a",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/learning/memories/delete",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "1a450e6b238d",
+      "organization": "0a0f2052f87e",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/learning/memories/delete",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "1a450e6b238d",
+      "organization": "da1f34dc414a",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/learning/skills/create",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "eec969e8eb76",
+      "organization": "da1f34dc414a",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/learning/skills/create",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "1a450e6b238d",
+      "organization": "0a0f2052f87e",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/learning/skills/create",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "1a450e6b238d",
+      "organization": "da1f34dc414a",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/learning/skills",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "eec969e8eb76",
+      "organization": "da1f34dc414a",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/learning/skills",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "1a450e6b238d",
+      "organization": "0a0f2052f87e",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/learning/skills",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "1a450e6b238d",
+      "organization": "da1f34dc414a",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/learning/skills/read",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "eec969e8eb76",
+      "organization": "da1f34dc414a",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/learning/skills/read",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "1a450e6b238d",
+      "organization": "0a0f2052f87e",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/learning/skills/read",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "1a450e6b238d",
+      "organization": "da1f34dc414a",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/learning/skills/revise",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "eec969e8eb76",
+      "organization": "da1f34dc414a",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/learning/skills/revise",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "1a450e6b238d",
+      "organization": "0a0f2052f87e",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/learning/skills/revise",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "1a450e6b238d",
+      "organization": "da1f34dc414a",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/learning/skills/assign",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "eec969e8eb76",
+      "organization": "da1f34dc414a",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/learning/skills/assign",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "1a450e6b238d",
+      "organization": "0a0f2052f87e",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/learning/skills/assign",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "1a450e6b238d",
+      "organization": "da1f34dc414a",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/entities/:kind/:id",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "eec969e8eb76",
+      "organization": "da1f34dc414a",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/data/team-agents/:id/configuration",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "eec969e8eb76",
+      "organization": "da1f34dc414a",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/auth/bootstrap",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "77c39ad966f0",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "77c39ad966f0",
+      "organization": null,
+      "count": 2
+    },
+    {
+      "method": "POST",
+      "path": "/v1/data/legacy-binding",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "77c39ad966f0",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/auth/session",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "66a5371bd60f",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId/invitations",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "77c39ad966f0",
+      "organization": null,
+      "count": 2
+    },
+    {
+      "method": "POST",
+      "path": "/v1/invitations/:invitationId/accept",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "66a5371bd60f",
+      "organization": null,
+      "count": 2
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId/audiences",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "77c39ad966f0",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/data/team-agents",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "77c39ad966f0",
+      "organization": "45c86f84a8a7",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/ai/selections",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "66a5371bd60f",
+      "organization": "45c86f84a8a7",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/agents/:id/dm",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "66a5371bd60f",
+      "organization": "45c86f84a8a7",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/creation/groups",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "66a5371bd60f",
+      "organization": "45c86f84a8a7",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/groups/:id/configuration",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "77c39ad966f0",
+      "organization": "45c86f84a8a7",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/groups/:id/configuration",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "66a5371bd60f",
+      "organization": "02dff4c7c6f6",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/groups/:id/configuration",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "66a5371bd60f",
+      "organization": "45c86f84a8a7",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/groups/:id/membership",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "77c39ad966f0",
+      "organization": "45c86f84a8a7",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/groups/:id/membership",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "66a5371bd60f",
+      "organization": "02dff4c7c6f6",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/groups/:id/membership",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "66a5371bd60f",
+      "organization": "45c86f84a8a7",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/groups/:id/messages",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "77c39ad966f0",
+      "organization": "45c86f84a8a7",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/groups/:id/messages",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "66a5371bd60f",
+      "organization": "02dff4c7c6f6",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/groups/:id/messages",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "66a5371bd60f",
+      "organization": "45c86f84a8a7",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/groups/:id/routes/:routeId/decision",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "77c39ad966f0",
+      "organization": "45c86f84a8a7",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/groups/:id/routes/:routeId/decision",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "66a5371bd60f",
+      "organization": "02dff4c7c6f6",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/groups/:id/routes/:routeId/decision",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "66a5371bd60f",
+      "organization": "45c86f84a8a7",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/groups/:id/routes/:routeId/retry",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "77c39ad966f0",
+      "organization": "45c86f84a8a7",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/groups/:id/routes/:routeId/retry",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "66a5371bd60f",
+      "organization": "02dff4c7c6f6",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/groups/:id/routes/:routeId/retry",
+      "mode": "accounts",
+      "status": 409,
+      "actor": "66a5371bd60f",
+      "organization": "45c86f84a8a7",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/goals",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "66a5371bd60f",
+      "organization": "45c86f84a8a7",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/goals/:id/assignment",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "77c39ad966f0",
+      "organization": "45c86f84a8a7",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/goals/:id/assignment",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "66a5371bd60f",
+      "organization": "02dff4c7c6f6",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/goals/:id/assignment",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "66a5371bd60f",
+      "organization": "45c86f84a8a7",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/data/team-agents/:id/skills/publish",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "77c39ad966f0",
+      "organization": "45c86f84a8a7",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/data/team-agents/:id/skills/assign",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "77c39ad966f0",
+      "organization": "45c86f84a8a7",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/auth/bootstrap",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "ffceea89d7e9",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "ffceea89d7e9",
+      "organization": null,
+      "count": 2
+    },
+    {
+      "method": "POST",
+      "path": "/v1/data/legacy-binding",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "ffceea89d7e9",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/auth/session",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "cd25f26c302a",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId/invitations",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "ffceea89d7e9",
+      "organization": null,
+      "count": 2
+    },
+    {
+      "method": "POST",
+      "path": "/v1/invitations/:invitationId/accept",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "cd25f26c302a",
+      "organization": null,
+      "count": 2
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId/audiences",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "ffceea89d7e9",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/data/team-agents",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "ffceea89d7e9",
+      "organization": "110366db7ed8",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/ai/selections",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "cd25f26c302a",
+      "organization": "110366db7ed8",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/agents/:id/dm",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "cd25f26c302a",
+      "organization": "110366db7ed8",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/runs",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "cd25f26c302a",
+      "organization": "110366db7ed8",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/entities/:kind/:id",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "cd25f26c302a",
+      "organization": "110366db7ed8",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/artifacts",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "ffceea89d7e9",
+      "organization": "110366db7ed8",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/artifacts",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "cd25f26c302a",
+      "organization": "ec12a86efd95",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/artifacts",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "cd25f26c302a",
+      "organization": "110366db7ed8",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/goals/capture",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "cd25f26c302a",
+      "organization": "110366db7ed8",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/routines/write",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "cd25f26c302a",
+      "organization": "110366db7ed8",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/goals/:id/recover-completion",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "ffceea89d7e9",
+      "organization": "110366db7ed8",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/goals/:id/recover-completion",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "cd25f26c302a",
+      "organization": "ec12a86efd95",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/goals/:id/recover-completion",
+      "mode": "accounts",
+      "status": 409,
+      "actor": "cd25f26c302a",
+      "organization": "110366db7ed8",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/goals/:id/progress",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "ffceea89d7e9",
+      "organization": "110366db7ed8",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/goals/:id/progress",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "cd25f26c302a",
+      "organization": "ec12a86efd95",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/goals/:id/progress",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "cd25f26c302a",
+      "organization": "110366db7ed8",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/message-submissions/:id",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "cd25f26c302a",
+      "organization": "110366db7ed8",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/auth/bootstrap",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "f5bc01b37dd9",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "f5bc01b37dd9",
+      "organization": null,
+      "count": 2
+    },
+    {
+      "method": "POST",
+      "path": "/v1/data/legacy-binding",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "f5bc01b37dd9",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/auth/session",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "b359e2dd0c91",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId/invitations",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "f5bc01b37dd9",
+      "organization": null,
+      "count": 2
+    },
+    {
+      "method": "POST",
+      "path": "/v1/invitations/:invitationId/accept",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "b359e2dd0c91",
+      "organization": null,
+      "count": 2
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId/audiences",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "f5bc01b37dd9",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/data/team-agents",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "f5bc01b37dd9",
+      "organization": "fedad160533a",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/ai/selections",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "b359e2dd0c91",
+      "organization": "fedad160533a",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/agents/:id/dm",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "b359e2dd0c91",
+      "organization": "fedad160533a",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/runs",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "b359e2dd0c91",
+      "organization": "fedad160533a",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/human-requests/:id/reply",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "f5bc01b37dd9",
+      "organization": "fedad160533a",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/human-requests/:id/reply",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "b359e2dd0c91",
+      "organization": "30e9e089ec2f",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/human-requests/:id/reply",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "b359e2dd0c91",
+      "organization": "fedad160533a",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/machine/view",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "b359e2dd0c91",
+      "organization": "fedad160533a",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/machine/views/:viewerId/renew",
+      "mode": "accounts",
+      "status": 403,
+      "actor": "f5bc01b37dd9",
+      "organization": "fedad160533a",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/machine/views/:viewerId/renew",
+      "mode": "accounts",
+      "status": 403,
+      "actor": "b359e2dd0c91",
+      "organization": "30e9e089ec2f",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/machine/views/:viewerId/renew",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "b359e2dd0c91",
+      "organization": "fedad160533a",
+      "count": 1
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/machine/views/:viewerId",
+      "mode": "accounts",
+      "status": 403,
+      "actor": "f5bc01b37dd9",
+      "organization": "fedad160533a",
+      "count": 1
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/machine/views/:viewerId",
+      "mode": "accounts",
+      "status": 403,
+      "actor": "b359e2dd0c91",
+      "organization": "30e9e089ec2f",
+      "count": 1
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/machine/views/:viewerId",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "b359e2dd0c91",
+      "organization": "fedad160533a",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/machine/processes/control",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "b359e2dd0c91",
+      "organization": "fedad160533a",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/auth/bootstrap",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "bc93c9c9535d",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "bc93c9c9535d",
+      "organization": null,
+      "count": 2
+    },
+    {
+      "method": "POST",
+      "path": "/v1/data/legacy-binding",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "bc93c9c9535d",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/auth/session",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "3dde8e058857",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId/invitations",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "bc93c9c9535d",
+      "organization": null,
+      "count": 2
+    },
+    {
+      "method": "POST",
+      "path": "/v1/invitations/:invitationId/accept",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "3dde8e058857",
+      "organization": null,
+      "count": 2
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId/audiences",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "bc93c9c9535d",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/data/team-agents",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "bc93c9c9535d",
+      "organization": "aeb4e7b30c40",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/ai/selections",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "3dde8e058857",
+      "organization": "aeb4e7b30c40",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/agents/:id/dm",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "3dde8e058857",
+      "organization": "aeb4e7b30c40",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/harness/contracts",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "3dde8e058857",
+      "organization": "aeb4e7b30c40",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/harnesses",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "3dde8e058857",
+      "organization": "aeb4e7b30c40",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/connections/:id/inspect",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "bc93c9c9535d",
+      "organization": "aeb4e7b30c40",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/connections/:id/inspect",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "3dde8e058857",
+      "organization": "997582ad9496",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/connections/:id/inspect",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "3dde8e058857",
+      "organization": "aeb4e7b30c40",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/connections/:id/login",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "bc93c9c9535d",
+      "organization": "aeb4e7b30c40",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/connections/:id/login",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "3dde8e058857",
+      "organization": "997582ad9496",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/connections/:id/login",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "3dde8e058857",
+      "organization": "aeb4e7b30c40",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/connections/:id/login/cancel",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "bc93c9c9535d",
+      "organization": "aeb4e7b30c40",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/connections/:id/login/cancel",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "3dde8e058857",
+      "organization": "997582ad9496",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/connections/:id/login/cancel",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "3dde8e058857",
+      "organization": "aeb4e7b30c40",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/threads/:id/prepare",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "bc93c9c9535d",
+      "organization": "aeb4e7b30c40",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/threads/:id/prepare",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "3dde8e058857",
+      "organization": "997582ad9496",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/threads/:id/prepare",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "3dde8e058857",
+      "organization": "aeb4e7b30c40",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/runs",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "3dde8e058857",
+      "organization": "aeb4e7b30c40",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/messages/:id/edit",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "bc93c9c9535d",
+      "organization": "aeb4e7b30c40",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/messages/:id/edit",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "3dde8e058857",
+      "organization": "997582ad9496",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/messages/:id/edit",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "3dde8e058857",
+      "organization": "aeb4e7b30c40",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/runs/:id/steer",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "bc93c9c9535d",
+      "organization": "aeb4e7b30c40",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/runs/:id/steer",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "3dde8e058857",
+      "organization": "997582ad9496",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/runs/:id/steer",
+      "mode": "accounts",
+      "status": 409,
+      "actor": "3dde8e058857",
+      "organization": "aeb4e7b30c40",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/runs/:id/interactions/history",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "bc93c9c9535d",
+      "organization": "aeb4e7b30c40",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/runs/:id/interactions/history",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "3dde8e058857",
+      "organization": "997582ad9496",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/runs/:id/interactions/history",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "3dde8e058857",
+      "organization": "aeb4e7b30c40",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/runs/:id/interactions",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "bc93c9c9535d",
+      "organization": "aeb4e7b30c40",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/runs/:id/interactions",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "3dde8e058857",
+      "organization": "997582ad9496",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/runs/:id/interactions",
+      "mode": "accounts",
+      "status": 409,
+      "actor": "3dde8e058857",
+      "organization": "aeb4e7b30c40",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/runs/:id/interactions",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "bc93c9c9535d",
+      "organization": "aeb4e7b30c40",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/runs/:id/interactions",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "3dde8e058857",
+      "organization": "997582ad9496",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/runs/:id/interactions",
+      "mode": "accounts",
+      "status": 409,
+      "actor": "3dde8e058857",
+      "organization": "aeb4e7b30c40",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/runs/:id/reconcile",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "bc93c9c9535d",
+      "organization": "aeb4e7b30c40",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/runs/:id/reconcile",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "3dde8e058857",
+      "organization": "997582ad9496",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/runs/:id/reconcile",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "3dde8e058857",
+      "organization": "aeb4e7b30c40",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/runs/:id/retry",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "bc93c9c9535d",
+      "organization": "aeb4e7b30c40",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/runs/:id/retry",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "3dde8e058857",
+      "organization": "997582ad9496",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/runs/:id/retry",
+      "mode": "accounts",
+      "status": 409,
+      "actor": "3dde8e058857",
+      "organization": "aeb4e7b30c40",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/runs/:id/retry-preparation",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "bc93c9c9535d",
+      "organization": "aeb4e7b30c40",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/runs/:id/retry-preparation",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "3dde8e058857",
+      "organization": "997582ad9496",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/runs/:id/retry-preparation",
+      "mode": "accounts",
+      "status": 409,
+      "actor": "3dde8e058857",
+      "organization": "aeb4e7b30c40",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/entities/:kind/:id",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "3dde8e058857",
+      "organization": "aeb4e7b30c40",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/messages/:id/delete",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "bc93c9c9535d",
+      "organization": "aeb4e7b30c40",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/messages/:id/delete",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "3dde8e058857",
+      "organization": "997582ad9496",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/messages/:id/delete",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "3dde8e058857",
+      "organization": "aeb4e7b30c40",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/runs/:id/cancel",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "bc93c9c9535d",
+      "organization": "aeb4e7b30c40",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/runs/:id/cancel",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "3dde8e058857",
+      "organization": "997582ad9496",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/runs/:id/cancel",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "3dde8e058857",
+      "organization": "aeb4e7b30c40",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/auth/bootstrap",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "7ea4c5d61015",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "7ea4c5d61015",
+      "organization": null,
+      "count": 2
+    },
+    {
+      "method": "POST",
+      "path": "/v1/data/legacy-binding",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "7ea4c5d61015",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/auth/session",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "a8a2f479931f",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId/invitations",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "7ea4c5d61015",
+      "organization": null,
+      "count": 2
+    },
+    {
+      "method": "POST",
+      "path": "/v1/invitations/:invitationId/accept",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "a8a2f479931f",
+      "organization": null,
+      "count": 2
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId/audiences",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "7ea4c5d61015",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/data/team-agents",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "7ea4c5d61015",
+      "organization": "f50eb861f70c",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/ai/selections",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "a8a2f479931f",
+      "organization": "f50eb861f70c",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/agents/:id/dm",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "a8a2f479931f",
+      "organization": "f50eb861f70c",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/workspaces",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "a8a2f479931f",
+      "organization": "f50eb861f70c",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/threads/:id/workspace",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "7ea4c5d61015",
+      "organization": "f50eb861f70c",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/threads/:id/workspace",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "a8a2f479931f",
+      "organization": "1e299d74b6ef",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/threads/:id/workspace",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "a8a2f479931f",
+      "organization": "f50eb861f70c",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/workspaces/:id/uploads",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "7ea4c5d61015",
+      "organization": "f50eb861f70c",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/workspaces/:id/uploads",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "a8a2f479931f",
+      "organization": "1e299d74b6ef",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/workspaces/:id/uploads",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "a8a2f479931f",
+      "organization": "f50eb861f70c",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/workspaces/:id/files",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "7ea4c5d61015",
+      "organization": "f50eb861f70c",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/workspaces/:id/files",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "a8a2f479931f",
+      "organization": "1e299d74b6ef",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/workspaces/:id/files",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "a8a2f479931f",
+      "organization": "f50eb861f70c",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/workspaces/:id/file",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "7ea4c5d61015",
+      "organization": "f50eb861f70c",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/workspaces/:id/file",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "a8a2f479931f",
+      "organization": "1e299d74b6ef",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/workspaces/:id/file",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "a8a2f479931f",
+      "organization": "f50eb861f70c",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/artifacts/:id/share",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "7ea4c5d61015",
+      "organization": "f50eb861f70c",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/artifacts/:id/share",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "a8a2f479931f",
+      "organization": "1e299d74b6ef",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/artifacts/:id/share",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "a8a2f479931f",
+      "organization": "f50eb861f70c",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/machine/files",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "a8a2f479931f",
+      "organization": "f50eb861f70c",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/machine/file",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "a8a2f479931f",
+      "organization": "f50eb861f70c",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/machine/operations",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "a8a2f479931f",
+      "organization": "f50eb861f70c",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/machine/processes",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "a8a2f479931f",
+      "organization": "f50eb861f70c",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/machine/windows",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "a8a2f479931f",
+      "organization": "f50eb861f70c",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/machine",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "a8a2f479931f",
+      "organization": "f50eb861f70c",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/machine/control",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "a8a2f479931f",
+      "organization": "f50eb861f70c",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/goals",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "a8a2f479931f",
+      "organization": "f50eb861f70c",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/threads/:id/goals",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "7ea4c5d61015",
+      "organization": "f50eb861f70c",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/threads/:id/goals",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "a8a2f479931f",
+      "organization": "1e299d74b6ef",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/threads/:id/goals",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "a8a2f479931f",
+      "organization": "f50eb861f70c",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/goals/:id/control",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "7ea4c5d61015",
+      "organization": "f50eb861f70c",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/goals/:id/control",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "a8a2f479931f",
+      "organization": "1e299d74b6ef",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/goals/:id/control",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "a8a2f479931f",
+      "organization": "f50eb861f70c",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/routines",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "a8a2f479931f",
+      "organization": "f50eb861f70c",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/routines/:id/control",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "7ea4c5d61015",
+      "organization": "f50eb861f70c",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/routines/:id/control",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "a8a2f479931f",
+      "organization": "1e299d74b6ef",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/routines/:id/control",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "a8a2f479931f",
+      "organization": "f50eb861f70c",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/workspaces/:id/revoke",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "7ea4c5d61015",
+      "organization": "f50eb861f70c",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/workspaces/:id/revoke",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "a8a2f479931f",
+      "organization": "1e299d74b6ef",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/workspaces/:id/revoke",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "a8a2f479931f",
+      "organization": "f50eb861f70c",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/auth/bootstrap",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "c6391d251034",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "c6391d251034",
+      "organization": null,
+      "count": 2
+    },
+    {
+      "method": "POST",
+      "path": "/v1/data/legacy-binding",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "c6391d251034",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/auth/session",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "845efeeac14f",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId/invitations",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "c6391d251034",
+      "organization": null,
+      "count": 2
+    },
+    {
+      "method": "POST",
+      "path": "/v1/invitations/:invitationId/accept",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "845efeeac14f",
+      "organization": null,
+      "count": 2
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId/audiences",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "c6391d251034",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/apps/catalog",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "845efeeac14f",
+      "organization": "662cf8ee19e0",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/apps/connect",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "845efeeac14f",
+      "organization": "662cf8ee19e0",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/apps/connections",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "845efeeac14f",
+      "organization": "662cf8ee19e0",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/apps/connections/:id/refresh",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "c6391d251034",
+      "organization": "662cf8ee19e0",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/apps/connections/:id/refresh",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "845efeeac14f",
+      "organization": "86012f72c7a3",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/apps/connections/:id/refresh",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "845efeeac14f",
+      "organization": "662cf8ee19e0",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/apps/search",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "c6391d251034",
+      "organization": "662cf8ee19e0",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/apps/search",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "845efeeac14f",
+      "organization": "86012f72c7a3",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/apps/search",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "845efeeac14f",
+      "organization": "662cf8ee19e0",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/apps/connections/:id/reconnect",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "c6391d251034",
+      "organization": "662cf8ee19e0",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/apps/connections/:id/reconnect",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "845efeeac14f",
+      "organization": "86012f72c7a3",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/apps/connections/:id/reconnect",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "845efeeac14f",
+      "organization": "662cf8ee19e0",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/apps/connections/:id/revoke",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "c6391d251034",
+      "organization": "662cf8ee19e0",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/apps/connections/:id/revoke",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "845efeeac14f",
+      "organization": "86012f72c7a3",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/apps/connections/:id/revoke",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "845efeeac14f",
+      "organization": "662cf8ee19e0",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/auth/bootstrap",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "49c5eed6fdab",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "49c5eed6fdab",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/data/legacy-binding",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "49c5eed6fdab",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/auth/session",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "b4f9a8d53fce",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId/invitations",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "49c5eed6fdab",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/invitations/:invitationId/accept",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "b4f9a8d53fce",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId/audiences",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "49c5eed6fdab",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/data/team-agents",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "49c5eed6fdab",
+      "organization": "067c4481bae7",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/ai/selections",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "b4f9a8d53fce",
+      "organization": "067c4481bae7",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/agents/:id/dm",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "b4f9a8d53fce",
+      "organization": "067c4481bae7",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/harness/tools",
+      "mode": "accounts",
+      "status": 405,
+      "actor": "3f446dea8e1f",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/harness/tools",
+      "mode": "accounts",
+      "status": 401,
+      "actor": "fed3803c0db6",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/harness/tools",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "3f446dea8e1f",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/harness/tools",
+      "mode": "accounts",
+      "status": 401,
+      "actor": "fed3803c0db6",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/auth/bootstrap",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "1043063db3fb",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "ALL",
+      "path": "/api/auth/*",
+      "mode": "accounts",
+      "status": 302,
+      "actor": "1043063db3fb",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/auth/bootstrap",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "3aff6c44dd4c",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "ALL",
+      "path": "/api/auth/*",
+      "mode": "accounts",
+      "status": 302,
+      "actor": "3aff6c44dd4c",
+      "organization": null,
+      "count": 5
+    },
+    {
+      "method": "ALL",
+      "path": "/api/auth/*",
+      "mode": "accounts",
+      "status": 400,
+      "actor": null,
+      "organization": null,
+      "count": 6
+    },
+    {
+      "method": "ALL",
+      "path": "/api/auth/*",
+      "mode": "accounts",
+      "status": 404,
+      "actor": "3aff6c44dd4c",
+      "organization": null,
+      "count": 2
+    },
+    {
+      "method": "POST",
+      "path": "/v1/auth/bootstrap",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "7f048c885bbc",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "ALL",
+      "path": "/api/auth/*",
+      "mode": "accounts",
+      "status": 302,
+      "actor": "7f048c885bbc",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/auth/session",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "c5504d72370f",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/events",
+      "mode": "accounts",
+      "status": 401,
+      "actor": "c5504d72370f",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/events/stream",
+      "mode": "accounts",
+      "status": 401,
+      "actor": "c5504d72370f",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/events",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "7f048c885bbc",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/auth/bootstrap",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "292efbd5f8f1",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/auth/session",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "292efbd5f8f1",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/events/stream",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "292efbd5f8f1",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/auth/sessions/:sessionId/revoke",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "67b9f9147b2e",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/events",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "67b9f9147b2e",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/auth/bootstrap",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "0c98acd02380",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/auth/sessions/:sessionId/revoke",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "dc8c82e8c527",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/auth/bootstrap",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "a26af8746078",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "ALL",
+      "path": "/api/auth/*",
+      "mode": "accounts",
+      "status": 302,
+      "actor": "a26af8746078",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/events",
+      "mode": "accounts",
+      "status": 401,
+      "actor": "ca46d86cfa2b",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/auth/bootstrap",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "aa903d6fe476",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/contracts",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "aa903d6fe476",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/auth/bootstrap",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "45311a6eed94",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "ALL",
+      "path": "/api/auth/*",
+      "mode": "accounts",
+      "status": 429,
+      "actor": null,
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/auth/bootstrap",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "984be1721cef",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "ALL",
+      "path": "/api/auth/*",
+      "mode": "accounts",
+      "status": 302,
+      "actor": "984be1721cef",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/auth/logout",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "984be1721cef",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/events",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "c79c4dc48ea4",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/events/stream",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "c79c4dc48ea4",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/events",
+      "mode": "accounts",
+      "status": 401,
+      "actor": "c79c4dc48ea4",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/auth/bootstrap",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "fcdf872025e7",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "fcdf872025e7",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/data/legacy-binding",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "fcdf872025e7",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/auth/session",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "fcab5fdefa4d",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId/invitations",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "fcdf872025e7",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/invitations/:invitationId/accept",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "fcab5fdefa4d",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/machine",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "fcdf872025e7",
+      "organization": "4b14e52c0dde",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/machine",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "fcab5fdefa4d",
+      "organization": "4b14e52c0dde",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/machine/view",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "fcdf872025e7",
+      "organization": "4b14e52c0dde",
+      "count": 1
+    },
+    {
+      "method": "ALL",
+      "path": "/v1/machine/viewer/:viewerId/*",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "fcdf872025e7",
+      "organization": "4b14e52c0dde",
+      "count": 1
+    },
+    {
+      "method": "ALL",
+      "path": "/v1/machine/viewer/:viewerId/*",
+      "mode": "accounts",
+      "status": 401,
+      "actor": "fcab5fdefa4d",
+      "organization": "4b14e52c0dde",
+      "count": 1
+    },
+    {
+      "method": "ALL",
+      "path": "/v1/machine/viewer/:viewerId/*",
+      "mode": "accounts",
+      "status": 401,
+      "actor": "cfc9e09d0b3f",
+      "organization": "4b14e52c0dde",
+      "count": 1
+    },
+    {
+      "method": "ALL",
+      "path": "/v1/machine/viewer/:viewerId/*",
+      "mode": "accounts",
+      "status": 403,
+      "actor": "fcdf872025e7",
+      "organization": "28ef323513e2",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/auth/bootstrap",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "ea4c184cceab",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "ea4c184cceab",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/data/legacy-binding",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "ea4c184cceab",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/machine/view",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "ea4c184cceab",
+      "organization": "54e30d5bc7af",
+      "count": 1
+    },
+    {
+      "method": "ALL",
+      "path": "/v1/machine/viewer/:viewerId/*",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "ea4c184cceab",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/auth/session",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "ea4c184cceab",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/auth/sessions/:sessionId/revoke",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "ea4c184cceab",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "ALL",
+      "path": "/v1/machine/viewer/:viewerId/*",
+      "mode": "accounts",
+      "status": 401,
+      "actor": "ea4c184cceab",
+      "organization": "54e30d5bc7af",
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/auth/bootstrap",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "c1f2febcef4d",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "c1f2febcef4d",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/data/legacy-binding",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "c1f2febcef4d",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/auth/session",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "3fcb3619107a",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId/invitations",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "c1f2febcef4d",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/invitations/:invitationId/accept",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "3fcb3619107a",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/machine/view",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "3fcb3619107a",
+      "organization": "f8d769678a4a",
+      "count": 1
+    },
+    {
+      "method": "ALL",
+      "path": "/v1/machine/viewer/:viewerId/*",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "3fcb3619107a",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/organizations/:organizationId/members",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "c1f2febcef4d",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId/members/:membershipId/remove",
+      "mode": "accounts",
+      "status": 200,
+      "actor": "c1f2febcef4d",
+      "organization": null,
+      "count": 1
+    },
+    {
+      "method": "ALL",
+      "path": "/v1/machine/viewer/:viewerId/*",
+      "mode": "accounts",
+      "status": 401,
+      "actor": "3fcb3619107a",
+      "organization": "f8d769678a4a",
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/v1/machine/files",
+      "mode": "accounts",
+      "status": 403,
+      "actor": "3fcb3619107a",
+      "organization": "f8d769678a4a",
+      "count": 1
+    }
+  ]
+}

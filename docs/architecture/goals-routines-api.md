@@ -1,5 +1,7 @@
 # Persistent responsibilities and Routine API
 
+NMA-079 amendment: the [2.0.0 server-organizations consumer contract](server-organizations-api.md) and [verification report](../verification/nma-079/README.md) own current account-mode authentication, scope, normal native dispatch and readiness. Earlier versioned examples and pending-gate statements below retain their captured scope. Web/Tauri UI and deployment remain later milestones.
+
 Planned November 12 amendment: [the server-organizations plan](server-organizations-plan-2026-11-12.md) and NMA-072–083 define PostgreSQL, authenticated organization/user scope, private Team-agent interactions and explicit connections. This guide retains its current/recorded implementation boundary until the new NMA-079 API gate verifies the changed contract; its owner-only examples do not establish multi-user authorization.
 
 Application contract **1.24.0** extends the existing [conversation controls](conversation-control-api.md), [group collaboration](group-collaboration-api.md), [memory/skills](memory-skills-api.md), queue, SQLite authority lock, transactional command receipts and event replay. It introduces no additional model/tool loop, scheduler process or engine. Browser connections are not required for execution; the backend and native harness host must remain alive. Host shutdown/suspend is not offline execution.

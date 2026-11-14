@@ -1,0 +1,36 @@
+{
+  "planned_lanes": 4,
+  "lanes": [
+    {
+      "harness": "codex",
+      "actor": 0,
+      "version": "0.169.0",
+      "model": "gpt-6.1-sol",
+      "billing": "subscription",
+      "completed_inference": true,
+      "useful_product_tool": true,
+      "private_marker_and_thread": true,
+      "cross_user_read": 404,
+      "replay_same_run": true,
+      "account_fingerprint": "2c1301eb496b"
+    },
+    {
+      "harness": "codex",
+      "actor": 1,
+      "version": "0.169.0",
+      "model": "gpt-6.1-sol",
+      "billing": "subscription",
+      "completed_inference": true,
+      "useful_product_tool": true,
+      "private_marker_and_thread": true,
+      "cross_user_read": 404,
+      "replay_same_run": true,
+      "account_fingerprint": "2c1301eb496b"
+    }
+  ],
+  "completed": false,
+  "scope": "real HTTP account principals, normal admission/claim/dispatch, real native inference and product tools",
+  "credential_handling": "read-only existing short-lived Codex access token; no refresh token copying or authority mutation; explicit Muse API key",
+  "synthetic_dispatch": false,
+  "failure": "Error"
+}

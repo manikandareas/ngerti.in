@@ -10,6 +10,7 @@ import type { DataContext } from "./persistence/access-context";
 import { executionSchemaSql, executionSchemaVersion } from "./persistence/execution-schema";
 import { integrationSchemaSql, integrationSchemaVersion } from "./persistence/integration-schema";
 import { providerSchemaSql, providerSchemaVersion } from "./persistence/provider-schema";
+import { fenceScopedRun } from "./persistence/run-fence";
 import { schemaSql, schemaVersion } from "./persistence/schema";
 import { scopedSchemaSql, scopedSchemaVersion } from "./persistence/scoped-schema";
 
@@ -28,6 +29,7 @@ type Transaction = {
   changed: boolean;
   tail: Promise<unknown>;
   root?: Transaction;
+  validate?: (privateWork?: boolean) => Promise<unknown>;
 };
 export type StoreOptions = {
   connectionString?: string;
@@ -61,6 +63,20 @@ export class Store {
   readonly #data = new AsyncLocalStorage<DataContext>();
   readonly #publication = new AsyncLocalStorage<DataContext>();
   scopeRunner?: (action: () => Promise<void>) => Promise<void>;
+
+  async fenceScopedRun(
+    run: Entity<"run">,
+    outcome?: "succeeded" | "failed" | "cancelled" | "unknown",
+  ) {
+    if (run.owner_id !== this.ownerId) throw new DomainError("SCOPE_DENIED", 403);
+    await fenceScopedRun(
+      this.#administration,
+      run,
+      (client) => this.checkAuthority(client),
+      outcome,
+    );
+    this.notify();
+  }
   readonly #listeners = new Set<() => unknown>();
   readonly #pendingCommands = new Map<
     string,
@@ -273,9 +289,9 @@ export class Store {
     }
   }
   async query<R extends QueryResultRow = QueryResultRow>(text: string, values: unknown[] = []) {
-    await this.dataContext?.validate();
     const context = this.#transactions.getStore();
     if (context && !context.active) throw new Error("Transaction context has expired.");
+    await this.validateDataContext();
     if (context) return context.client.query<R>(text, values);
     const release = await this.dataContext?.acquire?.();
     let client: PoolClient;
@@ -287,9 +303,9 @@ export class Store {
     }
     try {
       await client.query("BEGIN");
-      await this.configureScope(client);
+      await this.configureScope(client, release?.validate);
       const result = await client.query<R>(text, values);
-      await this.dataContext?.validate();
+      await (release?.validate ?? this.dataContext?.validate)?.();
       await client.query("COMMIT");
       return result;
     } catch (error) {
@@ -314,6 +330,9 @@ export class Store {
       throw new Error("Data scope must be selected before a transaction.");
     return this.#data.run(context, action);
   }
+  async validateDataContext(privateWork = false) {
+    return (this.#transactions.getStore()?.validate ?? this.dataContext?.validate)?.(privateWork);
+  }
   async publishShared<T>(action: () => Promise<T>): Promise<T> {
     if (!this.dataContext?.canManage) throw new DomainError("SCOPE_DENIED", 403);
     const transaction = this.#transactions.getStore();
@@ -330,7 +349,7 @@ export class Store {
   async assertInvocation(agentId: string) {
     const context = this.dataContext;
     if (!context) return;
-    await context.validate(true);
+    await this.validateDataContext(true);
     const agent = await this.get("agent", agentId);
     if (agent.ownership === "organization" && !context.invocableAgents.includes(agentId))
       throw new DomainError("SCOPE_DENIED", 403);
@@ -572,9 +591,9 @@ export class Store {
       client.release();
     }
   }
-  private async configureScope(client: PoolClient) {
+  private async configureScope(client: PoolClient, validate?: () => Promise<unknown>) {
     const context = this.dataContext;
-    await context?.validate();
+    await (validate ?? this.#transactions.getStore()?.validate ?? context?.validate)?.();
     await client.query("SET LOCAL ROLE ngertiin_runtime");
     await client.query(
       "SELECT set_config('ngertiin.mode',$1,true),set_config('ngertiin.organization_id',$2,true),set_config('ngertiin.actor_id',$3,true),set_config('ngertiin.agents',$4,true),set_config('ngertiin.managed',$5,true),set_config('ngertiin.publish',$6,true),set_config('ngertiin.manage',$7,true),set_config('ngertiin.membership_generation',$8,true),set_config('ngertiin.connections',$9,true),set_config('ngertiin.app_connections',$10,true)",
@@ -606,6 +625,7 @@ export class Store {
           changed: false,
           tail: Promise.resolve(),
           root: parent.root ?? parent,
+          validate: parent.validate,
         };
         try {
           const result = await this.#transactions.run(child, fn);
@@ -637,10 +657,16 @@ export class Store {
       await release?.();
       throw error;
     }
-    const context: Transaction = { client, active: true, changed: false, tail: Promise.resolve() };
+    const context: Transaction = {
+      client,
+      active: true,
+      changed: false,
+      tail: Promise.resolve(),
+      validate: release?.validate,
+    };
     try {
       await client.query("BEGIN");
-      await this.configureScope(client);
+      await this.configureScope(client, release?.validate);
       const result = await this.#transactions.run(context, async () => {
         // The clock row serializes writers through commit, including receipts and projections.
         await client.query("SELECT event_clock FROM installation WHERE id=1 FOR UPDATE");
@@ -668,16 +694,27 @@ export class Store {
     return () => this.#listeners.delete(listener);
   }
   private emitListeners() {
-    const failed = () => {
-      if (!this.closed) console.error(JSON.stringify({ event: "persistence.subscription_failed" }));
-    };
-    for (const listener of this.#listeners) {
-      try {
-        void Promise.resolve(listener()).catch(failed);
-      } catch {
-        failed();
-      }
-    }
+    // Subscribers own their scope. A committed command must not lend its actor,
+    // transaction, publication privilege or browser-session authorizer to background work.
+    this.#transactions.exit(() =>
+      this.#data.exit(() =>
+        this.#authorization.exit(() =>
+          this.#publication.exit(() => {
+            const failed = () => {
+              if (!this.closed)
+                console.error(JSON.stringify({ event: "persistence.subscription_failed" }));
+            };
+            for (const listener of this.#listeners) {
+              try {
+                void Promise.resolve(listener()).catch(failed);
+              } catch {
+                failed();
+              }
+            }
+          }),
+        ),
+      ),
+    );
   }
   private notify() {
     if (this.#notificationPending) return;

@@ -623,10 +623,10 @@ export class Lifecycle {
 
   /** Adapter seam only; no executor is registered by this foundation. */
   async claimNext(threadId: string, agentId: string): Promise<Entity<"run"> | null> {
-    // New tenants cannot execute against the historical shared machine/provider homes.
-    if (this.store.dataContext) throw new DomainError("SCOPE_DENIED", 403);
     return await this.store.transaction(async () => {
-      const { agent, thread } = await this.scope(threadId, agentId);
+      await this.store.validateDataContext(true);
+      const { thread } = await this.scope(threadId, agentId);
+      const agent = await this.executionAgent(threadId, agentId);
       // Every current group adapter can mutate files. The durable run is the exclusive lease;
       // unknown work keeps it until native reconciliation, including after an application restart.
       if (
@@ -652,6 +652,18 @@ export class Lifecycle {
         await this.store.list("binding", { thread_id: threadId, agent_id: agentId })
       ).find((item) => item.active && item.thread_id === threadId && item.agent_id === agentId);
       if (!binding) throw new DomainError("CONFLICT");
+      if (this.store.dataContext) {
+        const { connection } = await new Connections(this).forAgent(agentId, threadId);
+        if (
+          !next.provider_selection ||
+          !binding.workspace_id ||
+          !(await this.store.get("workspace", binding.workspace_id)).machine_id ||
+          binding.organization_id !== next.organization_id ||
+          binding.actor_id !== next.actor_id ||
+          binding.connection_generation !== connection.grant_revision
+        )
+          throw new DomainError("STALE_DISPATCH");
+      }
       if (
         binding.connection_id !== agent.connection_id ||
         binding.harness !== agent.harness ||
@@ -712,8 +724,8 @@ export class Lifecycle {
   }
 
   async authorizeDispatch(runId: string, token: string) {
-    if (this.store.dataContext) throw new DomainError("SCOPE_DENIED", 403);
     return await this.store.transaction(async () => {
+      await this.store.validateDataContext(true);
       const run = await this.dispatch(runId, token);
       const { thread } = await this.scope(run.thread_id, run.agent_id);
       if (run.thread_revision !== null && thread.revision !== run.thread_revision)
@@ -730,6 +742,16 @@ export class Lifecycle {
       if (run.workspace_id) await new Workspaces(this).authorizeRun(run);
       if (!run.binding_id) throw new DomainError("STALE_DISPATCH");
       const binding = await this.store.get("binding", run.binding_id);
+      if (this.store.dataContext) {
+        const { connection } = await new Connections(this).forAgent(run.agent_id, run.thread_id);
+        if (
+          !run.provider_selection ||
+          binding.organization_id !== run.organization_id ||
+          binding.actor_id !== run.actor_id ||
+          binding.connection_generation !== connection.grant_revision
+        )
+          throw new DomainError("STALE_DISPATCH");
+      }
       if (
         binding.connection_id !== agent.connection_id ||
         binding.harness !== agent.harness ||
@@ -738,6 +760,16 @@ export class Lifecycle {
       )
         throw new DomainError("STALE_DISPATCH");
       return run;
+    });
+  }
+
+  /** Recover this durable principal after authority replacement, without replaying native input. */
+  async recoverScopedRuns() {
+    if (!this.store.dataContext) return;
+    await this.store.transaction(async () => {
+      for (const run of await this.store.list("run"))
+        if (active.has(run.status) && run.authority_epoch !== this.epoch)
+          await this.update(run, { status: "unknown", outcome: "unknown", activity: "unknown" });
     });
   }
 
@@ -960,7 +992,12 @@ export class Lifecycle {
   async preparing(runId: string, runtimeRevision?: string) {
     return await this.store.transaction(async () => {
       const run = await this.store.get("run", runId);
-      if (run.status !== "queued" || run.delivery !== "pending") throw new DomainError("CONFLICT");
+      if (
+        run.status !== "queued" ||
+        run.delivery !== "pending" ||
+        run.preparation?.state === "blocked"
+      )
+        return null;
       return await this.update(run, {
         timings: {
           ...run.timings,
@@ -978,11 +1015,13 @@ export class Lifecycle {
   }
 
   async prepared(runId: string) {
-    const run = await this.store.get("run", runId);
-    if (run.status !== "queued" || !run.preparation) return run;
-    return await this.update(run, {
-      timings: { ...run.timings, ready_at: new Date().toISOString() },
-      preparation: { ...run.preparation, state: "ready", next_attempt_at: null },
+    return this.store.transaction(async () => {
+      const run = await this.store.get("run", runId);
+      if (run.status !== "queued" || !run.preparation) return run;
+      return await this.update(run, {
+        timings: { ...run.timings, ready_at: new Date().toISOString() },
+        preparation: { ...run.preparation, state: "ready", next_attempt_at: null },
+      });
     });
   }
 
@@ -991,19 +1030,21 @@ export class Lifecycle {
     failure: NonNullable<Entity<"run">["diagnostic"]>,
     runtimeRevision?: string,
   ) {
-    const run = await this.store.get("run", runId);
-    if (run.status !== "queued" || !run.preparation) return run;
-    const retry = failure.category === "temporary" && run.preparation.attempts < 3;
-    return await this.update(run, {
-      diagnostic: failure,
-      preparation: {
-        ...run.preparation,
-        runtime_revision: runtimeRevision ?? run.preparation.runtime_revision,
-        state: retry ? "retrying" : "blocked",
-        next_attempt_at: retry
-          ? new Date(Date.now() + 1000 * 2 ** (run.preparation.attempts - 1)).toISOString()
-          : null,
-      },
+    return this.store.transaction(async () => {
+      const run = await this.store.get("run", runId);
+      if (run.status !== "queued" || !run.preparation) return run;
+      const retry = failure.category === "temporary" && run.preparation.attempts < 3;
+      return await this.update(run, {
+        diagnostic: failure,
+        preparation: {
+          ...run.preparation,
+          runtime_revision: runtimeRevision ?? run.preparation.runtime_revision,
+          state: retry ? "retrying" : "blocked",
+          next_attempt_at: retry
+            ? new Date(Date.now() + 1000 * 2 ** (run.preparation.attempts - 1)).toISOString()
+            : null,
+        },
+      });
     });
   }
 

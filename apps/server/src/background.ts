@@ -7,6 +7,7 @@ import { Groups } from "./groups/service";
 import { diagnostic } from "./harness/contracts";
 import { Interactions } from "./interactions/service";
 import type { Lifecycle } from "./lifecycle";
+import type { DataContext } from "./persistence/access-context";
 
 export interface ExecutorContext {
   signal: AbortSignal;
@@ -23,7 +24,12 @@ export interface HarnessExecutor {
     context: ExecutorContext,
   ): Promise<"succeeded" | "failed" | "cancelled" | "unknown">;
 }
-type Work = { run: Entity<"run">; controller: AbortController; done: Promise<void> };
+type Work = {
+  run: Entity<"run">;
+  controller: AbortController;
+  done: Promise<void>;
+  scope?: DataContext;
+};
 
 /** Scheduler and dispatcher share the application authority; neither runs a model loop. */
 export class Background {
@@ -91,15 +97,22 @@ export class Background {
       return this.#ticking;
     }
     this.#ticking = (async () => {
+      for (const work of this.#work.values()) {
+        if (!work.scope || !checkControls || this.lifecycle.toolControlHeld(work.run.id)) continue;
+        try {
+          await this.inScope(work, () =>
+            this.lifecycle.authorizeDispatch(work.run.id, work.run.dispatch_token as string),
+          );
+        } catch {
+          await this.lifecycle.store.fenceScopedRun(work.run);
+          work.controller.abort();
+        }
+      }
       await this.dispatchTick(now, checkControls);
       await this.lifecycle.store.scopeRunner?.(async () => {
         await this.lifecycle.store.dataContext?.validate(true);
-        await new Goals(this.lifecycle).advance(now);
-        await new GroupSchedules(this.lifecycle).advance();
-        for (const routine of await this.lifecycle.store.list("routine"))
-          await this.lifecycle.fireRoutine(routine.id, now);
-        // Scoped jobs retain durable queue identity. Production native admission remains
-        // closed until the integrated NMA-079 API/isolation readiness gate.
+        await this.lifecycle.recoverScopedRuns();
+        await this.dispatchTick(now, checkControls);
       });
     })().finally(() => {
       this.#ticking = undefined;
@@ -136,6 +149,12 @@ export class Background {
     // Owner controls call notifyControls immediately. A commit wake must not abort a native
     // self-stop tool before its committed receipt has crossed the tool transport.
     for (const work of checkControls ? this.#work.values() : []) {
+      const scope = this.lifecycle.store.dataContext;
+      if (
+        work.scope?.organizationId !== scope?.organizationId ||
+        work.scope?.userId !== scope?.userId
+      )
+        continue;
       if (
         !this.lifecycle.toolControlHeld(work.run.id) &&
         (await this.lifecycle.store.get("run", work.run.id)).cancellation === "requested"
@@ -209,7 +228,8 @@ export class Background {
       if (this.#preparing.has(lane)) continue;
       this.#dispatchCursor = queued.id;
       if (executor.prepare) {
-        await this.lifecycle.preparing(queued.id, executor.preparationRevision?.());
+        if (!(await this.lifecycle.preparing(queued.id, executor.preparationRevision?.())))
+          continue;
         const pending = executor
           .prepare(queued.thread_id, queued.agent_id)
           .then(async () => {
@@ -242,14 +262,17 @@ export class Background {
 
   /** Control requests bypass ordinary work and do not wait for the next scheduler tick. */
   async notifyControls() {
-    if (this.lifecycle.store.dataContext) {
-      await this.wake();
-      return;
-    }
     await this.wake();
-    for (const work of this.#work.values())
+    for (const work of this.#work.values()) {
+      const scope = this.lifecycle.store.dataContext;
+      if (
+        work.scope?.organizationId !== scope?.organizationId ||
+        work.scope?.userId !== scope?.userId
+      )
+        continue;
       if ((await this.lifecycle.store.get("run", work.run.id)).cancellation === "requested")
         work.controller.abort();
+    }
   }
 
   private async claim(threadId: string, agentId: string) {
@@ -261,7 +284,12 @@ export class Background {
       const run = await this.lifecycle.claimNext(threadId, agentId);
       if (!run) return;
       const controller = new AbortController();
-      const work: Work = { run, controller, done: Promise.resolve() };
+      const work: Work = {
+        run,
+        controller,
+        done: Promise.resolve(),
+        scope: this.lifecycle.store.dataContext,
+      };
       this.#work.set(run.id, work);
       work.done = this.execute(work, executor).catch(() => this.report("EXECUTION_UNKNOWN"));
     } catch (error) {
@@ -303,13 +331,23 @@ export class Background {
         },
       });
       if (this.#closed || this.lifecycle.store.closed) return;
-      await this.lifecycle.settle(run.id, token, outcome);
+      try {
+        await this.lifecycle.settle(run.id, token, outcome);
+      } catch (error) {
+        if (!work.scope) throw error;
+        await this.lifecycle.store.fenceScopedRun(work.run, outcome);
+      }
     } catch (error) {
       if (this.#closed || this.lifecycle.store.closed) return;
       // A thrown error may follow an accepted native request or external effect.
-      const current = await this.lifecycle.store.get("run", work.run.id);
-      if (["dispatching", "running", "cancel_requested"].includes(current.status))
-        await this.lifecycle.settle(work.run.id, token, "unknown");
+      try {
+        const current = await this.lifecycle.store.get("run", work.run.id);
+        if (["dispatching", "running", "cancel_requested"].includes(current.status))
+          await this.lifecycle.settle(work.run.id, token, "unknown");
+      } catch (settlementError) {
+        if (!work.scope) throw settlementError;
+        await this.lifecycle.store.fenceScopedRun(work.run, "unknown");
+      }
       await this.report(error instanceof DomainError ? error.code : "EXECUTION_UNKNOWN");
     } finally {
       this.#work.delete(work.run.id);
@@ -324,6 +362,10 @@ export class Background {
     await Promise.all([...this.#work.values()].map((work) => work.done));
   }
 
+  private inScope<T>(work: Work, action: () => Promise<T>) {
+    return work.scope ? this.lifecycle.store.withDataContext(work.scope, action) : action();
+  }
+
   async stop(timeoutMs = 5000) {
     this.#stopping = true;
     await this.#unsubscribe?.();
@@ -332,7 +374,14 @@ export class Background {
     if (this.#timer) clearInterval(this.#timer);
     this.#timer = null;
     for (const work of this.#work.values()) {
-      if (!this.lifecycle.store.closed) await this.lifecycle.cancel(work.run.id);
+      if (!this.lifecycle.store.closed) {
+        try {
+          await this.inScope(work, () => this.lifecycle.cancel(work.run.id));
+        } catch (error) {
+          if (!work.scope) throw error;
+          await this.lifecycle.store.fenceScopedRun(work.run);
+        }
+      }
       work.controller.abort();
     }
     let timer: ReturnType<typeof setTimeout> | undefined;
@@ -348,8 +397,14 @@ export class Background {
     }
     for (const work of this.#work.values()) {
       const token = work.run.dispatch_token;
-      if (token && !this.lifecycle.store.closed)
-        await this.lifecycle.settle(work.run.id, token, "unknown");
+      if (token && !this.lifecycle.store.closed) {
+        try {
+          await this.inScope(work, () => this.lifecycle.settle(work.run.id, token, "unknown"));
+        } catch (error) {
+          if (!work.scope) throw error;
+          await this.lifecycle.store.fenceScopedRun(work.run, "unknown");
+        }
+      }
     }
     this.#closed = true;
     // The process exits after stop. Late native completion must not touch a closed store.

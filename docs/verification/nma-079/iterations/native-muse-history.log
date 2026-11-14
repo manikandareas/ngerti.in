@@ -1,0 +1,22 @@
+bun test v1.3.10 (30e609e0)
+
+../../scripts/verification/nma079/native.test.ts:
+145 |         const body = { thread_id: thread.id, agent_id: team.id, text: `Call ngertiin.read_run_context with empty arguments. Reply with its thread_id and this marker: ${marker}. Do not create a Goal or Routine. Do not use host tools.` };
+146 |         const admission = await f.success(request(cookie, "/v1/runs", body, key));
+147 |         await background.tick();
+148 |         await background.idle();
+149 |         const current = await f.success(request(cookie, `/v1/entities/run/${admission.run.id}`));
+150 |         expect(current.status, JSON.stringify(current.diagnostic)).toBe("succeeded");
+                                                                         ^
+error: {"code":"NATIVE_UNKNOWN","category":"unknown","outcome":"unknown"}
+
+Expected: "succeeded"
+Received: "unknown"
+
+      at <anonymous> (/Users/vitoandareasmanik/Development/project/ngertiin/scripts/verification/nma079/native.test.ts:150:68)
+(fail) real account-mode admission executes both native harnesses through private Cua domains [42074.19ms]
+
+ 0 pass
+ 1 fail
+ 2 expect() calls
+Ran 1 test across 1 file. [42.89s]

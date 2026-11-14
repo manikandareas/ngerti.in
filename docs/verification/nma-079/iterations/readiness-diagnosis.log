@@ -1,0 +1,71 @@
+bun test v1.3.10 (30e609e0)
+
+tests/organizations/readiness.test.ts:
+(pass) every installed account surface declares authentication/scope and rejects missing credentials before input validation [938.01ms]
+(pass) normal HTTP admission and both broker executors keep two users of one Team agent private [7943.97ms]
+[DEBUG-nma079] subscription 4 | import { DomainError, id } from "../contracts";
+5 | import { type AccessContext, accessView, type Role } from "./contracts";
+6 | 
+7 | export type Transaction = PoolClient;
+8 | export type Permission = "member" | "manage" | "owner";
+9 | export const deny = () => new DomainError("SCOPE_DENIED", 403);
+                              ^
+error: SCOPE_DENIED
+ status: 403,
+   code: "SCOPE_DENIED"
+
+      at deny (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/src/organizations/database.ts:9:27)
+      at accessContext (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/src/organizations/database.ts:36:19)
+
+{"event":"persistence.subscription_failed"}
+[DEBUG-nma079] execution 4 | import { DomainError, id } from "../contracts";
+5 | import { type AccessContext, accessView, type Role } from "./contracts";
+6 | 
+7 | export type Transaction = PoolClient;
+8 | export type Permission = "member" | "manage" | "owner";
+9 | export const deny = () => new DomainError("SCOPE_DENIED", 403);
+                              ^
+error: SCOPE_DENIED
+ status: 403,
+   code: "SCOPE_DENIED"
+
+      at deny (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/src/organizations/database.ts:9:27)
+      at accessContext (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/src/organizations/database.ts:36:19)
+
+[DEBUG-nma079] subscription 4 | import { DomainError, id } from "../contracts";
+5 | import { type AccessContext, accessView, type Role } from "./contracts";
+6 | 
+7 | export type Transaction = PoolClient;
+8 | export type Permission = "member" | "manage" | "owner";
+9 | export const deny = () => new DomainError("SCOPE_DENIED", 403);
+                              ^
+error: SCOPE_DENIED
+ status: 403,
+   code: "SCOPE_DENIED"
+
+      at deny (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/src/organizations/database.ts:9:27)
+      at accessContext (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/src/organizations/database.ts:36:19)
+
+{"event":"persistence.subscription_failed"}
+[DEBUG-nma079] subscription 4 | import { DomainError, id } from "../contracts";
+5 | import { type AccessContext, accessView, type Role } from "./contracts";
+6 | 
+7 | export type Transaction = PoolClient;
+8 | export type Permission = "member" | "manage" | "owner";
+9 | export const deny = () => new DomainError("SCOPE_DENIED", 403);
+                              ^
+error: SCOPE_DENIED
+ status: 403,
+   code: "SCOPE_DENIED"
+
+      at deny (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/src/organizations/database.ts:9:27)
+      at accessContext (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/src/organizations/database.ts:36:19)
+
+{"event":"persistence.subscription_failed"}
+(pass) revoking membership during native work requests stop and retains its uncertain outcome without late publication [2783.36ms]
+(pass) generic entity inventory and organization switches never grant another actor's private data [1979.39ms]
+
+ 4 pass
+ 0 fail
+ 621 expect() calls
+Ran 4 tests across 1 file. [14.23s]

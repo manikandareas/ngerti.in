@@ -590,7 +590,7 @@ test("private Goals/Routine schedule under their retained execution principal wi
     f.domain.store.withDataContext(actor, () =>
       f.domain.lifecycle.claimNext(setup.thread_id, setup.agent_id),
     ),
-  ).rejects.toMatchObject({ code: "SCOPE_DENIED" });
+  ).rejects.toMatchObject({ code: "CONFLICT" });
   await background.stop();
 });
 

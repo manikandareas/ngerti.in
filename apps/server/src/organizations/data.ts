@@ -1,8 +1,9 @@
 import { createHmac, timingSafeEqual } from "node:crypto";
 import { Elysia } from "elysia";
 import { z } from "zod";
+import { routeAccess } from "../api-access";
 import { isAuthenticationRoute } from "../auth/http";
-import type { Authentication } from "../auth/service";
+import type { Authentication, Principal } from "../auth/service";
 import { DomainError, id } from "../contracts";
 import { Conversations } from "../conversations";
 import type { Lifecycle } from "../lifecycle";
@@ -29,11 +30,12 @@ export class ScopedData {
     const organizationId = id.parse(request.headers.get("X-Ngertiin-Organization"));
     const principal = this.auth.principal(request);
     const access = await this.organizations.context(request, organizationId);
-    return this.resolve(access, principal.validate);
+    return this.resolve(access, principal.validate, principal);
   }
   private async resolve(
     access: AccessContext,
     validatePrincipal: () => Promise<unknown> = async () => {},
+    principal?: Principal,
   ): Promise<DataContext> {
     const organizationId = access.organization_id;
     const grants = await this.lifecycle.store.teamGrants(organizationId);
@@ -65,21 +67,33 @@ export class ScopedData {
     }
     const managed = access.role === "member" ? [] : grants.map((grant) => grant.agent_id);
     const acquire = async (session: boolean) => {
+      if (session) await validatePrincipal();
       const connection = await this.auth.pool.connect();
       try {
         await connection.query("BEGIN");
         await connection.query("SELECT id FROM organization WHERE id=$1 FOR SHARE", [
           organizationId,
         ]);
-        if (session) await validatePrincipal();
-        await this.organizations.assertCurrent(access, !session);
-        return async () => {
+        const validate = async (privateWork = false) => {
+          if (session && principal) {
+            const current = await connection.query(
+              'SELECT s.id FROM session s JOIN "user" u ON u.id=s."userId" WHERE s.id=$1 AND s."userId"=$2 AND s."expiresAt">now() AND u."emailVerified"=true FOR SHARE OF s,u',
+              [principal.sessionId, principal.userId],
+            );
+            if (!current.rowCount || Date.now() >= principal.expires)
+              throw new DomainError("UNAUTHORIZED", 401);
+          }
+          return this.organizations.assertCurrent(access, !session || privateWork, connection);
+        };
+        await validate();
+        const release = async () => {
           try {
             await connection.query("ROLLBACK");
           } finally {
             connection.release();
           }
         };
+        return Object.assign(release, { validate });
       } catch (error) {
         await connection.query("ROLLBACK");
         connection.release();
@@ -124,15 +138,15 @@ export class ScopedData {
       )
     ).rows;
     for (const row of rows) {
-      const tx = await this.auth.pool.connect();
-      let access: AccessContext;
       try {
-        access = await accessContext(tx, row.user_id, row.organization_id);
-      } finally {
-        tx.release();
-      }
-      const context = await this.resolve(access);
-      try {
+        const tx = await this.auth.pool.connect();
+        let access: AccessContext;
+        try {
+          access = await accessContext(tx, row.user_id, row.organization_id);
+        } finally {
+          tx.release();
+        }
+        const context = await this.resolve(access);
         await context.validate(true);
         await this.lifecycle.store.withDataContext(context, action);
       } catch (error) {
@@ -384,6 +398,14 @@ export class ScopedData {
         "*",
         async ({ request }) => {
           const path = new URL(request.url).pathname;
+          const policy = routeAccess(path);
+          if (
+            ["public", "authentication_protocol"].includes(policy.authentication_class) ||
+            policy.scope === "authenticated_account" ||
+            policy.scope === "guarded_installation" ||
+            path === "/v1/harness/tools"
+          )
+            return api.handle(request);
           // Viewer URLs are session-bound capabilities checked by the viewer gateway on every frame/RPC.
           if (path.startsWith("/v1/machine/viewer/")) return api.handle(request);
           if (
@@ -406,12 +428,8 @@ export class ScopedData {
           await this.auth.authenticate(request);
           if (!(await store.legacyScopeReady())) throw deny();
           const context = await this.context(request);
-          // Until their resource isolation milestones, native/provider and machine control stay closed.
-          if (
-            /^\/v1\/(browser|harness)(\/|$)/.test(path) ||
-            /\/(sessions|prepare|reconcile|interactions|steer)$/.test(path)
-          )
-            throw deny();
+          // The retired browser controller is never an account-mode execution path.
+          if (/^\/v1\/browser(\/|$)/.test(path)) throw deny();
           this.checkCursor(request, context);
           this.requests.add(request);
           return store.withDataContext(context, async () => {

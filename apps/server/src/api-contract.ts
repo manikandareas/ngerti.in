@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { routeAccess } from "./api-access";
 import { operationResponse, operationSchemas } from "./api-responses";
 import { browserCapabilities } from "./browser/contracts";
 import { API_READINESS_GATE, domainEvent, errorCodes, goal, id, message, run } from "./contracts";
@@ -167,6 +168,7 @@ export function httpContract(routes: readonly Route[], accounts = false) {
       method,
       path,
       authentication: routeAuthentication(path, accounts),
+      ...(accounts ? { access: routeAccess(path) } : {}),
       idempotency:
         method === "POST" && (durablePaths.has(path) || organizationCommand)
           ? "required_uuid"
@@ -233,7 +235,7 @@ export function consumerContract(machineRuntime = false) {
         "generation",
         "input_lease_revision",
       ],
-      scoped_native_admission: "closed_pending_nma_077_078",
+      scoped_native_admission: "organization_actor_provider_and_execution_domain_fenced",
     },
     product_tools: productToolCatalog(machineRuntime ? "machine" : "browser"),
     protocols: {
@@ -267,7 +269,7 @@ export function consumerContract(machineRuntime = false) {
           "Request disappearance, native submission acknowledgement and run termination are separate observations; none establishes that an approved action completed.",
         bounds: { records_per_run: 1000, snapshot_bytes: 131072, journal_bytes: 2097152 },
         privacy:
-          "Installation-owner private normalized requests and redacted answer displays only; no opaque native event or response-body log.",
+          "Organization/user-private normalized requests and redacted answer displays only; no opaque native event or response-body log.",
       },
       event: {
         schema_version: 1,

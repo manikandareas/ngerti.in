@@ -13,6 +13,7 @@ import { registerMachineRoutes } from "./api/machines";
 import { registerRunRoutes } from "./api/runs";
 import type { ApiServices } from "./api/services";
 import { registerWorkspaceRoutes } from "./api/workspaces";
+import { routeAccess } from "./api-access";
 import { consumerContract, httpContract } from "./api-contract";
 import { authenticationContract } from "./auth/contracts";
 import { registerAuthenticationRoutes } from "./auth/http";
@@ -98,6 +99,62 @@ export async function createApi(
             authentication: authenticationContract(services.authentication.config.origin),
             organizations: organizationsContract(),
             scoped_data: scopedDataContract(),
+            access_model: {
+              version: "nma-079.1",
+              classes: [
+                "public",
+                "authentication_protocol",
+                "operator",
+                "bootstrap_owner_session",
+                "user",
+                "run_lease",
+                "ticket",
+              ],
+              operator: "local_cli_only_no_http_elevation",
+              database: "transaction_local_non_owner_non_superuser_non_bypassrls_role",
+              entity_policy: "organization_and_actor_rls_with_explicit_published_resource_grants",
+              tool_policy: "server_derived_run_lease_and_current_resource_authorization",
+              surfaces: api.routes.map(({ method, path }) => ({
+                method,
+                path,
+                ...routeAccess(path),
+              })),
+              entities: Object.fromEntries(
+                Object.keys(contractDocument().entities).map((kind) => [
+                  kind,
+                  {
+                    scope: "organization_and_actor",
+                    sharing: [
+                      "agent",
+                      "published_knowledge",
+                      "connection",
+                      "ai_selection",
+                      "app_connection",
+                      "skill",
+                      "skill_revision",
+                      "skill_assignment",
+                    ].includes(kind)
+                      ? "explicit_published_configuration_or_current_resource_grant"
+                      : "private",
+                    reads: "same_rls_for_entity_list_detail_references_and_event_projection",
+                  },
+                ]),
+              ),
+              commands: Object.keys(contractDocument().commands),
+              tools: consumerContract(services.tools.machines !== undefined).product_tools.map(
+                (tool) => tool.name,
+              ),
+              events: "commit_ordered_actor_and_grant_filtered_signed_context_cursors",
+              viewers: "issuing_user_device_domain_generation_and_input_lease",
+              privileged_boundaries: [
+                "authentication_and_organization_metadata",
+                "schema_migration_and_offline_import",
+                "guarded_legacy_binding",
+                "bounded_team_and_connection_grant_lookup",
+                "exact_reserved_app_effect_settlement",
+                "exact_reserved_scoped_run_stop_and_settlement",
+              ],
+            },
           }
         : {}),
     }));

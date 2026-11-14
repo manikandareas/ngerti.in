@@ -105,6 +105,7 @@ export function createHttp(
         await authentication.authenticate(request);
         if (
           !isAuthenticationRoute(request) &&
+          new URL(request.url).pathname !== "/v1/contracts" &&
           !isOrganizationPath(new URL(request.url).pathname) &&
           !scoped?.requests.has(request)
         )

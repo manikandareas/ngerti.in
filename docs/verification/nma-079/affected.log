@@ -1,0 +1,143 @@
+bun test v1.3.10 (30e609e0)
+
+tests/run-recovery.test.ts:
+(pass) unknown work is reconciled automatically with backoff and no prompt replay [1451.51ms]
+(pass) a lost native completion is recovered through the executing owner and fences late output [1082.45ms]
+(pass) silence with no terminal receipt preserves running work and its tools [1187.70ms]
+(pass) current native observations postpone stale checks during a long valid run [1289.08ms]
+(pass) foreign receipts and unexpected cancellation cannot release an unknown lane [1475.03ms]
+(pass) an unrequested native interruption remains unresolved [1526.45ms]
+(pass) closing recovery cancels timers and prevents further receipt reads [1140.68ms]
+(pass) automatic group recovery keeps the writer fenced until its owned transport is quiescent [1221.01ms]
+
+tests/background.test.ts:
+(pass) scheduler atomically persists one occurrence/run and survives repeated ticks and restart [417.20ms]
+(pass) interval recovery collapses missed occurrences and holds overlapping work [270.33ms]
+(pass) paused responsibilities do not fire routines after restart [390.62ms]
+(pass) dispatcher waits for a registered adapter and has no implicit executor [219.83ms]
+(pass) dispatcher uses one lane at a time and records native acknowledgement before completion [375.60ms]
+(pass) adapter exceptions become unknown and are never automatically retried [275.40ms]
+(pass) native stop confirmation differs from shutdown timeout and late completion is fenced [408.47ms]
+
+tests/conversation-latency.test.ts:
+(pass) commit notifications coalesce nested writes and ignore rolled-back commands [176.89ms]
+(pass) SSE wakes on a committed event without waiting for its periodic heartbeat [162.66ms]
+(pass) committed admission and settlement drain FIFO without waiting for a 60-second scheduler tick [450.25ms]
+(pass) configuration preparation failures stay explicit and retry the exact queued input [326.10ms]
+(pass) repairing configuration resumes the same blocked input without a polling delay [512.67ms]
+(pass) a rejected claim does not spin or let later queued inputs bypass the blocked head [690.77ms]
+(pass) Jev makes one typed SDK request and keeps its API key out of the routing state [9.83ms]
+(pass) Jev rate limits do not trigger the SDK's default retry cascade [4.91ms]
+(pass) a persisted unfinished pure decision recomputes once and rejects the old attempt [367.77ms]
+(pass) Jev selects one valid member without creating a native routing session or importing DM history [347.17ms]
+(pass) explicit mentions bypass Jev and stale membership fences a late decision [362.42ms]
+(pass) ambiguous Jev results create exactly one explicit member-model fallback [421.90ms]
+(pass) switching back to the member router drains a persisted pure Jev decision without replaying work [404.94ms]
+(pass) Jev service failures reject the original route and can retry without duplicate messages [384.61ms]
+(pass) ordinary complete handoffs settle the task without a third model run [518.84ms]
+
+tests/harness.test.ts:
+(pass) DM prewarm performs no inference and reuses skills, transport and presentation-only revisions [1584.98ms]
+(pass) DM prewarm replaces the least recently used idle transport and preserves native identities [1179.76ms]
+(pass) speculative DM preparation never evicts transports while active or unknown work exists [806.06ms]
+(pass) minimum policies reject below-floor and prerelease versions for both harnesses [5.87ms]
+(pass) real executable probes distinguish supported, old, missing, unknown and failed without returning diagnostics [2171.12ms]
+(pass) connection API persists secret references and independent evidence states across restart [260.26ms]
+{"event":"attachments.materialization_pending"}
+(pass) API rejects billing mismatches, secret values and caller-supplied owner identity [197.95ms]
+(pass) isolated native-login environment strips inherited billing keys; selected keys are connection-specific [189.03ms]
+(pass) credential files fail closed on missing or public permissions [186.27ms]
+(pass) diagnostic redaction buffers split UTF-8/secret records and discards oversized fragments [5.56ms]
+(pass) owned native processes run concurrently with separate environment and redact fragmented stderr [148.13ms]
+(pass) two harnesses, accounts, models and agents execute concurrently through scoped product tools [1515.40ms]
+(pass) login, catalog failure and completed inference remain separate observations [340.88ms]
+(pass) native account cannot silently switch selected authentication or billing [362.39ms]
+(pass) unknown resume never starts a replacement session [324.81ms]
+(pass) concurrent opens share one lane and separate sessions for two agents on one connection [551.51ms]
+(pass) grant revocation while native initialization waits prevents session binding [374.72ms]
+(pass) connection revoke retires an initializing native process before deleting auth state and leaves other connections alive [514.38ms]
+(pass) scope, private resources, current grants and terminal runs are rechecked on each tool call [782.99ms]
+(pass) MCP HTTP round trip uses scoped leases and refuses the installation token [1133.50ms]
+(pass) grant change between settings and prompt blocks final dispatch [676.90ms]
+(pass) native acceptance followed by failure becomes unknown and blocks retry [870.04ms]
+(pass) native rejection is failed; malformed terminal identity remains unknown [1551.40ms]
+(pass) native stop receipt confirms cancellation [905.27ms]
+(pass) native text redaction covers secrets split across events [940.02ms]
+{"event":"attachments.materialization_pending"}
+{"event":"attachments.materialization_pending"}
+{"event":"attachments.materialization_pending"}
+{"event":"attachments.materialization_pending"}
+{"event":"attachments.materialization_pending"}
+(pass) API exposes host detection states for both manifests and authenticated revocation [211.52ms]
+(pass) tool capability revocation during an asynchronous handler blocks its final effect [643.08ms]
+(pass) broker shutdown fences late completion and text after an unconfirmed native stop [959.72ms]
+(pass) MCP transport validates origin/protocol, initialization and notification responses [834.58ms]
+(pass) native account change after session initialization cannot dispatch under the old connection [606.99ms]
+(pass) a connection change starts a separate native session and retains the previous mapping [397.21ms]
+(pass) version and executable failures cannot reach the adapter connect boundary [380.72ms]
+(pass) protocol request and close deadlines bound an unresponsive client without fabricating login [244.26ms]
+(pass) two simultaneous key connections on the same harness retain their selected accounts and models [1463.75ms]
+(pass) concurrent steering receipts send once and a lost acknowledgement never resends [594.53ms]
+(pass) native receipt reads recheck revocation before committing recovered output [442.39ms]
+(pass) owner receipt inspection releases revoked group work without restoring its workspace or publishing its output [664.54ms]
+(pass) an unconfirmed native stop reaches a bounded unknown outcome and fences late events [910.95ms]
+
+tests/organizations/readiness.test.ts:
+(pass) every installed account surface declares authentication/scope and rejects missing credentials before input validation [1174.95ms]
+(pass) normal HTTP admission and both broker executors keep two users of one Team agent private [10328.93ms]
+{"event":"persistence.subscription_failed"}
+(pass) revoking membership during native work retains the matching cancelled outcome without late publication [3593.71ms]
+{"event":"persistence.subscription_failed"}
+(pass) revoking membership during native work retains the matching unknown outcome without late publication [3079.38ms]
+(pass) authority replacement fences accepted scoped work and preserves the queued lane without resubmitting [2116.03ms]
+(pass) generic entity inventory and organization switches never grant another actor's private data [3097.60ms]
+(pass) concurrent scoped queries reuse their authorization fence without exhausting the auth pool [1178.91ms]
+
+tests/organizations/surfaces.test.ts:
+(pass) account consumers exercise administrative metadata, conversation creation and private learning surfaces [2866.70ms]
+(pass) account consumers exercise private group routing, Team publication and assignment [2163.14ms]
+(pass) account consumers exercise run-owned publication and durable responsibility commands [6232.35ms]
+(pass) account consumers exercise private human replies and device-bound Computer renewal [8096.80ms]
+(pass) account consumers exercise selected-provider metadata, preparation and private run controls [6281.39ms]
+(pass) account consumers exercise private working-file, derived-artifact and responsibility surfaces [5036.30ms]
+(pass) account consumers exercise app discovery, reconnect and private revocation without ambient app identity [3419.69ms]
+(pass) only the issued live run lease enters the private MCP endpoint [5494.65ms]
+
+tests/auth/security.test.ts:
+(pass) account mode fails closed on missing secrets, insecure origins or unsafe callbacks [10.60ms]
+(pass) native callback rejects wrong state, issuer, redirect, duplicate fields and replay [1023.16ms]
+(pass) token endpoint rejects wrong verifier, redirect, audience, code replay and client registration [1121.27ms]
+(pass) expired access/device sessions fail API, SSE and renewal without affecting another device [1081.28ms]
+(pass) revocation closes an existing HTTP SSE stream and preserves another device [1524.60ms]
+(pass) viewer tickets are bound to a live device and cannot be renewed from another device [1585.55ms]
+(pass) password recovery revokes native offline credentials and leaves no auth secrets in domain records [1092.17ms]
+(pass) account-mode export identifies auth classes and the verified multi-user API gate [1000.73ms]
+(pass) HTTPS configuration serializes Secure cookies and ignores spoofed proxy addresses [989.25ms]
+(pass) rate limits survive changing untrusted forwarding headers [899.18ms]
+(pass) a native device outlives browser logout and access-token revocation closes its stream [1419.64ms]
+
+tests/machines/authorization.test.ts:
+(pass) real user sessions resolve private machines and a copied viewer ticket cannot cross users or devices [3186.01ms]
+(pass) revoking the actual issuing login closes existing media and rejects further viewer RPCs [2508.62ms]
+(pass) removing an organization member closes their already-open media and invalidates clipboard/file access [2915.94ms]
+
+tests/machines/execution-domains.test.ts:
+(pass) lazy resolution coalesces concurrent requests and persists one organization/user domain without native I/O [410.94ms]
+(pass) different humans and organizations receive different files while one human's agents cooperate [1261.61ms]
+(pass) PostgreSQL rejects a cross-domain machine reference even through the restricted application role [841.54ms]
+(pass) private uploads materialize into the resolved domain and immutable downloads survive working-copy edits [754.70ms]
+(pass) scoped resolution never returns the singleton when the operator has not enabled domain provisioning [815.90ms]
+(pass) viewer tickets reject another organization/user and read-only clipboard or filesystem RPCs [902.81ms]
+(pass) human control is session-bound and stale revisions cannot acquire or reactivate a viewer [1492.45ms]
+(pass) membership or grant changes revoke existing viewers and do not resurrect a racing ticket issuance [1262.76ms]
+(pass) backend restart preserves domain identity and private control credentials without provision or replacement [787.20ms]
+(pass) operator policy is explicit, bounded and private [446.90ms]
+(pass) run-tool leases restore their private domain outside the initiating request and reject foreign scope or revoked grants [3081.64ms]
+(pass) rolled-back domain metadata is not cached as a retained binding [870.27ms]
+(pass) loss of a retained private configuration requires reconciliation instead of generating replacement credentials [619.92ms]
+(pass) immutable private artifact downloads do not require reattaching a former working machine [887.21ms]
+
+ 111 pass
+ 0 fail
+ 1289 expect() calls
+Ran 111 tests across 9 files. [143.90s]

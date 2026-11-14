@@ -132,8 +132,8 @@ export class Organizations {
       tx.release();
     }
   }
-  async assertCurrent(context: AccessContext, privateWork = false) {
-    const tx = await this.auth.pool.connect();
+  async assertCurrent(context: AccessContext, privateWork = false, transaction?: Transaction) {
+    const tx = transaction ?? (await this.auth.pool.connect());
     try {
       const current = await accessContext(tx, context.user_id, context.organization_id);
       if (
@@ -145,7 +145,7 @@ export class Organizations {
         throw deny();
       return current;
     } finally {
-      tx.release();
+      if (!transaction) tx.release();
     }
   }
   context(request: Request, organizationId: string) {

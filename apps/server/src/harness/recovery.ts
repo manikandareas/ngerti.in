@@ -1,3 +1,4 @@
+import { AsyncResource } from "node:async_hooks";
 import type { Store } from "../store";
 
 export interface RecoveryPolicy {
@@ -53,7 +54,7 @@ export class RunRecovery {
 
   watch(runId: string, inspect: () => Promise<void>) {
     const watch: Watch = {
-      inspect,
+      inspect: AsyncResource.bind(inspect),
       next: Date.now() + this.#policy.stale_ms,
       attempts: 0,
       observation: 0,
@@ -71,23 +72,27 @@ export class RunRecovery {
     };
   }
 
-  private async tick() {
+  private async tick(): Promise<void> {
     if (this.#closed || this.store.closed) return;
+    if (this.store.dataContext) return this.store.outsideDataContext(() => this.tick());
     const now = Date.now();
-    const unknown = (await this.store.list("run", { status: "unknown" })).filter(
-      (run) => run.status === "unknown",
-    );
-    const unresolved = new Set(unknown.map((run) => run.id));
-    for (const id of this.#unknown.keys()) if (!unresolved.has(id)) this.#unknown.delete(id);
-    for (const run of unknown) {
-      if (!run.binding_id || !(run.native_run_id ?? run.native_dispatch_id)) continue;
-      let check = this.#unknown.get(run.id);
-      if (!check) {
-        check = { next: now, attempts: 0, observation: 0 };
-        this.#unknown.set(run.id, check);
+    const unresolved = new Set<string>();
+    const collect = async () => {
+      const unknown = await this.store.list("run", { status: "unknown" });
+      for (const run of unknown) {
+        unresolved.add(run.id);
+        if (!run.binding_id || !(run.native_run_id ?? run.native_dispatch_id)) continue;
+        let check = this.#unknown.get(run.id);
+        if (!check) {
+          check = { next: now, attempts: 0, observation: 0 };
+          this.#unknown.set(run.id, check);
+        }
+        this.inspect(run.id, check, () => this.reconcile(run.id));
       }
-      this.inspect(run.id, check, () => this.reconcile(run.id));
-    }
+    };
+    await collect();
+    await this.store.scopeRunner?.(collect);
+    for (const id of this.#unknown.keys()) if (!unresolved.has(id)) this.#unknown.delete(id);
     for (const [id, watch] of this.#watches)
       this.inspect(id, watch, watch.inspect, this.#policy.stale_ms);
   }

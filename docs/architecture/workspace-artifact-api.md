@@ -1,5 +1,7 @@
 # Workspace and artifact API v1.22.0
 
+NMA-079 amendment: the [2.0.0 server-organizations consumer contract](server-organizations-api.md) and [verification report](../verification/nma-079/README.md) own current account-mode authentication, scope, normal native dispatch and readiness. Earlier versioned examples and pending-gate statements below retain their captured scope. Web/Tauri UI and deployment remain later milestones.
+
 Planned November 12 amendment: [the server-organizations plan](server-organizations-plan-2026-11-12.md) and NMA-072–083 define PostgreSQL, authenticated organization/user scope, private Team-agent interactions and explicit connections. This guide retains its current/recorded implementation boundary until the new NMA-079 API gate verifies the changed contract; its owner-only examples do not establish multi-user authorization.
 
 Current machine amendment: organization-scoped working files and attachment copies resolve to the current human's [execution domain](execution-domains.md). Saved-artifact bytes remain immutable, with conversation-scoped metadata and downloads independent of reattaching a former working machine. The retained single-owner mode uses the historical cooperative Cua desktop. Host-only private working-root assumptions below apply to the original contract. Use [the current architecture](overview.md) and [execution-domain verification](../verification/nma-076/README.md) for the later file/process boundary.

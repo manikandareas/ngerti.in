@@ -1,0 +1,27 @@
+bun test v1.3.10 (30e609e0)
+
+tests/run-recovery.test.ts:
+(pass) unknown work is reconciled automatically with backoff and no prompt replay [2097.37ms]
+(pass) a lost native completion is recovered through the executing owner and fences late output [1478.39ms]
+(pass) silence with no terminal receipt preserves running work and its tools [1452.56ms]
+(pass) current native observations postpone stale checks during a long valid run [1702.38ms]
+(pass) foreign receipts and unexpected cancellation cannot release an unknown lane [1341.68ms]
+(pass) an unrequested native interruption remains unresolved [1480.64ms]
+(pass) closing recovery cancels timers and prevents further receipt reads [1324.50ms]
+(pass) automatic group recovery keeps the writer fenced until its owned transport is quiescent [1699.09ms]
+
+tests/organizations/readiness.test.ts:
+(pass) every installed account surface declares authentication/scope and rejects missing credentials before input validation [1422.93ms]
+(pass) normal HTTP admission and both broker executors keep two users of one Team agent private [15768.05ms]
+{"event":"persistence.subscription_failed"}
+(pass) revoking membership during native work retains the matching cancelled outcome without late publication [6923.66ms]
+{"event":"persistence.subscription_failed"}
+(pass) revoking membership during native work retains the matching unknown outcome without late publication [8323.24ms]
+(pass) authority replacement fences accepted scoped work and preserves the queued lane without resubmitting [5219.37ms]
+(pass) generic entity inventory and organization switches never grant another actor's private data [8326.97ms]
+(pass) concurrent scoped queries reuse their authorization fence without exhausting the auth pool [3836.52ms]
+
+ 15 pass
+ 0 fail
+ 675 expect() calls
+Ran 15 tests across 2 files. [63.35s]

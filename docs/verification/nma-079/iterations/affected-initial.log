@@ -1,0 +1,145 @@
+bun test v1.3.10 (30e609e0)
+
+tests/conversation-latency.test.ts:
+(pass) commit notifications coalesce nested writes and ignore rolled-back commands [317.21ms]
+(pass) SSE wakes on a committed event without waiting for its periodic heartbeat [272.81ms]
+(pass) committed admission and settlement drain FIFO without waiting for a 60-second scheduler tick [485.28ms]
+(pass) configuration preparation failures stay explicit and retry the exact queued input [472.80ms]
+(pass) repairing configuration resumes the same blocked input without a polling delay [712.00ms]
+201 |   const second = await f.admit("Later input");
+202 |   await until(
+203 |     async () => (await f.store.get("run", first.run.id)).preparation?.state === "blocked",
+204 |   );
+205 |   await Bun.sleep(20);
+206 |   expect(prepared).toBe(1);
+                         ^
+error: expect(received).toBe(expected)
+
+Expected: 1
+Received: 2
+
+      at <anonymous> (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/tests/conversation-latency.test.ts:206:20)
+(fail) a rejected claim does not spin or let later queued inputs bypass the blocked head [522.75ms]
+(pass) Jev makes one typed SDK request and keeps its API key out of the routing state [7.33ms]
+(pass) Jev rate limits do not trigger the SDK's default retry cascade [4.67ms]
+(pass) a persisted unfinished pure decision recomputes once and rejects the old attempt [367.29ms]
+(pass) Jev selects one valid member without creating a native routing session or importing DM history [304.90ms]
+(pass) explicit mentions bypass Jev and stale membership fences a late decision [327.67ms]
+(pass) ambiguous Jev results create exactly one explicit member-model fallback [383.26ms]
+(pass) switching back to the member router drains a persisted pure Jev decision without replaying work [291.23ms]
+(pass) Jev service failures reject the original route and can retry without duplicate messages [325.54ms]
+(pass) ordinary complete handoffs settle the task without a third model run [582.53ms]
+
+tests/organizations/data.test.ts:
+(pass) random default names come from the single-syllable library subset and exhaust unused names first [3.82ms]
+(pass) membership provisioning creates one private randomly named default agent, DM and authored welcome without inference [1315.08ms]
+(pass) two users share Team configuration while their DM, memory, uploads and receipts stay private even from an administrator [1469.67ms]
+(pass) personal preference overlays and explicit published knowledge cannot rewrite or automatically publish private context [995.74ms]
+(pass) RLS uses a non-owner role and transaction-local settings across pooled users and organization boundaries [1212.60ms]
+(pass) context-bound replay rejects cross-user cursors and permission changes close old event access [1183.08ms]
+(pass) private file publication, immutable downloads, parsed data and command replay stay in the initiating organization [1441.29ms]
+(pass) Workgroup invocation is distinct from administration and Team ownership survives creator offboarding [887.37ms]
+(pass) removed/rejoined membership cannot replay prior receipts or resume its private work implicitly [917.53ms]
+(pass) database references reject cross-user scope and concurrent organization tabs retain independent commands [1090.31ms]
+(pass) SSE retains its captured private context outside the request and closes on membership revocation [914.40ms]
+(pass) guarded legacy binding backfills retained private entities/events and blocks old owner-wide routes [920.12ms]
+(pass) scoped application SQL also works through a real non-owner, non-superuser database login [687.42ms]
+588 |   expect(executed).toBe(false);
+589 |   await expect(
+590 |     f.domain.store.withDataContext(actor, () =>
+591 |       f.domain.lifecycle.claimNext(setup.thread_id, setup.agent_id),
+592 |     ),
+593 |   ).rejects.toMatchObject({ code: "SCOPE_DENIED" });
+                  ^
+error: expect(received).toMatchObject(expected)
+
+- {
+-   "code": "SCOPE_DENIED",
+- }
++ [DomainError: CONFLICT]
+
+- Expected  - 3
++ Received  + 1
+
+      at <anonymous> (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/tests/organizations/data.test.ts:593:13)
+(fail) private Goals/Routine schedule under their retained execution principal without borrowing a UI session or shared native resources [2909.13ms]
+(pass) private groups and routing cannot enroll another user's agent or another organization's Team agent [973.03ms]
+(pass) Team-agent native-binding metadata is actor-private and cannot reference another user's connection [1149.76ms]
+(pass) immutable command receipts recheck current Team-agent invocation grants before replay [908.59ms]
+
+tests/organizations/providers.test.ts:
+(pass) personal provider connections remain private; organization connections require management and an explicit audience [906.87ms]
+(pass) private conversation and user choices inherit only when unset and freeze connection/model on admission [2521.07ms]
+(pass) provider snapshots cannot be rewritten or forged across actors even through SQL-backed entity writes [1341.22ms]
+(pass) pre-provider scoped queued records can normalize a missing null snapshot without accepting a different selection [1696.16ms]
+(pass) same organization account has distinct native homes for each actor, conversation and connection generation [1238.66ms]
+(pass) scheduled responsibilities retain their selected connection after private preferences change [1792.24ms]
+(pass) scoped API key submission and rotation retain encrypted bytes and secret-free receipts without selecting a replacement implicitly [1564.05ms]
+
+tests/organizations/readiness.test.ts:
+(pass) every installed account surface declares authentication/scope and rejects missing credentials before input validation [1460.51ms]
+(pass) normal HTTP admission and both broker executors keep two users of one Team agent private [10485.87ms]
+{"event":"persistence.subscription_failed"}
+{"event":"persistence.subscription_failed"}
+{"event":"persistence.subscription_failed"}
+(pass) revoking membership during native work retains the matching cancelled outcome without late publication [6212.83ms]
+{"event":"persistence.subscription_failed"}
+{"event":"persistence.subscription_failed"}
+{"event":"persistence.subscription_failed"}
+(pass) revoking membership during native work retains the matching unknown outcome without late publication [3407.48ms]
+(pass) authority replacement fences accepted scoped work and preserves the queued lane without resubmitting [2296.39ms]
+(pass) generic entity inventory and organization switches never grant another actor's private data [2263.11ms]
+
+tests/organizations/integrations.test.ts:
+(pass) organization accounts require management; personal identity and account routing stay private [1156.25ms]
+(pass) shared app execution enforces resource arguments and persists actor-attributed receipts [1440.51ms]
+(pass) OAuth completion cannot publish after the initiating member is removed [798.25ms]
+(pass) revocation after async native preflight blocks dispatch; stale sessions cannot expose disabled schemas [1394.95ms]
+(pass) membership revocation suppresses the result while retaining a known completed external effect [1105.13ms]
+(pass) unknown effects hold a shared account across different members and command identities [1697.32ms]
+(pass) pending OAuth stays bound to its initiator even after an unsuccessful refresh [977.58ms]
+(pass) Workgroup removal invalidates retained app sessions and new requests cannot see the account [1012.06ms]
+(pass) refresh refuses another connected account and never falls back to an active account of the same toolkit [965.88ms]
+(pass) selected provider bindings isolate inherited packages and do not change app account routing [1871.74ms]
+(pass) Team skill publication is management-only, immutable and pinned; private overlays cannot replace it [1366.92ms]
+
+tests/auth/security.test.ts:
+(pass) account mode fails closed on missing secrets, insecure origins or unsafe callbacks [3.48ms]
+(pass) native callback rejects wrong state, issuer, redirect, duplicate fields and replay [468.21ms]
+(pass) token endpoint rejects wrong verifier, redirect, audience, code replay and client registration [531.79ms]
+(pass) expired access/device sessions fail API, SSE and renewal without affecting another device [481.58ms]
+(pass) revocation closes an existing HTTP SSE stream and preserves another device [532.53ms]
+(pass) viewer tickets are bound to a live device and cannot be renewed from another device [558.12ms]
+(pass) password recovery revokes native offline credentials and leaves no auth secrets in domain records [544.82ms]
+(pass) account-mode export identifies auth classes and keeps the multi-user API gate pending [550.78ms]
+(pass) HTTPS configuration serializes Secure cookies and ignores spoofed proxy addresses [508.53ms]
+(pass) rate limits survive changing untrusted forwarding headers [303.08ms]
+(pass) a native device outlives browser logout and access-token revocation closes its stream [988.73ms]
+
+tests/machines/authorization.test.ts:
+(pass) real user sessions resolve private machines and a copied viewer ticket cannot cross users or devices [1062.00ms]
+(pass) revoking the actual issuing login closes existing media and rejects further viewer RPCs [689.57ms]
+(pass) removing an organization member closes their already-open media and invalidates clipboard/file access [1753.03ms]
+
+tests/persistence/postgres.test.ts:
+(pass) an empty optional application database URL retains the configured database and restricted statement role [115.01ms]
+(pass) nested failure restores its savepoint while an outer command commits one receipt [157.39ms]
+(pass) concurrent duplicate commands and lost acknowledgements retain one admission [194.22ms]
+(pass) commit-ordered clocks prevent a blocked lower cursor from disappearing behind replay [191.15ms]
+(pass) authority session loss fences an in-flight publication and a pooled reconnect never owns its lock [165.69ms]
+(pass) receipt replay reauthorizes, and interrupted external reservations retain unknown identity [151.12ms]
+(pass) bounded indexed reads retain keyset order across pages [195.47ms]
+(pass) offline import reconciles IDs, events, receipts and native bindings and rehearses verified rollback [411.48ms]
+(pass) filtered replay advances through hidden events and retains a consistent high watermark [170.80ms]
+(pass) a killed authority releases its session and restart preserves unknown native work without dispatching it twice [622.78ms]
+(pass) loss of the authority session aborts active native work and leaves recovery unknown [314.80ms]
+(pass) a changed applied migration refuses startup without changing domain history or retaining its authority lock [181.56ms]
+
+2 tests failed:
+(fail) a rejected claim does not spin or let later queued inputs bypass the blocked head [522.75ms]
+(fail) private Goals/Routine schedule under their retained execution principal without borrowing a UI session or shared native resources [2909.13ms]
+
+ 80 pass
+ 2 fail
+ 1099 expect() calls
+Ran 82 tests across 8 files. [88.22s]

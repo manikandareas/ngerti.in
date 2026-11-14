@@ -1,5 +1,7 @@
 # Private and Team-agent data
 
+NMA-079 amendment: the [2.0.0 server-organizations consumer contract](server-organizations-api.md) and [verification report](../verification/nma-079/README.md) own current account-mode authentication, scope, normal native dispatch and readiness. Earlier versioned examples and pending-gate statements below retain their captured scope. Web/Tauri UI and deployment remain later milestones.
+
 [NMA-075](../backlog/NMA-075.md) implements the application-data boundary following [organization administration](organization-access.md). Its account-mode contract is `nma-075.1`, exported as `scoped_data` by `/v1/contracts`. The historical local-development contract and native provider evidence retain their original boundaries. The broader API gate remains NMA-079.
 
 ## Identity and request context

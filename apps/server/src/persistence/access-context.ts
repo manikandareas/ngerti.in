@@ -1,3 +1,6 @@
+export type ScopeLease = (() => Promise<void>) & {
+  validate?: (privateWork?: boolean) => Promise<unknown>;
+};
 export type DataContext = {
   organizationId: string;
   userId: string;
@@ -9,8 +12,8 @@ export type DataContext = {
   canManage: boolean;
   allowedConnections?: string[];
   allowedAppConnections?: string[];
-  acquire?(): Promise<() => Promise<void>>;
-  acquireResources?(): Promise<() => Promise<void>>;
+  acquire?(): Promise<ScopeLease>;
+  acquireResources?(): Promise<ScopeLease>;
   validate(privateWork?: boolean): Promise<unknown>;
   validateAudience?(id: string): Promise<void>;
   validateResources?(): Promise<unknown>;

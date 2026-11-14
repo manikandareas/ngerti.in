@@ -360,7 +360,7 @@
     "ticket": "NMA-079",
     "title": "Server organizations API and isolation readiness gate",
     "plan": "Harness-first",
-    "status": "Backlog",
+    "status": "Done",
     "order": 16.77,
     "layer": "Engine / Backend",
     "depends_on": [

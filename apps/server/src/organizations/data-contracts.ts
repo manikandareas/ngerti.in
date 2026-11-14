@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { SCOPED_API_READINESS_GATE } from "../contracts";
 import { base, id } from "../contracts/base";
 
 export const preferenceChanges = z.strictObject({
@@ -28,7 +29,7 @@ export const teamAgentWrite = z.strictObject({
 export function scopedDataContract() {
   return {
     version: "nma-075.1",
-    readiness_gate: "pending_nma_079",
+    readiness_gate: SCOPED_API_READINESS_GATE,
     organization_header: "X-Ngertiin-Organization",
     cursor_header: "X-Ngertiin-Event-Context",
     cursors: "server_signed_user_organization_membership_and_authorization_generation",
@@ -40,9 +41,9 @@ export function scopedDataContract() {
       selection: "conversation_then_user_then_allowed_organization_only_when_unset",
       admission: "immutable_connection_generation_account_model_billing_snapshot",
       credentials: "server_only_encrypted_keys_actor_private_native_homes",
-      native_execution: "closed_pending_nma_079",
+      native_execution: "scoped_selected_provider_and_private_execution_domain",
     },
-    native_execution: "closed_pending_nma_079",
+    native_execution: "scoped_selected_provider_and_private_execution_domain",
     applications: {
       version: "nma-078.1",
       ownership: ["personal", "organization"],

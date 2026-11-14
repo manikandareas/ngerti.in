@@ -1,3 +1,4 @@
+import { AsyncResource } from "node:async_hooks";
 import { Artifacts } from "../artifacts";
 import { Attachments } from "../attachments/service";
 import type { ExecutorContext, HarnessExecutor } from "../background";
@@ -5,6 +6,7 @@ import { agentInput, DomainError, type Entity } from "../contracts";
 import type { NativeSkillMetadata } from "../learning/contracts";
 import type { Lifecycle } from "../lifecycle";
 import { prepareVisualInputs } from "../multimodal";
+import type { DataContext } from "../persistence/access-context";
 import { RunControls } from "../run-controls";
 import { observeToolActivity } from "../runs/activity";
 import { InteractionJournal } from "../runs/interaction-journal";
@@ -32,6 +34,7 @@ import type { HarnessDetector } from "./runtime";
 import type { ProductTools } from "./tools";
 
 type Session = {
+  scope?: DataContext;
   client: HarnessClient;
   launch: LaunchContext;
   binding: Entity<"binding">;
@@ -79,6 +82,7 @@ export class HarnessBroker {
   readonly connections: Connections;
   readonly #interactionJournal: InteractionJournal;
   readonly #sessions = new Map<string, Session>();
+  readonly #executingLanes = new Set<string>();
   readonly #opening = new Map<string, Promise<Session>>();
   readonly #openingConnections = new Map<string, string>();
   readonly #openingControllers = new Map<AbortController, string>();
@@ -224,17 +228,33 @@ export class HarnessBroker {
       this.#idleTimers.delete(lane);
       if (this.#closed || this.lifecycle.store.closed || this.#sessions.get(lane) !== session)
         return;
-      const busy = (
-        await this.lifecycle.store.list("run", {
-          thread_id: session.binding.thread_id,
-          agent_id: session.binding.agent_id,
-        })
-      ).some(
-        (run) =>
-          run.thread_id === session.binding.thread_id &&
-          run.agent_id === session.binding.agent_id &&
-          ["queued", "dispatching", "running", "cancel_requested", "unknown"].includes(run.status),
-      );
+      let busy = this.#executingLanes.has(lane);
+      try {
+        const read = () =>
+          this.lifecycle.store.list("run", {
+            thread_id: session.binding.thread_id,
+            agent_id: session.binding.agent_id,
+          });
+        const runs = await this.lifecycle.store.outsideDataContext(() =>
+          session.scope ? this.lifecycle.store.withDataContext(session.scope, read) : read(),
+        );
+        busy ||= runs.some(
+          (run) =>
+            run.thread_id === session.binding.thread_id &&
+            run.agent_id === session.binding.agent_id &&
+            ["queued", "dispatching", "running", "cancel_requested", "unknown"].includes(
+              run.status,
+            ),
+        );
+      } catch (error) {
+        if (
+          !(error instanceof DomainError) ||
+          !["SCOPE_DENIED", "UNAUTHORIZED"].includes(error.code)
+        ) {
+          this.touch(lane, session);
+          return;
+        }
+      }
       if (busy) {
         this.touch(lane, session);
         return;
@@ -256,7 +276,7 @@ export class HarnessBroker {
         .map((run) => `${run.thread_id}:${run.agent_id}`),
     );
     const idle = [...this.#sessions]
-      .filter(([lane]) => !busy.has(lane))
+      .filter(([lane]) => !busy.has(lane) && !this.#executingLanes.has(lane))
       .sort((a, b) => a[1].touched_at - b[1].touched_at);
     while (this.#sessions.size > limit && idle.length) {
       const entry = idle.shift();
@@ -357,6 +377,8 @@ export class HarnessBroker {
     const controller = new AbortController();
     const workspaces = new Workspaces(this.lifecycle);
     const workspace = await workspaces.ensure(threadId, agentId);
+    if (this.lifecycle.store.dataContext && !workspace.machine_id)
+      throw new DomainError("MACHINE_UNAVAILABLE", 503);
     const launch: LaunchContext = {
       ...this.credentials.create(
         initial.connection,
@@ -384,6 +406,21 @@ export class HarnessBroker {
         ? { machine: { id: workspace.machine_id, root: workspaces.path(workspace) } }
         : {}),
     };
+    const resource = this.lifecycle.store.dataContext;
+    if (resource && launch.codexAuth) {
+      const authorize = launch.codexAuth;
+      const scope: DataContext = {
+        ...resource,
+        validate: resource.validateResources ?? resource.validate,
+        acquire: resource.acquireResources,
+      };
+      // A native refresh request can arrive from a transport or after browser logout.
+      // It retains the admitted resource principal and rechecks its current grants.
+      launch.codexAuth = (refresh) =>
+        this.lifecycle.store.outsideDataContext(() =>
+          this.lifecycle.store.withDataContext(scope, () => authorize(refresh)),
+        );
+    }
     const temporary = await workspaces.temporary(workspace, agentId);
     launch.env = { ...launch.env, TMPDIR: temporary, TMP: temporary, TEMP: temporary };
     let client: HarnessClient | undefined;
@@ -545,6 +582,15 @@ export class HarnessBroker {
       );
       if (inherited) await persistInheritedSkills(this.lifecycle, launch, binding.id, inherited);
       const session: Session = {
+        scope: this.lifecycle.store.dataContext
+          ? {
+              ...this.lifecycle.store.dataContext,
+              validate:
+                this.lifecycle.store.dataContext.validateResources ??
+                this.lifecycle.store.dataContext.validate,
+              acquire: this.lifecycle.store.dataContext.acquireResources,
+            }
+          : undefined,
         client,
         launch,
         binding,
@@ -912,6 +958,8 @@ export class HarnessBroker {
     run: Entity<"run">,
     context: ExecutorContext,
   ): Promise<Entity<"run">["outcome"] & ("succeeded" | "failed" | "cancelled" | "unknown")> {
+    const lane = `${run.thread_id}:${run.agent_id}`;
+    this.#executingLanes.add(lane);
     let lease: ToolLease | undefined;
     let removeAbort = () => {};
     let stopTimer: ReturnType<typeof setTimeout> | undefined;
@@ -988,13 +1036,12 @@ export class HarnessBroker {
       const stopResult = new Promise<unknown>((resolve) => {
         stopped = resolve;
       });
-      const abort = () => {
+      const abort = AsyncResource.bind(() => {
         stopTimer = setTimeout(async () => {
           if (!this.#closed)
-            await this.lifecycle.recordDiagnostic(
-              run.id,
-              diagnostic(new HarnessError("NATIVE_UNKNOWN", "unknown")),
-            );
+            await this.lifecycle
+              .recordDiagnostic(run.id, diagnostic(new HarnessError("NATIVE_UNKNOWN", "unknown")))
+              .catch(() => {});
           stopped({
             status: "unknown",
             native_session_id: session.binding.native_session_id,
@@ -1014,7 +1061,7 @@ export class HarnessBroker {
               });
           })
           .catch(() => {});
-      };
+      });
       context.signal.addEventListener("abort", abort, { once: true });
       removeAbort = () => context.signal.removeEventListener("abort", abort);
       if (context.signal.aborted) {
@@ -1061,7 +1108,9 @@ export class HarnessBroker {
           settings: { ...session.selected },
           tools: lease,
           signal: context.signal,
-          onEvent: (raw) => {
+          // Native sockets and embedded MCP servers may deliver outside the caller's async
+          // context. Restore the admitted resource principal, never a transport's ambient scope.
+          onEvent: AsyncResource.bind((raw: NativeEvent) => {
             watch.observe();
             nativeEventPending++;
             nativeEvents = nativeEvents
@@ -1183,7 +1232,7 @@ export class HarnessBroker {
                 watch.observe();
               });
             return nativeEvents;
-          },
+          }),
         }),
       ]);
       await nativeEvents;
@@ -1207,65 +1256,75 @@ export class HarnessBroker {
       if (!this.#closed && run.dispatch_token)
         await this.lifecycle.observe(run.id, run.dispatch_token, { diagnostic: diagnostic(error) });
     } finally {
+      this.#executingLanes.delete(lane);
       finished = true;
       removeWatch();
       removeAbort();
       clearTimeout(stopTimer);
       lease?.revoke();
-      const groupWorkspace = run.workspace_id
-        ? (await this.lifecycle.store.get("workspace", run.workspace_id)).scope === "group"
-        : false;
-      if (groupWorkspace || recoveredNative) {
-        const session = this.#sessions.get(`${run.thread_id}:${run.agent_id}`);
-        if (session) {
-          // End the writer process before the application's durable workspace lease can settle.
-          try {
-            await this.closeWriter(run.id, session.client);
-          } catch {
-            outcome = "unknown";
+      const scope = this.lifecycle.store.dataContext;
+      const authorized =
+        !scope ||
+        (await (scope.validateResources ?? scope.validate)().then(
+          () => true,
+          () => false,
+        ));
+      if (authorized) {
+        const groupWorkspace = run.workspace_id
+          ? (await this.lifecycle.store.get("workspace", run.workspace_id)).scope === "group"
+          : false;
+        if (groupWorkspace || recoveredNative) {
+          const session = this.#sessions.get(`${run.thread_id}:${run.agent_id}`);
+          if (session) {
+            // End the writer process before the application's durable workspace lease can settle.
+            try {
+              await this.closeWriter(run.id, session.client);
+            } catch {
+              outcome = "unknown";
+            }
           }
         }
-      }
-      if (!this.#closed && (text || (await this.lifecycle.store.answer(run.id)))) {
-        const session = this.#sessions.get(`${run.thread_id}:${run.agent_id}`);
-        if (session && accepted) {
-          const safe = session.launch.redactor.text(text);
-          const published = await this.appendIfAuthorized(
-            run.id,
-            safe,
-            outcome === "succeeded" ? "complete" : "partial",
-          );
-          if (
-            published &&
-            (await this.lifecycle.store.get("run", run.id)).publication === "immediate"
-          )
-            await this.publish(run.id, { type: "text", text: safe }, outcome);
+        if (!this.#closed && (text || (await this.lifecycle.store.answer(run.id)))) {
+          const session = this.#sessions.get(`${run.thread_id}:${run.agent_id}`);
+          if (session && accepted) {
+            const safe = session.launch.redactor.text(text);
+            const published = await this.appendIfAuthorized(
+              run.id,
+              safe,
+              outcome === "succeeded" ? "complete" : "partial",
+            );
+            if (
+              published &&
+              (await this.lifecycle.store.get("run", run.id)).publication === "immediate"
+            )
+              await this.publish(run.id, { type: "text", text: safe }, outcome);
+          }
         }
-      }
-      if (!this.#closed && dispatched) {
-        const connection = await this.connections.get(
-          lease?.scope.connection_id ??
-            (await this.lifecycle.store.get("agent", run.agent_id)).connection_id,
-        );
-        if (connection.state === "active")
-          await this.connections.update(connection, {
-            inference: outcome,
-          });
-      }
-      if (
-        !this.#closed &&
-        (groupWorkspace ||
-          recoveredNative ||
-          (await this.lifecycle.store.get("thread", run.thread_id)).purpose === "routing")
-      ) {
-        const key = `${run.thread_id}:${run.agent_id}`;
-        const session = this.#sessions.get(key);
-        if (session) {
-          this.#sessions.delete(key);
-          clearTimeout(this.#idleTimers.get(key));
-          this.#idleTimers.delete(key);
-          session.controller.abort();
-          await this.closeWriter(run.id, session.client).catch(() => {});
+        if (!this.#closed && dispatched) {
+          const connection = await this.connections.get(
+            lease?.scope.connection_id ??
+              (await this.lifecycle.store.get("agent", run.agent_id)).connection_id,
+          );
+          if (connection.state === "active")
+            await this.connections.update(connection, {
+              inference: outcome,
+            });
+        }
+        if (
+          !this.#closed &&
+          (groupWorkspace ||
+            recoveredNative ||
+            (await this.lifecycle.store.get("thread", run.thread_id)).purpose === "routing")
+        ) {
+          const key = `${run.thread_id}:${run.agent_id}`;
+          const session = this.#sessions.get(key);
+          if (session) {
+            this.#sessions.delete(key);
+            clearTimeout(this.#idleTimers.get(key));
+            this.#idleTimers.delete(key);
+            session.controller.abort();
+            await this.closeWriter(run.id, session.client).catch(() => {});
+          }
         }
       }
     }

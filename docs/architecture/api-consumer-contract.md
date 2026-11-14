@@ -1,8 +1,16 @@
 # API consumer contract
 
+Current source export: **2.0.0**. [Server organizations consumer contract](server-organizations-api.md) is the authoritative account-mode guide. [NMA-079 verification](../verification/nma-079/README.md) records the complete surface/access inventory, PostgreSQL and revocation proof, native Cua isolation, and normal scoped Codex/Muse execution. Authentication, organizations and scoped-data readiness are `ready` for this backend API scope. Web/Tauri UI, deployed HTTPS/restore, installation and capacity remain separate gates.
+
+The breaking major version replaces owner-only consumer assumptions with verified user/device authentication, explicit organization context, private Team-agent interactions, selected connections and signed replay context. Existing 1.x clients must implement the new contract before consumption; historical exports remain unchanged.
+
+## Retained 1.x consumer reference
+
+The following sections retain their captured contracts and evidence. Statements about a pending NMA-079 gate describe those earlier versions; current account-mode consumption follows the 2.0.0 guide above.
+
 November 12 amendment: [the server-organizations plan](server-organizations-plan-2026-11-12.md) and NMA-072–083 define PostgreSQL, authenticated organization/user scope, private Team-agent interactions and explicit connections. NMA-072 changes persistence to [PostgreSQL](postgresql-persistence.md) while retaining the owner-only wire shapes. This guide retains its current/recorded implementation boundary until the new NMA-079 API gate verifies the changed contract; its owner-only examples do not establish multi-user authorization.
 
-Current source export: **1.35.0**. The [scoped application and skill schema snapshot](../contracts/1.35.0.json) is generated from authenticated `/v1/contracts` with disposable PostgreSQL/authentication state: 145 routes, organization/personal app accounts, explicit tool/resource grants, immutable Team skill publication and pinned assignments. It retains the 1.34.0 provider ownership, private selection, observed `account_plan`, frozen snapshots and explicit key rotation. Export performs no provider operation. [NMA-078 verification](../verification/nma-078/README.md) separates real Composio reads, native catalogs/package reads and fixture coverage. Production organization native admission remains closed for the complete NMA-079 API/isolation readiness gate; web/Tauri consumption follows that gate and desktop-rs remains paused.
+Retained NMA-078 source export: **1.35.0**. The [scoped application and skill schema snapshot](../contracts/1.35.0.json) is generated from authenticated `/v1/contracts` with disposable PostgreSQL/authentication state: 145 routes, organization/personal app accounts, explicit tool/resource grants, immutable Team skill publication and pinned assignments. It retains the 1.34.0 provider ownership, private selection, observed `account_plan`, frozen snapshots and explicit key rotation. Export performs no provider operation. [NMA-078 verification](../verification/nma-078/README.md) separates real Composio reads, native catalogs/package reads and fixture coverage. Production organization native admission remains closed for the complete NMA-079 API/isolation readiness gate; web/Tauri consumption follows that gate and desktop-rs remains paused.
 
 The [1.33.0 account-mode machine snapshot](../contracts/1.33.0.json) and [NMA-076 verification](../verification/nma-076/README.md) retain their 141-route execution-domain/viewer scope.
 

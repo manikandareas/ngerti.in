@@ -1,0 +1,122 @@
+bun test v1.3.10 (30e609e0)
+
+tests/background.test.ts:
+(pass) scheduler atomically persists one occurrence/run and survives repeated ticks and restart [376.83ms]
+(pass) interval recovery collapses missed occurrences and holds overlapping work [216.91ms]
+(pass) paused responsibilities do not fire routines after restart [217.68ms]
+(pass) dispatcher waits for a registered adapter and has no implicit executor [150.01ms]
+(pass) dispatcher uses one lane at a time and records native acknowledgement before completion [321.69ms]
+(pass) adapter exceptions become unknown and are never automatically retried [267.85ms]
+(pass) native stop confirmation differs from shutdown timeout and late completion is fenced [397.60ms]
+
+tests/provider-key.test.ts:
+(pass) provider key onboarding stores only a private host key and replays across restart [348.97ms]
+(pass) key onboarding preserves explicit Codex API billing and published request/response schemas [254.37ms]
+(pass) unauthorized, malformed and missing-key requests never write credentials or domain state [153.54ms]
+(pass) credential onboarding rejects symlinked credential directories [141.52ms]
+(pass) credential onboarding rejects publicly readable credential storage [139.87ms]
+(pass) a rejected connection transaction removes its new host key [141.74ms]
+
+tests/conversation-latency.test.ts:
+(pass) commit notifications coalesce nested writes and ignore rolled-back commands [164.96ms]
+(pass) SSE wakes on a committed event without waiting for its periodic heartbeat [158.17ms]
+(pass) committed admission and settlement drain FIFO without waiting for a 60-second scheduler tick [376.10ms]
+(pass) configuration preparation failures stay explicit and retry the exact queued input [307.58ms]
+(pass) repairing configuration resumes the same blocked input without a polling delay [454.65ms]
+(pass) a rejected claim does not spin or let later queued inputs bypass the blocked head [587.91ms]
+(pass) Jev makes one typed SDK request and keeps its API key out of the routing state [8.31ms]
+(pass) Jev rate limits do not trigger the SDK's default retry cascade [4.64ms]
+(pass) a persisted unfinished pure decision recomputes once and rejects the old attempt [312.60ms]
+(pass) Jev selects one valid member without creating a native routing session or importing DM history [294.85ms]
+(pass) explicit mentions bypass Jev and stale membership fences a late decision [306.92ms]
+(pass) ambiguous Jev results create exactly one explicit member-model fallback [307.87ms]
+(pass) switching back to the member router drains a persisted pure Jev decision without replaying work [363.28ms]
+(pass) Jev service failures reject the original route and can retry without duplicate messages [415.20ms]
+(pass) ordinary complete handoffs settle the task without a third model run [463.87ms]
+
+tests/provider-storage.test.ts:
+(pass) encrypted provider credentials authenticate their identity and reject tampering or an absent master key [2.80ms]
+(pass) revocation removes native files and the credential; retained tombstones fence restored native homes [2.24ms]
+
+tests/organizations/data.test.ts:
+(pass) random default names come from the single-syllable library subset and exhaust unused names first [1.64ms]
+(pass) membership provisioning creates one private randomly named default agent, DM and authored welcome without inference [1046.56ms]
+(pass) two users share Team configuration while their DM, memory, uploads and receipts stay private even from an administrator [1015.39ms]
+(pass) personal preference overlays and explicit published knowledge cannot rewrite or automatically publish private context [835.65ms]
+(pass) RLS uses a non-owner role and transaction-local settings across pooled users and organization boundaries [1022.10ms]
+(pass) context-bound replay rejects cross-user cursors and permission changes close old event access [1474.37ms]
+(pass) private file publication, immutable downloads, parsed data and command replay stay in the initiating organization [2972.25ms]
+(pass) Workgroup invocation is distinct from administration and Team ownership survives creator offboarding [1380.88ms]
+(pass) removed/rejoined membership cannot replay prior receipts or resume its private work implicitly [1731.24ms]
+(pass) database references reject cross-user scope and concurrent organization tabs retain independent commands [1442.87ms]
+(pass) SSE retains its captured private context outside the request and closes on membership revocation [952.70ms]
+(pass) guarded legacy binding backfills retained private entities/events and blocks old owner-wide routes [1357.50ms]
+(pass) scoped application SQL also works through a real non-owner, non-superuser database login [768.26ms]
+(pass) private Goals/Routine schedule under their retained execution principal without borrowing a UI session or shared native resources [1822.57ms]
+(pass) private groups and routing cannot enroll another user's agent or another organization's Team agent [1003.35ms]
+(pass) Team-agent native-binding metadata is actor-private and cannot reference another user's connection [1451.86ms]
+(pass) immutable command receipts recheck current Team-agent invocation grants before replay [1073.12ms]
+
+tests/organizations/providers.test.ts:
+(pass) personal provider connections remain private; organization connections require management and an explicit audience [894.01ms]
+(pass) private conversation and user choices inherit only when unset and freeze connection/model on admission [1406.52ms]
+(pass) provider snapshots cannot be rewritten or forged across actors even through SQL-backed entity writes [1024.05ms]
+(pass) pre-provider scoped queued records can normalize a missing null snapshot without accepting a different selection [1290.74ms]
+(pass) same organization account has distinct native homes for each actor, conversation and connection generation [831.37ms]
+(pass) scheduled responsibilities retain their selected connection after private preferences change [1131.76ms]
+(pass) scoped API key submission and rotation retain encrypted bytes and secret-free receipts without selecting a replacement implicitly [931.22ms]
+
+tests/organizations/readiness.test.ts:
+(pass) every installed account surface declares authentication/scope and rejects missing credentials before input validation [959.46ms]
+(pass) normal HTTP admission and both broker executors keep two users of one Team agent private [11355.50ms]
+(pass) revoking membership during native work retains the matching cancelled outcome without late publication [3770.40ms]
+(pass) revoking membership during native work retains the matching unknown outcome without late publication [3707.02ms]
+(pass) authority replacement fences accepted scoped work and preserves the queued lane without resubmitting [3520.64ms]
+(pass) generic entity inventory and organization switches never grant another actor's private data [8163.56ms]
+(pass) concurrent scoped queries reuse their authorization fence without exhausting the auth pool [4004.36ms]
+(pass) opening a fourth private transport cannot evict another actor's active native writer [16203.44ms]
+(pass) native credential callbacks retain current resource grants after the opening browser session logs out [2124.83ms]
+(pass) commit subscribers cannot borrow the writing user's request scope [1140.51ms]
+(pass) a native stop timeout still fences an unknown outcome after membership revocation [4326.65ms]
+
+tests/organizations/surfaces.test.ts:
+(pass) account consumers exercise administrative metadata, conversation creation and private learning surfaces [3318.44ms]
+(pass) account consumers exercise private group routing, Team publication and assignment [2454.47ms]
+(pass) account consumers exercise run-owned publication and durable responsibility commands [7059.58ms]
+(pass) account consumers exercise private human replies and device-bound Computer renewal [3113.01ms]
+(pass) account consumers exercise selected-provider metadata, preparation and private run controls [2701.94ms]
+(pass) account consumers exercise private working-file, derived-artifact and responsibility surfaces [2612.24ms]
+(pass) account consumers exercise app discovery, reconnect and private revocation without ambient app identity [1319.28ms]
+(pass) only the issued live run lease enters the private MCP endpoint [2997.37ms]
+
+tests/auth/security.test.ts:
+(pass) account mode fails closed on missing secrets, insecure origins or unsafe callbacks [3.10ms]
+(pass) native callback rejects wrong state, issuer, redirect, duplicate fields and replay [801.58ms]
+(pass) token endpoint rejects wrong verifier, redirect, audience, code replay and client registration [837.41ms]
+(pass) expired access/device sessions fail API, SSE and renewal without affecting another device [615.91ms]
+(pass) revocation closes an existing HTTP SSE stream and preserves another device [672.37ms]
+(pass) viewer tickets are bound to a live device and cannot be renewed from another device [643.95ms]
+(pass) password recovery revokes native offline credentials and leaves no auth secrets in domain records [737.71ms]
+(pass) account-mode export identifies auth classes and the verified multi-user API gate [586.67ms]
+(pass) HTTPS configuration serializes Secure cookies and ignores spoofed proxy addresses [878.98ms]
+(pass) rate limits survive changing untrusted forwarding headers [481.18ms]
+(pass) a native device outlives browser logout and access-token revocation closes its stream [1055.24ms]
+
+tests/persistence/postgres.test.ts:
+(pass) an empty optional application database URL retains the configured database and restricted statement role [133.66ms]
+(pass) nested failure restores its savepoint while an outer command commits one receipt [173.94ms]
+(pass) concurrent duplicate commands and lost acknowledgements retain one admission [211.49ms]
+(pass) commit-ordered clocks prevent a blocked lower cursor from disappearing behind replay [223.87ms]
+(pass) authority session loss fences an in-flight publication and a pooled reconnect never owns its lock [228.66ms]
+(pass) receipt replay reauthorizes, and interrupted external reservations retain unknown identity [176.82ms]
+(pass) bounded indexed reads retain keyset order across pages [260.72ms]
+(pass) offline import reconciles IDs, events, receipts and native bindings and rehearses verified rollback [547.72ms]
+(pass) filtered replay advances through hidden events and retains a consistent high watermark [199.14ms]
+(pass) a killed authority releases its session and restart preserves unknown native work without dispatching it twice [714.94ms]
+(pass) loss of the authority session aborts active native work and leaves recovery unknown [414.43ms]
+(pass) a changed applied migration refuses startup without changing domain history or retaining its authority lock [185.71ms]
+
+ 96 pass
+ 0 fail
+ 1335 expect() calls
+Ran 96 tests across 10 files. [133.60s]

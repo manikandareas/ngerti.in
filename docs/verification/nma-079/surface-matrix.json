@@ -1,0 +1,4666 @@
+{
+  "source": {
+    "captured_at": "2026-11-14T15:25:37.021Z",
+    "git_base": "771da1e6aa460d7df12fce7b5d5eab236f7acc5b",
+    "contract": "2.0.0",
+    "bun": "1.3.10",
+    "platform": "darwin",
+    "architecture": "arm64",
+    "dependencies": {
+      "@better-auth/oauth-provider": "1.7.23",
+      "@bufbuild/protobuf": "2.15.0",
+      "@composio/core": "0.27.0",
+      "@muse-code/sdk": "1.4.14",
+      "@ngertiin/avatar": "workspace:*",
+      "@trycua/cua": "0.10.1",
+      "@typesafe-ai/sdk": "0.6.0",
+      "better-auth": "1.7.23",
+      "elysia": "1.4.30",
+      "pdfjs-dist": "6.5.438",
+      "pg": "8.23.1",
+      "sharp": "0.35.5",
+      "unique-names-generator": "4.7.1",
+      "zod": "4.4.3"
+    },
+    "sha256": {
+      "apps/server/package.json": "4516b93780917994935ac7fb701bf5a2edc059afda3f72041d589b11bfedb321",
+      "apps/server/src/agent-instructions.ts": "77c6ccf1bd0c7ca3b32e3d0c890f9372ec75d4fb813fdea6fd91b56f18f7ed0a",
+      "apps/server/src/agents/activity.ts": "4b8a42b2621e094ca89e1b4fb5648a71c4f5271a38ac7aa74e92529e60f7c66d",
+      "apps/server/src/agents/contracts.ts": "5d308da8dc57400ea1a4c706f782d71253cb79e6a77c35237814e940f0729d21",
+      "apps/server/src/agents/names.ts": "8b819b2e512534eb17164abdc6543a751b0fb2d9fb7644c7408f605ab447a4e9",
+      "apps/server/src/agents/tools.ts": "a8ac22b7d74b2018aa465dd4728b44eff39efbb65647a1a772e777f97dda3c26",
+      "apps/server/src/api-access.ts": "0de13592190672ce921bc49340b1116226a02e8ee80cc9f2f6feb4d24cee4ef2",
+      "apps/server/src/api-contract.ts": "ec34625df1b56b2082ee52910a1a892f8b00fc6d265e02867ef71402429b53a7",
+      "apps/server/src/api-responses.ts": "1ff008e2425785878276ec6e63c43a100e3c42c92c9b7513c8ba0407821b085b",
+      "apps/server/src/api.ts": "2e4fe8083f90132f1300adc41b3e87f75555b5c5cbd6bb62e229e4922cd3a61d",
+      "apps/server/src/api/attachments.ts": "d9ccd3d97d9bfd6dc2471514554bf487317a317a6a3dc0242b0e89a193c95a9c",
+      "apps/server/src/api/browser.ts": "668fcf852275894672a75570f8e9abf9cadc437b3ea309bc16e2ef1cf7de93ca",
+      "apps/server/src/api/conversations.ts": "c83e1cf81a4e76501540be507602a07772d07c315d81ff076d6001e8afb07efa",
+      "apps/server/src/api/events.ts": "ded26861ef186884831d6368b55a0026ded94e5e84498386b88df5f04e383812",
+      "apps/server/src/api/goals.ts": "19fb9ac69c5b15f918fece844d2aa43ad29ecca5c0ad83b96d0e5d5ee923abfe",
+      "apps/server/src/api/groups.ts": "24e0d550e1199a569a6c0b55270c56f8967eea9eb0438fd0f312598e2c61083b",
+      "apps/server/src/api/harness.ts": "18602773dc82bc80ad770b0fe2e77464e3c6bc7c2f4a54349b4db7fb47c68ab6",
+      "apps/server/src/api/http.ts": "97b672c2a6f1c77e962c2ea81a6b230b6e92194ffcec79fa38da9496be25553a",
+      "apps/server/src/api/integrations.ts": "c098b16a8aa51ca5ccb72a714992d57dcda0e433ab16b7ad0720b6c52936aec5",
+      "apps/server/src/api/learning.ts": "864738f2eae8be1a61d56964055dc95b78bf1e86c95b9c65fdcab7f362a6f600",
+      "apps/server/src/api/machines.ts": "aa8063c35076ca7d0d2c93fc27ba1ac840b00f460a08bc20e9c13fc5332afcd4",
+      "apps/server/src/api/runs.ts": "fe033f309c64e1cd144599beb03a06387f067b754acc041dabaa020a7c411455",
+      "apps/server/src/api/services.ts": "f63d840c6aa8a762535eb8616064767ca02a4a79ae9f323393edfe7f1e51ecf6",
+      "apps/server/src/api/workspaces.ts": "3e29abe6706b471b5fc4ab8428ab97d6a5ef0407225d0ea2aa32b04335dc1e71",
+      "apps/server/src/artifacts.ts": "9266991eb272c84e0064a88a29761ed887e3c322cd7ee00c18bb3685a44a6910",
+      "apps/server/src/attachments/contracts.ts": "58c78abe02785c069b98a5d89351f9d25a4ba3e453310d361c3983ce01659a41",
+      "apps/server/src/attachments/documents.ts": "30b3b2ff45aaf9408e388bc2a5e4244a8b27b94339e544f26d0187d9e9c33ca5",
+      "apps/server/src/attachments/extract.ts": "d7cba64bba901910452eea7d55cb832b4fb2fa751af24a59fe7e7d055d024d19",
+      "apps/server/src/attachments/service.ts": "07ae82fe407b61305db488a0fcb62defd4ab4dac25989ce29f62d33a85223659",
+      "apps/server/src/attachments/submissions.ts": "6fd57c5ea2ec4668526ee45868ffc6e392d7a852037c775c4e0153c68db6815e",
+      "apps/server/src/attachments/tools.ts": "99c5747486389dc0efe8e553cf8ce8eb60c15d17e55cbcb97b20f44c8579ebf5",
+      "apps/server/src/auth/config.ts": "bbe08e3e33abbb3690b360b569f746572e6d0c289198c5ddeb5909077b58da66",
+      "apps/server/src/auth/contracts.ts": "205ec7bde9188f3e0f470d82b7c51b540bf6a4a94798c2681aea5ce863930d06",
+      "apps/server/src/auth/database.ts": "d275c38087bd6bda55d63afee753aac4cbde7d90f692c66558fb6b1ee6059d16",
+      "apps/server/src/auth/email.ts": "ab1d2e2deaf499a3d52f42072e4b99693ffe591fc1287a5bcafb8ae6be253e20",
+      "apps/server/src/auth/http.ts": "6f87c540804530ac4f0c1f0792fa9c66443b68b966f31c8177167df66b89cce2",
+      "apps/server/src/auth/native-client.ts": "3033cc3c7884e19aab5a900dd80389e518af36f50266fc7498aa253e3e9be27a",
+      "apps/server/src/auth/operator.ts": "61e5077f6623cf45bb1dd7c2533e53db76e9d60e1039f621c46791efe5c8d741",
+      "apps/server/src/auth/ownership-schema.ts": "f9586ba7d4274e6aa059ac7444e5d983b44a3fa130e34504508c7f20cf8210cb",
+      "apps/server/src/auth/provider.ts": "d1e1711b72632b7917b2acfc8a652948cad7c320571756283eb5d31f5bca94bf",
+      "apps/server/src/auth/service.ts": "b1a37246df129668daae0149b154fbed3bc2785d60aed477d93364a38053a91c",
+      "apps/server/src/background.ts": "4aafa24a7b2c2cc16d9972a85c4353ef5587ac24a4d4a0afc4768dd7f3b2aa56",
+      "apps/server/src/browser/contracts.ts": "8c64764b875fbd05d550dbdc69f4aeeb8f30b631a5b0406f0d8389a99f183462",
+      "apps/server/src/browser/host.ts": "e4532299e0de75f2e47e1ac7891b4af977d828920a0f26e20410f80ebdbf752f",
+      "apps/server/src/browser/mcp.ts": "e5bcbb57820312831a192f12c24404bd823d9c8970c46e85877537185a16c232",
+      "apps/server/src/browser/output.ts": "b9defa2d7f6cb5c2350f73baadf233e5e1a63af7ec77b1201a9ae7a555d64810",
+      "apps/server/src/browser/service.ts": "29bc9cae002299e22bafaf6fb692da7cd2f8766838f22acbdb0b14e17b42c373",
+      "apps/server/src/browser/tools.ts": "9f792f2b0e8a37f1bc4fb4c17d835accac8942235717d2c41c4162bb12be0c19",
+      "apps/server/src/browser/view.ts": "acdf5a7c388d8813073123aef34942c6a5a5c9d3be49f4af886443861bcfa793",
+      "apps/server/src/config.ts": "16fccb2cbf459fecab23b32f7ad35dbde9e605558fdc314eee635b07041b0675",
+      "apps/server/src/contracts.ts": "86265066703ce7293009325906a9b48915aff04c75a9e04778c4bc5b21456bca",
+      "apps/server/src/contracts/base.ts": "9a50ac00cb50624219c383fc26d600168b892a6fb0edcf733c80fbd5092363cb",
+      "apps/server/src/contracts/errors.ts": "30fc8ed0f7a303c858e6af8b2093def702f1ba7af692c6c56b4221d81f53e46c",
+      "apps/server/src/conversations.ts": "a4b2ff8a43dfacdb226333223f0fe596db740b0f6e3287a12defc4675459e3d0",
+      "apps/server/src/conversations/contracts.ts": "995c092a62a2417464c99e01e8047b94679d4ccbcb037d75814e5261ff508482",
+      "apps/server/src/conversations/creation.ts": "2bcaf10243613047b719fe097acb5ca18ad077d1096402a45392b0c725788670",
+      "apps/server/src/conversations/journal.ts": "9c06891cc16a894da16d983430affe47fb721626f9c2877f10d9c81f14a66f40",
+      "apps/server/src/conversations/labels.ts": "c9cb0468019021c0f7eb1207004b520d73db01ecac5d4662415d0e6067f84a7e",
+      "apps/server/src/conversations/parts.ts": "a94ce42db1c5aa8ce3b3decb56ca05dd26d98a0aa3a25b3758f2b60cdc3a5f8f",
+      "apps/server/src/conversations/previews.ts": "6cf47643f3dc9030e047a48853111d5cfc6eabd8277febc133585d534b9bef5d",
+      "apps/server/src/conversations/projection.ts": "57452d6c8fc3cd954002fe15a56437d8e729b69c3efefd7adeec83609fcff66e",
+      "apps/server/src/conversations/references.ts": "58500c081961b164787ac5544655812537b90221adc3a787520b8fdb45ec3e4b",
+      "apps/server/src/event-stream.ts": "3a95fea5145aa3ed47e1d7d8912347235a3e30f6080fe82c96bcb72e21d9ee3e",
+      "apps/server/src/goals/contracts.ts": "84f1c0c236179e3258ca51d0b683b44810ed079e26e2508b715717ffb3adb3a5",
+      "apps/server/src/goals/evidence.ts": "31d8cf47a889460a38ba805ff97ec971a2bb23c18dda47e37828d8bde381a104",
+      "apps/server/src/goals/group-schedules.ts": "adc360e76f0f612f5b12f4947976c94d7cdea07496563913e8a73b103075e532",
+      "apps/server/src/goals/instructions.ts": "19c349c8bb9db492b79095937d8b0de2d67858c170c7afc35b58ef4eaea3a382",
+      "apps/server/src/goals/schedule.ts": "6ca6a2d879437d12594647ffbaa38f2bf5f296ffad88520a4e2a913cba7fd4b9",
+      "apps/server/src/goals/scope.ts": "332624470db408ebc75c94679393a04b5689b0e89c7723b99959abad0c03563a",
+      "apps/server/src/goals/service.ts": "f9d63667a513550cd08c63d8b9adae4806b845ccf4c319545b5007df6a19a17e",
+      "apps/server/src/goals/tools.ts": "b03d85f2ae5e49d1f80f84f97521ea309b2b3d921dabe00ebd9dc75b7b57f10b",
+      "apps/server/src/goals/work-fence.ts": "a1147b3bb50766bec4693053b9b6e1e0c2fa6b65f330398bca9e8ebd5c8edfb0",
+      "apps/server/src/groups/attachments.ts": "4a231369c6307aa9db3995b91199507d15b4789ec8424df2eac47842b07c07c5",
+      "apps/server/src/groups/contracts.ts": "dc7dda58d712c94125bb31fc3ca85bb77515783a956335774db3d1384ec9c59e",
+      "apps/server/src/groups/decision-trace.ts": "fa31cb3878bc7c3fadb7ab2181d6cc8bb336e62282e24492b5fc28b372927027",
+      "apps/server/src/groups/native-routing.ts": "4667f5a2fab3f49ef302e3636a3226bdc7d36953443bef1c5338b74c7348bc56",
+      "apps/server/src/groups/projection.ts": "b30b6a6551ac1886b683277d32ed032803159b50d9f7a5ee75f93943ec7150e5",
+      "apps/server/src/groups/router.ts": "33a166c84856934bf345bd7268baafb86d8a6a73efcf9063df660d2b9c4d0543",
+      "apps/server/src/groups/routing-context.ts": "81688935207bf52bffd9d7432b29f744d29791e7712923407a0916e6c69798b9",
+      "apps/server/src/groups/routing-judgments.ts": "4bc5fd5a75609eaf4a53c7f6bbb987fa37f0526be37eedf700734288653aca60",
+      "apps/server/src/groups/routing-policy.ts": "209c0fc75e74ef283d25571907ee5592566b2f632d84f35afa564040b2f7b664",
+      "apps/server/src/groups/routing-worker.ts": "3cdf75576201be2a44e2d3fe5ac5a7b46fe754ded43d430e1c74ebeffc87872b",
+      "apps/server/src/groups/service.ts": "e231026e87d9a29ce2ddc35d0230c77ab709b2839513ac29486895532ed528b1",
+      "apps/server/src/groups/tools.ts": "8e4978b4204fe665afb6f07874243341bd022ab2107e7efa294f3c2de3e1d6d6",
+      "apps/server/src/harness/accounts.ts": "e5f382e76835d6426320fcaa75c001584ce7d28acc447d4ae3db559dc868a628",
+      "apps/server/src/harness/availability.ts": "a0bd5d50ffc1c7b9336fd86113c65dbd041c62b772da86b93b33968c9b4df0b6",
+      "apps/server/src/harness/broker.ts": "68a055bac4ddfdb09ef0f7da6b7bf5d58f9c31b50ae7da54e1a20befc33879d3",
+      "apps/server/src/harness/catalog-policy.ts": "f447c5b230da866f9a21e56d53cf45668a6b1468a74af3e3341bea2447e19669",
+      "apps/server/src/harness/client.ts": "78f81f74c72e37b87cc27134017f8392bbc224a8ad7f0d78cc0e9f0b3427d75e",
+      "apps/server/src/harness/codex/accounts.ts": "fb660285fe36c359781a63303c709f3ebf29fbafa874e69359a64831e6624634",
+      "apps/server/src/harness/codex/adapter.ts": "8050584e3b9bdfb99c05dfadef45b1e349b01ee7df54c1875781a2d9343f743b",
+      "apps/server/src/harness/codex/client.ts": "550233cfb3005c4aa5642ca1f023cadd0c3e24bc62adb58c90e531d7359a2be1",
+      "apps/server/src/harness/codex/output.ts": "268865a7bb6474b4deb9a8ff4b24cd20dd537cee0d62686d17c9639c11ee1ce6",
+      "apps/server/src/harness/codex/rpc.ts": "ccbc73ec4d9ec381a33aa19a9bea7048bd513e94371aabaf2175b53de50629f6",
+      "apps/server/src/harness/codex/workspace-policy.ts": "bf6506e782dcec5d932ef9c863fdb2110cdb2b5680274b9aaec26634b06c5ade",
+      "apps/server/src/harness/connections.ts": "a04dff1473e4bb638c3dd1b3a012e08a4e5356a799e68d1c499c2cfef3d79a79",
+      "apps/server/src/harness/context.ts": "05994eed1f6166feb87664e525308d0a76b695ff7db2cac184623ae3b12780f7",
+      "apps/server/src/harness/contracts.ts": "321e1e971af9ee0deb73695de532772462ea29c5242dbe8aef68f8dc9953d0fc",
+      "apps/server/src/harness/credential-storage.ts": "a943700591b034b22760ff54bf0c7abc64a4ed55cac3cb3ef7215e3696902095",
+      "apps/server/src/harness/inherited-skills.ts": "5b3244a9fcd5f2995118a43ca7e9b91399f083c6932e88db0bd1f2eff3abed85",
+      "apps/server/src/harness/instructions.ts": "6af791f0482abff2babb1e7a6d8068ae5a7d5f43e1352374868f567344846d9d",
+      "apps/server/src/harness/interaction-contracts.ts": "24bf2430f73710ab48c3c3df67367b205cfa5b5c84ceaa56150edd53cf457f80",
+      "apps/server/src/harness/mcp.ts": "cddec7a3d8f208ec0a13712d000011de8f0c489a20b7e737cb7e8c353c48f0dd",
+      "apps/server/src/harness/muse/accounts.ts": "c23b18e76a14794edb417edfb5802c05f41bbb75718713c57d1331c83377fd75",
+      "apps/server/src/harness/muse/adapter.ts": "10b7d00b2cc0ce618acb537ba60962d378b7c0735fd7ff8e264bb3f4d3aa17c8",
+      "apps/server/src/harness/muse/client.ts": "9ebfd040febd8faa2890ad8b8d940613dc5e5575d3ab437ff8fffed8b3952c3b",
+      "apps/server/src/harness/muse/interactions.ts": "ae9af80367ac80baf7340c1eeaad505a30faa35a970203444e786943046361c1",
+      "apps/server/src/harness/muse/protocol.ts": "37285234a919bacf159de9ba1f35449c270341012ec2008226cca26b136342b1",
+      "apps/server/src/harness/muse/tools.ts": "c43269f245f4429646af93546d70d99024c24f8a97a401c3949fc5143330c35b",
+      "apps/server/src/harness/muse/transport.ts": "37bad42baf4cf778808aa5a0edc7b2e6a25da53a94703454e964ce8431aa1c6c",
+      "apps/server/src/harness/process.ts": "4a6a3aaddc77fb3bf93abf2fb2ae6fa8a38dc5bae45cdd638040c5e7ecbb81a0",
+      "apps/server/src/harness/product-tool-contracts.ts": "78a1ff20d53cd149c3230be2f1072258c499b1d454c88f23cd3bb5b523d05c9f",
+      "apps/server/src/harness/recovery.ts": "47125cf540f7e13fb72e27fa077e174aa1c4c668a770ee46d14b720318b8e6ac",
+      "apps/server/src/harness/runtime.ts": "24948a8f719daa7c7cf2dd0ec6a2659995d4db0e6ff4d2c1465110ea4c6fb1d3",
+      "apps/server/src/harness/selection-contracts.ts": "94d5903b3e9479470cb23d8115112fe1a71114e181b5246188240cca406d86ff",
+      "apps/server/src/harness/tool-results.ts": "0e2e9947149a9fad3c9a39d7676eef17cd482ec77e819b0276939ee14f9c78b1",
+      "apps/server/src/harness/tools.ts": "622e0619fa005c6e1ed134b514a2cbd1c2a6eb33c00668966bf3667c1518f231",
+      "apps/server/src/integrations/contracts.ts": "b61b0eb65be3cf54ae579970b7399801e0e7eb882ed92077e0c0c900453eaf39",
+      "apps/server/src/integrations/host.ts": "e5e73e04eec63bb9dd0a0b3442b8f18c681d1201f68cf23421d188e873f1bbc0",
+      "apps/server/src/integrations/output.ts": "79ef2b83ea74373f9bb2153438ff21d5c2f564835c189aeff8096262612b25f9",
+      "apps/server/src/integrations/service.ts": "aa3e2d64803f4404be4164b68fe9db169219734a332bc84dde5b8f8b695824b7",
+      "apps/server/src/integrations/tools.ts": "6a18e2b6361bd6d4832308635bb327e4ab465f13d11f27ee5a3de223c7a91517",
+      "apps/server/src/interactions/contracts.ts": "1b60f9ca2e07445f0567301daa5efbfa65b90badeb53224433a8ae868fcf26a0",
+      "apps/server/src/interactions/service.ts": "523f8ddebd3e825556bf84d50e8bd76b5029b871c9a2a8eb7bdf843867a6b1cb",
+      "apps/server/src/interactions/tools.ts": "4f786f1d1af4f75110241020dd95643d8b7a2188d45e81d6b9c2f1f6361b0688",
+      "apps/server/src/learning/application-skills.ts": "9590b05555c5939c7c76e4ff1849d8e501b75515f860f6839c8eee4be6e7195a",
+      "apps/server/src/learning/contracts.ts": "92dd110a82b9e72c48c364ea97f537c9435973e3ddc180a5e9001ba5f5ec9f0b",
+      "apps/server/src/learning/memories.ts": "c8a1821a60642a082cb3070e18c892a88241a8e8da60b5615a66f00c18be7dba",
+      "apps/server/src/learning/scope.ts": "c67419399c464051c0950b0c77f2bd3da117e43e9b80f9220a28a5c68e5721b6",
+      "apps/server/src/learning/tools.ts": "17a069fdc096dbacc8b19d1ce61e9710aa13f0c7673c65f019764b9363b06e76",
+      "apps/server/src/lifecycle.ts": "914e27eb8d233b0e3bd562f1251b4d347da6f3777b89f98c412509971afb3d69",
+      "apps/server/src/machines/config.ts": "e03e2b8d3a1862c18e9ecf4154393c9e39635ab55d6e06ae100b9e19aa997f12",
+      "apps/server/src/machines/contracts.ts": "8a60eee8cf75346978cf2efa0af76a595ee4376078aad0cfb48a5335239ab813",
+      "apps/server/src/machines/cua.ts": "e81e83e119b0bd2155d083b60cf1ef2eef128fdef6495242a9ead45441513281",
+      "apps/server/src/machines/desktop.ts": "fa97f2dcec9f54971329637e523477c36328336edbeb54782ee631463c9d2686",
+      "apps/server/src/machines/domain-runtime.ts": "34af0d5d50146137e6c333e953e877bdc6eeef91c0e2d7a6567f0227f140ceb8",
+      "apps/server/src/machines/domains.ts": "1f9176c3d188786fb9c8ff85c86695ede1f2235739fac0de4e2cbe17af5d5f98",
+      "apps/server/src/machines/import.ts": "2b961517af1ac50d23b0591d6a7fbaf953bb23d3716a044bcd6a875974a066a7",
+      "apps/server/src/machines/instructions.ts": "cf7370b31fb4ad5601d4e5d5a431b6e923b09c81c5188735d7b3cde3fe0fcd5e",
+      "apps/server/src/machines/operations.ts": "67045001315241b3b7754cea276455ecedb2838e8161baa7e24566d91a9c9e03",
+      "apps/server/src/machines/processes.ts": "67bf69c9da2ac178de322898a2fe75b300ff28e11d3a8ab31be058281a59b642",
+      "apps/server/src/machines/protocol/common_pb.ts": "15bf8dfdf089a209565670fba57cc73c44ba0ebcfca2e3ee5d479eba4e8051d7",
+      "apps/server/src/machines/protocol/stream_pb.ts": "d598b1250f6014eb51397fa0b4a178de4b0c82dbbbb0947526160356b6deb9a7",
+      "apps/server/src/machines/protocol/windows_pb.ts": "ee799e4b6baf85a9ff4399f225d4136868a80d74e17d736c1fab04a30a477edf",
+      "apps/server/src/machines/service.ts": "cf0ccda81a619da192625f6d5849fdcca9bbbea4658b63629702a358bbde5397",
+      "apps/server/src/machines/setup-domains.ts": "16f1090e50f60db8d46bd685f8a1b59af0b1f198bb160cc5b88cf6ae2ea31e05",
+      "apps/server/src/machines/setup.ts": "1a0e615f878730b6fbc80c54f4dae34411b1dc48378a25e78bfb86fc40bf5d01",
+      "apps/server/src/machines/tools.ts": "4f65071c1c714a541b16d4f184401c3b4f51fd02dd72e42bb97f80284cc342f7",
+      "apps/server/src/machines/view-gateway.ts": "fc1d26fc98554cf7b9dd2ffa8e480d48e9618c470ca9abc24b9cce149c5bec0e",
+      "apps/server/src/machines/view.ts": "14e5c86e4561f6f08274f1dd375a30cbdeba97ee1966d2cedce9822170129ece",
+      "apps/server/src/main.ts": "32f423cbf47c2f51e008becd25007add8d5b6e52b68ce898a41384e19859bb66",
+      "apps/server/src/multimodal.ts": "de08a7929c14e47a8111b126037efb24a926ef5c7ea4c11d0687b27ea3cd7d49",
+      "apps/server/src/organizations/contracts.ts": "4f4d8da6d534c82fde273ecd1169293687adf47192ec8aeaafa5f4b64d60df33",
+      "apps/server/src/organizations/data-contracts.ts": "cc0e3cfcbd8350dda36a6abd567b9501eae3bb4bc2451ce0cfb1687525fc64c1",
+      "apps/server/src/organizations/data.ts": "f45da2adb4c45f959ca211e3fcddd7732b20906bb5bcc0a62732fe45defb216d",
+      "apps/server/src/organizations/database.ts": "034e73e845e43dd8b056c3cef19286f6b4c7070b2ff139ddd83f2e9fe8fe9cfc",
+      "apps/server/src/organizations/http.ts": "0cbfaf1c1b0d992436e8f8d0bc6bdfb1fc82b11d3e074d2922a0fd41ed2a9d2e",
+      "apps/server/src/organizations/invitations.ts": "b1e04aa0171dbe63f0771bd8865bc80946b6e827b7ea3a7a7384500bd09d7ed2",
+      "apps/server/src/organizations/members.ts": "f780fc9a6146dc6db918865ff7b71d1c7950f6244b6ddf92de60f31b5e2f1afa",
+      "apps/server/src/organizations/paths.ts": "6b4459affee584fa11224250c8242b5e813991669c8de51b0eea17105e76393b",
+      "apps/server/src/organizations/service.ts": "96cd36abb022fbc907cdeae7bebcf4075ebab39cc9ba24434312384db878c089",
+      "apps/server/src/organizations/workgroups.ts": "734e46653c8d02970e47f1ce19dbfc9deb410f5b3fe27a4a4f3632d7b0620e10",
+      "apps/server/src/persistence/access-context.ts": "fcdc9561ec9265c60383f2d86b9312dcb8ed664e74c366696af3214a131d840f",
+      "apps/server/src/persistence/async-collections.ts": "daf80e3cba5b928507537c2c012e56fc01811bcbe4f1c824e3b68560706da5cb",
+      "apps/server/src/persistence/cli.ts": "89a69ed06a1e8cc965a75d6f08055ce3b92265eee8c7276f5a8e824245b411d1",
+      "apps/server/src/persistence/errors.ts": "8aa42fc9ef76ceca4735b05039efddcd0f252ad05b24d19fa6a786499552a743",
+      "apps/server/src/persistence/execution-schema.ts": "a362da7d908af5b90c4f7ae6235fa67115be8768e5334f70181c685c8b6fde5c",
+      "apps/server/src/persistence/integration-schema.ts": "41cd5777190af90a834fde6fc5f082f6cc8928256b0494b0160fa2764a4ed10a",
+      "apps/server/src/persistence/provider-schema.ts": "415f47139169bfbe57aa011de6d91e806699ba8d284441b97e8407218b37686b",
+      "apps/server/src/persistence/run-fence.ts": "5b8ba299c3af396be9d3c04f7519566edff23cdfcee0161116526ddd22e13b90",
+      "apps/server/src/persistence/schema.ts": "6323a74839ee35d9aea209141c13a6fc08c2fe60f094dfc85136c60f01383806",
+      "apps/server/src/persistence/scoped-schema.ts": "944d9bafc21dcac3f8779e0bf4b6a93f97518bfa4b5159b9fe55b29e217db5d9",
+      "apps/server/src/persistence/sqlite-import.ts": "dece51a802ac8c9ebc12ae0a6c140393ef4d7dd34eaecaf876573ccd45ad0c1d",
+      "apps/server/src/run-controls.ts": "bc9818ab9b707fc3b4d18403b1f52a81b2966d11f75e789a85363a19451c03e7",
+      "apps/server/src/runs/activity.ts": "b32f927088f77725399495220520d26a958438394078b6fad5e027dc3b966f58",
+      "apps/server/src/runs/contracts.ts": "7dce0e098a9990c18851ff4af46d76d6ea36da5ceae4c4a0707918a7a69d904e",
+      "apps/server/src/runs/interaction-journal.ts": "fb478b693fd5f3621a4a76247cdf8c38abbca02b1b5f4fbac5ae818edef2cd26",
+      "apps/server/src/runs/retry-policy.ts": "8ce4013b3d98da6a0c34c9e1b795b20deb5b9f50a44ea0f798c48fb3a966a383",
+      "apps/server/src/runtime-record.ts": "5f2cc5012419b08e6fefa11f6c6e348b60bfc6cb8342d554d4d043e4ebbb6054",
+      "apps/server/src/setup.ts": "50c6125b95698aa7c8fd80723af257a7be2468546e2a310809564b4c797905f3",
+      "apps/server/src/store.ts": "419eef9ed2e7dac7c69805a54f8545fe80f9701f74d4b1ed177f836c3de91a66",
+      "apps/server/src/workspaces/contracts.ts": "d6690e9d7e87d3b7a42175b5d64e13138a5983c259e731398660de5b6eeeb3aa",
+      "apps/server/src/workspaces/files.ts": "29942f79f0fdb48b4f465800f9aa43c2ce6c396dbb09dba6379593f50ca2df0f",
+      "apps/server/src/workspaces/posix.ts": "471d712b60e300446ca32d97b5ab29353a3c44c56aba340605a369b4b1cd82c1",
+      "apps/server/src/workspaces/service.ts": "3622ad7a7dfd537f6c11b8719c35ed368ebae2314283f511201e1bb1e94b8f37",
+      "apps/server/src/workspaces/tools.ts": "355c9927258225e27b9abe9db499a26cbe4bd26f9dc8dd5087b56b5d960e4e9d",
+      "apps/server/tests/activity.test.ts": "21358810960170172d60382a74581007ab489ed3d4208eeb353093e344e8830d",
+      "apps/server/tests/agents.test.ts": "57c8d4cbe69b0dd6e2328a88ad710b0cd9074507d73e9e2d8c3985d43da7a718",
+      "apps/server/tests/api.test.ts": "291be5dde7861863923bf68e24496d135588d081fa44e75aeb754c23683c2764",
+      "apps/server/tests/attachments.test.ts": "9b6680a63447d2f779cee617b0f80905150d373da07c60f03f4fb4e4cf54d78a",
+      "apps/server/tests/auth/compatibility.test.ts": "9d1e73319d18a78697e28171f442805a678e116bdcbb7098fc877c6d2fdc457a",
+      "apps/server/tests/auth/helpers.ts": "563c17be334fe5c73918495787e79a1c5586a55b3ae4f15b8e40281b6254fd20",
+      "apps/server/tests/auth/http.test.ts": "80c97fc6ff4055048cd54afe0ed3ffa72bcce6a39eea4948e1b0c454aa02629b",
+      "apps/server/tests/auth/schema.test.ts": "c637ea0419241dc0f99ae43257d60e204dd68916e9f8f8624565a1103e5d9f56",
+      "apps/server/tests/auth/security.test.ts": "3652eb75ef6c36117d8317fa619b7a8949c8204d9c575ecf6c0e07e7546afe32",
+      "apps/server/tests/avatar.test.ts": "0091cfcb4999f708d60ad66de8d267972776ecc156179b8d60eb0d52dca746a4",
+      "apps/server/tests/background.test.ts": "aee0f9e99379ed0500411eb8d704f133025b31f46d03daef32efd5e1e6ca7aff",
+      "apps/server/tests/bootstrap.test.ts": "9d7ea9a716fdf5217edd276a4afd2923f819e916bd638ba3895a75421f0aad6c",
+      "apps/server/tests/browser/domain.test.ts": "e9257935606f7ba2d62e6dad15b49a0858fed8c1cafb1024afe6a73fbd7fa910",
+      "apps/server/tests/cancellation-adapters.test.ts": "40cdb682835d3a23cd72792b5c2a1d4ad21e94f4e533fdb773d8093c18cd1815",
+      "apps/server/tests/codex.test.ts": "3cf0c6691e2c54a70f51e6c1344499ac4006148848c644829d93f19a2f0e5e43",
+      "apps/server/tests/contracts.test.ts": "7e2c558993a4f9d006d5bc05bb45a616303a20004e1dc40002fa1d198a83b8a3",
+      "apps/server/tests/controls.test.ts": "e1de6c9960df46fa05e39e440444819aac367064177108291902a4701279b190",
+      "apps/server/tests/conversation-latency.test.ts": "62ddce4b34ed8024d66a772bb367f0b2811b7f54daf9ac76538a12a24b63b27e",
+      "apps/server/tests/conversation-parts.test.ts": "e258b90cdfd8e9bdcfde7cbd4ff9b03aa6b44e115bc628d6045973288fd5bd6b",
+      "apps/server/tests/conversation-previews.test.ts": "1471a584e45a275efb56369191a2e311761ed702f50eed240faa96cef2e921a5",
+      "apps/server/tests/creation.test.ts": "5fc24b7c8a0f58bc84d738c9d535d13b330afd8c7cdcdf1b6ee3893191de97fe",
+      "apps/server/tests/fixtures/codex-app-server.ts": "4066760e46b01420d6795287f7b81d2621818a3cbb5ffff0244d671c08e59db2",
+      "apps/server/tests/fixtures/muse-serve.ts": "11223d64ce76935f2b0bad9f0c37eda43f14a71554a7d2e82427d0dcb309b40b",
+      "apps/server/tests/goals/adapters.test.ts": "efa525567e79e318929fa6fc09d857ef2e57e8203593db5d72dc022223fd0e78",
+      "apps/server/tests/goals/domain.test.ts": "aa1a8549334cac2c30513ea59cf140931d75d8d1e9e0c5d9077e90b37ca304b4",
+      "apps/server/tests/goals/tool-discovery.test.ts": "6f61c3468402097af68c2fa3cfd62d979c811c985bb1db0a510bc1278dd5c1fc",
+      "apps/server/tests/groups/adapters.test.ts": "c5ef49713e086d7d70ab5ae3aebb1d8ba419745c332ff1d970cd845eb3ca7f36",
+      "apps/server/tests/groups/attachments.test.ts": "184b5fd324d930bc66390ce73b8a1e216561ff3aa4da7e31614096667e429388",
+      "apps/server/tests/groups/domain.test.ts": "b87da942b518704c83b92970c18016d563bb94cc9d3da054c7d74ea1b36d6c69",
+      "apps/server/tests/groups/responsibilities.test.ts": "85c6a40c0749abebacf9e17e51c44d47d30f4f8e6b7b28c4faecd2e7697753de",
+      "apps/server/tests/harness-catalog.test.ts": "c0dd888496bccdd1c161bb20a1f210f492876ad99a40cbdfb8ac14bc9fc5567d",
+      "apps/server/tests/harness.test.ts": "baed5d75cf7684f3c09163ec74af189ef450174b5bfcd31929ef7c747ba340e3",
+      "apps/server/tests/helpers.ts": "357797aaaa64b390f5f1ec8e1e27d2b4a02d94d6a88181adea6d4326c9d6490d",
+      "apps/server/tests/integrations.test.ts": "806bf391b637f2609b07e38e4d03f0daa2f9ca142231215a09d8a58ce15cbd64",
+      "apps/server/tests/interaction-journal.test.ts": "0b0831813c98bec3a7ffd45d79d43aaacc8661a2e9020cc4986cf8d7e852575b",
+      "apps/server/tests/learning/adapters.test.ts": "3755774813589779fed682a334d6b2d9cf96fd28f2654a0f98d25422631b234a",
+      "apps/server/tests/learning/domain.test.ts": "581aa0ee07461453ef094ffa6fe4eb71249ad47b21d1157f961ca5b49395ddb4",
+      "apps/server/tests/lifecycle.test.ts": "f52dc86590f6015cade764be7ba382216626404a8949bf36473af3ec82b9372a",
+      "apps/server/tests/machines/authorization.test.ts": "206f7966f468e1a13e1060702e9d9c330d833f193a4784e440f864b4a7e5aa5e",
+      "apps/server/tests/machines/cleanup.test.ts": "f6586f6cb07919f458c4a4c7e89aa8ff6ac5cb5f3d40ac7743ce3396e49811bb",
+      "apps/server/tests/machines/domain.test.ts": "b55abf7b024fa8b56bee1afef8e3e10a355a9a6068e53862dc627747058b3937",
+      "apps/server/tests/machines/execution-domains.test.ts": "65d61d2c9e3dde78032622bb4af5a83bd8c9555a4928896e7b968aa4cfc2dfb4",
+      "apps/server/tests/machines/view-sessions.test.ts": "30d7c07d5991d23dbf395fd29a54a33f976ad447f58c64004f2806eb258b94c6",
+      "apps/server/tests/multimodal.test.ts": "9b70dd4cf95396aae629f190bc0070a8a232fdc3f7088e4ed93023a9a60c690a",
+      "apps/server/tests/muse-interaction-view.test.ts": "5cc6f1c941a663ad54871609b62db313dc4194de84686ce1fb66d1d4f5ffddc7",
+      "apps/server/tests/muse-launch.test.ts": "5a1206527e6d1d41a699f67af99c3526613c1c581c735a8bf6968cc9de48b312",
+      "apps/server/tests/muse.test.ts": "4f28b0d2dfbc2f2553a9e5a7360beaf2fd86ac21efba7b9e95a4a17e3cb5f311",
+      "apps/server/tests/operation-responses.test.ts": "c444714ffb5632956c386996fac0fcb6028c604976a5eebc975ca53c72932174",
+      "apps/server/tests/organizations/data.test.ts": "c6cd56b1a1b0587d71b7839e749d73b3c2f2fc9434df23448a8eb02962113780",
+      "apps/server/tests/organizations/helpers.ts": "8a09f5c1bff23c63ce3499b2fb288186225ec06fc5e120ae80146d283ff67015",
+      "apps/server/tests/organizations/http.test.ts": "fa0021dbeef1dc52bb12680e1fbcf26ac716e54c287ad0670c951c793ca0534d",
+      "apps/server/tests/organizations/integrations.test.ts": "c51f7cdec17103015eaf564ed2298c419dacdb6c47a98a77152a9269b8098b48",
+      "apps/server/tests/organizations/providers.test.ts": "f7ca0dc1f3d2af58ebce9c277324ade11e42776326d18c9347f3e8587ab365e8",
+      "apps/server/tests/organizations/readiness-helpers.ts": "d37be8cf0b1da8e5f63f740e321aad816ad7144e7a099b36a5414149bc4127e4",
+      "apps/server/tests/organizations/readiness.test.ts": "cbd599e51e2f050e81e5f51186fa223231cbbb52dd28254980b847d8e4d64bff",
+      "apps/server/tests/organizations/surfaces.test.ts": "faf0bedcba21828708da1f000edcb491a1a21cde54597fe5b0aec9d44ad208e6",
+      "apps/server/tests/persistence/authority-child.ts": "6b05f171bb2d41dabbb97bbed9fe56121f0a923256e922ad997b67d109071e73",
+      "apps/server/tests/persistence/legacy-fixture.ts": "089016fe815a7f03d82195f383c7601ad35f82748860b336382abcccc8bd65fd",
+      "apps/server/tests/persistence/postgres.test.ts": "3c86f4a1eb6662d00275bcd65b8ea4d5daf7fe3c7ccbbb802ea8c37b76976c1f",
+      "apps/server/tests/product-interactions.test.ts": "11ef9732def08448acf922564945307ae4a916f26b9b0aaf822e1b7039711fc8",
+      "apps/server/tests/provider-key.test.ts": "d5ecaeda50fa185904eaa32a23f30624065da674b311c20c6ef455a7443ea129",
+      "apps/server/tests/provider-storage.test.ts": "c38a83f36990acfab5dd74b7501dfffe4478b2bdff09623e52f1760984d951d4",
+      "apps/server/tests/response-retry.test.ts": "bff6ece613938e29de4638f48b2385cac5d80682aa2ae2c25977e45d72664bf4",
+      "apps/server/tests/routing-policy.test.ts": "7877b7f7a549dbe1480c42ea8b1f54efd2b929573f09ede0187ce8619f63af0f",
+      "apps/server/tests/routing-recovery.test.ts": "1e631185a019656977d69fdcf7b5851d265e28dedc28596d0097fae9266aaa9a",
+      "apps/server/tests/routing-semantics.test.ts": "ee26608e48d6a0e8f130bbb0acd73e7aab16717f629addf0fbaca7cea5cc8443",
+      "apps/server/tests/run-recovery.test.ts": "ed60434c9f52d4ac673af0d00fcfdb434d2003a7b285a975526b3a0288bae8e7",
+      "apps/server/tests/submission-replay.test.ts": "a70a6a6e69e44d0e5b38cdbe9be04e6932abc4678d8a714757585e5fe5e38da2",
+      "apps/server/tests/workspaces.test.ts": "6e26765c155fdcd567dd994631fddaa3651cca1a356b91b79cfd55383bb2ab8d",
+      "bun.lock": "5382ed7328b2c20e9916dab724d8400417ddc4a0cbb0ff649cf0e5f62561bcfc",
+      "package.json": "8b8004daa93bda5eabdac426a955bab23d2e6ac8478982529ddd69e610c5d730",
+      "scripts/verification/nma079/cua.test.ts": "8184fddc4fe1a828d55dab3991fd66d9c974be26d38eed664fcfcf61d9916b47",
+      "scripts/verification/nma079/native.test.ts": "c3426e0361a98c209b05fff0310a41345136acce101b1b295b05cd24806a188b",
+      "scripts/verification/nma079/observe.ts": "c733fb9044b5d7970f7df13d4775461a45c1cb978a8a401eb4df944cc4ca85be",
+      "scripts/verification/nma079/report.ts": "8613051be1fbb1d4d2c0bbb48d387dee4e05307bcf0fa0c53e5964d8492f6805",
+      "scripts/verification/nma079/source.ts": "656ce6a06a4de2ce3eed580439a01825f7bc04f19e011069dcf0f4d6523eadf6",
+      "scripts/verification/nma079/verify.ts": "e6415422817361e823758455f49215c37ca748bc43d33239078854a28457fde9"
+    }
+  },
+  "contract": "2.0.0",
+  "registered_surfaces": 145,
+  "authentication": {
+    "contract": "2.0.0",
+    "registered": 145,
+    "tested": 142,
+    "results": [
+      {
+        "method": "GET",
+        "path": "/v1/auth/session",
+        "authentication": "user",
+        "unauthenticated_status": 401
+      },
+      {
+        "method": "GET",
+        "path": "/v1/auth/sessions",
+        "authentication": "user",
+        "unauthenticated_status": 401
+      },
+      {
+        "method": "POST",
+        "path": "/v1/auth/sessions/:sessionId/revoke",
+        "authentication": "user",
+        "unauthenticated_status": 401
+      },
+      {
+        "method": "POST",
+        "path": "/v1/auth/logout",
+        "authentication": "user",
+        "unauthenticated_status": 401
+      },
+      {
+        "method": "POST",
+        "path": "/v1/auth/renew",
+        "authentication": "user",
+        "unauthenticated_status": 401
+      },
+      {
+        "method": "POST",
+        "path": "/v1/auth/bootstrap",
+        "authentication": "user",
+        "unauthenticated_status": 401
+      },
+      {
+        "method": "GET",
+        "path": "/v1/organizations",
+        "authentication": "user",
+        "unauthenticated_status": 401
+      },
+      {
+        "method": "POST",
+        "path": "/v1/organizations",
+        "authentication": "user",
+        "unauthenticated_status": 401
+      },
+      {
+        "method": "GET",
+        "path": "/v1/organizations/:organizationId",
+        "authentication": "user",
+        "unauthenticated_status": 401
+      },
+      {
+        "method": "POST",
+        "path": "/v1/organizations/:organizationId",
+        "authentication": "user",
+        "unauthenticated_status": 401
+      },
+      {
+        "method": "DELETE",
+        "path": "/v1/organizations/:organizationId",
+        "authentication": "user",
+        "unauthenticated_status": 401
+      },
+      {
+        "method": "GET",
+        "path": "/v1/organizations/:organizationId/members",
+        "authentication": "user",
+        "unauthenticated_status": 401
+      },
+      {
+        "method": "POST",
+        "path": "/v1/organizations/:organizationId/members/:membershipId/role",
+        "authentication": "user",
+        "unauthenticated_status": 401
+      },
+      {
+        "method": "POST",
+        "path": "/v1/organizations/:organizationId/members/:membershipId/remove",
+        "authentication": "user",
+        "unauthenticated_status": 401
+      },
+      {
+        "method": "GET",
+        "path": "/v1/organizations/:organizationId/provisioning",
+        "authentication": "user",
+        "unauthenticated_status": 401
+      },
+      {
+        "method": "POST",
+        "path": "/v1/organizations/:organizationId/private-work/resume",
+        "authentication": "user",
+        "unauthenticated_status": 401
+      },
+      {
+        "method": "GET",
+        "path": "/v1/organizations/:organizationId/workgroups",
+        "authentication": "user",
+        "unauthenticated_status": 401
+      },
+      {
+        "method": "POST",
+        "path": "/v1/organizations/:organizationId/workgroups",
+        "authentication": "user",
+        "unauthenticated_status": 401
+      },
+      {
+        "method": "POST",
+        "path": "/v1/organizations/:organizationId/workgroups/:workgroupId",
+        "authentication": "user",
+        "unauthenticated_status": 401
+      },
+      {
+        "method": "POST",
+        "path": "/v1/organizations/:organizationId/workgroups/:workgroupId/delete",
+        "authentication": "user",
+        "unauthenticated_status": 401
+      },
+      {
+        "method": "POST",
+        "path": "/v1/organizations/:organizationId/workgroups/:workgroupId/members",
+        "authentication": "user",
+        "unauthenticated_status": 401
+      },
+      {
+        "method": "GET",
+        "path": "/v1/organizations/:organizationId/audiences",
+        "authentication": "user",
+        "unauthenticated_status": 401
+      },
+      {
+        "method": "POST",
+        "path": "/v1/organizations/:organizationId/audiences",
+        "authentication": "user",
+        "unauthenticated_status": 401
+      },
+      {
+        "method": "POST",
+        "path": "/v1/organizations/:organizationId/audiences/:audienceId",
+        "authentication": "user",
+        "unauthenticated_status": 401
+      },
+      {
+        "method": "GET",
+        "path": "/v1/organizations/:organizationId/audiences/:audienceId/access",
+        "authentication": "user",
+        "unauthenticated_status": 401
+      },
+      {
+        "method": "GET",
+        "path": "/v1/organizations/:organizationId/invitations",
+        "authentication": "user",
+        "unauthenticated_status": 401
+      },
+      {
+        "method": "POST",
+        "path": "/v1/organizations/:organizationId/invitations",
+        "authentication": "user",
+        "unauthenticated_status": 401
+      },
+      {
+        "method": "POST",
+        "path": "/v1/organizations/:organizationId/invitations/:invitationId/cancel",
+        "authentication": "user",
+        "unauthenticated_status": 401
+      },
+      {
+        "method": "POST",
+        "path": "/v1/organizations/:organizationId/invitations/:invitationId/send",
+        "authentication": "user",
+        "unauthenticated_status": 401
+      },
+      {
+        "method": "GET",
+        "path": "/v1/invitations/:invitationId",
+        "authentication": "user",
+        "unauthenticated_status": 401
+      },
+      {
+        "method": "POST",
+        "path": "/v1/invitations/:invitationId/accept",
+        "authentication": "user",
+        "unauthenticated_status": 401
+      },
+      {
+        "method": "GET",
+        "path": "/v1/organizations/:organizationId/audit",
+        "authentication": "user",
+        "unauthenticated_status": 401
+      },
+      {
+        "method": "GET",
+        "path": "/v1/organizations/:organizationId/export",
+        "authentication": "user",
+        "unauthenticated_status": 401
+      },
+      {
+        "method": "POST",
+        "path": "/v1/data/provision",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/data/team-agents",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/organizations/:organizationId/agent-access/:id",
+        "authentication": "user",
+        "unauthenticated_status": 401
+      },
+      {
+        "method": "POST",
+        "path": "/v1/data/team-agents/:id/configuration",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/data/agents/:id/preferences",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/data/agents/:id/knowledge",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/data/legacy-binding",
+        "authentication": "bootstrap_owner_session",
+        "unauthenticated_status": 401
+      },
+      {
+        "method": "GET",
+        "path": "/health/ready",
+        "authentication": "bootstrap_owner_session",
+        "unauthenticated_status": 401
+      },
+      {
+        "method": "GET",
+        "path": "/v1/contracts",
+        "authentication": "user",
+        "unauthenticated_status": 401
+      },
+      {
+        "method": "GET",
+        "path": "/v1/agents/activity",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "GET",
+        "path": "/v1/conversations/previews",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "GET",
+        "path": "/v1/threads/:id/opening",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/threads/:id/opening/retry",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/creation/agents",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/creation/groups",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/setup",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "GET",
+        "path": "/v1/threads/:id/snapshot",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "GET",
+        "path": "/v1/threads/:id/history",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "GET",
+        "path": "/v1/threads/:id/timeline",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/agents",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/agents/:id/configuration",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/agents/:id/dm",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/threads",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "GET",
+        "path": "/v1/apps/catalog",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "GET",
+        "path": "/v1/apps/connections",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/apps/connect",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/apps/connections/:id/reconnect",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/apps/connections/:id/refresh",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/apps/connections/:id/revoke",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/apps/connections/:id/assign",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/apps/search",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "GET",
+        "path": "/v1/harness/contracts",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "GET",
+        "path": "/v1/harnesses",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/connections",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/ai/selections",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/connections/api-key",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/connections/:id/rotate-key",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/connections/:id/revoke",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/connections/:id/inspect",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/connections/:id/login",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/connections/:id/login/cancel",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/threads/:id/prepare",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/threads/:id/sessions",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/harness/tools",
+        "authentication": "run_lease",
+        "unauthenticated_status": 401
+      },
+      {
+        "method": "GET",
+        "path": "/v1/harness/tools",
+        "authentication": "run_lease",
+        "unauthenticated_status": 401
+      },
+      {
+        "method": "GET",
+        "path": "/v1/entities/:kind",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "GET",
+        "path": "/v1/entities/:kind/:id",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "GET",
+        "path": "/v1/events/stream",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "GET",
+        "path": "/v1/events",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/data/team-agents/:id/skills/publish",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/data/team-agents/:id/skills/assign",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "GET",
+        "path": "/v1/learning/memories",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/learning/memories/write",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/learning/memories/delete",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "GET",
+        "path": "/v1/learning/skills",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/learning/skills/read",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/learning/skills/create",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/learning/skills/revise",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/learning/skills/assign",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "GET",
+        "path": "/v1/groups/:id/routes/:routeId/decision",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/groups/:id/configuration",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/groups/:id/membership",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/groups/:id/messages",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/groups/:id/routes/:routeId/retry",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/human-requests/:id/reply",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "GET",
+        "path": "/v1/threads/:id/goals",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/goals/:id/assignment",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/goals/:id/recover-completion",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/goals/capture",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/goals/:id/progress",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/routines/write",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/routines/:id/control",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/goals",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/routines",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/goals/:id/control",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/workspaces",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "GET",
+        "path": "/v1/threads/:id/workspace",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/workspaces/:id/revoke",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "GET",
+        "path": "/v1/workspaces/:id/files",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "GET",
+        "path": "/v1/workspaces/:id/file",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/workspaces/:id/uploads",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "GET",
+        "path": "/v1/artifacts/:id/content",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/artifacts/:id/share",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/artifacts",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/message-uploads",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "GET",
+        "path": "/v1/message-submissions/:id",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "GET",
+        "path": "/v1/machine",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "GET",
+        "path": "/v1/machine/operations",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "GET",
+        "path": "/v1/machine/processes",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "GET",
+        "path": "/v1/machine/windows",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/machine/processes/control",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/machine/control",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/machine/view",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/machine/views/:viewerId/renew",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "DELETE",
+        "path": "/v1/machine/views/:viewerId",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "GET",
+        "path": "/v1/machine/files",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "GET",
+        "path": "/v1/machine/file",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "ALL",
+        "path": "/v1/machine/viewer/:viewerId/*",
+        "authentication": "ticket",
+        "unauthenticated_status": 401
+      },
+      {
+        "method": "POST",
+        "path": "/v1/runs/:id/steer",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/runs/:id/reconcile",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/messages/:id/edit",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/messages/:id/delete",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "GET",
+        "path": "/v1/runs/:id/interactions/history",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "GET",
+        "path": "/v1/runs/:id/interactions",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/runs/:id/interactions",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/runs",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/runs/:id/retry",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/runs/:id/retry-preparation",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      },
+      {
+        "method": "POST",
+        "path": "/v1/runs/:id/cancel",
+        "authentication": "user",
+        "unauthenticated_status": 403
+      }
+    ]
+  },
+  "entities": {
+    "organizations": 2,
+    "member_actors": 3,
+    "outsider_actors": 1,
+    "workgroups": 2,
+    "entity_kinds": 37,
+    "results": [
+      {
+        "kind": "ai_selection",
+        "own_list": 200,
+        "other_organization_empty": true,
+        "outsider": 403
+      },
+      {
+        "kind": "execution_domain",
+        "own_list": 200,
+        "other_organization_empty": true,
+        "outsider": 403
+      },
+      {
+        "kind": "agent_preference",
+        "own_list": 200,
+        "other_organization_empty": true,
+        "outsider": 403
+      },
+      {
+        "kind": "published_knowledge",
+        "own_list": 200,
+        "other_organization_empty": true,
+        "outsider": 403
+      },
+      {
+        "kind": "attachment_upload",
+        "own_list": 200,
+        "other_organization_empty": true,
+        "outsider": 403
+      },
+      {
+        "kind": "attachment_document",
+        "own_list": 200,
+        "other_organization_empty": true,
+        "outsider": 403
+      },
+      {
+        "kind": "app_connection",
+        "own_list": 200,
+        "other_organization_empty": true,
+        "outsider": 403
+      },
+      {
+        "kind": "app_session",
+        "own_list": 200,
+        "other_organization_empty": true,
+        "outsider": 403
+      },
+      {
+        "kind": "app_effect",
+        "own_list": 200,
+        "other_organization_empty": true,
+        "outsider": 403
+      },
+      {
+        "kind": "browser_profile",
+        "own_list": 200,
+        "other_organization_empty": true,
+        "outsider": 403
+      },
+      {
+        "kind": "browser_session",
+        "own_list": 200,
+        "other_organization_empty": true,
+        "outsider": 403
+      },
+      {
+        "kind": "browser_action",
+        "own_list": 200,
+        "other_organization_empty": true,
+        "outsider": 403
+      },
+      {
+        "kind": "machine",
+        "own_list": 200,
+        "other_organization_empty": true,
+        "outsider": 403
+      },
+      {
+        "kind": "machine_operation",
+        "own_list": 200,
+        "other_organization_empty": true,
+        "outsider": 403
+      },
+      {
+        "kind": "machine_process",
+        "own_list": 200,
+        "other_organization_empty": true,
+        "outsider": 403
+      },
+      {
+        "kind": "machine_target",
+        "own_list": 200,
+        "other_organization_empty": true,
+        "outsider": 403
+      },
+      {
+        "kind": "machine_window",
+        "own_list": 200,
+        "other_organization_empty": true,
+        "outsider": 403
+      },
+      {
+        "kind": "group_route",
+        "own_list": 200,
+        "other_organization_empty": true,
+        "outsider": 403
+      },
+      {
+        "kind": "peer_task",
+        "own_list": 200,
+        "other_organization_empty": true,
+        "outsider": 403
+      },
+      {
+        "kind": "human_request",
+        "own_list": 200,
+        "other_organization_empty": true,
+        "outsider": 403
+      },
+      {
+        "kind": "memory",
+        "own_list": 200,
+        "other_organization_empty": true,
+        "outsider": 403
+      },
+      {
+        "kind": "skill",
+        "own_list": 200,
+        "other_organization_empty": true,
+        "outsider": 403
+      },
+      {
+        "kind": "skill_revision",
+        "own_list": 200,
+        "other_organization_empty": true,
+        "outsider": 403
+      },
+      {
+        "kind": "skill_assignment",
+        "own_list": 200,
+        "other_organization_empty": true,
+        "outsider": 403
+      },
+      {
+        "kind": "harness_inventory",
+        "own_list": 200,
+        "other_organization_empty": true,
+        "outsider": 403
+      },
+      {
+        "kind": "connection",
+        "own_list": 200,
+        "other_organization_empty": true,
+        "outsider": 403
+      },
+      {
+        "kind": "agent",
+        "own_list": 200,
+        "other_organization_empty": true,
+        "outsider": 403
+      },
+      {
+        "kind": "thread",
+        "own_list": 200,
+        "other_organization_empty": true,
+        "outsider": 403
+      },
+      {
+        "kind": "run",
+        "own_list": 200,
+        "other_organization_empty": true,
+        "outsider": 403
+      },
+      {
+        "kind": "message",
+        "own_list": 200,
+        "other_organization_empty": true,
+        "outsider": 403
+      },
+      {
+        "kind": "goal",
+        "own_list": 200,
+        "other_organization_empty": true,
+        "outsider": 403
+      },
+      {
+        "kind": "routine",
+        "own_list": 200,
+        "other_organization_empty": true,
+        "outsider": 403
+      },
+      {
+        "kind": "artifact",
+        "own_list": 200,
+        "other_organization_empty": true,
+        "outsider": 403
+      },
+      {
+        "kind": "binding",
+        "own_list": 200,
+        "other_organization_empty": true,
+        "outsider": 403
+      },
+      {
+        "kind": "occurrence",
+        "own_list": 200,
+        "other_organization_empty": true,
+        "outsider": 403
+      },
+      {
+        "kind": "control",
+        "own_list": 200,
+        "other_organization_empty": true,
+        "outsider": 403
+      },
+      {
+        "kind": "workspace",
+        "own_list": 200,
+        "other_organization_empty": true,
+        "outsider": 403
+      }
+    ]
+  },
+  "account_positive_surfaces": 135,
+  "authorized_policy_surfaces": 145,
+  "account_positive_missing": [],
+  "native_completed": true,
+  "native_planned": 4,
+  "native_executed": 4,
+  "native_runtime_drift": [],
+  "cua": {
+    "passed": true,
+    "planned": 12,
+    "executed": 12,
+    "report": "cua/2026-11-14T14-59-51.871Z/native.json"
+  },
+  "complete": true,
+  "limitations": [
+    "Recorded HTTP statuses distinguish account and legacy modes; unobserved positive account cases are not inferred from legacy tests.",
+    "Native/provider evidence does not establish web/Tauri UI, deployed HTTPS, fresh-device installation or production capacity."
+  ],
+  "surfaces": [
+    {
+      "method": "GET",
+      "path": "/health/live",
+      "authentication_class": "public",
+      "account_statuses": [
+        200
+      ],
+      "legacy_statuses": [
+        200
+      ],
+      "account_positive": true,
+      "account_denial": false,
+      "explicit_access_cases": [],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "ALL",
+      "path": "/api/auth/*",
+      "authentication_class": "authentication_protocol",
+      "account_statuses": [
+        200,
+        302,
+        400,
+        401,
+        403,
+        404,
+        429
+      ],
+      "legacy_statuses": [],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "GET",
+      "path": "/v1/auth/native",
+      "authentication_class": "public",
+      "account_statuses": [
+        200
+      ],
+      "legacy_statuses": [],
+      "account_positive": true,
+      "account_denial": false,
+      "explicit_access_cases": [
+        {
+          "method": "GET",
+          "path": "/v1/auth/native",
+          "own_status": 200,
+          "foreign_status": null,
+          "cross_organization_status": null,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "GET",
+      "path": "/v1/auth/session",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        401
+      ],
+      "legacy_statuses": [],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "GET",
+      "path": "/v1/auth/sessions",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        401
+      ],
+      "legacy_statuses": [],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/auth/sessions/:sessionId/revoke",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        401
+      ],
+      "legacy_statuses": [],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/auth/logout",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        401,
+        403
+      ],
+      "legacy_statuses": [],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/auth/renew",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        401
+      ],
+      "legacy_statuses": [],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/auth/bootstrap",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        401,
+        403
+      ],
+      "legacy_statuses": [],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "GET",
+      "path": "/v1/organizations",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        401
+      ],
+      "legacy_statuses": [],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        401,
+        403
+      ],
+      "legacy_statuses": [],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "GET",
+      "path": "/v1/organizations/:organizationId",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        401,
+        403
+      ],
+      "legacy_statuses": [],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        401
+      ],
+      "legacy_statuses": [],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "POST",
+          "path": "/v1/organizations/:organizationId",
+          "own_status": 200,
+          "foreign_status": null,
+          "cross_organization_status": null,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/organizations/:organizationId",
+      "authentication_class": "user",
+      "account_statuses": [
+        401,
+        403
+      ],
+      "legacy_statuses": [],
+      "account_positive": false,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "DELETE",
+          "path": "/v1/organizations/:organizationId",
+          "own_status": 403,
+          "foreign_status": null,
+          "cross_organization_status": null,
+          "behavior": "organization_deletion_explicitly_disabled"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "GET",
+      "path": "/v1/organizations/:organizationId/members",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        401,
+        403
+      ],
+      "legacy_statuses": [],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId/members/:membershipId/role",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        401,
+        403,
+        409
+      ],
+      "legacy_statuses": [],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId/members/:membershipId/remove",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        401,
+        403,
+        409
+      ],
+      "legacy_statuses": [],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "GET",
+      "path": "/v1/organizations/:organizationId/provisioning",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        401
+      ],
+      "legacy_statuses": [],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId/private-work/resume",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        401,
+        403
+      ],
+      "legacy_statuses": [],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "GET",
+      "path": "/v1/organizations/:organizationId/workgroups",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        401
+      ],
+      "legacy_statuses": [],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId/workgroups",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        401,
+        403,
+        409,
+        422
+      ],
+      "legacy_statuses": [],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "POST",
+          "path": "/v1/organizations/:organizationId/workgroups",
+          "own_status": 200,
+          "foreign_status": null,
+          "cross_organization_status": null,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId/workgroups/:workgroupId",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        401
+      ],
+      "legacy_statuses": [],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "POST",
+          "path": "/v1/organizations/:organizationId/workgroups/:workgroupId",
+          "own_status": 200,
+          "foreign_status": null,
+          "cross_organization_status": null,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId/workgroups/:workgroupId/delete",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        401
+      ],
+      "legacy_statuses": [],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId/workgroups/:workgroupId/members",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        401,
+        403
+      ],
+      "legacy_statuses": [],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "GET",
+      "path": "/v1/organizations/:organizationId/audiences",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        401
+      ],
+      "legacy_statuses": [],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "GET",
+          "path": "/v1/organizations/:organizationId/audiences",
+          "own_status": 200,
+          "foreign_status": null,
+          "cross_organization_status": null,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId/audiences",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        401,
+        403
+      ],
+      "legacy_statuses": [],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId/audiences/:audienceId",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        401
+      ],
+      "legacy_statuses": [],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "GET",
+      "path": "/v1/organizations/:organizationId/audiences/:audienceId/access",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        401
+      ],
+      "legacy_statuses": [],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "GET",
+      "path": "/v1/organizations/:organizationId/invitations",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        401
+      ],
+      "legacy_statuses": [],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "GET",
+          "path": "/v1/organizations/:organizationId/invitations",
+          "own_status": 200,
+          "foreign_status": null,
+          "cross_organization_status": null,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId/invitations",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        401,
+        403
+      ],
+      "legacy_statuses": [],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId/invitations/:invitationId/cancel",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        401
+      ],
+      "legacy_statuses": [],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId/invitations/:invitationId/send",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        401
+      ],
+      "legacy_statuses": [],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "GET",
+      "path": "/v1/invitations/:invitationId",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        401,
+        403
+      ],
+      "legacy_statuses": [],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/invitations/:invitationId/accept",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        401,
+        403,
+        500
+      ],
+      "legacy_statuses": [],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "GET",
+      "path": "/v1/organizations/:organizationId/audit",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        401
+      ],
+      "legacy_statuses": [],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "GET",
+      "path": "/v1/organizations/:organizationId/export",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        401,
+        403
+      ],
+      "legacy_statuses": [],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/data/provision",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403
+      ],
+      "legacy_statuses": [],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/data/team-agents",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403
+      ],
+      "legacy_statuses": [],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/organizations/:organizationId/agent-access/:id",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        401
+      ],
+      "legacy_statuses": [],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/data/team-agents/:id/configuration",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403
+      ],
+      "legacy_statuses": [],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "POST",
+          "path": "/v1/data/team-agents/:id/configuration",
+          "own_status": 200,
+          "foreign_status": null,
+          "cross_organization_status": null,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/data/agents/:id/preferences",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403
+      ],
+      "legacy_statuses": [],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/data/agents/:id/knowledge",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403
+      ],
+      "legacy_statuses": [],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/data/legacy-binding",
+      "authentication_class": "bootstrap_owner_session",
+      "account_statuses": [
+        200,
+        401,
+        403,
+        409
+      ],
+      "legacy_statuses": [],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "GET",
+      "path": "/health/ready",
+      "authentication_class": "bootstrap_owner_session",
+      "account_statuses": [
+        200,
+        401,
+        403
+      ],
+      "legacy_statuses": [
+        200,
+        401,
+        503
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "GET",
+          "path": "/health/ready",
+          "own_status": 200,
+          "foreign_status": 403,
+          "cross_organization_status": null,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "GET",
+      "path": "/v1/contracts",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        401
+      ],
+      "legacy_statuses": [
+        200,
+        401
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "GET",
+      "path": "/v1/agents/activity",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403
+      ],
+      "legacy_statuses": [
+        200,
+        401
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "GET",
+          "path": "/v1/agents/activity",
+          "own_status": 200,
+          "foreign_status": null,
+          "cross_organization_status": null,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "GET",
+      "path": "/v1/conversations/previews",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403
+      ],
+      "legacy_statuses": [
+        200,
+        401
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "GET",
+          "path": "/v1/conversations/previews",
+          "own_status": 200,
+          "foreign_status": null,
+          "cross_organization_status": null,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "GET",
+      "path": "/v1/threads/:id/opening",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403,
+        404
+      ],
+      "legacy_statuses": [
+        200,
+        401
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "GET",
+          "path": "/v1/threads/:id/opening",
+          "own_status": 200,
+          "foreign_status": 404,
+          "cross_organization_status": 404,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/threads/:id/opening/retry",
+      "authentication_class": "user",
+      "account_statuses": [
+        403,
+        404,
+        409
+      ],
+      "legacy_statuses": [
+        401
+      ],
+      "account_positive": false,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "POST",
+          "path": "/v1/threads/:id/opening/retry",
+          "own_status": 409,
+          "foreign_status": 404,
+          "cross_organization_status": 404,
+          "behavior": "authorized_resource_state_error"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/creation/agents",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403
+      ],
+      "legacy_statuses": [
+        200,
+        401
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "POST",
+          "path": "/v1/creation/agents",
+          "own_status": 200,
+          "foreign_status": null,
+          "cross_organization_status": null,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/creation/groups",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403
+      ],
+      "legacy_statuses": [
+        200,
+        401
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "POST",
+          "path": "/v1/creation/groups",
+          "own_status": 200,
+          "foreign_status": null,
+          "cross_organization_status": null,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/setup",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403
+      ],
+      "legacy_statuses": [
+        200,
+        401
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "POST",
+          "path": "/v1/setup",
+          "own_status": 200,
+          "foreign_status": null,
+          "cross_organization_status": null,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "GET",
+      "path": "/v1/threads/:id/snapshot",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403,
+        404
+      ],
+      "legacy_statuses": [
+        200,
+        401
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "GET",
+      "path": "/v1/threads/:id/history",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403,
+        404
+      ],
+      "legacy_statuses": [
+        200,
+        401
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "GET",
+          "path": "/v1/threads/:id/history",
+          "own_status": 200,
+          "foreign_status": 404,
+          "cross_organization_status": 404,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "GET",
+      "path": "/v1/threads/:id/timeline",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403,
+        404
+      ],
+      "legacy_statuses": [
+        200,
+        401,
+        422
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "GET",
+          "path": "/v1/threads/:id/timeline",
+          "own_status": 200,
+          "foreign_status": 404,
+          "cross_organization_status": 404,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/agents",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403
+      ],
+      "legacy_statuses": [
+        200,
+        401,
+        422
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "POST",
+          "path": "/v1/agents",
+          "own_status": 200,
+          "foreign_status": null,
+          "cross_organization_status": null,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/agents/:id/configuration",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403,
+        404
+      ],
+      "legacy_statuses": [
+        200,
+        401,
+        409,
+        422
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "POST",
+          "path": "/v1/agents/:id/configuration",
+          "own_status": 200,
+          "foreign_status": 404,
+          "cross_organization_status": 404,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/agents/:id/dm",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403
+      ],
+      "legacy_statuses": [
+        401
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/threads",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403
+      ],
+      "legacy_statuses": [
+        401
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "POST",
+          "path": "/v1/threads",
+          "own_status": 200,
+          "foreign_status": null,
+          "cross_organization_status": null,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "GET",
+      "path": "/v1/apps/catalog",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403
+      ],
+      "legacy_statuses": [
+        200,
+        401
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "GET",
+          "path": "/v1/apps/catalog",
+          "own_status": 200,
+          "foreign_status": null,
+          "cross_organization_status": null,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "GET",
+      "path": "/v1/apps/connections",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403
+      ],
+      "legacy_statuses": [
+        401
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "GET",
+          "path": "/v1/apps/connections",
+          "own_status": 200,
+          "foreign_status": null,
+          "cross_organization_status": null,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/apps/connect",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403
+      ],
+      "legacy_statuses": [
+        401
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "POST",
+          "path": "/v1/apps/connect",
+          "own_status": 200,
+          "foreign_status": null,
+          "cross_organization_status": null,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/apps/connections/:id/reconnect",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403,
+        404
+      ],
+      "legacy_statuses": [
+        401
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "POST",
+          "path": "/v1/apps/connections/:id/reconnect",
+          "own_status": 200,
+          "foreign_status": 404,
+          "cross_organization_status": 404,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/apps/connections/:id/refresh",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403,
+        404
+      ],
+      "legacy_statuses": [
+        401
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "POST",
+          "path": "/v1/apps/connections/:id/refresh",
+          "own_status": 200,
+          "foreign_status": 404,
+          "cross_organization_status": 404,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/apps/connections/:id/revoke",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403,
+        404
+      ],
+      "legacy_statuses": [
+        401
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "POST",
+          "path": "/v1/apps/connections/:id/revoke",
+          "own_status": 200,
+          "foreign_status": 404,
+          "cross_organization_status": 404,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/apps/connections/:id/assign",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403
+      ],
+      "legacy_statuses": [
+        200,
+        401
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/apps/search",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403,
+        404
+      ],
+      "legacy_statuses": [
+        401
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "POST",
+          "path": "/v1/apps/search",
+          "own_status": 200,
+          "foreign_status": 404,
+          "cross_organization_status": 404,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "GET",
+      "path": "/v1/harness/contracts",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403
+      ],
+      "legacy_statuses": [
+        401
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "GET",
+          "path": "/v1/harness/contracts",
+          "own_status": 200,
+          "foreign_status": null,
+          "cross_organization_status": null,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "GET",
+      "path": "/v1/harnesses",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403
+      ],
+      "legacy_statuses": [
+        200,
+        401
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "GET",
+          "path": "/v1/harnesses",
+          "own_status": 200,
+          "foreign_status": null,
+          "cross_organization_status": null,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/connections",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403
+      ],
+      "legacy_statuses": [
+        200,
+        401,
+        422
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/ai/selections",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403
+      ],
+      "legacy_statuses": [
+        401
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/connections/api-key",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403
+      ],
+      "legacy_statuses": [
+        200,
+        401,
+        409,
+        422,
+        500
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/connections/:id/rotate-key",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403
+      ],
+      "legacy_statuses": [
+        401
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/connections/:id/revoke",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403
+      ],
+      "legacy_statuses": [
+        200,
+        401
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/connections/:id/inspect",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403,
+        404
+      ],
+      "legacy_statuses": [
+        401
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "POST",
+          "path": "/v1/connections/:id/inspect",
+          "own_status": 200,
+          "foreign_status": 404,
+          "cross_organization_status": 404,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/connections/:id/login",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403,
+        404
+      ],
+      "legacy_statuses": [
+        401
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "POST",
+          "path": "/v1/connections/:id/login",
+          "own_status": 200,
+          "foreign_status": 404,
+          "cross_organization_status": 404,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/connections/:id/login/cancel",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403,
+        404
+      ],
+      "legacy_statuses": [
+        401
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "POST",
+          "path": "/v1/connections/:id/login/cancel",
+          "own_status": 200,
+          "foreign_status": 404,
+          "cross_organization_status": 404,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/threads/:id/prepare",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403,
+        404
+      ],
+      "legacy_statuses": [
+        401
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "POST",
+          "path": "/v1/threads/:id/prepare",
+          "own_status": 200,
+          "foreign_status": 404,
+          "cross_organization_status": 404,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/threads/:id/sessions",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403,
+        404
+      ],
+      "legacy_statuses": [
+        401
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/harness/tools",
+      "authentication_class": "run_lease",
+      "account_statuses": [
+        200,
+        401
+      ],
+      "legacy_statuses": [
+        200,
+        202,
+        400,
+        401,
+        403,
+        409
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "POST",
+          "path": "/v1/harness/tools",
+          "own_status": 200,
+          "foreign_status": 401,
+          "behavior": "authorized_run_lease_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "GET",
+      "path": "/v1/harness/tools",
+      "authentication_class": "run_lease",
+      "account_statuses": [
+        401,
+        405
+      ],
+      "legacy_statuses": [
+        401,
+        405
+      ],
+      "account_positive": false,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "GET",
+          "path": "/v1/harness/tools",
+          "own_status": 405,
+          "foreign_status": 401,
+          "behavior": "authorized_run_lease_method_explicitly_disabled"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "GET",
+      "path": "/v1/entities/:kind",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403
+      ],
+      "legacy_statuses": [
+        200,
+        401
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "GET",
+      "path": "/v1/entities/:kind/:id",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403,
+        404
+      ],
+      "legacy_statuses": [
+        200,
+        401,
+        404
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "GET",
+          "path": "/v1/entities/:kind/:id",
+          "own_status": 200,
+          "foreign_status": null,
+          "cross_organization_status": null,
+          "behavior": "authorized_success"
+        },
+        {
+          "method": "GET",
+          "path": "/v1/entities/:kind/:id",
+          "own_status": 200,
+          "foreign_status": null,
+          "cross_organization_status": null,
+          "behavior": "authorized_success"
+        },
+        {
+          "method": "GET",
+          "path": "/v1/entities/:kind/:id",
+          "own_status": 200,
+          "foreign_status": null,
+          "cross_organization_status": null,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "GET",
+      "path": "/v1/events/stream",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        401,
+        403
+      ],
+      "legacy_statuses": [
+        401
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "GET",
+      "path": "/v1/events",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        401,
+        403
+      ],
+      "legacy_statuses": [
+        200,
+        401,
+        422
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/data/team-agents/:id/skills/publish",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403
+      ],
+      "legacy_statuses": [
+        401
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "POST",
+          "path": "/v1/data/team-agents/:id/skills/publish",
+          "own_status": 200,
+          "foreign_status": null,
+          "cross_organization_status": null,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/data/team-agents/:id/skills/assign",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403
+      ],
+      "legacy_statuses": [
+        401
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "POST",
+          "path": "/v1/data/team-agents/:id/skills/assign",
+          "own_status": 200,
+          "foreign_status": null,
+          "cross_organization_status": null,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "GET",
+      "path": "/v1/learning/memories",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403,
+        404
+      ],
+      "legacy_statuses": [
+        200,
+        401
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "GET",
+          "path": "/v1/learning/memories",
+          "own_status": 200,
+          "foreign_status": 404,
+          "cross_organization_status": 404,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/learning/memories/write",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403,
+        404
+      ],
+      "legacy_statuses": [
+        200,
+        401
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "POST",
+          "path": "/v1/learning/memories/write",
+          "own_status": 200,
+          "foreign_status": 404,
+          "cross_organization_status": 404,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/learning/memories/delete",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403,
+        404
+      ],
+      "legacy_statuses": [
+        200,
+        401
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "POST",
+          "path": "/v1/learning/memories/delete",
+          "own_status": 200,
+          "foreign_status": 404,
+          "cross_organization_status": 404,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "GET",
+      "path": "/v1/learning/skills",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403,
+        404
+      ],
+      "legacy_statuses": [
+        200,
+        401
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "GET",
+          "path": "/v1/learning/skills",
+          "own_status": 200,
+          "foreign_status": 404,
+          "cross_organization_status": 404,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/learning/skills/read",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403,
+        404
+      ],
+      "legacy_statuses": [
+        200,
+        401
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "POST",
+          "path": "/v1/learning/skills/read",
+          "own_status": 200,
+          "foreign_status": 404,
+          "cross_organization_status": 404,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/learning/skills/create",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403,
+        404
+      ],
+      "legacy_statuses": [
+        200,
+        401
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "POST",
+          "path": "/v1/learning/skills/create",
+          "own_status": 200,
+          "foreign_status": 404,
+          "cross_organization_status": 404,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/learning/skills/revise",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403,
+        404
+      ],
+      "legacy_statuses": [
+        401
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "POST",
+          "path": "/v1/learning/skills/revise",
+          "own_status": 200,
+          "foreign_status": 404,
+          "cross_organization_status": 404,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/learning/skills/assign",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403,
+        404
+      ],
+      "legacy_statuses": [
+        200,
+        401
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "POST",
+          "path": "/v1/learning/skills/assign",
+          "own_status": 200,
+          "foreign_status": 404,
+          "cross_organization_status": 404,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "GET",
+      "path": "/v1/groups/:id/routes/:routeId/decision",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403,
+        404
+      ],
+      "legacy_statuses": [
+        200,
+        401,
+        403
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "GET",
+          "path": "/v1/groups/:id/routes/:routeId/decision",
+          "own_status": 200,
+          "foreign_status": 404,
+          "cross_organization_status": 404,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/groups/:id/configuration",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403,
+        404
+      ],
+      "legacy_statuses": [
+        200,
+        401
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "POST",
+          "path": "/v1/groups/:id/configuration",
+          "own_status": 200,
+          "foreign_status": 404,
+          "cross_organization_status": 404,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/groups/:id/membership",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403,
+        404
+      ],
+      "legacy_statuses": [
+        401
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "POST",
+          "path": "/v1/groups/:id/membership",
+          "own_status": 200,
+          "foreign_status": 404,
+          "cross_organization_status": 404,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/groups/:id/messages",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403,
+        404
+      ],
+      "legacy_statuses": [
+        200,
+        401,
+        403,
+        404,
+        409,
+        422
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "POST",
+          "path": "/v1/groups/:id/messages",
+          "own_status": 200,
+          "foreign_status": 404,
+          "cross_organization_status": 404,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/groups/:id/routes/:routeId/retry",
+      "authentication_class": "user",
+      "account_statuses": [
+        403,
+        404,
+        409
+      ],
+      "legacy_statuses": [
+        200,
+        401,
+        409
+      ],
+      "account_positive": false,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "POST",
+          "path": "/v1/groups/:id/routes/:routeId/retry",
+          "own_status": 409,
+          "foreign_status": 404,
+          "cross_organization_status": 404,
+          "behavior": "authorized_resource_state_error"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/human-requests/:id/reply",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403,
+        404
+      ],
+      "legacy_statuses": [
+        200,
+        401,
+        409
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "POST",
+          "path": "/v1/human-requests/:id/reply",
+          "own_status": 200,
+          "foreign_status": 404,
+          "cross_organization_status": 404,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "GET",
+      "path": "/v1/threads/:id/goals",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403,
+        404
+      ],
+      "legacy_statuses": [
+        200,
+        401
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "GET",
+          "path": "/v1/threads/:id/goals",
+          "own_status": 200,
+          "foreign_status": 404,
+          "cross_organization_status": 404,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/goals/:id/assignment",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403,
+        404
+      ],
+      "legacy_statuses": [
+        401
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "POST",
+          "path": "/v1/goals/:id/assignment",
+          "own_status": 200,
+          "foreign_status": 404,
+          "cross_organization_status": 404,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/goals/:id/recover-completion",
+      "authentication_class": "user",
+      "account_statuses": [
+        403,
+        404,
+        409
+      ],
+      "legacy_statuses": [
+        200,
+        401
+      ],
+      "account_positive": false,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "POST",
+          "path": "/v1/goals/:id/recover-completion",
+          "own_status": 409,
+          "foreign_status": 404,
+          "cross_organization_status": 404,
+          "behavior": "authorized_resource_state_error"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/goals/capture",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403
+      ],
+      "legacy_statuses": [
+        200,
+        401
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "POST",
+          "path": "/v1/goals/capture",
+          "own_status": 200,
+          "foreign_status": null,
+          "cross_organization_status": null,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/goals/:id/progress",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403,
+        404
+      ],
+      "legacy_statuses": [
+        401
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "POST",
+          "path": "/v1/goals/:id/progress",
+          "own_status": 200,
+          "foreign_status": 404,
+          "cross_organization_status": 404,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/routines/write",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403
+      ],
+      "legacy_statuses": [
+        401
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "POST",
+          "path": "/v1/routines/write",
+          "own_status": 200,
+          "foreign_status": null,
+          "cross_organization_status": null,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/routines/:id/control",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403,
+        404
+      ],
+      "legacy_statuses": [
+        401
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "POST",
+          "path": "/v1/routines/:id/control",
+          "own_status": 200,
+          "foreign_status": 404,
+          "cross_organization_status": 404,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/goals",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403
+      ],
+      "legacy_statuses": [
+        401
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "POST",
+          "path": "/v1/goals",
+          "own_status": 200,
+          "foreign_status": null,
+          "cross_organization_status": null,
+          "behavior": "authorized_success"
+        },
+        {
+          "method": "POST",
+          "path": "/v1/goals",
+          "own_status": 200,
+          "foreign_status": null,
+          "cross_organization_status": null,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/routines",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403
+      ],
+      "legacy_statuses": [
+        401
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "POST",
+          "path": "/v1/routines",
+          "own_status": 200,
+          "foreign_status": null,
+          "cross_organization_status": null,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/goals/:id/control",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403,
+        404
+      ],
+      "legacy_statuses": [
+        401
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "POST",
+          "path": "/v1/goals/:id/control",
+          "own_status": 200,
+          "foreign_status": 404,
+          "cross_organization_status": 404,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/workspaces",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403
+      ],
+      "legacy_statuses": [
+        200,
+        401
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "POST",
+          "path": "/v1/workspaces",
+          "own_status": 200,
+          "foreign_status": null,
+          "cross_organization_status": null,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "GET",
+      "path": "/v1/threads/:id/workspace",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403,
+        404
+      ],
+      "legacy_statuses": [
+        200,
+        401
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "GET",
+          "path": "/v1/threads/:id/workspace",
+          "own_status": 200,
+          "foreign_status": 404,
+          "cross_organization_status": 404,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/workspaces/:id/revoke",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403,
+        404
+      ],
+      "legacy_statuses": [
+        200,
+        401
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "POST",
+          "path": "/v1/workspaces/:id/revoke",
+          "own_status": 200,
+          "foreign_status": 404,
+          "cross_organization_status": 404,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "GET",
+      "path": "/v1/workspaces/:id/files",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403,
+        404
+      ],
+      "legacy_statuses": [
+        200,
+        401
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "GET",
+          "path": "/v1/workspaces/:id/files",
+          "own_status": 200,
+          "foreign_status": 404,
+          "cross_organization_status": 404,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "GET",
+      "path": "/v1/workspaces/:id/file",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403,
+        404
+      ],
+      "legacy_statuses": [
+        401
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "GET",
+          "path": "/v1/workspaces/:id/file",
+          "own_status": 200,
+          "foreign_status": 404,
+          "cross_organization_status": 404,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/workspaces/:id/uploads",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403,
+        404
+      ],
+      "legacy_statuses": [
+        200,
+        401
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "POST",
+          "path": "/v1/workspaces/:id/uploads",
+          "own_status": 200,
+          "foreign_status": 404,
+          "cross_organization_status": 404,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "GET",
+      "path": "/v1/artifacts/:id/content",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403,
+        404
+      ],
+      "legacy_statuses": [
+        401
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/artifacts/:id/share",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403,
+        404
+      ],
+      "legacy_statuses": [
+        401
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "POST",
+          "path": "/v1/artifacts/:id/share",
+          "own_status": 200,
+          "foreign_status": 404,
+          "cross_organization_status": 404,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/artifacts",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403,
+        404
+      ],
+      "legacy_statuses": [
+        401
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "POST",
+          "path": "/v1/artifacts",
+          "own_status": 200,
+          "foreign_status": 404,
+          "cross_organization_status": 404,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/message-uploads",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403
+      ],
+      "legacy_statuses": [
+        200,
+        401
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "GET",
+      "path": "/v1/message-submissions/:id",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403
+      ],
+      "legacy_statuses": [
+        200,
+        401
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "GET",
+          "path": "/v1/message-submissions/:id",
+          "own_status": 200,
+          "foreign_status": null,
+          "cross_organization_status": null,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "GET",
+      "path": "/v1/machine",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403
+      ],
+      "legacy_statuses": [],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "GET",
+          "path": "/v1/machine",
+          "own_status": 200,
+          "foreign_status": null,
+          "cross_organization_status": null,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "GET",
+      "path": "/v1/machine/operations",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403
+      ],
+      "legacy_statuses": [],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "GET",
+          "path": "/v1/machine/operations",
+          "own_status": 200,
+          "foreign_status": null,
+          "cross_organization_status": null,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "GET",
+      "path": "/v1/machine/processes",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403
+      ],
+      "legacy_statuses": [],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "GET",
+          "path": "/v1/machine/processes",
+          "own_status": 200,
+          "foreign_status": null,
+          "cross_organization_status": null,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "GET",
+      "path": "/v1/machine/windows",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403
+      ],
+      "legacy_statuses": [
+        200
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "GET",
+          "path": "/v1/machine/windows",
+          "own_status": 200,
+          "foreign_status": null,
+          "cross_organization_status": null,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/machine/processes/control",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403
+      ],
+      "legacy_statuses": [],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "POST",
+          "path": "/v1/machine/processes/control",
+          "own_status": 200,
+          "foreign_status": null,
+          "cross_organization_status": null,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/machine/control",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403
+      ],
+      "legacy_statuses": [],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "POST",
+          "path": "/v1/machine/control",
+          "own_status": 200,
+          "foreign_status": null,
+          "cross_organization_status": null,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/machine/view",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403
+      ],
+      "legacy_statuses": [],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "POST",
+          "path": "/v1/machine/view",
+          "own_status": 200,
+          "foreign_status": null,
+          "cross_organization_status": null,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/machine/views/:viewerId/renew",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403
+      ],
+      "legacy_statuses": [],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "POST",
+          "path": "/v1/machine/views/:viewerId/renew",
+          "own_status": 200,
+          "foreign_status": 403,
+          "cross_organization_status": 403,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/machine/views/:viewerId",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403
+      ],
+      "legacy_statuses": [],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "DELETE",
+          "path": "/v1/machine/views/:viewerId",
+          "own_status": 200,
+          "foreign_status": 403,
+          "cross_organization_status": 403,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "GET",
+      "path": "/v1/machine/files",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403
+      ],
+      "legacy_statuses": [],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "GET",
+          "path": "/v1/machine/files",
+          "own_status": 200,
+          "foreign_status": null,
+          "cross_organization_status": null,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "GET",
+      "path": "/v1/machine/file",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403
+      ],
+      "legacy_statuses": [],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "GET",
+          "path": "/v1/machine/file",
+          "own_status": 200,
+          "foreign_status": null,
+          "cross_organization_status": null,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "ALL",
+      "path": "/v1/machine/viewer/:viewerId/*",
+      "authentication_class": "ticket",
+      "account_statuses": [
+        200,
+        401,
+        403
+      ],
+      "legacy_statuses": [],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/runs/:id/steer",
+      "authentication_class": "user",
+      "account_statuses": [
+        403,
+        404,
+        409
+      ],
+      "legacy_statuses": [
+        401
+      ],
+      "account_positive": false,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "POST",
+          "path": "/v1/runs/:id/steer",
+          "own_status": 409,
+          "foreign_status": 404,
+          "cross_organization_status": 404,
+          "behavior": "authorized_resource_state_error"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/runs/:id/reconcile",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403,
+        404
+      ],
+      "legacy_statuses": [
+        401,
+        409
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "POST",
+          "path": "/v1/runs/:id/reconcile",
+          "own_status": 200,
+          "foreign_status": 404,
+          "cross_organization_status": 404,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/messages/:id/edit",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403,
+        404
+      ],
+      "legacy_statuses": [
+        200,
+        401,
+        409
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "POST",
+          "path": "/v1/messages/:id/edit",
+          "own_status": 200,
+          "foreign_status": 404,
+          "cross_organization_status": 404,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/messages/:id/delete",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403,
+        404
+      ],
+      "legacy_statuses": [
+        200,
+        401,
+        409
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "POST",
+          "path": "/v1/messages/:id/delete",
+          "own_status": 200,
+          "foreign_status": 404,
+          "cross_organization_status": 404,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "GET",
+      "path": "/v1/runs/:id/interactions/history",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403,
+        404
+      ],
+      "legacy_statuses": [
+        200,
+        401
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "GET",
+          "path": "/v1/runs/:id/interactions/history",
+          "own_status": 200,
+          "foreign_status": 404,
+          "cross_organization_status": 404,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "GET",
+      "path": "/v1/runs/:id/interactions",
+      "authentication_class": "user",
+      "account_statuses": [
+        403,
+        404,
+        409
+      ],
+      "legacy_statuses": [
+        401
+      ],
+      "account_positive": false,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "GET",
+          "path": "/v1/runs/:id/interactions",
+          "own_status": 409,
+          "foreign_status": 404,
+          "cross_organization_status": 404,
+          "behavior": "authorized_resource_state_error"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/runs/:id/interactions",
+      "authentication_class": "user",
+      "account_statuses": [
+        403,
+        404,
+        409
+      ],
+      "legacy_statuses": [
+        200,
+        401,
+        409
+      ],
+      "account_positive": false,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "POST",
+          "path": "/v1/runs/:id/interactions",
+          "own_status": 409,
+          "foreign_status": 404,
+          "cross_organization_status": 404,
+          "behavior": "authorized_resource_state_error"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/runs",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403,
+        404,
+        409
+      ],
+      "legacy_statuses": [
+        200,
+        401,
+        409,
+        422
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "POST",
+          "path": "/v1/runs",
+          "own_status": 200,
+          "foreign_status": null,
+          "cross_organization_status": null,
+          "behavior": "authorized_success"
+        },
+        {
+          "method": "POST",
+          "path": "/v1/runs",
+          "own_status": 200,
+          "foreign_status": null,
+          "cross_organization_status": null,
+          "behavior": "authorized_success"
+        },
+        {
+          "method": "POST",
+          "path": "/v1/runs",
+          "own_status": 200,
+          "foreign_status": null,
+          "cross_organization_status": null,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/runs/:id/retry",
+      "authentication_class": "user",
+      "account_statuses": [
+        403,
+        404,
+        409
+      ],
+      "legacy_statuses": [
+        401
+      ],
+      "account_positive": false,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "POST",
+          "path": "/v1/runs/:id/retry",
+          "own_status": 409,
+          "foreign_status": 404,
+          "cross_organization_status": 404,
+          "behavior": "authorized_resource_state_error"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/runs/:id/retry-preparation",
+      "authentication_class": "user",
+      "account_statuses": [
+        403,
+        404,
+        409
+      ],
+      "legacy_statuses": [
+        401
+      ],
+      "account_positive": false,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "POST",
+          "path": "/v1/runs/:id/retry-preparation",
+          "own_status": 409,
+          "foreign_status": 404,
+          "cross_organization_status": 404,
+          "behavior": "authorized_resource_state_error"
+        }
+      ],
+      "authorized_policy_case": true
+    },
+    {
+      "method": "POST",
+      "path": "/v1/runs/:id/cancel",
+      "authentication_class": "user",
+      "account_statuses": [
+        200,
+        403,
+        404
+      ],
+      "legacy_statuses": [
+        200,
+        401
+      ],
+      "account_positive": true,
+      "account_denial": true,
+      "explicit_access_cases": [
+        {
+          "method": "POST",
+          "path": "/v1/runs/:id/cancel",
+          "own_status": 200,
+          "foreign_status": 404,
+          "cross_organization_status": 404,
+          "behavior": "authorized_success"
+        }
+      ],
+      "authorized_policy_case": true
+    }
+  ]
+}

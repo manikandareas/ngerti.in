@@ -22,7 +22,7 @@ Asynchronous collectors use a resource context bound to the principal and author
 
 Codex continues to disable native shell/unified exec and deny host work-file writes through its permissions profile. Muse retains the MCP-only toolset and disabled native shell/write tools. Harness control directories and provider credentials remain on the trusted backend. Session instructions name the authorized domain and its cooperative limit.
 
-NMA-077 verifies private provider credential routing. The production scoped `claimNext` gate remains closed until **NMA-078** provides app/MCP/skill isolation. NMA-076's native adapter probe uses a single-owner fixture attached to an environment resolved for a fixture principal. It proves useful native tool execution and absence of the requested forbidden host write; it does not claim public multi-user provider admission.
+NMA-077 verifies private provider credential routing. NMA-078 supplies app/MCP/skill isolation and NMA-079 verifies normal scoped `claimNext`/broker execution at [contract 2.0.0](server-organizations-api.md), with [fresh native Cua/provider evidence](../verification/nma-079/README.md). NMA-076's native adapter probe uses a single-owner fixture attached to an environment resolved for a fixture principal. It proves useful native tool execution and absence of the requested forbidden host write; it does not claim public multi-user provider admission.
 
 ## Viewer and input authority
 

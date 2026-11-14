@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { SCOPED_API_READINESS_GATE } from "../contracts";
 
 export const authenticationSession = z.strictObject({
   user: z.strictObject({
@@ -39,7 +40,7 @@ export function authenticationContract(origin: string) {
   return {
     version: "nma-073.1",
     mode: "accounts",
-    readiness_gate: "pending_nma_079",
+    readiness_gate: SCOPED_API_READINESS_GATE,
     issuer: `${origin}/api/auth`,
     audience: origin,
     user: {
@@ -47,7 +48,7 @@ export function authenticationContract(origin: string) {
       native: "opaque_oauth_access_token",
       native_flow: "authorization_code_s256_pkce",
       device_sessions: "server_validated_and_revocable",
-      legacy_data_access: "explicit_bootstrap_owner_only_until_nma_075",
+      legacy_data_access: "guarded_bootstrap_binding_then_explicit_organization_and_actor_scope",
     },
     operator: "local_cli_only_no_user_role_or_installation_bearer_elevation",
     protocol: {

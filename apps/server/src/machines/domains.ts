@@ -35,8 +35,38 @@ function resourceLifecycle(lifecycle: Lifecycle, source: DataContext): Lifecycle
     get(target, key) {
       if (key === "dataContext") return scope;
       if (key === "subscribe")
-        return (listener: () => unknown) =>
-          target.subscribe(() => target.outsideDataContext(() => run(listener)));
+        return (listener: () => unknown) => {
+          let pending: Promise<void> | undefined;
+          let dirty = false;
+          let closed = false;
+          const unsubscribe = target.subscribe(() => {
+            dirty = true;
+            pending ??= (async () => {
+              while (dirty && !closed) {
+                dirty = false;
+                try {
+                  await target.outsideDataContext(() => run(listener));
+                } catch (error) {
+                  if (
+                    !(error instanceof DomainError) ||
+                    !["SCOPE_DENIED", "UNAUTHORIZED", "NOT_FOUND", "STALE_DISPATCH"].includes(
+                      error.code,
+                    )
+                  )
+                    throw error;
+                  closed = true;
+                }
+              }
+            })().finally(() => {
+              pending = undefined;
+            });
+            return pending;
+          });
+          return () => {
+            closed = true;
+            unsubscribe();
+          };
+        };
       const value = Reflect.get(target, key, target);
       return typeof value === "function"
         ? (...args: unknown[]) => run(() => value.apply(target, args))

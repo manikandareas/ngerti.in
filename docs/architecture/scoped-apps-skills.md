@@ -1,5 +1,7 @@
 # Scoped application accounts, MCP catalogs and Team skills
 
+NMA-079 amendment: the [2.0.0 server-organizations consumer contract](server-organizations-api.md) and [verification report](../verification/nma-079/README.md) own current account-mode authentication, scope, normal native dispatch and readiness. Earlier versioned examples and pending-gate statements below retain their captured scope. Web/Tauri UI and deployment remain later milestones.
+
 NMA-078 extends the NMA-077 provider boundary. Model-provider selection and app-account selection are independent. This backend contract targets the server and later web/Tauri consumers; desktop-rs remains paused. The complete multi-user API gate remains NMA-079.
 
 ## Identity and authorization

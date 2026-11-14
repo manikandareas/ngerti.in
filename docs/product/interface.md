@@ -45,7 +45,7 @@ Local Material Icon Theme assets identify exact filenames, compound extensions, 
 
 + → Create agent → create an owner-unique library-generated name and DM → open that conversation → publish one automatic human-owner opener → the agent helps and updates its profile through scoped tools when useful.
 
-Use the chosen connection/model/billing defaults and default avatar. No mandatory technical form, Tobi intermediary or onboarding checklist. Creation can succeed while connection/initial response fails: preserve the entity, explain the actionable state and continue in the same conversation. Retry/reconnect/restart preserves the same operation identity. Reopening a chat does not infer or resend an opener. Tobi's bootstrap welcome remains separate.
+Use the chosen connection/model/billing defaults and default avatar. No mandatory technical form, default-agent intermediary or onboarding checklist. Creation can succeed while connection/initial response fails: preserve the entity, explain the actionable state and continue in the same conversation. Retry/reconnect/restart preserves the same operation identity. Reopening a chat does not infer or resend an opener. The default agent's bootstrap welcome remains separate; new agents use library-generated single-syllable names.
 
 ## Create group
 
@@ -75,7 +75,7 @@ The owner requested a full Settings screen and then expanded its scope using fam
 
 | Menu | Working controls |
 | --- | --- |
-| General | Open the last conversation or Tobi on the next launch; configure Tobi/new-agent defaults through the existing model picker and explicit account/billing disclosure. |
+| General | Open the last conversation or the default agent on the next launch; configure default/new-agent settings through the existing model picker and explicit account/billing disclosure. |
 | Appearance | System/light/dark theme, conversation text size and reading width, with a text preview. |
 | Conversation | Enter or Command/Control+Enter to send, bounded streaming interpolation, and message clocks. Shift+Enter keeps its newline behavior. |
 | Accessibility | Avatar animation, pointer-following gaze, and always-visible message actions. System reduced-motion preferences remain effective. |

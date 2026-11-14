@@ -1,6 +1,6 @@
 # Central server, PostgreSQL and organizations implementation plan
 
-Date: 2026-11-12. Status: NMA-072 Done for its verified single-owner PostgreSQL/import scope; NMA-073 Done for its verified backend authentication/headless native scope; NMA-074–083 remain planned. This is the main design and delivery document for [NMA-072–083](../backlog/README.md#server-organizations-plan). The owner requested this plan after agreeing to PostgreSQL. It records the session's product direction and identifies implementation defaults separately from verified capabilities.
+Date: 2026-11-12. Status: NMA-072 Done for its verified single-owner PostgreSQL/import scope; NMA-073 Done for its verified backend authentication/headless native scope; NMA-074 is Done for organization administration; NMA-075 is Done for scoped application data; NMA-076–083 remain planned. This is the main design and delivery document for [NMA-072–083](../backlog/README.md#server-organizations-plan). The owner requested this plan after agreeing to PostgreSQL. It records the session's product direction and identifies implementation defaults separately from verified capabilities.
 
 The implementation targets `apps/server`, `apps/web-client` and the Tauri host in `apps/desktop`. Further `apps/desktop-rs` and GPUI experiment work is paused. Their historical Done milestones and evidence remain intact. This document does not authorize deployment, credential changes, database resets, or deletion of existing data.
 
@@ -179,7 +179,7 @@ flowchart TD
     V --> F[Complete first useful task]
 ```
 
-The first Owner is established through a bounded operator-controlled bootstrap, not first public signup. Subsequent organization creation requires the installation policy. Invitation acceptance verifies intended identity, expiry, current role/workgroup grants and the target organization; retries do not create duplicate memberships, Tobi agents, conversations or openers. NMA-074 records the durable membership-provisioning intent; NMA-075 materializes the private Tobi/DM once per user/organization without an inference call.
+The first Owner is established through a bounded operator-controlled bootstrap, not first public signup. Subsequent organization creation requires the installation policy. Invitation acceptance verifies intended identity, expiry, current role/workgroup grants and the target organization; retries do not create duplicate memberships, default agents, conversations or openers. NMA-074 records the durable membership-provisioning intent; NMA-075 materializes the private default agent/DM once per user/organization without an inference call.
 
 Creating workgroups, inviting people and publishing agents can be completed later in Settings; agent naming/persona questionnaires remain optional. A member does not choose their own administrative role. A member without a workgroup can still use personal agents and any explicit All members agent grant. Missing AI setup preserves created entities and points the responsible person to setup. New devices sign in without repeating organization setup.
 
@@ -206,6 +206,8 @@ flowchart LR
 | Upload, parsed text, chunks, thumbnails, saved artifact | Original private conversation and owner | Explicit scoped publication/copy, including derived data |
 | Skills | Enabled, pinned revision on the selected agent | Published package assignments; no credential grant |
 | Working filesystem and browser | Enforced execution domain | Explicit authorized external destination, never a common server home |
+
+The November 14 owner amendment chooses random library-generated single-syllable names for new default and quick-created agents, preserving existing identities.
 
 Team-agent personalization writes a user's preference overlay rather than the organization's global instructions. Publishing shared knowledge/skills requires the corresponding management permission; a member's chat does not silently update global configuration or another user's memory. Retrieval, generated previews, caches and native transcript hydration apply the same visibility policy as source records. Reopening history never triggers inference or recaptures private information globally.
 
@@ -294,7 +296,7 @@ Tauri remote mode keeps tokens in native transport/OS storage, restricts gateway
 
 ## 12. Delivery backlog and gates
 
-NMA-072 is **Done** for its [verified PostgreSQL/import scope](../verification/nma-072/README.md); NMA-073 is **Done** for its [verified backend authentication/headless native scope](../verification/nma-073/README.md); NMA-074 is **Done** for its [verified organization-administration and membership-principal scope](../verification/nma-074/README.md); NMA-075–083 remain **Backlog**. Dependencies are recorded in their files and [status.json](../backlog/status.json); dates and assignees are unset. Backend behavior precedes the new API gate, followed by web/Tauri consumption, deployment rehearsal and integrated acceptance. Existing NMA-060/061/062 and NMA-066–071 Done statuses retain their old scope. [NMA-063](../backlog/NMA-063.md) gains this plan's acceptance dependency; [NMA-064](../backlog/NMA-064.md) remains the separate fresh-device distribution gate.
+NMA-072 is **Done** for its [verified PostgreSQL/import scope](../verification/nma-072/README.md); NMA-073 is **Done** for its [verified backend authentication/headless native scope](../verification/nma-073/README.md); NMA-074 is **Done** for its [verified organization-administration and membership-principal scope](../verification/nma-074/README.md); NMA-075 is **Done** for [scoped application data](scoped-agent-data.md); NMA-076–083 remain **Backlog**. Dependencies are recorded in their files and [status.json](../backlog/status.json); dates and assignees are unset. Backend behavior precedes the new API gate, followed by web/Tauri consumption, deployment rehearsal and integrated acceptance. Existing NMA-060/061/062 and NMA-066–071 Done statuses retain their old scope. [NMA-063](../backlog/NMA-063.md) gains this plan's acceptance dependency; [NMA-064](../backlog/NMA-064.md) remains the separate fresh-device distribution gate.
 
 ```mermaid
 flowchart LR

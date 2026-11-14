@@ -316,7 +316,7 @@
     "ticket": "NMA-075",
     "title": "Private and Team agents with scoped data and events",
     "plan": "Harness-first",
-    "status": "Backlog",
+    "status": "Done",
     "order": 16.73,
     "layer": "Engine / Backend",
     "depends_on": [

@@ -1,0 +1,39 @@
+bun test v1.3.10 (30e609e0)
+
+tests/organizations/data.test.ts:
+(pass) random default names come from the single-syllable library subset and exhaust unused names first [24.71ms]
+(pass) membership provisioning creates one private randomly named default agent, DM and authored welcome without inference [1821.37ms]
+(pass) two users share Team configuration while their DM, memory, uploads and receipts stay private even from an administrator [1052.38ms]
+(pass) personal preference overlays and explicit published knowledge cannot rewrite or automatically publish private context [811.54ms]
+(pass) RLS uses a non-owner role and transaction-local settings across pooled users and organization boundaries [946.41ms]
+(pass) context-bound replay rejects cross-user cursors and permission changes close old event access [790.44ms]
+(pass) private file publication, immutable downloads, parsed data and command replay stay in the initiating organization [1091.80ms]
+(pass) Workgroup invocation is distinct from administration and Team ownership survives creator offboarding [782.03ms]
+(pass) removed/rejoined membership cannot replay prior receipts or resume its private work implicitly [986.65ms]
+(pass) database references reject cross-user scope and concurrent organization tabs retain independent commands [878.82ms]
+(pass) SSE retains its captured private context outside the request and closes on membership revocation [749.08ms]
+(pass) guarded legacy binding backfills retained private entities/events and blocks old owner-wide routes [773.08ms]
+(pass) scoped application SQL also works through a real non-owner, non-superuser database login [575.73ms]
+(pass) private Goals/Routine schedule under their retained execution principal without borrowing a UI session or shared native resources [1001.06ms]
+(pass) private groups and routing cannot enroll another user's agent or another organization's Team agent [882.75ms]
+(pass) Team-agent native-binding metadata is actor-private and cannot reference another user's connection [1046.62ms]
+(pass) immutable command receipts recheck current Team-agent invocation grants before replay [858.98ms]
+
+tests/persistence/postgres.test.ts:
+(pass) an empty optional application database URL retains the configured database and restricted statement role [106.36ms]
+(pass) nested failure restores its savepoint while an outer command commits one receipt [138.38ms]
+(pass) concurrent duplicate commands and lost acknowledgements retain one admission [181.81ms]
+(pass) commit-ordered clocks prevent a blocked lower cursor from disappearing behind replay [174.73ms]
+(pass) authority session loss fences an in-flight publication and a pooled reconnect never owns its lock [159.28ms]
+(pass) receipt replay reauthorizes, and interrupted external reservations retain unknown identity [152.15ms]
+(pass) bounded indexed reads retain keyset order across pages [149.93ms]
+(pass) offline import reconciles IDs, events, receipts and native bindings and rehearses verified rollback [350.59ms]
+(pass) filtered replay advances through hidden events and retains a consistent high watermark [147.79ms]
+(pass) a killed authority releases its session and restart preserves unknown native work without dispatching it twice [451.49ms]
+(pass) loss of the authority session aborts active native work and leaves recovery unknown [257.35ms]
+(pass) a changed applied migration refuses startup without changing domain history or retaining its authority lock [150.23ms]
+
+ 29 pass
+ 0 fail
+ 222 expect() calls
+Ran 29 tests across 2 files. [18.97s]

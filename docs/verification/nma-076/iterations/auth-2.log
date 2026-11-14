@@ -1,0 +1,23 @@
+bun test v1.3.10 (30e609e0)
+
+tests/machines/authorization.test.ts:
+(pass) real user sessions resolve private machines and a copied viewer ticket cannot cross users or devices [1178.80ms]
+(pass) revoking the actual issuing login closes existing media and rejects further viewer RPCs [683.37ms]
+(pass) removing an organization member closes their already-open media and invalidates clipboard/file access [1736.95ms]
+
+tests/machines/execution-domains.test.ts:
+(pass) lazy resolution coalesces concurrent requests and persists one organization/user domain without native I/O [164.15ms]
+(pass) different humans and organizations receive different files while one human's agents cooperate [377.00ms]
+(pass) PostgreSQL rejects a cross-domain machine reference even through the restricted application role [223.36ms]
+(pass) private uploads materialize into the resolved domain and immutable downloads survive working-copy edits [261.39ms]
+(pass) scoped resolution never returns the singleton when the operator has not enabled domain provisioning [160.66ms]
+(pass) viewer tickets reject another organization/user and read-only clipboard or filesystem RPCs [158.78ms]
+(pass) human control is session-bound and stale revisions cannot acquire or reactivate a viewer [267.06ms]
+(pass) membership or grant changes revoke existing viewers and do not resurrect a racing ticket issuance [145.84ms]
+(pass) backend restart preserves domain identity and private control credentials without provision or replacement [193.33ms]
+(pass) operator policy is explicit, bounded and private [106.01ms]
+
+ 13 pass
+ 0 fail
+ 49 expect() calls
+Ran 13 tests across 2 files. [6.12s]

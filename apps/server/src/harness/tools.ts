@@ -18,8 +18,10 @@ import { Interactions } from "../interactions/service";
 import { registerInteractionTools } from "../interactions/tools";
 import { registerLearningTools } from "../learning/tools";
 import type { Lifecycle } from "../lifecycle";
+import { resolvedMachine } from "../machines/domains";
 import { type Machines, machineFor } from "../machines/service";
 import { registerMachineTools } from "../machines/tools";
+import type { DataContext } from "../persistence/access-context";
 import { observeToolActivity, toolActivityKind } from "../runs/activity";
 import { canonical } from "../store";
 import { registerWorkspaceTools } from "../workspaces/tools";
@@ -43,6 +45,7 @@ export class ProductTools {
   machines!: Machines | undefined;
   applications!: Applications;
   readonly #leases = new Map<string, ToolScope>();
+  readonly #contexts = new Map<string, DataContext>();
   readonly #readiness = new Map<string, () => Promise<void>>();
   readonly #tools = new Map<string, Tool>();
   readonly #mcp = new ProductToolMcp({
@@ -85,11 +88,19 @@ export class ProductTools {
     });
     const token = `${crypto.randomUUID()}${crypto.randomUUID()}`;
     this.#leases.set(token, scope);
+    const context = this.lifecycle.store.dataContext;
+    if (context)
+      this.#contexts.set(token, {
+        ...context,
+        validate: context.validateResources ?? context.validate,
+        acquire: context.acquireResources,
+      });
     this.#readiness.set(token, ready);
     try {
       await this.authorize(scope);
     } catch (error) {
       this.#leases.delete(token);
+      this.#contexts.delete(token);
       this.#readiness.delete(token);
       throw error;
     }
@@ -97,10 +108,13 @@ export class ProductTools {
       token,
       scope: Object.freeze({ ...scope }),
       revoke: () => {
+        void this.inContext(token, async () =>
+          (await resolvedMachine(this.lifecycle))?.releaseRun(run.id),
+        ).catch(() => {});
         this.#leases.delete(token);
+        this.#contexts.delete(token);
         this.#readiness.delete(token);
         this.#mcp.revoke(token);
-        void this.machines?.releaseRun(run.id).catch(() => {});
       },
     };
   }
@@ -179,7 +193,21 @@ export class ProductTools {
     } else if (entity.thread_id === scope.thread_id && entity.agent_id === scope.agent_id) return;
     throw new DomainError("SCOPE_DENIED", 403);
   }
+  private async inContext<T>(token: string, action: () => Promise<T>): Promise<T> {
+    const context = this.#contexts.get(token);
+    const active = this.lifecycle.store.dataContext;
+    if (
+      context &&
+      active &&
+      (active.userId !== context.userId || active.organizationId !== context.organizationId)
+    )
+      throw new DomainError("SCOPE_DENIED", 403);
+    return context && !active ? this.lifecycle.store.withDataContext(context, action) : action();
+  }
   async call(token: string, claimedScope: unknown, name: string, input: unknown) {
+    return this.inContext(token, () => this.callScoped(token, claimedScope, name, input));
+  }
+  private async callScoped(token: string, claimedScope: unknown, name: string, input: unknown) {
     const scope = await this.lease(token);
     if ((await this.lifecycle.store.get("thread", scope.thread_id)).purpose === "routing")
       throw new DomainError("SCOPE_DENIED", 403);
@@ -236,7 +264,9 @@ export class ProductTools {
           name,
         )
       ) {
-        const machine = await this.machines.snapshot();
+        const machines = await resolvedMachine(this.lifecycle);
+        if (!machines) throw new DomainError("MACHINE_UNAVAILABLE", 503);
+        const machine = await machines.snapshot();
         const activity = {
           machine_id: machine.id,
           generation: machine.generation,
@@ -246,7 +276,7 @@ export class ProductTools {
         await this.lifecycle.observe(before.id, before.dispatch_token as string, {
           computer_activity: activity,
         });
-        await this.machines.ready();
+        await machines.ready();
         await authorize();
         await this.lifecycle.observe(before.id, before.dispatch_token as string, {
           computer_activity: { ...activity, phase: "active" },
@@ -330,24 +360,27 @@ export class ProductTools {
     return result;
   }
   async authenticate(token: string) {
-    await this.lease(token);
+    await this.inContext(token, () => this.lease(token));
   }
   revokeAll() {
-    for (const scope of this.#leases.values())
-      void this.machines?.releaseRun(scope.run_id).catch(() => {});
+    for (const [token, scope] of this.#leases)
+      void this.inContext(token, async () =>
+        (await resolvedMachine(this.lifecycle))?.releaseRun(scope.run_id),
+      ).catch(() => {});
     this.#leases.clear();
+    this.#contexts.clear();
     this.#readiness.clear();
     this.#mcp.clear();
   }
   async rpc(token: string, input: unknown) {
-    return this.#mcp.rpc(token, input);
+    return this.inContext(token, () => this.#mcp.rpc(token, input));
   }
 
   private async initialize(lifecycle: Lifecycle, browserHost?: BrowserHost, appHost?: AppHost) {
     this.applications = await Applications.open(lifecycle, appHost);
     registerAppTools(this);
     this.machines = machineFor(lifecycle);
-    if (this.machines) registerMachineTools(this, this.machines);
+    if (this.machines) registerMachineTools(this);
     else {
       this.#browsers = await Browsers.open(
         lifecycle,

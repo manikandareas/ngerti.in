@@ -4,6 +4,7 @@ import { authorizeResponsibilityWork } from "../goals/work-fence";
 import { productToolSchemas } from "../harness/product-tool-contracts";
 import type { ProductTools, ToolAccess } from "../harness/tools";
 import { sha256 } from "../machines/cua";
+import { resolvedMachine } from "../machines/domains";
 import { MachineEffectRefused } from "../machines/operations";
 import { machineFor } from "../machines/service";
 
@@ -55,7 +56,7 @@ export function registerWorkspaceTools(tools: ProductTools) {
             sha256: sha256(bytes),
           };
         }
-        const machine = machineFor(lifecycle);
+        const machine = await resolvedMachine(lifecycle);
         if (machine && (name === "ngertiin.create_file" || name === "ngertiin.write_file")) {
           const bytes = Buffer.from(data.text);
           const actor = await machine.actor(access);

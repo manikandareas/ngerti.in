@@ -214,7 +214,12 @@ test("viewer tickets are bound to a live device and cannot be renewed from anoth
     const principal = await f.auth.authenticate(request);
     const lease = f.auth.lease(request);
     const card = await views.issue(f.origin, false, f.origin, lease);
-    const viewRequest = new Request(`${f.origin}${card.viewer_url}`);
+    const viewRequest = new Request(`${f.origin}${card.viewer_url}`, {
+      headers: { Cookie: first.cookie },
+    });
+    await expect(views.authorize(new Request(`${f.origin}${card.viewer_url}`))).rejects.toThrow(
+      "UNAUTHORIZED",
+    );
     expect((await views.authorize(viewRequest)).id).toBe(card.viewer_id);
     await expect(views.renew(card.viewer_id, f.origin, crypto.randomUUID())).rejects.toThrow(
       "SCOPE_DENIED",

@@ -1,0 +1,18 @@
+bun test v1.3.10 (30e609e0)
+
+tests/machines/execution-domains.test.ts:
+(pass) lazy resolution coalesces concurrent requests and persists one organization/user domain without native I/O [208.54ms]
+(pass) different humans and organizations receive different files while one human's agents cooperate [415.25ms]
+(pass) PostgreSQL rejects a cross-domain machine reference even through the restricted application role [230.87ms]
+(pass) private uploads materialize into the resolved domain and immutable downloads survive working-copy edits [247.08ms]
+(pass) scoped resolution never returns the singleton when the operator has not enabled domain provisioning [148.71ms]
+(pass) viewer tickets reject another organization/user and read-only clipboard or filesystem RPCs [162.13ms]
+(pass) human control is session-bound and stale revisions cannot acquire or reactivate a viewer [266.21ms]
+(pass) membership or grant changes revoke existing viewers and do not resurrect a racing ticket issuance [147.75ms]
+(pass) backend restart preserves domain identity and private control credentials without provision or replacement [187.92ms]
+(pass) operator policy is explicit, bounded and private [117.62ms]
+
+ 10 pass
+ 0 fail
+ 34 expect() calls
+Ran 10 tests across 1 file. [2.40s]

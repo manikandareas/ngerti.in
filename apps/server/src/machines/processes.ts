@@ -62,7 +62,7 @@ export class MachineProcesses {
       new ReplayMode.FromOffset({ offset: BigInt(item.output_offset) }),
     );
     this.#handles.set(item.id, attached);
-    void this.collect(item.id, attached);
+    void this.collect(item.id, attached).catch(() => {});
     return attached;
   }
   private async collect(id: string, handle: SpacesdProcessLike) {
@@ -149,7 +149,7 @@ export class MachineProcesses {
             state: "running",
           });
           this.#handles.set(record.id, handle);
-          void this.collect(record.id, handle);
+          void this.collect(record.id, handle).catch(() => {});
           return { process_id: record.id };
         } catch (error) {
           await this.unknown(record.id);

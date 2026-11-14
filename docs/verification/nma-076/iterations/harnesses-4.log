@@ -1,0 +1,12 @@
+bun test v1.3.10 (30e609e0)
+
+../../scripts/verification/nma076/harnesses.test.ts:
+{"family":"codex","run_status":"succeeded","version":"0.169.0","product_tools":["ngertiin.machine_exec","ngertiin.read_file","ngertiin.computer_call"],"effective_billing":"subscription"}
+{"family":"muse","run_status":"succeeded","version":"1.4.14-R7309.1","product_tools":["ngertiin.machine_exec","ngertiin.read_file","ngertiin.computer_call"],"effective_billing":"api_key"}
+{"report":"/Users/vitoandareasmanik/Development/project/ngertiin/docs/verification/nma-076/2026-11-14T09-06-12.458Z/harnesses.json","pass":true}
+(pass) both native harnesses perform useful isolated work without writing to the host [83546.92ms]
+
+ 1 pass
+ 0 fail
+ 24 expect() calls
+Ran 1 test across 1 file. [84.22s]

@@ -1,0 +1,27 @@
+bun test v1.3.10 (30e609e0)
+
+tests/machines/authorization.test.ts:
+(pass) real user sessions resolve private machines and a copied viewer ticket cannot cross users or devices [1194.69ms]
+(pass) revoking the actual issuing login closes existing media and rejects further viewer RPCs [654.90ms]
+(pass) removing an organization member closes their already-open media and invalidates clipboard/file access [1885.54ms]
+
+tests/machines/execution-domains.test.ts:
+(pass) lazy resolution coalesces concurrent requests and persists one organization/user domain without native I/O [222.44ms]
+(pass) different humans and organizations receive different files while one human's agents cooperate [390.49ms]
+(pass) PostgreSQL rejects a cross-domain machine reference even through the restricted application role [224.43ms]
+(pass) private uploads materialize into the resolved domain and immutable downloads survive working-copy edits [242.41ms]
+(pass) scoped resolution never returns the singleton when the operator has not enabled domain provisioning [156.90ms]
+(pass) viewer tickets reject another organization/user and read-only clipboard or filesystem RPCs [160.92ms]
+(pass) human control is session-bound and stale revisions cannot acquire or reactivate a viewer [268.58ms]
+(pass) membership or grant changes revoke existing viewers and do not resurrect a racing ticket issuance [139.89ms]
+(pass) backend restart preserves domain identity and private control credentials without provision or replacement [197.12ms]
+(pass) operator policy is explicit, bounded and private [105.38ms]
+(pass) run-tool leases restore their private domain outside the initiating request and reject foreign scope or revoked grants [711.29ms]
+(pass) rolled-back domain metadata is not cached as a retained binding [163.02ms]
+(pass) loss of a retained private configuration requires reconciliation instead of generating replacement credentials [147.78ms]
+(pass) immutable private artifact downloads do not require reattaching a former working machine [244.04ms]
+
+ 17 pass
+ 0 fail
+ 62 expect() calls
+Ran 17 tests across 2 files. [7.66s]

@@ -2,7 +2,7 @@
 
 Planned November 12 amendment: [the server-organizations plan](server-organizations-plan-2026-11-12.md) and NMA-072–083 define PostgreSQL, authenticated organization/user scope, private Team-agent interactions and explicit connections. This guide retains its current/recorded implementation boundary until the new NMA-079 API gate verifies the changed contract; its owner-only examples do not establish multi-user authorization.
 
-Current machine amendment: working files and attachment copies live on the owner-wide shared Cua machine; saved-artifact bytes remain immutable and metadata stays scoped. Host-only private working-root assumptions below apply to the original contract. Use [the current architecture](overview.md) and [shared-machine evidence](../verification/shared-machine/README.md) for current file/process behavior.
+Current machine amendment: organization-scoped working files and attachment copies resolve to the current human's [execution domain](execution-domains.md). Saved-artifact bytes remain immutable, with conversation-scoped metadata and downloads independent of reattaching a former working machine. The retained single-owner mode uses the historical cooperative Cua desktop. Host-only private working-root assumptions below apply to the original contract. Use [the current architecture](overview.md) and [execution-domain verification](../verification/nma-076/README.md) for the later file/process boundary.
 
 The 2026-11-07 Working files tree and read-only source viewer use the existing `GET /v1/machine/files` and `GET /v1/machine/file` routes. Folder pages append within the UI; this presentation amendment adds no backend route or contract change. See [current interface behavior](../product/interface.md#working-files).
 

@@ -30,3 +30,8 @@ docs/verification/nma-071/web-width-biome.log whitespace=-blank-at-eol
 # Preserve cleanup raw logs listed in cleanup-2026-11-09/integrity.json.
 docs/verification/nma-071/cleanup-2026-11-09/native-doctest.log whitespace=-blank-at-eof
 docs/verification/nma-071/cleanup-2026-11-09/native-workspace.log whitespace=-blank-at-eof
+# Preserve NMA-076 raw output bytes verified by its integrity.json.
+docs/verification/nma-076/iterations/full-tests-1.log whitespace=-blank-at-eol
+docs/verification/nma-076/iterations/harnesses-2.log whitespace=-blank-at-eol
+docs/verification/nma-076/iterations/initial-tests.log whitespace=-blank-at-eol
+docs/verification/nma-076/logs/web-build.log whitespace=-blank-at-eol

@@ -25,6 +25,7 @@
     "test:server": "bun run --filter @ngertiin/server test",
     "verify:foundation": "bun scripts/verification/nma072/run-tests.ts tests/lifecycle.test.ts tests/persistence/postgres.test.ts tests/bootstrap.test.ts",
     "setup:machine": "bun apps/server/src/machines/setup.ts",
+    "setup:execution-domains": "bun apps/server/src/machines/setup-domains.ts",
     "import:machine": "bun apps/server/src/machines/import.ts",
     "setup:desktop": "bun apps/desktop/scripts/setup.ts",
     "dev:desktop": "bun apps/desktop/scripts/dev.ts",

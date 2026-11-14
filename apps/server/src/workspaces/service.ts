@@ -2,6 +2,7 @@ import { lstatSync, mkdirSync, realpathSync } from "node:fs";
 import { dirname, isAbsolute, join, relative, resolve } from "node:path";
 import { DomainError, type Entity } from "../contracts";
 import type { Lifecycle } from "../lifecycle";
+import { resolvedMachine } from "../machines/domains";
 import { machineFor } from "../machines/service";
 import { workspaceInput } from "./contracts";
 import { allowedPath, canonicalDirectory, WorkspaceFiles } from "./files";
@@ -38,7 +39,7 @@ export class Workspaces {
   }
   async ensure(threadId: string, agentId: string | null) {
     const current = await this.current(threadId, agentId);
-    const machine = this.lifecycle.store.dataContext ? undefined : machineFor(this.lifecycle);
+    const machine = await resolvedMachine(this.lifecycle);
     if (current && machine && current.machine_id !== (await machine.snapshot()).id) {
       if (
         (await this.lifecycle.store.list("run", { workspace_id: current.id })).some(
@@ -70,6 +71,7 @@ export class Workspaces {
     const data = workspaceInput.parse(input);
     if (this.lifecycle.store.dataContext && data.project_path !== null)
       throw new DomainError("SCOPE_DENIED", 403);
+    const machine = await resolvedMachine(this.lifecycle);
     return await this.lifecycle.store.transaction(async () => {
       const { shared } = await this.scope(data.thread_id, data.agent_id);
       if (
@@ -82,7 +84,6 @@ export class Workspaces {
       )
         throw new DomainError("CONFLICT");
       const id = crypto.randomUUID();
-      const machine = this.lifecycle.store.dataContext ? undefined : machineFor(this.lifecycle);
       if (machine) {
         if (data.project_path !== null) throw new DomainError("SCOPE_DENIED", 403);
         const current = await this.current(data.thread_id, data.agent_id);
@@ -183,8 +184,13 @@ export class Workspaces {
     if (workspace.state !== "active") throw new DomainError("SCOPE_DENIED", 403);
     if (workspace.machine_id !== null) {
       const machine = await this.lifecycle.store.get("machine", workspace.machine_id);
-      if (machine.id !== this.lifecycle.store.ownerId || workspace.machine_root !== machine.root)
+      if (
+        (!this.lifecycle.store.dataContext && machine.id !== this.lifecycle.store.ownerId) ||
+        workspace.machine_root !== machine.root
+      )
         throw new DomainError("SCOPE_DENIED", 403);
+      // RLS and the scoped reference guard authorize retained provenance; workingFiles
+      // separately requires the current execution domain before accessing mutable bytes.
       return workspace;
     }
     const path = this.path(workspace);
@@ -239,15 +245,16 @@ export class Workspaces {
     return new WorkspaceFiles(this.path(w), w.root_device, w.root_inode);
   }
   async workingFiles(workspaceId: string) {
-    if (this.lifecycle.store.dataContext) throw new DomainError("SCOPE_DENIED", 403);
     const workspace = await this.get(workspaceId);
     if (workspace.machine_id === null) {
+      if (this.lifecycle.store.dataContext) throw new DomainError("SCOPE_DENIED", 403);
       if (machineFor(this.lifecycle)) throw new DomainError("STALE_DISPATCH");
       return await this.files(workspace.id);
     }
-    const machine = this.lifecycle.store.dataContext ? undefined : machineFor(this.lifecycle);
+    const machine = await resolvedMachine(this.lifecycle);
     if (!machine || (await machine.snapshot()).id !== workspace.machine_id)
       throw new DomainError("MACHINE_UNAVAILABLE", 503);
+    await machine.ready();
     return machine.files();
   }
   async authorizeRun(run: Entity<"run">) {

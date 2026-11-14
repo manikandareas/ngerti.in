@@ -1,0 +1,12 @@
+{
+  "started_at": "2026-11-14T09:02:54.005Z",
+  "fixture_principals": true,
+  "live_installation_mutated": false,
+  "lanes": [],
+  "pass": false,
+  "error": {
+    "message": "SCOPE_DENIED",
+    "stack": "Error: SCOPE_DENIED\n    at claimNext (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/src/lifecycle.ts:579:43)\n    at <anonymous> (/Users/vitoandareasmanik/Development/project/ngertiin/scripts/verification/nma076/harnesses.test.ts:72:37)\n    at async <anonymous> (/Users/vitoandareasmanik/Development/project/ngertiin/scripts/verification/nma076/harnesses.test.ts:56:21)\n    at processTicksAndRejections (native:7:39)"
+  },
+  "finished_at": "2026-11-14T09:03:05.087Z"
+}

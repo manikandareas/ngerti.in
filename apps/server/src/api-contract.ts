@@ -137,7 +137,8 @@ function inputSchema(schema: unknown) {
 function routeAuthentication(path: string, accounts: boolean) {
   if (path === "/health/live" || path === "/v1/auth/native") return "public";
   if (path === "/api/auth/*") return "authentication_protocol";
-  if (path.startsWith("/v1/machine/viewer/")) return "scoped_viewer_ticket";
+  if (path.startsWith("/v1/machine/viewer/"))
+    return accounts ? "scoped_viewer_ticket_and_issuing_user_session" : "scoped_viewer_ticket";
   if (path === "/v1/harness/tools") return "run_lease";
   if (accounts) return "user_session_or_oauth_access_token";
   return "installation_bearer";
@@ -211,13 +212,24 @@ export function consumerContract(machineRuntime = false) {
     harness_versions: manifests,
     browser: machineRuntime ? { state: "replaced", resource: "machine" } : browserCapabilities(),
     machine: {
-      cardinality: "one_per_installation",
-      working_files: "shared",
+      cardinality: "one_per_organization_user_with_retained_single_owner_legacy",
+      working_files: "cooperative_within_one_human_execution_domain",
       input_ownership: "agent_or_human",
       process_cancellation: "attributed_process_group",
       unknown_effects: "reconcile_before_new_intent",
       viewer: "cua_html5_grpc_web_media",
       host_native_work: "disabled_for_machine_sessions",
+      provisioning: "lazy_after_explicit_operator_setup",
+      missing_domain: "unavailable_requires_operator_reconciliation_no_replacement",
+      viewer_scope: [
+        "user",
+        "device_session",
+        "organization",
+        "domain",
+        "generation",
+        "input_lease_revision",
+      ],
+      scoped_native_admission: "closed_pending_nma_077_078",
     },
     product_tools: productToolCatalog(machineRuntime ? "machine" : "browser"),
     protocols: {

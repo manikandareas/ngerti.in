@@ -1,0 +1,47 @@
+bun test v1.3.10 (30e609e0)
+
+tests/routing-recovery.test.ts: (run #1)
+(pass) the shared runtime discovers an installed executable and coalesces cached probes [574.34ms]
+(pass) replacing the pinned executable resumes the original undispatched fallback once [918.52ms]
+
+tests/routing-recovery.test.ts: (run #2)
+(pass) the shared runtime discovers an installed executable and coalesces cached probes [309.79ms]
+(pass) replacing the pinned executable resumes the original undispatched fallback once [927.99ms]
+
+tests/routing-recovery.test.ts: (run #3)
+(pass) the shared runtime discovers an installed executable and coalesces cached probes [350.31ms]
+(pass) replacing the pinned executable resumes the original undispatched fallback once [1010.15ms]
+
+tests/routing-recovery.test.ts: (run #4)
+(pass) the shared runtime discovers an installed executable and coalesces cached probes [334.48ms]
+(pass) replacing the pinned executable resumes the original undispatched fallback once [904.15ms]
+
+tests/routing-recovery.test.ts: (run #5)
+(pass) the shared runtime discovers an installed executable and coalesces cached probes [308.32ms]
+(pass) replacing the pinned executable resumes the original undispatched fallback once [1048.26ms]
+
+tests/routing-recovery.test.ts: (run #6)
+(pass) the shared runtime discovers an installed executable and coalesces cached probes [366.17ms]
+(pass) replacing the pinned executable resumes the original undispatched fallback once [1050.51ms]
+
+tests/routing-recovery.test.ts: (run #7)
+(pass) the shared runtime discovers an installed executable and coalesces cached probes [332.94ms]
+(pass) replacing the pinned executable resumes the original undispatched fallback once [970.34ms]
+
+tests/routing-recovery.test.ts: (run #8)
+(pass) the shared runtime discovers an installed executable and coalesces cached probes [306.00ms]
+(pass) replacing the pinned executable resumes the original undispatched fallback once [1042.22ms]
+
+tests/routing-recovery.test.ts: (run #9)
+(pass) the shared runtime discovers an installed executable and coalesces cached probes [329.92ms]
+(pass) replacing the pinned executable resumes the original undispatched fallback once [944.80ms]
+
+tests/routing-recovery.test.ts: (run #10)
+(pass) the shared runtime discovers an installed executable and coalesces cached probes [305.92ms]
+(pass) replacing the pinned executable resumes the original undispatched fallback once [983.73ms]
+
+ 20 pass
+ 20 filtered out
+ 0 fail
+ 140 expect() calls
+Ran 20 tests across 1 file. [13.51s]

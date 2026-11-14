@@ -7,6 +7,7 @@ import { DomainError, type DomainEvent, type Entity, type Kind, schemas } from "
 import { ConversationJournal } from "./conversations/journal";
 import { type RoutingDecisionTrace, routingDecisionTrace } from "./groups/decision-trace";
 import type { DataContext } from "./persistence/access-context";
+import { executionSchemaSql, executionSchemaVersion } from "./persistence/execution-schema";
 import { schemaSql, schemaVersion } from "./persistence/schema";
 import { scopedSchemaSql, scopedSchemaVersion } from "./persistence/scoped-schema";
 
@@ -156,12 +157,16 @@ export class Store {
       const checksum = createHash("sha256").update(schemaSql).digest("hex");
       const scopedSql = scopedSchemaSql(this.schema);
       const scopedChecksum = createHash("sha256").update(scopedSql).digest("hex");
+      const executionSql = executionSchemaSql(this.schema);
+      const executionChecksum = createHash("sha256").update(executionSql).digest("hex");
       if (
         migrations.some(
           (migration) =>
             !(
               (migration.version === schemaVersion && migration.sha256 === checksum) ||
-              (migration.version === scopedSchemaVersion && migration.sha256 === scopedChecksum)
+              (migration.version === scopedSchemaVersion && migration.sha256 === scopedChecksum) ||
+              (migration.version === executionSchemaVersion &&
+                migration.sha256 === executionChecksum)
             ),
         )
       )
@@ -178,6 +183,13 @@ export class Store {
         await this.#authority.query("INSERT INTO schema_migrations(version,sha256) VALUES($1,$2)", [
           scopedSchemaVersion,
           scopedChecksum,
+        ]);
+      }
+      if (!migrations.some((migration) => migration.version === executionSchemaVersion)) {
+        await this.#authority.query(executionSql);
+        await this.#authority.query("INSERT INTO schema_migrations(version,sha256) VALUES($1,$2)", [
+          executionSchemaVersion,
+          executionChecksum,
         ]);
       }
       await this.#authority.query(
@@ -361,7 +373,10 @@ export class Store {
           "UPDATE entities SET organization_id=$1::uuid,actor_id=$2::uuid,body=body || jsonb_build_object('organization_id',$1::text,'actor_id',$2::text) WHERE organization_id IS NULL",
           [organizationId, userId],
         );
+        // Flush the additive execution-reference guard before changing trigger state.
+        await client.query("SET CONSTRAINTS ALL IMMEDIATE");
         await client.query("ALTER TABLE entities ENABLE TRIGGER entity_scope_guard");
+        await client.query("SET CONSTRAINTS ALL DEFERRED");
         await client.query(
           "UPDATE events SET organization_id=$1::uuid,actor_id=$2::uuid,body=jsonb_set(body,'{data}',(body->'data') || jsonb_build_object('organization_id',$1::text,'actor_id',$2::text)) WHERE organization_id IS NULL",
           [organizationId, userId],

@@ -327,7 +327,7 @@
     "ticket": "NMA-076",
     "title": "Execution domains, browser files and viewer isolation",
     "plan": "Harness-first",
-    "status": "Backlog",
+    "status": "Done",
     "order": 16.74,
     "layer": "Engine / Backend",
     "depends_on": [

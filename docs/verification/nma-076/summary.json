@@ -1,0 +1,60 @@
+{
+  "captured_at": "2026-11-14T09:45:40.757539+00:00",
+  "status": "scope_verified_with_global_check_limitations",
+  "contract": "1.33.0",
+  "backend_affected": {
+    "pass": 17,
+    "fail": 0,
+    "assertions": 62,
+    "files": 2
+  },
+  "native_cua": {
+    "pass": 12,
+    "planned": 12,
+    "assertions": 44,
+    "report": "2026-11-14T09-29-27.156Z/native.json"
+  },
+  "native_adapters": {
+    "pass": 2,
+    "planned": 2,
+    "assertions": 24,
+    "report": "2026-11-14T09-38-57.649Z/harnesses.json"
+  },
+  "backend_full": {
+    "pass": 497,
+    "fail": 2,
+    "total": 499,
+    "files": 56,
+    "assertions": 3118,
+    "limitation": "Unresolved combined-suite runtime-discovery probe timeouts; not represented as a full clean pass."
+  },
+  "runtime_isolated": {
+    "pass": 4,
+    "fail": 0
+  },
+  "runtime_repeat": {
+    "pass": 20,
+    "fail": 0,
+    "filtered": 20
+  },
+  "typecheck_server_and_web": "passed",
+  "biome_server_and_web": "passed",
+  "web_build": "passed_with_existing_large_chunk_warning",
+  "scoped_native_admission": "closed_pending_nma_077_078",
+  "api_gate": "pending_nma_079",
+  "ui_deployment_distribution": "not_claimed",
+  "native_changed_source_since_cohort": [
+    "apps/server/src/harness/tools.ts",
+    "apps/server/src/harness/instructions.ts"
+  ],
+  "adapters_changed_source_since_cohort": [
+    "apps/server/src/harness/tools.ts"
+  ],
+  "documentation": {
+    "exit_code": 1,
+    "retained_imported_gpui_reference_errors": 8,
+    "new_broken_links": 0
+  },
+  "final_source": "final-source.json",
+  "scoped_local_delivery": "delivery-2026-11-14/result.json"
+}

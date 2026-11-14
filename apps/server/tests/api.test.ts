@@ -1,6 +1,7 @@
 import { afterEach, expect, test } from "bun:test";
 import { createApi } from "../src/api";
 import { Background } from "../src/background";
+import { CONTRACT_VERSION } from "../src/contracts";
 import { fixture } from "./helpers";
 
 const token = "a".repeat(64);
@@ -93,7 +94,9 @@ test("HTTP errors do not echo malformed input or exception details", async () =>
 test("HTTP exposes schemas and cursor replay, and validates cursor bounds", async () => {
   const app = await setup();
   await f.admit();
-  expect((await (await app.handle(request("/v1/contracts"))).json()).version).toBe("1.32.0");
+  expect((await (await app.handle(request("/v1/contracts"))).json()).version).toBe(
+    CONTRACT_VERSION,
+  );
   const first = await (await app.handle(request("/v1/events?limit=1"))).json();
   const second = await (await app.handle(request(`/v1/events?after=${first.next_cursor}`))).json();
   expect(second.events[0].cursor).toBeGreaterThan(first.next_cursor);

@@ -41,7 +41,7 @@ import { relativePath, uploadInput } from "../workspaces/contracts";
 export const productToolSchemas = {
   "ngertiin.machine_status": z.strictObject({}),
   "ngertiin.machine_exec": machineCommand.describe(
-    "Run shell work on the shared persistent Linux machine. The returned process can keep running; use machine_process to read output or control it. A host-native terminal is not this machine.",
+    "Run shell work in the authorized human/organization execution domain. The returned process can keep running; use machine_process to read output or control it. A host-native terminal is not this machine.",
   ),
   "ngertiin.machine_process": machineProcessInput,
   "ngertiin.machine_window": machineWindowInput.describe(

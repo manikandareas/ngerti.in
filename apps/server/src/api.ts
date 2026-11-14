@@ -23,7 +23,7 @@ import { Connections } from "./harness/connections";
 import { CredentialStorage } from "./harness/credential-storage";
 import { ProductTools } from "./harness/tools";
 import type { Lifecycle } from "./lifecycle";
-import { MachineViews } from "./machines/view";
+import { MachineViewGateway } from "./machines/view-gateway";
 import { organizationsContract } from "./organizations/contracts";
 import { ScopedData } from "./organizations/data";
 import { scopedDataContract } from "./organizations/data-contracts";
@@ -46,7 +46,7 @@ export async function createApi(
     ? new ScopedData(lifecycle, services.authentication)
     : undefined;
   const command = createCommand(lifecycle, services.authentication);
-  const views = services.tools.machines ? new MachineViews(services.tools.machines) : undefined;
+  const views = services.tools.machines ? new MachineViewGateway(lifecycle) : undefined;
   const api = await createHttp(
     token,
     services.tools,
@@ -112,7 +112,7 @@ export async function createApi(
   await registerAttachmentRoutes(api, lifecycle);
   await registerBrowserRoutes(api, services, command);
   if (services.tools.machines && views)
-    await registerMachineRoutes(api, services.tools.machines, views, services.authentication);
+    await registerMachineRoutes(api, lifecycle, views, services.authentication);
   await registerRunRoutes(api, lifecycle, background, services, command);
   // Abort upstream streaming bodies before Bun waits for the HTTP server to drain.
   const stop = api.stop.bind(api);

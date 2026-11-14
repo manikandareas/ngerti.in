@@ -1,6 +1,6 @@
 # Shared persistent machine with Cua
 
-Planned November 12 amendment: the [server-organizations plan](server-organizations-plan-2026-11-12.md#8-agent-sharing-memory-and-files) and NMA-076 replace the singleton machine as the future cross-human privacy boundary with isolated organization/user execution domains. The cooperative shared OS described below remains the implemented single-owner baseline and retained evidence; folder prefixes alone do not isolate different users.
+November 14 execution-domain amendment: NMA-076 implements [isolated organization/user execution domains](execution-domains.md) following the [server-organizations plan](server-organizations-plan-2026-11-12.md#8-agent-sharing-memory-and-files). Its [verification](../verification/nma-076/README.md) has a separate native boundary. The cooperative shared OS described below remains the retained single-owner baseline; folder prefixes alone do not isolate different users. Scoped native admission, remote clients and deployed transport retain their later gates.
 
 Date: 2026-11-04. Status: approved plan implemented in the working tree. Backend/API delta and native Cua/Codex/Muse checks were completed before UI consumption. Current evidence, setup and limitations: [verification report](../verification/shared-machine/README.md).
 

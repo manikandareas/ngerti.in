@@ -20,8 +20,11 @@ export type Principal = {
   validate: () => Promise<void>;
 };
 export type SessionLease = {
+  userId?: string;
+  organizationId?: string;
   sessionId: string;
   assert: () => Promise<void>;
+  authorizeRequest?: (request: Request) => Promise<void>;
   signal: AbortSignal;
   release: () => void;
 };
@@ -199,7 +202,19 @@ export class Authentication {
       if (!controllers.size) this.#leases.delete(principal.sessionId);
     };
     controller.signal.addEventListener("abort", release, { once: true });
-    return { sessionId: principal.sessionId, assert, signal: controller.signal, release };
+    return {
+      userId: principal.userId,
+      sessionId: principal.sessionId,
+      assert,
+      signal: controller.signal,
+      release,
+      authorizeRequest: async (candidate) => {
+        const current = await this.authenticate(candidate);
+        if (current.userId !== principal.userId || current.sessionId !== principal.sessionId)
+          throw denied();
+        await assert();
+      },
+    };
   }
   async self(request: Request) {
     const principal = this.principal(request);

@@ -41,19 +41,27 @@ export class MachineViews {
   readonly #closingMedia = new Map<string, Promise<void>>();
   readonly #unsubscribe: () => void;
   readonly #expiry: ReturnType<typeof setInterval>;
-  constructor(readonly machines: Machines) {
+  constructor(
+    readonly machines: Machines,
+    readonly revoked: (id: string) => void = () => {},
+  ) {
     this.#unsubscribe = machines.onControl(async () => this.sweep());
-    this.#expiry = setInterval(async () => {
-      if (
-        [...this.#peers.values()].some(
-          (bridge) => bridge.view.interactive && bridge.socket.readyState === WebSocket.OPEN,
-        )
-      )
-        await machines.renewHuman();
-      void machines
-        .expireControl()
-        .then(async () => this.sweep())
-        .catch(() => {});
+    this.#expiry = setInterval(() => {
+      void (async () => {
+        try {
+          if (
+            [...this.#peers.values()].some(
+              (bridge) => bridge.view.interactive && bridge.socket.readyState === WebSocket.OPEN,
+            )
+          )
+            await machines.renewHuman();
+          await machines.expireControl();
+        } finally {
+          // A revoked principal can no longer read machine state. Its existing media must
+          // still be swept and closed even when lease maintenance is denied.
+          await this.sweep();
+        }
+      })().catch(() => {});
     }, 1000);
     this.#expiry.unref();
   }
@@ -65,7 +73,7 @@ export class MachineViews {
       (await this.machines.snapshot()).generation !== view.generation
     )
       throw new DomainError("UNAUTHORIZED", 401);
-    await this.machines.assertViewer(view.revision, view.interactive);
+    await this.machines.assertViewer(view.revision, view.interactive, view.lease?.sessionId);
     return view;
   }
   async authorize(request: Request, media = false) {
@@ -82,22 +90,27 @@ export class MachineViews {
         : ![view.origin, view.apiOrigin].includes(url.origin))
     )
       throw new DomainError("UNAUTHORIZED", 401);
+    const organization = request.headers.get("X-Ngertiin-Organization");
+    if (organization && view.lease?.organizationId && organization !== view.lease.organizationId)
+      throw new DomainError("SCOPE_DENIED", 403);
+    await view.lease?.authorizeRequest?.(request);
     return await this.valid(view);
   }
   async issue(origin: string, interactive = false, apiOrigin = origin, lease?: SessionLease) {
     await lease?.assert();
     const host = await this.machines.ready();
     const current = await this.machines.snapshot();
-    await this.machines.assertViewer(current.lease.revision, interactive);
+    await this.machines.assertViewer(current.lease.revision, interactive, lease?.sessionId);
     const reply = (await host.rpc("SystemService/CreateViewerTicket", {
       ttl: "600s",
       policy: interactive ? "SESSION_POLICY_ALLOW_ACTIVATION" : "SESSION_POLICY_VIEW_ONLY",
       clipboard: interactive,
       filesRoot: interactive ? current.root : "",
-      principal: { id: "owner", displayName: "You" },
+      principal: { id: lease?.userId ?? "owner", displayName: "You" },
     })) as { ticket: string };
     if (!reply.ticket) throw new DomainError("MACHINE_UNAVAILABLE", 503);
-    await this.machines.assertViewer(current.lease.revision, interactive);
+    await lease?.assert();
+    await this.machines.assertViewer(current.lease.revision, interactive, lease?.sessionId);
     await this.sweep();
     if (this.#views.size >= 40) throw new DomainError("CONFLICT");
     const id = `${crypto.randomUUID().replaceAll("-", "")}${crypto.randomUUID().replaceAll("-", "")}`;
@@ -149,7 +162,7 @@ export class MachineViews {
       policy: view.interactive ? "SESSION_POLICY_ALLOW_ACTIVATION" : "SESSION_POLICY_VIEW_ONLY",
       clipboard: view.interactive,
       filesRoot: view.interactive ? (await this.machines.snapshot()).root : "",
-      principal: { id: "owner", displayName: "You" },
+      principal: { id: view.lease?.userId ?? "owner", displayName: "You" },
     })) as { ticket?: string } | undefined;
     await this.valid(view);
     if (!reply?.ticket) throw new DomainError("MACHINE_UNAVAILABLE", 503);
@@ -166,11 +179,7 @@ export class MachineViews {
     if (existing) return existing;
     const work = (async () => {
       try {
-        await this.machines.host?.rpc(
-          "StreamService/CloseMedia",
-          { mediaSessionId: id },
-          AbortSignal.timeout(5000),
-        );
+        await this.machines.host?.revokeMedia(id);
       } catch (error) {
         if (!/not.?found|already closed/i.test(String(error))) throw error;
       }
@@ -186,6 +195,7 @@ export class MachineViews {
   }
   private async revoke(view: View) {
     this.#views.delete(view.id);
+    this.revoked(view.id);
     view.abort.abort();
     view.lease?.release();
     for (const [peer, bridge] of this.#peers)

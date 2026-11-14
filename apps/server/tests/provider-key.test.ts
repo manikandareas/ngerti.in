@@ -4,7 +4,7 @@ import { join } from "node:path";
 import { z } from "zod";
 import { createApi } from "../src/api";
 import { Background } from "../src/background";
-import { schemas } from "../src/contracts";
+import { CONTRACT_VERSION, schemas } from "../src/contracts";
 import { Connections } from "../src/harness/connections";
 import { CredentialContexts } from "../src/harness/context";
 import { CredentialStorage } from "../src/harness/credential-storage";
@@ -92,7 +92,7 @@ test("key onboarding preserves explicit Codex API billing and published request/
       }),
     )
   ).json();
-  expect(contract.version).toBe("1.32.0");
+  expect(contract.version).toBe(CONTRACT_VERSION);
   const route = contract.http.find(
     (item: { path: string; method: string }) =>
       item.method === "POST" && item.path === "/v1/connections/api-key",

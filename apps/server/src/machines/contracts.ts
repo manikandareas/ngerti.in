@@ -9,6 +9,14 @@ export const machineLease = z.strictObject({
   revision: z.int().nonnegative(),
   state: z.enum(["active", "unknown"]),
   expires_at: z.iso.datetime().nullable(),
+  session_id: z.string().nullable().optional(),
+});
+export const executionDomain = z.strictObject({
+  ...base,
+  kind: z.literal("execution_domain"),
+  generation: z.int().positive(),
+  state: z.enum(["pending", "provisioning", "ready", "offline", "missing", "failed", "retired"]),
+  error_code: z.string().nullable(),
 });
 export const machine = z.strictObject({
   ...base,
@@ -20,6 +28,7 @@ export const machine = z.strictObject({
   service_version: z.string().nullable(),
   driver_version: z.string().nullable(),
   features: z.array(z.string()),
+  error_code: z.string().nullable().optional(),
   lease: machineLease,
 });
 export const machineOperation = z.strictObject({

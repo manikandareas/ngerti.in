@@ -3,9 +3,9 @@ import { DomainError } from "../contracts";
 import { productToolSchemas } from "../harness/product-tool-contracts";
 import type { ProductTools } from "../harness/tools";
 import { sha256 } from "./cua";
-import type { Machines } from "./service";
+import { resolvedMachine } from "./domains";
 
-export function registerMachineTools(tools: ProductTools, machines: Machines) {
+export function registerMachineTools(tools: ProductTools) {
   for (const name of [
     "ngertiin.machine_status",
     "ngertiin.machine_exec",
@@ -21,6 +21,8 @@ export function registerMachineTools(tools: ProductTools, machines: Machines) {
       schema: productToolSchemas[name],
       resources: () => [],
       execute: async (input, access) => {
+        const machines = await resolvedMachine(tools.lifecycle);
+        if (!machines) throw new DomainError("MACHINE_UNAVAILABLE", 503);
         const actor = await machines.actor(access);
         if (name === "ngertiin.machine_status") {
           await machines.refresh().catch(() => {});

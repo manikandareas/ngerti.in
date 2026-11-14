@@ -1,0 +1,32 @@
+bun test v1.3.10 (30e609e0)
+
+tests/machines/authorization.test.ts:
+Elysia isn't running. Call `app.listen` to start the server. Error
+    at stop (/Users/vitoandareasmanik/Development/project/ngertiin/node_modules/.bun/elysia@1.4.30+6c81576b6e24dad9/node_modules/elysia/dist/adapter/bun/index.mjs:234:13)
+    at <anonymous> (/Users/vitoandareasmanik/Development/project/ngertiin/node_modules/.bun/elysia@1.4.30+6c81576b6e24dad9/node_modules/elysia/dist/index.mjs:188:75)
+    at processTicksAndRejections (native:7:39)
+(pass) real user sessions resolve private machines and a copied viewer ticket cannot cross users or devices [1567.37ms]
+Elysia isn't running. Call `app.listen` to start the server. Error
+    at stop (/Users/vitoandareasmanik/Development/project/ngertiin/node_modules/.bun/elysia@1.4.30+6c81576b6e24dad9/node_modules/elysia/dist/adapter/bun/index.mjs:234:13)
+    at <anonymous> (/Users/vitoandareasmanik/Development/project/ngertiin/node_modules/.bun/elysia@1.4.30+6c81576b6e24dad9/node_modules/elysia/dist/index.mjs:188:75)
+    at processTicksAndRejections (native:7:39)
+(pass) revoking the actual issuing login closes existing media and rejects further viewer RPCs [723.57ms]
+101 |   const view=await viewer(alice.cookie);const media=await connect(alice.cookie,view);
+102 |   const members=await f.success(f.http(`${f.path}/members`,undefined,f.owner.cookie));
+103 |   const member=members.members.find((m:{user_id:string})=>m.user_id===alice.userId);
+104 |   expect(member).toBeTruthy();
+105 |   await f.success(f.write(f.owner.cookie,`${f.path}/members/${member.id}/remove`));
+106 |   await Promise.race([media.closed,Bun.sleep(3500).then(()=>{throw new Error("Active media survived member removal.");})]);
+                                                                             ^
+error: Active media survived member removal.
+      at <anonymous> (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/tests/machines/authorization.test.ts:106:72)
+Elysia isn't running. Call `app.listen` to start the server. Error
+    at stop (/Users/vitoandareasmanik/Development/project/ngertiin/node_modules/.bun/elysia@1.4.30+6c81576b6e24dad9/node_modules/elysia/dist/adapter/bun/index.mjs:234:13)
+    at <anonymous> (/Users/vitoandareasmanik/Development/project/ngertiin/node_modules/.bun/elysia@1.4.30+6c81576b6e24dad9/node_modules/elysia/dist/index.mjs:188:75)
+    at processTicksAndRejections (native:7:39)
+(fail) removing an organization member closes their already-open media and invalidates clipboard/file access [4389.91ms]
+
+ 2 pass
+ 1 fail
+ 12 expect() calls
+Ran 3 tests across 1 file. [7.31s]

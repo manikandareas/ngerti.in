@@ -2,36 +2,58 @@ import { posix } from "node:path";
 import type { Elysia } from "elysia";
 import { z } from "zod";
 import type { Authentication } from "../auth/service";
+import { DomainError } from "../contracts";
+import type { Lifecycle } from "../lifecycle";
 import { machineControl, machineProcessInput } from "../machines/contracts";
-import type { Machines } from "../machines/service";
-import type { MachineViews } from "../machines/view";
+import { resolvedMachine } from "../machines/domains";
+import type { MachineViewGateway } from "../machines/view-gateway";
 import { fileQuery, relativePath } from "../workspaces/contracts";
 
 export function registerMachineRoutes(
   api: Elysia,
-  machines: Machines,
-  views: MachineViews,
+  lifecycle: Lifecycle,
+  views: MachineViewGateway,
   authentication?: Authentication,
 ) {
+  const machine = async () => {
+    const result = await resolvedMachine(lifecycle);
+    if (!result) throw new DomainError("MACHINE_UNAVAILABLE", 503);
+    return result;
+  };
+  const authorize = async (request: Request) => {
+    const scope = lifecycle.store.dataContext;
+    if (scope) await scope.validate(true);
+    else await authentication?.assertOwner(request);
+  };
   api.onStop(async () => await views.close());
   return api
     .get("/v1/machine", async () => {
+      const machines = await machine();
       await machines.refresh().catch(() => {});
       return await machines.snapshot();
     })
-    .get("/v1/machine/operations", async () => ({ operations: await machines.operations.list() }))
-    .get("/v1/machine/processes", async () => ({ processes: await machines.processes.list() }))
-    .get("/v1/machine/windows", async () => ({ windows: await machines.desktop.list() }))
+    .get("/v1/machine/operations", async () => ({
+      operations: await (await machine()).operations.list(),
+    }))
+    .get("/v1/machine/processes", async () => ({
+      processes: await (await machine()).processes.list(),
+    }))
+    .get("/v1/machine/windows", async () => ({ windows: await (await machine()).desktop.list() }))
     .post(
       "/v1/machine/processes/control",
       async ({ body, request }) =>
-        machines.processes.control(body, null, () => authentication?.assertOwner(request)),
+        (await machine()).processes.control(body, null, () => authorize(request)),
       { body: machineProcessInput },
     )
     .post(
       "/v1/machine/control",
       async ({ body, request }) =>
-        machines.control(body, null, () => authentication?.assertOwner(request)),
+        (await machine()).control(
+          body,
+          null,
+          () => authorize(request),
+          authentication?.principal(request).sessionId,
+        ),
       {
         body: machineControl,
       },
@@ -70,6 +92,7 @@ export function registerMachineRoutes(
     .get(
       "/v1/machine/files",
       async ({ query }) => {
+        const machines = await machine();
         await machines.ready();
         return machines.files().list(query.path, query.after, query.limit);
       },
@@ -78,6 +101,7 @@ export function registerMachineRoutes(
     .get(
       "/v1/machine/file",
       async ({ query }) => {
+        const machines = await machine();
         await machines.ready();
         const bytes = await machines.files().read(query.path);
         return new Response(bytes, {

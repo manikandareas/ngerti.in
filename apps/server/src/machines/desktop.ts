@@ -232,7 +232,7 @@ export class MachineDesktop {
     if (this.#pending || this.#timer) return;
     this.#timer = setTimeout(async () => {
       this.#timer = undefined;
-      void this.idle();
+      void this.idle().catch(() => {});
     }, 0);
     this.#timer.unref();
   }

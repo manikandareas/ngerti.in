@@ -4,7 +4,7 @@ import { join } from "node:path";
 import { createApi } from "../../src/api";
 import { Artifacts } from "../../src/artifacts";
 import { Background } from "../../src/background";
-import type { Entity } from "../../src/contracts";
+import { CONTRACT_VERSION, type Entity } from "../../src/contracts";
 import { Conversations } from "../../src/conversations";
 import { dueWindow, firstDue } from "../../src/goals/schedule";
 import { Goals } from "../../src/goals/service";
@@ -530,7 +530,7 @@ test("HTTP contracts expose goal/Routine commands, snapshot/replay and authentic
   expect(await (await request("/v1/goals/capture", input)).json()).toEqual(receipt);
   expect(await f.store.cursor).toBe(cursor);
   const document = await (await request("/v1/contracts")).json();
-  expect(document.version).toBe("1.32.0");
+  expect(document.version).toBe(CONTRACT_VERSION);
   expect(document.commands.report_goal).toBeDefined();
   const snapshot = await (await request(`/v1/threads/${run.thread_id}/snapshot`)).json();
   expect(snapshot.goals[0].id).toBe(input.goal_id);

@@ -50,6 +50,12 @@ export class CuaMachine {
       });
     return this.#client;
   }
+  protected resetClient() {
+    this.#client = undefined;
+  }
+  async revokeMedia(id: string) {
+    await this.rpc("StreamService/CloseMedia", { mediaSessionId: id }, AbortSignal.timeout(5000));
+  }
   async rpc(
     method: string,
     input: unknown = {},

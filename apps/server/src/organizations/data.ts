@@ -47,6 +47,28 @@ export class ScopedData {
       tx.release();
     }
     const managed = access.role === "member" ? [] : grants.map((grant) => grant.agent_id);
+    const acquire = async (session: boolean) => {
+      const connection = await this.auth.pool.connect();
+      try {
+        await connection.query("BEGIN");
+        await connection.query("SELECT id FROM organization WHERE id=$1 FOR SHARE", [
+          organizationId,
+        ]);
+        if (session) await validatePrincipal();
+        await this.organizations.assertCurrent(access, !session);
+        return async () => {
+          try {
+            await connection.query("ROLLBACK");
+          } finally {
+            connection.release();
+          }
+        };
+      } catch (error) {
+        await connection.query("ROLLBACK");
+        connection.release();
+        throw error;
+      }
+    };
     return {
       organizationId,
       userId: access.user_id,
@@ -56,28 +78,9 @@ export class ScopedData {
       invocableAgents: invocable,
       managedAgents: managed,
       canManage: access.role !== "member",
-      acquire: async () => {
-        const connection = await this.auth.pool.connect();
-        try {
-          await connection.query("BEGIN");
-          await connection.query("SELECT id FROM organization WHERE id=$1 FOR SHARE", [
-            organizationId,
-          ]);
-          await validatePrincipal();
-          await this.organizations.assertCurrent(access);
-          return async () => {
-            try {
-              await connection.query("ROLLBACK");
-            } finally {
-              connection.release();
-            }
-          };
-        } catch (error) {
-          await connection.query("ROLLBACK");
-          connection.release();
-          throw error;
-        }
-      },
+      validateResources: async () => this.organizations.assertCurrent(access, true),
+      acquire: () => acquire(true),
+      acquireResources: () => acquire(false),
       validate: async (privateWork = false) => {
         await validatePrincipal();
         return this.organizations.assertCurrent(access, privateWork);
@@ -351,6 +354,8 @@ export class ScopedData {
         "*",
         async ({ request }) => {
           const path = new URL(request.url).pathname;
+          // Viewer URLs are session-bound capabilities checked by the viewer gateway on every frame/RPC.
+          if (path.startsWith("/v1/machine/viewer/")) return api.handle(request);
           if (
             !request.headers.has("X-Ngertiin-Organization") ||
             isAuthenticationRoute(request) ||
@@ -373,7 +378,7 @@ export class ScopedData {
           const context = await this.context(request);
           // Until their resource isolation milestones, native/provider and machine control stay closed.
           if (
-            /^\/v1\/(connections|apps|browser|machine|harness)(\/|$)/.test(path) ||
+            /^\/v1\/(connections|apps|browser|harness)(\/|$)/.test(path) ||
             /\/(sessions|prepare|reconcile|interactions|steer)$/.test(path)
           )
             throw deny();
@@ -392,7 +397,7 @@ export class ScopedData {
     const stop = edge.stop.bind(edge);
     edge.stop = async (force) => {
       await api.stop(force);
-      return stop(force);
+      return edge.server ? stop(force) : edge;
     };
     return edge;
   }

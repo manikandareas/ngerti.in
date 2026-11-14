@@ -36,6 +36,7 @@ import {
   skillRevision,
 } from "./learning/contracts";
 import {
+  executionDomain,
   machine,
   machineOperation,
   machineProcess,
@@ -104,10 +105,11 @@ export {
   workspace,
 };
 
-export const CONTRACT_VERSION = "1.32.0";
+export const CONTRACT_VERSION = "1.33.0";
 export const API_READINESS_GATE = "ready" as const;
 
 export const schemas = {
+  execution_domain: executionDomain,
   agent_preference: agentPreference,
   published_knowledge: publishedKnowledge,
   attachment_upload: stagedUpload,

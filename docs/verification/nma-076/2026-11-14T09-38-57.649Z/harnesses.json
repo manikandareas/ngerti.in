@@ -1,0 +1,150 @@
+{
+  "started_at": "2026-11-14T09:38:57.649Z",
+  "source": {
+    "baseline": "74cfabc23e43c962e9e3b58c91b5d0671da093d9",
+    "contract_version": "1.33.0",
+    "bun": "1.3.10",
+    "files": {
+      "package.json": "c499c905b142b8302276609259d28ce251012bab03e5cc940b57ce2c0a0d6a75",
+      "apps/server/package.json": "4516b93780917994935ac7fb701bf5a2edc059afda3f72041d589b11bfedb321",
+      "bun.lock": "5382ed7328b2c20e9916dab724d8400417ddc4a0cbb0ff649cf0e5f62561bcfc",
+      "apps/server/src/machines/config.ts": "e03e2b8d3a1862c18e9ecf4154393c9e39635ab55d6e06ae100b9e19aa997f12",
+      "apps/server/src/machines/contracts.ts": "8a60eee8cf75346978cf2efa0af76a595ee4376078aad0cfb48a5335239ab813",
+      "apps/server/src/machines/cua.ts": "e81e83e119b0bd2155d083b60cf1ef2eef128fdef6495242a9ead45441513281",
+      "apps/server/src/machines/desktop.ts": "fa97f2dcec9f54971329637e523477c36328336edbeb54782ee631463c9d2686",
+      "apps/server/src/machines/domain-runtime.ts": "34af0d5d50146137e6c333e953e877bdc6eeef91c0e2d7a6567f0227f140ceb8",
+      "apps/server/src/machines/domains.ts": "88a095bdabc6c2d9dbf2ee2591a8e2b4b621709ea9f0f0ebb14c142dba14021d",
+      "apps/server/src/machines/operations.ts": "67045001315241b3b7754cea276455ecedb2838e8161baa7e24566d91a9c9e03",
+      "apps/server/src/machines/processes.ts": "67bf69c9da2ac178de322898a2fe75b300ff28e11d3a8ab31be058281a59b642",
+      "apps/server/src/machines/service.ts": "cf0ccda81a619da192625f6d5849fdcca9bbbea4658b63629702a358bbde5397",
+      "apps/server/src/machines/setup-domains.ts": "16f1090e50f60db8d46bd685f8a1b59af0b1f198bb160cc5b88cf6ae2ea31e05",
+      "apps/server/src/machines/tools.ts": "4f65071c1c714a541b16d4f184401c3b4f51fd02dd72e42bb97f80284cc342f7",
+      "apps/server/src/machines/view.ts": "14e5c86e4561f6f08274f1dd375a30cbdeba97ee1966d2cedce9822170129ece",
+      "apps/server/src/machines/view-gateway.ts": "fc1d26fc98554cf7b9dd2ffa8e480d48e9618c470ca9abc24b9cce149c5bec0e",
+      "apps/server/src/api.ts": "59c26cb12c45f44e1f8041f59cd3758b9be77f2a98e4200da4116565912a996c",
+      "apps/server/src/api-contract.ts": "9269ce3fa2c35745862bb9bd810368c7cf039c5907ac5cb3469ac41c94c422e3",
+      "apps/server/src/api/http.ts": "f8fd8898ab0dd043b1cfa0bd4caf66a5197a0ae4de9cc361cda3a638c3803ed9",
+      "apps/server/src/api/machines.ts": "aa8063c35076ca7d0d2c93fc27ba1ac840b00f460a08bc20e9c13fc5332afcd4",
+      "apps/server/src/auth/service.ts": "b1a37246df129668daae0149b154fbed3bc2785d60aed477d93364a38053a91c",
+      "apps/server/src/contracts.ts": "cd8aa58ebf13c38482760159fb1c62a868e7ec545c4be50d7be0111fad646ce3",
+      "apps/server/src/contracts/errors.ts": "30fc8ed0f7a303c858e6af8b2093def702f1ba7af692c6c56b4221d81f53e46c",
+      "apps/server/src/main.ts": "32f423cbf47c2f51e008becd25007add8d5b6e52b68ce898a41384e19859bb66",
+      "apps/server/src/organizations/data.ts": "d90ecdc837224edac79d964918f5240b10d061f69ee1461f93c98b93d584546d",
+      "apps/server/src/persistence/access-context.ts": "14934558294811179fdf56f99e77affacdca7c2607bdd6c4d8e5d5771d6eaed0",
+      "apps/server/src/persistence/execution-schema.ts": "a362da7d908af5b90c4f7ae6235fa67115be8768e5334f70181c685c8b6fde5c",
+      "apps/server/src/store.ts": "2fc3fbd4d02360010144c2a04026b7ec563c253f00e08b3d5c7b2af0b4576824",
+      "apps/server/src/artifacts.ts": "9266991eb272c84e0064a88a29761ed887e3c322cd7ee00c18bb3685a44a6910",
+      "apps/server/src/workspaces/service.ts": "3622ad7a7dfd537f6c11b8719c35ed368ebae2314283f511201e1bb1e94b8f37",
+      "apps/server/src/workspaces/tools.ts": "355c9927258225e27b9abe9db499a26cbe4bd26f9dc8dd5087b56b5d960e4e9d",
+      "apps/server/src/harness/tools.ts": "f214fb33f599f2eb27ed1c5f403d5ea4ba2200bc9ea88d31ad4f7a20c6d72475",
+      "apps/server/src/harness/instructions.ts": "6af791f0482abff2babb1e7a6d8068ae5a7d5f43e1352374868f567344846d9d",
+      "apps/server/src/harness/context.ts": "6e5d64be4c77d6e715a41ea5b31963ffef2511905b55d22ebfd520e6b0207b91",
+      "apps/server/src/harness/product-tool-contracts.ts": "78a1ff20d53cd149c3230be2f1072258c499b1d454c88f23cd3bb5b523d05c9f",
+      "apps/server/src/harness/codex/rpc.ts": "7bb55ac560b5dbb41409b9013358519a5954decb6237004b4154382edfbf8d9a",
+      "apps/server/src/harness/codex/workspace-policy.ts": "bf6506e782dcec5d932ef9c863fdb2110cdb2b5680274b9aaec26634b06c5ade",
+      "apps/server/src/harness/muse/transport.ts": "7f97f0b1580d759d016b68a5288aab6cddb9696b0cdb6d3fbc041660b59e4adb",
+      "infra/machine/ngertiin-browser.desktop": "3463f6c821f6e60b6cac66a3e1e5f082346f258dff3eced706adc447f3c982d1",
+      "infra/machine/chromium-policy.json": "ea93a0b94d560ad5b2e35fcb99a8d2dc326bb1a586e3c68125419cdc29dc8785",
+      "infra/machine/start-browser.sh": "b5205b10bfec34437e2fcd0c1a248fbce400636b7c1e9d1ae6a0f4e49b65a306",
+      "infra/machine/compose.yaml": "53db6628a9e24aa423d3290768742861b1e7d94bec6b1fdcc592f860c9f2d5ee",
+      "scripts/verification/nma076/evidence.ts": "1cfa86e013487fd80d0f2946f085f0fa403a71c94ef7d856fe9622b56dc86442",
+      "scripts/verification/nma076/native.test.ts": "7ff05d5c6f474fcb768f112ad4bb34ccb847979b146f8e9b32fb3b4058339b98",
+      "scripts/verification/nma076/harnesses.test.ts": "4121935668ba33e0076e6e8fae766c0263b4835f4a20f755c40288dab7c3f77f",
+      "scripts/verification/nma076/contract.test.ts": "3588954e7b046bf085561521f3b25dd00e7377fd23ff39dffad395e31fa262b7"
+    }
+  },
+  "planned_lanes": 2,
+  "fixture_principals": true,
+  "live_installation_mutated": false,
+  "lanes": [
+    {
+      "family": "codex",
+      "version": "0.169.0",
+      "organization_id": "b660bd43-dcb1-4dde-b44d-743d02256934",
+      "user_id": "42eb6ebd-8699-49e8-b37d-7f2ad0697234",
+      "machine_id": "86a347d9-b603-42b7-bfea-b6724a46227d",
+      "run_status": "succeeded",
+      "diagnostic": null,
+      "product_tools": [
+        "ngertiin.machine_exec",
+        "ngertiin.read_file",
+        "ngertiin.computer_call"
+      ],
+      "native_tools": [],
+      "effective_billing": "subscription",
+      "host_write_observed": false,
+      "answer": "Confirmed marker: `DOMAIN-66f30aeb-ee19-4591-b899-fc2c53658bec`\nOS: **Linux**\n\nFile bytes verified and desktop access succeeded. The native host write was refused by policy."
+    },
+    {
+      "family": "muse",
+      "version": "1.4.14-R7309.1",
+      "organization_id": "b660bd43-dcb1-4dde-b44d-743d02256934",
+      "user_id": "42eb6ebd-8699-49e8-b37d-7f2ad0697234",
+      "machine_id": "86a347d9-b603-42b7-bfea-b6724a46227d",
+      "run_status": "succeeded",
+      "diagnostic": null,
+      "product_tools": [
+        "ngertiin.machine_exec",
+        "ngertiin.read_file",
+        "ngertiin.computer_call"
+      ],
+      "native_tools": [],
+      "effective_billing": "api_key",
+      "host_write_observed": false,
+      "answer": "Integration check starting — running the machine marker and desktop state verification.\n\nConfirmed marker `DOMAIN-b0bf9f3b-7e44-4fe2-9b73-a93f4611ad3d` and OS `Linux`.\n\n- Wrote marker via `machine_exec` (exit 0, stdout `Linux`).\n- Verified via `read_file`: exact bytes returned.\n- `computer_call get_desktop_state` with `{}` succeeded (Linux, 1280x800, Chromium visible).\n\nNo native host shell/file tool available, so no forbidden-native write attempted. No Goals, Routines, memory, skills, or profile changes made."
+    }
+  ],
+  "application_mode": "single_owner_adapter_probe_in_resolved_private_domain",
+  "execution_domain": {
+    "id": "755a9304-e1ad-4c50-bca0-0ab3fc72f5eb",
+    "organization_id": "b660bd43-dcb1-4dde-b44d-743d02256934",
+    "user_id": "42eb6ebd-8699-49e8-b37d-7f2ad0697234"
+  },
+  "tool_calls": [
+    {
+      "name": "ngertiin.machine_exec",
+      "input": {
+        "command_id": "c898db5f-4b9a-408b-806d-c25a783cfb29",
+        "command": "printf '%s' 'DOMAIN-66f30aeb-ee19-4591-b899-fc2c53658bec' > 'harness-90f0c790-b4e6-45b8-9c34-f198f7d5adb8.txt'; uname -s"
+      }
+    },
+    {
+      "name": "ngertiin.read_file",
+      "input": {
+        "path": "harness-90f0c790-b4e6-45b8-9c34-f198f7d5adb8.txt"
+      }
+    },
+    {
+      "name": "ngertiin.computer_call",
+      "input": {
+        "command_id": "fc006d19-cb1e-42b2-9355-1ad540d7ed23",
+        "name": "get_desktop_state",
+        "arguments": {}
+      }
+    },
+    {
+      "name": "ngertiin.machine_exec",
+      "input": {
+        "command": "printf '%s' 'DOMAIN-b0bf9f3b-7e44-4fe2-9b73-a93f4611ad3d' > 'harness-4edf9a9b-7545-4b25-b6e9-d4befcc0b6ff.txt'; uname -s",
+        "command_id": "11111111-2222-4333-8333-444444444444"
+      }
+    },
+    {
+      "name": "ngertiin.read_file",
+      "input": {
+        "path": "harness-4edf9a9b-7545-4b25-b6e9-d4befcc0b6ff.txt"
+      }
+    },
+    {
+      "name": "ngertiin.computer_call",
+      "input": {
+        "arguments": {},
+        "command_id": "22222222-3333-4444-8444-555555555555",
+        "name": "get_desktop_state"
+      }
+    }
+  ],
+  "pass": true,
+  "finished_at": "2026-11-14T09:40:43.466Z",
+  "executed_lanes": 2
+}

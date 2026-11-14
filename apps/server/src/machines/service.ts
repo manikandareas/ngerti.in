@@ -219,13 +219,17 @@ export class Machines {
           service_version: capabilities.version,
           driver_version: registry.contractVersion,
           features,
+          error_code: null,
         });
-      } catch {
+      } catch (error) {
         const current = await this.snapshot();
         if (current.state !== "offline")
-          await this.operations.update(current, { state: "offline" });
+          await this.operations.update(current, {
+            state: "offline",
+            error_code: error instanceof DomainError ? error.code : "MACHINE_UNAVAILABLE",
+          });
         if (current.lease.holder !== "none") await this.uncertainControl();
-        throw new DomainError("MACHINE_UNAVAILABLE", 503);
+        throw error instanceof DomainError ? error : new DomainError("MACHINE_UNAVAILABLE", 503);
       } finally {
         this.#refresh = undefined;
       }
@@ -285,7 +289,12 @@ export class Machines {
       });
     return await this.snapshot();
   }
-  async control(raw: unknown, actor: MachineActor, authorize: () => void = () => {}) {
+  async control(
+    raw: unknown,
+    actor: MachineActor,
+    authorize: () => unknown = () => {},
+    sessionId?: string,
+  ) {
     const data = machineControl.parse(raw);
     await this.ready();
     await this.expireControl();
@@ -300,9 +309,10 @@ export class Machines {
       (await this.snapshot()).generation,
       actor,
       `control.${data.operation}`,
-      data,
+      { ...data, session_id: sessionId ?? null },
       authorize,
       async () => {
+        if (this.#handoff) throw new DomainError("MACHINE_INPUT_BUSY");
         if (data.operation === "acquire" && actor === null) {
           this.#handoff = true;
           try {
@@ -317,6 +327,7 @@ export class Machines {
               revision: lease.revision + 1,
               state: "active",
               expires_at: new Date(Date.now() + 60_000).toISOString(),
+              session_id: sessionId ?? null,
             });
             await this.desktop.preserveForHuman();
             await this.quiesce();
@@ -327,6 +338,13 @@ export class Machines {
         }
         if (data.operation === "acquire") return await this.acquire(actor);
         const lease = (await this.snapshot()).lease;
+        if (
+          !actor &&
+          lease.holder === "human" &&
+          lease.session_id &&
+          lease.session_id !== sessionId
+        )
+          throw new DomainError("SCOPE_DENIED", 403);
         if (actor && (lease.holder !== "agent" || lease.run_id !== actor.run_id))
           throw new DomainError("SCOPE_DENIED", 403);
         if (this.#input) throw new DomainError("MACHINE_INPUT_BUSY");
@@ -530,7 +548,7 @@ export class Machines {
       if (target.run_id === runId && target.active)
         await this.operations.update(target, { active: false });
   }
-  async assertViewer(revision: number, interactive: boolean) {
+  async assertViewer(revision: number, interactive: boolean, sessionId?: string) {
     const current = await this.snapshot();
     if (
       current.state !== "ready" ||
@@ -539,6 +557,7 @@ export class Machines {
           current.lease.holder !== "human" ||
           current.lease.state !== "active" ||
           current.lease.revision !== revision ||
+          (!!current.lease.session_id && current.lease.session_id !== sessionId) ||
           (!!current.lease.expires_at && Date.parse(current.lease.expires_at) <= Date.now())))
     )
       throw new DomainError("SCOPE_DENIED", 403);
@@ -550,7 +569,7 @@ export class Machines {
       .catch(() => {});
   }
   async close() {
-    await this.desktop.close();
+    await this.desktop.close().catch(() => {});
     await this.#input?.catch(() => {});
     await this.processes.close();
     installations.delete(this.lifecycle);
@@ -560,15 +579,18 @@ export class Machines {
     lifecycle: Lifecycle,
     configuration: MachineConfiguration | null,
     host?: CuaMachine,
+    machineId = lifecycle.store.ownerId,
   ) {
     if (installations.has(lifecycle))
       throw new Error("This application already has a machine module.");
     installations.set(lifecycle, this);
-    this.host = host ?? (configuration ? new CuaMachine(configuration) : null);
-    this.operations = await MachineOperations.open(lifecycle, lifecycle.store.ownerId);
-    const current = (await lifecycle.store.list("machine")).find(
-      (item) => item.id === lifecycle.store.ownerId,
-    );
+    const legacyMapped =
+      !lifecycle.store.dataContext && (await lifecycle.store.legacyScopeMapped());
+    this.host = legacyMapped
+      ? null
+      : (host ?? (configuration ? new CuaMachine(configuration) : null));
+    this.operations = await MachineOperations.open(lifecycle, machineId);
+    const current = (await lifecycle.store.list("machine")).find((item) => item.id === machineId);
     if (
       current &&
       configuration &&
@@ -578,9 +600,9 @@ export class Machines {
       throw new Error(
         "The retained machine binding changed. Reconcile it before starting this installation.",
       );
-    if (!current)
+    if (!current && !legacyMapped)
       await lifecycle.store.put({
-        ...this.operations.base(lifecycle.store.ownerId),
+        ...this.operations.base(machineId),
         kind: "machine",
         machine_key: configuration?.id ?? null,
         generation: configuration?.generation ?? 1,
@@ -591,7 +613,7 @@ export class Machines {
         features: [],
         lease: noLease(),
       });
-    else
+    else if (current)
       await this.operations.update(current, {
         machine_key: configuration?.id ?? current.machine_key,
         state: configuration ? "offline" : "unconfigured",
@@ -617,9 +639,10 @@ export class Machines {
     lifecycle: Lifecycle,
     configuration: MachineConfiguration | null,
     host?: CuaMachine,
+    machineId = lifecycle.store.ownerId,
   ): Promise<Machines> {
     const instance = new Machines(lifecycle, configuration);
-    await instance.initialize(lifecycle, configuration, host);
+    await instance.initialize(lifecycle, configuration, host, machineId);
     return instance;
   }
 }

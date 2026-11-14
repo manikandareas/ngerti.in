@@ -17,6 +17,7 @@ import { HarnessRuntime } from "./harness/runtime";
 import { ProductTools } from "./harness/tools";
 import { Lifecycle } from "./lifecycle";
 import { readMachineConfiguration } from "./machines/config";
+import { ExecutionDomains } from "./machines/domains";
 import { Machines } from "./machines/service";
 import { publishRuntime } from "./runtime-record";
 import { Store } from "./store";
@@ -47,7 +48,9 @@ export async function startApplication(config: ApplicationConfig = developmentCo
     );
     const machines = await Machines.open(lifecycle, readMachineConfiguration(config.stateDir));
     cleanup.push(() => machines.close());
-    await new Conversations(lifecycle).setup();
+    const domains = ExecutionDomains.open(lifecycle, config.stateDir);
+    cleanup.push(() => domains.close());
+    if (!(await store.legacyScopeMapped())) await new Conversations(lifecycle).setup();
     const tools = await ProductTools.open(lifecycle, (scope, name) => {
       console.log(
         JSON.stringify({
@@ -142,6 +145,7 @@ export async function startApplication(config: ApplicationConfig = developmentCo
         await background.stop();
         await broker.close();
         await machines.close();
+        await domains.close();
         await Promise.allSettled([codexAccounts.close(), museAccounts.close()]);
         await httpStopped;
         await authentication?.close();

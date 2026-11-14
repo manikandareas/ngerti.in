@@ -349,6 +349,7 @@ test("event cursor pagination is stable and contracts expose all domain entities
     "browser_session",
     "connection",
     "control",
+    "execution_domain",
     "goal",
     "group_route",
     "harness_inventory",

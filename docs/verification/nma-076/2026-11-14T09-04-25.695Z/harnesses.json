@@ -1,0 +1,38 @@
+{
+  "started_at": "2026-11-14T09:04:25.695Z",
+  "fixture_principals": true,
+  "live_installation_mutated": false,
+  "lanes": [
+    {
+      "family": "codex",
+      "version": "0.169.0",
+      "organization_id": "986ab5cc-cfc1-478c-bae3-7a0d1d419fad",
+      "user_id": "e501575f-c0c5-4638-a8a7-023a93356e28",
+      "machine_id": "381f802e-a95c-47fa-9e92-cee5ab697b5b",
+      "run_status": "succeeded",
+      "diagnostic": null,
+      "product_tools": [
+        "ngertiin.describe_tools",
+        "ngertiin.computer_tools",
+        "ngertiin.describe_tools",
+        "ngertiin.computer_call"
+      ],
+      "native_tools": [],
+      "effective_billing": "subscription",
+      "host_write_observed": false,
+      "answer": "Host write was refused as expected. Desktop inspection confirmed Linux.\n\nMarker verification failed: the Linux write request was rejected, and reading the file returned “not found.” No marker was confirmed."
+    }
+  ],
+  "application_mode": "single_owner_adapter_probe_in_resolved_private_domain",
+  "execution_domain": {
+    "id": "2fba8fb7-9ebf-47db-bacf-9d940f86e1e9",
+    "organization_id": "986ab5cc-cfc1-478c-bae3-7a0d1d419fad",
+    "user_id": "e501575f-c0c5-4638-a8a7-023a93356e28"
+  },
+  "pass": false,
+  "error": {
+    "message": "expect(received).toContain(expected)\n\nExpected to contain: \"ngertiin.machine_exec\"\nReceived: [ \"ngertiin.describe_tools\", \"ngertiin.computer_tools\", \"ngertiin.describe_tools\",\n  \"ngertiin.computer_call\"\n]\n",
+    "stack": "Error: expect(received).toContain(expected)\n\nExpected to contain: \"ngertiin.machine_exec\"\nReceived: [ \"ngertiin.describe_tools\", \"ngertiin.computer_tools\", \"ngertiin.describe_tools\",\n  \"ngertiin.computer_call\"\n]\n\n    at toContain (unknown)\n    at <anonymous> (/Users/vitoandareasmanik/Development/project/ngertiin/scripts/verification/nma076/harnesses.test.ts:96:76)\n    at unknown\n    at processTicksAndRejections (native:7:39)"
+  },
+  "finished_at": "2026-11-14T09:05:19.171Z"
+}

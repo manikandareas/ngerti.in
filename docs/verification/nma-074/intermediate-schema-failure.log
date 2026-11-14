@@ -1,0 +1,33 @@
+bun test v1.3.10 (30e609e0)
+
+tests/auth/schema.test.ts:
+35 |     if (process.env.NGERTIIN_WRITE_ORGANIZATION_SCHEMA === "1") await writeFile(file, generated);
+36 |     expect(await readFile(file, "utf8")).toBe(generated);
+37 |     await pool.query(generated);
+38 |     await pool.query(await readFile(new URL("../../src/organizations/schema.sql", import.meta.url),"utf8"));
+39 |     const applied=await getMigrations(auth.options);
+40 |     expect({created:applied.toBeCreated,added:applied.toBeAdded,indexes:applied.toBeAddedIndexes,problems:applied.schemaProblems,unsafe:applied.unsafeChanges}).toEqual({created:[],added:[],indexes:[],problems:[],unsafe:[]});
+                                                                                                                                                                     ^
+error: expect(received).toEqual(expected)
+
+  {
+    "added": [],
+    "created": [],
+    "indexes": [],
+-   "problems": [],
++   "problems": [
++     "Column "organization_id" on table "teamMember" is required but Better Auth never writes it, so every insert into "teamMember" fails. Drop the column, make it nullable, or give it a database default.",
++   ],
+    "unsafe": [],
+  }
+
+- Expected  - 1
++ Received  + 3
+
+      at <anonymous> (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/tests/auth/schema.test.ts:40:161)
+(fail) retained authentication schema exactly matches the pinned plugins [196.77ms]
+
+ 0 pass
+ 1 fail
+ 2 expect() calls
+Ran 1 test across 1 file. [434.00ms]

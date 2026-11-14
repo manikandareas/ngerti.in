@@ -7,6 +7,7 @@ import { manifests } from "./harness/availability";
 import { brokerContract, brokerErrorCodes } from "./harness/contracts";
 import { productToolCatalog } from "./harness/product-tool-contracts";
 import { machine, machineOperation, machineProcess, machineWindow } from "./machines/contracts";
+import { isOrganizationPath } from "./organizations/paths";
 
 export const responseSchemas = {
   machine,
@@ -141,12 +142,14 @@ export function httpContract(routes: readonly Route[], accounts = false) {
   return routes.map(({ method, path, hooks }) => {
     const mcp = path === "/v1/harness/tools";
     const viewer = path.startsWith("/v1/machine/viewer/");
+    const organizationCommand = isOrganizationPath(path) && !path.endsWith("/send");
     if (
       method === "POST" &&
       !mcp &&
       !durablePaths.has(path) &&
       !operationPaths.has(path) &&
-      !path.startsWith("/v1/auth/")
+      !path.startsWith("/v1/auth/") &&
+      !isOrganizationPath(path)
     )
       throw new Error(`HTTP request semantics are missing for ${method} ${path}.`);
     return {
@@ -154,7 +157,7 @@ export function httpContract(routes: readonly Route[], accounts = false) {
       path,
       authentication: routeAuthentication(path, accounts),
       idempotency:
-        method === "POST" && durablePaths.has(path)
+        method === "POST" && (durablePaths.has(path) || organizationCommand)
           ? "required_uuid"
           : ["/v1/machine/control", "/v1/machine/processes/control"].includes(path)
             ? "required_body_command_id"
@@ -163,7 +166,7 @@ export function httpContract(routes: readonly Route[], accounts = false) {
         ? "mcp"
         : method === "GET"
           ? "read"
-          : durablePaths.has(path)
+          : durablePaths.has(path) || (method === "POST" && organizationCommand)
             ? "durable_command"
             : "operation",
       request: {

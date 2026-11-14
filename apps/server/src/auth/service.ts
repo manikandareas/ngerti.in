@@ -36,7 +36,7 @@ export class Authentication {
     readonly config: AuthenticationConfig,
     connectionString: string,
     readonly legacyOwnerId: string,
-    deliver: EmailDelivery,
+    readonly deliver: EmailDelivery,
   ) {
     this.pool = new Pool({
       connectionString,

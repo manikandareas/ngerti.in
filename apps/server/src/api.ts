@@ -24,6 +24,9 @@ import { CredentialStorage } from "./harness/credential-storage";
 import { ProductTools } from "./harness/tools";
 import type { Lifecycle } from "./lifecycle";
 import { MachineViews } from "./machines/view";
+import { organizationsContract } from "./organizations/contracts";
+import { registerOrganizationRoutes } from "./organizations/http";
+import { Organizations } from "./organizations/service";
 
 export async function createApi(
   lifecycle: Lifecycle,
@@ -45,7 +48,10 @@ export async function createApi(
     views ? async (request) => await views.authorize(request) : undefined,
     services.authentication,
   );
-  if (services.authentication) registerAuthenticationRoutes(api, services.authentication);
+  if (services.authentication) {
+    registerAuthenticationRoutes(api, services.authentication);
+    registerOrganizationRoutes(api, new Organizations(services.authentication));
+  }
   api
     .get("/health/ready", async () => {
       try {
@@ -81,7 +87,10 @@ export async function createApi(
       ...consumerContract(services.tools.machines !== undefined),
       http: httpContract(api.routes, Boolean(services.authentication)),
       ...(services.authentication
-        ? { authentication: authenticationContract(services.authentication.config.origin) }
+        ? {
+            authentication: authenticationContract(services.authentication.config.origin),
+            organizations: organizationsContract(),
+          }
         : {}),
     }));
   await registerConversationRoutes(api, lifecycle, command);

@@ -3,7 +3,6 @@ import { randomBytes } from "node:crypto";
 import { readFile, writeFile } from "node:fs/promises";
 import { getMigrations } from "better-auth/db/migration";
 import { Pool } from "pg";
-import { authenticationOwnershipSql } from "../../src/auth/ownership-schema";
 import { createAuthenticationProvider } from "../../src/auth/provider";
 
 test("retained authentication schema exactly matches the pinned plugins", async () => {
@@ -28,11 +27,25 @@ test("retained authentication schema exactly matches the pinned plugins", async 
       async () => {},
       () => {},
     );
+    // Version 1 is immutable. Version 2 adds the organization plugin to an existing auth DB.
+    await pool.query(await readFile(new URL("../../src/auth/schema.sql", import.meta.url), "utf8"));
     const migration = await getMigrations(auth.options);
-    const generated = `${await migration.compileMigrations()}\n\n${authenticationOwnershipSql}\n`;
-    const file = new URL("../../src/auth/schema.sql", import.meta.url);
-    if (process.env.NGERTIIN_WRITE_AUTH_SCHEMA === "1") await writeFile(file, generated);
+    const generated = `${await migration.compileMigrations()}\n`;
+    const file = new URL("../../src/organizations/provider-schema.sql", import.meta.url);
+    if (process.env.NGERTIIN_WRITE_ORGANIZATION_SCHEMA === "1") await writeFile(file, generated);
     expect(await readFile(file, "utf8")).toBe(generated);
+    await pool.query(generated);
+    await pool.query(
+      await readFile(new URL("../../src/organizations/schema.sql", import.meta.url), "utf8"),
+    );
+    const applied = await getMigrations(auth.options);
+    expect({
+      created: applied.toBeCreated,
+      added: applied.toBeAdded,
+      indexes: applied.toBeAddedIndexes,
+      problems: applied.schemaProblems,
+      unsafe: applied.unsafeChanges,
+    }).toEqual({ created: [], added: [], indexes: [], problems: [], unsafe: [] });
   } finally {
     await pool.query(`DROP SCHEMA "${schema}" CASCADE`);
     await pool.end();

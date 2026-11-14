@@ -21,17 +21,34 @@ export async function initializeAuthentication(
     await client.query(
       "CREATE TABLE IF NOT EXISTS ngertiin_auth_migrations(version integer PRIMARY KEY,sha256 text NOT NULL)",
     );
-    const sql = await readFile(new URL("./schema.sql", import.meta.url), "utf8");
-    const checksum = createHash("sha256").update(sql).digest("hex");
+    const migrations = await Promise.all([
+      readFile(new URL("./schema.sql", import.meta.url), "utf8"),
+      Promise.all([
+        readFile(new URL("../organizations/provider-schema.sql", import.meta.url), "utf8"),
+        readFile(new URL("../organizations/schema.sql", import.meta.url), "utf8"),
+      ]).then((parts) => parts.join("\n")),
+    ]);
     const existing = (await client.query("SELECT * FROM ngertiin_auth_migrations ORDER BY version"))
       .rows;
-    if (existing.some((row) => row.version !== 1 || row.sha256 !== checksum))
+    if (
+      existing.some(
+        (row, index) =>
+          row.version !== index + 1 ||
+          !migrations[index] ||
+          row.sha256 !== createHash("sha256").update(migrations[index]).digest("hex"),
+      )
+    )
       throw new Error("Unsupported or modified authentication migration.");
-    if (!existing.length) {
+    for (let index = existing.length; index < migrations.length; index++) {
+      const sql = migrations[index];
+      const checksum = createHash("sha256").update(sql).digest("hex");
       await client.query("BEGIN");
       try {
         await client.query(sql);
-        await client.query("INSERT INTO ngertiin_auth_migrations VALUES(1,$1)", [checksum]);
+        await client.query("INSERT INTO ngertiin_auth_migrations VALUES($1,$2)", [
+          index + 1,
+          checksum,
+        ]);
         await client.query("COMMIT");
       } catch (error) {
         await client.query("ROLLBACK");

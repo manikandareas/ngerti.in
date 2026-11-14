@@ -2,7 +2,7 @@ import { randomBytes } from "node:crypto";
 import { Elysia } from "elysia";
 import { createApi } from "../../src/api";
 import type { AuthenticationConfig } from "../../src/auth/config";
-import type { AuthenticationEmail } from "../../src/auth/email";
+import type { AuthenticationEmail, EmailDelivery } from "../../src/auth/email";
 import { Authentication } from "../../src/auth/service";
 import { Background } from "../../src/background";
 import { Connections } from "../../src/harness/connections";
@@ -10,7 +10,7 @@ import { ProductTools } from "../../src/harness/tools";
 import { fixture } from "../helpers";
 
 export const fixturePassword = "A-long-fixture-password-948!";
-export async function authFixture() {
+export async function authFixture(deliver?: EmailDelivery) {
   const domain = await fixture();
   let api: Awaited<ReturnType<typeof createApi>>;
   const edge = new Elysia()
@@ -40,6 +40,7 @@ export async function authFixture() {
       domain.owner,
       async (message) => {
         emails.push(message);
+        await deliver?.(message);
       },
     );
     api = await createApi(domain.lifecycle, new Background(domain.lifecycle), "o".repeat(64), {

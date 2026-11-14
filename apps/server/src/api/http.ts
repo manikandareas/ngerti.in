@@ -7,6 +7,7 @@ import { DomainError, id } from "../contracts";
 import { HarnessError } from "../harness/contracts";
 import type { ProductTools } from "../harness/tools";
 import type { Lifecycle } from "../lifecycle";
+import { isOrganizationPath } from "../organizations/paths";
 
 export function createCommand(lifecycle: Lifecycle, authentication?: Authentication) {
   return async function command<T>(request: Request, body: unknown, action: () => T): Promise<T> {
@@ -93,7 +94,8 @@ export function createHttp(
       if (authentication) {
         if (isPublicAuthenticationRoute(request)) return;
         await authentication.authenticate(request);
-        if (!isAuthenticationRoute(request)) await authentication.assertOwner(request);
+        if (!isAuthenticationRoute(request) && !isOrganizationPath(new URL(request.url).pathname))
+          await authentication.assertOwner(request);
         return;
       }
       const supplied = request.headers.get("Authorization") ?? "";

@@ -1,0 +1,166 @@
+{
+  "git_base": "cc1475eba81b6edcef721c0ba97c5439b0a56b61",
+  "date": "2026-11-14",
+  "bun": "1.3.10",
+  "dependencies": {
+    "better-auth": "1.7.23",
+    "@better-auth/oauth-provider": "1.7.23",
+    "elysia": "1.4.30",
+    "pg": "8.23.1",
+    "zod": "4.4.3"
+  },
+  "postgres_image": "postgres:18.1-alpine@sha256:aa6eb304ddb6dd26df23d05db4e5cb05af8951cda3e0dc57731b771e0ef4ab29",
+  "test_database": "runner-created disposable container; no NGERTIIN_TEST_DATABASE_URL override",
+  "scope": "Cleaned NMA-074 local-delivery source; tested in an isolated worktree excluding pre-existing NMA-072 changes",
+  "source_sha256": {
+    "apps/server/src/api-contract.ts": "d004f4b6d4ba2f53cf5a6cd5329954c5a573df72e4ee556180c00033e69a016a",
+    "apps/server/src/api-responses.ts": "f7273892d5a721fc7a14ca392743d5b46ad19710a307908b90ddd065e4e09f31",
+    "apps/server/src/api.ts": "6590cee4cb41796fe41829cd541129daa40fe84292f9daa3867c0feac417225a",
+    "apps/server/src/api/http.ts": "d379f8f7eb888f8634535e651d5ab2a4b8476bdd08bd521d0d7be95e6a55f2f8",
+    "apps/server/src/auth/database.ts": "d275c38087bd6bda55d63afee753aac4cbde7d90f692c66558fb6b1ee6059d16",
+    "apps/server/src/auth/email.ts": "ab1d2e2deaf499a3d52f42072e4b99693ffe591fc1287a5bcafb8ae6be253e20",
+    "apps/server/src/auth/operator.ts": "61e5077f6623cf45bb1dd7c2533e53db76e9d60e1039f621c46791efe5c8d741",
+    "apps/server/src/auth/provider.ts": "d1e1711b72632b7917b2acfc8a652948cad7c320571756283eb5d31f5bca94bf",
+    "apps/server/src/auth/schema.sql": "e71c66f708d29f7d35d1e7857859a8e95cc993365843ffb580f7d9e95e9cf0d4",
+    "apps/server/src/auth/service.ts": "4024c002a234d1b5d794d5bac5a7650a090f3a462d1e3b29bfe73b8934ea1507",
+    "apps/server/src/organizations/contracts.ts": "5aa52586677cb468ec2ec670d8dd65f7a0d2109e9877563e441489fb6ef40276",
+    "apps/server/src/organizations/database.ts": "034e73e845e43dd8b056c3cef19286f6b4c7070b2ff139ddd83f2e9fe8fe9cfc",
+    "apps/server/src/organizations/http.ts": "0cbfaf1c1b0d992436e8f8d0bc6bdfb1fc82b11d3e074d2922a0fd41ed2a9d2e",
+    "apps/server/src/organizations/invitations.ts": "b1e04aa0171dbe63f0771bd8865bc80946b6e827b7ea3a7a7384500bd09d7ed2",
+    "apps/server/src/organizations/members.ts": "f780fc9a6146dc6db918865ff7b71d1c7950f6244b6ddf92de60f31b5e2f1afa",
+    "apps/server/src/organizations/paths.ts": "6b4459affee584fa11224250c8242b5e813991669c8de51b0eea17105e76393b",
+    "apps/server/src/organizations/provider-schema.sql": "019632781b606846e139a64c7fdd35868ff8f0c810b2eeb4757e95029cf79b79",
+    "apps/server/src/organizations/schema.sql": "076c82a0585dac6d91eb1fcee7fb63cfb94199d62c62557f8abf66e9f2e4893b",
+    "apps/server/src/organizations/service.ts": "791d42c87722b4f1b1533fc4d1a4b01d28a5a5d7c738584c49e5b1a8626ac6e4",
+    "apps/server/src/organizations/workgroups.ts": "734e46653c8d02970e47f1ce19dbfc9deb410f5b3fe27a4a4f3632d7b0620e10",
+    "apps/server/tests/auth/helpers.ts": "563c17be334fe5c73918495787e79a1c5586a55b3ae4f15b8e40281b6254fd20",
+    "apps/server/tests/auth/schema.test.ts": "c637ea0419241dc0f99ae43257d60e204dd68916e9f8f8624565a1103e5d9f56",
+    "apps/server/tests/organizations/helpers.ts": "8a09f5c1bff23c63ce3499b2fb288186225ec06fc5e120ae80146d283ff67015",
+    "apps/server/tests/organizations/http.test.ts": "a900b3e6fb722c7e8d7d1f1badcf6824773e61eb346a3683d2ce3dc977a76442",
+    "scripts/verification/nma072/run-tests.ts": "92cc08c48029e630ee0a41c2012d5a03e3eb561bbd8e7ff61b0406aa3b235f0d"
+  },
+  "adopted_provider_module_sha256": {
+    "apps/server/node_modules/better-auth/dist/plugins/organization/organization.mjs": "782a9515c64db0356e60001302d445f9ae1e7bc09f64cc8406f285684ac8bbca",
+    "apps/server/node_modules/better-auth/dist/plugins/organization/adapter.mjs": "19caeccf2143c4fcb6262afae288fbf7cacd1c0deb30b6f2bc268cf0e8c07e59",
+    "apps/server/node_modules/better-auth/dist/plugins/organization/schema.mjs": "ffdd6d199b312b536c1a1b37a21c6c8871fcc6136ccc0fe5a5934b5b86ebbfa3",
+    "apps/server/node_modules/better-auth/dist/plugins/organization/types.d.mts": "695bae64375f145c5fa1b1bd0b9a31c29d1fd19ec6353c8da76944955717af88",
+    "apps/server/node_modules/better-auth/dist/db/get-migration.mjs": "3f5bdad9b790ee8e0e958a0645b01957c6fa029c75b34da461be0aff0713528a"
+  },
+  "preexisting_file_preservation": {
+    "apps/server/tests/persistence/sqlite-backup.test.ts": {
+      "before_sha256": "2aaa45827a6e8a45deea41984901941d72fed32bf5fad7b178284dee9c6a0a31",
+      "after_sha256": "2aaa45827a6e8a45deea41984901941d72fed32bf5fad7b178284dee9c6a0a31",
+      "unchanged": true
+    },
+    "compose.postgres.local.yml": {
+      "before_sha256": "7da1020674b1bfbc4e2e1e8601abcad7b7698e6cbca7cd9a857ac07754cba706",
+      "after_sha256": "7da1020674b1bfbc4e2e1e8601abcad7b7698e6cbca7cd9a857ac07754cba706",
+      "unchanged": true
+    },
+    "docs/verification/nma-072/local-orbstack-2026-11-13.md": {
+      "before_sha256": "23abf6fa3102fe5a6bbc97c8ccbe5ff6c105999559fa9bec47bb2cf6cf188240",
+      "after_sha256": "23abf6fa3102fe5a6bbc97c8ccbe5ff6c105999559fa9bec47bb2cf6cf188240",
+      "unchanged": true
+    },
+    "docs/verification/nma-072/local-orbstack-2026-11-13/artifact-hashes.json": {
+      "before_sha256": "30dca2db493952d9c2e91a9e98112dd8b3e1d458b642a226cd8975ec4e6a5d0c",
+      "after_sha256": "30dca2db493952d9c2e91a9e98112dd8b3e1d458b642a226cd8975ec4e6a5d0c",
+      "unchanged": true
+    },
+    "docs/verification/nma-072/local-orbstack-2026-11-13/docs-check.log": {
+      "before_sha256": "5efb0b5810fe668cd10d1d0a8a485523c4cf8240d0adf089291545eebac215bf",
+      "after_sha256": "5efb0b5810fe668cd10d1d0a8a485523c4cf8240d0adf089291545eebac215bf",
+      "unchanged": true
+    },
+    "docs/verification/nma-072/local-orbstack-2026-11-13/foundation.log": {
+      "before_sha256": "cc8548d128aa4c64e0e2816786b5ce2f0f327fe5a669223843e07b7111ef7077",
+      "after_sha256": "cc8548d128aa4c64e0e2816786b5ce2f0f327fe5a669223843e07b7111ef7077",
+      "unchanged": true
+    },
+    "docs/verification/nma-072/local-orbstack-2026-11-13/lint.log": {
+      "before_sha256": "4de1f7c49611cbb46119ca4d223c01504bac1011e573a5e3d52fe8255c3894f3",
+      "after_sha256": "4de1f7c49611cbb46119ca4d223c01504bac1011e573a5e3d52fe8255c3894f3",
+      "unchanged": true
+    },
+    "docs/verification/nma-072/local-orbstack-2026-11-13/persistence-tests.log": {
+      "before_sha256": "cacb517f38487fe027d36d960be5aa2f3532981b95ac0633ca3e86a143577b76",
+      "after_sha256": "cacb517f38487fe027d36d960be5aa2f3532981b95ac0633ca3e86a143577b76",
+      "unchanged": true
+    },
+    "docs/verification/nma-072/local-orbstack-2026-11-13/result.json": {
+      "before_sha256": "7719fe5f5b32d622bcf67822c09f8e1e9483752d047a1aacc3cf2f84be640e61",
+      "after_sha256": "7719fe5f5b32d622bcf67822c09f8e1e9483752d047a1aacc3cf2f84be640e61",
+      "unchanged": true
+    },
+    "docs/verification/nma-072/local-orbstack-2026-11-13/source-hashes.json": {
+      "before_sha256": "bf44b97a42f04e768c4759177bce8dc5253376b10cbf5a9e76fb467a5e6589fe",
+      "after_sha256": "bf44b97a42f04e768c4759177bce8dc5253376b10cbf5a9e76fb467a5e6589fe",
+      "unchanged": true
+    },
+    "docs/verification/nma-072/local-orbstack-2026-11-13/typecheck.log": {
+      "before_sha256": "61766a3a5683935e7882088a4d1c3c810c31ae5343f3d6d339ae52e0cdf03e4b",
+      "after_sha256": "61766a3a5683935e7882088a4d1c3c810c31ae5343f3d6d339ae52e0cdf03e4b",
+      "unchanged": true
+    },
+    ".env.example": {
+      "before_sha256": "2902ecc1504a94c9209780b71fa979d1bfa6e920de932c58d320b4f3cf55def0",
+      "after_sha256": "2902ecc1504a94c9209780b71fa979d1bfa6e920de932c58d320b4f3cf55def0",
+      "unchanged": true
+    },
+    "README.md": {
+      "before_sha256": "053c9283142249e7dae041832c9b322723877e34d954b36b9ebaeb43c9125b04",
+      "after_sha256": "053c9283142249e7dae041832c9b322723877e34d954b36b9ebaeb43c9125b04",
+      "unchanged": true
+    },
+    "apps/server/src/persistence/sqlite-import.ts": {
+      "before_sha256": "9d175c317704eeff98cd816a76dab84f07bb9e1dcc1ad5f32991225f0285dfa5",
+      "after_sha256": "9d175c317704eeff98cd816a76dab84f07bb9e1dcc1ad5f32991225f0285dfa5",
+      "unchanged": true
+    },
+    "docs/architecture/postgresql-persistence.md": {
+      "before_sha256": "d1c006523d7f2c42db2e4b7a335f5a3cef3aa1749acf613d29e30fbfecc2ab92",
+      "after_sha256": "d1c006523d7f2c42db2e4b7a335f5a3cef3aa1749acf613d29e30fbfecc2ab92",
+      "unchanged": true
+    },
+    "docs/backlog/NMA-072.md": {
+      "before_sha256": "4b54f2879bcefd3b6292cfc17798f9833254eee16879db605c2ee34f4c1ed410",
+      "after_sha256": "4b54f2879bcefd3b6292cfc17798f9833254eee16879db605c2ee34f4c1ed410",
+      "unchanged": true
+    },
+    "docs/backlog/README.md": {
+      "before_sha256": "6084f35fb6dc7c63c6c4e0df260fe4cbff4153b4363c3957921742f5c3ab27ae",
+      "after_sha256": "b9dbbc47871a8ce628ceeaba68eafd3af8c328a8a384089f97dddd2797d34b48",
+      "unchanged": false
+    },
+    "package.json": {
+      "before_sha256": "cb74ec99e0b95b6659f511d708395e40bccef4c13518e639145fea4b52edb269",
+      "after_sha256": "cb74ec99e0b95b6659f511d708395e40bccef4c13518e639145fea4b52edb269",
+      "unchanged": true
+    }
+  },
+  "verification_tree": "728b2c25b4fdee7b60418a3748b9a6c32465365a",
+  "verification_worktree_kind": "git worktree materialized from the staged index; frozen install with scripts disabled",
+  "implementation_manifest": "implementation-source-manifest.json",
+  "staging_boundaries": {
+    "excluded_unrelated_paths": [
+      ".env.example",
+      "README.md",
+      "apps/server/src/persistence/sqlite-import.ts",
+      "apps/server/tests/persistence/sqlite-backup.test.ts",
+      "compose.postgres.local.yml",
+      "docs/architecture/postgresql-persistence.md",
+      "docs/backlog/NMA-072.md",
+      "docs/verification/nma-072/local-orbstack-2026-11-13.md",
+      "docs/verification/nma-072/local-orbstack-2026-11-13/artifact-hashes.json",
+      "docs/verification/nma-072/local-orbstack-2026-11-13/docs-check.log",
+      "docs/verification/nma-072/local-orbstack-2026-11-13/foundation.log",
+      "docs/verification/nma-072/local-orbstack-2026-11-13/lint.log",
+      "docs/verification/nma-072/local-orbstack-2026-11-13/persistence-tests.log",
+      "docs/verification/nma-072/local-orbstack-2026-11-13/result.json",
+      "docs/verification/nma-072/local-orbstack-2026-11-13/source-hashes.json",
+      "docs/verification/nma-072/local-orbstack-2026-11-13/typecheck.log",
+      "package.json"
+    ],
+    "shared_backlog": "Only NMA-074 status/scope hunks staged; original NMA-072 amendment remains unstaged"
+  }
+}

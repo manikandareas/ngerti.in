@@ -7,6 +7,7 @@ import {
 } from "@better-auth/oauth-provider";
 import { betterAuth } from "better-auth";
 import { createAuthEndpoint } from "better-auth/api";
+import { organization } from "better-auth/plugins/organization";
 import type { Pool } from "pg";
 import { z } from "zod";
 import type { AuthenticationConfig } from "./config";
@@ -106,8 +107,29 @@ export function createAuthenticationProvider(
     },
     plugins: [
       oauthProvider(oauth),
+      // Product organization writes use one locked SQL transaction, including audit and intents.
+      // Raw plugin routes stay outside the HTTP allowlist (including active-org session setters).
+      organization({
+        allowUserToCreateOrganization: false,
+        disableOrganizationDeletion: true,
+        teams: { enabled: true, defaultTeam: { enabled: false } },
+      }),
       {
         id: "ngertiin-access-verification",
+        schema: {
+          teamMember: {
+            fields: {
+              organizationId: {
+                type: "string",
+                required: true,
+                input: false,
+                returned: false,
+                fieldName: "organization_id",
+                references: { model: "organization", field: "id" },
+              },
+            },
+          },
+        },
         endpoints: {
           verifyNativeAccess: createAuthEndpoint(
             "/ngertiin/verify-access",

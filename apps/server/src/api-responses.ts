@@ -10,6 +10,16 @@ import { capabilities } from "./harness/contracts";
 import { nativeInteractionJournal } from "./harness/interaction-contracts";
 import { approval, userInput } from "./harness/muse/protocol";
 import { inheritedSkill, nativeSkillMetadata } from "./learning/contracts";
+import {
+  accessView,
+  audienceView,
+  auditView,
+  invitationView,
+  membershipView,
+  organizationView,
+  provisioningView,
+  workgroupView,
+} from "./organizations/contracts";
 
 const jsonSchema = z.record(z.string(), z.json());
 const skillResult = z.strictObject({ skill: schemas.skill, revision: schemas.skill_revision });
@@ -383,8 +393,137 @@ routes(
 );
 routes("POST", ["/v1/auth/bootstrap"], z.strictObject({ owner_bound: z.boolean() }));
 
+routes(
+  "GET",
+  ["/v1/organizations"],
+  z.strictObject({
+    organizations: z.array(organizationView),
+    creation_limit: z.int().nonnegative(),
+    created_count: z.int().nonnegative(),
+  }),
+);
+routes(
+  "POST",
+  ["/v1/organizations"],
+  z.strictObject({
+    organization: organizationView,
+    membership: membershipView,
+    provisioning: provisioningView,
+  }),
+);
+routes("GET", ["/v1/organizations/:organizationId"], accessView);
+routes(
+  "POST",
+  ["/v1/organizations/:organizationId"],
+  z.strictObject({ organization: organizationView }),
+);
+routes(
+  "GET",
+  ["/v1/invitations/:invitationId"],
+  z.strictObject({ organization: organizationView, invitation: invitationView }),
+);
+routes(
+  "GET",
+  ["/v1/organizations/:organizationId/members"],
+  z.strictObject({ members: z.array(membershipView) }),
+);
+routes(
+  "POST",
+  ["/v1/organizations/:organizationId/members/:membershipId/role"],
+  z.strictObject({ membership: membershipView }),
+);
+routes(
+  "POST",
+  ["/v1/organizations/:organizationId/members/:membershipId/remove"],
+  z.strictObject({ removed: z.literal(true) }),
+);
+routes(
+  "GET",
+  ["/v1/organizations/:organizationId/provisioning"],
+  z.strictObject({ provisioning: provisioningView }),
+);
+routes("POST", ["/v1/organizations/:organizationId/private-work/resume"], accessView);
+routes(
+  "GET",
+  ["/v1/organizations/:organizationId/workgroups"],
+  z.strictObject({ workgroups: z.array(workgroupView) }),
+);
+routes(
+  "POST",
+  [
+    "/v1/organizations/:organizationId/workgroups",
+    "/v1/organizations/:organizationId/workgroups/:workgroupId",
+    "/v1/organizations/:organizationId/workgroups/:workgroupId/members",
+  ],
+  z.strictObject({ workgroup: workgroupView }),
+);
+routes(
+  "POST",
+  ["/v1/organizations/:organizationId/workgroups/:workgroupId/delete"],
+  z.strictObject({ deleted: z.literal(true) }),
+);
+routes(
+  "GET",
+  ["/v1/organizations/:organizationId/audiences"],
+  z.strictObject({ audiences: z.array(audienceView) }),
+);
+routes(
+  "POST",
+  [
+    "/v1/organizations/:organizationId/audiences",
+    "/v1/organizations/:organizationId/audiences/:audienceId",
+  ],
+  z.strictObject({ audience: audienceView }),
+);
+routes(
+  "GET",
+  ["/v1/organizations/:organizationId/audiences/:audienceId/access"],
+  z.strictObject({ allowed: z.boolean() }),
+);
+routes(
+  "GET",
+  ["/v1/organizations/:organizationId/invitations"],
+  z.strictObject({ invitations: z.array(invitationView) }),
+);
+routes(
+  "POST",
+  [
+    "/v1/organizations/:organizationId/invitations",
+    "/v1/organizations/:organizationId/invitations/:invitationId/cancel",
+    "/v1/organizations/:organizationId/invitations/:invitationId/send",
+  ],
+  z.strictObject({ invitation: invitationView }),
+);
+routes(
+  "POST",
+  ["/v1/invitations/:invitationId/accept"],
+  z.strictObject({ membership: membershipView, provisioning: provisioningView }),
+);
+routes(
+  "GET",
+  ["/v1/organizations/:organizationId/audit"],
+  z.strictObject({ audit: z.array(auditView) }),
+);
+routes(
+  "GET",
+  ["/v1/organizations/:organizationId/export"],
+  z.strictObject({
+    organization: organizationView,
+    members: z.array(membershipView),
+    workgroups: z.array(workgroupView),
+    audiences: z.array(audienceView),
+    retention: z.strictObject({
+      administration: z.literal("retained_until_explicit_operator_purge"),
+      private_data: z.literal("excluded"),
+      team_ownership: z.literal("organization"),
+    }),
+  }),
+);
+
 /** Fail closed when an added route has no reviewed response contract. */
 export function operationResponse(method: string, path: string) {
+  if (method === "DELETE" && path === "/v1/organizations/:organizationId")
+    return { status: 403, reference: "error", reason: "organization_deletion_disabled" };
   const result = responses[`${method} ${path}`];
   if (result)
     return "schema" in result

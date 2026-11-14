@@ -1,0 +1,53 @@
+bun test v1.3.10 (30e609e0)
+
+tests/organizations/http.test.ts:
+(pass) one account has independent roles in two organizations and membership grants no legacy private-data access [1082.74ms]
+(pass) creation entitlement is separate from role and concurrent creations cannot exceed its limit [631.18ms]
+(pass) Owner/Admin/Member matrix protects elevation, peer administrators and the last Owner [828.98ms]
+(pass) concurrent Owner demotions serialize and always retain one Owner [592.48ms]
+(pass) multiple Workgroups form a union; All members is explicit and removed or deleted groups revoke effective access [709.30ms]
+(pass) cross-organization Workgroup and membership references fail in both API and database [431.26ms]
+(pass) invitation acceptance is email-bound and rejects expired or canceled invitations [719.72ms]
+(pass) invitation acceptance rechecks inviter role/generation and deleted Workgroups [786.61ms]
+(pass) concurrent acceptance and retries commit exactly one membership and provisioning intent without model calls [564.77ms]
+(pass) offboarding retains attribution, suspends private work and fences old contexts/receipts across rejoin [632.23ms]
+(pass) organization export contains administration only and organization deletion remains unavailable [545.25ms]
+(pass) raw Better Auth organization routes cannot bypass transactional product policy or select active context [390.06ms]
+(pass) organization commands require stable IDs and reject changed payloads without leaking inputs [404.55ms]
+(pass) membership and provisioning survive interruption/reopen with no provider configuration [636.43ms]
+(pass) failed invitation delivery retains durable state and explicit retry uses the same delivery identity [580.45ms]
+(pass) an interrupted acceptance rolls back membership, Workgroups, audit, receipt and provisioning together [578.55ms]
+(pass) the installed account contract enumerates organization request, response and command semantics [504.01ms]
+
+tests/auth/security.test.ts:
+(pass) account mode fails closed on missing secrets, insecure origins or unsafe callbacks [3.18ms]
+(pass) native callback rejects wrong state, issuer, redirect, duplicate fields and replay [405.98ms]
+(pass) token endpoint rejects wrong verifier, redirect, audience, code replay and client registration [450.79ms]
+(pass) expired access/device sessions fail API, SSE and renewal without affecting another device [390.82ms]
+(pass) revocation closes an existing HTTP SSE stream and preserves another device [473.93ms]
+(pass) viewer tickets are bound to a live device and cannot be renewed from another device [480.71ms]
+(pass) password recovery revokes native offline credentials and leaves no auth secrets in domain records [445.64ms]
+(pass) account-mode export identifies auth classes and keeps the multi-user API gate pending [432.07ms]
+(pass) HTTPS configuration serializes Secure cookies and ignores spoofed proxy addresses [491.58ms]
+(pass) rate limits survive changing untrusted forwarding headers [251.23ms]
+(pass) a native device outlives browser logout and access-token revocation closes its stream [987.04ms]
+
+tests/auth/schema.test.ts:
+(pass) retained authentication schema exactly matches the pinned plugins [145.68ms]
+
+tests/auth/http.test.ts:
+(pass) verified login uses HttpOnly cookies, redacts tokens and denies installation credentials [466.26ms]
+(pass) Owner bootstrap requires verified intended identity, expires and consumes once under a race [539.87ms]
+(pass) one device can renew, revoke and logout without ending another device or durable work [469.77ms]
+(pass) cross-origin and missing-origin cookie mutations fail without disclosing input [436.08ms]
+(pass) recovery uses controlled email delivery and retires old sessions [601.78ms]
+(pass) native loopback PKCE exchange, rotation and per-device revocation complete over real HTTP [453.69ms]
+(pass) persisted sessions and Owner mapping survive reopening the auth service [431.99ms]
+
+tests/auth/compatibility.test.ts:
+(pass) pinned Better Auth, PostgreSQL, Elysia and public-client PKCE complete real HTTP [210.46ms]
+
+ 37 pass
+ 0 fail
+ 316 expect() calls
+Ran 37 tests across 5 files. [19.86s]

@@ -47,8 +47,17 @@ export const authentication = z.discriminatedUnion("method", [
     credential_ref: z.uuid(),
   }),
 ]);
-export const connectionInput = z.strictObject({ harness: harnessId, authentication });
+export const connectionOwnership = {
+  ownership: z.enum(["personal", "organization"]).default("personal"),
+  audience_id: id.nullable().default(null),
+};
+export const connectionInput = z.strictObject({
+  harness: harnessId,
+  authentication,
+  ...connectionOwnership,
+});
 export const apiKeyConnectionInput = z.strictObject({
+  ...connectionOwnership,
   harness: harnessId,
   api_key: z
     .string()
@@ -63,6 +72,7 @@ export const model = z.strictObject({
   input_modalities: z.array(z.enum(["text", "image", "video"])).optional(),
 });
 export const connectionFields = {
+  account_plan: z.string().min(1).max(100).nullable().optional(),
   ...connectionInput.shape,
   state: z.enum(["active", "revoked"]),
   grant_revision: z.int().positive(),
@@ -120,6 +130,8 @@ export const nativeEvent = z.discriminatedUnion("type", [
 ]);
 export type NativeEvent = z.infer<typeof nativeEvent>;
 export const toolScope = z.strictObject({
+  organization_id: id.optional(),
+  actor_id: id.optional(),
   owner_id: z.uuid(),
   connection_id: z.uuid(),
   agent_id: z.uuid(),
@@ -237,6 +249,8 @@ export const binding = z.strictObject({
   agent_id: id,
   connection_id: id,
   harness,
+  connection_generation: z.int().positive().nullable().optional(),
+  account_id: z.string().nullable().optional(),
   native_session_id: z.string().min(1).max(1000),
   generation: z.int().positive(),
   active: z.boolean().default(true),

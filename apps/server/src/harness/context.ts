@@ -1,7 +1,9 @@
-import { chmodSync, lstatSync, mkdirSync, readFileSync } from "node:fs";
+import { createHash } from "node:crypto";
+import { chmodSync, mkdirSync, realpathSync } from "node:fs";
 import { join } from "node:path";
 import type { Entity } from "../contracts";
 import { HarnessError } from "./contracts";
+import { CredentialStorage } from "./credential-storage";
 
 export class Redactor {
   readonly #values = new Set<string>();
@@ -67,6 +69,10 @@ export class Diagnostics {
   }
 }
 export type LaunchContext = {
+  ephemeralAuth?: boolean;
+  codexAuth?: (
+    refresh?: boolean,
+  ) => Promise<{ accessToken: string; chatgptAccountId: string; chatgptPlanType?: string }>;
   purpose?: "conversation" | "routing";
   env: Record<string, string>;
   state_directory: string;
@@ -76,12 +82,36 @@ export type LaunchContext = {
   machine?: { id: string; root: string };
 };
 export class CredentialContexts {
+  codexTokens?: (
+    connectionId: string,
+    refresh: boolean,
+  ) => Promise<{ accessToken: string; chatgptAccountId: string; chatgptPlanType?: string }>;
   constructor(
     readonly root: string,
     private readonly readSecret?: (reference: string) => string,
-  ) {}
-  create(connection: Entity<"connection">): LaunchContext {
-    const directory = join(this.root, "connections", connection.id);
+  ) {
+    mkdirSync(root, { recursive: true, mode: 0o700 });
+    this.root = realpathSync(root);
+  }
+  create(
+    connection: Entity<"connection">,
+    binding?: {
+      organization_id: string;
+      actor_id: string;
+      agent_id: string;
+      thread_id: string;
+      generation: number;
+    },
+  ): LaunchContext {
+    new CredentialStorage(this.root).assertActive(connection.id);
+    const authority = join(this.root, "connections", connection.id);
+    const directory = binding
+      ? join(
+          authority,
+          "bindings",
+          createHash("sha256").update(JSON.stringify(binding)).digest("hex"),
+        )
+      : authority;
     const home = join(directory, "home");
     const codexHome = join(directory, "codex");
     for (const path of [
@@ -116,11 +146,7 @@ export class CredentialContexts {
         const reference = connection.authentication.credential_ref;
         if (this.readSecret) secret = this.readSecret(reference);
         else {
-          const file = join(this.root, "credentials", reference);
-          const info = lstatSync(file);
-          if (!info.isFile() || (info.mode & 0o077) !== 0 || info.size > 16384)
-            throw new Error("Invalid credential file.");
-          secret = readFileSync(file, "utf8").trim();
+          secret = new CredentialStorage(this.root).read(reference, !!binding);
         }
         if (!secret || secret.length > 16384 || /[\r\n\0]/.test(secret))
           throw new Error("Invalid credential.");
@@ -130,6 +156,37 @@ export class CredentialContexts {
       redactor.add(secret);
       env[connection.harness === "codex" ? "OPENAI_API_KEY" : "META_API_KEY"] = secret;
     }
-    return { env, state_directory: directory, redactor };
+    if (
+      binding &&
+      connection.harness === "muse" &&
+      connection.authentication.method === "native_login"
+    )
+      throw new HarnessError("CAPABILITY_UNKNOWN");
+    if (
+      binding &&
+      connection.harness === "codex" &&
+      connection.authentication.method === "native_login"
+    ) {
+      const provider = this.codexTokens;
+      if (!provider || process.env.NGERTIIN_PROVIDER_NATIVE_STORAGE !== "encrypted-volume")
+        throw new HarnessError("CAPABILITY_UNSUPPORTED");
+      return {
+        env,
+        ephemeralAuth: true,
+        state_directory: directory,
+        redactor,
+        codexAuth: async (refresh = false) => {
+          const tokens = await provider(connection.id, refresh);
+          redactor.add(tokens.accessToken);
+          return tokens;
+        },
+      };
+    }
+    return {
+      env,
+      state_directory: directory,
+      redactor,
+      ephemeralAuth: !!binding || connection.authentication.method === "api_key",
+    };
   }
 }

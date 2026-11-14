@@ -1,0 +1,11 @@
+bun test v1.3.10 (30e609e0)
+
+tests/codex.test.ts:
+(pass) external Codex access tokens stay ephemeral and native refresh cannot change the selected account [223.94ms]
+(pass) one native credential authority coordinates simultaneous refresh consumers and survives its restart [251.26ms]
+
+ 2 pass
+ 18 filtered out
+ 0 fail
+ 10 expect() calls
+Ran 2 tests across 1 file. [1174.00ms]

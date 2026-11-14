@@ -1,0 +1,10 @@
+bun test v1.3.10 (30e609e0)
+
+../../scripts/verification/nma077/contract.test.ts:
+{"version":"1.34.0","routes":143,"scoped_readiness":"pending_nma_079"}
+(pass) export the installed account-mode provider connection API contract [799.40ms]
+
+ 1 pass
+ 0 fail
+ 7 expect() calls
+Ran 1 test across 1 file. [1.56s]

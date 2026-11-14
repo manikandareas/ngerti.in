@@ -1,12 +1,15 @@
 import { afterEach, expect, test } from "bun:test";
-import { renameSync } from "node:fs";
+import { createHash } from "node:crypto";
+import { existsSync, readFileSync, renameSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { createApi } from "../src/api";
 import { Background } from "../src/background";
 import type { Entity } from "../src/contracts";
 import { manifests } from "../src/harness/availability";
 import { HarnessBroker } from "../src/harness/broker";
+import { CodexAccounts } from "../src/harness/codex/accounts";
 import { CodexAdapter } from "../src/harness/codex/adapter";
+import { CodexClient } from "../src/harness/codex/client";
 import { classifyCodexRpcError } from "../src/harness/codex/rpc";
 import { Connections } from "../src/harness/connections";
 import { CredentialContexts } from "../src/harness/context";
@@ -19,6 +22,91 @@ let broker: HarnessBroker;
 let background: Background;
 let app: Awaited<ReturnType<typeof createApi>>;
 const token = "a".repeat(64);
+test("external Codex access tokens stay ephemeral and native refresh cannot change the selected account", async () => {
+  f = await fixture();
+  const connection = await new Connections(f.lifecycle).get(
+    (f.agent as Entity<"agent">).connection_id,
+  );
+  const context = new CredentialContexts(f.dir).create(connection);
+  const requested: boolean[] = [];
+  const client = new CodexClient(
+    process.execPath,
+    {
+      ...context,
+      codexAuth: async (refresh = false) => {
+        requested.push(refresh);
+        return {
+          accessToken: refresh ? "fixture-refreshed-token" : "fixture-request-refresh",
+          chatgptAccountId: "fixture-account-a",
+          chatgptPlanType: "free",
+        };
+      },
+    },
+    join(context.state_directory, "control"),
+    () => "http://127.0.0.1:1",
+    "",
+    [join(import.meta.dir, "fixtures/codex-app-server.ts")],
+  );
+  try {
+    await client.initialize();
+    for (let i = 0; i < 100 && requested.length < 2; i++) await Bun.sleep(5);
+    expect(requested).toEqual([false, true]);
+    expect((await client.inspect()).account_id).toBe(
+      createHash("sha256").update("fixture-account-a").digest("hex"),
+    );
+    expect((await client.inspect()).account_plan).toBe("free");
+    expect(existsSync(join(context.env.CODEX_HOME, "auth.json"))).toBe(false);
+  } finally {
+    await client.close();
+  }
+});
+
+test("one native credential authority coordinates simultaneous refresh consumers and survives its restart", async () => {
+  f = await fixture();
+  const connections = new Connections(f.lifecycle);
+  const connection = await connections.get((f.agent as Entity<"agent">).connection_id);
+  const credentials = new CredentialContexts(f.dir);
+  const context = credentials.create(connection);
+  writeFileSync(
+    join(context.env.CODEX_HOME, "auth.json"),
+    JSON.stringify({
+      tokens: { access_token: "fixture-access-token", account_id: "fixture-account-a" },
+    }),
+    { mode: 0o600 },
+  );
+  const detect = async () => ({
+    harness: "codex" as const,
+    executable: process.execPath,
+    version: "0.169.0",
+    state: "supported" as const,
+    manifest: manifests.codex,
+  });
+  const args = [join(import.meta.dir, "fixtures/codex-app-server.ts")];
+  let accounts = new CodexAccounts(connections, credentials, detect, args);
+  try {
+    await accounts.inspect(connection.id);
+    const refreshed = await Promise.all([
+      accounts.tokens(connection.id, true),
+      accounts.tokens(connection.id, true),
+      accounts.tokens(connection.id, true),
+    ]);
+    expect(new Set(refreshed.map((value) => value.chatgptAccountId))).toEqual(
+      new Set(["fixture-account-a"]),
+    );
+    expect(refreshed.every((value) => value.chatgptPlanType === "plus")).toBe(true);
+    const counts = () =>
+      JSON.parse(readFileSync(join(context.env.CODEX_HOME, "fixture-auth-count.json"), "utf8"));
+    expect(counts().refreshes).toBe(1);
+    await accounts.close();
+    accounts = new CodexAccounts(connections, credentials, detect, args);
+    expect((await accounts.tokens(connection.id, true)).chatgptAccountId).toBe("fixture-account-a");
+    expect(counts().refreshes).toBe(2);
+    await connections.revoke(connection.id);
+    await expect(accounts.tokens(connection.id, true)).rejects.toThrow("SCOPE_DENIED");
+  } finally {
+    await accounts.close();
+  }
+});
 afterEach(async () => {
   await background?.stop(100);
   await broker?.close();

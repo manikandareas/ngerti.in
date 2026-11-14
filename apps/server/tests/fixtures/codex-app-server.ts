@@ -77,6 +77,7 @@ function requestProductTool(text: string) {
   });
 }
 async function receive(message: Message) {
+  if (!message.method && message.id === "auth-refresh") return;
   const p = message.params ?? {};
   const reply = (result: unknown) => send({ id: message.id, result });
   if (!message.method && message.id === "product") {
@@ -109,10 +110,39 @@ async function receive(message: Message) {
     case "initialized":
       break;
     case "account/login/start":
-      account = { type: "apiKey" };
-      reply({ type: "apiKey" });
+      if (p.type === "chatgptAuthTokens") {
+        account = {
+          type: "chatgpt",
+          email: "fixture@example.test",
+          planType: String(p.chatgptPlanType ?? "plus"),
+        };
+        reply({ type: "chatgptAuthTokens" });
+        if (p.accessToken === "fixture-request-refresh")
+          send({
+            id: "auth-refresh",
+            method: "account/chatgptAuthTokens/refresh",
+            params: { reason: "unauthorized", previousAccountId: p.chatgptAccountId },
+          });
+      } else if (p.type === "chatgptDeviceCode") {
+        reply({
+          type: "chatgptDeviceCode",
+          loginId: crypto.randomUUID(),
+          verificationUrl: "https://auth.openai.com/codex/device",
+          userCode: "FIXTURE-ONLY",
+        });
+      } else {
+        account = { type: "apiKey" };
+        reply({ type: "apiKey" });
+      }
       break;
     case "account/read":
+      if (p.refreshToken === true) {
+        const metricsFile = join(process.env.CODEX_HOME as string, "fixture-auth-count.json");
+        const previous = (await Bun.file(metricsFile).exists())
+          ? await Bun.file(metricsFile).json()
+          : { refreshes: 0 };
+        writeFileSync(metricsFile, JSON.stringify({ refreshes: previous.refreshes + 1 }));
+      }
       reply({ account });
       break;
     case "model/list":

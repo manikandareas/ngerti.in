@@ -8,6 +8,7 @@ import { ConversationJournal } from "./conversations/journal";
 import { type RoutingDecisionTrace, routingDecisionTrace } from "./groups/decision-trace";
 import type { DataContext } from "./persistence/access-context";
 import { executionSchemaSql, executionSchemaVersion } from "./persistence/execution-schema";
+import { providerSchemaSql, providerSchemaVersion } from "./persistence/provider-schema";
 import { schemaSql, schemaVersion } from "./persistence/schema";
 import { scopedSchemaSql, scopedSchemaVersion } from "./persistence/scoped-schema";
 
@@ -159,12 +160,16 @@ export class Store {
       const scopedChecksum = createHash("sha256").update(scopedSql).digest("hex");
       const executionSql = executionSchemaSql(this.schema);
       const executionChecksum = createHash("sha256").update(executionSql).digest("hex");
+      const providerSql = providerSchemaSql(this.schema);
+      const providerChecksum = createHash("sha256").update(providerSql).digest("hex");
       if (
         migrations.some(
           (migration) =>
             !(
               (migration.version === schemaVersion && migration.sha256 === checksum) ||
               (migration.version === scopedSchemaVersion && migration.sha256 === scopedChecksum) ||
+              (migration.version === providerSchemaVersion &&
+                migration.sha256 === providerChecksum) ||
               (migration.version === executionSchemaVersion &&
                 migration.sha256 === executionChecksum)
             ),
@@ -190,6 +195,13 @@ export class Store {
         await this.#authority.query("INSERT INTO schema_migrations(version,sha256) VALUES($1,$2)", [
           executionSchemaVersion,
           executionChecksum,
+        ]);
+      }
+      if (!migrations.some((migration) => migration.version === providerSchemaVersion)) {
+        await this.#authority.query(providerSql);
+        await this.#authority.query("INSERT INTO schema_migrations(version,sha256) VALUES($1,$2)", [
+          providerSchemaVersion,
+          providerChecksum,
         ]);
       }
       await this.#authority.query(
@@ -286,7 +298,16 @@ export class Store {
   }
   async publishShared<T>(action: () => Promise<T>): Promise<T> {
     if (!this.dataContext?.canManage) throw new DomainError("SCOPE_DENIED", 403);
-    return this.#publication.run(this.dataContext, action);
+    const transaction = this.#transactions.getStore();
+    if (this.publishing) return action();
+    try {
+      return await this.#publication.run(this.dataContext, async () => {
+        if (transaction) await this.configureScope(transaction.client);
+        return action();
+      });
+    } finally {
+      if (transaction) await this.configureScope(transaction.client);
+    }
   }
   async assertInvocation(agentId: string) {
     const context = this.dataContext;
@@ -301,6 +322,16 @@ export class Store {
     return (
       await this.#administration.query(
         "SELECT agent_id,audience_id FROM team_agent_grants WHERE organization_id=$1",
+        [organizationId],
+      )
+    ).rows;
+  }
+  async connectionGrants(
+    organizationId: string,
+  ): Promise<{ id: string; audience_id: string | null }[]> {
+    return (
+      await this.#administration.query(
+        "SELECT id,body->>'audience_id' AS audience_id FROM entities WHERE organization_id=$1 AND actor_id IS NULL AND kind='connection'",
         [organizationId],
       )
     ).rows;
@@ -424,7 +455,7 @@ export class Store {
     await context?.validate();
     await client.query("SET LOCAL ROLE ngertiin_runtime");
     await client.query(
-      "SELECT set_config('ngertiin.mode',$1,true),set_config('ngertiin.organization_id',$2,true),set_config('ngertiin.actor_id',$3,true),set_config('ngertiin.agents',$4,true),set_config('ngertiin.managed',$5,true),set_config('ngertiin.publish',$6,true),set_config('ngertiin.manage',$7,true),set_config('ngertiin.membership_generation',$8,true)",
+      "SELECT set_config('ngertiin.mode',$1,true),set_config('ngertiin.organization_id',$2,true),set_config('ngertiin.actor_id',$3,true),set_config('ngertiin.agents',$4,true),set_config('ngertiin.managed',$5,true),set_config('ngertiin.publish',$6,true),set_config('ngertiin.manage',$7,true),set_config('ngertiin.membership_generation',$8,true),set_config('ngertiin.connections',$9,true)",
       [
         context ? "scoped" : "legacy",
         context?.organizationId ?? "",
@@ -434,6 +465,7 @@ export class Store {
         this.publishing ? "yes" : "no",
         context?.canManage ? "yes" : "no",
         String(context?.membershipGeneration ?? ""),
+        context?.allowedConnections?.join(",") ?? "",
       ],
     );
   }
@@ -880,7 +912,10 @@ export class Store {
     const shared =
       scope &&
       this.publishing &&
-      (entity.kind === "agent" || entity.kind === "published_knowledge");
+      (entity.kind === "agent" ||
+        entity.kind === "published_knowledge" ||
+        entity.kind === "connection" ||
+        entity.kind === "ai_selection");
     const actor = shared ? null : (scope?.userId ?? null);
     const validated = schemas[entity.kind].parse(
       scope ? { ...entity, organization_id: scope.organizationId, actor_id: actor } : entity,

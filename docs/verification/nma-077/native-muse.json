@@ -1,0 +1,11 @@
+{
+  "scope": "native API-key adapter proof with a controlled fixture principal",
+  "version": "1.4.14-R7309.1",
+  "login": true,
+  "catalog": true,
+  "inference": true,
+  "scoped_tool": true,
+  "key_present_in_native_files": false,
+  "billing": "api_key",
+  "subscription": "unverified"
+}

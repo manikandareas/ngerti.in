@@ -1,0 +1,41 @@
+{
+  "host": {
+    "system": "Darwin",
+    "architecture": "arm64"
+  },
+  "native_storage_observation": "FileVault is On; backups and other servers not attested",
+  "codex": {
+    "version": "0.169.0",
+    "protocol_schema_sha256": {
+      "LoginAccountParams.ts": "168b2dd917703547e001b4402f74a43ea6b94f758b7ecd42406b12e3f109f315",
+      "LoginAccountResponse.ts": "f80e451eacbb6621777976aaa137735cb03749b2699b84308579498b3108d67f",
+      "ChatgptAuthTokensRefreshParams.ts": "7c5e6a8629b8d6484d45ed07709198e010c14089623bb0879dc42198ec9db243",
+      "ChatgptAuthTokensRefreshResponse.ts": "b7744dfdf2e62755d1153bd4c5217bb62283e9fd32143665317e44206bff6790"
+    },
+    "entrypoint_sha256": "e14fc83739c13c1074b12bd1acce4010c893c7f6fbfc1593b4a31d74cabb57af"
+  },
+  "muse": {
+    "version": "1.4.14-R7309.1",
+    "entrypoint_sha256": "1c96114408acbeade9a8fb79e3b4425e5b64d50425938568aef01bdc04ce2e03"
+  },
+  "server_dependencies": {
+    "@better-auth/oauth-provider": "1.7.23",
+    "@bufbuild/protobuf": "2.15.0",
+    "@composio/core": "0.27.0",
+    "@muse-code/sdk": "1.4.14",
+    "@ngertiin/avatar": "workspace:*",
+    "@trycua/cua": "0.10.1",
+    "@typesafe-ai/sdk": "0.6.0",
+    "better-auth": "1.7.23",
+    "elysia": "1.4.30",
+    "pdfjs-dist": "6.5.438",
+    "pg": "8.23.1",
+    "sharp": "0.35.5",
+    "unique-names-generator": "4.7.1",
+    "zod": "4.4.3"
+  },
+  "package_manifest_sha256": "4516b93780917994935ac7fb701bf5a2edc059afda3f72041d589b11bfedb321",
+  "bun_lock_sha256": "5382ed7328b2c20e9916dab724d8400417ddc4a0cbb0ff649cf0e5f62561bcfc",
+  "postgres_image": "postgres:18.1-alpine@sha256:aa6eb304ddb6dd26df23d05db4e5cb05af8951cda3e0dc57731b771e0ef4ab29",
+  "native_principals": "controlled fixtures; one live Codex account; selected Muse API key; second live Codex account unavailable"
+}

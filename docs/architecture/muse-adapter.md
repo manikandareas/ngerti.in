@@ -1,5 +1,7 @@
 # Native Muse Code adapter
 
+NMA-077 implementation amendment: account-mode provider ownership, private selection, frozen run snapshots and server-side credential retirement are defined by the [1.34.0 provider contract](provider-connections.md). Its [verification report](../verification/nma-077/README.md) records native Codex/Muse proof and a completed two-account Codex probe including Free. The owner-only paths below retain their captured compatibility scope; production organization native admission and NMA-079 readiness remain closed.
+
 Implemented for [NMA-050](../backlog/NMA-050.md), on the existing application lifecycle and broker. The development bootstrap registers Muse and Codex explicitly. Muse owns its model/tool loop; Ngertiin owns identity, admission, queue, transcript publication, grants, stop intent and recovery decisions. This guide records the backend/API adapter milestone. NMA-050 and NMA-060 are Done under the explicitly accepted API-key billing scope; product-wide UI acceptance and installation remain open in [the local backlog](../backlog/README.md).
 
 ## Versions and adoption

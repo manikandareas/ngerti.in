@@ -17,6 +17,7 @@ import { GroupSchedules } from "./goals/group-schedules";
 import { dueWindow, firstDue } from "./goals/schedule";
 import { ResponsibilityScope } from "./goals/scope";
 import type { GroupRouter } from "./groups/router";
+import { Connections } from "./harness/connections";
 import { asyncMap, asyncSome } from "./persistence/async-collections";
 import { InteractionJournal } from "./runs/interaction-journal";
 import { canRetryResponse } from "./runs/retry-policy";
@@ -201,6 +202,10 @@ export class Lifecycle {
                 thread_id: data.thread_id,
                 agent_id: actor,
               })),
+              provider_selection: await new Connections(this).resolveSelection(
+                await this.store.get("agent", actor),
+                data.thread_id,
+              ),
               coordinator_agent_id: actor,
               state: "active",
               generation: 1,
@@ -230,6 +235,10 @@ export class Lifecycle {
                 thread_id: data.thread_id,
                 agent_id: actor,
               })),
+              provider_selection: await new Connections(this).resolveSelection(
+                await this.store.get("agent", actor),
+                data.thread_id,
+              ),
               execution_target: target,
               state: "active",
               generation: 1,
@@ -361,6 +370,35 @@ export class Lifecycle {
         item.agent_id === agentId &&
         (active.has(item.status) || item.status === "unknown"),
     );
+    if (this.store.dataContext) {
+      const queued = (
+        await this.store.list("run", { thread_id: threadId, agent_id: agentId })
+      ).find(
+        (item) =>
+          item.thread_id === threadId && item.agent_id === agentId && item.status === "queued",
+      );
+      const selection =
+        (running ?? queued)?.provider_selection ??
+        (!running && !queued
+          ? await new Connections(this).resolveSelection(current, threadId)
+          : null);
+      if (selection)
+        current = {
+          ...current,
+          connection_id: selection.connection_id,
+          model_id: selection.model_id,
+          reasoning: selection.reasoning,
+          billing_source: selection.billing_source,
+        };
+      else
+        current = {
+          ...current,
+          connection_id: null,
+          model_id: null,
+          reasoning: null,
+          billing_source: null,
+        };
+    }
     if (!running?.agent_snapshot) return current;
     const { agent_id: _id, revision, ...profile } = running.agent_snapshot;
     return { ...current, ...profile, revision };
@@ -473,6 +511,11 @@ export class Lifecycle {
       thread_id: thread.id,
       agent_id: agentId,
       input_message_id: message.id,
+      provider_selection: options.routine_id
+        ? ((await this.store.get("routine", options.routine_id)).provider_selection ?? null)
+        : options.goal_id
+          ? ((await this.store.get("goal", options.goal_id)).provider_selection ?? null)
+          : await new Connections(this).resolveSelection(agent, thread.id),
       computer_activity: null,
       retry_allowed: false,
       retry_of_run_id: null,
@@ -532,12 +575,15 @@ export class Lifecycle {
       await this.scope(threadId, agentId);
       const agent = await this.executionAgent(threadId, agentId);
       if (!agent.connection_id) throw new DomainError("SCOPE_DENIED", 403);
+      const connection = await new Connections(this).get(agent.connection_id);
       const existing = (
         await this.store.list("binding", { thread_id: threadId, agent_id: agentId })
       ).find((item) => item.active && item.thread_id === threadId && item.agent_id === agentId);
       if (existing) {
         if (
           existing.connection_id === agent.connection_id &&
+          existing.connection_generation === connection.grant_revision &&
+          existing.account_id === connection.account_id &&
           existing.harness === agent.harness &&
           existing.agent_revision === agent.revision &&
           existing.workspace_id === (workspace?.id ?? null) &&
@@ -563,6 +609,8 @@ export class Lifecycle {
         agent_id: agentId,
         harness: agent.harness,
         connection_id: agent.connection_id,
+        connection_generation: connection.grant_revision,
+        account_id: connection.account_id,
         native_session_id: nativeSessionId,
         generation: (existing?.generation ?? 0) + 1,
         active: true,
@@ -902,7 +950,7 @@ export class Lifecycle {
   }
 
   async preparationConfiguration(run: Entity<"run">) {
-    const agent = await this.store.get("agent", run.agent_id);
+    const agent = await this.executionAgent(run.thread_id, run.agent_id);
     const connection = agent.connection_id
       ? await this.store.get("connection", agent.connection_id)
       : null;

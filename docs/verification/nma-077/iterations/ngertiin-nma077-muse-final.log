@@ -1,0 +1,24 @@
+bun test v1.3.10 (30e609e0)
+
+../../scripts/verification/nma077/muse-key.test.ts:
+61 |       if (error instanceof HarnessError) throw error;
+62 |       if (
+63 |         error instanceof MspError &&
+64 |         ["commandRejected", "invalidParams", "capabilityRequired", "notFound"].includes(error.kind)
+65 |       )
+66 |         throw new HarnessError("NATIVE_REJECTED");
+                       ^
+error: NATIVE_REJECTED
+ outcome: "not_dispatched",
+    code: "NATIVE_REJECTED"
+
+      at bounded (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/src/harness/muse/transport.ts:66:19)
+      at prompt (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/src/harness/muse/client.ts:368:7)
+      at /Users/vitoandareasmanik/Development/project/ngertiin/scripts/verification/nma077/muse-key.test.ts:71:113
+      at processTicksAndRejections (unknown:7:39)
+(fail) selected Muse API key remains encrypted at rest and works in a private native home [4075.04ms]
+
+ 0 pass
+ 1 fail
+ 4 expect() calls
+Ran 1 test across 1 file. [4.47s]

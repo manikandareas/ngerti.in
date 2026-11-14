@@ -1,0 +1,272 @@
+bun test v1.3.10 (30e609e0)
+
+tests/run-recovery.test.ts:
+(pass) unknown work is reconciled automatically with backoff and no prompt replay [4782.24ms]
+(pass) a lost native completion is recovered through the executing owner and fences late output [2920.69ms]
+18 | });
+19 | 
+20 | async function until(predicate: () => boolean | Promise<boolean>) {
+21 |   const deadline = Date.now() + 2000;
+22 |   while (!(await predicate()) && Date.now() < deadline) await Bun.sleep(5);
+23 |   expect(await predicate()).toBe(true);
+                                 ^
+error: expect(received).toBe(expected)
+
+Expected: true
+Received: false
+
+      at until (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/tests/run-recovery.test.ts:23:29)
+      at async setup (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/tests/run-recovery.test.ts:135:9)
+      at async <anonymous> (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/tests/run-recovery.test.ts:184:23)
+(fail) silence with no terminal receipt preserves running work and its tools [4838.86ms]
+(pass) current native observations postpone stale checks during a long valid run [5480.69ms]
+18 | });
+19 | 
+20 | async function until(predicate: () => boolean | Promise<boolean>) {
+21 |   const deadline = Date.now() + 2000;
+22 |   while (!(await predicate()) && Date.now() < deadline) await Bun.sleep(5);
+23 |   expect(await predicate()).toBe(true);
+                                 ^
+error: expect(received).toBe(expected)
+
+Expected: true
+Received: false
+
+      at until (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/tests/run-recovery.test.ts:23:29)
+      at async setup (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/tests/run-recovery.test.ts:135:9)
+      at async <anonymous> (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/tests/run-recovery.test.ts:208:23)
+(fail) foreign receipts and unexpected cancellation cannot release an unknown lane [5022.60ms]
+18 | });
+19 | 
+20 | async function until(predicate: () => boolean | Promise<boolean>) {
+21 |   const deadline = Date.now() + 2000;
+22 |   while (!(await predicate()) && Date.now() < deadline) await Bun.sleep(5);
+23 |   expect(await predicate()).toBe(true);
+                                 ^
+error: expect(received).toBe(expected)
+
+Expected: true
+Received: false
+
+      at until (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/tests/run-recovery.test.ts:23:29)
+      at async <anonymous> (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/tests/run-recovery.test.ts:218:23)
+(fail) an unrequested native interruption remains unresolved [4187.87ms]
+18 | });
+19 | 
+20 | async function until(predicate: () => boolean | Promise<boolean>) {
+21 |   const deadline = Date.now() + 2000;
+22 |   while (!(await predicate()) && Date.now() < deadline) await Bun.sleep(5);
+23 |   expect(await predicate()).toBe(true);
+                                 ^
+error: expect(received).toBe(expected)
+
+Expected: true
+Received: false
+
+      at until (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/tests/run-recovery.test.ts:23:29)
+      at async setup (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/tests/run-recovery.test.ts:135:9)
+      at async <anonymous> (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/tests/run-recovery.test.ts:230:23)
+(fail) closing recovery cancels timers and prevents further receipt reads [4234.59ms]
+(pass) automatic group recovery keeps the writer fenced until its owned transport is quiescent [4153.69ms]
+
+tests/operation-responses.test.ts:
+(pass) consumer validates real creation, learning, workspace, group and control responses [2413.87ms]
+
+tests/agents.test.ts:
+(pass) concurrent HTTP setup and distinct retry keys produce one default agent, primary DM and authored welcome without runs [1016.20ms]
+(pass) setup transaction rolls back all state, events and receipt, then retries safely after restart [478.70ms]
+(pass) configuration HTTP requires revisions and rejects identity/access injection and mismatched connections [503.38ms]
+(pass) codex native protocol fixture creates and updates an agent through scoped HTTP tools with durable deduplication [11614.40ms]
+(pass) codex configuration updates keep active snapshots and replace subsequent sessions with thread-only history [11975.01ms]
+(pass) muse native protocol fixture creates and updates an agent through scoped HTTP tools with durable deduplication [14095.55ms]
+293 |       (await f.store.get("run", admitted.run.id)).status !== "running" && i < 100;
+294 |       i++
+295 |     )
+296 |       await Bun.sleep(5);
+297 |     const active = await f.store.get("run", admitted.run.id);
+298 |     expect(active.status).toBe("running");
+                                ^
+error: expect(received).toBe(expected)
+
+Expected: "running"
+Received: "dispatching"
+
+      at <anonymous> (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/tests/agents.test.ts:298:27)
+(fail) muse configuration updates keep active snapshots and replace subsequent sessions with thread-only history [18416.91ms]
+(pass) tool scope denies ordinary agents owner configuration and prevents stale revisions and command reuse [5727.91ms]
+(pass) history pagination and snapshot cursor survive restart with explicit authors and no duplicate replay [2333.37ms]
+(pass) concurrent configuration writes admit one expected revision and reject duplicate handles and invalid creation scope [1023.68ms]
+(pass) switching harness during active work preserves the old run and selects a new binding for the next work [8247.79ms]
+
+tests/background.test.ts:
+(pass) scheduler atomically persists one occurrence/run and survives repeated ticks and restart [881.24ms]
+(pass) interval recovery collapses missed occurrences and holds overlapping work [758.42ms]
+(pass) paused responsibilities do not fire routines after restart [629.54ms]
+(pass) dispatcher waits for a registered adapter and has no implicit executor [404.44ms]
+(pass) dispatcher uses one lane at a time and records native acknowledgement before completion [983.03ms]
+(pass) adapter exceptions become unknown and are never automatically retried [830.67ms]
+(pass) native stop confirmation differs from shutdown timeout and late completion is fenced [1145.03ms]
+
+tests/routing-semantics.test.ts:
+(pass) focused decisions exclude historical bodies, retain the complete request and use identity-stable keys [9.55ms]
+(pass) semantic context selection expands factual shared history once within the same decision [1.77ms]
+(pass) a high-confidence downstream selection is not admitted when semantic role review disagrees [1136.51ms]
+(pass) a coherent relational judgment can resolve the initiator without a phrase recognizer [821.08ms]
+(pass) observations remain in scoped owner diagnostics and survive restart without rerouting [1085.18ms]
+(pass) queued classification never imports later messages or private DM history [823.28ms]
+(pass) identity ambiguity is factual evidence while the model retains the semantic choice [10.48ms]
+(pass) member fallback can ask for clarification without assigning an arbitrary member [996.96ms]
+(pass) public handoff tools require an agent-authored announcement without prescribing its wording [9.75ms]
+(pass) unrelated optional judgments do not veto an otherwise supported decision [11.05ms]
+
+tests/provider-key.test.ts:
+(pass) provider key onboarding stores only a private host key and replays across restart [539.96ms]
+(pass) key onboarding preserves explicit Codex API billing and published request/response schemas [583.67ms]
+(pass) unauthorized, malformed and missing-key requests never write credentials or domain state [331.48ms]
+(pass) credential onboarding rejects symlinked credential directories [349.30ms]
+(pass) credential onboarding rejects publicly readable credential storage [367.92ms]
+(pass) a rejected connection transaction removes its new host key [375.65ms]
+
+tests/attachments.test.ts:
+(pass) private uploads appear in neither workspace nor artifacts until one message commits [717.78ms]
+(pass) a missing second upload rolls back all artifact and message publication [378.32ms]
+{"event":"attachments.materialization_pending"}
+(pass) HTTP lost acknowledgement, exact replay and restart publish one message and artifact [902.37ms]
+(pass) restart finishes a committed pending projection and expiry only removes uncommitted bytes [1009.13ms]
+(pass) PDF extraction supplies real page text, search locations and bounded read receipts [3953.87ms]
+(pass) follow-up context finds prior sent files but excludes drafts, future messages and foreign lanes [1929.62ms]
+(pass) unsupported, empty and invalid documents have explicit failures without a fabricated read [1368.41ms]
+(pass) cached document reads recheck revoked access and immutable source corruption [3032.76ms]
+(pass) an interrupted derived text cache is recomputed without changing source bytes [1550.18ms]
+
+tests/submission-replay.test.ts:
+(pass) dm existing-file submissions replay directly after lost acknowledgement and restart [2042.40ms]
+(pass) group existing-file submissions replay directly after lost acknowledgement and restart [1721.39ms]
+
+tests/muse.test.ts:
+(pass) official Muse SDK fixture completes an actual scoped HTTP product-tool call [5510.58ms]
+(pass) Muse maps the official tool field and clears terminal updates without a completed notification [4564.60ms]
+(pass) native history resumes the exact DM after restart without importing group history [12663.19ms]
+(pass) effective stored key cannot masquerade as a subscription after browser login [992.08ms]
+(pass) missing credentials remain login-required and device login does not claim inference [1062.03ms]
+(pass) key-selected connection cannot start browser login [533.32ms]
+126 | async function waitRunning(id: string) {
+127 |   for (let i = 0; i < 100; i++) {
+128 |     if ((await f.store.get("run", id)).status === "running") return;
+129 |     await Bun.sleep(5);
+130 |   }
+131 |   throw new Error("Run did not reach native acceptance.");
+                  ^
+error: Run did not reach native acceptance.
+      at waitRunning (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/tests/muse.test.ts:131:13)
+      at async <anonymous> (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/tests/muse.test.ts:243:9)
+(fail) interrupt acknowledgement remains intent until native cancelled terminal arrives [3293.84ms]
+126 | async function waitRunning(id: string) {
+127 |   for (let i = 0; i < 100; i++) {
+128 |     if ((await f.store.get("run", id)).status === "running") return;
+129 |     await Bun.sleep(5);
+130 |   }
+131 |   throw new Error("Run did not reach native acceptance.");
+                  ^
+error: Run did not reach native acceptance.
+      at waitRunning (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/tests/muse.test.ts:131:13)
+      at async <anonymous> (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/tests/muse.test.ts:256:9)
+681 |     if (
+682 |       !active.has(run.status) ||
+683 |       run.dispatch_token !== token ||
+684 |       run.authority_epoch !== this.epoch
+685 |     )
+686 |       throw new DomainError("STALE_DISPATCH");
+                  ^
+error: STALE_DISPATCH
+ status: 409,
+   code: "STALE_DISPATCH"
+
+      at dispatch (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/src/lifecycle.ts:686:13)
+(fail) unverified Muse steering preserves queued correction and does not dispatch it natively [3308.82ms]
+126 | async function waitRunning(id: string) {
+127 |   for (let i = 0; i < 100; i++) {
+128 |     if ((await f.store.get("run", id)).status === "running") return;
+129 |     await Bun.sleep(5);
+130 |   }
+131 |   throw new Error("Run did not reach native acceptance.");
+                  ^
+error: Run did not reach native acceptance.
+      at waitRunning (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/tests/muse.test.ts:131:13)
+      at async <anonymous> (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/tests/muse.test.ts:274:9)
+681 |     if (
+682 |       !active.has(run.status) ||
+683 |       run.dispatch_token !== token ||
+684 |       run.authority_epoch !== this.epoch
+685 |     )
+686 |       throw new DomainError("STALE_DISPATCH");
+                      ^
+error: STALE_DISPATCH
+ status: 409,
+   code: "STALE_DISPATCH"
+
+      at dispatch (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/src/lifecycle.ts:686:17)
+      at processTicksAndRejections (unknown:7:39)
+(fail) Muse streams a stable partial message and repairs final native text without duplicate messages [3597.62ms]
+(pass) Muse reconciles durable native commit and product-tool receipt after process loss without resubmission [6386.01ms]
+126 | async function waitRunning(id: string) {
+127 |   for (let i = 0; i < 100; i++) {
+128 |     if ((await f.store.get("run", id)).status === "running") return;
+129 |     await Bun.sleep(5);
+130 |   }
+131 |   throw new Error("Run did not reach native acceptance.");
+                  ^
+error: Run did not reach native acceptance.
+      at waitRunning (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/tests/muse.test.ts:131:13)
+      at async <anonymous> (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/tests/muse.test.ts:323:9)
+681 |     if (
+682 |       !active.has(run.status) ||
+683 |       run.dispatch_token !== token ||
+684 |       run.authority_epoch !== this.epoch
+685 |     )
+686 |       throw new DomainError("STALE_DISPATCH");
+                  ^
+error: STALE_DISPATCH
+ status: 409,
+   code: "STALE_DISPATCH"
+
+      at dispatch (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/src/lifecycle.ts:686:13)
+(fail) interrupt acknowledgement alone cannot fabricate cancellation [15683.24ms]
+(pass) revoked connection cannot answer a pending native question [3036.93ms]
+126 | async function waitRunning(id: string) {
+127 |   for (let i = 0; i < 100; i++) {
+128 |     if ((await f.store.get("run", id)).status === "running") return;
+129 |     await Bun.sleep(5);
+130 |   }
+131 |   throw new Error("Run did not reach native acceptance.");
+                  ^
+error: Run did not reach native acceptance.
+      at waitRunning (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/tests/muse.test.ts:131:13)
+      at async <anonymous> (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/tests/muse.test.ts:362:11)
+681 |     if (
+682 |       !active.has(run.status) ||
+683 |       run.dispatch_token !== token ||
+684 |       run.authority_epoch !== this.epoch
+685 |     )
+686 |       throw new DomainError("STALE_DISPATCH");
+                  ^
+error: STALE_DISPATCH
+ status: 409,
+   code: "STALE_DISPATCH"
+
+      at dispatch (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/src/lifecycle.ts:686:13)
+(fail) native question exposes scoped pending interaction and validates its answer [3208.53ms]
+(pass) native approval exposes scoped pending interaction and validates its answer [6716.36ms]
+(pass) replayed Muse approval notifications are reconciled before display or dispatch [4563.60ms]
+(pass) a late pending-state response cannot repopulate interactions after native completion [5271.15ms]
+(pass) revocation during a native pending-state read fences the subsequent approval decision [2420.26ms]
+(pass) native failed remains failed [2604.23ms]
+(pass) native disconnect remains unknown [2265.90ms]
+(pass) native gap remains unknown [2674.52ms]
+(pass) native unknown-terminal remains unknown [2502.67ms]
+(pass) native reject remains failed [2286.77ms]
+(pass) typed Muse authentication rejection and temporary provider failure retain distinct diagnostics [3651.64ms]
+(pass) authoritative empty Muse history clears ephemeral text without minting a second answer [2349.82ms]
+
+tests/controls.test.ts:
+(pass) queued HTTP edits use revisions, preserve FIFO and survive exact retries and restart [1072.45ms]

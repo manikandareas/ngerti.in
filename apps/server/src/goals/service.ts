@@ -119,6 +119,7 @@ export class Goals {
             root_task_id: run.task_id
               ? (await this.store.get("peer_task", run.task_id)).root_task_id
               : null,
+            provider_selection: run.provider_selection,
             source_message_ids: [source.id],
             source_run_ids: [run.id],
             state: "active",
@@ -392,6 +393,7 @@ export class Goals {
           error_code: null,
           source_message_id: run.input_message_id,
           source_run_id: run.id,
+          provider_selection: run.provider_selection,
           paused_by_goal: false,
           state: "active",
           generation: 1,

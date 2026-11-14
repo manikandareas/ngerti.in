@@ -299,6 +299,16 @@ routes(
 );
 routes("POST", ["/v1/connections/:id/login"], operationSchemas.login);
 routes("POST", ["/v1/connections/:id/login/cancel"], operationSchemas.login_cancel);
+routes("POST", ["/v1/ai/selections"], schemas.ai_selection);
+routes(
+  "POST",
+  ["/v1/connections/:id/rotate-key"],
+  z.strictObject({
+    retired: schemas.connection,
+    replacement: schemas.connection,
+    selection_action: z.literal("explicitly_select_replacement"),
+  }),
+);
 routes("POST", ["/v1/threads/:id/sessions"], schemas.binding);
 routes("GET", ["/v1/runs/:id/interactions"], operationSchemas.interactions);
 routes("GET", ["/v1/runs/:id/interactions/history"], operationSchemas.interaction_history);

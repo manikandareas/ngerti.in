@@ -10,6 +10,7 @@ import { MuseClient } from "./client";
 
 export class MuseAccounts implements AccountService {
   readonly #clients = new Set<MuseClient>();
+  readonly #clientConnections = new Map<MuseClient, string>();
   readonly #logins = new Map<
     string,
     { client: MuseClient; timer: ReturnType<typeof setTimeout> }
@@ -50,6 +51,7 @@ export class MuseAccounts implements AccountService {
       this.args,
     );
     this.#clients.add(client);
+    this.#clientConnections.set(client, id);
     try {
       await client.initialize();
       await this.current(id, connection.grant_revision);
@@ -61,6 +63,7 @@ export class MuseAccounts implements AccountService {
   }
   private async release(client: MuseClient) {
     this.#clients.delete(client);
+    this.#clientConnections.delete(client);
     await client.close();
   }
   async inspect(id: string) {
@@ -173,5 +176,13 @@ export class MuseAccounts implements AccountService {
     this.#closed = true;
     await Promise.allSettled([...this.#logins.keys()].map(async (id) => this.cancel(id)));
     await Promise.allSettled([...this.#clients].map(async (client) => this.release(client)));
+  }
+  async retire(id: string) {
+    await this.cancel(id);
+    await Promise.all(
+      [...this.#clientConnections]
+        .filter(([, connection]) => connection === id)
+        .map(([client]) => this.release(client)),
+    );
   }
 }

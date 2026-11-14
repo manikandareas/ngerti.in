@@ -34,7 +34,15 @@ export function scopedDataContract() {
     cursors: "server_signed_user_organization_membership_and_authorization_generation",
     private_data: "organization_and_user_never_administrator_inheritance",
     default_agent: "idempotent_library_generated_single_syllable_name",
-    native_execution: "requires_nma_076_078_isolated_resources",
+    provider_connections: {
+      version: "nma-077.1",
+      ownership: ["personal", "organization"],
+      selection: "conversation_then_user_then_allowed_organization_only_when_unset",
+      admission: "immutable_connection_generation_account_model_billing_snapshot",
+      credentials: "server_only_encrypted_keys_actor_private_native_homes",
+      native_execution: "closed_pending_nma_078",
+    },
+    native_execution: "requires_nma_078_scoped_apps",
     switching: "explicit_request_scope_preserved_by_retry_no_session_active_organization",
   };
 }

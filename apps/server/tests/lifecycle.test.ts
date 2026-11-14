@@ -337,6 +337,7 @@ test("event cursor pagination is stable and contracts expose all domain entities
   expect(Object.keys(contractDocument().entities).sort()).toEqual([
     "agent",
     "agent_preference",
+    "ai_selection",
     "app_connection",
     "app_effect",
     "app_session",

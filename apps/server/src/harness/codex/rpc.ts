@@ -33,7 +33,7 @@ export class CodexRpc {
         "--listen",
         "stdio://",
         "-c",
-        'cli_auth_credentials_store="file"',
+        `cli_auth_credentials_store="${context.codexAuth || context.ephemeralAuth ? "ephemeral" : "file"}"`,
         "-c",
         'model_provider="openai"',
         "-c",

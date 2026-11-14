@@ -46,6 +46,7 @@ export const responseSchemas = {
 
 // These paths call the common durable command store, or artifact receipt store.
 const durablePaths = new Set([
+  "/v1/ai/selections",
   "/v1/data/provision",
   "/v1/data/team-agents",
   "/v1/data/team-agents/:id/configuration",
@@ -60,6 +61,7 @@ const durablePaths = new Set([
   "/v1/connections",
   "/v1/connections/api-key",
   "/v1/connections/:id/revoke",
+  "/v1/connections/:id/rotate-key",
   "/v1/runs/:id/steer",
   "/v1/messages/:id/edit",
   "/v1/messages/:id/delete",

@@ -3,6 +3,7 @@ import { agentSnapshot } from "../agents/contracts";
 import { attachmentObservation } from "../attachments/contracts";
 import { base, id, text } from "../contracts/base";
 import { nativeInteractionJournal } from "../harness/interaction-contracts";
+import { providerSelection } from "../harness/selection-contracts";
 import { activeTool } from "./activity";
 
 export const runStatus = z.enum([
@@ -92,6 +93,7 @@ export const run = z
     binding_id: id.nullable(),
     native_run_id: z.string().min(1).max(1000).nullable().default(null),
     native_interactions: nativeInteractionJournal,
+    provider_selection: providerSelection.nullable().default(null),
     agent_snapshot: agentSnapshot.nullable().default(null),
     workspace_id: id.nullable().default(null),
     workspace_revision: z.int().positive().nullable().default(null),

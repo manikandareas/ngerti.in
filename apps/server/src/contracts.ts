@@ -21,6 +21,7 @@ import {
 } from "./goals/contracts";
 import { groupCommands, groupRoute, humanRequest, peerTask } from "./groups/contracts";
 import { binding, connection } from "./harness/contracts";
+import { aiSelection } from "./harness/selection-contracts";
 import {
   appConnection,
   appEffect,
@@ -105,10 +106,11 @@ export {
   workspace,
 };
 
-export const CONTRACT_VERSION = "1.33.0";
+export const CONTRACT_VERSION = "1.34.0";
 export const API_READINESS_GATE = "ready" as const;
 
 export const schemas = {
+  ai_selection: aiSelection,
   execution_domain: executionDomain,
   agent_preference: agentPreference,
   published_knowledge: publishedKnowledge,

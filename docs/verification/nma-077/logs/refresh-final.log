@@ -1,0 +1,103 @@
+bun test v1.3.10 (30e609e0)
+
+tests/harness.test.ts:
+(pass) DM prewarm performs no inference and reuses skills, transport and presentation-only revisions [2160.58ms]
+(pass) DM prewarm replaces the least recently used idle transport and preserves native identities [1612.51ms]
+(pass) speculative DM preparation never evicts transports while active or unknown work exists [1095.01ms]
+(pass) minimum policies reject below-floor and prerelease versions for both harnesses [5.24ms]
+(pass) real executable probes distinguish supported, old, missing, unknown and failed without returning diagnostics [2230.68ms]
+(pass) connection API persists secret references and independent evidence states across restart [218.73ms]
+{"event":"attachments.materialization_pending"}
+(pass) API rejects billing mismatches, secret values and caller-supplied owner identity [169.61ms]
+(pass) isolated native-login environment strips inherited billing keys; selected keys are connection-specific [167.64ms]
+(pass) credential files fail closed on missing or public permissions [181.97ms]
+(pass) diagnostic redaction buffers split UTF-8/secret records and discards oversized fragments [7.03ms]
+(pass) owned native processes run concurrently with separate environment and redact fragmented stderr [184.99ms]
+(pass) two harnesses, accounts, models and agents execute concurrently through scoped product tools [1995.74ms]
+(pass) login, catalog failure and completed inference remain separate observations [403.19ms]
+(pass) native account cannot silently switch selected authentication or billing [400.51ms]
+(pass) unknown resume never starts a replacement session [460.59ms]
+(pass) concurrent opens share one lane and separate sessions for two agents on one connection [672.12ms]
+(pass) grant revocation while native initialization waits prevents session binding [398.93ms]
+(pass) connection revoke retires an initializing native process before deleting auth state and leaves other connections alive [766.24ms]
+(pass) scope, private resources, current grants and terminal runs are rechecked on each tool call [834.06ms]
+(pass) MCP HTTP round trip uses scoped leases and refuses the installation token [1181.72ms]
+(pass) grant change between settings and prompt blocks final dispatch [758.34ms]
+(pass) native acceptance followed by failure becomes unknown and blocks retry [1117.30ms]
+(pass) native rejection is failed; malformed terminal identity remains unknown [2073.06ms]
+(pass) native stop receipt confirms cancellation [1159.52ms]
+(pass) native text redaction covers secrets split across events [1113.67ms]
+{"event":"attachments.materialization_pending"}
+{"event":"attachments.materialization_pending"}
+{"event":"attachments.materialization_pending"}
+{"event":"attachments.materialization_pending"}
+{"event":"attachments.materialization_pending"}
+(pass) API exposes host detection states for both manifests and authenticated revocation [223.63ms]
+(pass) tool capability revocation during an asynchronous handler blocks its final effect [725.89ms]
+(pass) broker shutdown fences late completion and text after an unconfirmed native stop [1101.39ms]
+(pass) MCP transport validates origin/protocol, initialization and notification responses [950.21ms]
+(pass) native account change after session initialization cannot dispatch under the old connection [760.47ms]
+(pass) a connection change starts a separate native session and retains the previous mapping [479.79ms]
+(pass) version and executable failures cannot reach the adapter connect boundary [485.22ms]
+(pass) protocol request and close deadlines bound an unresponsive client without fabricating login [305.02ms]
+(pass) two simultaneous key connections on the same harness retain their selected accounts and models [1719.47ms]
+(pass) concurrent steering receipts send once and a lost acknowledgement never resends [902.83ms]
+(pass) native receipt reads recheck revocation before committing recovered output [596.31ms]
+(pass) owner receipt inspection releases revoked group work without restoring its workspace or publishing its output [835.77ms]
+(pass) an unconfirmed native stop reaches a bounded unknown outcome and fences late events [1060.02ms]
+
+tests/provider-storage.test.ts:
+(pass) encrypted provider credentials authenticate their identity and reject tampering or an absent master key [3.80ms]
+(pass) revocation removes native files and the credential; retained tombstones fence restored native homes [2.99ms]
+
+tests/codex.test.ts:
+(pass) external Codex access tokens stay ephemeral and native refresh cannot change the selected account [219.10ms]
+(pass) one native credential authority coordinates simultaneous refresh consumers and survives its restart [323.25ms]
+(pass) only an exact missing-rollout response for the requested resume permits pristine recovery [6.96ms]
+(pass) an unused prewarmed Codex thread is replaced after its process closes before first dispatch [2304.07ms]
+(pass) a missing Codex rollout used by a prior dispatch is never silently replaced or replayed [1975.95ms]
+(pass) Codex JSONL fixture performs an HTTP product-tool round trip and persists owned output [1874.81ms]
+(pass) Codex publishes search activity at start and preserves overlapping file work [1202.94ms]
+(pass) native session and separate DM/group histories survive backend and child restart [4787.71ms]
+(pass) selected API-key authentication is observed separately without a subscription fallback [1613.04ms]
+(pass) native interruption ack stays intent until interrupted terminal confirmation [1160.81ms]
+(pass) steer is bound to the active native turn and keeps the same run [1525.59ms]
+(pass) native permission escalation is declined and reported unsupported [1387.95ms]
+(pass) a native tool request cannot use another thread scope [1125.37ms]
+(pass) process loss preserves partial output and blocks automatic replay [6887.47ms]
+(pass) mismatched native terminal identity remains unknown [6675.68ms]
+(pass) explicit native turn rejection fails without publishing native error secrets [3851.92ms]
+(pass) Codex streams a stable partial message before the native turn completes [3905.99ms]
+(pass) Codex reconciles native commit before publication after restart without repeating a tool effect [5915.21ms]
+(pass) default reasoning omits the native config override and completes a turn [3576.96ms]
+(pass) native commentary and final answer item phases stay separate in live output and receipt recovery [1995.53ms]
+
+tests/organizations/providers.test.ts:
+(pass) personal provider connections remain private; organization connections require management and an explicit audience [1551.20ms]
+(pass) private conversation and user choices inherit only when unset and freeze connection/model on admission [1861.86ms]
+(pass) provider snapshots cannot be rewritten or forged across actors even through SQL-backed entity writes [1469.90ms]
+(pass) pre-provider scoped queued records can normalize a missing null snapshot without accepting a different selection [1306.54ms]
+(pass) same organization account has distinct native homes for each actor, conversation and connection generation [1097.67ms]
+(pass) scheduled responsibilities retain their selected connection after private preferences change [1504.78ms]
+(pass) scoped API key submission and rotation retain encrypted bytes and secret-free receipts without selecting a replacement implicitly [1227.88ms]
+
+tests/machines/execution-domains.test.ts:
+(pass) lazy resolution coalesces concurrent requests and persists one organization/user domain without native I/O [280.18ms]
+(pass) different humans and organizations receive different files while one human's agents cooperate [733.66ms]
+(pass) PostgreSQL rejects a cross-domain machine reference even through the restricted application role [425.61ms]
+(pass) private uploads materialize into the resolved domain and immutable downloads survive working-copy edits [442.81ms]
+(pass) scoped resolution never returns the singleton when the operator has not enabled domain provisioning [300.72ms]
+(pass) viewer tickets reject another organization/user and read-only clipboard or filesystem RPCs [318.87ms]
+(pass) human control is session-bound and stale revisions cannot acquire or reactivate a viewer [486.85ms]
+(pass) membership or grant changes revoke existing viewers and do not resurrect a racing ticket issuance [279.40ms]
+(pass) backend restart preserves domain identity and private control credentials without provision or replacement [350.78ms]
+(pass) operator policy is explicit, bounded and private [209.89ms]
+(pass) run-tool leases restore their private domain outside the initiating request and reject foreign scope or revoked grants [1526.67ms]
+(pass) rolled-back domain metadata is not cached as a retained binding [290.03ms]
+(pass) loss of a retained private configuration requires reconciliation instead of generating replacement credentials [302.78ms]
+(pass) immutable private artifact downloads do not require reattaching a former working machine [519.08ms]
+
+ 81 pass
+ 0 fail
+ 343 expect() calls
+Ran 81 tests across 5 files. [101.79s]

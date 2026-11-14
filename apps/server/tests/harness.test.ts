@@ -754,6 +754,73 @@ test("grant revocation while native initialization waits prevents session bindin
   expect(await f.store.list("binding")).toHaveLength(0);
 });
 
+test("connection revoke retires an initializing native process before deleting auth state and leaves other connections alive", async () => {
+  const connections = await setup();
+  const first = await connections.create({
+    harness: "codex",
+    authentication: { method: "native_login", billing_source: "subscription" },
+  });
+  const other = await connections.create({
+    harness: "codex",
+    authentication: { method: "native_login", billing_source: "subscription" },
+  });
+  const lane = await assign(first);
+  const otherLane = await assign(other, "Other account");
+  let entered: () => void = () => {};
+  const starting = new Promise<void>((resolve) => {
+    entered = resolve;
+  });
+  const closed = new Set<string>();
+  const native = await makeBroker({
+    codex: adapter("codex", async (context) =>
+      client({
+        async start() {
+          if (context.connection_id === first.id) {
+            entered();
+            await new Promise<void>((_, reject) =>
+              context.signal?.addEventListener(
+                "abort",
+                () => reject(new HarnessError("SERVICE_UNAVAILABLE")),
+                { once: true },
+              ),
+            );
+          }
+          return { native_session_id: crypto.randomUUID() };
+        },
+        async close() {
+          closed.add(context.connection_id);
+        },
+      }),
+    ),
+  });
+  await native.openSession(otherLane.thread.id, otherLane.agent.id);
+  const pending = native.openSession(lane.thread.id, lane.agent.id);
+  void pending.catch(() => {});
+  await starting;
+  const api = await createApi(f.lifecycle, new Background(f.lifecycle), "r".repeat(64), {
+    connections,
+    broker: native,
+    tools,
+  });
+  const response = await api.handle(
+    new Request(`http://localhost/v1/connections/${first.id}/revoke`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${"r".repeat(64)}`,
+        "Idempotency-Key": crypto.randomUUID(),
+      },
+    }),
+  );
+  expect(response.status).toBe(200);
+  await expect(pending).rejects.toThrow("SERVICE_UNAVAILABLE");
+  expect(closed.has(first.id)).toBe(true);
+  expect(closed.has(other.id)).toBe(false);
+  expect((await connections.get(first.id)).state).toBe("revoked");
+  expect(
+    (await f.store.list("binding")).some((binding) => binding.connection_id === first.id),
+  ).toBe(false);
+});
+
 test("scope, private resources, current grants and terminal runs are rechecked on each tool call", async () => {
   const connections = await setup();
   const connection = await connections.create({

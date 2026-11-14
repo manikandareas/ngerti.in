@@ -78,6 +78,8 @@ export class ProductTools {
     if (!run.binding_id) throw new DomainError("SCOPE_DENIED", 403);
     const scope = toolScope.parse({
       owner_id: run.owner_id,
+      organization_id: run.organization_id,
+      actor_id: run.actor_id ?? undefined,
       connection_id: connection.id,
       agent_id: agent.id,
       thread_id: run.thread_id,
@@ -419,6 +421,10 @@ export class ProductTools {
         const run = await lifecycle.store.get("run", scope.run_id);
         const message = await lifecycle.store.get("message", run.input_message_id);
         return {
+          organization_id: run.organization_id,
+          actor_id: run.actor_id,
+          connection_id: scope.connection_id,
+          provider_selection: run.provider_selection,
           agent_id: run.agent_id,
           thread_id: run.thread_id,
           run_id: run.id,

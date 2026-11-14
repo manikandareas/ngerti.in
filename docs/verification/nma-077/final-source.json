@@ -1,0 +1,53 @@
+{
+  "git_head": "f5a3e02cffd3ad63cf89d42b83d111c6bb199931",
+  "bun": "1.3.10",
+  "scope": "Final affected cohorts after refresh coalescing and API-key authority storage corrections; preceding full cohort is 510/511, not a clean full-suite pass",
+  "files": {
+    "apps/server/src/api-contract.ts": "095b8cc4d68f223e7de969c9942cf97b7d12ddaa1d0f775de2e60ce22386c18a",
+    "apps/server/src/api-responses.ts": "5657afd57e7e5a5c6c11927c6714f6ac57169fed71934e155ccc100f5397debd",
+    "apps/server/src/api/harness.ts": "18602773dc82bc80ad770b0fe2e77464e3c6bc7c2f4a54349b4db7fb47c68ab6",
+    "apps/server/src/contracts.ts": "20bf98118b90f5f9a10ee8b77e56cf4504ef3556cb38eb23235696dc13bfea22",
+    "apps/server/src/goals/contracts.ts": "84f1c0c236179e3258ca51d0b683b44810ed079e26e2508b715717ffb3adb3a5",
+    "apps/server/src/goals/service.ts": "f9d63667a513550cd08c63d8b9adae4806b845ccf4c319545b5007df6a19a17e",
+    "apps/server/src/harness/accounts.ts": "e5f382e76835d6426320fcaa75c001584ce7d28acc447d4ae3db559dc868a628",
+    "apps/server/src/harness/broker.ts": "a41135c087a07293cfe2e3aaad89d4a004aa57b160eda8637118f80ba90150c5",
+    "apps/server/src/harness/codex/accounts.ts": "4244582f3acda09dc80a8bed43c0bab86c19816876bc0283ed7f133bd3d811e0",
+    "apps/server/src/harness/codex/client.ts": "8698d7acefd650818f7565e9aa1e83989d8000872a133c91bec1f0861e103331",
+    "apps/server/src/harness/codex/rpc.ts": "67897c853e9509da6f0531e20cde91425e9aaf1407f89186c4dc2b3882a4cf82",
+    "apps/server/src/harness/connections.ts": "f2a736f6a79bc5b09b300cd347c6da1f5a7f9ce187cf9d34e6dc65955dde6de1",
+    "apps/server/src/harness/context.ts": "f0ada4187dea2adfd66a6aec8bc25021c68a085ecccc3ad70cb7a9d57b0ec510",
+    "apps/server/src/harness/contracts.ts": "4b4d2e3c89a5b4211c7dbac7b09d9c8c5f1ba515eafb3de406c14b5cb9080b8b",
+    "apps/server/src/harness/credential-storage.ts": "a943700591b034b22760ff54bf0c7abc64a4ed55cac3cb3ef7215e3696902095",
+    "apps/server/src/harness/muse/accounts.ts": "c23b18e76a14794edb417edfb5802c05f41bbb75718713c57d1331c83377fd75",
+    "apps/server/src/harness/selection-contracts.ts": "94d5903b3e9479470cb23d8115112fe1a71114e181b5246188240cca406d86ff",
+    "apps/server/src/harness/tools.ts": "622e0619fa005c6e1ed134b514a2cbd1c2a6eb33c00668966bf3667c1518f231",
+    "apps/server/src/lifecycle.ts": "bd96b0d0f9bc112dfbb8cb384479e3c71f2c10b8747bde99b965047825df0f3b",
+    "apps/server/src/organizations/data-contracts.ts": "189c33102102f08e2bf5019a99fafd1cb16d19a986fbd6676fd7bee65d6c5458",
+    "apps/server/src/organizations/data.ts": "daac91b2dc55916bbc4889d0663244dcbc66e29c2883591072290031d297b929",
+    "apps/server/src/persistence/access-context.ts": "1c5d2c9834cb8b8893354e57663eff82b679efb57c86dec179e7999394244b1a",
+    "apps/server/src/persistence/provider-schema.ts": "415f47139169bfbe57aa011de6d91e806699ba8d284441b97e8407218b37686b",
+    "apps/server/src/persistence/sqlite-import.ts": "4f92eaccdf1e4a6a415038eb7c39ffff84a6fc924a4bd0c1b7f85cf16f9040d5",
+    "apps/server/src/runs/contracts.ts": "7dce0e098a9990c18851ff4af46d76d6ea36da5ceae4c4a0707918a7a69d904e",
+    "apps/server/src/store.ts": "1b5ed24026a3595fb74a581fff11d5ad265608623d861e4feb9658c2bcf0c13b",
+    "apps/server/tests/codex.test.ts": "9263880d91bc68dbd203a1c3a50a08a3848ba1fd0a63eed85b6ebe86393e373f",
+    "apps/server/tests/fixtures/codex-app-server.ts": "b4955fc8f8b3e9125c6d8bc92ec188d52975aecc5f23f97ed577bb94b762419a",
+    "apps/server/tests/harness.test.ts": "baed5d75cf7684f3c09163ec74af189ef450174b5bfcd31929ef7c747ba340e3",
+    "apps/server/tests/lifecycle.test.ts": "f52dc86590f6015cade764be7ba382216626404a8949bf36473af3ec82b9372a",
+    "apps/server/tests/machines/execution-domains.test.ts": "65d61d2c9e3dde78032622bb4af5a83bd8c9555a4928896e7b968aa4cfc2dfb4",
+    "apps/server/tests/organizations/providers.test.ts": "f7ca0dc1f3d2af58ebce9c277324ade11e42776326d18c9347f3e8587ab365e8",
+    "apps/server/tests/persistence/sqlite-backup.test.ts": "2aaa45827a6e8a45deea41984901941d72fed32bf5fad7b178284dee9c6a0a31",
+    "apps/server/tests/provider-storage.test.ts": "c38a83f36990acfab5dd74b7501dfffe4478b2bdff09623e52f1760984d951d4",
+    "scripts/verification/nma077/codex-key-storage.test.ts": "503fab0d5f8880d3fa07b5d1a49833e9dcce24dca84500374f40c8e0f48f8103",
+    "scripts/verification/nma077/contract.test.ts": "f3d1795a72d372932b000be67660b2b43bfd69e87072c3d50982a07847d59e3e",
+    "scripts/verification/nma077/muse-key.test.ts": "23b9b216b1618d3a0c3b4d9f76f427206533279ef1bb6468ed6055a86040f6d5",
+    "scripts/verification/nma077/remote-codex.test.ts": "698f0ba6c94a0a246130ad98a1b872342945fc21fbd61aa4840b7053c12ef6bd"
+  },
+  "pre_existing_paths": [
+    "apps/server/src/persistence/sqlite-import.ts",
+    "apps/server/tests/persistence/sqlite-backup.test.ts"
+  ],
+  "preceding_full_cohort_differences": {
+    "apps/server/src/harness/codex/accounts.ts": "59e4e83904a57566f9b3dc6b98bd6e1a9a8881060b5c158ece27ed94ee1e938b",
+    "apps/server/src/harness/context.ts": "e18d78642e1f018c231d11d52327fc71edaba8a58d4a907e214d2c0132c076a3"
+  }
+}

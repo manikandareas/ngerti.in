@@ -69,6 +69,7 @@ export class CodexClient implements HarnessClient {
   #selected: Settings | null = null;
   #active: Active | null = null;
   #closed = false;
+  #externalAccountId: string | null = null;
   constructor(
     executable: string,
     readonly context: LaunchContext,
@@ -91,6 +92,11 @@ export class CodexClient implements HarnessClient {
   }
   async initialize() {
     await this.rpc.initialize();
+    if (this.context.codexAuth) {
+      const tokens = await this.context.codexAuth();
+      this.#externalAccountId = tokens.chatgptAccountId;
+      await this.rpc.request("account/login/start", { type: "chatgptAuthTokens", ...tokens });
+    }
     if (this.context.env.OPENAI_API_KEY)
       await this.rpc.request("account/login/start", {
         type: "apiKey",
@@ -115,8 +121,9 @@ export class CodexClient implements HarnessClient {
     const key = !!this.context.env.OPENAI_API_KEY;
     if (result.account && (result.account.type === "apiKey") !== key)
       throw new HarnessError("BILLING_MISMATCH");
-    let accountIdentity = result.account?.type === "chatgpt" ? result.account.email : null;
-    if (!key && result.account) {
+    let accountIdentity =
+      this.#externalAccountId ?? (result.account?.type === "chatgpt" ? result.account.email : null);
+    if (!key && result.account && !this.context.codexAuth) {
       // The native file store carries the workspace/account identity missing from account/read.
       // Read only that identifier; never publish or copy its credential payload.
       try {
@@ -137,6 +144,7 @@ export class CodexClient implements HarnessClient {
             .update(key ? this.context.env.OPENAI_API_KEY : (accountIdentity as string))
             .digest("hex")
         : null,
+      account_plan: result.account?.type === "chatgpt" ? result.account.planType : null,
       auth_method: key ? "api_key" : "native_login",
       billing_source: key ? "api_key" : "subscription",
       capabilities: { ...codexCapabilities },
@@ -332,6 +340,21 @@ export class CodexClient implements HarnessClient {
   private async receive(message: RpcMessage) {
     const active = this.#active;
     if (message.id !== undefined) {
+      if (message.method === "account/chatgptAuthTokens/refresh" && this.context.codexAuth) {
+        const tokens = await this.context.codexAuth(true);
+        const previous = z
+          .object({ previousAccountId: z.string().nullable().optional() })
+          .parse(message.params);
+        if (previous.previousAccountId && previous.previousAccountId !== tokens.chatgptAccountId)
+          throw new HarnessError("AUTH_REJECTED");
+        if (this.#externalAccountId !== tokens.chatgptAccountId)
+          throw new HarnessError("AUTH_REJECTED");
+        this.rpc.respond(message.id, {
+          ...tokens,
+          chatgptPlanType: tokens.chatgptPlanType ?? null,
+        });
+        return;
+      }
       if (message.method === "item/tool/call") {
         const requestId = message.id;
         void this.tool(message).catch(async () => {

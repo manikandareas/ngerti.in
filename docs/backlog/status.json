@@ -338,7 +338,7 @@
     "ticket": "NMA-077",
     "title": "Personal and organization AI connections on server harnesses",
     "plan": "Harness-first",
-    "status": "Backlog",
+    "status": "Done",
     "order": 16.75,
     "layer": "Engine / Backend",
     "depends_on": [

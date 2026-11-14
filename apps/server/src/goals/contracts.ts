@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { base, text as domainText } from "../contracts/base";
+import { providerSelection } from "../harness/selection-contracts";
 
 const id = z.uuid();
 const text = z.string().trim().min(1).max(100_000);
@@ -16,6 +17,7 @@ export const executionTarget = z.discriminatedUnion("type", [
   z.strictObject({ type: z.literal("agent"), agent_id: id }),
 ]);
 const ownership = {
+  provider_selection: providerSelection.nullable().optional(),
   scope: z.enum(["agent", "group"]).default("agent"),
   created_by_agent_id: id.nullable().default(null),
 };

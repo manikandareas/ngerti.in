@@ -368,13 +368,24 @@ test("run-tool leases restore their private domain outside the initiating reques
     });
     await connections.update(connection, {
       capabilities: { ...connection.capabilities, product_tools: "supported" },
+      login: "authenticated",
+      account_id: "fixture-scoped-account",
+      effective_billing_source: "subscription",
     });
     const agent = await f.lifecycle.createAgent({
       name: "Scoped tools",
       harness: "codex",
       connection_id: connection.id,
+      model_id: "fixture-model",
     });
     const thread = await f.lifecycle.create("thread", { type: "dm", member_agent_ids: [agent.id] });
+    await connections.saveSelection({
+      scope: "conversation",
+      harness: "codex",
+      thread_id: thread.id,
+      agent_id: agent.id,
+      selection: { connection_id: connection.id, model_id: "fixture-model" },
+    });
     const binding = await f.lifecycle.bind(thread.id, agent.id, crypto.randomUUID());
     const admission = await f.lifecycle.admit({
       thread_id: thread.id,

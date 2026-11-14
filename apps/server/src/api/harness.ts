@@ -1,6 +1,6 @@
 import type { Elysia } from "elysia";
 import { z } from "zod";
-import { id } from "../contracts";
+import { DomainError, id } from "../contracts";
 import { detectHarness } from "../harness/availability";
 import {
   apiKeyConnectionInput,
@@ -8,9 +8,20 @@ import {
   connectionInput,
   HarnessError,
 } from "../harness/contracts";
+import { selectionInput } from "../harness/selection-contracts";
 import type { ApiServices, Command } from "./services";
 
 export function registerHarnessRoutes(api: Elysia, services: ApiServices, command: Command) {
+  const retire = async (connection: Awaited<ReturnType<typeof services.connections.get>>) => {
+    await services.accounts?.retire?.(connection.id);
+    await services.broker?.retireConnection(connection.id);
+    services.credentialStorage?.retire(
+      connection.id,
+      connection.authentication.method === "api_key"
+        ? connection.authentication.credential_ref
+        : undefined,
+    );
+  };
   return api
     .get("/v1/harness/contracts", () => brokerContract())
     .get("/v1/harnesses", async () =>
@@ -21,8 +32,20 @@ export function registerHarnessRoutes(api: Elysia, services: ApiServices, comman
     .post(
       "/v1/connections",
       async ({ request, body }) =>
-        await command(request, body, async () => await services.connections.create(body)),
+        await command(request, body, async () => {
+          if (
+            services.connections.lifecycle.store.dataContext &&
+            body.authentication.method === "api_key"
+          )
+            throw new DomainError("SCOPE_DENIED", 403);
+          return services.connections.create(body);
+        }),
       { body: connectionInput },
+    )
+    .post(
+      "/v1/ai/selections",
+      ({ request, body }) => command(request, body, () => services.connections.saveSelection(body)),
+      { body: selectionInput },
     )
     .post(
       "/v1/connections/api-key",
@@ -33,9 +56,14 @@ export function registerHarnessRoutes(api: Elysia, services: ApiServices, comman
         try {
           // The command store retains a SHA-256 fingerprint and secret-free receipt only.
           return await command(request, body, async () => {
-            reference = storage.write(body.api_key);
+            reference = storage.write(
+              body.api_key,
+              !!services.connections.lifecycle.store.dataContext,
+            );
             return await services.connections.create({
               harness: body.harness,
+              ownership: body.ownership,
+              audience_id: body.audience_id,
               authentication: {
                 method: "api_key",
                 billing_source: "api_key",
@@ -51,23 +79,74 @@ export function registerHarnessRoutes(api: Elysia, services: ApiServices, comman
       { body: apiKeyConnectionInput },
     )
     .post(
+      "/v1/connections/:id/rotate-key",
+      async ({ request, params, body }) => {
+        const storage = services.credentialStorage;
+        if (!storage) throw new HarnessError("ADAPTER_UNAVAILABLE");
+        await services.connections.assertManagement(params.id);
+        let reference: string | undefined;
+        let result: {
+          retired: Awaited<ReturnType<typeof services.connections.get>>;
+          replacement: Awaited<ReturnType<typeof services.connections.get>>;
+        };
+        try {
+          result = await command(request, body, async () => {
+            const old = await services.connections.assertManagement(params.id);
+            if (old.state !== "active" || old.authentication.method !== "api_key")
+              throw new HarnessError("BILLING_MISMATCH");
+            reference = storage.write(
+              body.api_key,
+              !!services.connections.lifecycle.store.dataContext,
+            );
+            const replacement = await services.connections.create({
+              harness: old.harness,
+              ownership: old.ownership,
+              audience_id: old.audience_id,
+              authentication: {
+                method: "api_key",
+                billing_source: "api_key",
+                credential_ref: reference,
+              },
+            });
+            return { retired: await services.connections.revoke(old.id), replacement };
+          });
+        } catch (error) {
+          if (reference) storage.remove(reference);
+          throw error;
+        }
+        await retire(result.retired);
+        return { ...result, selection_action: "explicitly_select_replacement" as const };
+      },
+      { params: z.object({ id }), body: apiKeyConnectionInput.pick({ api_key: true }) },
+    )
+    .post(
       "/v1/connections/:id/revoke",
-      async ({ request, params }) =>
-        await command(request, {}, async () => await services.connections.revoke(params.id)),
+      async ({ request, params }) => {
+        await services.connections.assertManagement(params.id);
+        const connection = await command(
+          request,
+          {},
+          async () => await services.connections.revoke(params.id),
+        );
+        await retire(connection);
+        return connection;
+      },
       { params: z.object({ id }) },
     )
     .post(
       "/v1/connections/:id/inspect",
-      ({ params }) => {
+      async ({ params }) => {
         if (!services.accounts) throw new HarnessError("ADAPTER_UNAVAILABLE");
+        await services.connections.assertManagement(params.id);
         return services.accounts.inspect(params.id);
       },
       { params: z.object({ id }) },
     )
     .post(
       "/v1/connections/:id/login",
-      ({ params }) => {
+      async ({ params }) => {
         if (!services.accounts) throw new HarnessError("ADAPTER_UNAVAILABLE");
+        await services.connections.assertManagement(params.id);
         return services.accounts.login(params.id);
       },
       { params: z.object({ id }) },
@@ -76,6 +155,7 @@ export function registerHarnessRoutes(api: Elysia, services: ApiServices, comman
       "/v1/connections/:id/login/cancel",
       async ({ params }) => {
         if (!services.accounts) throw new HarnessError("ADAPTER_UNAVAILABLE");
+        await services.connections.assertManagement(params.id);
         await services.accounts.cancel(params.id);
         return { status: "cancelled" };
       },

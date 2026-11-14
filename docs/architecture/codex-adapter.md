@@ -1,5 +1,7 @@
 # Native Codex adapter
 
+NMA-077 implementation amendment: account-mode provider ownership, private selection, frozen run snapshots and server-side credential retirement are defined by the [1.34.0 provider contract](provider-connections.md). Its [verification report](../verification/nma-077/README.md) records native Codex/Muse proof and a completed two-account Codex probe including Free. The owner-only paths below retain their captured compatibility scope; production organization native admission and NMA-079 readiness remain closed.
+
 Implemented for [NMA-049](../backlog/NMA-049.md). The development bootstrap explicitly registers Codex through `CodexAdapter`; The [Muse adapter](muse-adapter.md) is registered separately; its evidence and accepted API-key billing scope belong to NMA-050, while Muse subscription remains unverified. The application still owns admission, binding, queue, cancellation intent, transcript publication and recovery decisions. App Server owns inference and its inner tool loop. No ACP wrapper, second model loop or provider fallback is introduced.
 
 Implementation lives in `apps/server/src/harness/codex/`: `adapter.ts` implements the broker entry point, `client.ts` maps native sessions/events/tools, `accounts.ts` owns account operations, and `rpc.ts` owns the JSONL process transport. Imports use the specific module; shared harness contracts and services remain in the parent directory.

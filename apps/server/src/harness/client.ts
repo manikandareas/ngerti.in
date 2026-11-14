@@ -7,6 +7,7 @@ import type { ProductTools } from "./tools";
 
 export type SessionIdentity = { native_session_id: string };
 export type Inspection = {
+  account_plan?: string | null;
   login: Entity<"connection">["login"];
   account_id: string | null;
   auth_method: Entity<"connection">["authentication"]["method"];

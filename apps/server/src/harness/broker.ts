@@ -80,6 +80,8 @@ export class HarnessBroker {
   readonly #interactionJournal: InteractionJournal;
   readonly #sessions = new Map<string, Session>();
   readonly #opening = new Map<string, Promise<Session>>();
+  readonly #openingConnections = new Map<string, string>();
+  readonly #openingControllers = new Map<AbortController, string>();
   readonly #connectionOpens = new Map<string, Promise<void>>();
   readonly #controls = new Map<string, Promise<Entity<"control">>>();
   readonly #recovering = new Map<string, Promise<Entity<"run">>>();
@@ -123,6 +125,23 @@ export class HarnessBroker {
     );
     for (const [id, adapter] of Object.entries(adapters))
       if (adapter?.harness !== id) throw new Error("Adapter identity mismatch.");
+  }
+  async retireConnection(connectionId: string) {
+    for (const [controller, id] of this.#openingControllers)
+      if (id === connectionId) controller.abort();
+    const opening = [...this.#opening]
+      .filter(([lane]) => this.#openingConnections.get(lane) === connectionId)
+      .map(([, promise]) => promise);
+    await bounded(Promise.allSettled(opening), this.timeouts.request_ms);
+    for (const [lane, session] of this.#sessions) {
+      if (session.binding.connection_id !== connectionId) continue;
+      session.controller.abort();
+      this.#sessions.delete(lane);
+      clearTimeout(this.#idleTimers.get(lane));
+      this.#idleTimers.delete(lane);
+      await bounded(session.client.close(), this.timeouts.close_ms);
+    }
+    this.#modelCatalogs.delete(connectionId);
   }
   executors(): Partial<Record<HarnessId, HarnessExecutor>> {
     return Object.fromEntries(
@@ -300,6 +319,8 @@ export class HarnessBroker {
   }
   private async serializedOpen(threadId: string, agentId: string) {
     const connectionId = (await this.member(threadId, agentId)).connection.id;
+    const lane = `${threadId}:${agentId}`;
+    this.#openingConnections.set(lane, connectionId);
     const previous = this.#connectionOpens.get(connectionId);
     let release: () => void = () => {};
     const current = new Promise<void>((resolve) => {
@@ -312,6 +333,7 @@ export class HarnessBroker {
       return await this.open(threadId, agentId);
     } finally {
       release();
+      this.#openingConnections.delete(lane);
       if (this.#connectionOpens.get(connectionId) === current)
         this.#connectionOpens.delete(connectionId);
     }
@@ -336,7 +358,18 @@ export class HarnessBroker {
     const workspaces = new Workspaces(this.lifecycle);
     const workspace = await workspaces.ensure(threadId, agentId);
     const launch: LaunchContext = {
-      ...this.credentials.create(initial.connection),
+      ...this.credentials.create(
+        initial.connection,
+        this.lifecycle.store.dataContext
+          ? {
+              organization_id: this.lifecycle.store.dataContext.organizationId,
+              actor_id: this.lifecycle.store.dataContext.userId,
+              agent_id: agentId,
+              thread_id: threadId,
+              generation: initial.connection.grant_revision,
+            }
+          : undefined,
+      ),
       purpose: (await this.lifecycle.store.get("thread", threadId)).purpose,
       signal: controller.signal,
       workspace: {
@@ -354,6 +387,7 @@ export class HarnessBroker {
     const temporary = await workspaces.temporary(workspace, agentId);
     launch.env = { ...launch.env, TMPDIR: temporary, TMP: temporary, TEMP: temporary };
     let client: HarnessClient | undefined;
+    this.#openingControllers.set(controller, initial.connection.id);
     try {
       const connecting = adapter.connect({
         ...launch,
@@ -395,6 +429,7 @@ export class HarnessBroker {
         effective_billing_source:
           observed.login === "authenticated" ? observed.billing_source : "unknown",
         account_id: observed.account_id,
+        account_plan: observed.account_plan ?? null,
         capabilities: capabilities.parse(observed.capabilities),
       });
       if (current.login !== "authenticated")
@@ -450,6 +485,11 @@ export class HarnessBroker {
           binding.agent_id === agentId &&
           binding.connection_id === current.id &&
           binding.harness === current.harness &&
+          (!this.lifecycle.store.dataContext ||
+            (binding.organization_id === this.lifecycle.store.dataContext.organizationId &&
+              binding.actor_id === this.lifecycle.store.dataContext.userId &&
+              binding.connection_generation === current.grant_revision &&
+              binding.account_id === current.account_id)) &&
           binding.agent_revision === initial.agent.revision &&
           binding.workspace_id === workspace.id &&
           binding.workspace_revision === workspace.revision,
@@ -517,8 +557,10 @@ export class HarnessBroker {
         skills: inherited ? { at: Date.now(), value: inherited } : undefined,
       };
       await this.check(session, threadId, agentId);
+      this.#openingControllers.delete(controller);
       return session;
     } catch (error) {
+      this.#openingControllers.delete(controller);
       controller.abort();
       if (error instanceof HarnessError && error.code === "BILLING_MISMATCH") {
         const latest = await this.connections.get(initial.connection.id);
@@ -690,7 +732,18 @@ export class HarnessBroker {
     // Owner-authorized receipt inspection never resumes a turn or grants filesystem/tools.
     // It must remain possible after membership/workspace revocation to release unknown work.
     const launch: LaunchContext = {
-      ...this.credentials.create(connection),
+      ...this.credentials.create(
+        connection,
+        binding.organization_id && binding.actor_id
+          ? {
+              organization_id: binding.organization_id,
+              actor_id: binding.actor_id,
+              agent_id: binding.agent_id,
+              thread_id: binding.thread_id,
+              generation: binding.connection_generation ?? connection.grant_revision,
+            }
+          : undefined,
+      ),
       signal: controller.signal,
       purpose: "routing",
     };

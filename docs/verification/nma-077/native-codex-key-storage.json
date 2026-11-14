@@ -1,0 +1,7 @@
+{
+  "version": "0.169.0",
+  "mode": "native_local_account_protocol_with_invalid_fixture_key",
+  "provider_inference": "not_attempted",
+  "ephemeral_authority": true,
+  "native_auth_file_present": false
+}

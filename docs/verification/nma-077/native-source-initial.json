@@ -1,0 +1,9 @@
+{
+  "apps/server/src/harness/codex/accounts.ts": "41283c5efa9db4a4dacfede24b278b4d4669897e4d3c4b1e2a9b9574f1c6dbbf",
+  "apps/server/src/harness/codex/client.ts": "8698d7acefd650818f7565e9aa1e83989d8000872a133c91bec1f0861e103331",
+  "apps/server/src/harness/codex/rpc.ts": "1cda9a69372758a49749b8456374828147c9acbe81c01e8063f1c749ddaf8ff4",
+  "apps/server/src/harness/context.ts": "2290d0b1ae2c3d7b6ea3d4b8a308cf726cb1240b051aec269beb2f52b5aa7df3",
+  "apps/server/src/harness/connections.ts": "f2a736f6a79bc5b09b300cd347c6da1f5a7f9ce187cf9d34e6dc65955dde6de1",
+  "apps/server/src/harness/credential-storage.ts": "a943700591b034b22760ff54bf0c7abc64a4ed55cac3cb3ef7215e3696902095",
+  "scripts/verification/nma077/remote-codex.test.ts": "27b7d3ea605566eb8d994523d43c30d5337aa96bfc3a753a3263a89127a572c2"
+}

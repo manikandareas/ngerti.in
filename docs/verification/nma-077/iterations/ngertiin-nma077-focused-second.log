@@ -1,0 +1,63 @@
+bun test v1.3.10 (30e609e0)
+
+tests/provider-storage.test.ts:
+(pass) encrypted provider credentials authenticate their identity and reject tampering or an absent master key [5.95ms]
+(pass) revocation removes native files and the credential; retained tombstones fence restored native homes [2.25ms]
+
+tests/contracts.test.ts:
+(pass) every registered domain route retains the shared authentication guard [256.97ms]
+(pass) published replay schema accepts browser and application receipts across restart [349.98ms]
+(pass) published command schemas retain optional defaulted admission fields [190.60ms]
+141 |   const response = await app.handle(
+142 |     new Request("http://localhost/v1/contracts", {
+143 |       headers: { Authorization: `Bearer ${"a".repeat(64)}` },
+144 |     }),
+145 |   );
+146 |   expect(response.status).toBe(200);
+                                ^
+error: expect(received).toBe(expected)
+
+Expected: 200
+Received: 500
+
+      at <anonymous> (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/tests/contracts.test.ts:146:27)
+(fail) consumer contract describes actual routes without executing native operations [272.39ms]
+(pass) published response schemas validate admission, control, history, snapshots and safe errors [309.18ms]
+
+tests/codex.test.ts:
+(pass) external Codex access tokens stay ephemeral and native refresh cannot change the selected account [210.01ms]
+(pass) one native credential authority coordinates simultaneous refresh consumers and survives its restart [398.44ms]
+(pass) only an exact missing-rollout response for the requested resume permits pristine recovery [5.60ms]
+(pass) an unused prewarmed Codex thread is replaced after its process closes before first dispatch [2294.90ms]
+(pass) a missing Codex rollout used by a prior dispatch is never silently replaced or replayed [2004.27ms]
+(pass) Codex JSONL fixture performs an HTTP product-tool round trip and persists owned output [2013.61ms]
+(pass) Codex publishes search activity at start and preserves overlapping file work [1379.13ms]
+(pass) native session and separate DM/group histories survive backend and child restart [7926.01ms]
+(pass) selected API-key authentication is observed separately without a subscription fallback [2084.35ms]
+(pass) native interruption ack stays intent until interrupted terminal confirmation [1806.00ms]
+(pass) steer is bound to the active native turn and keeps the same run [2517.11ms]
+(pass) native permission escalation is declined and reported unsupported [1422.58ms]
+(pass) a native tool request cannot use another thread scope [1506.76ms]
+(pass) process loss preserves partial output and blocks automatic replay [1684.08ms]
+(pass) mismatched native terminal identity remains unknown [2098.58ms]
+(pass) explicit native turn rejection fails without publishing native error secrets [1853.50ms]
+(pass) Codex streams a stable partial message before the native turn completes [2354.53ms]
+(pass) Codex reconciles native commit before publication after restart without repeating a tool effect [3610.83ms]
+(pass) default reasoning omits the native config override and completes a turn [2542.67ms]
+(pass) native commentary and final answer item phases stay separate in live output and receipt recovery [2015.84ms]
+
+tests/organizations/providers.test.ts:
+(pass) personal provider connections remain private; organization connections require management and an explicit audience [1760.50ms]
+(pass) private conversation and user choices inherit only when unset and freeze connection/model on admission [1954.84ms]
+(pass) provider snapshots cannot be rewritten or forged across actors even through SQL-backed entity writes [1487.53ms]
+(pass) same organization account has distinct native homes for each actor, conversation and connection generation [1051.25ms]
+(pass) scheduled responsibilities retain their selected connection after private preferences change [1722.50ms]
+(pass) scoped API key submission and rotation retain encrypted bytes and secret-free receipts without selecting a replacement implicitly [1247.91ms]
+
+1 tests failed:
+(fail) consumer contract describes actual routes without executing native operations [272.39ms]
+
+ 32 pass
+ 1 fail
+ 244 expect() calls
+Ran 33 tests across 4 files. [53.26s]

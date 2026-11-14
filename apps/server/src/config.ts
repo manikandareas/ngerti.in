@@ -3,6 +3,7 @@ import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { parseEnv } from "node:util";
 import { z } from "zod";
+import { authenticationConfig } from "./auth/config";
 import { id } from "./contracts";
 
 const installationSchema = z.strictObject({
@@ -64,6 +65,7 @@ export function developmentConfig() {
     port,
     groupRouter,
     typesafeApiKey,
+    authentication: authenticationConfig({ ...rootEnvironment, ...process.env }),
     harnessExecutables: {
       codex: process.env.NGERTIIN_CODEX_EXECUTABLE ?? rootEnvironment.NGERTIIN_CODEX_EXECUTABLE,
       muse: process.env.NGERTIIN_MUSE_EXECUTABLE ?? rootEnvironment.NGERTIIN_MUSE_EXECUTABLE,

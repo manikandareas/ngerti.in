@@ -1,0 +1,54 @@
+{
+  "scope": "NMA-073 staged source snapshot, excluding pre-existing NMA-072 changes",
+  "staged_tree": "6772623311327ea35393ea64e0cc98f56777d371",
+  "dependency_install": {
+    "command": "bun install --frozen-lockfile --ignore-scripts",
+    "exit_code": 0
+  },
+  "typecheck": {
+    "command": "bun run --filter @ngertiin/server typecheck",
+    "exit_code": 0
+  },
+  "lint": {
+    "command": "bun run --filter @ngertiin/server lint",
+    "exit_code": 0,
+    "checked_files": 217,
+    "warnings": 0
+  },
+  "documentation": {
+    "command": "bun run docs:check",
+    "exit_code": 1,
+    "pre_existing_failures": 8,
+    "new_failures": 0
+  },
+  "unrelated_files_preserved": 15,
+  "full_backend": {
+    "command": "bun scripts/verification/nma072/run-tests.ts",
+    "executed": 444,
+    "passed": 443,
+    "failed": 1,
+    "files": 51,
+    "assertions": 2695,
+    "exit_code": 1
+  },
+  "authentication_cases": {
+    "executed": 20,
+    "passed": 20,
+    "failed": 0
+  },
+  "authority_rerun": {
+    "command": "bun scripts/verification/nma072/run-tests.ts tests/persistence/postgres.test.ts",
+    "executed": 11,
+    "passed": 11,
+    "failed": 0,
+    "assertions": 57,
+    "exit_code": 0
+  },
+  "unchanged_authority_sources": [
+    "apps/server/src/store.ts",
+    "apps/server/tests/persistence/postgres.test.ts",
+    "apps/server/tests/helpers.ts"
+  ],
+  "interpretation": "The unchanged authority-loss test failed in the full cohort and passed in the isolated rerun; retain as a timing flake, not an all-green full regression.",
+  "source_manifest": "../source-manifest.json"
+}

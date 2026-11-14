@@ -1,18 +1,21 @@
 import { timingSafeEqual } from "node:crypto";
 import { Elysia } from "elysia";
 import { z } from "zod";
+import { isAuthenticationRoute, isPublicAuthenticationRoute } from "../auth/http";
+import type { Authentication } from "../auth/service";
 import { DomainError, id } from "../contracts";
 import { HarnessError } from "../harness/contracts";
 import type { ProductTools } from "../harness/tools";
 import type { Lifecycle } from "../lifecycle";
 
-export function createCommand(lifecycle: Lifecycle) {
+export function createCommand(lifecycle: Lifecycle, authentication?: Authentication) {
   return async function command<T>(request: Request, body: unknown, action: () => T): Promise<T> {
     const commandId = id.parse(request.headers.get("Idempotency-Key"));
     return await lifecycle.store.command(
       commandId,
       { method: request.method, path: new URL(request.url).pathname, body },
       action,
+      authentication ? () => authentication.assertOwner(request) : undefined,
     );
   };
 }
@@ -21,6 +24,7 @@ export function createHttp(
   token: string,
   tools: ProductTools,
   viewerAccess?: (request: Request) => unknown,
+  authentication?: Authentication,
 ) {
   const api = new Elysia({
     name: "ngertiin-foundation",
@@ -84,6 +88,12 @@ export function createHttp(
         await tools.authenticate(
           (request.headers.get("Authorization") ?? "").replace(/^Bearer /, ""),
         );
+        return;
+      }
+      if (authentication) {
+        if (isPublicAuthenticationRoute(request)) return;
+        await authentication.authenticate(request);
+        if (!isAuthenticationRoute(request)) await authentication.assertOwner(request);
         return;
       }
       const supplied = request.headers.get("Authorization") ?? "";

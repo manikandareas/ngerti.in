@@ -6,6 +6,8 @@
 
 The [main plan](server-organizations-plan-2026-11-12.md) and NMA-072–083 promote PostgreSQL, authenticated users, multiple organizations, organization-local roles/Workgroups, personal/Team agents and explicit personal/organization connections. New clients are web and Tauri; further desktop-rs work is paused. The target server owns harnesses and durable execution independently of remote clients. Separate execution domains must enforce cross-human privacy; the singleton shared machine below describes the current single-owner baseline, not the target multi-user boundary. No new runtime or readiness is claimed until its milestones are verified.
 
+NMA-073 adds the [account/session authentication boundary](user-authentication.md): guarded verified-owner binding, revocable browser/native device sessions and a separately verified PKCE contract. Existing application data remains restricted to the bootstrapped account until the organization/data authorization milestones. This does not establish general multi-user privacy or client UI readiness.
+
 ## Ownership
 
 | Component | Authority |

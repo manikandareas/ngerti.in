@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { agentActivities } from "./agents/activity";
 import { submissionStatus } from "./api/attachments";
+import { authenticationSession, deviceSessions, nativeAuthentication } from "./auth/contracts";
 import { browserContent } from "./browser/contracts";
 import { API_READINESS_GATE, agent, domainEvent, id, runStatus, schemas } from "./contracts";
 import { conversationPreviews } from "./conversations/previews";
@@ -371,6 +372,17 @@ routes(
 routes("POST", ["/v1/machine/processes/control"], schemas.machine_process);
 routes("GET", ["/v1/machine/files"], operationSchemas.files);
 
+routes("GET", ["/v1/auth/session"], authenticationSession);
+routes("GET", ["/v1/auth/sessions"], deviceSessions);
+routes("GET", ["/v1/auth/native"], nativeAuthentication);
+routes("POST", ["/v1/auth/renew"], authenticationSession);
+routes(
+  "POST",
+  ["/v1/auth/logout", "/v1/auth/sessions/:sessionId/revoke"],
+  z.strictObject({ revoked: z.boolean() }),
+);
+routes("POST", ["/v1/auth/bootstrap"], z.strictObject({ owner_bound: z.boolean() }));
+
 /** Fail closed when an added route has no reviewed response contract. */
 export function operationResponse(method: string, path: string) {
   const result = responses[`${method} ${path}`];
@@ -401,5 +413,7 @@ export function operationResponse(method: string, path: string) {
       framing: "upstream_viewer",
       reference: "protocols.machine_viewer",
     };
+  if (path === "/api/auth/*")
+    return { status: [200, 302, 400, 401, 403, 404, 429], reference: "authentication.protocol" };
   throw new Error(`HTTP response contract is missing for ${method} ${path}.`);
 }

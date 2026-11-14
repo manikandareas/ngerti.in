@@ -1,4 +1,5 @@
 import { fromBinary, toBinary } from "@bufbuild/protobuf";
+import type { SessionLease } from "../auth/service";
 import { DomainError } from "../contracts";
 import { asyncMap } from "../persistence/async-collections";
 import { OpenMediaResponseSchema } from "./protocol/stream_pb";
@@ -11,6 +12,7 @@ type Peer = {
 };
 type View = {
   id: string;
+  lease?: SessionLease;
   ticket: string;
   revision: number;
   generation: number;
@@ -56,6 +58,7 @@ export class MachineViews {
     this.#expiry.unref();
   }
   private async valid(view: View) {
+    await view.lease?.assert();
     if (
       this.#views.get(view.id) !== view ||
       Date.now() >= view.expires ||
@@ -81,7 +84,8 @@ export class MachineViews {
       throw new DomainError("UNAUTHORIZED", 401);
     return await this.valid(view);
   }
-  async issue(origin: string, interactive = false, apiOrigin = origin) {
+  async issue(origin: string, interactive = false, apiOrigin = origin, lease?: SessionLease) {
+    await lease?.assert();
     const host = await this.machines.ready();
     const current = await this.machines.snapshot();
     await this.machines.assertViewer(current.lease.revision, interactive);
@@ -99,6 +103,7 @@ export class MachineViews {
     const id = `${crypto.randomUUID().replaceAll("-", "")}${crypto.randomUUID().replaceAll("-", "")}`;
     const view: View = {
       id,
+      lease,
       ticket: reply.ticket,
       revision: current.lease.revision,
       generation: current.generation,
@@ -110,6 +115,19 @@ export class MachineViews {
       media: new Map(),
     };
     this.#views.set(id, view);
+    if (lease) {
+      lease.signal.addEventListener(
+        "abort",
+        () => {
+          void this.revoke(view).catch(() => {});
+        },
+        { once: true },
+      );
+      if (lease.signal.aborted) {
+        await this.revoke(view);
+        throw new DomainError("UNAUTHORIZED", 401);
+      }
+    }
     return {
       viewer_id: id,
       viewer_url: `${prefix}${id}/viewer/#ticket=${encodeURIComponent(reply.ticket)}${interactive ? "" : "&view_only=1"}`,
@@ -119,10 +137,12 @@ export class MachineViews {
       machine_id: current.id,
     };
   }
-  async renew(id: string, origin: string) {
+  async renew(id: string, origin: string, sessionId?: string) {
     const view = this.#views.get(id);
     if (!view || ![view.origin, view.apiOrigin].includes(origin))
       throw new DomainError("UNAUTHORIZED", 401);
+    if (view.lease && view.lease.sessionId !== sessionId)
+      throw new DomainError("SCOPE_DENIED", 403);
     await this.valid(view);
     const reply = (await this.machines.host?.rpc("SystemService/CreateViewerTicket", {
       ttl: "600s",
@@ -167,6 +187,7 @@ export class MachineViews {
   private async revoke(view: View) {
     this.#views.delete(view.id);
     view.abort.abort();
+    view.lease?.release();
     for (const [peer, bridge] of this.#peers)
       if (bridge.view === view) this.denyPeer(peer, "Machine control changed.");
     const pending = await asyncMap(
@@ -176,8 +197,10 @@ export class MachineViews {
     view.media.clear();
     await Promise.all(pending);
   }
-  async remove(id: string) {
+  async remove(id: string, sessionId?: string) {
     const view = this.#views.get(id);
+    if (view?.lease && view.lease.sessionId !== sessionId)
+      throw new DomainError("SCOPE_DENIED", 403);
     if (view) await this.revoke(view);
     return { revoked: true };
   }

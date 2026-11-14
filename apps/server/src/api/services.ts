@@ -1,3 +1,4 @@
+import type { Authentication } from "../auth/service";
 import type { AccountService } from "../harness/accounts";
 import type { detectHarness } from "../harness/availability";
 import type { HarnessBroker } from "../harness/broker";
@@ -8,6 +9,7 @@ import type { createCommand } from "./http";
 
 export type Command = ReturnType<typeof createCommand>;
 export type ApiServices = {
+  authentication?: Authentication;
   connections: Connections;
   tools: ProductTools;
   detect?: typeof detectHarness;

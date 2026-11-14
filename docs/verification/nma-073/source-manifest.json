@@ -1,0 +1,49 @@
+{
+  "git_base": "96a99a550d4680a29df98dd049d6db331509feee",
+  "runtime": "bun 1.3.10",
+  "database_image": "postgres:18.1-alpine@sha256:aa6eb304ddb6dd26df23d05db4e5cb05af8951cda3e0dc57731b771e0ef4ab29",
+  "dependencies": {
+    "better-auth": "1.7.23",
+    "@better-auth/oauth-provider": "1.7.23",
+    "elysia": "1.4.30",
+    "pg": "8.23.1",
+    "typescript": "7.0.2"
+  },
+  "files_sha256": {
+    "apps/server/package.json": "4516b93780917994935ac7fb701bf5a2edc059afda3f72041d589b11bfedb321",
+    "apps/server/src/api/browser.ts": "668fcf852275894672a75570f8e9abf9cadc437b3ea309bc16e2ef1cf7de93ca",
+    "apps/server/src/api/events.ts": "d3fd9726f2468be75fb25b674cd976d0477cf9c152296cd939467da133bd6868",
+    "apps/server/src/api/http.ts": "138ea46e74d6105c7607b01ed380eafe00292f9c702ad82ff011575708cfca0c",
+    "apps/server/src/api/machines.ts": "53a097218ed208ef63eb31e08ca2fb01d69bb33bcb14abc54e8f29ee1cccbecf",
+    "apps/server/src/api/services.ts": "f63d840c6aa8a762535eb8616064767ca02a4a79ae9f323393edfe7f1e51ecf6",
+    "apps/server/src/api-contract.ts": "fe45367b3761d08bb4336cfd4ff6339f6a06918e7addd946cb9b1c059898c50b",
+    "apps/server/src/api-responses.ts": "e354af94f7a6a28a143ee7511d39850179086271b11f95f7d427d7aa066e1cb0",
+    "apps/server/src/api.ts": "5a73e5384a6c6b1bacbac1f4ea7767653c09335c08d65f6c21d4464829a0a464",
+    "apps/server/src/auth/config.ts": "bbe08e3e33abbb3690b360b569f746572e6d0c289198c5ddeb5909077b58da66",
+    "apps/server/src/auth/contracts.ts": "f98f5dd32049bfce40c53ac886d6b9c32d1b17df48b339048e1faa214e6af544",
+    "apps/server/src/auth/database.ts": "ef24e39ebe0eeb96fd304f5471036d56721250f747fdc45294f7e95d3b4bbd68",
+    "apps/server/src/auth/email.ts": "4a9e82a73e147f8e16bcdade0aa7846a28c4b917d60b5805674c4a7aacf608fe",
+    "apps/server/src/auth/http.ts": "6f87c540804530ac4f0c1f0792fa9c66443b68b966f31c8177167df66b89cce2",
+    "apps/server/src/auth/native-client.ts": "3033cc3c7884e19aab5a900dd80389e518af36f50266fc7498aa253e3e9be27a",
+    "apps/server/src/auth/operator.ts": "29870386445713f2dd3b99b87f2b9564eecb5d98c7bb966c7ce55f50be4ebea5",
+    "apps/server/src/auth/ownership-schema.ts": "f9586ba7d4274e6aa059ac7444e5d983b44a3fa130e34504508c7f20cf8210cb",
+    "apps/server/src/auth/provider.ts": "5d76c7d522e29bc954dae72c8beac0e0a3400e38544782b0aeeb17588035d538",
+    "apps/server/src/auth/schema.sql": "e71c66f708d29f7d35d1e7857859a8e95cc993365843ffb580f7d9e95e9cf0d4",
+    "apps/server/src/auth/service.ts": "39ad59a3a2046c19f9d876a3c9163ebf787228cbac19dc1c1f1484d3f8fe0efe",
+    "apps/server/src/browser/view.ts": "acdf5a7c388d8813073123aef34942c6a5a5c9d3be49f4af886443861bcfa793",
+    "apps/server/src/config.ts": "16fccb2cbf459fecab23b32f7ad35dbde9e605558fdc314eee635b07041b0675",
+    "apps/server/src/event-stream.ts": "95c57f827bcdc0ac88f41d7b27374390decf826069f0dfe1da71cc6ff6a6f38c",
+    "apps/server/src/machines/view.ts": "440814ece4140e64a3ed8d749750766a30867ec352e89c05b0bde10ce219e0ee",
+    "apps/server/src/main.ts": "4b5036010d25b1bb7e7f164062aeb458e5a1b8898821a575db3b84a94ef2f787",
+    "apps/server/tests/auth/compatibility.test.ts": "9d1e73319d18a78697e28171f442805a678e116bdcbb7098fc877c6d2fdc457a",
+    "apps/server/tests/auth/helpers.ts": "bed3d7a3b0504f7c4a0df7e8d080205e2fb95b92bf0e8b9aaae814c3266aae6a",
+    "apps/server/tests/auth/http.test.ts": "80c97fc6ff4055048cd54afe0ed3ffa72bcce6a39eea4948e1b0c454aa02629b",
+    "apps/server/tests/auth/schema.test.ts": "9e4b5e17cce1847f9f891b53428b2a8848ef87b716c7cb0d2cd41c9d59802963",
+    "apps/server/tests/auth/security.test.ts": "f0628ebbab52683fccf8959ff916fd9277075d6c41822717b4f7e375cf4c35e6",
+    "bun.lock": "5382ed7328b2c20e9916dab724d8400417ddc4a0cbb0ff649cf0e5f62561bcfc"
+  },
+  "limitations": [
+    "Source hashes captured for scoped local delivery; no deployment or live-auth activation",
+    "Controlled email and loopback HTTP; no live provider/Tauri/HTTPS deployment acceptance"
+  ]
+}

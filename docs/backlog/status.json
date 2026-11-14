@@ -294,7 +294,7 @@
     "ticket": "NMA-073",
     "title": "User authentication, device sessions and owner bootstrap",
     "plan": "Harness-first",
-    "status": "Backlog",
+    "status": "Done",
     "order": 16.71,
     "layer": "Engine / Backend",
     "depends_on": [

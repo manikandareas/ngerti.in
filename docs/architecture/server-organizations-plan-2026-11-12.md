@@ -1,6 +1,6 @@
 # Central server, PostgreSQL and organizations implementation plan
 
-Date: 2026-11-12. Status: NMA-072 Done for its verified single-owner PostgreSQL/import scope; NMA-073–083 remain planned. This is the main design and delivery document for [NMA-072–083](../backlog/README.md#server-organizations-plan). The owner requested this plan after agreeing to PostgreSQL. It records the session's product direction and identifies implementation defaults separately from verified capabilities.
+Date: 2026-11-12. Status: NMA-072 Done for its verified single-owner PostgreSQL/import scope; NMA-073 Done for its verified backend authentication/headless native scope; NMA-074–083 remain planned. This is the main design and delivery document for [NMA-072–083](../backlog/README.md#server-organizations-plan). The owner requested this plan after agreeing to PostgreSQL. It records the session's product direction and identifies implementation defaults separately from verified capabilities.
 
 The implementation targets `apps/server`, `apps/web-client` and the Tauri host in `apps/desktop`. Further `apps/desktop-rs` and GPUI experiment work is paused. Their historical Done milestones and evidence remain intact. This document does not authorize deployment, credential changes, database resets, or deletion of existing data.
 
@@ -128,6 +128,8 @@ Use one PostgreSQL instance, optionally on the same physical server, with separa
 Use disposable fixtures first. A development-data reset is an alternative only when separately authorized for named data; this plan does not reset the current installation. Once multiple users are enrolled, normal upgrades preserve their data. Backup/restore covers PostgreSQL plus immutable artifact bytes, private provider stores, execution-domain volumes and configuration. Record a tested RPO/RTO, and configure WAL archiving/PITR when that recovery objective requires it; a database dump alone does not back up the entire product.
 
 ## 6. User login and device sessions
+
+The [NMA-073 implementation contract](user-authentication.md) pins Better Auth/OAuth Provider 1.7.23 and Resend delivery, with controlled-email HTTP and headless PKCE evidence. It selects opaque audience-bound OAuth access tokens, independent native device sessions and server-checked revocation, including offline credentials. Only the explicitly bound account can enter the retained owner-wide domain before NMA-074/075. Product login screens, OS credential storage and general multi-user access are still later scope.
 
 Web login uses secure HttpOnly cookies on the selected server origin, CSRF defenses and server-validated sessions. Tauri remote mode uses the same web-client UI and existing narrow native gateway, with an external system-browser public-client authorization-code/PKCE flow. Store long-lived renewal credentials in the OS credential store, short-lived access tokens in native memory, and keep provider tokens outside the renderer. The OAuth access token is not an ID token or an installation bearer.
 
@@ -290,7 +292,7 @@ Tauri remote mode keeps tokens in native transport/OS storage, restricts gateway
 
 ## 12. Delivery backlog and gates
 
-NMA-072 is **Done** for its [verified PostgreSQL/import scope](../verification/nma-072/README.md); NMA-073–083 remain **Backlog**. Dependencies are recorded in their files and [status.json](../backlog/status.json); dates and assignees are unset. Backend behavior precedes the new API gate, followed by web/Tauri consumption, deployment rehearsal and integrated acceptance. Existing NMA-060/061/062 and NMA-066–071 Done statuses retain their old scope. [NMA-063](../backlog/NMA-063.md) gains this plan's acceptance dependency; [NMA-064](../backlog/NMA-064.md) remains the separate fresh-device distribution gate.
+NMA-072 is **Done** for its [verified PostgreSQL/import scope](../verification/nma-072/README.md); NMA-073 is **Done** for its [verified backend authentication/headless native scope](../verification/nma-073/README.md); NMA-074–083 remain **Backlog**. Dependencies are recorded in their files and [status.json](../backlog/status.json); dates and assignees are unset. Backend behavior precedes the new API gate, followed by web/Tauri consumption, deployment rehearsal and integrated acceptance. Existing NMA-060/061/062 and NMA-066–071 Done statuses retain their old scope. [NMA-063](../backlog/NMA-063.md) gains this plan's acceptance dependency; [NMA-064](../backlog/NMA-064.md) remains the separate fresh-device distribution gate.
 
 ```mermaid
 flowchart LR
@@ -338,14 +340,14 @@ Web acceptance uses real API browser desktop/mobile journeys. Tauri acceptance u
 
 | Item | Planning default | Resolution owner |
 | --- | --- | --- |
-| Auth library and native token mode | Better Auth + Organization/Teams + OAuth Provider PKCE; prove revocation/resource checks | NMA-073 |
+| Auth library and native token mode | Better Auth/OAuth Provider 1.7.23, public-client S256 PKCE, opaque access tokens and independent revocable native sessions; [contract](user-authentication.md). Organization/Teams follows in NMA-074. | NMA-073 / NMA-074 |
 | PostgreSQL driver/version and SQL shape | PostgreSQL 18.1, `pg`/`@types/pg` 8.23.1, Bun 1.3.10; JSONB with explicit identity and future scope columns, indexed bounded reads | NMA-072; tenant policy/RLS remains NMA-075 |
 | Personal scope | Per user within an organization; no global personal space in this delivery | NMA-074/075 |
 | Org creation and admin elevation | Operator policy grants creation; Owner grants Admin; protect last Owner | NMA-074 |
 | Machine deployment/capacity | Retained per-user/organization isolated Cua environments on the same server | NMA-076/082 |
 | Credential protection | Native-compatible isolated storage plus measured at-rest/backup controls; remote login must be proven | NMA-077 |
 | Custom MCP compatibility | Gateway-enforced scoped server connections; no unrestricted native/global MCP inheritance | NMA-078 |
-| External email delivery | SMTP/provider adapter for verification, recovery and invitations; select during auth integration | NMA-073/074 |
+| External email delivery | Resend HTTPS adapter for verification/recovery; controlled delivery capture verified in NMA-073. Real provider delivery and organization invitations remain separate proof. | NMA-073/074 |
 | Backup targets, capacity and recovery SLO | Declared workload, restore drill and measured RPO/RTO on selected host | NMA-082/083 |
 
 These are bounded implementation decisions, not permission to weaken privacy, silently switch billing or add a second runtime authority. Escalate a material incompatible requirement before changing the accepted boundary.

@@ -127,24 +127,32 @@ function inputSchema(schema: unknown) {
   return z.toJSONSchema(schema, { io: "input" });
 }
 
+function routeAuthentication(path: string, accounts: boolean) {
+  if (path === "/health/live" || path === "/v1/auth/native") return "public";
+  if (path === "/api/auth/*") return "authentication_protocol";
+  if (path.startsWith("/v1/machine/viewer/")) return "scoped_viewer_ticket";
+  if (path === "/v1/harness/tools") return "run_lease";
+  if (accounts) return "user_session_or_oauth_access_token";
+  return "installation_bearer";
+}
+
 /** Read the installed router's request schemas; exporting never invokes a handler or provider. */
-export function httpContract(routes: readonly Route[]) {
+export function httpContract(routes: readonly Route[], accounts = false) {
   return routes.map(({ method, path, hooks }) => {
     const mcp = path === "/v1/harness/tools";
     const viewer = path.startsWith("/v1/machine/viewer/");
-    if (method === "POST" && !mcp && !durablePaths.has(path) && !operationPaths.has(path))
+    if (
+      method === "POST" &&
+      !mcp &&
+      !durablePaths.has(path) &&
+      !operationPaths.has(path) &&
+      !path.startsWith("/v1/auth/")
+    )
       throw new Error(`HTTP request semantics are missing for ${method} ${path}.`);
     return {
       method,
       path,
-      authentication:
-        path === "/health/live"
-          ? "public"
-          : viewer
-            ? "scoped_viewer_ticket"
-            : mcp
-              ? "run_lease"
-              : "installation_bearer",
+      authentication: routeAuthentication(path, accounts),
       idempotency:
         method === "POST" && durablePaths.has(path)
           ? "required_uuid"

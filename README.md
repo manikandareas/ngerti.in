@@ -58,3 +58,5 @@ bun run package:desktop
 See [desktop setup and lifecycle](docs/architecture/tauri-development.md) and [verification boundaries](docs/verification/tauri-development/README.md). Tauri is the only desktop implementation. The retired Electron host and legacy `apps/web` workspace are available in Git at `6de957e7145c0367a52b10f5fd19bbd91c50e458`; historical research and verification evidence retain their original scope.
 
 Run `bun run test:desktop`, `bun run typecheck:desktop` and `bun run lint:desktop` for native lifecycle tests, Rust checks and desktop tooling validation. See the [cleanup verification](docs/verification/tauri-cleanup-2026-11-05.md) for the removal scope and current checks.
+
+Account-authentication backend configuration and the web/native HTTP contract are documented in [user authentication](docs/architecture/user-authentication.md). Product onboarding and the Tauri remote client remain later milestones.

@@ -14,6 +14,8 @@ import { registerRunRoutes } from "./api/runs";
 import type { ApiServices } from "./api/services";
 import { registerWorkspaceRoutes } from "./api/workspaces";
 import { consumerContract, httpContract } from "./api-contract";
+import { authenticationContract } from "./auth/contracts";
+import { registerAuthenticationRoutes } from "./auth/http";
 import type { Background } from "./background";
 import { API_READINESS_GATE, CONTRACT_VERSION, contractDocument, DomainError } from "./contracts";
 import { detectHarness } from "./harness/availability";
@@ -35,13 +37,15 @@ export async function createApi(
     credentialStorage: new CredentialStorage(dirname(lifecycle.store.path)),
   };
   if (token.length < 32) throw new Error("A private development token is required.");
-  const command = createCommand(lifecycle);
+  const command = createCommand(lifecycle, services.authentication);
   const views = services.tools.machines ? new MachineViews(services.tools.machines) : undefined;
   const api = await createHttp(
     token,
     services.tools,
     views ? async (request) => await views.authorize(request) : undefined,
+    services.authentication,
   );
+  if (services.authentication) registerAuthenticationRoutes(api, services.authentication);
   api
     .get("/health/ready", async () => {
       try {
@@ -75,12 +79,15 @@ export async function createApi(
     .get("/v1/contracts", () => ({
       ...contractDocument(),
       ...consumerContract(services.tools.machines !== undefined),
-      http: httpContract(api.routes),
+      http: httpContract(api.routes, Boolean(services.authentication)),
+      ...(services.authentication
+        ? { authentication: authenticationContract(services.authentication.config.origin) }
+        : {}),
     }));
   await registerConversationRoutes(api, lifecycle, command);
   await registerIntegrationRoutes(api, lifecycle, services, command);
   await registerHarnessRoutes(api, services, command);
-  await registerEventRoutes(api, lifecycle);
+  await registerEventRoutes(api, lifecycle, services.authentication);
   await registerLearningRoutes(api, lifecycle, command);
   await registerGroupRoutes(api, lifecycle, background, command);
   await registerGoalRoutes(api, lifecycle, background, command);
@@ -88,7 +95,7 @@ export async function createApi(
   await registerAttachmentRoutes(api, lifecycle);
   await registerBrowserRoutes(api, services, command);
   if (services.tools.machines && views)
-    await registerMachineRoutes(api, services.tools.machines, views);
+    await registerMachineRoutes(api, services.tools.machines, views, services.authentication);
   await registerRunRoutes(api, lifecycle, background, services, command);
   // Abort upstream streaming bodies before Bun waits for the HTTP server to drain.
   const stop = api.stop.bind(api);

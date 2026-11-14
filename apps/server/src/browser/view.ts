@@ -1,8 +1,10 @@
 import { connect, type Socket } from "node:net";
+import type { SessionLease } from "../auth/service";
 import { DomainError } from "../contracts";
 import type { BrowserScope, Browsers } from "./service";
 
 type View = {
+  lease?: SessionLease;
   profile_id: string;
   session_id: string;
   generation: number;
@@ -36,6 +38,7 @@ export class BrowserViews {
               request.headers.get("Origin") !== view.origin)
           )
             return new Response(null, { status: 403 });
+          await view.lease?.assert();
           await this.browsers.session(view.session_id, view.scope, view.generation);
           if (server.upgrade(request, { data: { view } })) return;
         } catch {
@@ -48,6 +51,7 @@ export class BrowserViews {
           this.#peers.add(ws);
           const check = async () => {
             try {
+              await ws.data.view.lease?.assert();
               if (Date.now() > ws.data.view.expires) throw new DomainError("UNAUTHORIZED");
               await this.browsers.session(
                 ws.data.view.session_id,
@@ -77,6 +81,7 @@ export class BrowserViews {
         },
         message: async (ws, bytes) => {
           try {
+            await ws.data.view.lease?.assert();
             await this.browsers.session(
               ws.data.view.session_id,
               ws.data.view.scope,
@@ -95,11 +100,13 @@ export class BrowserViews {
           clearInterval(ws.data.timer);
           ws.data.tcp?.destroy();
           this.#peers.delete(ws);
+          ws.data.view.lease?.release();
         },
       },
     });
   }
-  async issue(sessionId: string, scope: BrowserScope, origin: string) {
+  async issue(sessionId: string, scope: BrowserScope, origin: string, lease?: SessionLease) {
+    await lease?.assert();
     const session = await this.browsers.session(sessionId, scope);
     const port = await this.browsers.host.vncPort(session.profile_id);
     await this.browsers.session(sessionId, scope, session.generation);
@@ -109,6 +116,7 @@ export class BrowserViews {
     const ticket = `${crypto.randomUUID()}${crypto.randomUUID()}`;
     const expires = Date.now() + 60_000;
     this.#tickets.set(ticket, {
+      lease,
       session_id: sessionId,
       profile_id: session.profile_id,
       generation: session.generation,
@@ -117,6 +125,11 @@ export class BrowserViews {
       origin,
       port,
     });
+    if (lease)
+      setTimeout(() => {
+        this.#tickets.delete(ticket);
+        lease.release();
+      }, 60_000).unref();
     return {
       session_id: sessionId,
       generation: session.generation,
@@ -129,6 +142,7 @@ export class BrowserViews {
     };
   }
   async close() {
+    for (const view of this.#tickets.values()) view.lease?.release();
     this.#tickets.clear();
     for (const peer of this.#peers) peer.close();
     await this.server.stop(true);

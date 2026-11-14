@@ -1,4 +1,5 @@
 import { createApi } from "./api";
+import { Authentication } from "./auth/service";
 import { Background } from "./background";
 import { developmentConfig } from "./config";
 import { API_READINESS_GATE, CONTRACT_VERSION } from "./contracts";
@@ -20,13 +21,26 @@ import { Machines } from "./machines/service";
 import { publishRuntime } from "./runtime-record";
 import { Store } from "./store";
 
-export async function startApplication(config = developmentConfig()) {
+type ApplicationConfig = Omit<ReturnType<typeof developmentConfig>, "authentication"> & {
+  authentication?: ReturnType<typeof developmentConfig>["authentication"];
+};
+export async function startApplication(config: ApplicationConfig = developmentConfig()) {
   const store = await Store.open(config.database, config.owner_id, {
     connectionString: config.databaseUrl,
     schema: config.databaseSchema,
   });
   const cleanup: (() => Promise<unknown>)[] = [() => store.close()];
   try {
+    if (config.authentication?.schema === store.schema)
+      throw new Error("Authentication and application schemas must be separate.");
+    const authentication = config.authentication
+      ? await Authentication.open(
+          config.authentication,
+          config.databaseUrl as string,
+          config.owner_id,
+        )
+      : undefined;
+    if (authentication) cleanup.push(() => authentication.close());
     const lifecycle = await Lifecycle.open(
       store,
       config.groupRouter === "jev" ? new JevRouter(config.typesafeApiKey as string) : undefined,
@@ -74,6 +88,7 @@ export async function startApplication(config = developmentConfig()) {
     );
     cleanup.push(() => background.stop());
     const app = await createApi(lifecycle, background, config.token, {
+      authentication,
       connections: broker.connections,
       tools,
       broker,
@@ -129,6 +144,7 @@ export async function startApplication(config = developmentConfig()) {
         await machines.close();
         await Promise.allSettled([codexAccounts.close(), museAccounts.close()]);
         await httpStopped;
+        await authentication?.close();
         await store.close();
         record.remove();
       })();

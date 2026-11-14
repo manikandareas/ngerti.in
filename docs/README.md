@@ -4,7 +4,7 @@ This repository is the authority for product decisions, local backlog, implement
 
 ## Product and work
 
-- [Central server, PostgreSQL and organizations plan](architecture/server-organizations-plan-2026-11-12.md): the main November 12 design and diagrams, with [NMA-072–083](backlog/README.md#server-organizations-plan) covering auth, roles/Workgroups, private/Team agents, scoped data/execution/connections and web/Tauri delivery. NMA-072 is Done for its [verified single-owner PostgreSQL/import scope](verification/nma-072/README.md); the other new milestones remain Backlog. Further desktop-rs work is paused.
+- [Central server, PostgreSQL and organizations plan](architecture/server-organizations-plan-2026-11-12.md): the main November 12 design and diagrams, with [NMA-072–083](backlog/README.md#server-organizations-plan) covering auth, roles/Workgroups, private/Team agents, scoped data/execution/connections and web/Tauri delivery. NMA-072 is Done for its [verified single-owner PostgreSQL/import scope](verification/nma-072/README.md); NMA-073 is Done for its [verified backend authentication/headless native scope](verification/nma-073/README.md); NMA-074–083 remain Backlog. Further desktop-rs work is paused.
 
 - [All 83 feature decisions](product/feature-decisions.md), [agents/conversations/groups](product/conversations.md), [Goals and Routine](product/goals-routine.md), and [current interface](product/interface.md).
 - [Local backlog and delivery status](backlog/README.md), [feature ownership](backlog/feature-coverage.md), and [acceptance/readiness gates](development/acceptance.md).
@@ -25,6 +25,8 @@ The handoff reconciled eleven decision documents and nineteen milestone records,
 - [Goals/Routine API](architecture/goals-routines-api.md), [memory/skills](architecture/memory-skills-api.md), [workspace/artifacts](architecture/workspace-artifact-api.md), and [app connections/research/visual input](architecture/apps-research-visual-api.md).
 - [Current checked-in contract 1.32.0](contracts/1.32.0.json). Earlier bundles and versioned guides retain their original scope; authenticated `/v1/contracts` identifies the installed server's export.
 
+- [User authentication and device sessions](architecture/user-authentication.md): account-mode setup, guarded Owner bootstrap, browser HTTP/session APIs and the native OAuth/PKCE contract.
+
 ## Machine, desktop and evidence
 
 - [Shared-machine architecture](architecture/shared-machine-cua-plan-2026-11-04.md), [setup/native verification](verification/shared-machine/README.md), and [task-window cleanup](verification/shared-machine/cleanup-2026-11-04.md).
@@ -35,6 +37,6 @@ The handoff reconciled eleven decision documents and nineteen milestone records,
 - [Working files tree, local file icons and source viewer](verification/working-files-tree-2026-11-07/README.md).
 - [Research index](research/README.md), [initial NMA-060 API gate](verification/nma-060/final-cohort/README.md), [NMA-061 UI](verification/nma-061/README.md), and [NMA-062 UI](verification/nma-062/README.md).
 
-Sixteen earlier active milestones and six Desktop Rust milestones are Done for their recorded scope. NMA-072 adds the verified PostgreSQL/import foundation; NMA-073–083 remain the planned server-organizations sequence; NMA-063 full-product acceptance now depends on its focused acceptance, and NMA-064 remains distribution. Further desktop-rs work is paused. Native/provider, billing, API, browser/Tauri and installation claims retain separate evidence boundaries.
+Sixteen earlier active milestones and six Desktop Rust milestones are Done for their recorded scope. NMA-072 adds the verified PostgreSQL/import foundation; NMA-073 adds the [verified account/device-session backend](architecture/user-authentication.md); NMA-074–083 remain the planned server-organizations sequence; NMA-063 full-product acceptance now depends on its focused acceptance, and NMA-064 remains distribution. Further desktop-rs work is paused. Native/provider, billing, API, browser/Tauri and installation claims retain separate evidence boundaries.
 
 Run `make docs-check` or `bun run docs:check` to validate local links and backlog consistency. Only byte-identical registered historical captures may resolve missing targets in pinned Git trees. Current guides resolve against the working tree.

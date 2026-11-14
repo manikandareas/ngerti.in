@@ -1,4 +1,5 @@
 import { ApiError, durableCommand } from "@/lib/api-client";
+import { scopedStorageKey } from "@/lib/client-scope";
 import type { Thread } from "@/types/workspace";
 
 export type GroupDraft = { name: string; member_agent_ids: string[] };
@@ -13,7 +14,9 @@ export function groupEdit(thread: Thread): GroupEdit {
 
 export function pendingGroupEdit(id: string): GroupEdit | null {
   try {
-    const saved = JSON.parse(localStorage.getItem(journalKey(id)) ?? "null") as GroupEdit | null;
+    const saved = JSON.parse(
+      localStorage.getItem(scopedStorageKey(journalKey(id))) ?? "null",
+    ) as GroupEdit | null;
     return saved &&
       typeof saved.draft?.name === "string" &&
       Array.isArray(saved.draft.member_agent_ids) &&
@@ -30,9 +33,9 @@ export function pendingGroupEdit(id: string): GroupEdit | null {
 }
 
 export function discardGroupEdit(id: string) {
-  localStorage.removeItem(journalKey(id));
+  localStorage.removeItem(scopedStorageKey(journalKey(id)));
   for (const step of ["members", "name"])
-    localStorage.removeItem(`ngertiin:pending:${operationSlot(id, step)}`);
+    localStorage.removeItem(scopedStorageKey(`ngertiin:pending:${operationSlot(id, step)}`));
 }
 
 export function rejectedGroupEdit(error: unknown) {
@@ -53,7 +56,8 @@ export function rejectedGroupEdit(error: unknown) {
 // Name and membership use separate existing APIs; resume from the last confirmed revision.
 export async function saveGroupEdit(id: string, edit: GroupEdit) {
   let current = pendingGroupEdit(id) ?? edit;
-  const remember = () => localStorage.setItem(journalKey(id), JSON.stringify(current));
+  const remember = () =>
+    localStorage.setItem(scopedStorageKey(journalKey(id)), JSON.stringify(current));
   const confirmed = (thread: Thread) => {
     current = { ...current, base: groupEdit(thread).base };
     remember();

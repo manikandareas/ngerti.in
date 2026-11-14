@@ -16,6 +16,7 @@ import {
   type TextTable,
   tableDelimiter,
 } from "@/features/conversation/lib/table-file";
+import { downloadFile, scopedFetch } from "@/lib/client-scope";
 import type { ViewerFile } from "../lib/content-viewer";
 import { fileLanguage, isTextFile } from "../lib/file-format";
 import { MarkdownDocument } from "./answer";
@@ -44,7 +45,7 @@ export function FileContent({ file, headerInset = 0 }: { file: FileView; headerI
     setContent(null);
     const abort = new AbortController();
     let objectUrl: string | undefined;
-    void fetch(file.url, { signal: abort.signal })
+    void scopedFetch(file.url, { signal: abort.signal })
       .then(async (response) => {
         if (!response.ok)
           throw new Error("File tidak dapat dibuka. Periksa akses folder dan coba lagi.");
@@ -245,11 +246,15 @@ export function FileViewer({ file, close }: { file: FileView | null; close: () =
             <FileContent file={file} />
           </div>
         )}
-        <Button asChild variant="outline" className="self-start">
-          <a href={file?.url} download={file?.name}>
-            <HugeiconsIcon icon={Download04Icon} size={14} />
-            Unduh file
-          </a>
+        <Button
+          variant="outline"
+          className="self-start"
+          onClick={() => {
+            if (file) void downloadFile(file.url, file.name);
+          }}
+        >
+          <HugeiconsIcon icon={Download04Icon} size={14} />
+          Unduh file
         </Button>
       </DialogContent>
     </Dialog>

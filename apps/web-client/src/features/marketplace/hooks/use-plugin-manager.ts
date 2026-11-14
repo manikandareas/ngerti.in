@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useAppAuthorization } from "@/features/conversation/components/use-app-authorization";
 import { useApiResource } from "@/hooks/use-api-resource";
 import { command } from "@/lib/api-client";
+import { scopedStorageKey } from "@/lib/client-scope";
 import { isPageVisible, subscribePageVisibility } from "@/lib/page-visibility";
 import type { AppConnection } from "@/types/work";
 import type { CatalogEntry } from "../lib/catalog";
@@ -27,6 +28,14 @@ export function usePluginManager(cursor = 0) {
     };
   }, []);
   const authorization = useAppAuthorization(connections.retry);
+  const ownershipKey = scopedStorageKey("ngertiin:marketplace:ownership");
+  const [ownership, updateOwnership] = useState<"personal" | "organization">(() =>
+    sessionStorage.getItem(ownershipKey) === "organization" ? "organization" : "personal",
+  );
+  const setOwnership = (value: "personal" | "organization") => {
+    sessionStorage.setItem(ownershipKey, value);
+    updateOwnership(value);
+  };
   const [target, setTarget] = useState("");
   const [removing, setRemoving] = useState(false);
   const [error, setError] = useState("");
@@ -47,7 +56,12 @@ export function usePluginManager(cursor = 0) {
 
   function install(entry: CatalogEntry, account?: AppConnection) {
     if (authorization.integrating || removing || !connections.data || connections.error) return;
-    const current = account ?? inventory.findLast((connection) => connection.toolkit === entry.id);
+    const current =
+      account ??
+      inventory.findLast(
+        (connection) =>
+          connection.toolkit === entry.id && (connection.ownership ?? "personal") === ownership,
+      );
     if (current?.state === "active") return;
     setTarget(entry.id);
     setError("");
@@ -57,7 +71,7 @@ export function usePluginManager(cursor = 0) {
       return;
     }
     // Reuse the pending account after reload/lost acknowledgement, never create a duplicate.
-    void authorization.authorize(entry.id, entry.name, current?.id);
+    void authorization.authorize(entry.id, entry.name, current?.id, ownership);
   }
 
   async function uninstall(connection: AppConnection) {
@@ -94,6 +108,8 @@ export function usePluginManager(cursor = 0) {
 
   return {
     connections,
+    ownership,
+    setOwnership,
     authorization,
     inventory,
     removing,

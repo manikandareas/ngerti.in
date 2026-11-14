@@ -9,6 +9,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { useAccount } from "@/features/account/session";
 import { useApiResource } from "@/hooks/use-api-resource";
 import { ApiError, request } from "@/lib/api-client";
 import { isPageVisible, subscribePageVisibility } from "@/lib/page-visibility";
@@ -17,9 +18,11 @@ import type { Agent } from "@/types/workspace";
 import { MachineScreen } from "./machine-viewer";
 
 export function MachineSection({ agents, cursor }: { agents: Agent[]; cursor: number }) {
+  const scoped = useAccount()?.mode === "accounts";
   const [tick, setTick] = useState(0);
   const [open, setOpen] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [controlled, setControlled] = useState<Machine | null>(null);
   const [error, setError] = useState("");
   const resource = useApiResource<Machine>("/v1/machine", cursor + tick);
   useEffect(() => {
@@ -38,7 +41,12 @@ export function MachineSection({ agents, cursor }: { agents: Agent[]; cursor: nu
       unsubscribe();
     };
   }, []);
-  const machine = resource.data;
+  const machine =
+    controlled &&
+    (!resource.data ||
+      (controlled.id === resource.data.id && controlled.revision > resource.data.revision))
+      ? controlled
+      : resource.data;
   const human = machine?.lease.holder === "human";
   const uncertain = machine?.lease.state === "unknown";
   const activeAgent = agents.find((agent) => agent.id === machine?.lease.agent_id);
@@ -54,11 +62,12 @@ export function MachineSection({ agents, cursor }: { agents: Agent[]; cursor: nu
     setBusy(true);
     setError("");
     try {
-      await request("/v1/machine/control", {
+      const confirmed = await request<Machine>("/v1/machine/control", {
         command_id: crypto.randomUUID(),
         operation,
         expected_revision: machine.lease.revision,
       });
+      setControlled(confirmed);
       resource.retry();
     } catch (e) {
       setError(
@@ -106,7 +115,9 @@ export function MachineSection({ agents, cursor }: { agents: Agent[]; cursor: nu
         />
         <span className="text-[13px] font-medium">
           {machine?.state === "ready"
-            ? "Open shared desktop"
+            ? scoped
+              ? "Open computer"
+              : "Open shared desktop"
             : machine?.state === "unconfigured"
               ? "Desktop not set up"
               : "Desktop unavailable"}
@@ -115,12 +126,16 @@ export function MachineSection({ agents, cursor }: { agents: Agent[]; cursor: nu
       <p role="status" className="text-center text-[13px] text-muted-foreground">
         {machine?.state === "ready"
           ? label
-          : "Reconnect the local machine to continue desktop work."}
+          : scoped
+            ? "Your computer is unavailable. Try reconnecting."
+            : "Reconnect the local machine to continue desktop work."}
       </p>
-      <p className="px-1 text-[13px] leading-relaxed text-muted-foreground">
-        One desktop for you and all your agents. Browser sessions, working files, and attachment
-        copies on this machine are shared.
-      </p>
+      {!scoped && (
+        <p className="px-1 text-[13px] leading-relaxed text-muted-foreground">
+          One desktop for you and all your agents. Browser sessions, working files, and attachment
+          copies on this machine are shared.
+        </p>
+      )}
       {(error || resource.error) && (
         <p role="alert" className="text-sm text-destructive">
           {error || "Desktop status is unavailable. Reconnect and try again."}
@@ -142,10 +157,12 @@ export function MachineSection({ agents, cursor }: { agents: Agent[]; cursor: nu
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2 pr-7 text-[15px] font-medium">
               <HugeiconsIcon icon={ComputerIcon} size={17} strokeWidth={1.5} />
-              Shared desktop
+              {scoped ? "Computer" : "Shared desktop"}
             </DialogTitle>
-            <DialogDescription>
-              The same Linux desktop your agents use. Take control to click, type, or sign in.
+            <DialogDescription className={scoped ? "sr-only" : undefined}>
+              {scoped
+                ? "Your private workspace computer."
+                : "The same Linux desktop your agents use. Take control to click, type, or sign in."}
             </DialogDescription>
           </DialogHeader>
           <div className="flex flex-wrap items-center justify-between gap-2">

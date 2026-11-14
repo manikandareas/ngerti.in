@@ -1,0 +1,20 @@
+bun test v1.3.10 (30e609e0)
+
+verification/markdown-render.test.tsx:
+(pass) cached Markdown keeps plain formatting, links and GFM tables [33.50ms]
+8940 |         destroy: function (error) {
+8941 |           didFatal = !0;
+8942 |           fatalError = error;
+8943 |         }
+8944 |       });
+8945 |       if (didFatal && fatalError !== abortReason) throw fatalError;
+                                                               ^
+error: Preferences requires the application provider.
+      at renderToStringImpl (/Users/vitoandareasmanik/Development/project/ngertiin/node_modules/.bun/react-dom@19.3.1+0441d6f8f57aca1e/node_modules/react-dom/cjs/react-dom-server-legacy.browser.development.js:8945:57)
+      at <anonymous> (/private/var/folders/j1/p1582yhj20z58phnf_zrzy7w0000gn/T/ngertiin-nma080-baseline-_3je_kgu/apps/web-client/verification/markdown-render.test.tsx:32:19)
+(fail) reference detection preserves aliases, raw file IDs and explicit file links [5.28ms]
+
+ 1 pass
+ 1 fail
+ 3 expect() calls
+Ran 2 tests across 1 file. [1007.00ms]

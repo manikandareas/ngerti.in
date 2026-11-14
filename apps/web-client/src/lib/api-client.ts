@@ -1,3 +1,11 @@
+import {
+  assertScope,
+  type ClientScope,
+  clientScope,
+  scopedFetch,
+  scopedStorageKey,
+} from "./client-scope";
+
 export class ApiError extends Error {
   code: string;
   constructor(code: string, message: string) {
@@ -24,31 +32,40 @@ export async function request<T>(
   key?: string,
   signal?: AbortSignal,
   timeoutMs = body === undefined ? 15_000 : 30_000,
+  scope: ClientScope | null = clientScope(),
 ): Promise<T> {
   const deadline = new AbortController();
-  const connection = signal ? AbortSignal.any([signal, deadline.signal]) : deadline.signal;
+  const signals = [signal, deadline.signal, scope?.abort.signal].filter(
+    (value): value is AbortSignal => !!value,
+  );
+  const connection = AbortSignal.any(signals);
   const timer = setTimeout(
     () => deadline.abort(new Error("Request timed out. Reconnecting…")),
     timeoutMs,
   );
   try {
     return await withAbort(connection, async () => {
-      const response = await fetch(path, {
-        method: body === undefined ? "GET" : "POST",
-        signal: connection,
-        cache: "no-store",
-        headers:
-          body === undefined
-            ? {}
-            : { "Content-Type": "application/json", ...(key ? { "Idempotency-Key": key } : {}) },
-        body: body === undefined ? undefined : JSON.stringify(body),
-      });
+      const response = await scopedFetch(
+        path,
+        {
+          method: body === undefined ? "GET" : "POST",
+          signal: connection,
+          cache: "no-store",
+          headers:
+            body === undefined
+              ? {}
+              : { "Content-Type": "application/json", ...(key ? { "Idempotency-Key": key } : {}) },
+          body: body === undefined ? undefined : JSON.stringify(body),
+        },
+        scope,
+      );
       const value = await response.json().catch(() => {
         connection.throwIfAborted();
         if (response.ok)
           throw new ApiError("INVALID_RESPONSE", "Invalid server response. Reconnecting…");
         return null;
       });
+      assertScope(scope);
       if (!response.ok)
         throw new ApiError(
           value?.error?.code ?? "API_UNAVAILABLE",
@@ -69,7 +86,7 @@ export function pendingMessage(threadId: string): string | null {
   return pendingText(`message:${threadId}`);
 }
 export function pendingText(slot: string): string | null {
-  const saved = localStorage.getItem(`ngertiin:pending:${slot}`);
+  const saved = localStorage.getItem(scopedStorageKey(`ngertiin:pending:${slot}`));
   if (!saved) return null;
   try {
     return (JSON.parse(saved) as { body: { text: string } }).body.text;
@@ -80,14 +97,22 @@ export function pendingText(slot: string): string | null {
 
 // Persist the exact operation before sending. A lost acknowledgement reuses its body and key.
 export async function durableCommand<T>(slot: string, path: string, body: unknown): Promise<T> {
-  const storageKey = `ngertiin:pending:${slot}`;
+  const scope = clientScope();
+  const storageKey = scopedStorageKey(`ngertiin:pending:${slot}`, scope);
   const saved = localStorage.getItem(storageKey);
   const operation = saved
     ? (JSON.parse(saved) as { path: string; body: unknown; key: string })
     : { path, body, key: crypto.randomUUID() };
   localStorage.setItem(storageKey, JSON.stringify(operation));
   try {
-    const result = await request<T>(operation.path, operation.body, operation.key);
+    const result = await request<T>(
+      operation.path,
+      operation.body,
+      operation.key,
+      undefined,
+      30_000,
+      scope,
+    );
     localStorage.removeItem(storageKey);
     return result;
   } catch (error) {
@@ -126,7 +151,12 @@ export async function followEvents(
   inactivityMs = 35_000,
 ) {
   const stalled = new AbortController();
-  const connection = AbortSignal.any([signal, stalled.signal]);
+  const scope = clientScope();
+  const connection = AbortSignal.any([
+    signal,
+    stalled.signal,
+    ...(scope ? [scope.abort.signal] : []),
+  ]);
   // A proxy can leave an old response open across backend restart. Bound only
   // network waits; processing a batch must not consume the heartbeat budget.
   const receive = async <T>(operation: () => Promise<T>): Promise<T> => {
@@ -141,7 +171,7 @@ export async function followEvents(
     }
   };
   const response = await receive(() =>
-    fetch(`/v1/events/stream?after=${after}`, { signal: connection }),
+    scopedFetch(`/v1/events/stream?after=${after}`, { signal: connection }, scope),
   );
   if (!response.ok || !response.body) throw new Error("Event connection unavailable");
   const reader = response.body.getReader();

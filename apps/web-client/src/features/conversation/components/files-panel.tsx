@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { command, request } from "@/lib/api-client";
+import { downloadFile } from "@/lib/client-scope";
 import { artifactUrl } from "@/lib/workspace-files";
 import type { Artifact, Workspace } from "@/types/work";
 import type { Agent, Snapshot, Thread } from "@/types/workspace";
@@ -116,11 +117,13 @@ export function FilesPanel({
               Open {artifact.name}
             </Button>
             {active.some((w) => w.id === artifact.workspace_id) && (
-              <Button variant="outline" size="sm" asChild>
-                <a href={artifactUrl(artifact)} download={artifact.name}>
-                  <HugeiconsIcon icon={Download04Icon} size={14} strokeWidth={1.5} />
-                  Download {artifact.name}
-                </a>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => void downloadFile(artifactUrl(artifact), artifact.name)}
+              >
+                <HugeiconsIcon icon={Download04Icon} size={14} strokeWidth={1.5} />
+                Download {artifact.name}
               </Button>
             )}
             {active.some((w) => w.id === artifact.workspace_id) && (

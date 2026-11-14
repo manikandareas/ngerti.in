@@ -1,12 +1,15 @@
 import { type JSX, useRef, useState } from "react";
 import { ApiError, durableCommand } from "@/lib/api-client";
+import { scopedStorageKey } from "@/lib/client-scope";
 import type { Agent, Thread } from "@/types/workspace";
 import type { GroupDraft } from "../lib/group-edit";
 import { GroupDialog } from "./group-dialog";
 
 function savedDraft(): GroupDraft | null {
   try {
-    const value = JSON.parse(localStorage.getItem("ngertiin:pending:create-group") ?? "null");
+    const value = JSON.parse(
+      localStorage.getItem(scopedStorageKey("ngertiin:pending:create-group")) ?? "null",
+    );
     return value?.body ?? null;
   } catch {
     return null;

@@ -1,5 +1,10 @@
 export const settingsSectionIds = [
   "general",
+  "account",
+  "organization",
+  "members",
+  "workgroups",
+  "team-agents",
   "appearance",
   "conversation",
   "accessibility",

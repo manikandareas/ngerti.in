@@ -7,6 +7,7 @@ import {
   useRef,
   useState,
 } from "react";
+import { scopedFetch } from "@/lib/client-scope";
 import { artifactUrl } from "@/lib/workspace-files";
 import type { Artifact } from "@/types/work";
 import type { Snapshot } from "@/types/workspace";
@@ -55,7 +56,7 @@ export function workingFileTarget(file: ViewerFile): ViewerTarget {
     name: file.name,
     file,
     resolve: async (signal) => {
-      const response = await fetch(file.url, { signal });
+      const response = await scopedFetch(file.url, { signal });
       if (!response.ok)
         throw new Error("The working file is unavailable. Reopen it and try again.");
       const content = await readFilePreview(response, 16 * 1024 * 1024, signal);

@@ -1,6 +1,7 @@
 import { ArrowUpRight01Icon, Cancel01Icon, RotateRight01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useState } from "react";
+import { ScopedImage } from "@/components/scoped-image";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import type { ComposerAttachment } from "@/features/conversation/lib/attachment-references";
@@ -34,7 +35,7 @@ function AttachmentPreview({ file }: { file: ComposerAttachment }) {
   return (
     <div className="attachment-preview min-w-0 space-y-2">
       {image && url && (
-        <img
+        <ScopedImage
           src={url}
           alt={`Pratinjau ${file.name}`}
           className="max-h-44 max-w-full rounded-md object-contain"

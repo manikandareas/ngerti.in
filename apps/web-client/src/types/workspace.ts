@@ -9,8 +9,10 @@ import type {
   Routine,
   Workspace,
 } from "./work";
-// Consumer projections of the published Ngertiin API 1.31.0.
+// Consumer projections of the published Ngertiin API 2.1.0.
 export interface Base {
+  organization_id?: string | null;
+  actor_id?: string | null;
   id: string;
   revision: number;
   created_at: string;
@@ -48,6 +50,12 @@ export interface Message extends Base {
   purpose: string;
 }
 export interface Run extends Base {
+  provider_selection?: {
+    connection_id: string;
+    account_id: string | null;
+    model_id: string;
+    billing_source: "subscription" | "api_key";
+  } | null;
   retry_allowed?: boolean;
   retry_of_run_id?: string | null;
   retried_by_run_id?: string | null;
@@ -119,6 +127,8 @@ export interface ConversationPreviews {
   items: ConversationPreview[];
 }
 export interface Connection extends Base {
+  ownership?: "personal" | "organization";
+  audience_id?: string | null;
   harness: "codex" | "muse";
   state: string;
   account_id: string | null;

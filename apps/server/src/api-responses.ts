@@ -20,6 +20,7 @@ import {
   provisioningView,
   workgroupView,
 } from "./organizations/contracts";
+import { workspaceAccess } from "./organizations/workspace-access";
 
 const jsonSchema = z.record(z.string(), z.json());
 const skillResult = z.strictObject({ skill: schemas.skill, revision: schemas.skill_revision });
@@ -537,6 +538,7 @@ routes(
 );
 
 /** Fail closed when an added route has no reviewed response contract. */
+routes("GET", ["/v1/data/access"], workspaceAccess);
 routes(
   "POST",
   ["/v1/data/provision"],

@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { routineName } from "@/features/conversation/lib/routine-name";
 import { ApiError, durableCommand } from "@/lib/api-client";
+import { scopedStorageKey } from "@/lib/client-scope";
 import type { Goal, Routine } from "@/types/work";
 
 const stateLabels: Record<string, string> = {
@@ -23,7 +24,7 @@ type ResponsibilityControlsProps = {
 } & ({ kind: "goal"; item: Goal } | { kind: "routine"; item: Routine });
 function savedControl(slot: string): PendingControl | null {
   try {
-    const saved = localStorage.getItem(`ngertiin:pending:${slot}`);
+    const saved = localStorage.getItem(scopedStorageKey(`ngertiin:pending:${slot}`));
     return saved ? (JSON.parse(saved) as { body: PendingControl }).body : null;
   } catch {
     return null;
@@ -83,7 +84,7 @@ export function ResponsibilityControls({
           "STALE_DISPATCH",
         ].includes(failure.code)
       ) {
-        localStorage.removeItem(`ngertiin:pending:${slot}`);
+        localStorage.removeItem(scopedStorageKey(`ngertiin:pending:${slot}`));
         setPending(null);
         setError(
           failure.code === "CONFLICT"

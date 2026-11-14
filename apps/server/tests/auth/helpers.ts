@@ -10,12 +10,13 @@ import { ProductTools } from "../../src/harness/tools";
 import { fixture } from "../helpers";
 
 export const fixturePassword = "A-long-fixture-password-948!";
-export async function authFixture(deliver?: EmailDelivery) {
+export async function authFixture(deliver?: EmailDelivery, httpPort = 0) {
   const domain = await fixture();
   let api: Awaited<ReturnType<typeof createApi>>;
+  let handler = (request: Request): Response | Promise<Response> => api.handle(request);
   const edge = new Elysia()
-    .all("*", ({ request }) => api.handle(request), { parse: "none" })
-    .listen({ hostname: "127.0.0.1", port: 0 });
+    .all("*", ({ request }) => handler(request), { parse: "none" })
+    .listen({ hostname: "127.0.0.1", port: httpPort });
   const callback = Bun.serve({
     hostname: "127.0.0.1",
     port: 0,
@@ -107,6 +108,10 @@ export async function authFixture(deliver?: EmailDelivery) {
   }
   return {
     domain,
+    serve(next: typeof handler) {
+      handler = next;
+    },
+    api,
     auth,
     config,
     origin,

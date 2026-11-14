@@ -17,6 +17,10 @@ const apiProxy: ProxyOptions = {
   target,
   configure(proxy) {
     proxy.on("proxyReq", (request) => {
+      if (process.env.NGERTIIN_AUTH_MODE === "accounts") {
+        request.removeHeader("Authorization");
+        return;
+      }
       try {
         const installation = JSON.parse(
           readFileSync(resolve(stateDirectory, "installation.json"), "utf8"),
@@ -38,7 +42,7 @@ const localApiGuard: Plugin = {
   },
 };
 const guard: import("vite").Connect.NextHandleFunction = (request, response, next) => {
-  if (!/^\/(v1|health)\//.test(request.url ?? "")) return next();
+  if (!/^\/(v1|health|api\/auth)\//.test(request.url ?? "")) return next();
   const host = request.headers.host ?? "";
   const origin = request.headers.origin;
   if (
@@ -55,8 +59,8 @@ const guard: import("vite").Connect.NextHandleFunction = (request, response, nex
 
 export default defineConfig({
   plugins: [localApiGuard, pdfAssets(), fileIcons(), react(), tailwindcss()],
-  server: { proxy: { "/v1": apiProxy, "/health": apiProxy } },
-  preview: { proxy: { "/v1": apiProxy, "/health": apiProxy } },
+  server: { proxy: { "/v1": apiProxy, "/health": apiProxy, "/api/auth": apiProxy } },
+  preview: { proxy: { "/v1": apiProxy, "/health": apiProxy, "/api/auth": apiProxy } },
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),

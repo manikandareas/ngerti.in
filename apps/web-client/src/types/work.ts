@@ -110,9 +110,16 @@ export interface BrowserObservation {
   content: ({ type: "text"; text: string } | { type: "image"; data: string; mimeType: string })[];
 }
 export interface AppConnection extends Base {
+  ownership?: "personal" | "organization";
+  audience_id?: string | null;
   toolkit: string;
   state: string;
-  grants: { agent_id: string; thread_id: string; tools: string[] }[];
+  grants: {
+    agent_id: string;
+    thread_id: string | null;
+    tools: string[];
+    resources?: Record<string, (string | number | boolean)[]>;
+  }[];
 }
 export interface AppEffect extends Base {
   connection_id: string;

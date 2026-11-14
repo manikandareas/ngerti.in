@@ -4,6 +4,7 @@ import { DomainError } from "../contracts";
 import { asyncMap } from "../persistence/async-collections";
 import { OpenMediaResponseSchema } from "./protocol/stream_pb";
 import type { Machines } from "./service";
+import { viewerSessionScript } from "./viewer-transport";
 
 type Peer = {
   send(data: string | ArrayBuffer | Uint8Array): unknown;
@@ -263,6 +264,10 @@ export class MachineViews {
   async proxy(request: Request) {
     const view = await this.authorize(request);
     const { path, search } = this.path(request, view);
+    if (path === "viewer/ngertiin-session.js")
+      return new Response(viewerSessionScript, {
+        headers: { "Content-Type": "text/javascript", "Cache-Control": "no-store" },
+      });
     if (path === "viewer/ngertiin-health.js")
       return new Response(viewerHealthScript, {
         headers: { "Content-Type": "text/javascript", "Cache-Control": "no-store" },
@@ -371,7 +376,7 @@ export class MachineViews {
       return new Response(
         html.replace(
           "</head>",
-          '<link rel="stylesheet" href="./ngertiin-preview.css"><script src="./ngertiin-health.js" defer></script></head>',
+          '<script src="./ngertiin-session.js"></script><link rel="stylesheet" href="./ngertiin-preview.css"><script src="./ngertiin-health.js" defer></script></head>',
         ),
         { status: upstream.status, headers: responseHeaders },
       );

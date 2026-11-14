@@ -13,6 +13,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { downloadFile } from "@/lib/client-scope";
 import type { ContentViewer, ViewerTarget } from "../lib/content-viewer";
 import { FileTypeIcon } from "./file-type-icon";
 import { FileContent } from "./file-viewer";
@@ -93,11 +94,13 @@ export function ConversationContentViewer({ viewer }: { viewer: ContentViewer })
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             {target.file ? (
-              <DropdownMenuItem asChild>
-                <a href={target.file.url} download={target.name}>
-                  <HugeiconsIcon icon={Download04Icon} size={15} />
-                  Unduh file
-                </a>
+              <DropdownMenuItem
+                onSelect={() => {
+                  if (target.file) void downloadFile(target.file.url, target.name);
+                }}
+              >
+                <HugeiconsIcon icon={Download04Icon} size={15} />
+                Unduh file
               </DropdownMenuItem>
             ) : (
               <DropdownMenuItem onSelect={target.download}>

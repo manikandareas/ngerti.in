@@ -2,8 +2,8 @@ import type { EmailDelivery } from "../../src/auth/email";
 import { Organizations } from "../../src/organizations/service";
 import { authFixture } from "../auth/helpers";
 
-export async function organizationFixture(deliver?: EmailDelivery) {
-  const f = await authFixture(deliver);
+export async function organizationFixture(deliver?: EmailDelivery, httpPort = 0) {
+  const f = await authFixture(deliver, httpPort);
   const owner = await f.owner();
   const organizations = new Organizations(f.auth);
   async function write(

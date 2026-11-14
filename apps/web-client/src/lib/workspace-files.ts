@@ -1,4 +1,5 @@
 import { command, request } from "@/lib/api-client";
+import { assertScope, clientScope } from "@/lib/client-scope";
 import type { Artifact, Workspace } from "@/types/work";
 
 export function artifactUrl(artifact: Artifact, workspaceId = artifact.workspace_id) {
@@ -9,6 +10,7 @@ export async function uploadFile(
   file: File,
   options: { key?: string; signal?: AbortSignal } = {},
 ): Promise<Artifact> {
+  const scope = clientScope();
   if (file.size > 16 * 1024 * 1024) throw new Error("Ukuran file maksimal 16 MB.");
   const content = await new Promise<string>((resolve, reject) => {
     const reader = new FileReader();
@@ -17,6 +19,7 @@ export async function uploadFile(
     reader.readAsDataURL(file);
   });
   options.signal?.throwIfAborted();
+  assertScope(scope);
   return request<Artifact>(
     `/v1/workspaces/${workspaceId}/uploads`,
     {

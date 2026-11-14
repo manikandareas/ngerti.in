@@ -1,0 +1,139 @@
+bun test v1.3.10 (30e609e0)
+
+verification/client-scope.test.ts:
+(pass) changing server, user, organization or session aborts the previous immutable request [10.47ms]
+(pass) a lost acknowledgement retains its original private operation and cannot become another scope's submission [2.51ms]
+(pass) event resume carries the signed snapshot context and drops it at a scope boundary [10.63ms]
+(pass) external images and links receive no organization or event capability headers [0.16ms]
+(pass) an unavailable explicit connection stays selected rather than inheriting organization billing [0.12ms]
+(pass) native login forwards only signed provider parameters and accepts only the pinned callback [0.96ms]
+
+verification/event-connection.test.ts:
+(pass) a stalled open event connection is aborted so its caller can reconcile and reconnect [23.14ms]
+(pass) heartbeats keep an idle event stream alive beyond one inactivity window [70.83ms]
+
+verification/workspace-sync.test.ts:
+(pass) reconnect retires a hanging snapshot and subsequent events continue without a reload [17.55ms]
+(pass) a failed projection read automatically reconciles and reconnects from authoritative state [13.95ms]
+(pass) bounded reconciliation repairs a missed terminal event while the event stream remains open [32.81ms]
+(pass) event bursts coalesce projection reads and normal stream expiry retains the applied cursor [21.22ms]
+(pass) events arriving during an in-flight projection trigger one following refresh [28.75ms]
+(pass) retired connection callbacks and late refresh results cannot advance the new connection [24.92ms]
+(pass) foreground resume reconciles without creating another event connection [24.27ms]
+(pass) hidden presentation retires its stream and resumes from a fresh authoritative snapshot [36.37ms]
+
+verification/avatar-activity.test.ts:
+(pass) activity presentation preserves waiting, stopping and unknown while separating generation from tools [0.36ms]
+
+verification/page-visibility.test.ts:
+(pass) native window visibility initializes a background-launched WKWebView before WebKit exposes it [0.28ms]
+
+verification/inline-references.test.ts:
+(pass) durable inline references > round trips escaped labels, qualified native keys and pinned application versions [1.22ms]
+(pass) durable inline references > a mention takes routing precedence over a skill owner and survives a renamed label [0.16ms]
+(pass) durable inline references > known plain names are styled without converting paths, URLs or code [0.93ms]
+(pass) durable inline references > Markdown keeps inline code, fenced code, existing links and image content intact [0.47ms]
+(pass) durable inline references > owner and multiword aliases resolve without ambiguity or changing routing [0.31ms]
+(pass) durable inline references > verified legacy file receipts become scoped readable links while other code and links stay literal [0.11ms]
+
+verification/activity-presentation.test.ts:
+(pass) friendly activity uses observed categories and preserves stop, waiting and unknown precedence [0.15ms]
+(pass) activity follows its own latest output, keeps peers separate and never borrows another input [0.17ms]
+(pass) queued work, quiet continuations and superseded failures do not create ghost activity [0.06ms]
+(pass) an interactive group continuation anchors to the user's reply while unrelated deferred work stays quiet [0.02ms]
+(pass) handoff keeps the queued recipient visible while the parent yields
+(pass) thinking copy varies across runs and stays stable for the same run [0.33ms]
+(pass) routing copy varies by route and stays stable across repeated reads [0.51ms]
+(pass) pending product and native interactions suppress duplicate waiting activity but preserve recovery
+
+verification/request.test.ts:
+(pass) snapshot reads have a deadline even when the transport never settles [21.26ms]
+(pass) the request deadline includes reading the response body [21.20ms]
+(pass) cancelling a connection generation rejects its snapshot read immediately [0.42ms]
+(pass) invalid successful JSON is a recoverable API failure rather than a null snapshot [0.13ms]
+
+verification/working-files.test.ts:
+(pass) visible child folders are prepared before expansion [1.25ms]
+(pass) background synchronization keeps cached children visible without a loading row [0.38ms]
+(pass) file classification recognizes extensionless names and preserves the actual read path [0.25ms]
+(pass) file icons prefer exact names, parent names and compound extensions with theme overrides [0.22ms]
+(pass) source search finds literal case-insensitive matches independently of syntax tokens [0.05ms]
+(pass) folder pages append, refresh rereads the loaded prefix and failed refresh retains entries [0.59ms]
+(pass) disposing the conversation aborts in-flight directory reads without publishing late data [0.17ms]
+(pass) refresh clears focus and selection for files removed from the machine [0.26ms]
+(pass) directory names that match JavaScript object properties remain normal file paths [0.15ms]
+(pass) prefetch stays one visible level ahead and limits speculative reads [0.57ms]
+(pass) unchanged synchronization deduplicates requests and preserves the rendered snapshot [0.16ms]
+(pass) pausing cancels a warmup continuation and never restarts hidden speculative reads [0.34ms]
+(pass) synchronization removes deleted directory caches and their selected descendants [0.26ms]
+
+verification/settings-preferences.test.ts:
+(pass) corrupt, unknown-version and malformed stored preferences fall back field by field [0.34ms]
+(pass) export follows the public timeline, deduplicates overlap and omits private fields [1.53ms]
+(pass) a repeated history cursor fails rather than downloading an incomplete or looping export [0.16ms]
+(pass) cancelled export cannot publish a download [0.09ms]
+
+verification/markdown-render.test.tsx:
+(pass) cached Markdown keeps plain formatting, links and GFM tables [23.10ms]
+8940 |         destroy: function (error) {
+8941 |           didFatal = !0;
+8942 |           fatalError = error;
+8943 |         }
+8944 |       });
+8945 |       if (didFatal && fatalError !== abortReason) throw fatalError;
+                                                               ^
+error: Preferences requires the application provider.
+      at renderToStringImpl (/Users/vitoandareasmanik/Development/project/ngertiin/node_modules/.bun/react-dom@19.3.1+0441d6f8f57aca1e/node_modules/react-dom/cjs/react-dom-server-legacy.browser.development.js:8945:57)
+      at <anonymous> (/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/verification/markdown-render.test.tsx:32:19)
+(fail) reference detection preserves aliases, raw file IDs and explicit file links [4.75ms]
+
+verification/conversation-parts.test.ts:
+(pass) milestones group only across adjacent events and sequence wins over intake timestamps [0.95ms]
+(pass) Routine milestones remain separate and legacy references never become technical titles [0.30ms]
+
+verification/conversation-latency.test.ts:
+(pass) streamed text invalidates its public conversation and preview without global catalog reloads [0.54ms]
+(pass) late global responses cannot replace newer entity configuration [0.25ms]
+(pass) queue, preparation and blocked states have distinct actionable user labels
+
+verification/conversation-preparation.test.ts:
+(pass) file-reference submissions skip the status request and retain exact retry keys; uploads retain recovery [6.88ms]
+
+verification/avatar-clock.test.ts:
+(pass) modal dialogs suspend background avatars and resume the shared clock on close [1.08ms]
+
+verification/conversation-chronology.test.ts:
+(pass) calendar days follow the viewing zone, including UTC midnight and DST repeated hours [2.93ms]
+(pass) days span both authors, split at local midnight and stay stable across reloading [13.63ms]
+(pass) prepending an overlapping history page produces one divider for each contiguous day [0.13ms]
+(pass) queued intake time does not reorder published messages or determine the visible date [0.08ms]
+(pass) adjacent Goal milestones never fold across days and hidden handoffs create no dividers
+(pass) retry suppression happens before date groups so a replaced answer leaves no empty day [0.58ms]
+(pass) native cards keep verified text boundaries and introduce their own day after midnight [1.22ms]
+(pass) fallback native records share a row within a day and split across a midnight boundary [0.83ms]
+(pass) Computer stays on its start day before the next-day answer, including after completion [0.37ms]
+(pass) non-Computer activity remains after the latest public answer on that answer's day [0.05ms]
+(pass) a product card retains its request date when the decision changes or the parent predates it
+
+verification/avatar-engine.test.ts:
+(pass) Ngertiin avatar engine > seeded identities and persisted recipes reproduce exactly [134.94ms]
+(pass) Ngertiin avatar engine > rejects unsupported versions and malformed recipes at import boundaries [0.14ms]
+(pass) Ngertiin avatar engine > renders all 1280 shape/color/face combinations without invalid coordinates [3485.25ms]
+(pass) Ngertiin avatar engine > arbitrary seeds stay outside markup and rendering can use unique gradient IDs [9.07ms]
+(pass) Ngertiin avatar engine > default portraits use mouthless eyes and reject untrusted texture markup [8.72ms]
+(pass) Ngertiin avatar engine > all states and actions have finite poses and honor reduced motion [2.11ms]
+(pass) Gravity overthinking loading > one local timeline coordinates calm, intensity, recovery and reduced motion [0.23ms]
+(pass) Gravity overthinking loading > loading SVG includes both depth layers and veins without modifying the recipe [10.23ms]
+
+verification/file-preview.test.ts:
+(pass) large previews bound retained bytes and cancel the unread original [1.22ms]
+(pass) an exact-limit preview remains complete and UTF-8 bytes are preserved [1.07ms]
+(pass) cancelled scope does not publish a preview [0.18ms]
+
+1 tests failed:
+(fail) reference detection preserves aliases, raw file IDs and explicit file links [4.75ms]
+
+ 83 pass
+ 1 fail
+ 9001 expect() calls
+Ran 84 tests across 18 files. [4.86s]

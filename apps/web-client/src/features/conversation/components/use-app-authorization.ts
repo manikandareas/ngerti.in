@@ -1,5 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import { request } from "@/lib/api-client";
+import { useAccount } from "@/features/account/session";
+import type { Audience } from "@/features/account/types";
+import { durableCommand, request } from "@/lib/api-client";
+import { assertScope, clientScope } from "@/lib/client-scope";
 import type { AppConnection } from "@/types/work";
 
 const pollMs = 5000;
@@ -51,6 +54,8 @@ function reservePage() {
 }
 
 export function useAppAuthorization(refresh: () => void) {
+  const account = useAccount();
+  const scope = useRef(clientScope()).current;
   const refreshRef = useRef(refresh);
   refreshRef.current = refresh;
   const mounted = useRef(true);
@@ -113,7 +118,12 @@ export function useAppAuthorization(refresh: () => void) {
       clearTimeout(timer);
     };
   }, [polling]);
-  async function authorize(toolkit: string, name: string, id?: string) {
+  async function authorize(
+    toolkit: string,
+    name: string,
+    id?: string,
+    ownership: "personal" | "organization" = "personal",
+  ) {
     if (inFlight.current) return;
     const reserved = reservePage();
     launch.current = reserved;
@@ -125,9 +135,19 @@ export function useAppAuthorization(refresh: () => void) {
     setVerified(null);
     const createdAt = Date.now();
     try {
+      let audienceId: string | null = null;
+      if (!id && ownership === "organization") {
+        const audience = await durableCommand<{ audience: Audience }>(
+          `app-audience:${toolkit}`,
+          `/v1/organizations/${account?.organization?.id}/audiences`,
+          { mode: "all_members" },
+        );
+        audienceId = audience.audience.id;
+      }
+      assertScope(scope);
       const value = await request<{ connection: AppConnection; connect_url: string }>(
         id ? `/v1/apps/connections/${id}/reconnect` : "/v1/apps/connect",
-        id ? {} : { toolkit },
+        id ? {} : { toolkit, ownership, audience_id: audienceId },
       );
       if (!mounted.current) return;
       const url = new URL(value.connect_url);

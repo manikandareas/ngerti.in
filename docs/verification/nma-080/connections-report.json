@@ -1,0 +1,325 @@
+{
+  "config": {
+    "argv": [
+      "/Users/vitoandareasmanik/.nvm/versions/node/v25.8.0/bin/node",
+      "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/node_modules/.bin/playwright",
+      "test",
+      "--config",
+      "playwright.organizations.config.ts",
+      "--grep",
+      "Team-agent model|keyboard focus"
+    ],
+    "configFile": "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/playwright.organizations.config.ts",
+    "rootDir": "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "desktop",
+        "name": "desktop",
+        "testDir": "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "organizations.spec.ts"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "mobile",
+        "name": "mobile",
+        "testDir": "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "organizations.spec.ts"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "filteredProjects": [
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "name": "desktop",
+        "testDir": "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests",
+        "snapshotDir": "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests",
+        "testIgnore": [],
+        "testMatch": "organizations.spec.ts",
+        "timeout": 60000,
+        "use": {
+          "baseURL": "http://127.0.0.1:4320",
+          "screenshot": "only-on-failure",
+          "trace": "retain-on-failure",
+          "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.8078.4 Safari/537.36",
+          "viewport": {
+            "width": 1440,
+            "height": 1000
+          },
+          "screen": {
+            "width": 1920,
+            "height": 1080
+          },
+          "deviceScaleFactor": 1,
+          "isMobile": false,
+          "hasTouch": false,
+          "defaultBrowserType": "chromium"
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": "desktop"
+      },
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "name": "mobile",
+        "testDir": "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests",
+        "snapshotDir": "/Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests",
+        "testIgnore": [],
+        "testMatch": "organizations.spec.ts",
+        "timeout": 60000,
+        "use": {
+          "baseURL": "http://127.0.0.1:4320",
+          "screenshot": "only-on-failure",
+          "trace": "retain-on-failure",
+          "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.8078.4 Safari/537.36",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "screen": {
+            "width": 1920,
+            "height": 1080
+          },
+          "deviceScaleFactor": 1,
+          "isMobile": true,
+          "hasTouch": true,
+          "defaultBrowserType": "chromium"
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": "mobile"
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "../../docs/verification/nma-080/connections-report.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "default",
+    "updateSourceMethod": "patch",
+    "version": "1.64.1",
+    "workers": 1,
+    "webServer": {
+      "command": "bun ../../scripts/verification/nma080/browser-server.ts",
+      "url": "http://127.0.0.1:8320/health",
+      "timeout": 120000,
+      "gracefulShutdown": {
+        "signal": "SIGTERM",
+        "timeout": 30000
+      }
+    }
+  },
+  "suites": [
+    {
+      "title": "organizations.spec.ts",
+      "file": "organizations.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "a Team-agent model choice stays private to its user and conversation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 15617,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-14T16:50:27.085Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e73cfbd0adf242785189-d793700a367dea8390e7",
+          "file": "organizations.spec.ts",
+          "line": 243,
+          "column": 1
+        },
+        {
+          "title": "keyboard focus and dark responsive settings stay simple",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4635,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-14T16:50:43.517Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e73cfbd0adf242785189-87f12a876973d9ff6a92",
+          "file": "organizations.spec.ts",
+          "line": 460,
+          "column": 1
+        },
+        {
+          "title": "a Team-agent model choice stays private to its user and conversation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 15387,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-14T16:50:48.659Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e73cfbd0adf242785189-1f39e38bced09609b432",
+          "file": "organizations.spec.ts",
+          "line": 243,
+          "column": 1
+        },
+        {
+          "title": "keyboard focus and dark responsive settings stay simple",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4977,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-14T16:51:04.309Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e73cfbd0adf242785189-cb884c3d095dc8675f6b",
+          "file": "organizations.spec.ts",
+          "line": 460,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-14T16:50:22.790Z",
+    "duration": 46767.526000000005,
+    "expected": 4,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

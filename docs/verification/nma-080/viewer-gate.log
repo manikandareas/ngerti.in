@@ -1,0 +1,35 @@
+bun test v1.3.10 (30e609e0)
+
+tests/machines/authorization.test.ts:
+(pass) real user sessions resolve private machines and a copied viewer ticket cannot cross users or devices [1728.83ms]
+(pass) revoking the actual issuing login closes existing media and rejects further viewer RPCs [896.48ms]
+(pass) removing an organization member closes their already-open media and invalidates clipboard/file access [2115.21ms]
+
+tests/machines/execution-domains.test.ts:
+(pass) lazy resolution coalesces concurrent requests and persists one organization/user domain without native I/O [338.43ms]
+(pass) different humans and organizations receive different files while one human's agents cooperate [1094.89ms]
+(pass) PostgreSQL rejects a cross-domain machine reference even through the restricted application role [523.14ms]
+(pass) private uploads materialize into the resolved domain and immutable downloads survive working-copy edits [484.49ms]
+(pass) scoped resolution never returns the singleton when the operator has not enabled domain provisioning [263.06ms]
+(pass) viewer tickets reject another organization/user and read-only clipboard or filesystem RPCs [251.00ms]
+(pass) human control is session-bound and stale revisions cannot acquire or reactivate a viewer [450.92ms]
+(pass) membership or grant changes revoke existing viewers and do not resurrect a racing ticket issuance [243.09ms]
+(pass) backend restart preserves domain identity and private control credentials without provision or replacement [306.92ms]
+(pass) operator policy is explicit, bounded and private [241.14ms]
+(pass) run-tool leases restore their private domain outside the initiating request and reject foreign scope or revoked grants [2485.23ms]
+(pass) rolled-back domain metadata is not cached as a retained binding [499.85ms]
+(pass) loss of a retained private configuration requires reconciliation instead of generating replacement credentials [366.89ms]
+(pass) immutable private artifact downloads do not require reattaching a former working machine [486.63ms]
+
+tests/machines/view-sessions.test.ts:
+(pass) viewer renewals keep the gateway identity and independent consumers cannot revoke each other [348.80ms]
+(pass) a renewal racing explicit revocation never resurrects the view [331.77ms]
+
+tests/machines/viewer-transport.test.ts:
+(pass) viewer RPCs include the issuing cookie only inside their same-origin opaque gateway [5.96ms]
+(pass) viewer transport preserves a Request body and leaves device credentials to the browser [0.37ms]
+
+ 21 pass
+ 0 fail
+ 77 expect() calls
+Ran 21 tests across 4 files. [14.14s]

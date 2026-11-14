@@ -1,0 +1,47 @@
+
+Running 1 test using 1 worker
+
+(node:72509) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 [desktop] › tests/organizations.spec.ts:75:1 › guarded owner setup preserves the new workspace without AI setup (8.6s)
+
+
+  1) [desktop] › tests/organizations.spec.ts:75:1 › guarded owner setup preserves the new workspace without AI setup 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('textbox', { name: 'Pesan', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('textbox', { name: 'Pesan', exact: true }) with timeout 5000ms
+      - waiting for getByRole('textbox', { name: 'Pesan', exact: true })
+
+
+      90 |   await page.getByRole("button", { name: "Create organization", exact: true }).click();
+      91 |   const composer = page.getByRole("textbox", { name: "Pesan", exact: true });
+    > 92 |   await expect(composer).toBeVisible();
+         |                          ^
+      93 |   await expect(page.getByRole("button", { name: "Pilih model", exact: true })).toBeVisible();
+      94 |   const heading = await page.getByRole("button", { name: /^Detail / }).getAttribute("aria-label");
+      95 |   await page.reload();
+        at /Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests/organizations.spec.ts:92:26
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/organizations-guarded-owne-94c94--workspace-without-AI-setup-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/organizations-guarded-owne-94c94--workspace-without-AI-setup-desktop/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/organizations-guarded-owne-94c94--workspace-without-AI-setup-desktop/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/organizations-guarded-owne-94c94--workspace-without-AI-setup-desktop/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    [desktop] › tests/organizations.spec.ts:75:1 › guarded owner setup preserves the new workspace without AI setup 

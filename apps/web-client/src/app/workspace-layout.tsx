@@ -119,6 +119,7 @@ import {
   request,
 } from "@/lib/api-client";
 import { repairMessage } from "@/lib/api-errors";
+import { scopedStorageKey } from "@/lib/client-scope";
 import type { NativeInteractionSnapshot } from "@/types/native-interactions";
 import type {
   ConversationPart,
@@ -484,7 +485,7 @@ export default function Workspace() {
         failure instanceof ApiError &&
         ["CONFLICT", "STALE_DISPATCH", "IDEMPOTENCY_CONFLICT"].includes(failure.code)
       ) {
-        localStorage.removeItem(`ngertiin:pending:${slot}`);
+        localStorage.removeItem(scopedStorageKey(`ngertiin:pending:${slot}`));
         await refresh().catch(() => {});
       }
       throw failure;
@@ -527,7 +528,15 @@ export default function Workspace() {
     <ConversationNavigation
       loading={!workspace.navigationReady && !error}
       agents={agents}
-      threads={workspace.navigationReady ? threads : []}
+      threads={
+        workspace.navigationReady
+          ? threads.filter(
+              (thread) =>
+                thread.type === "group" ||
+                workspace.invocableAgents.some((agent) => agent.id === thread.member_agent_ids[0]),
+            )
+          : []
+      }
       activities={workspace.activity.items}
       previews={workspace.previews.items}
       threadId={threadId}
@@ -919,6 +928,8 @@ export default function Workspace() {
         agents,
         connections,
         appConnectionCursor: workspace.appConnectionCursor,
+        selections: workspace.selections,
+        allowedOrganizationConnectionIds: workspace.access?.allowed_organization_connection_ids,
         refresh,
         openAgent: (selectedAgent) => {
           const dm = threads.find(
@@ -1714,7 +1725,7 @@ export default function Workspace() {
               </SheetContent>
             </Sheet>
             <CreateGroup
-              agents={agents}
+              agents={workspace.invocableAgents}
               open={createGroupOpen && !isSecondaryScreen}
               onOpenChange={setCreateGroupOpen}
               created={async (thread) => {

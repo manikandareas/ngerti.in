@@ -1,5 +1,6 @@
 import { Kbd } from "@/components/ui/kbd";
 import { Switch } from "@/components/ui/switch";
+import { useAccount } from "@/features/account/session";
 import { ProviderDefault } from "@/features/settings/components/provider-default";
 import { SettingsRow, SettingsSection } from "@/features/settings/components/shared";
 import { ThemeSelect } from "@/features/settings/components/theme-select";
@@ -59,6 +60,7 @@ function Choice<T extends string>({
 }
 
 export function GeneralSettings() {
+  const scoped = useAccount()?.mode === "accounts";
   const { agents, connections, refresh } = useSettingsWorkspace();
   const { preferences, update } = usePreferences();
   return (
@@ -76,11 +78,13 @@ export function GeneralSettings() {
           />
         </SettingsRow>
       </SettingsSection>
-      <ProviderDefault
-        agent={agents.find((agent) => agent.system_role === "tobi")}
-        connections={connections}
-        refresh={refresh}
-      />
+      {!scoped && (
+        <ProviderDefault
+          agent={agents.find((agent) => agent.system_role === "tobi")}
+          connections={connections}
+          refresh={refresh}
+        />
+      )}
     </>
   );
 }

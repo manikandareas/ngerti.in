@@ -1,5 +1,6 @@
 import { useEffect, useSyncExternalStore } from "react";
 import { request } from "@/lib/api-client";
+import { clientScope, onScopeChange, scopedStorageKey } from "@/lib/client-scope";
 import type { MachineView } from "@/types/machine";
 
 type State = { view: MachineView | null; error: string; reconnecting: boolean };
@@ -14,6 +15,7 @@ class ComputerViewSession {
   private inFlight = false;
   private closed = false;
   private failures = 0;
+  readonly scope = clientScope();
   readonly interactive: boolean;
   readonly revision: number;
   readonly key: string;
@@ -56,11 +58,14 @@ class ComputerViewSession {
     };
   }
   private revoke(view: MachineView) {
-    void fetch(`/v1/machine/views/${view.viewer_id}`, { method: "DELETE", keepalive: true }).catch(
-      () => {},
-    );
+    void fetch(`/v1/machine/views/${view.viewer_id}`, {
+      method: "DELETE",
+      keepalive: true,
+      credentials: "same-origin",
+      headers: this.scope ? { "X-Ngertiin-Organization": this.scope.identity.organization } : {},
+    }).catch(() => {});
   }
-  private close() {
+  close() {
     this.closed = true;
     clearTimeout(this.timer);
     if (this.state.view) this.revoke(this.state.view);
@@ -76,6 +81,10 @@ class ComputerViewSession {
         const renewed = await request<{ expires_at: string }>(
           `/v1/machine/views/${previous.viewer_id}/renew`,
           {},
+          undefined,
+          undefined,
+          30_000,
+          this.scope,
         );
         if (!this.closed)
           this.publish({
@@ -84,9 +93,16 @@ class ComputerViewSession {
             reconnecting: false,
           });
       } else {
-        const view = await request<MachineView>("/v1/machine/view", {
-          interactive: this.interactive,
-        });
+        const view = await request<MachineView>(
+          "/v1/machine/view",
+          {
+            interactive: this.interactive,
+          },
+          undefined,
+          undefined,
+          30_000,
+          this.scope,
+        );
         if (this.closed) {
           this.revoke(view);
           return;
@@ -124,7 +140,7 @@ class ComputerViewSession {
   }
 }
 export function useComputerView(surface: string, interactive: boolean, revision: number) {
-  const key = `${surface}:${interactive}:${interactive ? revision : "view"}`;
+  const key = scopedStorageKey(`${surface}:${interactive}:${interactive ? revision : "view"}`);
   let session = sessions.get(key);
   if (!session) {
     session = new ComputerViewSession(interactive, revision, key);
@@ -135,3 +151,8 @@ export function useComputerView(surface: string, interactive: boolean, revision:
   useEffect(() => current.attach(), [current]);
   return { ...state, reconnect: () => void current.connect(true) };
 }
+
+onScopeChange(() => {
+  for (const session of sessions.values()) session.close();
+  sessions.clear();
+});

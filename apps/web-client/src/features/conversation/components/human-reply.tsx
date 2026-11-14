@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { ApiError, durableCommand } from "@/lib/api-client";
+import { scopedStorageKey } from "@/lib/client-scope";
 import type { HumanRequest } from "@/types/work";
 import { HumanReplyCard } from "./human-reply-card";
 
@@ -20,11 +21,11 @@ export function HumanReply({
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [uncertain, setUncertain] = useState(
-    () => localStorage.getItem(`ngertiin:pending:human:${request.id}`) !== null,
+    () => localStorage.getItem(scopedStorageKey(`ngertiin:pending:human:${request.id}`)) !== null,
   );
   useEffect(() => {
     if (request.state !== "pending")
-      localStorage.removeItem(`ngertiin:pending:human:${request.id}`);
+      localStorage.removeItem(scopedStorageKey(`ngertiin:pending:human:${request.id}`));
   }, [request.id, request.state]);
   if (request.purpose !== "approval" && !request.options) return null;
   async function submit(decision: "approve" | "reject" | null = null) {

@@ -6,6 +6,7 @@ import {
   useLayoutEffect,
   useState,
 } from "react";
+import { clientScope, scopedStorageKey } from "@/lib/client-scope";
 
 export const preferencesKey = "ngertiin:preferences:v1";
 export const defaultPreferences = {
@@ -53,7 +54,7 @@ export function parsePreferences(raw: string | null): Preferences {
 }
 function readPreferences() {
   try {
-    return parsePreferences(localStorage.getItem(preferencesKey));
+    return parsePreferences(localStorage.getItem(scopedStorageKey(preferencesKey)));
   } catch {
     return { ...defaultPreferences };
   }
@@ -67,12 +68,14 @@ const PreferencesContext = createContext<{
 } | null>(null);
 
 export function PreferencesProvider({ children }: { children: ReactNode }) {
+  const storageKey = scopedStorageKey(preferencesKey);
+  const scopePrefix = clientScope()?.key;
   const [preferences, setPreferences] = useState(readPreferences);
   const [error, setError] = useState("");
   function save(next: Preferences) {
     setPreferences(next);
     try {
-      localStorage.setItem(preferencesKey, JSON.stringify({ version: 1, ...next }));
+      localStorage.setItem(storageKey, JSON.stringify({ version: 1, ...next }));
       setError("");
     } catch {
       setError("Preferensi berlaku saat ini, tetapi belum dapat disimpan di perangkat ini.");
@@ -80,15 +83,12 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
   }
   useEffect(() => {
     const sync = (event: StorageEvent) => {
-      if (
-        event.storageArea === localStorage &&
-        (event.key === preferencesKey || event.key === null)
-      )
+      if (event.storageArea === localStorage && (event.key === storageKey || event.key === null))
         setPreferences(readPreferences());
     };
     window.addEventListener("storage", sync);
     return () => window.removeEventListener("storage", sync);
-  }, []);
+  }, [storageKey]);
   useLayoutEffect(() => {
     const root = document.documentElement;
     root.dataset.chatTextSize = preferences.textSize;
@@ -97,7 +97,8 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
     if (!preferences.persistDrafts) {
       try {
         for (const key of Object.keys(localStorage))
-          if (key.startsWith("ngertiin:draft:")) localStorage.removeItem(key);
+          if (key.startsWith(scopePrefix ? `${scopePrefix}draft:` : "ngertiin:draft:"))
+            localStorage.removeItem(key);
       } catch {
         // In-memory editing remains available without browser storage.
       }
@@ -107,6 +108,7 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
     preferences.readingWidth,
     preferences.alwaysShowActions,
     preferences.persistDrafts,
+    scopePrefix,
   ]);
   return (
     <PreferencesContext.Provider

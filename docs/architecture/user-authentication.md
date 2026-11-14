@@ -4,6 +4,12 @@ NMA-079 amendment: the [2.0.0 server-organizations consumer contract](server-org
 
 [NMA-073](../backlog/NMA-073.md) implements account authentication in the server on Bun 1.3.10, Better Auth 1.7.23, `@better-auth/oauth-provider` 1.7.23, Elysia 1.4.30 and `pg` 8.23.1. [Evidence](../verification/nma-073/README.md) distinguishes HTTP/PostgreSQL and headless native-client proof from product UI, real email-provider delivery and deployment.
 
+## Web consumer — NMA-080
+
+The web-client implements account onboarding and consumes the verified [2.1.0 contract delta](server-organizations-api.md#additive-web-consumer-delta--210). Browser credentials remain HttpOnly; private workspace reads/writes and SSE carry explicit organization context. Sign-in, invitations, password reset, browser renewal and logout retain the server's current session checks. The [NMA-080 report](../verification/nma-080/README.md) separates real HTTP/browser behavior from controlled delivery/provider adapters and native Cua observations.
+
+For the loopback Vite bridge, explicitly select `NGERTIIN_AUTH_MODE=accounts` when starting the web client. This disables development installation-bearer injection and forwards the allowlisted `/api/auth` protocol alongside `/v1`; the existing Host/Origin guard remains active. `NGERTIIN_AUTH_URL` must match the browser-visible origin. Loopback HTTP still requires the explicit development cookie exception described below. A failed account connection never chooses the local-owner profile automatically. Remote Tauri token transport remains NMA-081.
+
 ## Modes and installation boundary
 
 `NGERTIIN_AUTH_MODE=accounts` selects user/device authentication. Missing or invalid account configuration stops startup; it never falls back to installation credentials. The existing development-only bootstrap defaults to the `local-development` profile so the retained local web/Tauri client remains usable until NMA-080/081 consume the new contract. This profile is not a remote-user authentication mode. The installation bearer is rejected on normal APIs in accounts mode. Operator access remains a local CLI capability, separate from application users, run leases and scoped viewer tickets.

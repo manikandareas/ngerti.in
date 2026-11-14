@@ -12,14 +12,16 @@ import {
   Tick02Icon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { type ReactNode, useEffect, useId, useRef, useState } from "react";
+import { type ReactNode, useContext, useEffect, useId, useRef, useState } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { useAccount } from "@/features/account/session";
 import {
   type ModelMenuTypeahead,
   modelMenuKey,
   modelMenuPointerMove,
 } from "@/features/conversation/components/model-picker-keys";
 import { billingLabel, ProviderMark } from "@/features/settings/components/shared";
+import { SettingsWorkspaceContext } from "@/hooks/settings-workspace";
 import { ApiError, command, request } from "@/lib/api-client";
 import { repairMessage } from "@/lib/api-errors";
 import { cn } from "@/lib/utils";
@@ -86,7 +88,10 @@ function Mark({ connection }: { connection?: Connection }) {
 }
 
 function providerName(connection?: Connection) {
-  return connection?.harness === "muse" ? "Muse Code" : "ChatGPT";
+  const provider = connection?.harness === "muse" ? "Muse Code" : "ChatGPT";
+  return connection?.organization_id && connection.account_id
+    ? `${provider} · ${connection.account_id}`
+    : provider;
 }
 
 function unavailable(connection?: Connection) {
@@ -121,6 +126,16 @@ export function ModelPicker({
   contained = false,
   label,
 }: ModelPickerProps) {
+  const account = useAccount();
+  const workspace = useContext(SettingsWorkspaceContext);
+  const scoped = account?.mode === "accounts";
+  if (scoped && agent)
+    connections = connections.filter(
+      (connection) =>
+        connection.harness === agent.harness &&
+        (connection.actor_id !== null ||
+          workspace?.allowedOrganizationConnectionIds?.includes(connection.id)),
+    );
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [expanded, setExpanded] = useState<ReadonlySet<string>>(() => new Set());
@@ -132,9 +147,18 @@ export function ModelPicker({
   const typed = useRef<ModelMenuTypeahead | null>(null);
   const id = useId();
   const current = connections.find((item) => item.id === agent?.connection_id);
+  const runningSelection = workspace?.snapshot?.runs.find(
+    (run) =>
+      run.agent_id === agent?.id &&
+      ["dispatching", "running", "cancel_requested"].includes(run.status),
+  )?.provider_selection;
+  const runningDiffers =
+    runningSelection &&
+    (runningSelection.connection_id !== agent?.connection_id ||
+      runningSelection.model_id !== agent?.model_id);
   const currentModel = current?.models.find((item) => item.id === agent?.model_id);
   const warning =
-    unavailable(current) ??
+    (agent?.connection_id && !current ? "Koneksi pilihan tidak tersedia" : unavailable(current)) ??
     (agent?.model_id && !currentModel
       ? current?.discovery === "succeeded"
         ? "Model tidak tersedia"
@@ -199,10 +223,29 @@ export function ModelPicker({
   async function configure(changes: Record<string, unknown>, key: string, close: boolean) {
     if (!agent) return;
     await perform(key, async () => {
-      await command(`/v1/agents/${agent.id}/configuration`, {
-        expected_revision: agent.revision,
-        changes,
-      });
+      if (scoped) {
+        const thread = workspace?.snapshot?.thread.id;
+        const connectionId =
+          typeof changes.connection_id === "string" ? changes.connection_id : agent.connection_id;
+        const modelId = typeof changes.model_id === "string" ? changes.model_id : agent.model_id;
+        if (!thread || !connectionId || !modelId)
+          throw new Error("Choose an account and model first.");
+        await command("/v1/ai/selections", {
+          scope: "conversation",
+          thread_id: thread,
+          agent_id: agent.id,
+          harness: agent.harness,
+          selection: {
+            connection_id: connectionId,
+            model_id: modelId,
+            reasoning: "reasoning" in changes ? changes.reasoning : agent.reasoning,
+          },
+        });
+      } else
+        await command(`/v1/agents/${agent.id}/configuration`, {
+          expected_revision: agent.revision,
+          changes,
+        });
       await refresh();
       if (close) setOpen(false);
     });
@@ -334,6 +377,13 @@ export function ModelPicker({
           )}
           <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain">
             <div className="flex flex-col gap-0.5 p-1.5">
+              {runningDiffers && (
+                <p className="px-2 py-2 text-[12px] leading-4 text-muted-foreground">
+                  Running: {runningSelection.model_id} ·{" "}
+                  {runningSelection.account_id ?? "Selected account"} ·{" "}
+                  {billingLabel(runningSelection.billing_source)}
+                </p>
+              )}
               {!term && agent?.model_id && (
                 <>
                   <button
@@ -351,7 +401,7 @@ export function ModelPicker({
                       <span className="truncate capitalize">{agent.model_id}</span>
                       <span className={cn(meta, warning && "text-warning-foreground")}>
                         {warning ??
-                          `${providerName(current)} · ${current ? billingLabel(current.authentication.billing_source) : "Akun tidak tersedia"}`}
+                          `${current?.account_id ?? providerName(current)} · ${current ? billingLabel(current.effective_billing_source) : "Akun tidak tersedia"}`}
                       </span>
                     </span>
                     <HugeiconsIcon

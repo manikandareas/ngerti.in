@@ -1,0 +1,88 @@
+
+Running 2 tests using 1 worker
+
+(node:75896) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 [desktop] › tests/organizations-native.spec.ts:5:1 › real private Cua media, human control and logout work through the web client (59.9s)
+(node:75999) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  2 [mobile] › tests/organizations-native.spec.ts:5:1 › real private Cua media, human control and logout work through the web client (1.0m)
+
+
+  1) [desktop] › tests/organizations-native.spec.ts:5:1 › real private Cua media, human control and logout work through the web client 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: locator('[data-computer-live="true"]').first()
+    Expected: visible
+    Timeout: 45000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" locator('[data-computer-live="true"]').first() with timeout 45000ms
+      - waiting for locator('[data-computer-live="true"]').first()
+
+
+      19 |   await page.getByRole("button", { name: /^Detail / }).click();
+      20 |   await page.getByRole("tab", { name: "Computer", exact: true }).click();
+    > 21 |   await expect(page.locator('[data-computer-live="true"]').first()).toBeVisible({
+         |                                                                     ^
+      22 |     timeout: 45_000,
+      23 |   });
+      24 |   await page.getByRole("button", { name: "View desktop", exact: true }).click();
+        at /Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests/organizations-native.spec.ts:21:69
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/organizations-native-real--e0330-work-through-the-web-client-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/organizations-native-real--e0330-work-through-the-web-client-desktop/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/organizations-native-real--e0330-work-through-the-web-client-desktop/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/organizations-native-real--e0330-work-through-the-web-client-desktop/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) [mobile] › tests/organizations-native.spec.ts:5:1 › real private Cua media, human control and logout work through the web client 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: locator('[data-computer-live="true"]').first()
+    Expected: visible
+    Timeout: 45000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" locator('[data-computer-live="true"]').first() with timeout 45000ms
+      - waiting for locator('[data-computer-live="true"]').first()
+
+
+      19 |   await page.getByRole("button", { name: /^Detail / }).click();
+      20 |   await page.getByRole("tab", { name: "Computer", exact: true }).click();
+    > 21 |   await expect(page.locator('[data-computer-live="true"]').first()).toBeVisible({
+         |                                                                     ^
+      22 |     timeout: 45_000,
+      23 |   });
+      24 |   await page.getByRole("button", { name: "View desktop", exact: true }).click();
+        at /Users/vitoandareasmanik/Development/project/ngertiin/apps/web-client/tests/organizations-native.spec.ts:21:69
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/organizations-native-real--e0330-work-through-the-web-client-mobile/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/organizations-native-real--e0330-work-through-the-web-client-mobile/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/organizations-native-real--e0330-work-through-the-web-client-mobile/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/organizations-native-real--e0330-work-through-the-web-client-mobile/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2 failed
+    [desktop] › tests/organizations-native.spec.ts:5:1 › real private Cua media, human control and logout work through the web client 
+    [mobile] › tests/organizations-native.spec.ts:5:1 › real private Cua media, human control and logout work through the web client 

@@ -1,6 +1,7 @@
 // OpenMausBot 0.1.137 CodeBlock grammar/theme loading, rendered as escaped React text tokens.
 import { type CSSProperties, createElement, type ReactNode } from "react";
 import type { HighlighterCore, ThemedToken } from "shiki/core";
+import { assertScope, clientScope, onScopeChange, scopedStorageKey } from "@/lib/client-scope";
 
 const LIGHT_THEME = "github-light-default";
 const DARK_THEME = "github-dark-default";
@@ -123,7 +124,8 @@ const cache = new Map<string, { tokens: ThemedToken[][]; lines?: ReactNode[][]; 
 export const HIGHLIGHT_MAX_CHARS = 100_000;
 export async function highlightTokens(code: string, lang: string): Promise<ThemedToken[][] | null> {
   if (code.length > HIGHLIGHT_MAX_CHARS) return null;
-  const key = `${lang}:${code}`;
+  const scope = clientScope();
+  const key = scopedStorageKey(`${lang}:${code}`, scope);
   const cached = cache.get(key);
   if (cached) return cached.tokens;
   const highlighter = await getHighlighter();
@@ -132,6 +134,7 @@ export async function highlightTokens(code: string, lang: string): Promise<Theme
   const file = plain ? undefined : grammarFile(requested);
   if (!plain && !file) return null;
   if (file) await loadGrammar(highlighter, file);
+  assertScope(scope);
   const tokens = highlighter.codeToTokens(code, {
     lang: file ?? "text",
     themes: { light: LIGHT_THEME, dark: DARK_THEME },
@@ -151,11 +154,13 @@ export async function highlightTokens(code: string, lang: string): Promise<Theme
 }
 
 export async function highlightSnippet(code: string, lang: string): Promise<ReactNode[][] | null> {
-  const key = `${lang}:${code}`;
+  const scope = clientScope();
+  const key = scopedStorageKey(`${lang}:${code}`, scope);
   const cached = cache.get(key);
   if (cached?.lines) return cached.lines;
   const tokens = await highlightTokens(code, lang);
   if (!tokens) return null;
+  assertScope(scope);
   const lines = tokens.map((line) =>
     line.map((token, index) =>
       createElement(
@@ -173,3 +178,5 @@ export async function highlightSnippet(code: string, lang: string): Promise<Reac
   if (entry) entry.lines = lines;
   return lines;
 }
+
+onScopeChange(() => cache.clear());

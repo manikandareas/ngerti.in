@@ -13,11 +13,11 @@ import {
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Link, useSearch } from "@tanstack/react-router";
-
 import { useTheme } from "next-themes";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { command, request } from "@/lib/api-client";
+import { scopedStorageKey } from "@/lib/client-scope";
 import type { Agent } from "@/types/workspace";
 import {
   type AvatarAction,
@@ -70,7 +70,7 @@ const actionLabels: Record<AvatarAction, string> = {
 
 function loadConfig(): AvatarConfig {
   try {
-    const saved = localStorage.getItem(storageKey);
+    const saved = localStorage.getItem(scopedStorageKey(storageKey));
     return saved ? (parseAvatarConfig(JSON.parse(saved)) ?? initialConfig) : initialConfig;
   } catch {
     return initialConfig;
@@ -151,7 +151,7 @@ export default function AvatarStudio() {
   useEffect(() => {
     if (agentId) return;
     try {
-      localStorage.setItem(storageKey, JSON.stringify(config));
+      localStorage.setItem(scopedStorageKey(storageKey), JSON.stringify(config));
       setStorageError(false);
     } catch {
       setStorageError(true);

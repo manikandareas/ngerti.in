@@ -377,7 +377,7 @@
     "ticket": "NMA-080",
     "title": "Web onboarding, organization management and agent access UI",
     "plan": "Harness-first",
-    "status": "Backlog",
+    "status": "Done",
     "order": 16.78,
     "layer": "UI",
     "depends_on": [

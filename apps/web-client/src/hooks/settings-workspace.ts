@@ -1,4 +1,5 @@
 import { createContext, useContext } from "react";
+import type { AISelection } from "@/features/account/types";
 import type { Agent, Connection, Snapshot } from "@/types/workspace";
 
 export type SettingsWorkspace = {
@@ -6,6 +7,8 @@ export type SettingsWorkspace = {
   agents: Agent[];
   connections: Connection[];
   appConnectionCursor: number;
+  allowedOrganizationConnectionIds?: string[];
+  selections?: AISelection[];
   refresh: () => Promise<unknown>;
   openAgent: (agent: Agent) => void;
 };

@@ -1,0 +1,22 @@
+bun test v1.3.10 (30e609e0)
+
+tests/organizations/workspace-access.test.ts:
+(pass) workspace choices distinguish management visibility from current invocation grants [1200.05ms]
+
+tests/organizations/readiness.test.ts:
+(pass) every installed account surface declares authentication/scope and rejects missing credentials before input validation [888.20ms]
+(pass) normal HTTP admission and both broker executors keep two users of one Team agent private [8059.71ms]
+(pass) revoking membership during native work retains the matching cancelled outcome without late publication [2716.19ms]
+(pass) revoking membership during native work retains the matching unknown outcome without late publication [2883.12ms]
+(pass) authority replacement fences accepted scoped work and preserves the queued lane without resubmitting [2001.00ms]
+(pass) generic entity inventory and organization switches never grant another actor's private data [2789.77ms]
+(pass) concurrent scoped queries reuse their authorization fence without exhausting the auth pool [1179.16ms]
+(pass) opening a fourth private transport cannot evict another actor's active native writer [6305.99ms]
+(pass) native credential callbacks retain current resource grants after the opening browser session logs out [1750.11ms]
+(pass) commit subscribers cannot borrow the writing user's request scope [870.17ms]
+(pass) a native stop timeout still fences an unknown outcome after membership revocation [3892.66ms]
+
+ 12 pass
+ 0 fail
+ 656 expect() calls
+Ran 12 tests across 2 files. [35.46s]

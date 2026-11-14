@@ -1,0 +1,9 @@
+bun test v1.3.10 (30e609e0)
+
+tests/organizations/workspace-access.test.ts:
+(pass) workspace choices distinguish management visibility from current invocation grants [1242.02ms]
+
+ 1 pass
+ 0 fail
+ 12 expect() calls
+Ran 1 test across 1 file. [1.72s]

@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useSettingsWorkspace } from "@/hooks/settings-workspace";
 import { command, request } from "@/lib/api-client";
 import type { AppConnection } from "@/types/work";
 import type { Snapshot } from "@/types/workspace";
@@ -19,10 +20,16 @@ export function PluginAccess({
   snapshot: Snapshot;
   changed: () => void;
 }) {
-  const [agentId, setAgentId] = useState(snapshot.agents[0]?.id ?? "");
+  const workspace = useSettingsWorkspace();
+  const organizationOwned = connection.ownership === "organization";
+  const agents = organizationOwned
+    ? workspace.agents.filter((agent) => agent.organization_id && agent.actor_id === null)
+    : snapshot.agents;
+  const grantThread = organizationOwned ? null : snapshot.thread.id;
+  const [agentId, setAgentId] = useState(agents[0]?.id ?? "");
   const [editing, setEditing] = useState(connection);
   const grantsFor = (id: string) =>
-    editing.grants.find((grant) => grant.thread_id === snapshot.thread.id && grant.agent_id === id)
+    editing.grants.find((grant) => grant.thread_id === grantThread && grant.agent_id === id)
       ?.tools ?? [];
   const [selected, setSelected] = useState(() => grantsFor(agentId));
   const [query, setQuery] = useState("");
@@ -48,12 +55,12 @@ export function PluginAccess({
   }
   return (
     <section className="marketplace-access" aria-label={`Access to ${connection.toolkit}`}>
-      <h3>Conversation access</h3>
+      <h3>{organizationOwned ? "Team agent access" : "Conversation access"}</h3>
       <p className="marketplace-availability-note">
         Choose the actions your agent can use in{" "}
         {snapshot.thread.name ?? snapshot.agents[0]?.name ?? "this conversation"}.
       </p>
-      {snapshot.thread.type === "group" && (
+      {(organizationOwned || snapshot.thread.type === "group") && (
         <>
           <Label htmlFor="plugin-agent">Agent with access</Label>
           <select
@@ -67,8 +74,10 @@ export function PluginAccess({
               setQuery("");
             }}
           >
-            {snapshot.agents
-              .filter((agent) => snapshot.thread.member_agent_ids.includes(agent.id))
+            {agents
+              .filter(
+                (agent) => organizationOwned || snapshot.thread.member_agent_ids.includes(agent.id),
+              )
               .map((agent) => (
                 <option key={agent.id} value={agent.id}>
                   {agent.name}
@@ -135,25 +144,37 @@ export function PluginAccess({
       )}
       <Button
         className="self-start"
-        disabled={busy || !snapshot.thread.member_agent_ids.includes(agentId)}
+        disabled={busy || !agents.some((agent) => agent.id === agentId)}
         onClick={() =>
           void act("save", async () => {
             const grants = editing.grants.filter(
-              (grant) => !(grant.agent_id === agentId && grant.thread_id === snapshot.thread.id),
+              (grant) => !(grant.agent_id === agentId && grant.thread_id === grantThread),
             );
             if (selected.length)
-              grants.push({ agent_id: agentId, thread_id: snapshot.thread.id, tools: selected });
+              grants.push({
+                agent_id: agentId,
+                thread_id: grantThread,
+                tools: selected,
+                resources:
+                  editing.grants.find(
+                    (grant) => grant.agent_id === agentId && grant.thread_id === grantThread,
+                  )?.resources ?? {},
+              });
             const result = await command<AppConnection>(
               `/v1/apps/connections/${editing.id}/assign`,
               { expected_revision: editing.revision, grants },
             );
             setEditing(result);
-            toast.success("Conversation access updated.");
+            toast.success("Access updated.");
             changed();
           })
         }
       >
-        {operation === "save" ? "Saving…" : "Save conversation access"}
+        {operation === "save"
+          ? "Saving…"
+          : organizationOwned
+            ? "Save agent access"
+            : "Save conversation access"}
       </Button>
     </section>
   );

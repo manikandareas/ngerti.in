@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useAccount } from "@/features/account/session";
 import { useApiResource } from "@/hooks/use-api-resource";
 import type { AppEffect } from "@/types/work";
 import type { Snapshot } from "@/types/workspace";
@@ -36,6 +37,11 @@ export function PluginManagement({
   manager: PluginManager;
   snapshot: Snapshot | null;
 }) {
+  const account = useAccount();
+  const canManage = (connection: { actor_id?: string | null }) =>
+    account?.mode !== "accounts" ||
+    connection.actor_id === account.session?.user.id ||
+    !!account.access?.capabilities.manage_organization;
   const [editing, setEditing] = useState<string | null>(null);
   const accounts = manager.inventory.filter((connection) => connection.toolkit === entry.id);
   const effects = useApiResource<AppEffect[]>(
@@ -87,10 +93,13 @@ export function PluginManagement({
                 data-installed={connection.state === "active"}
               >
                 {connectionStatus(connection.state)}
+                {account?.mode === "accounts"
+                  ? ` · ${connection.ownership === "organization" ? "Organization" : "Personal"}`
+                  : ""}
               </span>
             </div>
             <div className="marketplace-plugin-account-actions">
-              {connection.state !== "active" && (
+              {canManage(connection) && connection.state !== "active" && (
                 <Button
                   variant="ghost"
                   disabled={manager.authorization.busy || Boolean(manager.connections.error)}
@@ -99,7 +108,7 @@ export function PluginManagement({
                   Check status
                 </Button>
               )}
-              {connection.state === "active" && (
+              {canManage(connection) && connection.state === "active" && (
                 <Button
                   variant="secondary"
                   aria-expanded={editing === connection.id}
@@ -113,6 +122,7 @@ export function PluginManagement({
                 variant="ghost"
                 className="text-destructive"
                 disabled={
+                  !canManage(connection) ||
                   manager.authorization.busy ||
                   manager.removing ||
                   Boolean(manager.connections.error)

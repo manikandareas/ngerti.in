@@ -1,8 +1,10 @@
 import { ApiError, request } from "@/lib/api-client";
+import { assertScope, clientScope } from "@/lib/client-scope";
 import { attachmentParts, attachmentReference } from "./attachment-references";
 
 export interface MessageSubmission {
   id: string;
+  scopeKey?: string;
   target?: "dm" | "group";
   body: {
     submission_id: string;
@@ -15,9 +17,9 @@ export interface MessageSubmission {
 }
 const DATABASE = "ngertiin-message-submissions";
 const STORE = "pending";
-async function database() {
+async function database(scopeKey = clientScope()?.key) {
   return new Promise<IDBDatabase>((resolve, reject) => {
-    const opening = indexedDB.open(DATABASE, 1);
+    const opening = indexedDB.open(scopeKey ? `${scopeKey}${DATABASE}` : DATABASE, 1);
     opening.onupgradeneeded = () => opening.result.createObjectStore(STORE);
     opening.onsuccess = () => resolve(opening.result);
     opening.onerror = () =>
@@ -27,8 +29,9 @@ async function database() {
 async function transaction<T>(
   mode: IDBTransactionMode,
   action: (store: IDBObjectStore, set: (value: T) => void) => void,
+  scopeKey = clientScope()?.key,
 ) {
-  const db = await database();
+  const db = await database(scopeKey);
   try {
     return await new Promise<T>((resolve, reject) => {
       const tx = db.transaction(STORE, mode);
@@ -51,6 +54,8 @@ export function pendingSubmission(threadId: string) {
   });
 }
 export function saveSubmission(operation: MessageSubmission) {
+  if (operation.scopeKey !== clientScope()?.key)
+    throw new Error("This submission belongs to another workspace.");
   return transaction<MessageSubmission>("readwrite", (store, set) => {
     const read = store.get(operation.body.thread_id);
     read.onsuccess = () => {
@@ -63,13 +68,17 @@ export function saveSubmission(operation: MessageSubmission) {
   });
 }
 export function clearSubmission(operation: MessageSubmission) {
-  return transaction<void>("readwrite", (store, set) => {
-    const read = store.get(operation.body.thread_id);
-    read.onsuccess = () => {
-      if (read.result?.id === operation.id) store.delete(operation.body.thread_id);
-      set(undefined);
-    };
-  });
+  return transaction<void>(
+    "readwrite",
+    (store, set) => {
+      const read = store.get(operation.body.thread_id);
+      read.onsuccess = () => {
+        if (read.result?.id === operation.id) store.delete(operation.body.thread_id);
+        set(undefined);
+      };
+    },
+    operation.scopeKey,
+  );
 }
 export function prepareSubmission(
   threadId: string,
@@ -96,6 +105,7 @@ export function prepareSubmission(
     .join("");
   return {
     id,
+    scopeKey: clientScope()?.key,
     target,
     body: {
       submission_id: id,
@@ -126,6 +136,9 @@ export async function executeSubmission(
   operation: MessageSubmission,
   progress: (id: string, state: "uploading" | "ready") => void,
 ) {
+  const scope = clientScope();
+  if (operation.scopeKey !== scope?.key)
+    throw new Error("This submission belongs to another workspace.");
   try {
     // Upload recovery needs a receipt check to avoid re-uploading committed files.
     // Without uploads, the command itself replays the durable idempotency receipt.
@@ -146,7 +159,10 @@ export async function executeSubmission(
           agent_id: operation.body.agent_id,
           name: source.file.name,
           media_type: source.file.type || "application/octet-stream",
-          content_base64: await base64(source.file),
+          content_base64: await base64(source.file).then((value) => {
+            assertScope(scope);
+            return value;
+          }),
         },
         source.id,
       );

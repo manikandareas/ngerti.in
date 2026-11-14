@@ -73,8 +73,10 @@ export async function readinessFixture(
   prompt?: HarnessClient["prompt"],
   appHost?: AppHost,
   timeouts = { request_ms: 30_000, close_ms: 1000 },
+  httpPort = 0,
+  nativeCua = false,
 ) {
-  const f = await organizationFixture();
+  const f = await organizationFixture(undefined, httpPort);
   const { lifecycle, store } = f.domain;
   await f.success(
     f.write(f.owner.cookie, "/v1/data/legacy-binding", {
@@ -85,10 +87,15 @@ export async function readinessFixture(
   const alice = await f.account("alice@example.test");
   const joined = await f.join(alice);
   const legacy = await Machines.open(lifecycle, null);
+  const domainRuntime = new DomainRuntime(
+    f.domain.dir,
+    f.domain.owner,
+    nativeCua ? { version: 1, max_domains: 2, memory_mib: 768, cpus: 1, pids: 512 } : null,
+  );
   const domains = new ExecutionDomains(
     lifecycle,
-    new DomainRuntime(f.domain.dir, f.domain.owner, null),
-    (configuration) => new ReadinessHost(configuration),
+    domainRuntime,
+    nativeCua ? undefined : (configuration) => new ReadinessHost(configuration),
   );
   const tools = await ProductTools.open(lifecycle, undefined, undefined, appHost);
   const calls: { actor: string | undefined; thread: string; input: string }[] = [];
@@ -299,6 +306,7 @@ export async function readinessFixture(
     broker,
     background,
     domains,
+    domainRuntime,
     calls,
     closedConnections,
     closedActiveConnections,
@@ -312,6 +320,21 @@ export async function readinessFixture(
       tools.revokeAll();
       await api.stop(true);
       await domains.close();
+      if (nativeCua) {
+        const domains = await f.domain.administrativeQuery(
+          "SELECT id FROM entities WHERE kind='execution_domain'",
+        );
+        for (const row of domains.rows) {
+          await domainRuntime.retire(row.id).catch(() => {});
+          for (const args of [
+            ["network", "rm", `ngertiin-domain-${row.id}-network`],
+            ["volume", "rm", `ngertiin-domain-${row.id}-home`],
+          ]) {
+            const cleanup = Bun.spawn(["docker", ...args], { stdout: "ignore", stderr: "ignore" });
+            await cleanup.exited;
+          }
+        }
+      }
       await legacy.close();
       await f.close();
       if (previousStorage === undefined) delete process.env.NGERTIIN_PROVIDER_NATIVE_STORAGE;

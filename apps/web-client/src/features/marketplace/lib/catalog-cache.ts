@@ -1,3 +1,4 @@
+import { scopedStorageKey } from "@/lib/client-scope";
 export type CatalogApp = {
   slug: string;
   name: string;
@@ -19,7 +20,7 @@ export const catalogFreshnessMs = 7 * 24 * 60 * 60 * 1000;
 const retentionMs = 30 * 24 * 60 * 60 * 1000;
 const databaseName = "ngertiin-marketplace";
 const storeName = "catalog";
-const cacheKey = "metadata-v1";
+const cacheKey = () => scopedStorageKey("ngertiin:catalog:metadata-v1");
 
 function https(value: unknown) {
   if (typeof value !== "string" || value.length > 8192) return undefined;
@@ -108,7 +109,7 @@ async function transaction<T>(
 export async function readCatalogCache(): Promise<CachedCatalog | null> {
   try {
     const value = await transaction<unknown>("readonly", (store, set) => {
-      const read = store.get(cacheKey);
+      const read = store.get(cacheKey());
       read.onsuccess = () => set(read.result);
     });
     if (!value || typeof value !== "object") return null;
@@ -153,7 +154,7 @@ export async function saveCatalogCache(
           metadataComplete,
           items: items.flatMap((item) => catalogMetadata(item) ?? []),
         } satisfies CachedCatalog,
-        cacheKey,
+        cacheKey(),
       );
       set(undefined);
     });

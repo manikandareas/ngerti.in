@@ -6,7 +6,9 @@ import {
   lazyRouteComponent,
   Outlet,
   redirect,
+  useLocation,
 } from "@tanstack/react-router";
+import { lazy, Suspense } from "react";
 import { Button } from "@/components/ui/button";
 import { validateMarketplaceSearch } from "@/features/marketplace/lib/marketplace-search";
 import {
@@ -16,8 +18,22 @@ import {
 } from "@/features/settings/lib/settings-search";
 import { type ComponentName, components } from "@/lib/component-catalog";
 
+const AccountBoundary = lazy(() => import("@/features/account/session"));
+function ApplicationRoot() {
+  const pathname = useLocation({ select: (location) => location.pathname });
+  if (["/theme-preview", "/design-system", "/assistant-studio", "/color-studio"].includes(pathname))
+    return <Outlet />;
+  return (
+    <Suspense fallback={<div role="status" aria-label="Loading workspace" />}>
+      <AccountBoundary>
+        <Outlet />
+      </AccountBoundary>
+    </Suspense>
+  );
+}
+
 const rootRoute = createRootRoute({
-  component: Outlet,
+  component: ApplicationRoot,
   notFoundComponent: () => (
     <main className="mx-auto flex min-h-svh max-w-content flex-col items-start justify-center gap-4 px-6">
       <p className="font-mono text-caption text-link">404</p>
@@ -46,6 +62,22 @@ const homeRoute = createRoute({
 const conversationRoute = createRoute({
   getParentRoute: () => homeRoute,
   path: "/",
+  component: () => null,
+});
+
+const signInRoute = createRoute({
+  getParentRoute: () => homeRoute,
+  path: "/sign-in",
+  component: () => null,
+});
+const resetPasswordRoute = createRoute({
+  getParentRoute: () => homeRoute,
+  path: "/reset-password",
+  component: () => null,
+});
+const invitationRoute = createRoute({
+  getParentRoute: () => homeRoute,
+  path: "/invitations/$invitationId",
   component: () => null,
 });
 
@@ -126,7 +158,7 @@ const designSystemRoute = createRoute({
 
 export const router = createRouter({
   routeTree: rootRoute.addChildren([
-    homeRoute.addChildren([conversationRoute]),
+    homeRoute.addChildren([conversationRoute, signInRoute, resetPasswordRoute, invitationRoute]),
     settingsRoute,
     designSystemRoute,
     themePreviewRoute,

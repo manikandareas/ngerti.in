@@ -192,3 +192,14 @@ Composio and visual inputs expose only supported capabilities. Harness vs app sk
 [Creation](../backlog/NMA-065.md), [conversation UI](../backlog/NMA-061.md), and [contextual work UI](../backlog/NMA-062.md) are completed for their recorded scope. [NMA-063](../backlog/NMA-063.md) remains Backlog for product-wide real-API desktop/mobile acceptance with both required harnesses. [NMA-064](../backlog/NMA-064.md) remains Backlog for installation after that gate.
 
 Use the [interaction/Computer implementation evidence](../verification/conversation-implementation-2026-11-06/README.md), [later refinements](../verification/conversation-followup-2026-11-06/report.html), [shared-machine verification](../verification/shared-machine/README.md) and [Tauri guide](../architecture/tauri-development.md). Screenshots/build/typecheck or a development bundle do not complete the open product/distribution gates.
+
+
+## Web organizations and account onboarding — 2026-11-15
+
+The conversation workspace remains the default. A compact organization picker sits above My agents and Team agents; only invocable Team agents appear in conversation navigation. Organization administration lives in Settings, with member, Workgroup and Team-agent controls disclosed under Organization for authorized users. Account/device controls and AI connections use the same in-place Settings surface. Avoid duplicate headings, status cards, mandatory personalization and explanatory prose that does not help the current decision.
+
+Sign-in, registration, email recovery and invitation review use simple labeled forms. The guarded initial-owner token is a secondary setup disclosure rather than a public first-signup claim. Organization creation follows the server's entitlement policy. Provisioning creates the private default agent/DM once, including when AI setup is unavailable. Invitations preserve the assigned organization, role and Workgroups.
+
+Conversation model choices and personal defaults are private; changing a Team agent's connection does not rewrite its published profile. The model menu exposes the selected account, model and effective billing, with explicit repair for unavailable choices. Marketplace retains app installation, personal/organization ownership and grants. Advanced connection/default controls appear on demand.
+
+Switching server/account/organization, logout and revocation reconcile mounted views, drafts, pending uploads/commands, caches, signed stream cursors and Computer tickets by the intended scope. Each tab retains its own organization; browser-cookie changes invalidate other tabs before another account's data is used. File previews and downloads use scoped transport. See [NMA-080](../backlog/NMA-080.md) and [its verification](../verification/nma-080/README.md). Tauri remote profiles remain NMA-081.

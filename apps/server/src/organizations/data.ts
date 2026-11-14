@@ -15,6 +15,7 @@ import { accessContext, audit, deny } from "./database";
 import { isOrganizationPath } from "./paths";
 import { Organizations } from "./service";
 import { audienceAllows } from "./workgroups";
+import { workspaceAccess } from "./workspace-access";
 
 export class ScopedData {
   readonly organizations: Organizations;
@@ -191,6 +192,14 @@ export class ScopedData {
         action,
       );
     api
+      .get("/v1/data/access", () => {
+        const scope = store.dataContext;
+        if (!scope) throw deny();
+        return workspaceAccess.parse({
+          invocable_team_agent_ids: scope.invocableAgents,
+          allowed_organization_connection_ids: scope.allowedConnections ?? [],
+        });
+      })
       .post(
         "/v1/data/provision",
         async ({ request, body }) => {

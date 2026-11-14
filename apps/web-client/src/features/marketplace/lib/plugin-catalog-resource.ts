@@ -1,4 +1,5 @@
 import { request } from "@/lib/api-client";
+import { onScopeChange } from "@/lib/client-scope";
 import {
   type CatalogApp,
   catalogFreshnessMs,
@@ -27,13 +28,14 @@ let staged = new Map<string, CatalogApp>();
 let cursor: string | undefined;
 let inFlight: Promise<void> | null = null;
 let hydrated = false;
+let generation = 0;
 
 function publish(value: Snapshot) {
   snapshot = value;
   for (const listener of listeners) listener();
 }
 
-async function readCatalog() {
+async function readCatalog(version: number) {
   publish({ ...snapshot, busy: true, error: "" });
   const visited = new Set<string>();
   let metadataComplete = snapshot.metadataComplete;
@@ -50,6 +52,7 @@ async function readCatalog() {
         undefined,
         30_000,
       );
+      if (version !== generation) return;
       for (const value of page.items) {
         const app = catalogMetadata(value);
         if (app) staged.set(app.slug, app);
@@ -60,6 +63,7 @@ async function readCatalog() {
   } catch {
     failure = "Could not load the complete catalog. Your loaded plugins are still available.";
   }
+  if (version !== generation) return;
   const items = [...staged.values()];
   const completedAt = failure ? 0 : Date.now();
   const retainingCache = Boolean(failure && snapshot.completedAt);
@@ -77,10 +81,12 @@ function load(force = false) {
   // Once requested, finish warming the public catalog even if its screen closes.
   // Connection/account status remains a separate uncached resource.
   if (inFlight) return;
+  const version = generation;
   inFlight = (async () => {
     if (!hydrated) {
       hydrated = true;
       const cached = await readCatalogCache();
+      if (version !== generation) return;
       if (cached)
         publish({
           items: cached.items,
@@ -104,9 +110,9 @@ function load(force = false) {
       cursor = undefined;
       snapshot = { ...snapshot, metadataComplete: true };
     }
-    await readCatalog();
+    await readCatalog(version);
   })().finally(() => {
-    inFlight = null;
+    if (version === generation) inFlight = null;
   });
 }
 
@@ -131,3 +137,12 @@ export const pluginCatalogResource = {
     load(true);
   },
 };
+
+onScopeChange(() => {
+  generation++;
+  staged = new Map();
+  cursor = undefined;
+  inFlight = null;
+  hydrated = false;
+  publish({ items: [], busy: true, error: "", metadataComplete: true, completedAt: 0 });
+});

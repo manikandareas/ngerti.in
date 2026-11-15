@@ -10,12 +10,9 @@
     "lint": "biome check .",
     "format": "biome check --write .",
     "preview": "vite preview",
-    "test:e2e": "bun run build && playwright test",
+    "test:e2e": "bun run build && bun ../../scripts/verification/nma072/run-tests.ts ../../scripts/verification/accounts-only/browser.test.ts",
     "test:avatar": "bun test verification/avatar-engine.test.ts && bun run build && playwright test --config playwright.avatar.config.ts",
-    "test:conversation": "bun run build && playwright test --config playwright.conversation.config.ts",
-    "test:work": "bun run build && playwright test --config playwright.work.config.ts",
-    "test:viewer": "bun run build && playwright test --config playwright.viewer.config.ts",
-    "test:machine": "bun run build && playwright test --config playwright.machine.config.ts"
+    "test:organizations": "bun run test:e2e"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",

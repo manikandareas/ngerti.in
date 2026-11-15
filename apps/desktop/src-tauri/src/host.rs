@@ -1,8 +1,8 @@
 use crate::{
+    desktop_session::DesktopSession,
     gateway::{self, Gateway},
     log::Log,
     profile::{self, Profile, RuntimePaths, private_json, write_private},
-    supervisor::Supervisor,
 };
 use anyhow::{Context, Result};
 use fs2::FileExt;
@@ -25,7 +25,7 @@ use tauri::{
 };
 
 pub struct Host {
-    pub supervisor: Arc<Supervisor>,
+    pub session: Arc<DesktopSession>,
     pub gateway: Gateway,
     pub home: PathBuf,
     pub quitting: AtomicBool,
@@ -70,32 +70,11 @@ pub fn setup(app: &mut tauri::App) -> Result<()> {
         return Ok(());
     }
     let paths = RuntimePaths::resolve(&profile, &app.path().resource_dir()?)?;
-    let environment = if profile.mode == profile::ProfileMode::Remote {
-        std::collections::HashMap::new()
-    } else {
-        profile.environment(&paths.bun)?
-    };
-    let mut secrets: Vec<String> = environment
-        .iter()
-        .filter(|(key, _)| {
-            let key = key.to_lowercase();
-            ["key", "token", "secret", "pass"]
-                .iter()
-                .any(|word| key.contains(word))
-        })
-        .map(|(_, value)| value.clone())
-        .collect();
-    if profile.mode == profile::ProfileMode::LocalDevelopment
-        && let Ok(value) =
-            private_json::<serde_json::Value>(&profile.state_directory.join("installation.json"))
-        && let Some(token) = value["token"].as_str()
-    {
-        secrets.push(token.into());
-    }
+    let secrets = Vec::<String>::new();
     let log = Log::new(&home, secrets);
-    let supervisor = Supervisor::new(profile, paths, log.clone())?;
+    let session = DesktopSession::new(profile, paths, log.clone())?;
     let gateway = tauri::async_runtime::block_on(gateway::start(
-        supervisor.clone(),
+        session.clone(),
         Some(app.handle().clone()),
     ))?;
     let origin = gateway.origin.clone();
@@ -111,7 +90,7 @@ pub fn setup(app: &mut tauri::App) -> Result<()> {
     let native_data = home.join("webkit");
     profile::prepare_home(&native_data)?;
     app.manage(Host {
-        supervisor: supervisor.clone(),
+        session: session.clone(),
         gateway,
         home,
         quitting: AtomicBool::new(false),
@@ -127,7 +106,7 @@ pub fn setup(app: &mut tauri::App) -> Result<()> {
     let download_log = log.clone();
     let initial_url = format!(
         "{origin}{}",
-        supervisor.profile.initial_path.as_deref().unwrap_or("/")
+        session.profile.initial_path.as_deref().unwrap_or("/")
     );
     let mut builder = WebviewWindowBuilder::new(app, "main", WebviewUrl::External(initial_url.parse()?))
         .title("Ngertiin")
@@ -138,7 +117,7 @@ pub fn setup(app: &mut tauri::App) -> Result<()> {
         .data_directory(native_data)
         .data_store_identifier(data_store)
         .disable_drag_drop_handler()
-        .initialization_script(include_str!("bridge.js").replace("__NGERTIIN_REMOTE__", if supervisor.remote.is_some() { "true" } else { "false" }))
+        .initialization_script(include_str!("bridge.js"))
         .on_navigation(move |url| {
             if url.origin().ascii_serialization() == navigation_origin || trusted_blob(url, &navigation_origin) {
                 return true;
@@ -152,7 +131,7 @@ pub fn setup(app: &mut tauri::App) -> Result<()> {
                 let app = popup_app.clone();
                 tauri::async_runtime::spawn(async move {
                     if let Err(error) = download(&app, &url).await {
-                        app.state::<Host>().supervisor.log.event(
+                        app.state::<Host>().session.log.event(
                             "desktop.download.failed",
                             json!({"error": error.to_string()}),
                         );
@@ -190,16 +169,16 @@ pub fn setup(app: &mut tauri::App) -> Result<()> {
         })
         .on_page_load(|window, payload| {
             if payload.event() == tauri::webview::PageLoadEvent::Started {
-                let supervisor = window.state::<Host>().supervisor.clone();
+                let session = window.state::<Host>().session.clone();
                 tauri::async_runtime::spawn(async move {
-                    supervisor.release_views().await;
+                    session.release_views().await;
                 });
             }
             if payload.event() == tauri::webview::PageLoadEvent::Finished {
                 let host = window.state::<Host>();
-                let visible = host.supervisor.visible.load(Ordering::Acquire);
+                let visible = host.session.visible.load(Ordering::Acquire);
                 let _ = window.eval(format!("window.__ngertiinDesktopVisibility?.({visible})"));
-                let log = host.supervisor.log.clone();
+                let log = host.session.log.clone();
                 let _ = window.eval_with_callback("JSON.stringify({ready:document.readyState,hidden:document.hidden,online:navigator.onLine,bridge:!!window.ngertiinDesktop})", move |result| { log.event("desktop.webview.ready", json!({"diagnostic":result})); });
             }
         });
@@ -231,23 +210,7 @@ pub fn setup(app: &mut tauri::App) -> Result<()> {
     app.show()?;
     window.show()?;
     window.set_focus()?;
-    log.event("desktop.started", json!({"framework": "tauri", "version": tauri::VERSION, "packaged": supervisor.paths.packaged}));
-    if supervisor.remote.is_none() {
-        tauri::async_runtime::spawn(async move {
-            supervisor.start().await;
-            let machine = supervisor.clone();
-            tokio::spawn(async move {
-                machine.start_machine().await;
-            });
-            loop {
-                tokio::time::sleep(std::time::Duration::from_secs(5)).await;
-                supervisor.check().await;
-                if supervisor.status().await.state == "stopped" {
-                    break;
-                }
-            }
-        });
-    }
+    log.event("desktop.started", json!({"framework": "tauri", "version": tauri::VERSION, "packaged": session.paths.packaged}));
     signals(app.handle());
     Ok(())
 }
@@ -261,9 +224,9 @@ pub fn show(app: &tauri::AppHandle) {
         let _ = window.set_focus();
         visibility(app, true);
         if let Some(host) = app.try_state::<Host>() {
-            let supervisor = host.supervisor.clone();
+            let session = host.session.clone();
             tauri::async_runtime::spawn(async move {
-                supervisor.check().await;
+                let _ = session.remote.metadata().await;
             });
         }
     }
@@ -273,7 +236,7 @@ pub fn visibility(app: &tauri::AppHandle, visible: bool) {
     let Some(host) = app.try_state::<Host>() else {
         return;
     };
-    let changed = host.supervisor.visible.swap(visible, Ordering::AcqRel) != visible;
+    let changed = host.session.visible.swap(visible, Ordering::AcqRel) != visible;
     if !changed {
         return;
     }
@@ -281,9 +244,9 @@ pub fn visibility(app: &tauri::AppHandle, visible: bool) {
         let _ = window.eval(format!("window.__ngertiinDesktopVisibility?.({visible})"));
     }
     if !visible {
-        let supervisor = host.supervisor.clone();
+        let session = host.session.clone();
         tauri::async_runtime::spawn(async move {
-            supervisor.release_views().await;
+            session.release_views().await;
         });
     }
 }
@@ -307,10 +270,10 @@ pub fn quit(app: &tauri::AppHandle) {
     let app = app.clone();
     tauri::async_runtime::spawn(async move {
         let host = app.state::<Host>();
-        host.supervisor.stop().await;
+        host.session.stop().await;
         host.gateway.shutdown.cancel();
         host.finished.store(true, Ordering::Release);
-        host.supervisor.log.event("desktop.stopped", json!({}));
+        host.session.log.event("desktop.stopped", json!({}));
         app.exit(0);
     });
 }
@@ -420,7 +383,6 @@ fn menus(app: &tauri::App) -> Result<()> {
         .build()?;
     let development = SubmenuBuilder::new(app, "Development")
         .text("reconnect", "Reconnect Workspace")
-        .text("machine", "Start Shared Desktop")
         .text("logs", "Open Desktop Logs")
         .text("data", "Open Data Folder")
         .build()?;
@@ -458,22 +420,16 @@ fn menus(app: &tauri::App) -> Result<()> {
             }
         }
         "reconnect" => {
-            let supervisor = app.state::<Host>().supervisor.clone();
+            let session = app.state::<Host>().session.clone();
             tauri::async_runtime::spawn(async move {
-                supervisor.start().await;
-            });
-        }
-        "machine" => {
-            let supervisor = app.state::<Host>().supervisor.clone();
-            tauri::async_runtime::spawn(async move {
-                supervisor.start_machine().await;
+                let _ = session.remote.metadata().await;
             });
         }
         "logs" => {
             let _ = open::that_detached(app.state::<Host>().home.join("tauri.log"));
         }
         "data" => {
-            let _ = open::that_detached(&app.state::<Host>().supervisor.profile.state_directory);
+            let _ = open::that_detached(&app.state::<Host>().home);
         }
         _ => {}
     });
@@ -604,7 +560,7 @@ async fn download(app: &tauri::AppHandle, url: &url::Url) -> Result<()> {
         let _ = tokio::fs::remove_file(&path).await;
     }
     result?;
-    host.supervisor
+    host.session
         .log
         .event("desktop.download.finished", json!({"success": true}));
     Ok(())

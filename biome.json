@@ -3,8 +3,8 @@
   "files": {
     "includes": [
       "apps/web-client/**",
-      "apps/desktop-rs/scripts/**",
-      "apps/desktop-rs/package.json",
+      "scripts/development.ts",
+      "scripts/verification/accounts-only/**",
       "!apps/web-client/dist",
       "!apps/web-client/node_modules"
     ]

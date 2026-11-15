@@ -1,0 +1,21 @@
+bun test v1.3.10 (30e609e0)
+
+tests/bootstrap.test.ts:
+{"event":"foundation.started","url":"http://127.0.0.1:59284","identity_file":"/var/folders/j1/p1582yhj20z58phnf_zrzy7w0000gn/T/ngertiin-bootstrap-L0e91y/installation.json","registered_executors":2,"api_readiness_gate":"ready"}
+{"event":"foundation.started","url":"http://127.0.0.1:59293","identity_file":"/var/folders/j1/p1582yhj20z58phnf_zrzy7w0000gn/T/ngertiin-bootstrap-L0e91y/installation.json","registered_executors":2,"api_readiness_gate":"ready"}
+(pass) account bootstrap rejects installation credentials and preserves verified sessions across restart [1381.68ms]
+
+tests/auth/schema.test.ts:
+(pass) retained authentication schema exactly matches the pinned plugins [161.09ms]
+
+tests/auth/namespace.test.ts:
+(pass) provider queries and schema inspection use the explicit auth namespace across pooled search paths [601.68ms]
+
+tests/auth/development.test.ts:
+(pass) development always enables accounts, retains its secret and delivers private local email without Resend [14.93ms]
+(pass) production never generates secrets or accepts a local email inbox [1.59ms]
+
+ 5 pass
+ 0 fail
+ 43 expect() calls
+Ran 5 tests across 4 files. [3.01s]

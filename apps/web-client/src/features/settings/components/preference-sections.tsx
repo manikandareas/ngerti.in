@@ -1,10 +1,7 @@
 import { Kbd } from "@/components/ui/kbd";
 import { Switch } from "@/components/ui/switch";
-import { useAccount } from "@/features/account/session";
-import { ProviderDefault } from "@/features/settings/components/provider-default";
 import { SettingsRow, SettingsSection } from "@/features/settings/components/shared";
 import { ThemeSelect } from "@/features/settings/components/theme-select";
-import { useSettingsWorkspace } from "@/hooks/settings-workspace";
 import { type Preferences, usePreferences } from "@/hooks/use-preferences";
 
 type ToggleKey = {
@@ -60,32 +57,21 @@ function Choice<T extends string>({
 }
 
 export function GeneralSettings() {
-  const scoped = useAccount()?.mode === "accounts";
-  const { agents, connections, refresh } = useSettingsWorkspace();
   const { preferences, update } = usePreferences();
   return (
-    <>
-      <SettingsSection title="Saat aplikasi dibuka">
-        <SettingsRow title="Percakapan awal">
-          <Choice
-            label="Percakapan awal"
-            value={preferences.startup}
-            options={[
-              { value: "last", label: "Percakapan terakhir" },
-              { value: "tobi", label: "Agent awal" },
-            ]}
-            onChange={(value) => update("startup", value)}
-          />
-        </SettingsRow>
-      </SettingsSection>
-      {!scoped && (
-        <ProviderDefault
-          agent={agents.find((agent) => agent.system_role === "tobi")}
-          connections={connections}
-          refresh={refresh}
+    <SettingsSection title="Saat aplikasi dibuka">
+      <SettingsRow title="Percakapan awal">
+        <Choice
+          label="Percakapan awal"
+          value={preferences.startup}
+          options={[
+            { value: "last", label: "Percakapan terakhir" },
+            { value: "tobi", label: "Agent awal" },
+          ]}
+          onChange={(value) => update("startup", value)}
         />
-      )}
-    </>
+      </SettingsRow>
+    </SettingsSection>
   );
 }
 

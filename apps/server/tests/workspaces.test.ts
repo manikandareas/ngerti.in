@@ -13,12 +13,12 @@ import {
 } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { createApi } from "../src/api";
 import { Artifacts } from "../src/artifacts";
 import { Background } from "../src/background";
 import type { Entity } from "../src/contracts";
 import { ProductTools } from "../src/harness/tools";
 import { fixture } from "./helpers";
+import { fixtureApi as createApi } from "./http-fixture";
 
 let f: Awaited<ReturnType<typeof fixture>>;
 afterEach(async () => await f?.close());

@@ -78,7 +78,7 @@ test.skipIf(process.env.NGERTIIN_NMA079_NATIVE !== "1")("real account-mode admis
     await f.success(f.write(f.owner.cookie, "/v1/data/legacy-binding", { organization_id: f.initial.organization.id, legacy_owner_id: f.domain.owner }));
     const member = await f.account("native-member@example.test");
     await f.join(member);
-    api = await createApi(lifecycle, background, "n".repeat(64), { authentication: f.auth, tools, connections: broker.connections, broker });
+    api = await createApi(lifecycle, background, { authentication: f.auth, tools, connections: broker.connections, broker });
     const audience = (await f.success(f.write(f.owner.cookie, `${f.path}/audiences`, { mode: "all_members" }))).audience;
     for (const harness of ["codex", "muse"] as const) {
       if (process.env.NGERTIIN_NMA079_HARNESS && process.env.NGERTIIN_NMA079_HARNESS !== harness) continue;

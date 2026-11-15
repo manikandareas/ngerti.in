@@ -488,7 +488,9 @@ test("guarded legacy binding backfills retained private entities/events and bloc
   await f.join(alice);
   const body = { organization_id: f.initial.organization.id, legacy_owner_id: f.domain.owner };
   expect((await f.write(alice.cookie, "/v1/data/legacy-binding", body)).status).toBe(403);
-  expect((await request(alice.cookie, "/v1/entities/agent")).status).toBe(403);
+  expect(await f.success(request(alice.cookie, "/v1/entities/agent"))).toEqual([]);
+  const privateDefault = await f.success(request(alice.cookie, "/v1/data/provision", {}));
+  expect(privateDefault.agent_id).not.toBe(f.domain.agent.id);
   const before = await f.domain.store.get("agent", f.domain.agent.id);
   await f.domain.admit("Retained unfinished work");
   await f.domain.bind();

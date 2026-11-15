@@ -1,72 +1,34 @@
 # Tauri development application
 
-November 15 amendment: [NMA-081](../backlog/NMA-081.md) implements an explicit remote-client mode with native browser login, Keychain renewal and independent server lifecycle. See the [remote-client contract](tauri-remote-client.md) and [verification](../verification/nma-081/README.md) for setup, current results and remaining conditions. The local supervision and installation-token behavior below describes the explicitly selected local-development mode.
-
-Date: 2026-11-05. Tauri is the sole desktop implementation following the user-authorized removal of Electron and the legacy `apps/web` workspace. This is a macOS ARM64 development application; it does not close NMA-063/NMA-064 or establish production distribution readiness. The Bun backend remains the sole application lifecycle authority.
+The November 15 owner instruction makes account authentication the sole supported path. Tauri is an account client of the server, including the loopback server started by `bun dev`. The launcher owns development processes; quitting the client leaves server work alive. The local supervisor and installation-token gateway are removed. See [account sessions](tauri-remote-client.md) and [current verification](../verification/accounts-only-2026-11-15/README.md).
 
 ## Run and build
 
-From the repository root, with Bun 1.3.10, Rust stable (minimum 1.90), and Xcode Command Line Tools installed:
+Requirements: Bun 1.3.10, PostgreSQL, Rust stable (minimum 1.90) and Xcode Command Line Tools.
 
 ```sh
 bun install --frozen-lockfile
-bun run setup:desktop
-bun run dev:desktop
+bun dev
 ```
 
-The launcher locates Cargo on PATH or at `~/.cargo/bin/cargo`. It builds/stages assets, starts Vite, then launches the Rust host with UI HMR. Restart the command after Rust/backend changes. Run only one host per desktop profile.
+The launcher builds shared assets, starts API/Vite, opens Tauri and starts the local email inbox. Defaults are API port 8000, web/auth origin 3001 and inbox 8025. Occupied ports fail visibly; another process is never reused or stopped. The persistent desktop profile is `.dev/development-client`. Sign up and open the inbox to verify the email. The first verified local account becomes Owner and can create an organization. Other accounts use ordinary invitations and permissions.
 
-To create the local application:
+`bun run dev:api` and `bun run dev:web-client` start individual services. A standalone native client uses one account-server profile:
 
 ```sh
+NGERTIIN_DESKTOP_HOME="/absolute/private/account-profile" bun run setup:desktop -- --server https://ngertiin.example.com
+NGERTIIN_DESKTOP_HOME="/absolute/private/account-profile" bun run dev:desktop
 bun run package:desktop
-open "apps/desktop/src-tauri/target/release/bundle/macos/Ngertiin Tauri.app"
 ```
 
-The package includes the Rust host, target-specific Bun executable, existing backend source, required production dependencies, and built UI assets from `apps/web-client`. Staging uses `.dev/tauri-stage`. The filtered production dependency closure uses Bun’s hoisted layout and a materialized avatar workspace package so the bundle does not depend on hidden `.bun` directories or workspace directory symlinks. Packaging then starts the shipped Bun/backend with isolated temporary state and no credentials and checks authenticated readiness. No repository `.env`, credentials, installation database, machine state, or profile is bundled. The packaged application references external development state/configuration and existing Codex/Muse executables. It is not a fresh-device installer.
+Version-2 profiles identify one server, native manager, private UI port and UI source root. They contain no backend environment, state directory, provider executable or installation credential. Version-1 profiles, Keychain entries, server records and installed applications are preserved; use a new profile for this client.
 
-The default Tauri profile is `~/Library/Application Support/Ngertiin Tauri/profile.json`. Setup preserves existing profiles and references `.dev/harness-first` and `.env` by default. Its new manager UUID and stable UI port provide separate WKWebView storage. On macOS 14+, the UUID also identifies the native WebKit data store. An explicit absolute `NGERTIIN_DESKTOP_HOME` overrides the home for setup and launch; set `NGERTIIN_STATE_DIR` during setup to select separate backend data.
+Debug builds permit explicit IPv4 loopback HTTP for development. Release clients require canonical HTTPS and certificate/hostname validation. Both use the same PKCE, account/device sessions and organization authorization.
 
-Plain Tauri text drafts survive a full Quit/relaunch. Files and pending upload/submission operations retain the existing IndexedDB mechanism. The TypeScript helpers in `apps/desktop/scripts/profile.ts` provide setup and tooling validation; the Rust host owns runtime profile validation and supervision.
+## Lifecycle and packaging
 
-Electron source, dependencies, scripts and tests have been removed. Its historical profile and any separately installed application are untouched; browser storage is not imported into WebKit. The retired implementation is available at Git revision `6de957e7145c0367a52b10f5fd19bbd91c50e458`. See [historical recovery](../development/history.md) for its retired architecture guide and [original trial evidence](../verification/tauri-development/README.md) for its recorded scope.
+Native code owns the narrow gateway, PKCE callback, renewal/Keychain storage, downloads and presentation-scoped Computer viewers. Close/hide/reload/Quit retire only this client's streams and viewers. Server responsibilities and other clients remain independent. Explicit Ctrl+C in `bun dev` stops the processes owned by that development command.
 
-## Runtime and lifecycle
+The bundle contains the Rust client and built web assets without a Bun sidecar, backend source/dependencies, private configuration or credentials. Asset preparation removes obsolete generated sidecar staging. Shared UI has HMR; Rust/backend changes require restarting their owning development command.
 
-The host owns one main WKWebView and an asynchronous Rust loopback gateway. Existing React screens, full-screen Settings, Details/Library/Computer, API/event contracts, model/authentication semantics and product tools remain on their existing paths. No domain backend was rewritten in Rust. Settings uses the shared web-client screen and device-local preferences at the saved profile origin; its [November 11 specification](../product/interface.md#web-and-tauri-settings--2026-11-11) defines the supported controls and preserved return context.
-
-| Action | Behavior |
-| --- | --- |
-| Launch | Authenticate and attach to a compatible discovered backend, or start one owned Bun backend. The backend authority lock remains independent. |
-| Second launch | A private host lock prevents a second UI authority and requests focus at the saved origin. |
-| Close / Hide / Minimize | Suspend UI presentation and avatar animation; retire projection events/polling; revoke this host’s viewer tickets and release only its exact current human-control revision. Backend work continues. |
-| Reopen / Wake | Restore native visibility, read authoritative workspace state and reconnect events; do not resubmit prompts. |
-| Reload | Keep backend alive, revoke prior viewer tickets, preserve stable-origin browser storage. |
-| Backend exit | Bounded restart with backend receipt recovery. An unresponsive live authority is not replaced blindly. |
-| Quit | Gracefully stop only owned services, with a bounded shutdown. An external backend is left alive. Goal/Routine definitions are retained. |
-| OS sleep / forced exit | Sleep handback is best effort. Local work cannot execute during physical sleep; forced exit does not prove clean native cancellation. |
-
-The existing retained Cua machine is started when configured, never provisioned, deleted or stopped by desktop Quit. Its viewer still uses the existing ticketed media protocol and separate media listener. No extra browser engine or noVNC viewer is introduced. The foreground lease is learned from authenticated `/v1/machine/view` responses, rather than trusting a renderer report. Native callbacks revoke tracked tickets even when JavaScript is suspended.
-
-## Presentation changes
-
-- One shared native/browser visibility subscription suspends avatars, workspace events and Computer polling/viewers while hidden. Resume reconciles authoritative state. WKWebView native visibility handles background-launch `document.hidden` behavior.
-- Streaming interpolation is bounded to 60 ms; existing event projection batching remains 40 ms. Final/history/reduced-motion text bypasses interpolation. This is a scheduling bound, not a measured end-to-end latency guarantee.
-- Text previews retain at most 128 KiB plus one detection byte and cancel the remaining response. Unsupported preview formats cancel their body. Full downloads retain their original bytes; raster previews still use the existing image path.
-- Plain text drafts use persistent localStorage in addition to sessionStorage; attachment state retains its prior rules.
-
-Historical Markdown memoization, event coalescing and avatar texture caching are reused. There is no React rewrite, new global state manager, or new per-token native IPC channel. Content-heavy first-open work remains a profiling opportunity.
-
-## Native boundary
-
-The gateway binds only to `127.0.0.1` at a saved UI port. It validates Host/Origin/fetch metadata, blocks path traversal, injects installation authentication in Rust, and streams HTTP/SSE/uploads/downloads with backpressure. Static responses include the existing restrictive CSP; Vite HMR is a development-only path. Missing WKWebView fetch metadata does not bypass exact-origin checks.
-
-The renderer has no Tauri capability permissions, custom native commands, shell/filesystem grants, or generic shell opener. Its frozen main-frame bridge supplies visibility and a bounded HTTPS browser handoff. Viewer iframes do not receive that bridge. `openExternal(url)` posts to the loopback `/_desktop/open-external` endpoint, which requires the exact renderer Origin, POST JSON, a bounded credential-free HTTPS URL and no extra fields. The host acknowledges the operating-system browser command or returns a sanitized failure; authorization remains server-verified. This avoids the blank-popup reservation that Tauri denies. [Regression and proof limits](../verification/marketplace-screen-2026-11-11/catalog-and-authorization/README.md). External navigation is handled by the native host, and authenticated same-origin `/v1/` downloads and same-origin blob exports use native download handling. Native menus provide editing, zoom, full screen and development inspection without granting these operations to page content.
-
-Profiles/configuration use private file validation and atomic writes. Logs use a bounded queue, 2 MB rotation, secret/key/Bearer redaction and bounded structured backend records. Unstructured or oversized backend records are omitted from the desktop log; backend persistence/receipts remain authoritative.
-
-## Validation and remaining scope
-
-See [verification and resource observations](../verification/tauri-development/README.md). Tested versions: Tauri core 2.12.5, CLI 2.12.4, Rust 1.99.1, Bun 1.3.10, macOS 26.3 ARM64 on an 8 GiB MacBookAir10,1. The current WK data-store implementation sets macOS 14 as its minimum.
-
-Signing/notarization, update delivery, fresh-machine onboarding, Windows/Linux builds, a separate persistent background service, physical sleep/wake validation, and long-duration workload/animation benchmarks remain unverified. Native chat history/model discovery is not a new provider inference/billing proof. No ticket is marked Done by this local trial.
+Run `bun run test:desktop`, `bun run typecheck:desktop` and `bun run lint:desktop`. The [current report](../verification/accounts-only-2026-11-15/README.md) separates source/contract, native tests, browser development journeys and unchanged provider evidence. NMA-063/NMA-064 remain separate product/distribution gates. The retired supervisor source and its [original evidence](../verification/tauri-development/README.md) are available through [historical recovery](../development/history.md#retired-installation-token-authentication--2026-11-15).

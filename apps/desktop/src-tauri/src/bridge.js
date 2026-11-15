@@ -7,7 +7,7 @@
     value: Object.freeze({
       platform: "darwin",
       nativeVisibility: true,
-      remote: __NGERTIIN_REMOTE__,
+      remote: true,
       async signIn() {
         const response = await fetch("/_desktop/login", { method: "POST", signal: AbortSignal.timeout(310000) });
         if (!response.ok) throw new Error("Sign in could not finish. Try again from this window.");

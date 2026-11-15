@@ -1,5 +1,4 @@
 import { afterEach, expect, test } from "bun:test";
-import { createApi } from "../src/api";
 import { Background } from "../src/background";
 import { Conversations } from "../src/conversations";
 import { Creation, openingState, retryOpening } from "../src/conversations/creation";
@@ -8,6 +7,7 @@ import { Connections } from "../src/harness/connections";
 import { ProductTools } from "../src/harness/tools";
 import { Lifecycle } from "../src/lifecycle";
 import { fixture } from "./helpers";
+import { fixtureApi as createApi } from "./http-fixture";
 
 let f: Awaited<ReturnType<typeof fixture>>;
 afterEach(async () => await f?.close());

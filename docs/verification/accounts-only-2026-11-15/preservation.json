@@ -1,0 +1,17 @@
+{
+  "source_revision": "51dea542d545e6faf290b6d5e3771717d47b002e",
+  "historical_evidence_files_compared": 4738,
+  "historical_mismatches": [],
+  "historical_path_hash_pairs_sha256": "99c655737b20d057fd3dd59c4afb1865a40f1588eb52407698255f685c9cbf30",
+  "preexisting_sqlite_import": {
+    "path": "apps/server/src/persistence/sqlite-import.ts",
+    "before_sha256": "4f92eaccdf1e4a6a415038eb7c39ffff84a6fc924a4bd0c1b7f85cf16f9040d5",
+    "after_sha256": "4f92eaccdf1e4a6a415038eb7c39ffff84a6fc924a4bd0c1b7f85cf16f9040d5"
+  },
+  "preexisting_untracked_files_current_sha256": {
+    "apps/server/tests/persistence/sqlite-backup.test.ts": "2aaa45827a6e8a45deea41984901941d72fed32bf5fad7b178284dee9c6a0a31",
+    "compose.postgres.local.yml": "7da1020674b1bfbc4e2e1e8601abcad7b7698e6cbca7cd9a857ac07754cba706"
+  },
+  "credentials": "The existing .env and credentials were not edited or copied into this report.",
+  "historical_data": "No application data reset or old-profile rewrite was performed."
+}

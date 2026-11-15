@@ -1,5 +1,4 @@
 import { afterEach, expect, test } from "bun:test";
-import { createApi } from "../../src/api";
 import { Background } from "../../src/background";
 import type { Entity } from "../../src/contracts";
 import { Groups } from "../../src/groups/service";
@@ -12,6 +11,7 @@ import { Machines } from "../../src/machines/service";
 import { asyncMap } from "../../src/persistence/async-collections";
 import { Workspaces } from "../../src/workspaces/service";
 import { fixture } from "../helpers";
+import { fixtureApi as createApi } from "../http-fixture";
 
 let f: Awaited<ReturnType<typeof fixture>>;
 let machines: Machines;

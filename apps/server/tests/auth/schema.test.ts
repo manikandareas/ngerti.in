@@ -21,7 +21,7 @@ test("retained authentication schema exactly matches the pinned plugins", async 
         schema,
         nativeRedirectUri: "http://127.0.0.1:43119/callback",
         allowInsecureLoopback: false,
-        email: { from: "Ngertiin <auth@example.test>", apiKey: "fixture" },
+        email: { delivery: "resend", from: "Ngertiin <auth@example.test>", apiKey: "fixture" },
       },
       pool,
       async () => {},
@@ -29,7 +29,8 @@ test("retained authentication schema exactly matches the pinned plugins", async 
     );
     // Version 1 is immutable. Version 2 adds the organization plugin to an existing auth DB.
     await pool.query(await readFile(new URL("../../src/auth/schema.sql", import.meta.url), "utf8"));
-    const migration = await getMigrations(auth.options);
+    // Retained migrations use the pool search path; normalize generation only, while runtime stays schema-qualified.
+    const migration = await getMigrations({ ...auth.options, database: pool });
     const generated = `${await migration.compileMigrations()}\n`;
     const file = new URL("../../src/organizations/provider-schema.sql", import.meta.url);
     if (process.env.NGERTIIN_WRITE_ORGANIZATION_SCHEMA === "1") await writeFile(file, generated);

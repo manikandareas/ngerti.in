@@ -1,5 +1,5 @@
 import { afterEach, expect, test } from "bun:test";
-import { createApi } from "../../src/api";
+import { createApi as createAccountApi } from "../../src/api";
 import { Background } from "../../src/background";
 import { Connections } from "../../src/harness/connections";
 import { ProductTools } from "../../src/harness/tools";
@@ -60,7 +60,7 @@ class Host implements AppHost {
   }
 }
 let f: Awaited<ReturnType<typeof organizationFixture>>;
-let api: Awaited<ReturnType<typeof createApi>>;
+let api: Awaited<ReturnType<typeof createAccountApi>>;
 afterEach(async () => {
   await api?.stop(true);
   await f?.close();
@@ -80,7 +80,7 @@ async function setup() {
   ).audience;
   const host = new Host();
   const tools = await ProductTools.open(f.domain.lifecycle, undefined, undefined, host);
-  api = await createApi(f.domain.lifecycle, new Background(f.domain.lifecycle), "p".repeat(64), {
+  api = await createAccountApi(f.domain.lifecycle, new Background(f.domain.lifecycle), {
     authentication: f.auth,
     connections: new Connections(f.domain.lifecycle),
     tools,

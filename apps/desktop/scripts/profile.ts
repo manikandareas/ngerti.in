@@ -11,18 +11,12 @@ import { homedir } from "node:os";
 import { delimiter, isAbsolute, join, resolve } from "node:path";
 
 export type Profile = {
-  version: 1;
+  version: 2;
   managerId: string;
-  mode?: "local-development" | "remote";
-  serverOrigin?: string;
+  serverOrigin: string;
   serverCertificate?: string;
   initialPath?: string;
-  stateDirectory?: string;
   projectRoot: string;
-  configFile?: string;
-  bunExecutable?: string;
-  codexExecutable?: string;
-  museExecutable?: string;
   uiPort: number;
 };
 export function desktopHome(): string {
@@ -44,39 +38,48 @@ export function writePrivate(path: string, value: unknown): void {
 }
 export function loadProfile(home = desktopHome()): Profile {
   const profile = privateJson<Profile>(join(home, "profile.json"));
+  const allowed = [
+    "version",
+    "managerId",
+    "serverOrigin",
+    "serverCertificate",
+    "initialPath",
+    "projectRoot",
+    "uiPort",
+  ];
   if (
-    profile.version !== 1 ||
+    profile.version !== 2 ||
     !/^[a-f0-9-]{36}$/.test(profile.managerId) ||
-    ![undefined, "local-development", "remote"].includes(profile.mode) ||
-    (profile.mode !== "remote" &&
-      ![
-        profile.stateDirectory,
-        profile.projectRoot,
-        profile.configFile,
-        profile.bunExecutable,
-      ].every((value) => typeof value === "string" && isAbsolute(value))) ||
+    Object.keys(profile).some((key) => !allowed.includes(key)) ||
     !Number.isInteger(profile.uiPort) ||
     profile.uiPort < 1024 ||
     profile.uiPort > 65535 ||
-    [profile.codexExecutable, profile.museExecutable].some(
-      (value) => value !== undefined && (typeof value !== "string" || !isAbsolute(value)),
-    )
+    !isAbsolute(profile.projectRoot) ||
+    (profile.serverCertificate && !isAbsolute(profile.serverCertificate)) ||
+    (profile.initialPath && !/^\/invitations\/[a-f0-9-]{36}$/.test(profile.initialPath))
   )
-    throw new Error("The desktop profile is invalid. Run setup:desktop again.");
-  if (profile.mode === "remote") {
-    validateServerOrigin(profile.serverOrigin ?? "");
-    if (profile.serverCertificate && !isAbsolute(profile.serverCertificate))
-      throw new Error("The server certificate must be an absolute path.");
-    if (profile.initialPath && !/^\/invitations\/[a-f0-9-]{36}$/.test(profile.initialPath))
-      throw new Error("Invalid invitation handoff.");
-  } else if (profile.serverOrigin || profile.serverCertificate || profile.initialPath)
-    throw new Error("Remote settings require a remote profile.");
+    throw new Error(
+      "The desktop profile is invalid. Run setup:desktop with an account-authenticated server.",
+    );
+  validateServerOrigin(profile.serverOrigin);
   return profile;
 }
 export function validateServerOrigin(value: string) {
   const url = new URL(value);
-  if (url.protocol !== "https:" || url.origin !== value || url.username || url.password)
-    throw new Error("The remote server must be one canonical HTTPS origin.");
+  const loopback =
+    process.env.APP_ENV !== "production" &&
+    url.protocol === "http:" &&
+    url.hostname === "127.0.0.1" &&
+    !!url.port;
+  if (
+    (url.protocol !== "https:" && !loopback) ||
+    url.origin !== value ||
+    url.username ||
+    url.password
+  )
+    throw new Error(
+      "Select one canonical HTTPS origin; development also supports IPv4 loopback HTTP.",
+    );
   return value;
 }
 export function findExecutable(command: string | undefined): string | undefined {

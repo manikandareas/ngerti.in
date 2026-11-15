@@ -139,18 +139,17 @@ function inputSchema(schema: unknown) {
   return z.toJSONSchema(schema, { io: "input" });
 }
 
-function routeAuthentication(path: string, accounts: boolean) {
+function routeAuthentication(path: string) {
   if (path === "/health/live" || path === "/v1/auth/native") return "public";
   if (path === "/api/auth/*") return "authentication_protocol";
   if (path.startsWith("/v1/machine/viewer/"))
-    return accounts ? "scoped_viewer_ticket_and_issuing_user_session" : "scoped_viewer_ticket";
+    return "scoped_viewer_ticket_and_issuing_user_session";
   if (path === "/v1/harness/tools") return "run_lease";
-  if (accounts) return "user_session_or_oauth_access_token";
-  return "installation_bearer";
+  return "user_session_or_oauth_access_token";
 }
 
 /** Read the installed router's request schemas; exporting never invokes a handler or provider. */
-export function httpContract(routes: readonly Route[], accounts = false) {
+export function httpContract(routes: readonly Route[]) {
   return routes.map(({ method, path, hooks }) => {
     const mcp = path === "/v1/harness/tools";
     const viewer = path.startsWith("/v1/machine/viewer/");
@@ -167,8 +166,8 @@ export function httpContract(routes: readonly Route[], accounts = false) {
     return {
       method,
       path,
-      authentication: routeAuthentication(path, accounts),
-      ...(accounts ? { access: routeAccess(path) } : {}),
+      authentication: routeAuthentication(path),
+      access: routeAccess(path),
       idempotency:
         method === "POST" && (durablePaths.has(path) || organizationCommand)
           ? "required_uuid"

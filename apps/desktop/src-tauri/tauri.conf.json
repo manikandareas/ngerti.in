@@ -17,9 +17,7 @@
     "active": true,
     "targets": ["app"],
     "icon": ["../dist/app.icns", "../dist/app-icon.png"],
-    "externalBin": ["binaries/bun"],
     "resources": {
-      "../../../.dev/tauri-stage/runtime/": "runtime/",
       "../../../.dev/tauri-stage/web/": "web/"
     },
     "macOS": {

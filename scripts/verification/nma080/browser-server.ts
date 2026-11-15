@@ -24,7 +24,10 @@ function fixtureApps(): AppHost {
 }
 async function reset(empty = false) {
   ready = false;
+  const started = performance.now();
+  console.log("Resetting browser fixture: closing previous workspace.");
   await current?.close();
+  console.log(`Previous browser workspace closed in ${Math.round(performance.now() - started)}ms.`);
   if (empty) {
     const f = await authFixture(undefined, 4320);
     current = f;
@@ -57,7 +60,7 @@ async function reset(empty = false) {
     }
     const groups = [];
     for (const name of ["Engineering", "Marketing"]) groups.push((await f.success(f.write(f.owner.cookie, `${f.path}/workgroups`, { name }))).workgroup);
-    await f.background.start(100);
+    await f.background.start();
     metadata = {
       owner: "owner@example.test", alice: "alice@example.test", bob: "bob@example.test",
       organization: f.initial.organization, second: second.organization, team: ownerLane.agent,
@@ -78,8 +81,9 @@ async function reset(empty = false) {
     return new Response(Bun.file(resolve(dist, "index.html")), { headers: { "Cache-Control": "no-store", "Referrer-Policy": "no-referrer" } });
   });
   ready = true;
+  console.log(`Browser fixture reset completed in ${Math.round(performance.now() - started)}ms.`);
 }
-const control = Bun.serve({ hostname: "127.0.0.1", port: 8320, async fetch(request) {
+const control = Bun.serve({ hostname: "127.0.0.1", port: 8320, idleTimeout: 120, async fetch(request) {
   const url = new URL(request.url);
   if (url.pathname === "/health") return Response.json({ ready }, { status: ready ? 200 : 503 });
   if (request.method === "POST" && url.pathname === "/reset") { await reset(url.searchParams.has("empty")); return Response.json(metadata); }

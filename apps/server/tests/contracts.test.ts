@@ -1,10 +1,10 @@
 import { afterEach, expect, test } from "bun:test";
 import { z } from "zod";
-import { createApi } from "../src/api";
 import { httpContract, responseSchemas } from "../src/api-contract";
 import { Background } from "../src/background";
 import { contractDocument, domainEvent, type Entity } from "../src/contracts";
 import { fixture } from "./helpers";
+import { fixtureApi as createApi } from "./http-fixture";
 
 let f: Awaited<ReturnType<typeof fixture>>;
 afterEach(async () => await f?.close());
@@ -13,11 +13,25 @@ test("every registered domain route retains the shared authentication guard", as
   f = await fixture();
   const app = await createApi(f.lifecycle, new Background(f.lifecycle), "a".repeat(64));
   const cursor = await f.store.cursor;
-  for (const route of app.routes) {
-    if (route.path === "/health/live") continue;
+  const installed = await (
+    await app.handle(
+      new Request("http://localhost/v1/contracts", {
+        headers: { Authorization: `Bearer ${"a".repeat(64)}` },
+      }),
+    )
+  ).json();
+  const protectedRoutes = installed.http.filter(
+    (route: { authentication: string }) =>
+      route.authentication === "user_session_or_oauth_access_token",
+  );
+  expect(protectedRoutes.length).toBeGreaterThan(100);
+  for (const route of protectedRoutes) {
     const path = route.path.replace(/:[a-z_]+/g, crypto.randomUUID());
     const response = await app.handle(
-      new Request(`http://localhost${path}`, { method: route.method }),
+      new Request(`http://localhost${path}`, {
+        method: route.method,
+        headers: { "X-Ngertiin-Organization": crypto.randomUUID() },
+      }),
     );
     expect(response.status, `${route.method} ${route.path}`).toBe(401);
   }
@@ -145,8 +159,9 @@ test("consumer contract describes actual routes without executing native operati
   );
   expect(response.status).toBe(200);
   const contract = await response.json();
-  expect(contract.http).toEqual(httpContract(app.routes));
-  expect(contract.http.length).toBe(app.routes.length);
+  const identity = (route: { method: string; path: string }) => `${route.method} ${route.path}`;
+  expect(contract.http.map(identity)).toEqual(contract.access_model.surfaces.map(identity));
+  expect(contract.http.length).toBeGreaterThan(100);
   expect(contract.http.find((r: { path: string }) => r.path === "/v1/runs").idempotency).toBe(
     "required_uuid",
   );

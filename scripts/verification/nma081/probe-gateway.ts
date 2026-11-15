@@ -6,7 +6,7 @@ import { createHash } from "node:crypto";
 const root = resolve(import.meta.dir, "../../..");
 const finalProfile = process.argv.includes("--final-profile");
 const profile = JSON.parse(await readFile(resolve(root, `.dev/nma081/${finalProfile ? "client-final" : "client-a"}/profile.json`), "utf8"));
-if (profile.mode !== "remote" || profile.serverOrigin !== "https://127.0.0.1:44431") throw new Error("Select the disposable NMA-081 profile.");
+if (profile.version !== 2 || profile.serverOrigin !== "https://127.0.0.1:44431") throw new Error("Select the disposable NMA-081 profile.");
 const base = `http://127.0.0.1:${profile.uiPort}`;
 const metadata = await (await fetch("http://127.0.0.1:8441/state")).json();
 const session = await (await fetch(`${base}/v1/auth/session`)).json();

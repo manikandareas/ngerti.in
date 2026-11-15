@@ -8,6 +8,7 @@ export default defineConfig({
       : "organizations.spec.ts",
   workers: 1,
   retries: 0,
+  expect: { timeout: 10_000 },
   timeout: process.env.NGERTIIN_NMA080_NATIVE_CUA === "1" ? 180_000 : 60_000,
   reporter: [
     ["list"],
@@ -17,8 +18,8 @@ export default defineConfig({
         outputFile:
           process.env.NGERTIIN_NMA080_BROWSER_REPORT ??
           (process.env.NGERTIIN_NMA080_NATIVE_CUA === "1"
-            ? "../../docs/verification/nma-080/native-browser-report.json"
-            : "../../docs/verification/nma-080/browser-report.json"),
+            ? "../../.dev/accounts-native-browser-report.json"
+            : "../../.dev/accounts-browser-report.json"),
       },
     ],
   ],

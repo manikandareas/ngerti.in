@@ -1,0 +1,30 @@
+bun test v1.3.10 (30e609e0)
+
+apps/web-client/verification/client-scope.test.ts:
+(pass) changing server, user, organization or session aborts the previous immutable request [3.52ms]
+(pass) a lost acknowledgement retains its original private operation and cannot become another scope's submission [1.59ms]
+(pass) event resume carries the signed snapshot context and drops it at a scope boundary [3.40ms]
+(pass) external images and links receive no organization or event capability headers [0.18ms]
+(pass) an unavailable explicit connection stays selected rather than inheriting organization billing [0.19ms]
+(pass) native login forwards only signed provider parameters and accepts only the pinned callback [0.31ms]
+
+apps/web-client/verification/workspace-sync.test.ts:
+(pass) reconnect retires a hanging snapshot and subsequent events continue without a reload [21.49ms]
+(pass) a failed projection read automatically reconciles and reconnects from authoritative state [14.23ms]
+(pass) bounded reconciliation repairs a missed terminal event while the event stream remains open [31.77ms]
+(pass) event bursts coalesce projection reads and normal stream expiry retains the applied cursor [22.17ms]
+(pass) events arriving during an in-flight projection trigger one following refresh [21.73ms]
+(pass) retired connection callbacks and late refresh results cannot advance the new connection [26.50ms]
+(pass) foreground resume reconciles without creating another event connection [25.49ms]
+(pass) hidden presentation retires its stream and resumes from a fresh authoritative snapshot [35.33ms]
+
+apps/web-client/verification/request.test.ts:
+(pass) snapshot reads have a deadline even when the transport never settles [22.66ms]
+(pass) the request deadline includes reading the response body [21.00ms]
+(pass) cancelling a connection generation rejects its snapshot read immediately [0.35ms]
+(pass) invalid successful JSON is a recoverable API failure rather than a null snapshot [0.20ms]
+
+ 18 pass
+ 0 fail
+ 71 expect() calls
+Ran 18 tests across 3 files. [421.00ms]

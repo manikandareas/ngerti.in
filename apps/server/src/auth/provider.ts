@@ -8,6 +8,7 @@ import {
 import { betterAuth } from "better-auth";
 import { createAuthEndpoint } from "better-auth/api";
 import { organization } from "better-auth/plugins/organization";
+import { PostgresDialect } from "kysely";
 import type { Pool } from "pg";
 import { z } from "zod";
 import type { AuthenticationConfig } from "./config";
@@ -44,7 +45,12 @@ export function createAuthenticationProvider(
     baseURL: config.origin,
     basePath: AUTH_PATH,
     secret: config.secret,
-    database: pool,
+    database: {
+      dialect: new PostgresDialect({ pool }),
+      type: "postgres",
+      schemaName: config.schema,
+      transaction: true,
+    },
     trustedOrigins: [config.origin],
     logger: { disabled: true },
     advanced: {

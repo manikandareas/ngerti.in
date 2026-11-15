@@ -1,0 +1,51 @@
+bun test v1.3.10 (30e609e0)
+
+../../scripts/verification/accounts-only/browser.test.ts:
+
+Running 4 tests using 1 worker
+
+Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+      at emitWarning (unknown:1:1)
+      at warnOnDeactivatedColors (internal:tty:33:24)
+      at getColorDepth (internal:tty:42:39)
+      at shouldColorize (internal:util/colors:14:109)
+      at refresh (internal:util/colors:18:31)
+      at internal:util/colors (internal:util/colors:24:16)
+      at anonymous (unknown:1:1)
+      at internal:assert/assertion_error (internal:assert/assertion_error:2:187)
+      at anonymous (unknown:1:1)
+      at loadAssertionError (node:assert:28:96)
+
+  ✓  1 [desktop] › tests/organizations.spec.ts:144:0 › organization switching isolates drafts and uses the selected request scope (21.9s)
+[WebServer] DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+[WebServer]       at <anonymous> (internal:util/deprecate:11:28)
+[WebServer]       at deprecated (internal:util/deprecate:20:29)
+[WebServer]       at query (/Users/vitoandareasmanik/Development/project/ngertiin/node_modules/.bun/pg@8.23.1+5e0609b09ae208c8/node_modules/pg/lib/client.js:780:7)
+[WebServer]       at membership (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/src/organizations/members.ts:40:14)
+[WebServer]       at map (1:11)
+[WebServer]       at memberRows (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/src/organizations/service.ts:165:28)
+[WebServer]       at async <anonymous> (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/src/organizations/service.ts:156:27)
+[WebServer] 
+  ✓  2 [desktop] › tests/organizations.spec.ts:164:0 › owner manages workgroups and invites a member with the assigned access (27.6s)
+Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+      at emitWarning (unknown:1:1)
+      at warnOnDeactivatedColors (internal:tty:33:24)
+      at getColorDepth (internal:tty:42:39)
+      at shouldColorize (internal:util/colors:14:109)
+      at refresh (internal:util/colors:18:31)
+      at internal:util/colors (internal:util/colors:24:16)
+      at anonymous (unknown:1:1)
+      at internal:assert/assertion_error (internal:assert/assertion_error:2:187)
+      at anonymous (unknown:1:1)
+      at loadAssertionError (node:assert:28:96)
+
+  ✓  3 [mobile] › tests/organizations.spec.ts:144:0 › organization switching isolates drafts and uses the selected request scope (16.0s)
+  ✓  4 [mobile] › tests/organizations.spec.ts:164:0 › owner manages workgroups and invites a member with the assigned access (20.9s)
+
+  4 passed (1.7m)
+(pass) current account and organization desktop/mobile browser journeys [99953.28ms]
+
+ 1 pass
+ 0 fail
+ 1 expect() calls
+Ran 1 test across 1 file. [99.98s]

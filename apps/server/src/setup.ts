@@ -1,6 +1,5 @@
+import { Authentication } from "./auth/service";
 import { developmentConfig } from "./config";
-import { Conversations } from "./conversations";
-import { Lifecycle } from "./lifecycle";
 import { Store } from "./store";
 
 const config = developmentConfig();
@@ -8,13 +7,21 @@ const store = await Store.open(config.database, config.owner_id, {
   connectionString: config.databaseUrl,
   schema: config.databaseSchema,
 });
-const setup = await new Conversations(await Lifecycle.open(store)).setup();
-await store.close();
-console.log(
-  JSON.stringify({
-    event: "foundation.initialized",
-    database: config.database,
-    credentials_file: config.installationFile,
-    ...setup,
-  }),
-);
+try {
+  const authentication = await Authentication.open(
+    config.authentication,
+    config.databaseUrl as string,
+    config.owner_id,
+  );
+  await authentication.close();
+  console.log(
+    JSON.stringify({
+      event: "application.initialized",
+      state_directory: config.stateDir,
+      authentication: "accounts",
+      email_delivery: config.authentication.email.delivery,
+    }),
+  );
+} finally {
+  await store.close();
+}

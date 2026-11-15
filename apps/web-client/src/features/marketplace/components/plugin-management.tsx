@@ -39,9 +39,8 @@ export function PluginManagement({
 }) {
   const account = useAccount();
   const canManage = (connection: { actor_id?: string | null }) =>
-    account?.mode !== "accounts" ||
-    connection.actor_id === account.session?.user.id ||
-    !!account.access?.capabilities.manage_organization;
+    connection.actor_id === account?.session?.user.id ||
+    !!account?.access?.capabilities.manage_organization;
   const [editing, setEditing] = useState<string | null>(null);
   const accounts = manager.inventory.filter((connection) => connection.toolkit === entry.id);
   const effects = useApiResource<AppEffect[]>(
@@ -93,9 +92,7 @@ export function PluginManagement({
                 data-installed={connection.state === "active"}
               >
                 {connectionStatus(connection.state)}
-                {account?.mode === "accounts"
-                  ? ` · ${connection.ownership === "organization" ? "Organization" : "Personal"}`
-                  : ""}
+                {` · ${connection.ownership === "organization" ? "Organization" : "Personal"}`}
               </span>
             </div>
             <div className="marketplace-plugin-account-actions">

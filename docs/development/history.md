@@ -13,3 +13,20 @@ Retired Python runtime source is available at `80f66b9786d7776138fbe001b26ef068f
 The user removed the old archive directory from the working tree. Current guides therefore point here rather than recreating that directory. Retained raw evidence, versioned contract exports, source notices and immutable result manifests keep their original scope and bytes. Paths/hashes in old manifests may name retired source and require its historical checkout. Their presence is not proof of current compatibility or release readiness.
 
 [Historical link records](historical-links.json) identifies immutable evidence directories whose original links can be checked against the pinned pre-cleanup Git tree. The link checker requires the source Markdown to match its pinned bytes before allowing that fallback. Current guides and new/modified files must resolve local links in the working tree.
+
+## Retired GPUI clients — 2026-11-15
+
+The owner removed `apps/desktop-rs`, `apps/gpui-experiment` and the repository-local GPUI skills to retain the latest authenticated organization implementation in server/web-client/Tauri. The complete source, manifests, lockfiles, assets and guides immediately before removal remain available at Git revision `51dea542d545e6faf290b6d5e3771717d47b002e`:
+
+```sh
+git show 51dea542d545e6faf290b6d5e3771717d47b002e:apps/desktop-rs/README.md
+git show 51dea542d545e6faf290b6d5e3771717d47b002e:apps/gpui-experiment/README.md
+```
+
+Tracked raw files formerly under `apps/desktop-rs/verification` now live byte-for-byte in [retired verification](../verification/retired-desktop-rs/); asset license notices are retained in its `notices` directory. Existing `docs/verification/nma-066` through `nma-071` and GPUI experiment reports keep their original bytes and historical scope. Old source hashes and paths resolve against the pinned revision, not the retained client. Dedicated Cargo build caches, generated app bundles inside the removed apps and the desktop-rs tool cache were removed; application data, private profiles, credentials and installed applications were preserved. See [cleanup verification](../verification/desktop-retirement-2026-11-15/README.md).
+
+## Retired installation-token authentication — 2026-11-15
+
+The owner makes account authentication mandatory and removes the installation-bearer API/proxy, auth-mode selector, Tauri local supervisor and bundled Bun/backend. The source immediately before these changes is available at Git revision `51dea542d545e6faf290b6d5e3771717d47b002e`, including `apps/desktop/src-tauri/src/supervisor.rs` and the original [Tauri development evidence](../verification/tauri-development/README.md). Retained version-1 profiles and application/server data are preserved; the current client uses a separate version-2 profile. Historical data import/binding is a controlled recovery operation, not an authentication fallback. See [current verification](../verification/accounts-only-2026-11-15/README.md).
+
+The [account-only retirement manifest](../verification/accounts-only-2026-11-15/retired-verification.json) also identifies pre-account verification bootstraps, Playwright configurations and browser journeys requiring installation-token injection. Their complete source remains in the same pinned Git revision. The active browser baseline is the authenticated organization suite, with isolated avatar/component checks retained. Historical screenshots, results and failure logs remain unchanged; retiring a probe does not promote NMA-063 full-product acceptance.

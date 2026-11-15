@@ -1,8 +1,7 @@
-# Preserve the original PDF fixture and raw verification output bytes.
-apps/desktop-rs/assets/probe.pdf binary
+# Preserve retained PDF fixtures and raw verification output bytes.
 docs/verification/nma-066/rust-check.log whitespace=-blank-at-eof
 # Keep PDF cross-reference offsets and immutable capture/log bytes unchanged.
-apps/desktop-rs/verification/nma-067/pdf/*.pdf binary
+docs/verification/retired-desktop-rs/nma-067/pdf/*.pdf binary
 docs/verification/nma-066/reference-v3-conversation-dark.ax.txt whitespace=-blank-at-eol
 docs/verification/nma-066/reference-v3-focus-pdf-dark.ax.txt whitespace=-blank-at-eol
 docs/verification/nma-066/reference-v3-working-files-dark.ax.txt whitespace=-blank-at-eol
@@ -35,3 +34,8 @@ docs/verification/nma-076/iterations/full-tests-1.log whitespace=-blank-at-eol
 docs/verification/nma-076/iterations/harnesses-2.log whitespace=-blank-at-eol
 docs/verification/nma-076/iterations/initial-tests.log whitespace=-blank-at-eol
 docs/verification/nma-076/logs/web-build.log whitespace=-blank-at-eol
+# Preserve account-only cleanup logs and captured Playwright error text byte-for-byte.
+docs/verification/accounts-only-2026-11-15/*.log whitespace=-blank-at-eol,-blank-at-eof
+docs/verification/accounts-only-2026-11-15/*-error.txt whitespace=-blank-at-eol,-blank-at-eof
+# Preserve the retirement build capture; its SHA-256 is retained in scoped commit verification.
+docs/verification/desktop-retirement-2026-11-15/build.log whitespace=-blank-at-eol

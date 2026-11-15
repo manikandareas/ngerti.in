@@ -1,6 +1,5 @@
 import { expect, test } from "bun:test";
 import { join } from "node:path";
-import { createApi } from "../../src/api";
 import { Background } from "../../src/background";
 import { Conversations } from "../../src/conversations";
 import { Goals } from "../../src/goals/service";
@@ -13,6 +12,7 @@ import { MuseAdapter } from "../../src/harness/muse/adapter";
 import { ProductTools } from "../../src/harness/tools";
 import { RunControls } from "../../src/run-controls";
 import { fixture } from "../helpers";
+import { fixtureApi as createApi } from "../http-fixture";
 
 for (const harness of ["codex", "muse"] as const) {
   test(`${harness} structured goal capture and quiet Routine round trip survive native-client restart`, async () => {

@@ -3,7 +3,6 @@ import { createHash } from "node:crypto";
 import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { Client } from "pg";
-import { createApi } from "../../src/api";
 import { Artifacts } from "../../src/artifacts";
 import { Background } from "../../src/background";
 import {
@@ -17,6 +16,7 @@ import {
 import { Store } from "../../src/store";
 import { Workspaces } from "../../src/workspaces/service";
 import { fixture } from "../helpers";
+import { fixtureApi as createApi } from "../http-fixture";
 import { exportLegacyFixture } from "./legacy-fixture";
 
 let f: Awaited<ReturnType<typeof fixture>>;

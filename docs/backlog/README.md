@@ -66,9 +66,9 @@ The owner requested this [main implementation plan](../architecture/server-organ
 
 The dependency diagram, implementation defaults, migration approach and evidence matrix live in the main plan. A personal interaction remains private even when another person uses the same Team agent. Separate users/organizations cannot rely on a common sudo-capable desktop for private working files.
 
-## Desktop Rust parity plan
+## Desktop Rust parity plan (historical)
 
-Further desktop-rs work is paused by the November 12 owner direction. The six Done milestones below retain their historical accepted scope; none is a dependency of the new web/Tauri organization plan.
+The November 15 owner cleanup removed both GPUI implementations and their dedicated tooling, superseding the November 12 pause. The six Done milestones below retain historical acceptance and are not active work or dependencies of the web/Tauri organization plan. See [source recovery](../development/history.md#retired-gpui-clients--2026-11-15) and the [retirement report](../verification/desktop-retirement-2026-11-15/README.md).
 
 The [observation, architecture and parity contract](../architecture/desktop-rs-plan-2026-11-07.md) maps the current host/client and retained evidence to six ordered implementation slices. Orders 16.1–16.6 insert this separate plan after the NMA-061/062 reference; existing NMA-063/064 dependencies are unchanged. Initial verification targets the current macOS ARM64 development host. Other platforms, fresh-device installation and active-host replacement retain their separate decisions/gates.
 
@@ -86,6 +86,8 @@ The intended sequence is foundation/gallery and high-risk renderer paths → ful
 Each milestone has six ordered internal subtasks with deliverables/evidence; no additional milestone IDs are introduced. The [native rendering contract](../architecture/desktop-rs-plan-2026-11-07.md#rendering-ownership-contract) requires Rust/GPUI application UI, including native PDF controls/rendering. WebViews are limited to HTML document content and the scoped Computer viewer; forwarding the existing React client does not satisfy the plan.
 
 The [NMA-068 implementation handoff](../verification/nma-068/README.md) adds the native API workspace, conversation controls and durable journal. The owner requested implementation with bounded checks; focused native/API journeys and recovery receipts are retained. NMA-068 is Done for its implemented workspace/conversation scope and bounded native/API evidence and does not promote later milestones.
+
+The [November 15 account-only cleanup](../verification/accounts-only-2026-11-15/README.md) supersedes optional local account activation and Tauri backend supervision. It leaves historical milestone statuses unchanged; subsequent verification is retained separately.
 
 ## Next gates
 

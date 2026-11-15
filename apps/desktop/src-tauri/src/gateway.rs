@@ -1,4 +1,4 @@
-use crate::supervisor::Supervisor;
+use crate::desktop_session::DesktopSession;
 use anyhow::{Context, Result};
 use axum::{
     Router,
@@ -25,7 +25,7 @@ pub struct Gateway {
 }
 
 struct GatewayState {
-    supervisor: Arc<Supervisor>,
+    session: Arc<DesktopSession>,
     host: String,
     origin: String,
     vite: Option<url::Url>,
@@ -34,13 +34,13 @@ struct GatewayState {
     app: Option<tauri::AppHandle>,
 }
 
-pub async fn start(supervisor: Arc<Supervisor>, app: Option<tauri::AppHandle>) -> Result<Gateway> {
-    let port = supervisor.profile.ui_port;
+pub async fn start(session: Arc<DesktopSession>, app: Option<tauri::AppHandle>) -> Result<Gateway> {
+    let port = session.profile.ui_port;
     let listener = TcpListener::bind((std::net::Ipv4Addr::LOCALHOST, port)).await
         .context("The saved desktop port is occupied. Close the other desktop host before opening this one.")?;
     let host = format!("127.0.0.1:{port}");
     let origin = format!("http://{host}");
-    let vite = if supervisor.paths.packaged {
+    let vite = if session.paths.packaged {
         None
     } else {
         std::env::var("NGERTIIN_DESKTOP_VITE_URL")
@@ -59,17 +59,13 @@ pub async fn start(supervisor: Arc<Supervisor>, app: Option<tauri::AppHandle>) -
             .transpose()?
     };
     let shutdown = CancellationToken::new();
-    let client = if let Some(remote) = &supervisor.remote {
-        remote.client.clone()
-    } else {
-        reqwest::Client::builder()
-            .no_proxy()
-            .redirect(reqwest::redirect::Policy::none())
-            .connect_timeout(std::time::Duration::from_secs(3))
-            .build()?
-    };
+    let client = reqwest::Client::builder()
+        .no_proxy()
+        .redirect(reqwest::redirect::Policy::none())
+        .connect_timeout(std::time::Duration::from_secs(3))
+        .build()?;
     let state = Arc::new(GatewayState {
-        supervisor,
+        session,
         host,
         origin: origin.clone(),
         vite,
@@ -102,7 +98,8 @@ async fn handle(State(state): State<Arc<GatewayState>>, request: Request<Body>) 
     {
         return StatusCode::FORBIDDEN.into_response();
     }
-    if let Some(remote) = &state.supervisor.remote {
+    {
+        let remote = &state.session.remote;
         if path == "/_desktop/login"
             || path == "/_desktop/cancel-login"
             || path == "/v1/auth/logout"
@@ -137,14 +134,13 @@ async fn handle(State(state): State<Arc<GatewayState>>, request: Request<Body>) 
                         | "/_desktop/open-external"
                         | "/_desktop/retry"
                         | "/_desktop/focus"
-                        | "/_desktop/wait.js"
                 )
         {
             return StatusCode::FORBIDDEN.into_response();
         }
     }
     if path == "/_desktop/status" {
-        return axum::Json(state.supervisor.status().await).into_response();
+        return axum::Json(state.session.status().await).into_response();
     }
     if path == "/_desktop/open-external" {
         return open_external(request, &state.origin, |url| open::that(url)).await;
@@ -153,9 +149,9 @@ async fn handle(State(state): State<Arc<GatewayState>>, request: Request<Body>) 
         if request.method() != Method::POST {
             return StatusCode::METHOD_NOT_ALLOWED.into_response();
         }
-        let supervisor = state.supervisor.clone();
+        let session = state.session.clone();
         tokio::spawn(async move {
-            supervisor.start().await;
+            let _ = session.remote.metadata().await;
         });
         return StatusCode::ACCEPTED.into_response();
     }
@@ -168,40 +164,16 @@ async fn handle(State(state): State<Arc<GatewayState>>, request: Request<Body>) 
         }
         return StatusCode::NO_CONTENT.into_response();
     }
-    if path == "/_desktop/wait.js" {
-        return (
-            [(header::CONTENT_TYPE, "text/javascript")],
-            include_str!("wait.js"),
-        )
-            .into_response();
-    }
     if is_api(path) {
-        let Some(backend) = state.supervisor.backend().await else {
-            return unavailable(StatusCode::SERVICE_UNAVAILABLE);
-        };
-        if state.supervisor.remote.is_some()
-            && request
-                .headers()
-                .get(header::UPGRADE)
-                .is_some_and(|value| value.as_bytes().eq_ignore_ascii_case(b"websocket"))
+        let backend = state.session.remote.origin.clone();
+        if request
+            .headers()
+            .get(header::UPGRADE)
+            .is_some_and(|value| value.as_bytes().eq_ignore_ascii_case(b"websocket"))
         {
             return upgrade_media(state, request).await;
         }
         return proxy(&state, request, &backend, true).await;
-    }
-    if state.supervisor.status().await.state != "ready" {
-        return (
-            [
-                (header::CONTENT_TYPE, "text/html"),
-                (header::CACHE_CONTROL, "no-store"),
-                (
-                    header::CONTENT_SECURITY_POLICY,
-                    "default-src 'self'; style-src 'unsafe-inline'; script-src 'self'",
-                ),
-            ],
-            include_str!("startup.html"),
-        )
-            .into_response();
     }
     if let Some(vite) = &state.vite {
         if request
@@ -320,11 +292,7 @@ fn clean_headers(headers: &mut HeaderMap) {
 async fn proxy(state: &GatewayState, request: Request<Body>, target: &str, api: bool) -> Response {
     let path = request.uri().path().to_string();
     let track_view = api && path == "/v1/machine/view" && request.method() == Method::POST;
-    let presentation = state
-        .supervisor
-        .remote
-        .as_ref()
-        .map(|remote| remote.presentation());
+    let presentation = state.session.remote.presentation();
     let forget_view =
         api && request.method() == Method::DELETE && path.starts_with("/v1/machine/views/");
     let (parts, body) = request.into_parts();
@@ -338,7 +306,8 @@ async fn proxy(state: &GatewayState, request: Request<Body>, target: &str, api: 
     let mut used_access = None;
     let mut session_guard = None;
     if api {
-        let token = if let Some(remote) = &state.supervisor.remote {
+        let token = {
+            let remote = &state.session.remote;
             headers.insert(
                 header::ORIGIN,
                 HeaderValue::from_str(&remote.origin).expect("Validated server origin"),
@@ -368,11 +337,6 @@ async fn proxy(state: &GatewayState, request: Request<Body>, target: &str, api: 
             session_guard = Some(remote.stream_guard().await);
             used_access = Some(token.clone());
             token
-        } else {
-            let Ok(token) = state.supervisor.token() else {
-                return unavailable(StatusCode::SERVICE_UNAVAILABLE);
-            };
-            token
         };
         let Ok(value) = HeaderValue::from_str(&format!("Bearer {token}")) else {
             return unavailable(StatusCode::SERVICE_UNAVAILABLE);
@@ -387,8 +351,12 @@ async fn proxy(state: &GatewayState, request: Request<Body>, target: &str, api: 
             .map(|v| v.as_str())
             .unwrap_or("/")
     );
-    let result = state
-        .client
+    let client = if api {
+        &state.session.remote.client
+    } else {
+        &state.client
+    };
+    let result = client
         .request(parts.method, target)
         .headers(headers)
         .body(reqwest::Body::wrap_stream(body.into_data_stream()))
@@ -398,23 +366,21 @@ async fn proxy(state: &GatewayState, request: Request<Body>, target: &str, api: 
         return unavailable(StatusCode::BAD_GATEWAY);
     };
     let status = reply.status();
-    if api && state.supervisor.remote.is_some() && status.is_redirection() {
+    if api && status.is_redirection() {
         return unavailable(StatusCode::BAD_GATEWAY);
     }
     if status == StatusCode::UNAUTHORIZED
         && !path.starts_with("/v1/machine/viewer/")
         && !path.starts_with("/v1/machine/views/")
-        && let (Some(remote), Some(access)) = (&state.supervisor.remote, &used_access)
+        && let Some(access) = &used_access
     {
-        remote.invalidate(access).await;
+        state.session.remote.invalidate(access).await;
     }
     let mut headers = reply.headers().clone();
     clean_headers(&mut headers);
     headers.remove(header::ACCESS_CONTROL_ALLOW_ORIGIN);
-    if state.supervisor.remote.is_some() {
-        headers.remove(header::SET_COOKIE);
-        headers.remove(header::WWW_AUTHENTICATE);
-    }
+    headers.remove(header::SET_COOKIE);
+    headers.remove(header::WWW_AUTHENTICATE);
     headers.insert(
         header::X_CONTENT_TYPE_OPTIONS,
         HeaderValue::from_static("nosniff"),
@@ -424,16 +390,11 @@ async fn proxy(state: &GatewayState, request: Request<Body>, target: &str, api: 
         HeaderValue::from_static("no-referrer"),
     );
     if forget_view && status.is_success() {
-        if let Some(remote) = &state.supervisor.remote {
-            remote
-                .forget_view(path.trim_start_matches("/v1/machine/views/"))
-                .await;
-        } else {
-            state
-                .supervisor
-                .forget_view(path.trim_start_matches("/v1/machine/views/"))
-                .await;
-        }
+        state
+            .session
+            .remote
+            .forget_view(path.trim_start_matches("/v1/machine/views/"))
+            .await;
     }
     let body = if track_view && status.is_success() {
         // Only this bounded control response is decoded; files and event streams stay streaming.
@@ -442,21 +403,19 @@ async fn proxy(state: &GatewayState, request: Request<Body>, target: &str, api: 
             return unavailable(StatusCode::BAD_GATEWAY);
         };
         if let Ok(value) = serde_json::from_slice(&bytes) {
-            if let Some(remote) = &state.supervisor.remote {
-                remote
-                    .register_view(
-                        &value,
-                        &organization,
-                        presentation.unwrap_or_default(),
-                        state
-                            .supervisor
-                            .visible
-                            .load(std::sync::atomic::Ordering::Acquire),
-                    )
-                    .await;
-            } else {
-                state.supervisor.register_view(&value).await;
-            }
+            state
+                .session
+                .remote
+                .register_view(
+                    &value,
+                    &organization,
+                    presentation,
+                    state
+                        .session
+                        .visible
+                        .load(std::sync::atomic::Ordering::Acquire),
+                )
+                .await;
         }
         Body::from(bytes)
     } else {
@@ -491,7 +450,7 @@ async fn static_asset(state: &GatewayState, request: Request<Body>) -> Response 
     {
         return StatusCode::FORBIDDEN.into_response();
     }
-    let root = &state.supervisor.paths.assets;
+    let root = &state.session.paths.assets;
     let mut file = root.join(&relative);
     if !tokio::fs::metadata(&file).await.is_ok_and(|m| m.is_file()) {
         if relative.extension().is_some() {
@@ -567,7 +526,7 @@ async fn upgrade_vite(
 
 async fn upgrade_media(state: Arc<GatewayState>, request: Request<Body>) -> Response {
     use base64::{Engine, engine::general_purpose::STANDARD};
-    let remote = state.supervisor.remote.as_ref().unwrap();
+    let remote = &state.session.remote;
     let path = request.uri().path();
     let segments: Vec<_> = path.split('/').collect();
     if segments.len() != 6

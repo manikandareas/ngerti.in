@@ -6,7 +6,6 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { OrganizationSwitcher } from "@/features/account/organization-switcher";
-import { useAccount } from "@/features/account/session";
 import { NavigationSearch } from "@/features/conversation/components/navigation-search";
 import { command } from "@/lib/api-client";
 import type { Agent, AgentActivity, ConversationPreview, Thread } from "@/types/workspace";
@@ -43,8 +42,6 @@ export function ConversationNavigation({
   const [search, setSearch] = useState("");
   const [opening, setOpening] = useState<string | null>(null);
   const [error, setError] = useState("");
-  const account = useAccount();
-  const scoped = account?.mode === "accounts";
   const teamAgents = agents.filter(
     (agent) =>
       agent.organization_id &&
@@ -130,25 +127,20 @@ export function ConversationNavigation({
             Tidak ada agent atau grup yang cocok.
           </p>
         )}
-        {!loading && scoped && <div className="agent-section-label">My agents</div>}
+        {!loading && <div className="agent-section-label">My agents</div>}
         {!loading &&
           filteredThreads.some(
             (thread) =>
-              !scoped ||
               thread.type === "group" ||
               agentsById.get(thread.member_agent_ids[0])?.actor_id !== null,
           ) && (
             <ConversationList
               agents={agents}
-              threads={
-                scoped
-                  ? filteredThreads.filter(
-                      (thread) =>
-                        thread.type === "group" ||
-                        agentsById.get(thread.member_agent_ids[0])?.actor_id !== null,
-                    )
-                  : filteredThreads
-              }
+              threads={filteredThreads.filter(
+                (thread) =>
+                  thread.type === "group" ||
+                  agentsById.get(thread.member_agent_ids[0])?.actor_id !== null,
+              )}
               agentsById={agentsById}
               activitiesByThread={activitiesByThread}
               previewsByThread={previewsByThread}
@@ -156,7 +148,7 @@ export function ConversationNavigation({
               choose={choose}
             />
           )}
-        {!loading && scoped && teamAgents.length > 0 && (
+        {!loading && teamAgents.length > 0 && (
           <>
             <div className="agent-section-label">Team agents</div>
             {teamAgents.map((agent) => {

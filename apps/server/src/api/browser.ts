@@ -66,7 +66,7 @@ export function registerBrowserRoutes(api: Elysia, services: ApiServices, comman
       "/v1/browser/sessions/:id/view",
       async ({ params, body, request }) => {
         browserViews ??= new BrowserViews(browsers);
-        const lease = services.authentication?.lease(request);
+        const lease = services.authentication.lease(request);
         try {
           return await browserViews.issue(params.id, body, new URL(request.url).origin, lease);
         } catch (error) {

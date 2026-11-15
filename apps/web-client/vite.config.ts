@@ -1,5 +1,3 @@
-import { readFileSync } from "node:fs";
-import { resolve } from "node:path";
 import { fileURLToPath, URL } from "node:url";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
@@ -7,28 +5,14 @@ import { defineConfig, type Plugin, type ProxyOptions } from "vite";
 import { fileIcons } from "./build/file-icons.js";
 import { pdfAssets } from "./build/pdf-assets.js";
 
-// Development-only, loopback bridge. Installation credentials never enter the browser bundle.
+// The loopback dev proxy preserves cookie authentication and validates its caller before forwarding.
 const target = process.env.NGERTIIN_API_URL ?? "http://127.0.0.1:8000";
-const stateDirectory = resolve(
-  fileURLToPath(new URL("../../", import.meta.url)),
-  process.env.NGERTIIN_STATE_DIR ?? ".dev/harness-first",
-);
+const authOrigin = process.env.NGERTIIN_AUTH_URL || "http://127.0.0.1:3001";
 const apiProxy: ProxyOptions = {
   target,
   configure(proxy) {
     proxy.on("proxyReq", (request) => {
-      if (process.env.NGERTIIN_AUTH_MODE === "accounts") {
-        request.removeHeader("Authorization");
-        return;
-      }
-      try {
-        const installation = JSON.parse(
-          readFileSync(resolve(stateDirectory, "installation.json"), "utf8"),
-        );
-        request.setHeader("Authorization", `Bearer ${installation.token}`);
-      } catch {
-        request.removeHeader("Authorization");
-      }
+      request.setHeader("Origin", authOrigin);
     });
   },
 };

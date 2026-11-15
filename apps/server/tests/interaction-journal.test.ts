@@ -1,7 +1,6 @@
 import { afterEach, expect, test } from "bun:test";
 import { createHash } from "node:crypto";
 import { z } from "zod";
-import { createApi } from "../src/api";
 import { operationResponse } from "../src/api-responses";
 import { Background } from "../src/background";
 import type { Entity } from "../src/contracts";
@@ -14,6 +13,7 @@ import { HarnessError, unknownCapabilities } from "../src/harness/contracts";
 import { ProductTools } from "../src/harness/tools";
 import { InteractionJournal } from "../src/runs/interaction-journal";
 import { fixture } from "./helpers";
+import { fixtureApi as createApi } from "./http-fixture";
 
 const token = "a".repeat(64);
 const question = {

@@ -1,4 +1,3 @@
-import { timingSafeEqual } from "node:crypto";
 import { Elysia } from "elysia";
 import { z } from "zod";
 import { isAuthenticationRoute, isPublicAuthenticationRoute } from "../auth/http";
@@ -11,29 +10,26 @@ import type { ScopedData } from "../organizations/data";
 import { isOrganizationPath } from "../organizations/paths";
 import { databaseDomainError } from "../persistence/errors";
 
-export function createCommand(lifecycle: Lifecycle, authentication?: Authentication) {
+export function createCommand(lifecycle: Lifecycle, authentication: Authentication) {
   return async function command<T>(request: Request, body: unknown, action: () => T): Promise<T> {
     const commandId = id.parse(request.headers.get("Idempotency-Key"));
     return await lifecycle.store.command(
       commandId,
       { method: request.method, path: new URL(request.url).pathname, body },
       action,
-      authentication
-        ? () =>
-            lifecycle.store.dataContext
-              ? lifecycle.store.dataContext.validate()
-              : authentication.assertOwner(request)
-        : undefined,
+      () =>
+        lifecycle.store.dataContext
+          ? lifecycle.store.dataContext.validate()
+          : authentication.assertOwner(request),
     );
   };
 }
 
 export function createHttp(
-  token: string,
   tools: ProductTools,
+  authentication: Authentication,
+  scoped: ScopedData,
   viewerAccess?: (request: Request) => unknown,
-  authentication?: Authentication,
-  scoped?: ScopedData,
 ) {
   const api = new Elysia({
     name: "ngertiin-foundation",
@@ -80,7 +76,7 @@ export function createHttp(
         await viewerAccess(request);
         return;
       }
-      // The MCP endpoint accepts only a server-issued run lease, never the installation token.
+      // The MCP endpoint accepts only a server-issued run lease.
       if (
         ["GET", "POST"].includes(request.method) &&
         new URL(request.url).pathname === "/v1/harness/tools"
@@ -100,27 +96,16 @@ export function createHttp(
         );
         return;
       }
-      if (authentication) {
-        if (isPublicAuthenticationRoute(request)) return;
-        await authentication.authenticate(request);
-        if (
-          !isAuthenticationRoute(request) &&
-          new URL(request.url).pathname !== "/v1/contracts" &&
-          !isOrganizationPath(new URL(request.url).pathname) &&
-          !scoped?.requests.has(request)
-        )
-          await authentication.assertOwner(request);
-        return;
-      }
-      const supplied = request.headers.get("Authorization") ?? "";
-      const expected = `Bearer ${token}`;
-      const suppliedBytes = Buffer.from(supplied);
-      const expectedBytes = Buffer.from(expected);
+      if (isPublicAuthenticationRoute(request)) return;
+      await authentication.authenticate(request);
       if (
-        suppliedBytes.length !== expectedBytes.length ||
-        !timingSafeEqual(suppliedBytes, expectedBytes)
+        !isAuthenticationRoute(request) &&
+        new URL(request.url).pathname !== "/v1/contracts" &&
+        !isOrganizationPath(new URL(request.url).pathname) &&
+        !scoped.requests.has(request)
       )
-        throw new DomainError("UNAUTHORIZED", 401);
+        await authentication.assertOwner(request);
+      return;
     });
   return api;
 }

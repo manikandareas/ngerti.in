@@ -71,9 +71,9 @@ mod macos {
                     });
                 crate::host::visibility(&handle, is_visible);
                 if is_visible && let Some(host) = handle.try_state::<crate::host::Host>() {
-                    let supervisor = host.supervisor.clone();
+                    let session = host.session.clone();
                     tauri::async_runtime::spawn(async move {
-                        supervisor.check().await;
+                        let _ = session.remote.metadata().await;
                     });
                 }
             });

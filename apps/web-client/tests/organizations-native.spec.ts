@@ -26,7 +26,9 @@ test("real private Cua media, human control and logout work through the web clie
   await dialog.getByRole("button", { name: "Take control", exact: true }).click();
   await expect(dialog.getByRole("button", { name: "Return control", exact: true })).toBeVisible();
   await expect(dialog.locator('[data-computer-live="true"]')).toBeVisible({ timeout: 45_000 });
-  const directory = resolve("../../docs/verification/nma-080/screenshots");
+  const directory = resolve(
+    process.env.NGERTIIN_ACCOUNT_SCREENSHOTS ?? "../../.dev/accounts-browser-screenshots",
+  );
   mkdirSync(directory, { recursive: true });
   await page.screenshot({ path: resolve(directory, `${info.project.name}-native-computer.png`) });
   await dialog.getByRole("button", { name: "Return control", exact: true }).click();

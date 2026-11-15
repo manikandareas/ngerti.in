@@ -3,7 +3,7 @@ import { Pool } from "pg";
 import { DomainError } from "../contracts";
 import type { AuthenticationConfig } from "./config";
 import { initializeAuthentication } from "./database";
-import { type EmailDelivery, resendDelivery } from "./email";
+import { authenticationEmailDelivery, type EmailDelivery } from "./email";
 import {
   AUTH_PATH,
   type AuthenticationProvider,
@@ -35,6 +35,7 @@ export class Authentication {
   readonly pool: Pool;
   readonly #requests = new WeakMap<Request, Principal>();
   readonly #leases = new Map<string, Set<AbortController>>();
+  #closing: Promise<void> | undefined;
   private constructor(
     readonly config: AuthenticationConfig,
     connectionString: string,
@@ -57,7 +58,7 @@ export class Authentication {
     config: AuthenticationConfig,
     connectionString: string,
     legacyOwnerId: string,
-    deliver: EmailDelivery = resendDelivery(config.email),
+    deliver: EmailDelivery = authenticationEmailDelivery(config.email),
   ) {
     if (!/^[a-z][a-z0-9_]{0,62}$/.test(config.schema))
       throw new Error("Invalid authentication schema.");
@@ -79,7 +80,8 @@ export class Authentication {
   }
   async close() {
     for (const sessionId of this.#leases.keys()) this.retire(sessionId);
-    await this.pool.end();
+    this.#closing ??= this.pool.end();
+    await this.#closing;
   }
   checkOrigin(request: Request, cookieMutation = false) {
     const origin = request.headers.get("Origin");
@@ -156,6 +158,11 @@ export class Authentication {
       };
       if (!["GET", "HEAD", "OPTIONS"].includes(request.method)) this.checkOrigin(request, true);
     }
+    if (this.config.email.delivery === "local" && this.config.allowInsecureLoopback)
+      await this.pool.query(
+        "UPDATE ngertiin_owner_binding SET user_id=$1,bound_at=now() WHERE id=1 AND user_id IS NULL",
+        [principal.userId],
+      );
     this.#requests.set(request, principal);
     return principal;
   }

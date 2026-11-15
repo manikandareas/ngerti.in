@@ -2,7 +2,6 @@ import { afterEach, expect, test } from "bun:test";
 import { chmodSync, lstatSync, mkdirSync, readdirSync, readFileSync, symlinkSync } from "node:fs";
 import { join } from "node:path";
 import { z } from "zod";
-import { createApi } from "../src/api";
 import { Background } from "../src/background";
 import { CONTRACT_VERSION, schemas } from "../src/contracts";
 import { Connections } from "../src/harness/connections";
@@ -10,6 +9,7 @@ import { CredentialContexts } from "../src/harness/context";
 import { CredentialStorage } from "../src/harness/credential-storage";
 import { ProductTools } from "../src/harness/tools";
 import { fixture } from "./helpers";
+import { fixtureApi as createApi } from "./http-fixture";
 
 const token = "a".repeat(64);
 const secret = "provider-proof-key-do-not-publish-9d42824c";
@@ -98,7 +98,7 @@ test("key onboarding preserves explicit Codex API billing and published request/
       item.method === "POST" && item.path === "/v1/connections/api-key",
   );
   expect(route.idempotency).toBe("required_uuid");
-  expect(route.authentication).toBe("installation_bearer");
+  expect(route.authentication).toBe("user_session_or_oauth_access_token");
   z.fromJSONSchema(route.request.body).parse({ harness: "codex", api_key: secret });
   z.fromJSONSchema(route.response.schema).parse(connection);
   expect(JSON.stringify(contract)).not.toContain(secret);

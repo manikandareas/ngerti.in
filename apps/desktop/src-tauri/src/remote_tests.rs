@@ -1,9 +1,9 @@
 use super::*;
 use crate::{
+    desktop_session::DesktopSession,
     gateway,
     log::Log,
     profile::{RuntimePaths, prepare_home},
-    supervisor::Supervisor,
 };
 use axum::{
     Router,
@@ -200,21 +200,14 @@ async fn remote_gateway_never_loads_local_runtime_or_renderer_credentials_and_bl
     let listener = std::net::TcpListener::bind("127.0.0.1:0").unwrap();
     let port = listener.local_addr().unwrap().port();
     drop(listener);
-    let profile: Profile = serde_json::from_value(json!({"version":1,"managerId":uuid::Uuid::new_v4(),"mode":"remote", "serverOrigin":"https://remote.fixture.invalid", "uiPort":port})).unwrap();
+    let profile: Profile = serde_json::from_value(json!({"version":2,"managerId":uuid::Uuid::new_v4(), "serverOrigin":"https://remote.fixture.invalid", "projectRoot":home, "uiPort":port})).unwrap();
     let paths = RuntimePaths {
-        root: home.clone(),
-        bun: home.join("missing-bun"),
         assets: home.join("web"),
         packaged: false,
     };
-    let mut supervisor = Supervisor::new(profile, paths, Log::new(&home, vec![])).unwrap();
-    Arc::get_mut(&mut supervisor).unwrap().remote = Some(remote.clone());
-    supervisor.start().await;
-    supervisor.start_machine().await;
-    assert!(supervisor.environment.is_empty());
-    assert!(supervisor.runtime().is_none());
-    assert!(supervisor.token().is_err());
-    let gateway = gateway::start(supervisor.clone(), None).await.unwrap();
+    let mut session = DesktopSession::new(profile, paths, Log::new(&home, vec![])).unwrap();
+    Arc::get_mut(&mut session).unwrap().remote = remote.clone();
+    let gateway = gateway::start(session.clone(), None).await.unwrap();
     let client = reqwest::Client::builder()
         .redirect(reqwest::redirect::Policy::none())
         .build()
@@ -289,7 +282,7 @@ async fn remote_gateway_never_loads_local_runtime_or_renderer_credentials_and_bl
         .await
         .unwrap();
     assert!(response.status().is_success());
-    supervisor.stop().await;
+    session.stop().await;
     assert!(
         remote
             .client
@@ -324,10 +317,10 @@ fn api_paths_cannot_escape_the_selected_server() {
 async fn native_https_requires_trusted_tls_and_the_selected_issuer() {
     let certificate =
         std::env::var_os("NGERTIIN_NMA081_CA").expect("Select the fixture public CA.");
-    let mut profile: Profile = serde_json::from_value(json!({"version":1,"managerId":uuid::Uuid::new_v4(), "mode":"remote", "serverOrigin":"https://127.0.0.1:44431", "uiPort":4312})).unwrap();
+    let mut profile: Profile = serde_json::from_value(json!({"version":2,"managerId":uuid::Uuid::new_v4(),  "serverOrigin":"https://127.0.0.1:44431", "projectRoot":"/unused","uiPort":4312})).unwrap();
     assert!(Remote::new(&profile).unwrap().metadata().await.is_err());
     profile.server_certificate = Some(certificate.into());
     assert!(Remote::new(&profile).unwrap().metadata().await.is_ok());
-    profile.server_origin = Some("https://localhost:44431".into());
+    profile.server_origin = "https://localhost:44431".into();
     assert!(Remote::new(&profile).unwrap().metadata().await.is_err());
 }

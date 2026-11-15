@@ -15,7 +15,6 @@ test("export the installed account-mode execution-domain API contract", async ()
   const api = await createApi(
     f.domain.lifecycle,
     new Background(f.domain.lifecycle),
-    "c".repeat(64),
     {
       authentication: f.auth,
       connections: new Connections(f.domain.lifecycle),

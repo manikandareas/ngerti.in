@@ -1,0 +1,81 @@
+bun test v1.3.10 (30e609e0)
+
+tests/provider-key.test.ts:
+(pass) provider key onboarding stores only a private host key and replays across restart [3144.21ms]
+(pass) key onboarding preserves explicit Codex API billing and published request/response schemas [1517.36ms]
+(pass) unauthorized, malformed and missing-key requests never write credentials or domain state [1133.54ms]
+(pass) credential onboarding rejects symlinked credential directories [933.68ms]
+(pass) credential onboarding rejects publicly readable credential storage [1133.25ms]
+(pass) a rejected connection transaction removes its new host key [1041.16ms]
+
+tests/conversation-previews.test.ts:
+(pass) conversation previews return bounded visible excerpts for DMs and groups without side effects [409.18ms]
+(pass) authenticated preview reads reflect edits, deletions and restart through the published API [1931.06ms]
+
+tests/harness.test.ts:
+(pass) DM prewarm performs no inference and reuses skills, transport and presentation-only revisions [3845.05ms]
+(pass) DM prewarm replaces the least recently used idle transport and preserves native identities [2752.17ms]
+(pass) speculative DM preparation never evicts transports while active or unknown work exists [2023.78ms]
+(pass) minimum policies reject below-floor and prerelease versions for both harnesses [10.76ms]
+(pass) real executable probes distinguish supported, old, missing, unknown and failed without returning diagnostics [2522.49ms]
+(pass) connection API persists secret references and independent evidence states across restart [898.06ms]
+(pass) API rejects billing mismatches, secret values and caller-supplied owner identity [763.24ms]
+(pass) isolated native-login environment strips inherited billing keys; selected keys are connection-specific [292.30ms]
+(pass) credential files fail closed on missing or public permissions [326.21ms]
+(pass) diagnostic redaction buffers split UTF-8/secret records and discards oversized fragments [11.53ms]
+(pass) owned native processes run concurrently with separate environment and redact fragmented stderr [352.10ms]
+(pass) two harnesses, accounts, models and agents execute concurrently through scoped product tools [3026.86ms]
+(pass) login, catalog failure and completed inference remain separate observations [633.10ms]
+(pass) native account cannot silently switch selected authentication or billing [578.52ms]
+(pass) unknown resume never starts a replacement session [830.85ms]
+(pass) concurrent opens share one lane and separate sessions for two agents on one connection [1068.74ms]
+(pass) grant revocation while native initialization waits prevents session binding [579.47ms]
+(pass) connection revoke retires an initializing native process before deleting auth state and leaves other connections alive [1621.04ms]
+(pass) scope, private resources, current grants and terminal runs are rechecked on each tool call [1123.31ms]
+(pass) MCP HTTP round trip uses scoped leases and refuses the installation token [2039.49ms]
+(pass) grant change between settings and prompt blocks final dispatch [1174.19ms]
+(pass) native acceptance followed by failure becomes unknown and blocks retry [1382.31ms]
+(pass) native rejection is failed; malformed terminal identity remains unknown [2504.57ms]
+(pass) native stop receipt confirms cancellation [1391.44ms]
+(pass) native text redaction covers secrets split across events [1400.46ms]
+(pass) API exposes host detection states for both manifests and authenticated revocation [930.35ms]
+(pass) tool capability revocation during an asynchronous handler blocks its final effect [1173.57ms]
+(pass) broker shutdown fences late completion and text after an unconfirmed native stop [1589.34ms]
+(pass) MCP transport validates origin/protocol, initialization and notification responses [2185.50ms]
+(pass) native account change after session initialization cannot dispatch under the old connection [1207.65ms]
+(pass) a connection change starts a separate native session and retains the previous mapping [810.01ms]
+(pass) version and executable failures cannot reach the adapter connect boundary [794.86ms]
+(pass) protocol request and close deadlines bound an unresponsive client without fabricating login [684.18ms]
+(pass) two simultaneous key connections on the same harness retain their selected accounts and models [3536.22ms]
+(pass) concurrent steering receipts send once and a lost acknowledgement never resends [1213.27ms]
+(pass) native receipt reads recheck revocation before committing recovered output [872.09ms]
+(pass) owner receipt inspection releases revoked group work without restoring its workspace or publishing its output [1329.39ms]
+(pass) an unconfirmed native stop reaches a bounded unknown outcome and fences late events [1874.64ms]
+
+tests/contracts.test.ts:
+28 |   for (const route of protectedRoutes) {
+29 |     const path = route.path.replace(/:[a-z_]+/g, crypto.randomUUID());
+30 |     const response = await app.handle(
+31 |       new Request(`http://localhost${path}`, { method: route.method }),
+32 |     );
+33 |     expect(response.status, `${route.method} ${route.path}`).toBe(401);
+                                                                  ^
+error: GET /v1/data/access
+
+Expected: 401
+Received: 403
+
+      at <anonymous> (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/tests/contracts.test.ts:33:62)
+(fail) every registered domain route retains the shared authentication guard [1235.85ms]
+(pass) published replay schema accepts browser and application receipts across restart [535.36ms]
+(pass) published command schemas retain optional defaulted admission fields [276.12ms]
+(pass) consumer contract describes actual routes without executing native operations [1163.30ms]
+(pass) published response schemas validate admission, control, history, snapshots and safe errors [1622.40ms]
+
+1 tests failed:
+(fail) every registered domain route retains the shared authentication guard [1235.85ms]
+
+ 50 pass
+ 1 fail
+ 326 expect() calls
+Ran 51 tests across 4 files. [69.11s]

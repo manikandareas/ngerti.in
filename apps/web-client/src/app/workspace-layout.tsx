@@ -928,16 +928,6 @@ export default function Workspace() {
         selections: workspace.selections,
         allowedOrganizationConnectionIds: workspace.access?.allowed_organization_connection_ids,
         refresh,
-        openAgent: (selectedAgent) => {
-          const dm = threads.find(
-            (thread) => thread.type === "dm" && thread.member_agent_ids[0] === selectedAgent.id,
-          );
-          if (!dm) return;
-          if (dm.id !== threadId) choose(dm.id);
-          setDetails(true);
-          locate({ tab: "detail", id: null });
-          void closeSettings();
-        },
       }}
     >
       <div className="application-frame">

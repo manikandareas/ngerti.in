@@ -2,7 +2,6 @@ import { afterEach, expect, test } from "bun:test";
 import { chmodSync, mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { z } from "zod";
-import { createApi } from "../src/api";
 import { Background } from "../src/background";
 import type { Entity } from "../src/contracts";
 import { Groups } from "../src/groups/service";
@@ -22,6 +21,7 @@ import { ProductTools } from "../src/harness/tools";
 import { asyncFilter, asyncMap } from "../src/persistence/async-collections";
 import { RunControls } from "../src/run-controls";
 import { fixture } from "./helpers";
+import { fixtureApi as createApi } from "./http-fixture";
 
 let f: Awaited<ReturnType<typeof fixture>>;
 let broker: HarnessBroker | undefined;

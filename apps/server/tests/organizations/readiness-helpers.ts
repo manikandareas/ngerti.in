@@ -1,4 +1,4 @@
-import { createApi } from "../../src/api";
+import { createApi as createAccountApi } from "../../src/api";
 import { Background } from "../../src/background";
 import { DomainError, type Entity } from "../../src/contracts";
 import { manifests } from "../../src/harness/availability";
@@ -213,7 +213,7 @@ export async function readinessFixture(
     timeouts,
   );
   const background = new Background(lifecycle, broker.executors());
-  const api = await createApi(lifecycle, background, "r".repeat(64), {
+  const api = await createAccountApi(lifecycle, background, {
     authentication: f.auth,
     connections: broker.connections,
     tools,

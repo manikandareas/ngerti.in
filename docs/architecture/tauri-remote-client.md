@@ -1,22 +1,17 @@
-# Tauri remote client
+# Tauri account client
 
 [NMA-081](../backlog/NMA-081.md) implements remote sessions in the existing macOS ARM64 Tauri host and shared web-client. The [authentication contract](user-authentication.md) defines the server's native OAuth protocol. The [verification report](../verification/nma-081/README.md) owns executed results and remaining acceptance conditions.
 
 ## Profiles and server identity
 
-`profile.json` version 1 accepts explicit `mode: "local-development"` or `mode: "remote"`. Existing version-1 profiles without a mode retain their local-development interpretation. Unknown modes fail validation. Remote profiles require one canonical HTTPS `serverOrigin`, a manager UUID and a stable private UI port. They do not require backend state, an environment file, Bun, Codex, Muse or Cua executables on the client machine. Development profiles retain the repository path for local UI assets; packaged profiles use their bundled web assets.
-
-Create a separate remote profile without replacing an existing local profile:
+`profile.json` version 2 selects exactly one account-authenticated `serverOrigin`, manager UUID, private UI port and UI source root. There is no client/auth mode selector or backend environment/state/provider configuration. Release builds require HTTPS; debug builds additionally support canonical IPv4 loopback HTTP. Existing profiles are preserved; use a separate directory for the new client. `bun dev` uses `.dev/development-client`.
 
 ```sh
-NGERTIIN_DESKTOP_HOME="$HOME/Library/Application Support/Ngertiin Remote Example" \
-  bun run setup:desktop -- --remote https://ngertiin.example.com
-
-NGERTIIN_DESKTOP_HOME="$HOME/Library/Application Support/Ngertiin Remote Example" \
-  bun run dev:desktop
+NGERTIIN_DESKTOP_HOME="/absolute/private/account-profile" bun run setup:desktop -- --server https://ngertiin.example.com
+NGERTIIN_DESKTOP_HOME="/absolute/private/account-profile" bun run dev:desktop
 ```
 
-The profile directory and JSON retain the existing owner/private-file checks. Setup refuses to overwrite a profile selecting another server or mode. Use separate desktop homes to switch profiles/servers. Each profile has a separate WKWebView data store and native credential account; retained product projections additionally use the server/user/organization/conversation namespace from NMA-080. Remote Tauri remembers the selected organization in profile-local storage keyed by server and user, so relaunch restores the correct organization and its draft. Browser organization selection remains tab-local. Logout clears the selection and private retained UI data.
+Server/profile changes preserve private projection and Keychain boundaries. Browser organization choice remains tab-local; native choice is profile-local and server/user-keyed. Logout clears that identity's private UI state.
 
 An operator-selected private CA is supported through `--certificate /absolute/path/to/public-ca.pem`. This adds the selected certificate to native TLS trust; it does not disable certificate or hostname validation and does not modify OS trust. The external system browser must independently trust that server. Ordinary public HTTPS needs no certificate option.
 
@@ -44,7 +39,7 @@ The outer account HTTP server owns the WebSocket upgrade. Both upgrade and subse
 
 ## Lifecycle and retained work
 
-Remote mode does not read backend environment/installation credentials, supervise processes, start a Cua machine or run the local recovery loop. Explicit local-development supervision remains available, including the current compatible API major version.
+The client never reads backend environment/installation credentials, supervises processes, starts a Cua machine or runs a local recovery loop. `bun dev` owns its local server/Vite processes separately; the account protocol is identical for development and deployed servers.
 
 | Action | Client effect | Server effect |
 | --- | --- | --- |

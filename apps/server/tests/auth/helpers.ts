@@ -1,6 +1,6 @@
 import { randomBytes } from "node:crypto";
 import { Elysia } from "elysia";
-import { createApi } from "../../src/api";
+import { createApi as createAccountApi } from "../../src/api";
 import type { AuthenticationConfig } from "../../src/auth/config";
 import type { AuthenticationEmail, EmailDelivery } from "../../src/auth/email";
 import { Authentication } from "../../src/auth/service";
@@ -20,7 +20,7 @@ export async function authFixture(
   transport?: AuthFixtureTransport,
 ) {
   const domain = await fixture();
-  let api: Awaited<ReturnType<typeof createApi>>;
+  let api: Awaited<ReturnType<typeof createAccountApi>>;
   let handler = (request: Request): Response | Promise<Response> => api.handle(request);
   const edge = new Elysia()
     .all("*", ({ request }) => handler(request), { parse: "none" })
@@ -43,7 +43,7 @@ export async function authFixture(
     schema: `auth_${domain.owner.replaceAll("-", "")}`,
     nativeRedirectUri: transport?.nativeRedirectUri ?? `http://127.0.0.1:${callback.port}/callback`,
     allowInsecureLoopback: !transport?.tls,
-    email: { from: "auth@example.test", apiKey: "fixture-not-a-provider-key" },
+    email: { delivery: "resend", from: "auth@example.test", apiKey: "fixture-not-a-provider-key" },
   };
   const emails: AuthenticationEmail[] = [];
   let auth: Authentication;
@@ -57,7 +57,7 @@ export async function authFixture(
         await deliver?.(message);
       },
     );
-    api = await createApi(domain.lifecycle, new Background(domain.lifecycle), "o".repeat(64), {
+    api = await createAccountApi(domain.lifecycle, new Background(domain.lifecycle), {
       authentication: auth,
       tools: await ProductTools.open(domain.lifecycle),
       connections: new Connections(domain.lifecycle),

@@ -27,11 +27,9 @@ import {
   GeneralSettings,
   KeyboardSettings,
 } from "@/features/settings/components/preference-sections";
-import { ProviderSettings } from "@/features/settings/components/providers";
 import { SettingsRow, SettingsSection } from "@/features/settings/components/shared";
 import { useSettings } from "@/features/settings/hooks/use-settings";
 import type { SettingsSectionId } from "@/features/settings/lib/settings-search";
-import { useSettingsWorkspace } from "@/hooks/settings-workspace";
 import { usePreferences } from "@/hooks/use-preferences";
 import "../settings.css";
 
@@ -53,15 +51,12 @@ const sections = [
 
 export default function SettingsPage() {
   const account = useAccount();
-  const scoped = account?.mode === "accounts";
   const visibleSections = sections.filter((item) => {
-    if (["account", "organization"].includes(item.id)) return scoped;
     if (item.id === "members") return !!account?.access?.capabilities.invite_members;
     if (item.id === "workgroups") return !!account?.access?.capabilities.manage_workgroups;
     if (item.id === "team-agents") return !!account?.access?.capabilities.manage_organization;
     return true;
   });
-  const { agents, connections, refresh, openAgent } = useSettingsWorkspace();
   const { section, open } = useSettings();
   const { error } = usePreferences();
   const page = visibleSections.some((item) => item.id === section) ? section : "general";
@@ -138,17 +133,7 @@ export default function SettingsPage() {
             {page === "accessibility" && <AccessibilitySettings />}
             {page === "data" && <DataSettings />}
             {page === "shortcuts" && <KeyboardSettings />}
-            {page === "providers" &&
-              (scoped ? (
-                <ScopedProviderSettings />
-              ) : (
-                <ProviderSettings
-                  connections={connections}
-                  agents={agents}
-                  refresh={refresh}
-                  openAgent={openAgent}
-                />
-              ))}
+            {page === "providers" && <ScopedProviderSettings />}
             {page === "about" && (
               <SettingsSection title="Aplikasi">
                 <SettingsRow

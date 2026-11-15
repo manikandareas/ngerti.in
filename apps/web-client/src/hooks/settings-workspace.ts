@@ -10,7 +10,6 @@ export type SettingsWorkspace = {
   allowedOrganizationConnectionIds?: string[];
   selections?: AISelection[];
   refresh: () => Promise<unknown>;
-  openAgent: (agent: Agent) => void;
 };
 export const SettingsWorkspaceContext = createContext<SettingsWorkspace | null>(null);
 export function useSettingsWorkspace() {

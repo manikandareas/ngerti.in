@@ -1,7 +1,6 @@
 import { afterEach, expect, test } from "bun:test";
 import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { createApi } from "../src/api";
 import { Artifacts } from "../src/artifacts";
 import { attachmentRead, attachmentSearch } from "../src/attachments/contracts";
 import { AttachmentDocuments } from "../src/attachments/documents";
@@ -9,6 +8,7 @@ import { Attachments } from "../src/attachments/service";
 import { AttachmentSubmissions } from "../src/attachments/submissions";
 import { Background } from "../src/background";
 import { fixture } from "./helpers";
+import { fixtureApi as createApi } from "./http-fixture";
 
 let f: Awaited<ReturnType<typeof fixture>>;
 afterEach(async () => await f?.close());

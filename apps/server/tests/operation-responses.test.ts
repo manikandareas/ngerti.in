@@ -1,10 +1,10 @@
 import { expect, test } from "bun:test";
 import { z } from "zod";
-import { createApi } from "../src/api";
 import { responseSchemas } from "../src/api-contract";
 import { operationResponse } from "../src/api-responses";
 import { Background } from "../src/background";
 import { fixture } from "./helpers";
+import { fixtureApi as createApi } from "./http-fixture";
 
 test("consumer validates real creation, learning, workspace, group and control responses", async () => {
   const f = await fixture();

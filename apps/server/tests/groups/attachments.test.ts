@@ -2,7 +2,6 @@ import { afterEach, expect, test } from "bun:test";
 import { existsSync, mkdirSync, statSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import sharp from "sharp";
-import { createApi } from "../../src/api";
 import { Artifacts } from "../../src/artifacts";
 import { attachmentRead } from "../../src/attachments/contracts";
 import { Attachments } from "../../src/attachments/service";
@@ -16,6 +15,7 @@ import { OwnedProcess } from "../../src/harness/process";
 import { ProductTools } from "../../src/harness/tools";
 import { prepareVisualInputs } from "../../src/multimodal";
 import { fixture } from "../helpers";
+import { fixtureApi as createApi } from "../http-fixture";
 
 let f: Awaited<ReturnType<typeof fixture>>;
 afterEach(async () => await f?.close());

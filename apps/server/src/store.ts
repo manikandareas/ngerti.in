@@ -482,13 +482,6 @@ export class Store {
       });
     }
   }
-  async legacyScopeReady() {
-    return !(
-      await this.#administration.query(
-        "SELECT 1 FROM entities WHERE organization_id IS NULL LIMIT 1",
-      )
-    ).rowCount;
-  }
   /** Offline import only: sequence maintenance never broadens application-role privileges. */
   async assertEmptyImportTarget() {
     if (this.dataContext || !this.#transactions.getStore())

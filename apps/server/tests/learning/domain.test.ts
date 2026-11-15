@@ -8,7 +8,6 @@ import {
   writeFileSync,
 } from "node:fs";
 import { join } from "node:path";
-import { createApi } from "../../src/api";
 import { Background } from "../../src/background";
 import type { Entity } from "../../src/contracts";
 import { Connections } from "../../src/harness/connections";
@@ -18,6 +17,7 @@ import { ProductTools } from "../../src/harness/tools";
 import { ApplicationSkills } from "../../src/learning/application-skills";
 import { Memories } from "../../src/learning/memories";
 import { fixture } from "../helpers";
+import { fixtureApi as createApi } from "../http-fixture";
 
 let f: Awaited<ReturnType<typeof fixture>>;
 afterEach(async () => await f?.close());

@@ -1,12 +1,12 @@
 # Ngertiin
 
-Ngertiin is a persistent agent workspace for one human owner, private DMs, groups, automatic goals and Routine. The repository owns [product scope](PRODUCT.md), [acceptance](docs/development/acceptance.md), and [the local backlog](docs/backlog/README.md). See [the documentation index](docs/README.md).
+Ngertiin is a persistent agent workspace with authenticated accounts, organizations, organization-local roles and Workgroups, private and Team agents, DMs, groups, automatic goals and Routine. The current implementation uses `apps/server`, `apps/web-client`, `apps/desktop` (Tauri) and `packages/avatar`. The repository owns [product scope](PRODUCT.md), [acceptance](docs/development/acceptance.md), and [the local backlog](docs/backlog/README.md). See [the documentation index](docs/README.md).
 
 The harness-first backend uses **Bun, TypeScript, Elysia and PostgreSQL**. One application authority owns identity, admission, queue state, events, stop intent and recovery. Background scheduler and dispatcher modules run in that service. Codex App Server and the Muse SDK/MSP adapter supply native execution. Muse native interaction acceptance is verified; subscription remains unverified and is excluded from the explicitly accepted API-key billing scope. No Hermes executor or fallback is started.
 
 ## Development
 
-Requirements: Bun **1.3.10**, PostgreSQL **18.1** and `make` for foundation startup. The shared Linux desktop also requires Docker. Run `bun run setup:machine` once, then `bun run dev:api` and `bun run dev:web-client`. See the [shared-machine setup and verification](docs/verification/shared-machine/README.md). Configure `NGERTIIN_DATABASE_URL` in the private environment before setup. See [PostgreSQL persistence and controlled import](docs/architecture/postgresql-persistence.md).
+Requirements: Bun **1.3.10**, PostgreSQL **18.1**, Rust stable (minimum 1.90) and Xcode Command Line Tools for Tauri. Configure `NGERTIIN_DATABASE_URL`. `bun dev` starts the API, web, Tauri and the local email inbox together. Account authentication and organizations are always enabled. See [authentication defaults](docs/architecture/user-authentication.md) and [PostgreSQL persistence](docs/architecture/postgresql-persistence.md).
 
 ```sh
 make install
@@ -14,9 +14,9 @@ make setup
 make dev
 ```
 
-The API listens on `127.0.0.1:8000`. State defaults to `.dev/harness-first/`. Override `NGERTIIN_PORT` or `NGERTIIN_STATE_DIR` when needed; see [.env.example](.env.example). `APP_ENV` must be `development`. `make api`, `bun run dev` and `bun run dev:api` all start the same server. See the [documentation index](docs/README.md) for current guides and evidence.
+The API listens on `127.0.0.1:8000`, web/auth origin on `http://127.0.0.1:3001`, and inbox on `http://127.0.0.1:8025`. Tauri uses the same web development server through its native gateway. State defaults to `.dev/harness-first/`; the development desktop has a separate `.dev/development-client` profile. See [.env.example](.env.example) for ports and state. `bun run dev:api` and `bun run dev:web-client` start individual services. Ctrl+C stops only the launcher's children; quitting Tauri leaves server and web running until Ctrl+C.
 
-The bootstrap creates a stable owner UUID and private bearer token in `installation.json` with mode `0600`. Use that token in `Authorization: Bearer <token>` for API requests. Durable domain commands, including steer, also require a UUID `Idempotency-Key`. Native login/inspection/session operations have separate request semantics. The [consumer contract](docs/architecture/api-consumer-contract.md) describes these boundaries. The startup log names the credentials file without printing its token. Local bearer access is a development boundary, not the deferred full login/pairing implementation.
+Authentication always uses verified user accounts and revocable browser/native sessions. Development creates a private persistent authentication secret and delivers verification, recovery and invitations to the local inbox at `http://127.0.0.1:8025`; no Resend credentials are required. The first verified local account becomes the initial Owner. Production requires an explicit HTTPS origin, secret and Resend credentials. The auth-mode selector and installation-token authentication are removed. See [user authentication](docs/architecture/user-authentication.md) and [Tauri account sessions](docs/architecture/tauri-remote-client.md). Domain commands retain UUID idempotency keys.
 
 - `GET /health/live`: process liveness.
 - `GET /health/ready`: foundation readiness and the number of registered executors.
@@ -47,11 +47,10 @@ Development data does not require a migration from the historical runtime. A fre
 
 ## Tauri development app
 
-The macOS ARM64 development desktop uses Tauri v2, reuses the web client, and manages the local Bun backend lifecycle. Building it requires Rust stable (minimum 1.90) and Xcode Command Line Tools in addition to Bun:
+The macOS ARM64 desktop uses Tauri v2 as an account-authenticated server client. It reuses the web UI and keeps renewal credentials in Keychain. The development launcher owns the local server; Tauri never reads installation credentials, supervises a backend or starts a machine. The packaged client contains UI assets without Bun or backend source.
 
 ```sh
-bun run setup:desktop
-bun run dev:desktop
+bun dev
 bun run package:desktop
 ```
 
@@ -59,4 +58,4 @@ See [desktop setup and lifecycle](docs/architecture/tauri-development.md) and [v
 
 Run `bun run test:desktop`, `bun run typecheck:desktop` and `bun run lint:desktop` for native lifecycle tests, Rust checks and desktop tooling validation. See the [cleanup verification](docs/verification/tauri-cleanup-2026-11-05.md) for the removal scope and current checks.
 
-Account-authentication backend configuration and the web/native HTTP contract are documented in [user authentication](docs/architecture/user-authentication.md). Product onboarding and the Tauri remote client remain later milestones.
+Web onboarding, organization management and secure Tauri remote sessions are implemented under NMA-080/NMA-081, with [focused integrated evidence](docs/verification/nma-083/README.md). GPUI/desktop-rs implementations, their local skills and dedicated build caches were removed on November 15. See [cleanup verification](docs/verification/desktop-retirement-2026-11-15/README.md) and [historical source recovery](docs/development/history.md); earlier evidence keeps its original scope.

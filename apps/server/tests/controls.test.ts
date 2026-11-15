@@ -1,5 +1,4 @@
 import { afterEach, expect, test } from "bun:test";
-import { createApi } from "../src/api";
 import { Background } from "../src/background";
 import { Conversations } from "../src/conversations";
 import { Connections } from "../src/harness/connections";
@@ -8,6 +7,7 @@ import { diagnostic, HarnessError } from "../src/harness/contracts";
 import { ProductTools } from "../src/harness/tools";
 import { RunControls } from "../src/run-controls";
 import { fixture } from "./helpers";
+import { fixtureApi as createApi } from "./http-fixture";
 
 let f: Awaited<ReturnType<typeof fixture>>;
 let background: Background;

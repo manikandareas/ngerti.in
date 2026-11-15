@@ -2,7 +2,6 @@ import { afterEach, expect, test } from "bun:test";
 import { createHash } from "node:crypto";
 import { existsSync, readFileSync, renameSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { createApi } from "../src/api";
 import { Background } from "../src/background";
 import type { Entity } from "../src/contracts";
 import { manifests } from "../src/harness/availability";
@@ -16,6 +15,7 @@ import { CredentialContexts } from "../src/harness/context";
 import { NativeSessionMissing } from "../src/harness/contracts";
 import { ProductTools } from "../src/harness/tools";
 import { fixture } from "./helpers";
+import { fixtureApi as createApi } from "./http-fixture";
 
 let f: Awaited<ReturnType<typeof fixture>>;
 let broker: HarnessBroker;

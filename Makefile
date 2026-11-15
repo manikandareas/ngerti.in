@@ -5,8 +5,11 @@ install:
 setup migrate:
 	bun run setup
 
-dev api:
+dev:
 	bun run dev
+
+api:
+	bun run dev:api
 
 check:
 	bun run check

@@ -1,10 +1,8 @@
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync } from "node:fs";
 import { createServer } from "node:net";
 import { join, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
-import { parseArgs, parseEnv } from "node:util";
 import {
-  findExecutable,
+  desktopHome,
   loadProfile,
   type Profile,
   prepareHome,
@@ -12,90 +10,64 @@ import {
   writePrivate,
 } from "./profile";
 
-const root = fileURLToPath(new URL("../../../", import.meta.url));
-const home = prepareHome();
-const { values } = parseArgs({
-  args: process.argv.slice(2).filter((arg) => arg !== "--"),
-  options: {
-    remote: { type: "string" },
-    certificate: { type: "string" },
-    invitation: { type: "string" },
-  },
-});
-if (!values.remote && (values.certificate || values.invitation))
-  throw new Error("Certificate and invitation options require --remote.");
-if (existsSync(join(home, "profile.json"))) {
-  const current = loadProfile(home);
-  if (values.remote && (current.mode !== "remote" || current.serverOrigin !== values.remote))
-    throw new Error(
-      "This profile already selects another server or mode. Select a separate NGERTIIN_DESKTOP_HOME.",
-    );
-  console.log("Desktop profile already exists. Existing data and credentials were preserved.");
-} else {
-  let saved: Record<string, string | undefined> = {};
-  try {
-    if (!values.remote) saved = parseEnv(readFileSync(join(root, ".env"), "utf8"));
-  } catch {
-    /* Configuration is optional. */
+export async function setupDesktop(
+  serverOrigin: string,
+  home = desktopHome(),
+  certificate?: string,
+  invitation?: string,
+): Promise<Profile> {
+  validateServerOrigin(serverOrigin);
+  prepareHome(home);
+  if (existsSync(join(home, "profile.json"))) {
+    const profile = loadProfile(home);
+    if (profile.serverOrigin !== serverOrigin || profile.serverCertificate !== certificate)
+      throw new Error("This profile selects another server. Use a separate NGERTIIN_DESKTOP_HOME.");
+    return profile;
   }
-  const server = createServer();
-  await new Promise<void>((resolve) => server.listen(0, "127.0.0.1", resolve));
-  const address = server.address();
-  if (!address || typeof address === "string") throw new Error("Could not reserve a desktop port.");
-  const uiPort = address.port;
-  await new Promise<void>((resolve) => server.close(() => resolve()));
-  const executable = (value: string) =>
-    findExecutable(value.includes("/") ? resolve(root, value) : value);
-  let profile: Profile;
-  if (values.remote) {
-    const serverOrigin = validateServerOrigin(values.remote);
-    let initialPath: string | undefined;
-    if (values.invitation) {
-      const invitation = new URL(values.invitation);
-      if (
-        invitation.origin !== serverOrigin ||
-        !/^\/invitations\/[a-f0-9-]{36}$/.test(invitation.pathname) ||
-        invitation.search ||
-        invitation.hash ||
-        invitation.username ||
-        invitation.password
-      )
-        throw new Error("The invitation must belong to the selected server.");
-      initialPath = invitation.pathname;
-    }
-    profile = {
-      version: 1,
-      mode: "remote",
-      managerId: crypto.randomUUID(),
-      serverOrigin,
-      serverCertificate: values.certificate ? resolve(values.certificate) : undefined,
-      projectRoot: root,
-      uiPort,
-      initialPath,
-    };
-  } else
-    profile = {
-      version: 1,
-      mode: "local-development",
-      managerId: crypto.randomUUID(),
-      projectRoot: root,
-      stateDirectory: resolve(root, process.env.NGERTIIN_STATE_DIR ?? ".dev/harness-first"),
-      configFile: join(root, ".env"),
-      bunExecutable: process.execPath,
-      uiPort,
-      codexExecutable: executable(
-        process.env.NGERTIIN_CODEX_EXECUTABLE ?? saved.NGERTIIN_CODEX_EXECUTABLE ?? "codex",
-      ),
-      museExecutable: executable(
-        process.env.NGERTIIN_MUSE_EXECUTABLE ??
-          saved.NGERTIIN_MUSE_EXECUTABLE ??
-          (existsSync(join(root, ".dev/nma050/muse")) ? join(root, ".dev/nma050/muse") : "muse"),
-      ),
-    };
+  const probe = createServer();
+  const uiPort = await new Promise<number>((accept, reject) => {
+    probe.once("error", reject);
+    probe.listen(0, "127.0.0.1", () => {
+      const address = probe.address();
+      if (!address || typeof address === "string")
+        return reject(new Error("No desktop port was allocated."));
+      const port = address.port;
+      probe.close((error) => (error ? reject(error) : accept(port)));
+    });
+  });
+  let initialPath: string | undefined;
+  if (invitation) {
+    const url = new URL(invitation);
+    if (
+      url.origin !== serverOrigin ||
+      !/^\/invitations\/[a-f0-9-]{36}$/.test(url.pathname) ||
+      url.search ||
+      url.hash ||
+      url.username ||
+      url.password
+    )
+      throw new Error("Select an invitation on this server.");
+    initialPath = url.pathname;
+  }
+  const profile: Profile = {
+    version: 2,
+    managerId: crypto.randomUUID(),
+    serverOrigin,
+    projectRoot: resolve(import.meta.dir, "../../.."),
+    uiPort,
+    ...(certificate ? { serverCertificate: certificate } : {}),
+    ...(initialPath ? { initialPath } : {}),
+  };
   writePrivate(join(home, "profile.json"), profile);
-  loadProfile(home);
-  console.log(
-    "Desktop profile created. It references the selected development state without copying credentials.",
-  );
+  return profile;
 }
-console.log(`Profile: ${join(home, "profile.json")}`);
+if (import.meta.main) {
+  const args = process.argv.slice(2).filter((value) => value !== "--");
+  const option = (name: string) => {
+    const index = args.indexOf(name);
+    return index < 0 ? undefined : args[index + 1];
+  };
+  const origin = option("--server") ?? process.env.NGERTIIN_AUTH_URL ?? "http://127.0.0.1:3001";
+  await setupDesktop(origin, desktopHome(), option("--certificate"), option("--invitation"));
+  console.log("Account-authenticated desktop profile ready.");
+}

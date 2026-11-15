@@ -9,7 +9,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useAccount } from "@/features/account/session";
 import { useApiResource } from "@/hooks/use-api-resource";
 import { ApiError, request } from "@/lib/api-client";
 import { isPageVisible, subscribePageVisibility } from "@/lib/page-visibility";
@@ -18,7 +17,6 @@ import type { Agent } from "@/types/workspace";
 import { MachineScreen } from "./machine-viewer";
 
 export function MachineSection({ agents, cursor }: { agents: Agent[]; cursor: number }) {
-  const scoped = useAccount()?.mode === "accounts";
   const [tick, setTick] = useState(0);
   const [open, setOpen] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -115,27 +113,15 @@ export function MachineSection({ agents, cursor }: { agents: Agent[]; cursor: nu
         />
         <span className="text-[13px] font-medium">
           {machine?.state === "ready"
-            ? scoped
-              ? "Open computer"
-              : "Open shared desktop"
+            ? "Open computer"
             : machine?.state === "unconfigured"
               ? "Desktop not set up"
               : "Desktop unavailable"}
         </span>
       </button>
       <p role="status" className="text-center text-[13px] text-muted-foreground">
-        {machine?.state === "ready"
-          ? label
-          : scoped
-            ? "Your computer is unavailable. Try reconnecting."
-            : "Reconnect the local machine to continue desktop work."}
+        {machine?.state === "ready" ? label : "Your computer is unavailable. Try reconnecting."}
       </p>
-      {!scoped && (
-        <p className="px-1 text-[13px] leading-relaxed text-muted-foreground">
-          One desktop for you and all your agents. Browser sessions, working files, and attachment
-          copies on this machine are shared.
-        </p>
-      )}
       {(error || resource.error) && (
         <p role="alert" className="text-sm text-destructive">
           {error || "Desktop status is unavailable. Reconnect and try again."}
@@ -157,12 +143,10 @@ export function MachineSection({ agents, cursor }: { agents: Agent[]; cursor: nu
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2 pr-7 text-[15px] font-medium">
               <HugeiconsIcon icon={ComputerIcon} size={17} strokeWidth={1.5} />
-              {scoped ? "Computer" : "Shared desktop"}
+              Computer
             </DialogTitle>
-            <DialogDescription className={scoped ? "sr-only" : undefined}>
-              {scoped
-                ? "Your private workspace computer."
-                : "The same Linux desktop your agents use. Take control to click, type, or sign in."}
+            <DialogDescription className="sr-only">
+              Your private workspace computer.
             </DialogDescription>
           </DialogHeader>
           <div className="flex flex-wrap items-center justify-between gap-2">

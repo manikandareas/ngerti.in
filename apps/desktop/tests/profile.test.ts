@@ -7,12 +7,10 @@ import { loadProfile, type Profile, privateJson, writePrivate } from "../scripts
 test("private desktop profile validation rejects unsafe files", () => {
   const home = mkdtempSync(join(tmpdir(), "ngertiin-desktop-profile-"));
   const profile: Profile = {
-    version: 1,
+    version: 2,
     managerId: crypto.randomUUID(),
-    stateDirectory: join(home, "state"),
+    serverOrigin: "https://workspace.example.test",
     projectRoot: home,
-    configFile: join(home, "empty.env"),
-    bunExecutable: process.execPath,
     uiPort: 4311,
   };
   try {
@@ -35,10 +33,10 @@ test("remote profiles validate the selected HTTPS origin without any local runti
   const home = mkdtempSync(join(tmpdir(), "ngertiin-remote-profile-"));
   const path = join(home, "profile.json");
   const profile = {
-    version: 1,
-    mode: "remote",
+    version: 2,
     managerId: crypto.randomUUID(),
     serverOrigin: "https://workspace.example.test",
+    projectRoot: home,
     uiPort: 4312,
   };
   try {

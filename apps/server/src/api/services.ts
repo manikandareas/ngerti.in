@@ -9,7 +9,7 @@ import type { createCommand } from "./http";
 
 export type Command = ReturnType<typeof createCommand>;
 export type ApiServices = {
-  authentication?: Authentication;
+  authentication: Authentication;
   connections: Connections;
   tools: ProductTools;
   detect?: typeof detectHarness;

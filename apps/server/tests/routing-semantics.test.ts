@@ -1,5 +1,4 @@
 import { afterEach, expect, test } from "bun:test";
-import { createApi } from "../src/api";
 import { Background } from "../src/background";
 import { Conversations } from "../src/conversations";
 import { type GroupRouter, JevRouter, type RoutingPacket } from "../src/groups/router";
@@ -9,6 +8,7 @@ import { Groups } from "../src/groups/service";
 import { productToolSchemas } from "../src/harness/product-tool-contracts";
 import { Lifecycle } from "../src/lifecycle";
 import { fixture } from "./helpers";
+import { fixtureApi as createApi } from "./http-fixture";
 
 let f: Awaited<ReturnType<typeof fixture>>;
 let background: Background | undefined;

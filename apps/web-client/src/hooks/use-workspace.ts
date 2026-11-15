@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { selectedAgent } from "@/features/account/selection";
 import type { AISelection, WorkspaceAccess } from "@/features/account/types";
-import { command, durableCommand, followEvents, request } from "@/lib/api-client";
+import { durableCommand, followEvents, request } from "@/lib/api-client";
 import { clientScope, scopedStorageKey } from "@/lib/client-scope";
 import { isPageVisible, subscribePageVisibility } from "@/lib/page-visibility";
 import type {
@@ -21,6 +21,7 @@ import { WorkspaceSync } from "./workspace-sync";
 export function useWorkspace(composer: HTMLElement | null) {
   const { preferences } = usePreferences();
   const scope = useRef(clientScope()).current;
+  if (!scope) throw new Error("An authenticated organization workspace is required.");
   const threadKey = scopedStorageKey("ngertiin:thread", scope);
   const [access, setAccess] = useState<WorkspaceAccess | null>(null);
   const [selections, setSelections] = useState<AISelection[]>([]);
@@ -48,111 +49,97 @@ export function useWorkspace(composer: HTMLElement | null) {
   const firstSelection = useRef<string | null | undefined>(undefined);
   const synchronizer = useRef<WorkspaceSync | null>(null);
 
-  const refresh = useCallback(
-    async (signal?: AbortSignal, projections?: Set<Projection>) => {
-      const generation = epoch.current;
-      const selected = selectedThread.current;
-      const full = projections === undefined;
-      const cursors: number[] = [];
-      const load = async <T>(path: string, apply: (value: T) => void) => {
-        const value = await request<T>(path, undefined, undefined, signal);
-        if (signal?.aborted) return;
-        apply(value);
-        if (
-          value &&
-          typeof value === "object" &&
-          "cursor" in value &&
-          typeof value.cursor === "number"
-        )
-          cursors.push(value.cursor);
-      };
-      const current = () => generation === epoch.current && selected === selectedThread.current;
-      // Apply independent projections as they arrive. A failed read still fails the batch,
-      // so event replay never acknowledges it as fully reconciled.
-      const navigationRead = Promise.all([
-        full && scope ? load<WorkspaceAccess>("/v1/data/access", setAccess) : undefined,
-        full
-          ? load<Agent[]>("/v1/entities/agent", (value) =>
-              setAgents((previous) =>
-                value.reduce(
-                  mergeEntity,
-                  previous.filter((agent) => value.some((current) => current.id === agent.id)),
-                ),
+  const refresh = useCallback(async (signal?: AbortSignal, projections?: Set<Projection>) => {
+    const generation = epoch.current;
+    const selected = selectedThread.current;
+    const full = projections === undefined;
+    const cursors: number[] = [];
+    const load = async <T>(path: string, apply: (value: T) => void) => {
+      const value = await request<T>(path, undefined, undefined, signal);
+      if (signal?.aborted) return;
+      apply(value);
+      if (
+        value &&
+        typeof value === "object" &&
+        "cursor" in value &&
+        typeof value.cursor === "number"
+      )
+        cursors.push(value.cursor);
+    };
+    const current = () => generation === epoch.current && selected === selectedThread.current;
+    // Apply independent projections as they arrive. A failed read still fails the batch,
+    // so event replay never acknowledges it as fully reconciled.
+    const navigationRead = Promise.all([
+      full ? load<WorkspaceAccess>("/v1/data/access", setAccess) : undefined,
+      full
+        ? load<Agent[]>("/v1/entities/agent", (value) =>
+            setAgents((previous) =>
+              value.reduce(
+                mergeEntity,
+                previous.filter((agent) => value.some((current) => current.id === agent.id)),
               ),
-            )
-          : undefined,
-        full
-          ? load<Thread[]>("/v1/entities/thread", (value) =>
-              setThreads((previous) =>
-                value
-                  .filter((thread) => thread.purpose === "conversation")
-                  .reduce(mergeEntity, previous),
-              ),
-            )
-          : undefined,
-        full || projections.has("activity")
-          ? load<AgentActivities>("/v1/agents/activity", (value) =>
-              setActivity((previous) => (value.cursor >= previous.cursor ? value : previous)),
-            )
-          : undefined,
-        full || projections.has("previews")
-          ? load<ConversationPreviews>("/v1/conversations/previews", (value) =>
-              setPreviews((previous) => (value.cursor >= previous.cursor ? value : previous)),
-            )
-          : undefined,
-      ]).then(() => {
-        if (full && !signal?.aborted) setNavigationReady(true);
-      });
-      const results = await Promise.allSettled([
-        navigationRead,
-        scope ? load<AISelection[]>("/v1/entities/ai_selection", setSelections) : undefined,
-        full
-          ? load<Connection[]>("/v1/entities/connection", (value) =>
-              setConnections((previous) => value.reduce(mergeEntity, previous)),
-            )
-          : undefined,
-        selected && (full || projections.has("conversation"))
-          ? load<Snapshot>(`/v1/threads/${selected}/snapshot`, (value) => {
-              if (!current() || value.cursor < latestCursor.current) return;
-              latestCursor.current = value.cursor;
-              snapshots.current.delete(value.thread.id);
-              snapshots.current.set(value.thread.id, value);
-              const oldest = snapshots.current.keys().next().value;
-              if (snapshots.current.size > 5 && oldest !== undefined)
-                snapshots.current.delete(oldest);
-              setSnapshot(value);
-            })
-          : undefined,
-        selected && (full || projections.has("opening"))
-          ? load<Opening>(`/v1/threads/${selected}/opening`, (value) => {
-              if (!current()) return;
-              openingMessage.current = value.message?.id ?? null;
-              setOpening(value);
-            })
-          : undefined,
-      ]);
-      const failed = results.find((result) => result.status === "rejected");
-      if (failed?.status === "rejected") throw failed.reason;
-      return cursors.length ? Math.min(...cursors) : undefined;
-    },
-    [scope],
-  );
+            ),
+          )
+        : undefined,
+      full
+        ? load<Thread[]>("/v1/entities/thread", (value) =>
+            setThreads((previous) =>
+              value
+                .filter((thread) => thread.purpose === "conversation")
+                .reduce(mergeEntity, previous),
+            ),
+          )
+        : undefined,
+      full || projections.has("activity")
+        ? load<AgentActivities>("/v1/agents/activity", (value) =>
+            setActivity((previous) => (value.cursor >= previous.cursor ? value : previous)),
+          )
+        : undefined,
+      full || projections.has("previews")
+        ? load<ConversationPreviews>("/v1/conversations/previews", (value) =>
+            setPreviews((previous) => (value.cursor >= previous.cursor ? value : previous)),
+          )
+        : undefined,
+    ]).then(() => {
+      if (full && !signal?.aborted) setNavigationReady(true);
+    });
+    const results = await Promise.allSettled([
+      navigationRead,
+      load<AISelection[]>("/v1/entities/ai_selection", setSelections),
+      full
+        ? load<Connection[]>("/v1/entities/connection", (value) =>
+            setConnections((previous) => value.reduce(mergeEntity, previous)),
+          )
+        : undefined,
+      selected && (full || projections.has("conversation"))
+        ? load<Snapshot>(`/v1/threads/${selected}/snapshot`, (value) => {
+            if (!current() || value.cursor < latestCursor.current) return;
+            latestCursor.current = value.cursor;
+            snapshots.current.delete(value.thread.id);
+            snapshots.current.set(value.thread.id, value);
+            const oldest = snapshots.current.keys().next().value;
+            if (snapshots.current.size > 5 && oldest !== undefined)
+              snapshots.current.delete(oldest);
+            setSnapshot(value);
+          })
+        : undefined,
+      selected && (full || projections.has("opening"))
+        ? load<Opening>(`/v1/threads/${selected}/opening`, (value) => {
+            if (!current()) return;
+            openingMessage.current = value.message?.id ?? null;
+            setOpening(value);
+          })
+        : undefined,
+    ]);
+    const failed = results.find((result) => result.status === "rejected");
+    if (failed?.status === "rejected") throw failed.reason;
+    return cursors.length ? Math.min(...cursors) : undefined;
+  }, []);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: explicit retry restarts bootstrap after a connection failure.
   useEffect(() => {
     const abort = new AbortController();
-    (scope
-      ? durableCommand<{ thread_id: string }>("provision", "/v1/data/provision", {})
-      : request<{ api_readiness_gate: string }>(
-          "/health/ready",
-          undefined,
-          undefined,
-          abort.signal,
-        ).then((health) => {
-          if (health.api_readiness_gate !== "ready") throw new Error("API belum siap untuk UI.");
-          return command<{ thread_id: string }>("/v1/setup");
-        })
-    )
+    durableCommand<{ thread_id: string }>("provision", "/v1/data/provision", {})
       .then((value) => {
         if (abort.signal.aborted) return;
         if (!selectedThread.current) {
@@ -287,7 +274,7 @@ export function useWorkspace(composer: HTMLElement | null) {
   };
   const selectedSnapshot = useMemo(
     () =>
-      scope && snapshot
+      snapshot
         ? {
             ...snapshot,
             agents: snapshot.agents.map((agent) =>
@@ -295,16 +282,14 @@ export function useWorkspace(composer: HTMLElement | null) {
             ),
           }
         : snapshot,
-    [scope, snapshot, selections, connections],
+    [snapshot, selections, connections],
   );
   return {
     agents,
     access,
-    invocableAgents: scope
-      ? agents.filter(
-          (agent) => agent.actor_id !== null || access?.invocable_team_agent_ids.includes(agent.id),
-        )
-      : agents,
+    invocableAgents: agents.filter(
+      (agent) => agent.actor_id !== null || access?.invocable_team_agent_ids.includes(agent.id),
+    ),
     navigationReady,
     activity,
     previews,

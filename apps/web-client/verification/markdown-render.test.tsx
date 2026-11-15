@@ -2,6 +2,7 @@ import { expect, test } from "bun:test";
 import { renderToStaticMarkup } from "react-dom/server";
 import { MarkdownDocument } from "../src/features/conversation/components/answer";
 import { InlineReferencesProvider } from "../src/features/conversation/components/inline-references";
+import { PreferencesProvider } from "../src/hooks/use-preferences";
 import type { Snapshot } from "../src/types/workspace";
 
 const fileId = "11111111-1111-4111-8111-111111111111";
@@ -15,9 +16,11 @@ const snapshot = {
 
 function render(text: string) {
   return renderToStaticMarkup(
-    <InlineReferencesProvider snapshot={snapshot}>
-      <MarkdownDocument text={text} snapshot={snapshot} />
-    </InlineReferencesProvider>,
+    <PreferencesProvider>
+      <InlineReferencesProvider snapshot={snapshot}>
+        <MarkdownDocument text={text} snapshot={snapshot} />
+      </InlineReferencesProvider>
+    </PreferencesProvider>,
   );
 }
 

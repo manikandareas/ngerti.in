@@ -1,10 +1,10 @@
 import { afterEach, expect, test } from "bun:test";
-import { createApi } from "../src/api";
 import { responseSchemas } from "../src/api-contract";
 import { Background } from "../src/background";
 import { type Entity, thread } from "../src/contracts";
 import { readConversationPreviews } from "../src/conversations/previews";
 import { fixture } from "./helpers";
+import { fixtureApi as createApi } from "./http-fixture";
 
 let f: Awaited<ReturnType<typeof fixture>>;
 afterEach(async () => await f?.close());
@@ -101,7 +101,7 @@ test("authenticated preview reads reflect edits, deletions and restart through t
     contract.http.find((route: { path: string }) => route.path === "/v1/conversations/previews"),
   ).toMatchObject({
     method: "GET",
-    authentication: "installation_bearer",
+    authentication: "user_session_or_oauth_access_token",
     semantics: "read",
   });
 });

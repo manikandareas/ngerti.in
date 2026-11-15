@@ -14,7 +14,6 @@ import {
 import { HugeiconsIcon } from "@hugeicons/react";
 import { type ReactNode, useContext, useEffect, useId, useRef, useState } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { useAccount } from "@/features/account/session";
 import {
   type ModelMenuTypeahead,
   modelMenuKey,
@@ -126,10 +125,8 @@ export function ModelPicker({
   contained = false,
   label,
 }: ModelPickerProps) {
-  const account = useAccount();
   const workspace = useContext(SettingsWorkspaceContext);
-  const scoped = account?.mode === "accounts";
-  if (scoped && agent)
+  if (agent)
     connections = connections.filter(
       (connection) =>
         connection.harness === agent.harness &&
@@ -223,29 +220,23 @@ export function ModelPicker({
   async function configure(changes: Record<string, unknown>, key: string, close: boolean) {
     if (!agent) return;
     await perform(key, async () => {
-      if (scoped) {
-        const thread = workspace?.snapshot?.thread.id;
-        const connectionId =
-          typeof changes.connection_id === "string" ? changes.connection_id : agent.connection_id;
-        const modelId = typeof changes.model_id === "string" ? changes.model_id : agent.model_id;
-        if (!thread || !connectionId || !modelId)
-          throw new Error("Choose an account and model first.");
-        await command("/v1/ai/selections", {
-          scope: "conversation",
-          thread_id: thread,
-          agent_id: agent.id,
-          harness: agent.harness,
-          selection: {
-            connection_id: connectionId,
-            model_id: modelId,
-            reasoning: "reasoning" in changes ? changes.reasoning : agent.reasoning,
-          },
-        });
-      } else
-        await command(`/v1/agents/${agent.id}/configuration`, {
-          expected_revision: agent.revision,
-          changes,
-        });
+      const thread = workspace?.snapshot?.thread.id;
+      const connectionId =
+        typeof changes.connection_id === "string" ? changes.connection_id : agent.connection_id;
+      const modelId = typeof changes.model_id === "string" ? changes.model_id : agent.model_id;
+      if (!thread || !connectionId || !modelId)
+        throw new Error("Choose an account and model first.");
+      await command("/v1/ai/selections", {
+        scope: "conversation",
+        thread_id: thread,
+        agent_id: agent.id,
+        harness: agent.harness,
+        selection: {
+          connection_id: connectionId,
+          model_id: modelId,
+          reasoning: "reasoning" in changes ? changes.reasoning : agent.reasoning,
+        },
+      });
       await refresh();
       if (close) setOpen(false);
     });

@@ -1,0 +1,81 @@
+bun test v1.3.10 (30e609e0)
+
+tests/bootstrap.test.ts:
+{"event":"foundation.started","url":"http://127.0.0.1:57454","identity_file":"/var/folders/j1/p1582yhj20z58phnf_zrzy7w0000gn/T/ngertiin-bootstrap-N929DO/installation.json","registered_executors":2,"api_readiness_gate":"ready"}
+{"event":"foundation.started","url":"http://127.0.0.1:57464","identity_file":"/var/folders/j1/p1582yhj20z58phnf_zrzy7w0000gn/T/ngertiin-bootstrap-N929DO/installation.json","registered_executors":2,"api_readiness_gate":"ready"}
+(pass) account bootstrap rejects installation credentials and preserves verified sessions across restart [3537.72ms]
+
+tests/contracts.test.ts:
+(pass) every registered domain route retains the shared authentication guard [1642.67ms]
+(pass) published replay schema accepts browser and application receipts across restart [929.27ms]
+(pass) published command schemas retain optional defaulted admission fields [254.21ms]
+(pass) consumer contract describes actual routes without executing native operations [915.23ms]
+(pass) published response schemas validate admission, control, history, snapshots and safe errors [1767.84ms]
+
+tests/organizations/workspace-access.test.ts:
+(pass) workspace choices distinguish management visibility from current invocation grants [2336.78ms]
+
+tests/organizations/http.test.ts:
+(pass) one account has independent roles in two organizations and membership grants no legacy private-data access [884.71ms]
+(pass) creation entitlement is separate from role and concurrent creations cannot exceed its limit [808.77ms]
+(pass) Owner/Admin/Member matrix protects elevation, peer administrators and the last Owner [1144.58ms]
+(pass) concurrent Owner demotions serialize and always retain one Owner [808.91ms]
+(pass) multiple Workgroups form a union; All members is explicit and removed or deleted groups revoke effective access [994.19ms]
+(pass) cross-organization Workgroup and membership references fail in both API and database [703.54ms]
+(pass) invitation acceptance is email-bound and rejects expired or canceled invitations [990.65ms]
+(pass) invitation acceptance rechecks inviter role/generation and deleted Workgroups [1048.97ms]
+(pass) concurrent acceptance and retries commit exactly one membership and provisioning intent without model calls [896.84ms]
+(pass) offboarding retains attribution, suspends private work and fences old contexts/receipts across rejoin [911.72ms]
+(pass) organization export contains administration only and organization deletion remains unavailable [861.08ms]
+(pass) raw Better Auth organization routes cannot bypass transactional product policy or select active context [644.47ms]
+(pass) organization commands require stable IDs and reject changed payloads without leaking inputs [817.59ms]
+(pass) membership and provisioning survive interruption/reopen with no provider configuration [1012.65ms]
+(pass) failed invitation delivery retains durable state and explicit retry uses the same delivery identity [993.56ms]
+(pass) an interrupted acceptance rolls back membership, Workgroups, audit, receipt and provisioning together [975.31ms]
+(pass) the installed account contract enumerates organization request, response and command semantics [797.63ms]
+(pass) version-1 authentication upgrades additively and preserves users, sessions and owner binding [956.07ms]
+(pass) a public native PKCE client uses the same organization roles and explicit scope [1023.02ms]
+
+tests/auth/security.test.ts:
+(pass) account mode fails closed on missing secrets, insecure origins or unsafe callbacks [2.52ms]
+(pass) native callback rejects wrong state, issuer, redirect, duplicate fields and replay [678.23ms]
+(pass) token endpoint rejects wrong verifier, redirect, audience, code replay and client registration [833.39ms]
+(pass) expired access/device sessions fail API, SSE and renewal without affecting another device [723.39ms]
+(pass) revocation closes an existing HTTP SSE stream and preserves another device [723.15ms]
+(pass) viewer tickets are bound to a live device and cannot be renewed from another device [718.98ms]
+(pass) password recovery revokes native offline credentials and leaves no auth secrets in domain records [784.62ms]
+(pass) account-mode export identifies auth classes and the verified multi-user API gate [775.41ms]
+(pass) HTTPS configuration serializes Secure cookies and ignores spoofed proxy addresses [772.99ms]
+(pass) rate limits survive changing untrusted forwarding headers [618.06ms]
+(pass) a native device outlives browser logout and access-token revocation closes its stream [1216.99ms]
+
+tests/auth/schema.test.ts:
+(pass) retained authentication schema exactly matches the pinned plugins [223.46ms]
+
+tests/auth/namespace.test.ts:
+(pass) provider queries and schema inspection use the explicit auth namespace across pooled search paths [896.05ms]
+
+tests/auth/http.test.ts:
+(pass) verified login uses HttpOnly cookies, redacts tokens and denies installation credentials [708.53ms]
+(pass) Owner bootstrap requires verified intended identity, expires and consumes once under a race [787.02ms]
+(pass) one device can renew, revoke and logout without ending another device or durable work [910.93ms]
+(pass) cross-origin and missing-origin cookie mutations fail without disclosing input [854.66ms]
+(pass) recovery uses controlled email delivery and retires old sessions [930.12ms]
+(pass) native loopback PKCE exchange, rotation and per-device revocation complete over real HTTP [743.13ms]
+(pass) persisted sessions and Owner mapping survive reopening the auth service [742.11ms]
+
+tests/auth/compatibility.test.ts:
+(pass) pinned Better Auth, PostgreSQL, Elysia and public-client PKCE complete real HTTP [258.51ms]
+
+tests/auth/development.test.ts:
+(pass) development always enables accounts, retains its secret and delivers private local email without Resend [12.08ms]
+(pass) production never generates secrets or accepts a local email inbox [1.33ms]
+
+tests/auth/email-navigation.test.ts:
+(pass) email verification accepts an external document navigation while cross-site fetches and mutations remain denied [662.36ms]
+(pass) an external recovery-link navigation redirects only to the configured local reset screen [644.15ms]
+
+ 51 pass
+ 0 fail
+ 575 expect() calls
+Ran 51 tests across 11 files. [47.68s]

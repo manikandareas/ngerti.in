@@ -1,0 +1,2 @@
+$ bun scripts/check-docs.ts
+Docs: 290 Markdown files, 3333 local links OK (121 verified in pinned historical Git trees); 37 milestones, 83 decisions, contract 2.2.0.

@@ -16,14 +16,8 @@ export async function check(configPath: string) {
     throw new Error("The declared deployment profile requires Ubuntu 24.04 ARM64 or AMD64.");
   // Bun's descriptor-relative filesystem boundary compiles openat.c and needs libc6-dev.
   await import("../workspaces/posix");
-  if (
-    env.APP_ENV !== "production" ||
-    env.NGERTIIN_AUTH_MODE !== "accounts" ||
-    !authenticationConfig(env)
-  )
-    throw new Error("Deployment requires production account mode.");
-  if (env.NGERTIIN_AUTH_ALLOW_INSECURE_LOOPBACK !== "false")
-    throw new Error("Insecure authentication is forbidden in deployment.");
+  if (env.APP_ENV !== "production") throw new Error("Deployment requires APP_ENV=production.");
+  authenticationConfig(env);
   if (env.NGERTIIN_PROVIDER_NATIVE_STORAGE !== "encrypted-volume")
     throw new Error("Verify encrypted native storage and backups before enabling deployment.");
   if (

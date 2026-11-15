@@ -1,11 +1,11 @@
 import { afterEach, expect, test } from "bun:test";
 import { createAvatar } from "@ngertiin/avatar/config";
 import { readAgentActivities } from "../src/agents/activity";
-import { createApi } from "../src/api";
 import { responseSchemas } from "../src/api-contract";
 import { Background } from "../src/background";
 import { Groups } from "../src/groups/service";
 import { fixture } from "./helpers";
+import { fixtureApi as createApi } from "./http-fixture";
 
 let f: Awaited<ReturnType<typeof fixture>>;
 afterEach(async () => await f?.close());

@@ -1,6 +1,5 @@
 import { afterEach, expect, test } from "bun:test";
 import type { Composio } from "@composio/core";
-import { createApi } from "../src/api";
 import { Background } from "../src/background";
 import type { Entity } from "../src/contracts";
 import { Connections } from "../src/harness/connections";
@@ -10,6 +9,7 @@ import { appOutput } from "../src/integrations/output";
 import { Applications } from "../src/integrations/service";
 import { Interactions } from "../src/interactions/service";
 import { fixture } from "./helpers";
+import { fixtureApi as createApi } from "./http-fixture";
 
 let f: Awaited<ReturnType<typeof fixture>>;
 afterEach(async () => await f?.close());

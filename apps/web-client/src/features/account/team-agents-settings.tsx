@@ -85,11 +85,11 @@ export function TeamAgentsSettings() {
                       harness,
                       audience_id: saved.audience.id,
                     });
+                  await account.refresh();
+                  await workspace.refresh();
                   setCreating(false);
                   setEditing(null);
                   setName("");
-                  await account.refresh();
-                  await workspace.refresh();
                 });
               }}
             />

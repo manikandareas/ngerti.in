@@ -243,7 +243,7 @@ test("indexed input requires a fresh observation and exact native target", async
 });
 
 test("HTTP browser resources require owner authentication and explicit scoped grants", async () => {
-  const { createApi } = await import("../../src/api");
+  const { fixtureApi: createApi } = await import("../http-fixture");
   const { Background } = await import("../../src/background");
   const s = await setup();
   const token = "b".repeat(64);

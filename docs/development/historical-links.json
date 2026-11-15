@@ -10,5 +10,41 @@
   {
     "prefix": "docs/verification/electron-development/",
     "revision": "bdeeec2fa776b1cd6cd457e1db49ecc732ae51e6"
+  },
+  {
+    "prefix": "docs/verification/gpui-experiment-2026-11-07/",
+    "revision": "51dea542d545e6faf290b6d5e3771717d47b002e"
+  },
+  {
+    "prefix": "docs/verification/nma-066/",
+    "revision": "51dea542d545e6faf290b6d5e3771717d47b002e"
+  },
+  {
+    "prefix": "docs/verification/nma-067/",
+    "revision": "51dea542d545e6faf290b6d5e3771717d47b002e"
+  },
+  {
+    "prefix": "docs/verification/nma-068/",
+    "revision": "51dea542d545e6faf290b6d5e3771717d47b002e"
+  },
+  {
+    "prefix": "docs/verification/nma-069/",
+    "revision": "51dea542d545e6faf290b6d5e3771717d47b002e"
+  },
+  {
+    "prefix": "docs/verification/nma-070/",
+    "revision": "51dea542d545e6faf290b6d5e3771717d47b002e"
+  },
+  {
+    "prefix": "docs/verification/nma-071/",
+    "revision": "51dea542d545e6faf290b6d5e3771717d47b002e"
+  },
+  {
+    "prefix": "docs/verification/conversation-parts/",
+    "revision": "51dea542d545e6faf290b6d5e3771717d47b002e"
+  },
+  {
+    "prefix": "docs/verification/openmaus-fidelity-2026-11-01/",
+    "revision": "51dea542d545e6faf290b6d5e3771717d47b002e"
   }
 ]

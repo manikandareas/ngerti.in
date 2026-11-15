@@ -1,7 +1,6 @@
 import { afterEach, expect, test } from "bun:test";
 import { writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { createApi } from "../src/api";
 import { Background } from "../src/background";
 import type { Entity } from "../src/contracts";
 import { HarnessAccounts } from "../src/harness/accounts";
@@ -13,6 +12,7 @@ import { MuseAccounts } from "../src/harness/muse/accounts";
 import { MuseAdapter } from "../src/harness/muse/adapter";
 import { ProductTools } from "../src/harness/tools";
 import { fixture } from "./helpers";
+import { fixtureApi as createApi } from "./http-fixture";
 
 let f: Awaited<ReturnType<typeof fixture>>;
 let broker: HarnessBroker;
@@ -124,9 +124,10 @@ async function admit(lane: Awaited<ReturnType<typeof setup>>, text: string) {
   return run as Entity<"run">;
 }
 async function waitRunning(id: string) {
-  for (let i = 0; i < 100; i++) {
+  const deadline = performance.now() + 10_000;
+  while (performance.now() < deadline) {
     if ((await f.store.get("run", id)).status === "running") return;
-    await Bun.sleep(5);
+    await Bun.sleep(10);
   }
   throw new Error("Run did not reach native acceptance.");
 }

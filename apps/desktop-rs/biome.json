@@ -1,8 +1,0 @@
-{
-  "$schema": "https://biomejs.dev/schemas/2.5.15/schema.json",
-  "root": false,
-  "extends": "//",
-  "files": { "includes": ["scripts/**/*.ts", "verification/nma-069/**/*.ts", "verification/nma-071/**/*.ts", "package.json"] },
-  "formatter": { "indentStyle": "space", "indentWidth": 2 },
-  "javascript": { "formatter": { "quoteStyle": "double" } }
-}

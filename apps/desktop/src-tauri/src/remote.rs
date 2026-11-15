@@ -60,13 +60,10 @@ pub struct Remote {
 }
 impl Remote {
     pub fn new(profile: &Profile) -> Result<Arc<Self>> {
-        let origin = profile
-            .server_origin
-            .as_deref()
-            .ok_or_else(|| anyhow::anyhow!("Select a remote server."))?;
-        server_origin(origin)?;
+        let origin = &profile.server_origin;
+        let url = server_origin(origin)?;
         let mut builder = reqwest::Client::builder()
-            .https_only(true)
+            .https_only(url.scheme() == "https")
             .no_proxy()
             .redirect(reqwest::redirect::Policy::none())
             .connect_timeout(Duration::from_secs(5));

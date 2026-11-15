@@ -1,0 +1,165 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: organizations.spec.ts >> owner creates another organization and publishes a Team agent without a dashboard
+- Location: tests/organizations.spec.ts:371:0
+
+# Error details
+
+```
+Error: post: The socket connection was closed unexpectedly. For more information, pass `verbose: true` in the second argument to fetch() (ECONNRESET)
+Call log:
+  - → POST http://127.0.0.1:8320/reset
+    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.8078.4 Safari/537.36
+    - accept: */*
+    - accept-encoding: gzip,deflate,br
+
+```
+
+```
+Error: expect(received).toEqual(expected) // deep equality
+
+Expected: []
+Received: undefined
+```
+
+# Test source
+
+```ts
+  1   | import { mkdirSync, readFileSync } from "node:fs";
+  2   | import { resolve } from "node:path";
+  3   | import { type APIRequestContext, expect, type Page, test } from "@playwright/test";
+  4   | 
+  5   | const control = "http://127.0.0.1:8320";
+  6   | const password = "A-long-fixture-password-948!";
+  7   | type State = {
+  8   |   organization: { id: string; name: string };
+  9   |   second: { id: string; name: string };
+  10  |   team: { id: string; name: string };
+  11  |   ownerThread: string;
+  12  |   aliceThread: string;
+  13  |   bobThread: string;
+  14  |   ownerConnection: string;
+  15  |   aliceConnection: string;
+  16  |   alternativeConnection: string;
+  17  |   grant: string;
+  18  | };
+  19  | let state: State;
+  20  | const errors = new WeakMap<Page, string[]>();
+  21  | test.beforeEach(async ({ page, request }) => {
+  22  |   const response = await request.post(`${control}/reset`);
+  23  |   expect(response.ok()).toBeTruthy();
+  24  |   state = await response.json();
+  25  |   const failures: string[] = [];
+  26  |   errors.set(page, failures);
+  27  |   page.on("pageerror", (error) => failures.push(error.message));
+  28  | });
+  29  | test.afterEach(async ({ page }) => {
+> 30  |   expect(errors.get(page)).toEqual([]);
+      |                           ^ Error: expect(received).toEqual(expected) // deep equality
+  31  | });
+  32  | async function signIn(page: Page, email = "alice@example.test") {
+  33  |   await page.goto("/");
+  34  |   await page.getByLabel("Email", { exact: true }).fill(email);
+  35  |   await page.getByLabel("Password", { exact: true }).fill(password);
+  36  |   await page.getByRole("button", { name: "Sign in", exact: true }).click();
+  37  |   if (email === "owner@example.test")
+  38  |     await page.getByRole("button", { name: "First organization", exact: true }).click();
+  39  |   await expect(page.getByRole("textbox", { name: "Pesan", exact: true })).toBeVisible();
+  40  | }
+  41  | async function navigation(page: Page) {
+  42  |   if (!(await page.getByRole("button", { name: /^Organization:/ }).isVisible()))
+  43  |     await page.getByRole("button", { name: "Percakapan", exact: true }).click();
+  44  |   await expect(page.getByRole("button", { name: /^Organization:/ })).toBeVisible();
+  45  | }
+  46  | async function switchOrganization(page: Page, name: string) {
+  47  |   await navigation(page);
+  48  |   await page.getByRole("button", { name: /^Organization:/ }).click();
+  49  |   await page.getByRole("button", { name, exact: true }).click();
+  50  |   await expect(page.getByRole("textbox", { name: "Pesan", exact: true })).toBeVisible();
+  51  | }
+  52  | async function settings(page: Page, section: string, label: string) {
+  53  |   await page.getByRole("button", { name: "Pengaturan", exact: true }).click();
+  54  |   await expect(page.getByRole("main", { name: "Pengaturan", exact: true })).toBeVisible();
+  55  |   const mobile = page.getByRole("combobox", { name: "Menu pengaturan", exact: true });
+  56  |   if (await mobile.isVisible()) await mobile.selectOption(section);
+  57  |   else {
+  58  |     const menu = page.getByRole("navigation", { name: "Menu pengaturan", exact: true });
+  59  |     if (
+  60  |       ["members", "workgroups", "team-agents"].includes(section) &&
+  61  |       !(await menu.getByRole("link", { name: label, exact: true }).isVisible())
+  62  |     )
+  63  |       await menu.getByRole("link", { name: "Organization", exact: true }).click();
+  64  |     await menu.getByRole("link", { name: label, exact: true }).click();
+  65  |   }
+  66  |   await expect(page.getByRole("heading", { name: label, exact: true, level: 1 })).toBeVisible();
+  67  | }
+  68  | async function capture(page: Page, name: string) {
+  69  |   const directory = resolve(
+  70  |     process.env.NGERTIIN_ACCOUNT_SCREENSHOTS ?? "../../.dev/accounts-browser-screenshots",
+  71  |   );
+  72  |   mkdirSync(directory, { recursive: true });
+  73  |   await page.screenshot({ path: resolve(directory, name), fullPage: true });
+  74  |   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  75  | }
+  76  | async function emailLink(request: APIRequestContext, email: string, purpose: string) {
+  77  |   const response = await request.get(
+  78  |     `${control}/email?${new URLSearchParams({ to: email, purpose })}`,
+  79  |   );
+  80  |   return (await response.json()).url as string;
+  81  | }
+  82  | 
+  83  | test("guarded owner setup preserves the new workspace without AI setup", async ({
+  84  |   page,
+  85  |   request,
+  86  | }, info) => {
+  87  |   state = await (await request.post(`${control}/reset?empty=1`)).json();
+  88  |   await page.goto("/");
+  89  |   await capture(page, `${info.project.name}-sign-in.png`);
+  90  |   await page.getByLabel("Email", { exact: true }).fill("owner@example.test");
+  91  |   await page.getByLabel("Password", { exact: true }).fill(password);
+  92  |   await page.getByRole("button", { name: "Sign in", exact: true }).click();
+  93  |   await page.getByText("Set up this server", { exact: true }).click();
+  94  |   await page.getByLabel("Owner setup token").fill(state.grant);
+  95  |   await page.getByRole("button", { name: "Complete setup", exact: true }).click();
+  96  |   await page.getByRole("button", { name: "Create organization", exact: true }).click();
+  97  |   await page.getByLabel("Organization name").fill("Studio");
+  98  |   await page.getByRole("button", { name: "Create organization", exact: true }).click();
+  99  |   const composer = page.getByRole("textbox", { name: "Pesan", exact: true });
+  100 |   await expect(composer).toBeVisible();
+  101 |   await expect(page.getByRole("button", { name: "Pilih model", exact: true })).toBeVisible();
+  102 |   const heading = await page.getByRole("button", { name: /^Detail / }).getAttribute("aria-label");
+  103 |   await page.reload();
+  104 |   await expect(page.getByRole("button", { name: heading ?? "" })).toBeVisible();
+  105 |   await expect(composer).toBeVisible();
+  106 |   await capture(page, `${info.project.name}-first-workspace.png`);
+  107 | });
+  108 | 
+  109 | test("member completes a first task with a private Team-agent conversation", async ({
+  110 |   page,
+  111 | }, info) => {
+  112 |   await signIn(page);
+  113 |   await navigation(page);
+  114 |   await expect(page.getByText("My agents", { exact: true })).toBeVisible();
+  115 |   await expect(page.getByText("Team agents", { exact: true })).toBeVisible();
+  116 |   await page.locator(`[data-thread-id="${state.aliceThread}"]`).click();
+  117 |   const text = `Private first task ${crypto.randomUUID()}`;
+  118 |   await page.getByRole("textbox", { name: "Pesan", exact: true }).fill(text);
+  119 |   await page.getByRole("button", { name: "Kirim", exact: true }).click();
+  120 |   await expect
+  121 |     .poll(
+  122 |       async () => {
+  123 |         const response = await page.request.get(`/v1/threads/${state.aliceThread}/snapshot`, {
+  124 |           headers: { "X-Ngertiin-Organization": state.organization.id },
+  125 |         });
+  126 |         const snapshot = await response.json();
+  127 |         return snapshot.runs?.find((run: { status: string }) => run.status === "succeeded")?.status;
+  128 |       },
+  129 |       { timeout: 45_000 },
+  130 |     )
+```

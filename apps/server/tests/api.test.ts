@@ -1,8 +1,8 @@
 import { afterEach, expect, test } from "bun:test";
-import { createApi } from "../src/api";
 import { Background } from "../src/background";
 import { CONTRACT_VERSION } from "../src/contracts";
 import { fixture } from "./helpers";
+import { fixtureApi as createApi } from "./http-fixture";
 
 const token = "a".repeat(64);
 let f: Awaited<ReturnType<typeof fixture>>;

@@ -19,12 +19,12 @@ type State = {
 let state: State;
 const errors = new WeakMap<Page, string[]>();
 test.beforeEach(async ({ page, request }) => {
-  const response = await request.post(`${control}/reset`);
-  expect(response.ok()).toBeTruthy();
-  state = await response.json();
   const failures: string[] = [];
   errors.set(page, failures);
   page.on("pageerror", (error) => failures.push(error.message));
+  const response = await request.post(`${control}/reset`);
+  expect(response.ok()).toBeTruthy();
+  state = await response.json();
 });
 test.afterEach(async ({ page }) => {
   expect(errors.get(page)).toEqual([]);
@@ -66,7 +66,9 @@ async function settings(page: Page, section: string, label: string) {
   await expect(page.getByRole("heading", { name: label, exact: true, level: 1 })).toBeVisible();
 }
 async function capture(page: Page, name: string) {
-  const directory = resolve("../../docs/verification/nma-080/screenshots");
+  const directory = resolve(
+    process.env.NGERTIIN_ACCOUNT_SCREENSHOTS ?? "../../.dev/accounts-browser-screenshots",
+  );
   mkdirSync(directory, { recursive: true });
   await page.screenshot({ path: resolve(directory, name), fullPage: true });
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
@@ -380,6 +382,7 @@ test("owner creates another organization and publishes a Team agent without a da
   await page.getByRole("button", { name: "Create Team agent", exact: true }).click();
   await page.getByLabel("Name", { exact: true }).fill("Studio helper");
   await page.getByRole("button", { name: "Save access", exact: true }).click();
+  await expect(page.getByRole("button", { name: "Save access", exact: true })).toHaveCount(0);
   await expect(
     page.getByRole("main", { name: "Pengaturan" }).getByText("Studio helper", { exact: true }),
   ).toBeVisible();

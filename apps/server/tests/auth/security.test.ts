@@ -12,7 +12,7 @@ afterEach(async () => {
   f = undefined;
 });
 const env = {
-  NGERTIIN_AUTH_MODE: "accounts",
+  APP_ENV: "production",
   NGERTIIN_AUTH_URL: "https://auth.example.test",
   NGERTIIN_AUTH_SECRET: "a".repeat(48),
   NGERTIIN_AUTH_EMAIL_FROM: "auth@example.test",
@@ -20,7 +20,7 @@ const env = {
 };
 
 test("account mode fails closed on missing secrets, insecure origins or unsafe callbacks", () => {
-  expect(authenticationConfig({})).toBeUndefined();
+  expect(() => authenticationConfig({ APP_ENV: "production" })).toThrow();
   expect(authenticationConfig(env)?.origin).toBe("https://auth.example.test");
   for (const override of [
     { NGERTIIN_AUTH_SECRET: "short" },
@@ -29,7 +29,6 @@ test("account mode fails closed on missing secrets, insecure origins or unsafe c
     { NGERTIIN_AUTH_NATIVE_REDIRECT_URI: "http://0.0.0.0:5000/callback" },
     { NGERTIIN_AUTH_NATIVE_REDIRECT_URI: "https://other.example/callback" },
     { NGERTIIN_AUTH_SCHEMA: "public; drop table user" },
-    { NGERTIIN_AUTH_MODE: "automatic" },
   ])
     expect(() => authenticationConfig({ ...env, ...override })).toThrow();
   expect(() =>

@@ -13,7 +13,7 @@ export function registerMachineRoutes(
   api: Elysia,
   lifecycle: Lifecycle,
   views: MachineViewGateway,
-  authentication?: Authentication,
+  authentication: Authentication,
 ) {
   const machine = async () => {
     const result = await resolvedMachine(lifecycle);
@@ -23,7 +23,7 @@ export function registerMachineRoutes(
   const authorize = async (request: Request) => {
     const scope = lifecycle.store.dataContext;
     if (scope) await scope.validate(true);
-    else await authentication?.assertOwner(request);
+    else await authentication.assertOwner(request);
   };
   api.onStop(async () => await views.close());
   return api
@@ -52,7 +52,7 @@ export function registerMachineRoutes(
           body,
           null,
           () => authorize(request),
-          authentication?.principal(request).sessionId,
+          authentication.principal(request).sessionId,
         ),
       {
         body: machineControl,
@@ -61,14 +61,14 @@ export function registerMachineRoutes(
     .post(
       "/v1/machine/view",
       async ({ body, request }) => {
-        const lease = authentication?.lease(request);
+        const lease = authentication.lease(request);
         try {
           return await views.issue(
             request.headers.get("Origin") ??
-              authentication?.config.origin ??
+              authentication.config.origin ??
               new URL(request.url).origin,
             body.interactive,
-            authentication?.config.origin ?? new URL(request.url).origin,
+            authentication.config.origin ?? new URL(request.url).origin,
             lease,
           );
         } catch (error) {
@@ -84,14 +84,14 @@ export function registerMachineRoutes(
         views.renew(
           params.viewerId,
           request.headers.get("Origin") ??
-            authentication?.config.origin ??
+            authentication.config.origin ??
             new URL(request.url).origin,
-          authentication?.principal(request).sessionId,
+          authentication.principal(request).sessionId,
         ),
       { body: z.strictObject({}) },
     )
     .delete("/v1/machine/views/:viewerId", async ({ params, request }) =>
-      views.remove(params.viewerId, authentication?.principal(request).sessionId),
+      views.remove(params.viewerId, authentication.principal(request).sessionId),
     )
     .get(
       "/v1/machine/files",

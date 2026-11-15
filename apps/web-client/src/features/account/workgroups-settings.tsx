@@ -35,6 +35,7 @@ export function WorkgroupsSettings() {
               const name = String(new FormData(event.currentTarget).get("name"));
               void action.run(async () => {
                 await durableCommand("create-workgroup", `${path}/workgroups`, { name });
+                await account.refresh();
                 setEditing(null);
                 refresh();
               });

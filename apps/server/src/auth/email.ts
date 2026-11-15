@@ -1,3 +1,7 @@
+import { lstat, mkdir, writeFile } from "node:fs/promises";
+import { join } from "node:path";
+import type { AuthenticationEmailConfig } from "./config";
+
 export type AuthenticationEmail = {
   to: string;
   purpose: "verification" | "recovery" | "invitation";
@@ -5,6 +9,21 @@ export type AuthenticationEmail = {
   idempotencyKey?: string;
 };
 export type EmailDelivery = (message: AuthenticationEmail) => Promise<void>;
+
+export function authenticationEmailDelivery(config: AuthenticationEmailConfig): EmailDelivery {
+  if (config.delivery === "resend") return resendDelivery(config);
+  return async (message) => {
+    await mkdir(config.directory, { recursive: true, mode: 0o700 });
+    const info = await lstat(config.directory);
+    if (!info.isDirectory() || info.isSymbolicLink() || info.mode & 0o077)
+      throw new Error("The development email inbox must be private (0700).");
+    await writeFile(
+      join(config.directory, `${Date.now()}-${crypto.randomUUID()}.json`),
+      `${JSON.stringify({ ...message, created_at: new Date().toISOString() })}\n`,
+      { flag: "wx", mode: 0o600 },
+    );
+  };
+}
 
 const emailCopy: Record<AuthenticationEmail["purpose"], { subject: string; action: string }> = {
   verification: { subject: "Verify your Ngertiin account", action: "verify your email address" },

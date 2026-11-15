@@ -5,8 +5,7 @@ import { Authentication } from "./service";
 // This entry point is operator-only. No HTTP route can issue an Owner grant.
 if (import.meta.main) {
   const config = developmentConfig();
-  if (!config.authentication || !config.databaseUrl)
-    throw new Error("Configure account authentication and PostgreSQL first.");
+  if (!config.databaseUrl) throw new Error("Configure PostgreSQL first.");
   const [action, email, maximum] = process.argv.slice(2);
   if (
     !["issue-owner", "grant-organizations"].includes(action) ||

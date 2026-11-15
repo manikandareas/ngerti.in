@@ -436,7 +436,6 @@ export class ScopedData {
             return api.handle(request);
           }
           await this.auth.authenticate(request);
-          if (!(await store.legacyScopeReady())) throw deny();
           const context = await this.context(request);
           // The retired browser controller is never an account-mode execution path.
           if (/^\/v1\/browser(\/|$)/.test(path)) throw deny();

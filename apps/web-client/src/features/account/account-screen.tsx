@@ -119,7 +119,7 @@ export function AccountScreen() {
                 ) : account.list.organizations.length === 0 ? (
                   <p className="account-muted">Open your invitation to join an organization.</p>
                 ) : null}
-                {account.list.organizations.length === 0 && (
+                {account.list.organizations.length === 0 && account.list.creation_limit === 0 && (
                   <details className="account-setup">
                     <summary>Set up this server</summary>
                     <form

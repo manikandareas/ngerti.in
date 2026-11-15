@@ -10,5 +10,10 @@
     "skipLibCheck": true,
     "allowImportingTsExtensions": true
   },
-  "include": ["src", "tests"]
+  "include": [
+    "src",
+    "tests",
+    "../../scripts/development.ts",
+    "../../scripts/verification/accounts-only/*.test.ts"
+  ]
 }

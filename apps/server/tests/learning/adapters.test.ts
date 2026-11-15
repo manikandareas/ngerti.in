@@ -1,6 +1,5 @@
 import { expect, test } from "bun:test";
 import { join } from "node:path";
-import { createApi } from "../../src/api";
 import { Background } from "../../src/background";
 import { manifests } from "../../src/harness/availability";
 import { HarnessBroker } from "../../src/harness/broker";
@@ -10,6 +9,7 @@ import { CredentialContexts } from "../../src/harness/context";
 import { MuseAdapter } from "../../src/harness/muse/adapter";
 import { ProductTools } from "../../src/harness/tools";
 import { fixture } from "../helpers";
+import { fixtureApi as createApi } from "../http-fixture";
 
 for (const harness of ["codex", "muse"] as const) {
   test(`${harness} protocol fixture uses the trusted learning bridge and resumes pinned assets after restart`, async () => {

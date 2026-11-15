@@ -11,7 +11,6 @@ test("production bootstrap fails closed and preserves an account origin with exp
     NGERTIIN_CONFIG_FILE: join(directory, "absent"),
     NGERTIIN_STATE_DIR: directory,
     NGERTIIN_DATABASE_URL: "postgresql://fixture:fixture@127.0.0.1/fixture",
-    NGERTIIN_AUTH_MODE: "accounts",
     NGERTIIN_AUTH_URL: "https://server.example.test",
     NGERTIIN_AUTH_SECRET: "s".repeat(64),
     NGERTIIN_AUTH_EMAIL_FROM: "auth@example.test",
@@ -28,7 +27,7 @@ test("production bootstrap fails closed and preserves an account origin with exp
   }
   try {
     expect((await probe({})).output.trim()).toBe("https://server.example.test");
-    expect((await probe({ NGERTIIN_AUTH_MODE: "local-development" })).code).toBe(1);
+    expect((await probe({ NGERTIIN_AUTH_SECRET: "" })).code).toBe(1);
     expect((await probe({ NGERTIIN_STATE_DIR: "relative" })).code).toBe(1);
     expect(
       (

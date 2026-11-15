@@ -1,0 +1,4 @@
+$ bun --filter @ngertiin/desktop typecheck
+@ngertiin/desktop typecheck:    Compiling ngertiin-desktop v0.2.0 (/Users/vitoandareasmanik/Development/project/ngertiin/.dev/commit-accounts-38bdd264/snapshot/apps/desktop/src-tauri)
+@ngertiin/desktop typecheck:     Finished `dev` profile [unoptimized] target(s) in 9.47s
+@ngertiin/desktop typecheck: Exited with code 0

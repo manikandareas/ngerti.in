@@ -3,7 +3,6 @@ import { Authentication } from "./auth/service";
 import { Background } from "./background";
 import { developmentConfig } from "./config";
 import { API_READINESS_GATE, CONTRACT_VERSION } from "./contracts";
-import { Conversations } from "./conversations";
 import { JevRouter } from "./groups/router";
 import { HarnessAccounts } from "./harness/accounts";
 import { HarnessBroker } from "./harness/broker";
@@ -22,9 +21,7 @@ import { Machines } from "./machines/service";
 import { publishRuntime } from "./runtime-record";
 import { Store } from "./store";
 
-type ApplicationConfig = Omit<ReturnType<typeof developmentConfig>, "authentication"> & {
-  authentication?: ReturnType<typeof developmentConfig>["authentication"];
-};
+type ApplicationConfig = ReturnType<typeof developmentConfig>;
 export async function startApplication(config: ApplicationConfig = developmentConfig()) {
   const store = await Store.open(config.database, config.owner_id, {
     connectionString: config.databaseUrl,
@@ -32,16 +29,14 @@ export async function startApplication(config: ApplicationConfig = developmentCo
   });
   const cleanup: (() => Promise<unknown>)[] = [() => store.close()];
   try {
-    if (config.authentication?.schema === store.schema)
+    if (config.authentication.schema === store.schema)
       throw new Error("Authentication and application schemas must be separate.");
-    const authentication = config.authentication
-      ? await Authentication.open(
-          config.authentication,
-          config.databaseUrl as string,
-          config.owner_id,
-        )
-      : undefined;
-    if (authentication) cleanup.push(() => authentication.close());
+    const authentication = await Authentication.open(
+      config.authentication,
+      config.databaseUrl as string,
+      config.owner_id,
+    );
+    cleanup.push(() => authentication.close());
     const lifecycle = await Lifecycle.open(
       store,
       config.groupRouter === "jev" ? new JevRouter(config.typesafeApiKey as string) : undefined,
@@ -50,7 +45,6 @@ export async function startApplication(config: ApplicationConfig = developmentCo
     cleanup.push(() => machines.close());
     const domains = ExecutionDomains.open(lifecycle, config.stateDir);
     cleanup.push(() => domains.close());
-    if (!(await store.legacyScopeMapped())) await new Conversations(lifecycle).setup();
     const tools = await ProductTools.open(lifecycle, (scope, name) => {
       console.log(
         JSON.stringify({
@@ -90,7 +84,7 @@ export async function startApplication(config: ApplicationConfig = developmentCo
       console.error(JSON.stringify({ event: "background.error", code })),
     );
     cleanup.push(() => background.stop());
-    const app = await createApi(lifecycle, background, config.token, {
+    const app = await createApi(lifecycle, background, {
       authentication,
       connections: broker.connections,
       tools,
@@ -132,7 +126,7 @@ export async function startApplication(config: ApplicationConfig = developmentCo
       JSON.stringify({
         event: "foundation.started",
         url: record.value.url,
-        credentials_file: config.installationFile,
+        identity_file: config.installationFile,
         registered_executors: background.executorCount,
         api_readiness_gate: API_READINESS_GATE,
       }),
@@ -148,7 +142,7 @@ export async function startApplication(config: ApplicationConfig = developmentCo
         await domains.close();
         await Promise.allSettled([codexAccounts.close(), museAccounts.close()]);
         await httpStopped;
-        await authentication?.close();
+        await authentication.close();
         await store.close();
         record.remove();
       })();

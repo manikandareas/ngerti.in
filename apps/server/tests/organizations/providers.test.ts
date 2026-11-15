@@ -2,7 +2,7 @@ import { afterEach, expect, test } from "bun:test";
 import { randomBytes } from "node:crypto";
 import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { createApi } from "../../src/api";
+import { createApi as createAccountApi } from "../../src/api";
 import { Background } from "../../src/background";
 import { Connections } from "../../src/harness/connections";
 import { CredentialContexts } from "../../src/harness/context";
@@ -308,17 +308,12 @@ test("scoped API key submission and rotation retain encrypted bytes and secret-f
   const keyFile = join(f.domain.dir, "operator-key");
   writeFileSync(keyFile, randomBytes(32), { mode: 0o600 });
   const storage = new CredentialStorage(f.domain.dir, keyFile);
-  const api = await createApi(
-    f.domain.lifecycle,
-    new Background(f.domain.lifecycle),
-    "v".repeat(64),
-    {
-      authentication: f.auth,
-      connections: new Connections(f.domain.lifecycle),
-      tools: await ProductTools.open(f.domain.lifecycle),
-      credentialStorage: storage,
-    },
-  );
+  const api = await createAccountApi(f.domain.lifecycle, new Background(f.domain.lifecycle), {
+    authentication: f.auth,
+    connections: new Connections(f.domain.lifecycle),
+    tools: await ProductTools.open(f.domain.lifecycle),
+    credentialStorage: storage,
+  });
   const invoke = (path: string, body: unknown, key = crypto.randomUUID()) =>
     api.handle(
       new Request(`${f.origin}${path}`, {

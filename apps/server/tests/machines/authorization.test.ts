@@ -1,6 +1,6 @@
 import { afterEach, expect, test } from "bun:test";
 import { create, fromBinary, toBinary } from "@bufbuild/protobuf";
-import { createApi } from "../../src/api";
+import { createApi as createAccountApi } from "../../src/api";
 import { Background } from "../../src/background";
 import { Connections } from "../../src/harness/connections";
 import { ProductTools } from "../../src/harness/tools";
@@ -12,7 +12,7 @@ import { Machines } from "../../src/machines/service";
 import { organizationFixture } from "../organizations/helpers";
 
 let f: Awaited<ReturnType<typeof organizationFixture>>;
-let api: Awaited<ReturnType<typeof createApi>>;
+let api: Awaited<ReturnType<typeof createAccountApi>>;
 let domains: ExecutionDomains;
 let legacy: Machines;
 let stub: Bun.Server<undefined>;
@@ -95,7 +95,7 @@ async function setup() {
     new DomainRuntime(f.domain.dir, f.domain.owner, null),
     (configuration) => new Host({ ...configuration, endpoint: stub.url.origin }),
   );
-  api = await createApi(f.domain.lifecycle, new Background(f.domain.lifecycle), "a".repeat(64), {
+  api = await createAccountApi(f.domain.lifecycle, new Background(f.domain.lifecycle), {
     authentication: f.auth,
     connections: new Connections(f.domain.lifecycle),
     tools: await ProductTools.open(f.domain.lifecycle),

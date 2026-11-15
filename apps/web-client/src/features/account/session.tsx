@@ -17,7 +17,7 @@ import type { Organization, OrganizationAccess, OrganizationList, UserSession } 
 import "./account.css";
 
 interface AccountState {
-  mode: "loading" | "local" | "accounts";
+  status: "loading" | "ready";
   server: string;
   session: UserSession | null;
   list: OrganizationList;
@@ -27,7 +27,7 @@ interface AccountState {
 }
 const emptyList: OrganizationList = { organizations: [], creation_limit: 0, created_count: 0 };
 const initial: AccountState = {
-  mode: "loading",
+  status: "loading",
   server: "",
   session: null,
   list: emptyList,
@@ -43,7 +43,9 @@ type Account = AccountState & {
 };
 const AccountContext = createContext<Account | null>(null);
 export function useAccount() {
-  return useContext(AccountContext);
+  const account = useContext(AccountContext);
+  if (!account) throw new Error("Account access requires the application provider.");
+  return account;
 }
 
 const selectedKey = (server: string, user: string) =>
@@ -56,24 +58,15 @@ export default function WorkspaceEntry({ children }: { children: ReactNode }) {
   stateRef.current = state;
   const sequence = useRef(0);
   const mounted = useRef(true);
-  const refresh = useCallback(async (choice?: string) => {
+  const latestRefresh = useRef<Promise<void> | null>(null);
+  const load = useCallback(async (choice?: string) => {
     const generation = ++sequence.current;
     const current = () => mounted.current && generation === sequence.current;
     let server = stateRef.current.server;
     try {
       if (!server) {
-        try {
-          const metadata = await request<{ audience: string }>("/v1/auth/native");
-          server = metadata.audience;
-        } catch (error) {
-          if (!(error instanceof ApiError) || error.code !== "NOT_FOUND") throw error;
-          const contract = await request<{ authentication?: { mode: string }; version: string }>(
-            "/v1/contracts",
-          );
-          if (contract.authentication?.mode === "accounts") throw error;
-          if (current()) setState({ ...initial, mode: "local" });
-          return;
-        }
+        const metadata = await request<{ audience: string }>("/v1/auth/native");
+        server = metadata.audience;
       }
       let session: UserSession;
       try {
@@ -87,7 +80,7 @@ export default function WorkspaceEntry({ children }: { children: ReactNode }) {
         if (!(error instanceof ApiError) || error.code !== "UNAUTHORIZED") throw error;
         if (current()) {
           setClientScope(null);
-          setState({ ...initial, mode: "accounts", server });
+          setState({ ...initial, status: "ready", server });
         }
         return;
       }
@@ -122,7 +115,7 @@ export default function WorkspaceEntry({ children }: { children: ReactNode }) {
       );
       if (organization)
         organizationStorage().setItem(selectedKey(server, session.user.id), organization.id);
-      setState({ mode: "accounts", server, session, list, organization, access, error: "" });
+      setState({ status: "ready", server, session, list, organization, access, error: "" });
     } catch (error) {
       if (!current() || (error instanceof DOMException && error.name === "AbortError")) return;
       if (
@@ -132,19 +125,34 @@ export default function WorkspaceEntry({ children }: { children: ReactNode }) {
         setClientScope(null);
         setState({
           ...initial,
-          mode: "accounts",
+          status: "ready",
           server,
           error: "Access changed. Sign in or choose an organization again.",
         });
       } else
         setState((previous) => ({
           ...previous,
-          mode: previous.mode === "loading" ? "accounts" : previous.mode,
+          status: "ready",
           server,
           error: error instanceof Error ? error.message : "Could not connect. Try again.",
         }));
     }
   }, []);
+  const refresh = useCallback(
+    (choice?: string): Promise<void> => {
+      const completion: Promise<void> = load(choice).then(() => {
+        const latest = latestRefresh.current;
+        if (latest && latest !== completion) return latest;
+      });
+      latestRefresh.current = completion;
+      const finished = () => {
+        if (latestRefresh.current === completion) latestRefresh.current = null;
+      };
+      void completion.then(finished, finished);
+      return completion;
+    },
+    [load],
+  );
   useEffect(() => {
     mounted.current = true;
     void refresh();
@@ -154,7 +162,7 @@ export default function WorkspaceEntry({ children }: { children: ReactNode }) {
     };
   }, [refresh]);
   useEffect(() => {
-    if (state.mode !== "accounts" || !state.session) return;
+    if (!state.session) return;
     const check = () => {
       if (document.visibilityState === "visible") void refresh();
     };
@@ -182,7 +190,7 @@ export default function WorkspaceEntry({ children }: { children: ReactNode }) {
       window.removeEventListener("ngertiin:access-changed", changed);
       document.removeEventListener("visibilitychange", check);
     };
-  }, [state.mode, state.session, refresh]);
+  }, [state.session, refresh]);
   const account: Account = {
     ...state,
     refresh: () => refresh(),
@@ -204,20 +212,18 @@ export default function WorkspaceEntry({ children }: { children: ReactNode }) {
       setClientScope(null);
       await clearPrivateStorage();
       localStorage.setItem("ngertiin:session-change", crypto.randomUUID());
-      setState({ ...initial, mode: "accounts", server: state.server });
+      setState({ ...initial, status: "ready", server: state.server });
     },
   };
   const special = /^\/(invitations|sign-in|reset-password)(\/|$)/.test(location.pathname);
-  const active =
-    state.mode === "local" ||
-    (!!state.session && !!state.organization && !!state.access && !special);
+  const active = !!state.session && !!state.organization && !!state.access && !special;
   return (
     <AccountContext.Provider value={account}>
-      {state.mode === "loading" ? (
+      {state.status === "loading" ? (
         <div className="account-loading" role="status" aria-label="Loading workspace" />
       ) : active ? (
-        <PreferencesProvider key={clientScope()?.key ?? "local"}>
-          <Fragment key={`${clientScope()?.key ?? "local"}:${clientScope()?.epoch ?? 0}`}>
+        <PreferencesProvider key={clientScope()?.key ?? "account"}>
+          <Fragment key={`${clientScope()?.key ?? "account"}:${clientScope()?.epoch ?? 0}`}>
             {children}
           </Fragment>
         </PreferencesProvider>

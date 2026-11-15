@@ -1,0 +1,153 @@
+{
+  "source_revision": "51dea542d545e6faf290b6d5e3771717d47b002e",
+  "source_snapshot": "source-snapshot.json",
+  "source_count": 170,
+  "source_snapshot_matches_current_files": true,
+  "evidence_sha256": {
+    "README.md": "47b22c5cbf6cdefa3e52e44e443fd26e788ceb19e7e3499264c4287b346756f8",
+    "backend-contracts-final.log": "abdf1e34e3ee19403c24d5888b306ee99fd1ac4f7423ecd00f792a54646af177",
+    "backend-corrected-cohort-initial.log": "5deec29dd6787df862b002197a2fc183d6af1bd3f10c08000b369c29ce159ce3",
+    "backend-corrections-final.log": "a0f90e809229ea914e50e9de668cbfe525d8634615a3d0fd933cb179455cd691",
+    "backend-corrections-initial-deadline.log": "406b8d185ae89a22fa89319acec3a6939ca71e58337eba0b3dad848637812057",
+    "backend-development-namespace.log": "8f2546249117acb6725f3065c122de64b9c194419b7ab081ca08470a76de8121",
+    "backend-fixtures-initial-interrupted.log": "81c9cf9a6dda2943ceebe73ac326fd1fce14d5186bd3b61248ecca50cbf9a194",
+    "backend-focused-regression.log": "8e562af76635975eb33ec659591418da709b90222eea7d0d47b3725c5a0a8bc7",
+    "backend-full-initial.log": "2526d69c87eb6543cd6e60a4e5ac2c472e809e88c0732aad75f5d7b14f4cb657",
+    "browser-cadence-initial-error.txt": "a9b54eebe5fb12aa24f1343945034b60f8ccdb4919ea9db5f83aaf4d374d89c6",
+    "browser-cadence-initial.log": "8fef816c480a1c6f2bbce74c131e0d45302e829c3aed8193fc1076301d0a029d",
+    "browser-corrections-final.json": "75bfdb41b2e04a9784b8dc1f32d1523060555505a4707b6a12f919dbe9393424",
+    "browser-corrections-final.log": "88bebed55779e4ace1bd52af179833a11d03e1da23aae982894545594edfd164",
+    "browser-full-initial.json": "2dd55e25f19661b56b037ccc17bf5baed517cdd07a3b20278a56604bc8d97f2b",
+    "browser-full-initial.log": "de7b8d6d45388749095a7987ba741e2bfff14f2dec73aadf9e34514bdec27dc0",
+    "browser-initial-interrupted.log": "1b95493c0ca2e74a49c13ee74f790e29d092c7273f89711d859d206034f569a1",
+    "browser-initial-reset-error.txt": "8bde4a2e2d8b796ac02cb450ac74232d3eef0777958877c35eb10a260759a391",
+    "browser-navigation-initial-error.txt": "7adae3306d6df2ae68bebe1407386b8722b8620835c76894dd3f8f78a7e1d21c",
+    "browser-navigation-initial.log": "f143357276de47c6044528160f8c2773976b16a2cecc875d1cedafbb3482f319",
+    "browser-refresh-initial-error.txt": "8c73a1757cdc48da277f1a1d1e5f6ce47951ebd4ded1d5093dd1868d375f34e0",
+    "browser-refresh-initial.log": "99864d9426a00d020fae6dabc20cb5e42cc52b2e17a89428a335392247a47e3f",
+    "browser-reload-initial-error.txt": "7b5a96b706d3d007cfc2d5fe8a8ddf9b050fad9d84562bf38e283ca5b544636d",
+    "browser-workgroup-initial-error.txt": "09d96fbd16ecec0dae53bd2030af97c18a3cc05fcb8c3a72ec5b187fcc68f0fd",
+    "build.log": "dc6db97e60d2ad839c5a52cb20d571b6a88b0e9e540c73b3df1361f0fb3b6812",
+    "default-browser-list.log": "209bb7b14c057beaa9403c5a012219fffe637a713b357a879224d01126220c40",
+    "desktop-lint.log": "0a7cf488699df0356ec00e146b31a5114f183c252f55cf5d364e38db6a1e2ad3",
+    "desktop-tooling-tests.log": "896ecce211c689076b8b2c97c3355d14fb971273f60467c6770eb38a98117799",
+    "desktop-typecheck.log": "dc983cfd712e2bf092e10dab6b0fd44650338b863ce8bcca77b86f10a7b21368",
+    "development-cookie-transport-initial.log": "05373b1456984c0bcc78c2e320aec126e3779596dc5f5b834f77e4b33f5fe74e",
+    "development-desktop.png": "96dc15584c090bee0b7c456e5435d5543916ee0614a58ed577d4f60e4a146a9d",
+    "development-final.log": "260e85b3ff0248db344abb6d5acdb6854e4d15d2b072d09e71d0ea31222721a6",
+    "development-initial.log": "f7aa8dc52863fa2c9ba4eb3a27205b9a2676aeb4a5ce8335f6a52388a66529fe",
+    "development-launcher-cookie-transport-initial.log": "3c4783ca548482df265b4bf6a66bc9963a1bb9ac5579b811e362ed1c324d24bd",
+    "development-launcher-initial.log": "3c4783ca548482df265b4bf6a66bc9963a1bb9ac5579b811e362ed1c324d24bd",
+    "development-launcher.log": "6817e4917cb2f47be60487507c6fe5eeff4aee182177b556aaff6449d09972e8",
+    "development-mobile.png": "3cbb15d6cbd4eebec7c2f7042b52e9bab7cc1103ef196e9c575c2db0cae195b2",
+    "development-pre-native.json": "ad5fcf3de79d4095b2a32c4e74af942cb486d88e02a2b1bcd23a3f49e5a7a696",
+    "development.json": "825e60e44ef36870a7b878fb9fd6bef7fdf97cac27e2ec0b885cc0c8c8e3bb7c",
+    "docs-check.log": "792d8e59fc4532bcc8db1d5f079e0cea084c67702a4caea3bab63884aad7698d",
+    "environment.json": "eafb0460fd758dd8bf36ae285573f847579af0ee712948eb852a702f77a12e5d",
+    "launcher-lint.log": "1ae1295991b5f596a56360939606789e128f936d0d02d7353dc6eec4b092eec3",
+    "lint.log": "2e4f9057de7e0a7605c368aacfcc8d1ecefd3de8215680e9294c7e5585f6243b",
+    "native-session.json": "6a6b8a255df392dcfbecbda233e47580194d5df94cab57b56d06c85d20c9d3ba",
+    "preservation.json": "c1678eefa0e99fb6dda24684fb423b4968470a4be4109360fdd08b73eb75d184",
+    "retired-runtime.json": "8564ae3c04e7d2dada0236b9e64476ae52579bf4ea413f973333a4a54c5b385e",
+    "retired-verification.json": "5017e9ac8f1743b7e3bcd390bab171038168598980ac3c16fe7b60f69cfd3ae0",
+    "rust-tests.log": "ed4b65f09da9f651d16a4e9bfaa12d04c224d760e27d7905d2e5e4218b8bb115",
+    "source-snapshot.json": "78714191bda9f1660e574b33e49d65161ed4f758745d5e038ed4c23b379c4a52",
+    "typecheck.log": "c16281326e38b1541990f005f65cd97978e864e32b4c6ee505234983c4902255",
+    "web-unit-initial.log": "b16bd43384c94d61b1168383fb5d5572a8cc17843212a1d3c44cce0e4f25f72e",
+    "web-units-final.log": "b33ca69ec054f3b983bc1033974d59e40714c5f85f2d070a8ca5cb807916e1a8",
+    "whitespace.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "checks": {
+    "server_and_web_lint": "pass",
+    "server_and_web_typecheck": "pass",
+    "web_build": "pass_with_existing_large_chunk_warning",
+    "desktop_lint_format_clippy": "pass",
+    "desktop_typecheck": "pass",
+    "launcher_verifier_lint": "pass",
+    "docs": "291 Markdown files; 3385 links; 127 historical; 37 milestones; 83 decisions; contract 2.2.0",
+    "whitespace_exit_code": 0,
+    "backend_full_initial": {
+      "pass": 560,
+      "fail": 4,
+      "total": 564,
+      "files": 75
+    },
+    "backend_targeted_regression": {
+      "pass": 76,
+      "fail": 0,
+      "total": 76,
+      "files": 5
+    },
+    "development_and_namespace": {
+      "pass": 5,
+      "fail": 0,
+      "total": 5,
+      "files": 4
+    },
+    "backend_follow_up": {
+      "pass": 37,
+      "fail": 0,
+      "total": 37,
+      "files": 4
+    },
+    "final_contract_inventory": {
+      "pass": 5,
+      "fail": 0,
+      "total": 5,
+      "files": 1
+    },
+    "frontend_units": {
+      "pass": 86,
+      "fail": 0,
+      "total": 86,
+      "files": 19
+    },
+    "rust": {
+      "pass": 11,
+      "fail": 0,
+      "ignored": 2
+    },
+    "desktop_tooling": {
+      "pass": 2,
+      "fail": 0
+    },
+    "unified_development": {
+      "pass": 1,
+      "fail": 0,
+      "named_cases": 8,
+      "native_session": "observed"
+    },
+    "browser_full_initial": {
+      "pass": 24,
+      "fail": 2,
+      "total": 26
+    },
+    "browser_final_follow_up": {
+      "pass": 4,
+      "fail": 0,
+      "total": 4,
+      "retries": 0
+    },
+    "default_browser_config_discovery": 26,
+    "test_resources": "No disposable verification containers or test/default workspace listener ports remained after completion."
+  },
+  "boundaries": "Completed full runs retain their initial failures. Successful focused follow-ups overlap and are not summed as a new full-suite result. Production, fresh-device distribution, real email delivery and provider inference were not repeated.",
+  "committed": false,
+  "reproduction_commands": [
+    "bun run test:server",
+    "bun scripts/verification/nma072/run-tests.ts tests/agents.test.ts tests/muse.test.ts tests/controls.test.ts tests/auth/security.test.ts tests/organizations/data.test.ts",
+    "bun scripts/verification/nma072/run-tests.ts tests/bootstrap.test.ts tests/auth/schema.test.ts tests/auth/namespace.test.ts tests/auth/development.test.ts",
+    "bun scripts/verification/nma072/run-tests.ts tests/provider-key.test.ts tests/conversation-previews.test.ts tests/harness.test.ts tests/contracts.test.ts",
+    "bun scripts/verification/nma072/run-tests.ts tests/contracts.test.ts",
+    "bun scripts/verification/nma072/run-tests.ts tests/provider-key.test.ts tests/conversation-previews.test.ts tests/muse.test.ts tests/contracts.test.ts",
+    "bun test apps/web-client/verification",
+    "bun scripts/verification/nma072/run-tests.ts ../../scripts/verification/accounts-only/development.test.ts (NGERTIIN_ACCOUNT_PROOF_HOLD=1, with observed native sign-in)",
+    "bun scripts/verification/nma072/run-tests.ts ../../scripts/verification/accounts-only/browser.test.ts",
+    "NGERTIIN_ACCOUNT_BROWSER_GREP=\"organization switching isolates drafts|owner manages workgroups\" bun scripts/verification/nma072/run-tests.ts ../../scripts/verification/accounts-only/browser.test.ts",
+    "bun run lint; bun run typecheck; bun run build",
+    "bun run test:desktop; bun run lint:desktop; bun run typecheck:desktop",
+    "bunx biome check scripts/development.ts scripts/verification/accounts-only",
+    "bun run docs:check",
+    "git diff --check"
+  ]
+}

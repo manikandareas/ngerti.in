@@ -6,9 +6,8 @@ import { z } from "zod";
 import { authenticationConfig } from "./auth/config";
 import { id } from "./contracts";
 
-const installationSchema = z.strictObject({
+const installationSchema = z.object({
   owner_id: id,
-  token: z.string().regex(/^[a-f0-9]{64}$/),
 });
 export function developmentConfig() {
   const environment = process.env.APP_ENV ?? "development";
@@ -31,24 +30,26 @@ export function developmentConfig() {
     .parse(process.env.NGERTIIN_GROUP_ROUTER ?? (typesafeApiKey ? "jev" : "member"));
   if (groupRouter === "jev" && !typesafeApiKey)
     throw new Error("TYPESAFE_API_KEY is required for Jev group routing.");
-  const authentication = authenticationConfig({ ...rootEnvironment, ...process.env });
+  const stateDir = resolve(
+    root,
+    process.env.NGERTIIN_STATE_DIR || rootEnvironment.NGERTIIN_STATE_DIR || ".dev/harness-first",
+  );
+  mkdirSync(stateDir, { recursive: true, mode: 0o700 });
+  const authentication = authenticationConfig({ ...rootEnvironment, ...process.env }, stateDir);
   if (environment === "production") {
-    if (!authentication || authentication.allowInsecureLoopback)
+    if (authentication.allowInsecureLoopback)
       throw new Error("Server deployment requires certificate-validated account authentication.");
     if (!process.env.NGERTIIN_STATE_DIR?.startsWith("/"))
       throw new Error("Server deployment requires an absolute private state directory.");
     if (!process.env.NGERTIIN_DATABASE_URL)
       throw new Error("Server deployment requires an explicit PostgreSQL connection.");
   }
-  const stateDir = resolve(root, process.env.NGERTIIN_STATE_DIR || ".dev/harness-first");
-  mkdirSync(stateDir, { recursive: true, mode: 0o700 });
   const installationFile = resolve(stateDir, "installation.json");
   try {
     writeFileSync(
       installationFile,
       JSON.stringify({
         owner_id: crypto.randomUUID(),
-        token: crypto.randomUUID().replaceAll("-", "") + crypto.randomUUID().replaceAll("-", ""),
       }),
       { mode: 0o600, flag: "wx" },
     );

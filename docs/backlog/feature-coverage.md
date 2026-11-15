@@ -69,7 +69,7 @@ All 83 decision identities are assigned or explicitly parked. Shared-machine and
 | X03 | Banyak host dan akses harness laptop dari VPS | Tunda | — | — | Diparkir sesuai matriks |
 | X04 | Downloader / manajer model lokal | Tunda | — | — | Diparkir sesuai matriks |
 | X05 | Routing lanjutan, fallback, credential pool, Mixture of Agents | Tunda | — | — | Diparkir sesuai matriks |
-| X06 | Web/Tauri implementation focus | desktop-rs paused; historical NMA-066–071 Done retained | — | [NMA-080](NMA-080.md), [NMA-081](NMA-081.md) | [NMA-064](NMA-064.md) remains fresh-device distribution; no GPUI work required |
+| X06 | Web/Tauri implementation focus | GPUI source removed; historical NMA-066–071 Done retained | — | [NMA-080](NMA-080.md), [NMA-081](NMA-081.md) | [NMA-064](NMA-064.md) remains fresh-device distribution; no GPUI work required |
 | X07 | WhatsApp / Telegram / Slack / Discord / email sebagai kanal chat | Tunda | — | — | Diparkir sesuai matriks |
 | X08 | Multiple users, organizations and Workgroups | Promoted; planned | [NMA-073](NMA-073.md), [NMA-074](NMA-074.md), [NMA-075](NMA-075.md), [NMA-079](NMA-079.md) | [NMA-080](NMA-080.md), [NMA-081](NMA-081.md) | [NMA-083](NMA-083.md); multi-human shared chats deferred |
 | X09 | Hosting website, deploy, dan marketplace berbayar | Tunda | — | — | Diparkir sesuai matriks |

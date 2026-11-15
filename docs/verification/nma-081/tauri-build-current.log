@@ -1,0 +1,8 @@
+        Info Looking up installed tauri packages to check mismatched versions...
+   Compiling ngertiin-desktop v0.2.0 (/Users/vitoandareasmanik/Development/project/ngertiin/apps/desktop/src-tauri)
+    Finished `dev` profile [unoptimized] target(s) in 12.17s
+       Built application at: /Users/vitoandareasmanik/Development/project/ngertiin/apps/desktop/src-tauri/target/debug/ngertiin-desktop
+    Bundling Ngertiin NMA081.app (/Users/vitoandareasmanik/Development/project/ngertiin/apps/desktop/src-tauri/target/debug/bundle/macos/Ngertiin NMA081.app)
+    Finished 1 bundle at:
+        /Users/vitoandareasmanik/Development/project/ngertiin/apps/desktop/src-tauri/target/debug/bundle/macos/Ngertiin NMA081.app (579.42 MiB)
+

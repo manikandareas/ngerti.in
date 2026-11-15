@@ -21,7 +21,7 @@ const sockets = new Set<WebSocket>();
 afterEach(async () => {
   for (const socket of sockets) socket.close();
   sockets.clear();
-  await api?.stop(true).catch(() => {});
+  if (api) await Promise.race([api.stop(true).catch(() => {}), Bun.sleep(1000)]);
   await domains?.close();
   await legacy?.close();
   void stub?.stop(true);
@@ -100,6 +100,7 @@ async function setup() {
     connections: new Connections(f.domain.lifecycle),
     tools: await ProductTools.open(f.domain.lifecycle),
   });
+  await f.listenApi(api);
 }
 function request(
   cookie: string,
@@ -153,12 +154,26 @@ async function connect(cookie: string, view: Awaited<ReturnType<typeof viewer>>)
       url: string,
       options: { headers: Record<string, string> },
     ) => WebSocket);
-  const socket = new NativeSocket(media.wsPath, { headers: { Cookie: cookie, Origin: f.origin } });
+  expect(media.wsPath.startsWith("media?ticket=")).toBe(true);
+  const socket = new NativeSocket(
+    new URL(media.wsPath, `${f.origin.replace(/^http/, "ws")}${root}`).href,
+    {
+      headers: { Cookie: cookie, Origin: f.origin },
+    },
+  );
   sockets.add(socket);
   socket.onmessage = () => frame.resolve();
-  socket.onclose = () => closed.resolve();
+  socket.onclose = (event) => {
+    closed.resolve();
+    frame.reject(new Error(`Fixture media closed before a frame (${event.code}).`));
+  };
   socket.onerror = () => frame.reject(new Error("Fixture media did not connect."));
-  await frame.promise;
+  await Promise.race([
+    frame.promise,
+    Bun.sleep(5000).then(() => {
+      throw new Error(`Fixture frame timed out at state ${socket.readyState}.`);
+    }),
+  ]);
   return { socket, closed: closed.promise, media };
 }
 
@@ -194,6 +209,12 @@ test("revoking the actual issuing login closes existing media and rejects furthe
   expect(media.socket.readyState).toBe(WebSocket.CLOSED);
   expect(closedMedia).toContain(media.media.mediaSessionId);
   expect((await request(f.owner.cookie, view.viewer_url)).status).toBe(401);
+  const replacement = await f.login();
+  const nextView = await viewer(replacement.cookie);
+  const nextMedia = await connect(replacement.cookie, nextView);
+  await Bun.sleep(1500);
+  expect(nextMedia.socket.readyState).toBe(WebSocket.OPEN);
+  expect((await request(replacement.cookie, nextView.viewer_url)).status).toBe(200);
 });
 test("removing an organization member closes their already-open media and invalidates clipboard/file access", async () => {
   await setup();

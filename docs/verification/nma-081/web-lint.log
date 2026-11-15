@@ -1,0 +1,165 @@
+@ngertiin/web-client lint: src/features/account/account-screen.tsx format ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+@ngertiin/web-client lint: 
+@ngertiin/web-client lint:   × Formatter would have printed the following content:
+@ngertiin/web-client lint:   
+@ngertiin/web-client lint:     198 198 │                 <div className="account-form">
+@ngertiin/web-client lint:     199 199 │                   <p className="account-muted">{account.server}</p>
+@ngertiin/web-client lint:     200     │ - ················<Button·disabled={action.busy}·onClick={()·=>·void·action.run(async·()·=>·{
+@ngertiin/web-client lint:     201     │ - ··················await·window.ngertiinDesktop?.signIn?.();
+@ngertiin/web-client lint:     202     │ - ··················if·(location.pathname·===·"/sign-in")·location.assign("/");
+@ngertiin/web-client lint:     203     │ - ··················else·await·account.refresh();
+@ngertiin/web-client lint:     204     │ - ················})}>
+@ngertiin/web-client lint:         200 │ + ················<Button
+@ngertiin/web-client lint:         201 │ + ··················disabled={action.busy}
+@ngertiin/web-client lint:         202 │ + ··················onClick={()·=>
+@ngertiin/web-client lint:         203 │ + ····················void·action.run(async·()·=>·{
+@ngertiin/web-client lint:         204 │ + ······················await·window.ngertiinDesktop?.signIn?.();
+@ngertiin/web-client lint:         205 │ + ······················if·(location.pathname·===·"/sign-in")·location.assign("/");
+@ngertiin/web-client lint:         206 │ + ······················else·await·account.refresh();
+@ngertiin/web-client lint:         207 │ + ····················})
+@ngertiin/web-client lint:         208 │ + ··················}
+@ngertiin/web-client lint:         209 │ + ················>
+@ngertiin/web-client lint:     205 210 │                     {action.busy ? "Finish signing in in your browser…" : "Sign in with browser"}
+@ngertiin/web-client lint:     206 211 │                   </Button>
+@ngertiin/web-client lint:     207     │ - ················{action.busy·&&·<Button·variant="ghost"·onClick={()·=>·void·window.ngertiinDesktop?.cancelSignIn?.()}>Cancel</Button>}
+@ngertiin/web-client lint:         212 │ + ················{action.busy·&&·(
+@ngertiin/web-client lint:         213 │ + ··················<Button
+@ngertiin/web-client lint:         214 │ + ····················variant="ghost"
+@ngertiin/web-client lint:         215 │ + ····················onClick={()·=>·void·window.ngertiinDesktop?.cancelSignIn?.()}
+@ngertiin/web-client lint:         216 │ + ··················>
+@ngertiin/web-client lint:         217 │ + ····················Cancel
+@ngertiin/web-client lint:         218 │ + ··················</Button>
+@ngertiin/web-client lint:         219 │ + ················)}
+@ngertiin/web-client lint:     208 220 │                 </div>
+@ngertiin/web-client lint:     209     │ - ············)·:·<form·className="account-form"·onSubmit={(event)·=>·void·authenticate(event)}>
+@ngertiin/web-client lint:     210     │ - ··············{mode·===·"signup"·&&·(
+@ngertiin/web-client lint:     211     │ - ················<AccountField·label="Name">
+@ngertiin/web-client lint:     212     │ - ··················<Input
+@ngertiin/web-client lint:     213     │ - ····················name="name"
+@ngertiin/web-client lint:     214     │ - ····················required
+@ngertiin/web-client lint:     215     │ - ····················maxLength={120}
+@ngertiin/web-client lint:     216     │ - ····················autoComplete="name"
+@ngertiin/web-client lint:     217     │ - ····················disabled={action.busy}
+@ngertiin/web-client lint:     218     │ - ··················/>
+@ngertiin/web-client lint:     219     │ - ················</AccountField>
+@ngertiin/web-client lint:     220     │ - ··············)}
+@ngertiin/web-client lint:     221     │ - ··············{mode·!==·"reset"·&&·(
+@ngertiin/web-client lint:     222     │ - ················<AccountField·label="Email">
+@ngertiin/web-client lint:     223     │ - ··················<Input
+@ngertiin/web-client lint:     224     │ - ····················name="email"
+@ngertiin/web-client lint:     225     │ - ····················type="email"
+@ngertiin/web-client lint:     226     │ - ····················value={email}
+@ngertiin/web-client lint:     227     │ - ····················onChange={(event)·=>·setEmail(event.target.value)}
+@ngertiin/web-client lint:     228     │ - ····················required
+@ngertiin/web-client lint:     229     │ - ····················autoComplete="email"
+@ngertiin/web-client lint:     230     │ - ····················disabled={action.busy}
+@ngertiin/web-client lint:     231     │ - ··················/>
+@ngertiin/web-client lint:     232     │ - ················</AccountField>
+@ngertiin/web-client lint:     233     │ - ··············)}
+@ngertiin/web-client lint:     234     │ - ··············{mode·!==·"recover"·&&·(
+@ngertiin/web-client lint:     235     │ - ················<AccountField·label={mode·===·"reset"·?·"New·password"·:·"Password"}>
+@ngertiin/web-client lint:     236     │ - ··················<Input
+@ngertiin/web-client lint:     237     │ - ····················name="password"
+@ngertiin/web-client lint:     238     │ - ····················type="password"
+@ngertiin/web-client lint:     239     │ - ····················required
+@ngertiin/web-client lint:     240     │ - ····················minLength={mode·===·"login"·?·1·:·12}
+@ngertiin/web-client lint:     241     │ - ····················maxLength={128}
+@ngertiin/web-client lint:     242     │ - ····················autoComplete={mode·===·"login"·?·"current-password"·:·"new-password"}
+@ngertiin/web-client lint:     243     │ - ····················disabled={action.busy}
+@ngertiin/web-client lint:     244     │ - ··················/>
+@ngertiin/web-client lint:     245     │ - ··················{mode·!==·"login"·&&·(
+@ngertiin/web-client lint:     246     │ - ····················<span·className="account-muted">At·least·12·characters.</span>
+@ngertiin/web-client lint:     247     │ - ··················)}
+@ngertiin/web-client lint:     248     │ - ················</AccountField>
+@ngertiin/web-client lint:     249     │ - ··············)}
+@ngertiin/web-client lint:     250     │ - ··············<Button·disabled={action.busy·||·(mode·===·"reset"·&&·!token.current)}>
+@ngertiin/web-client lint:     251     │ - ················{action.busy
+@ngertiin/web-client lint:     252     │ - ··················?·"Please·wait…"
+@ngertiin/web-client lint:     253     │ - ··················:·mode·===·"signup"
+@ngertiin/web-client lint:     254     │ - ····················?·"Create·account"
+@ngertiin/web-client lint:     255     │ - ····················:·mode·===·"recover"
+@ngertiin/web-client lint:     256     │ - ······················?·"Send·reset·link"
+@ngertiin/web-client lint:     257     │ - ······················:·mode·===·"reset"
+@ngertiin/web-client lint:     258     │ - ························?·"Save·password"
+@ngertiin/web-client lint:     259     │ - ························:·"Sign·in"}
+@ngertiin/web-client lint:     260     │ - ··············</Button>
+@ngertiin/web-client lint:     261     │ - ············</form>}
+@ngertiin/web-client lint:     262     │ - ············{!window.ngertiinDesktop?.remote·&&·<div·className="account-links">
+@ngertiin/web-client lint:     263     │ - ··············{mode·===·"login"·?·(
+@ngertiin/web-client lint:     264     │ - ················<>
+@ngertiin/web-client lint:     265     │ - ··················<Button·variant="link"·onClick={()·=>·changeMode("recover")}>
+@ngertiin/web-client lint:     266     │ - ····················Forgot·password?
+@ngertiin/web-client lint:     267     │ - ··················</Button>
+@ngertiin/web-client lint:     268     │ - ··················<Button·variant="link"·onClick={()·=>·changeMode("signup")}>
+@ngertiin/web-client lint:     269     │ - ····················Create·account
+@ngertiin/web-client lint:     270     │ - ··················</Button>
+@ngertiin/web-client lint:     271     │ - ················</>
+@ngertiin/web-client lint:     272     │ - ··············)·:·(
+@ngertiin/web-client lint:     273     │ - ················<Button·variant="link"·onClick={()·=>·changeMode("login")}>
+@ngertiin/web-client lint:     274     │ - ··················Back·to·sign·in
+@ngertiin/web-client lint:     275     │ - ················</Button>
+@ngertiin/web-client lint:     276     │ - ··············)}
+@ngertiin/web-client lint:     277     │ - ··············{mode·===·"login"·&&·(notice·||·action.error)·&&·(
+@ngertiin/web-client lint:     278     │ - ················<Button
+@ngertiin/web-client lint:     279     │ - ··················variant="link"
+@ngertiin/web-client lint:     280     │ - ··················disabled={action.busy·||·!email}
+@ngertiin/web-client lint:     281     │ - ··················onClick={()·=>
+@ngertiin/web-client lint:     282     │ - ····················void·action.run(async·()·=>·{
+@ngertiin/web-client lint:     283     │ - ······················await·request("/api/auth/send-verification-email",·{
+@ngertiin/web-client lint:     284     │ - ························email,
+@ngertiin/web-client lint:     285     │ - ························callbackURL:·`${location.origin}${location.pathname}`,
+@ngertiin/web-client lint:     286     │ - ······················});
+@ngertiin/web-client lint:     287     │ - ······················setNotice("Verification·email·sent.·Check·your·inbox.");
+@ngertiin/web-client lint:     288     │ - ····················})
+@ngertiin/web-client lint:     289     │ - ··················}
+@ngertiin/web-client lint:     290     │ - ················>
+@ngertiin/web-client lint:     291     │ - ··················Resend·verification·email
+@ngertiin/web-client lint:     292     │ - ················</Button>
+@ngertiin/web-client lint:     293     │ - ··············)}
+@ngertiin/web-client lint:     294     │ - ············</div>}
+@ngertiin/web-client lint:         221 │ + ············)·:·(
+@ngertiin/web-client lint:         222 │ + ··············<form·className="account-form"·onSubmit={(event)·=>·void·authenticate(event)}>
+@ngertiin/web-client lint:         223 │ + ················{mode·===·"signup"·&&·(
+@ngertiin/web-client lint:         224 │ + ··················<AccountField·label="Name">
+@ngertiin/web-client lint:         225 │ + ····················<Input
+@ngertiin/web-client lint:         226 │ + ······················name="name"
+@ngertiin/web-client lint:         227 │ + ······················required
+@ngertiin/web-client lint:         228 │ + ······················maxLength={120}
+@ngertiin/web-client lint:         229 │ + ······················autoComplete="name"
+@ngertiin/web-client lint:         230 │ + ······················disabled={action.busy}
+@ngertiin/web-client lint:         231 │ + ····················/>
+@ngertiin/web-client lint:         232 │ + ··················</AccountField>
+@ngertiin/web-client lint:         233 │ + ················)}
+@ngertiin/web-client lint:         234 │ + ················{mode·!==·"reset"·&&·(
+@ngertiin/web-client lint:         235 │ + ··················<AccountField·label="Email">
+@ngertiin/web-client lint:         236 │ + ····················<Input
+@ngertiin/web-client lint:         237 │ + ······················name="email"
+@ngertiin/web-client lint:         238 │ + ······················type="email"
+@ngertiin/web-client lint:         239 │ + ······················value={email}
+@ngertiin/web-client lint:         240 │ + ······················onChange={(event)·=>·setEmail(event.target.value)}
+@ngertiin/web-client lint:         241 │ + ······················required
+@ngertiin/web-client lint:         242 │ + ······················autoComplete="email"
+@ngertiin/web-client lint:         243 │ + ······················disabled={action.busy}
+@ngertiin/web-client lint:         244 │ + ····················/>
+@ngertiin/web-client lint:         245 │ + ··················</AccountField>
+@ngertiin/web-client lint:         246 │ + ················)}
+@ngertiin/web-client lint:         247 │ + ················{mode·!==·"recover"·&&·(
+@ngertiin/web-client lint:         248 │ + ··················<AccountField·label={mode·===·"reset"·?·"New·password"·:·"Password"}>
+@ngertiin/web-client lint:         249 │ + ····················<Input
+@ngertiin/web-client lint:         250 │ + ······················name="password"
+@ngertiin/web-client lint:         251 │ + ······················type="password"
+@ngertiin/web-client lint:         252 │ + ······················required
+@ngertiin/web-client lint:         253 │ + ······················minLength={mode·===·"login"·?·1·:·12}
+@ngertiin/web-client lint:         254 │ + ······················maxLength={128}
+@ngertiin/web-client lint:         255 │ + ······················autoComplete={mode·===·"login"·?·"current-password"·:·"new-password"}
+@ngertiin/web-client lint:   57 more lines truncated
+@ngertiin/web-client lint:   
+@ngertiin/web-client lint: 
+@ngertiin/web-client lint: Checked 400 files in 593ms. No fixes applied.
+@ngertiin/web-client lint: Found 1 error.
+@ngertiin/web-client lint: check ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+@ngertiin/web-client lint: 
+@ngertiin/web-client lint:   × Some errors were emitted while running checks.
+@ngertiin/web-client lint:   
+@ngertiin/web-client lint: 
+@ngertiin/web-client lint: Exited with code 1

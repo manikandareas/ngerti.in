@@ -1,0 +1,10 @@
+bun test v1.3.10 (30e609e0)
+
+apps/desktop/tests/profile.test.ts:
+(pass) private desktop profile validation rejects unsafe files [2.27ms]
+(pass) remote profiles validate the selected HTTPS origin without any local runtime paths [2.22ms]
+
+ 2 pass
+ 0 fail
+ 13 expect() calls
+Ran 2 tests across 1 file. [37.00ms]

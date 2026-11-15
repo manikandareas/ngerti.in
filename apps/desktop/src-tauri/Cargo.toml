@@ -17,6 +17,9 @@ tauri-build = { version = "=2.7.4", features = [] }
 
 [dependencies]
 anyhow = "1"
+base64 = "=0.22.1"
+getrandom = "=0.3.4"
+sha2 = "=0.10.9"
 axum = { version = "0.8", features = ["ws"] }
 chrono = { version = "0.4", default-features = false, features = ["clock"] }
 dirs = "6"
@@ -40,6 +43,7 @@ url = "2"
 uuid = { version = "1", features = ["v4", "serde"] }
 
 [target.'cfg(target_os = "macos")'.dependencies]
+security-framework = "=3.7.0"
 block2 = "0.6.2"
 objc2 = "0.6.3"
 objc2-app-kit = { version = "0.3.2", default-features = false, features = ["std", "NSApplication", "NSWindow", "NSWorkspace"] }

@@ -48,6 +48,7 @@ export function useAccount() {
 
 const selectedKey = (server: string, user: string) =>
   `ngertiin:organization:${encodeURIComponent(server)}:${user}`;
+const organizationStorage = () => (window.ngertiinDesktop?.remote ? localStorage : sessionStorage);
 
 export default function WorkspaceEntry({ children }: { children: ReactNode }) {
   const [state, setState] = useState(initial);
@@ -96,7 +97,7 @@ export default function WorkspaceEntry({ children }: { children: ReactNode }) {
       const list = await request<OrganizationList>("/v1/organizations");
       if (!current()) return;
       const previous = stateRef.current;
-      const saved = sessionStorage.getItem(selectedKey(server, session.user.id));
+      const saved = organizationStorage().getItem(selectedKey(server, session.user.id));
       const requested =
         choice ??
         (previous.session?.user.id === session.user.id ? previous.organization?.id : null) ??
@@ -120,7 +121,7 @@ export default function WorkspaceEntry({ children }: { children: ReactNode }) {
           : null,
       );
       if (organization)
-        sessionStorage.setItem(selectedKey(server, session.user.id), organization.id);
+        organizationStorage().setItem(selectedKey(server, session.user.id), organization.id);
       setState({ mode: "accounts", server, session, list, organization, access, error: "" });
     } catch (error) {
       if (!current() || (error instanceof DOMException && error.name === "AbortError")) return;
@@ -197,6 +198,8 @@ export default function WorkspaceEntry({ children }: { children: ReactNode }) {
     },
     logout: async () => {
       await command("/v1/auth/logout");
+      if (state.session)
+        organizationStorage().removeItem(selectedKey(state.server, state.session.user.id));
       sequence.current++;
       setClientScope(null);
       await clearPrivateStorage();

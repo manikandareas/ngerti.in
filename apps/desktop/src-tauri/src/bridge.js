@@ -7,6 +7,14 @@
     value: Object.freeze({
       platform: "darwin",
       nativeVisibility: true,
+      remote: __NGERTIIN_REMOTE__,
+      async signIn() {
+        const response = await fetch("/_desktop/login", { method: "POST", signal: AbortSignal.timeout(310000) });
+        if (!response.ok) throw new Error("Sign in could not finish. Try again from this window.");
+      },
+      async cancelSignIn() {
+        await fetch("/_desktop/cancel-login", { method: "POST", signal: AbortSignal.timeout(10000) });
+      },
       async openExternal(url) {
         const response = await fetch("/_desktop/open-external", {
           method: "POST",

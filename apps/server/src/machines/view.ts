@@ -6,11 +6,12 @@ import { OpenMediaResponseSchema } from "./protocol/stream_pb";
 import type { Machines } from "./service";
 import { viewerSessionScript } from "./viewer-transport";
 
-type Peer = {
+export type ViewerPeer = {
   send(data: string | ArrayBuffer | Uint8Array): unknown;
   close(code?: number, reason?: string): unknown;
   terminate?(): unknown;
 };
+type Peer = ViewerPeer;
 type View = {
   id: string;
   lease?: SessionLease;
@@ -46,24 +47,29 @@ export class MachineViews {
     readonly machines: Machines,
     readonly revoked: (id: string) => void = () => {},
   ) {
-    this.#unsubscribe = machines.onControl(async () => this.sweep());
-    this.#expiry = setInterval(() => {
-      void (async () => {
-        try {
-          if (
-            [...this.#peers.values()].some(
-              (bridge) => bridge.view.interactive && bridge.socket.readyState === WebSocket.OPEN,
+    // Collectors outlive the request that first opened this domain. Each viewer
+    // validates its own session; an expired creator must not fence later logins.
+    const detached = <T>(action: () => T) => machines.lifecycle.store.outsideDataContext(action);
+    this.#unsubscribe = machines.onControl(() => detached(() => this.sweep()));
+    this.#expiry = detached(() =>
+      setInterval(() => {
+        void (async () => {
+          try {
+            if (
+              [...this.#peers.values()].some(
+                (bridge) => bridge.view.interactive && bridge.socket.readyState === WebSocket.OPEN,
+              )
             )
-          )
-            await machines.renewHuman();
-          await machines.expireControl();
-        } finally {
-          // A revoked principal can no longer read machine state. Its existing media must
-          // still be swept and closed even when lease maintenance is denied.
-          await this.sweep();
-        }
-      })().catch(() => {});
-    }, 1000);
+              await machines.renewHuman();
+            await machines.expireControl();
+          } finally {
+            // A revoked principal can no longer read machine state. Its existing media must
+            // still be swept and closed even when lease maintenance is denied.
+            await this.sweep();
+          }
+        })().catch(() => {});
+      }, 1000),
+    );
     this.#expiry.unref();
   }
   private async valid(view: View) {
@@ -348,7 +354,9 @@ export class MachineViews {
           );
           if (media.mediaSessionId && media.ticket) {
             view.media.set(media.ticket, media.mediaSessionId);
-            media.wsPath = `ws://127.0.0.1:${this.mediaServer().port}${prefix}${view.id}/media?ticket=${encodeURIComponent(media.ticket)}`;
+            media.wsPath = view.lease
+              ? `media?ticket=${encodeURIComponent(media.ticket)}`
+              : `ws://127.0.0.1:${this.mediaServer().port}${prefix}${view.id}/media?ticket=${encodeURIComponent(media.ticket)}`;
           }
           const payload = toBinary(OpenMediaResponseSchema, media);
           const frame = new Uint8Array(5 + payload.length);
@@ -433,10 +441,10 @@ export class MachineViews {
       },
     });
   }
-  async open(request: Request, peer: Peer) {
+  async open(request: Request, peer: Peer, localMedia = true) {
     this.#sockets.add(peer);
     try {
-      const view = await this.authorize(request, true);
+      const view = await this.authorize(request, localMedia);
       const ticket = new URL(request.url).searchParams.get("ticket") ?? "";
       const mediaId = view.media.get(ticket);
       if (!mediaId || !this.machines.host) throw new DomainError("UNAUTHORIZED", 401);

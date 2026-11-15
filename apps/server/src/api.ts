@@ -9,7 +9,7 @@ import { registerHarnessRoutes } from "./api/harness";
 import { createCommand, createHttp } from "./api/http";
 import { registerIntegrationRoutes } from "./api/integrations";
 import { registerLearningRoutes } from "./api/learning";
-import { registerMachineRoutes } from "./api/machines";
+import { registerMachineMediaRoutes, registerMachineRoutes } from "./api/machines";
 import { registerRunRoutes } from "./api/runs";
 import type { ApiServices } from "./api/services";
 import { registerWorkspaceRoutes } from "./api/workspaces";
@@ -177,5 +177,7 @@ export async function createApi(
     await views?.close();
     return api.server ? stop(closeActiveConnections) : api;
   };
-  return scoped ? scoped.wrap(api) : api;
+  const edge = scoped ? scoped.wrap(api) : api;
+  if (scoped && views) registerMachineMediaRoutes(edge, views);
+  return edge;
 }

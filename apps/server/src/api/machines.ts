@@ -1,5 +1,5 @@
 import { posix } from "node:path";
-import type { Elysia } from "elysia";
+import type { AnyElysia, Elysia } from "elysia";
 import { z } from "zod";
 import type { Authentication } from "../auth/service";
 import { DomainError } from "../contracts";
@@ -115,5 +115,21 @@ export function registerMachineRoutes(
       },
       { query: z.strictObject({ path: relativePath }) },
     )
+    .use((app) => registerMachineMediaRoutes(app, views))
     .all("/v1/machine/viewer/:viewerId/*", async ({ request }) => views.proxy(request));
+}
+
+/** The account HTTP edge must own the upgrade; scoped HTTP forwarding cannot upgrade its inner router. */
+export function registerMachineMediaRoutes(api: AnyElysia, views: MachineViewGateway) {
+  return api.ws("/v1/machine/viewer/:viewerId/media", {
+    beforeHandle: async ({ request }) => {
+      await views.authorize(request);
+    },
+    maxPayloadLength: 65_536,
+    backpressureLimit: 8 * 1024 * 1024,
+    closeOnBackpressureLimit: true,
+    open: async (peer) => views.open(peer.data.request, peer.raw),
+    message: async (peer, message) => views.message(peer.raw, message),
+    close: (peer) => views.closePeer(peer.raw),
+  });
 }

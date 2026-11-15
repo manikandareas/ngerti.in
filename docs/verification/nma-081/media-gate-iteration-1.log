@@ -1,0 +1,47 @@
+bun test v1.3.10 (30e609e0)
+
+tests/machines/authorization.test.ts:
+Elysia isn't running. Call `app.listen` to start the server. Error
+    at stop (/Users/vitoandareasmanik/Development/project/ngertiin/node_modules/.bun/elysia@1.4.30+6c81576b6e24dad9/node_modules/elysia/dist/adapter/bun/index.mjs:234:13)
+    at <anonymous> (/Users/vitoandareasmanik/Development/project/ngertiin/node_modules/.bun/elysia@1.4.30+6c81576b6e24dad9/node_modules/elysia/dist/index.mjs:188:75)
+    at close (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/tests/auth/helpers.ts:137:18)
+    at async <anonymous> (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/tests/machines/authorization.test.ts:29:12)
+    at processTicksAndRejections (native:7:39)
+(pass) real user sessions resolve private machines and a copied viewer ticket cannot cross users or devices [2272.85ms]
+157 |   expect(media.wsPath.startsWith(`/v1/machine/viewer/${view.viewer_id}/media?ticket=`)).toBe(true);
+158 |   const socket = new NativeSocket(new URL(media.wsPath, f.origin.replace(/^http/, "ws")).href, { headers: { Cookie: cookie, Origin: f.origin } });
+159 |   sockets.add(socket);
+160 |   socket.onmessage = () => frame.resolve();
+161 |   socket.onclose = () => closed.resolve();
+162 |   socket.onerror = () => frame.reject(new Error("Fixture media did not connect."));
+                                                ^
+error: Fixture media did not connect.
+      at <anonymous> (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/tests/machines/authorization.test.ts:162:43)
+Elysia isn't running. Call `app.listen` to start the server. Error
+    at stop (/Users/vitoandareasmanik/Development/project/ngertiin/node_modules/.bun/elysia@1.4.30+6c81576b6e24dad9/node_modules/elysia/dist/adapter/bun/index.mjs:234:13)
+    at <anonymous> (/Users/vitoandareasmanik/Development/project/ngertiin/node_modules/.bun/elysia@1.4.30+6c81576b6e24dad9/node_modules/elysia/dist/index.mjs:188:75)
+    at close (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/tests/auth/helpers.ts:137:18)
+    at async <anonymous> (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/tests/machines/authorization.test.ts:29:12)
+    at processTicksAndRejections (native:7:39)
+(fail) revoking the actual issuing login closes existing media and rejects further viewer RPCs [1624.86ms]
+157 |   expect(media.wsPath.startsWith(`/v1/machine/viewer/${view.viewer_id}/media?ticket=`)).toBe(true);
+158 |   const socket = new NativeSocket(new URL(media.wsPath, f.origin.replace(/^http/, "ws")).href, { headers: { Cookie: cookie, Origin: f.origin } });
+159 |   sockets.add(socket);
+160 |   socket.onmessage = () => frame.resolve();
+161 |   socket.onclose = () => closed.resolve();
+162 |   socket.onerror = () => frame.reject(new Error("Fixture media did not connect."));
+                                                ^
+error: Fixture media did not connect.
+      at <anonymous> (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/tests/machines/authorization.test.ts:162:43)
+Elysia isn't running. Call `app.listen` to start the server. Error
+    at stop (/Users/vitoandareasmanik/Development/project/ngertiin/node_modules/.bun/elysia@1.4.30+6c81576b6e24dad9/node_modules/elysia/dist/adapter/bun/index.mjs:234:13)
+    at <anonymous> (/Users/vitoandareasmanik/Development/project/ngertiin/node_modules/.bun/elysia@1.4.30+6c81576b6e24dad9/node_modules/elysia/dist/index.mjs:188:75)
+    at close (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/tests/auth/helpers.ts:137:18)
+    at async <anonymous> (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/tests/machines/authorization.test.ts:29:12)
+    at processTicksAndRejections (native:7:39)
+(fail) removing an organization member closes their already-open media and invalidates clipboard/file access [1991.71ms]
+
+ 1 pass
+ 2 fail
+ 10 expect() calls
+Ran 3 tests across 1 file. [6.71s]

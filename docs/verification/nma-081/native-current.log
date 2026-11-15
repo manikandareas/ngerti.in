@@ -1,0 +1,62 @@
+   Compiling objc2-exception-helper v0.1.1
+   Compiling objc2 v0.6.5
+   Compiling ring v0.17.14
+   Compiling block2 v0.6.2
+   Compiling objc2-core-foundation v0.3.2
+   Compiling objc2-foundation v0.3.2
+   Compiling wry v0.57.1
+   Compiling dispatch2 v0.3.1
+   Compiling rustls v0.23.46
+   Compiling rustls-webpki v0.103.16
+   Compiling objc2-core-graphics v0.3.2
+   Compiling objc2-quartz-core v0.3.2
+   Compiling objc2-app-kit v0.3.2
+   Compiling tokio-rustls v0.26.6
+   Compiling hyper-rustls v0.27.10
+   Compiling reqwest v0.12.28
+   Compiling objc2-web-kit v0.3.2
+   Compiling tauri-runtime v2.12.2
+   Compiling muda v0.20.0
+   Compiling tao v0.37.2
+   Compiling tray-icon v0.25.1
+   Compiling window-vibrancy v0.8.1
+   Compiling tauri-runtime-wry v2.12.3
+   Compiling rfd v0.17.2
+   Compiling tauri v2.12.5
+   Compiling tauri-plugin-fs v2.7.1
+   Compiling tauri-plugin-dialog v2.8.4
+   Compiling ngertiin-desktop v0.2.0 (/Users/vitoandareasmanik/Development/project/ngertiin/apps/desktop/src-tauri)
+    Finished `test` profile [unoptimized] target(s) in 1m 07s
+     Running unittests src/lib.rs (target/debug/deps/ngertiin_desktop_lib-9eb54e03da205ca0)
+
+running 15 tests
+test credential_store::tests::native_keychain_is_private_persistent_and_origin_bound ... ignored, Explicit native macOS Keychain probe; uses and removes a unique fixture entry.
+test remote::tests::api_paths_cannot_escape_the_selected_server ... ok
+test native_auth::tests::metadata_never_selects_another_issuer_endpoint_or_callback_host ... ok
+test native_auth::tests::callback_is_origin_state_issuer_deadline_and_one_use_bound ... ok
+test tests::browser_handoff_validates_origin_payload_and_reports_os_failure ... ok
+test native_auth::tests::listener_ignores_invalid_requests_then_closes_after_one_callback ... ok
+test log::tests::redacts_backend_credentials_without_losing_status ... ok
+test remote::tests::late_or_hidden_view_responses_are_revoked_without_retaining_the_ticket ... ok
+test remote::tests::concurrent_native_renewal_rotates_once_and_restart_uses_the_saved_credential ... ok
+test remote::tests::late_unauthorized_response_cannot_clear_a_newer_access_token ... ok
+test remote::tests::remote_gateway_never_loads_local_runtime_or_renderer_credentials_and_blocks_redirects ... ok
+test tests::native_handback_releases_only_the_exact_issued_human_revision ... ok
+test tests::gateway_preserves_streaming_bytes_origin_auth_and_spa_boundaries ... ok
+test tests::shutdown_during_startup_leaves_no_backend_behind ... ok
+test tests::managed_recovery_external_ownership_and_concurrent_start_are_preserved ... ok
+
+test result: ok. 14 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 5.24s
+
+     Running unittests src/main.rs (target/debug/deps/ngertiin_desktop-5eb6f40048433fea)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests ngertiin_desktop_lib
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

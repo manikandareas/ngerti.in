@@ -59,16 +59,21 @@ pub async fn start(supervisor: Arc<Supervisor>, app: Option<tauri::AppHandle>) -
             .transpose()?
     };
     let shutdown = CancellationToken::new();
+    let client = if let Some(remote) = &supervisor.remote {
+        remote.client.clone()
+    } else {
+        reqwest::Client::builder()
+            .no_proxy()
+            .redirect(reqwest::redirect::Policy::none())
+            .connect_timeout(std::time::Duration::from_secs(3))
+            .build()?
+    };
     let state = Arc::new(GatewayState {
         supervisor,
         host,
         origin: origin.clone(),
         vite,
-        client: reqwest::Client::builder()
-            .no_proxy()
-            .redirect(reqwest::redirect::Policy::none())
-            .connect_timeout(std::time::Duration::from_secs(3))
-            .build()?,
+        client,
         shutdown: shutdown.clone(),
         app,
     });
@@ -93,9 +98,50 @@ async fn handle(State(state): State<Arc<GatewayState>>, request: Request<Body>) 
             .is_some_and(|v| v == "cross-site")
         || request.uri().scheme().is_some()
         || !path.starts_with('/')
-        || path.starts_with("//")
+        || !valid_path(path)
     {
         return StatusCode::FORBIDDEN.into_response();
+    }
+    if let Some(remote) = &state.supervisor.remote {
+        if path == "/_desktop/login"
+            || path == "/_desktop/cancel-login"
+            || path == "/v1/auth/logout"
+        {
+            if request.method() != Method::POST || origin != Some(&state.origin) {
+                return StatusCode::FORBIDDEN.into_response();
+            }
+            let result = match path {
+                "/_desktop/login" => remote.sign_in().await,
+                "/_desktop/cancel-login" => {
+                    remote.cancel_login();
+                    Ok(())
+                }
+                _ => remote.logout().await,
+            };
+            return match result {
+                Ok(()) => axum::Json(json!({"ok": true})).into_response(),
+                Err(error) => (StatusCode::BAD_GATEWAY, axum::Json(json!({"error":{"code":"NATIVE_AUTH_UNAVAILABLE", "message":error.to_string()}}))).into_response(),
+            };
+        }
+        if path == "/v1/auth/native" && request.method() == Method::GET {
+            return match remote.metadata().await {
+                Ok(metadata) => axum::Json(metadata).into_response(),
+                Err(_) => unavailable(StatusCode::BAD_GATEWAY),
+            };
+        }
+        if path.starts_with("/api/")
+            || path.starts_with("/_desktop/")
+                && !matches!(
+                    path,
+                    "/_desktop/status"
+                        | "/_desktop/open-external"
+                        | "/_desktop/retry"
+                        | "/_desktop/focus"
+                        | "/_desktop/wait.js"
+                )
+        {
+            return StatusCode::FORBIDDEN.into_response();
+        }
     }
     if path == "/_desktop/status" {
         return axum::Json(state.supervisor.status().await).into_response();
@@ -133,6 +179,14 @@ async fn handle(State(state): State<Arc<GatewayState>>, request: Request<Body>) 
         let Some(backend) = state.supervisor.backend().await else {
             return unavailable(StatusCode::SERVICE_UNAVAILABLE);
         };
+        if state.supervisor.remote.is_some()
+            && request
+                .headers()
+                .get(header::UPGRADE)
+                .is_some_and(|value| value.as_bytes().eq_ignore_ascii_case(b"websocket"))
+        {
+            return upgrade_media(state, request).await;
+        }
         return proxy(&state, request, &backend, true).await;
     }
     if state.supervisor.status().await.state != "ready" {
@@ -224,6 +278,17 @@ fn is_api(path: &str) -> bool {
         .any(|prefix| path == *prefix || path.starts_with(&format!("{prefix}/")))
 }
 
+pub(crate) fn valid_path(path: &str) -> bool {
+    let Ok(decoded) = percent_encoding::percent_decode_str(path).decode_utf8() else {
+        return false;
+    };
+    !decoded.starts_with("//")
+        && !decoded.contains(['\\', '\0', '%'])
+        && !decoded.chars().any(char::is_control)
+        && !decoded.split('/').any(|part| matches!(part, "." | ".."))
+        && path.split('/').count() == decoded.split('/').count()
+}
+
 fn clean_headers(headers: &mut HeaderMap) {
     if let Some(connection) = headers
         .get(header::CONNECTION)
@@ -255,14 +320,59 @@ fn clean_headers(headers: &mut HeaderMap) {
 async fn proxy(state: &GatewayState, request: Request<Body>, target: &str, api: bool) -> Response {
     let path = request.uri().path().to_string();
     let track_view = api && path == "/v1/machine/view" && request.method() == Method::POST;
+    let presentation = state
+        .supervisor
+        .remote
+        .as_ref()
+        .map(|remote| remote.presentation());
     let forget_view =
         api && request.method() == Method::DELETE && path.starts_with("/v1/machine/views/");
     let (parts, body) = request.into_parts();
     let mut headers = parts.headers;
+    let organization = headers
+        .get("x-ngertiin-organization")
+        .and_then(|v| v.to_str().ok())
+        .unwrap_or("")
+        .to_owned();
     clean_headers(&mut headers);
+    let mut used_access = None;
+    let mut session_guard = None;
     if api {
-        let Ok(token) = state.supervisor.token() else {
-            return unavailable(StatusCode::SERVICE_UNAVAILABLE);
+        let token = if let Some(remote) = &state.supervisor.remote {
+            headers.insert(
+                header::ORIGIN,
+                HeaderValue::from_str(&remote.origin).expect("Validated server origin"),
+            );
+            headers.remove(header::COOKIE);
+            headers.remove(header::REFERER);
+            for name in [
+                "forwarded",
+                "x-forwarded-proto",
+                "x-real-ip",
+                "x-cua-env-authorization",
+                "proxy-connection",
+            ] {
+                headers.remove(name);
+            }
+            let token = match remote.authorization().await {
+                Ok(token) => token,
+                Err(error) if error.is::<crate::remote::SignInRequired>() => return (
+                    StatusCode::UNAUTHORIZED,
+                    axum::Json(
+                        json!({"error":{"code":"UNAUTHORIZED", "message":"Sign in to continue."}}),
+                    ),
+                )
+                    .into_response(),
+                Err(_) => return unavailable(StatusCode::SERVICE_UNAVAILABLE),
+            };
+            session_guard = Some(remote.stream_guard().await);
+            used_access = Some(token.clone());
+            token
+        } else {
+            let Ok(token) = state.supervisor.token() else {
+                return unavailable(StatusCode::SERVICE_UNAVAILABLE);
+            };
+            token
         };
         let Ok(value) = HeaderValue::from_str(&format!("Bearer {token}")) else {
             return unavailable(StatusCode::SERVICE_UNAVAILABLE);
@@ -288,9 +398,23 @@ async fn proxy(state: &GatewayState, request: Request<Body>, target: &str, api: 
         return unavailable(StatusCode::BAD_GATEWAY);
     };
     let status = reply.status();
+    if api && state.supervisor.remote.is_some() && status.is_redirection() {
+        return unavailable(StatusCode::BAD_GATEWAY);
+    }
+    if status == StatusCode::UNAUTHORIZED
+        && !path.starts_with("/v1/machine/viewer/")
+        && !path.starts_with("/v1/machine/views/")
+        && let (Some(remote), Some(access)) = (&state.supervisor.remote, &used_access)
+    {
+        remote.invalidate(access).await;
+    }
     let mut headers = reply.headers().clone();
     clean_headers(&mut headers);
     headers.remove(header::ACCESS_CONTROL_ALLOW_ORIGIN);
+    if state.supervisor.remote.is_some() {
+        headers.remove(header::SET_COOKIE);
+        headers.remove(header::WWW_AUTHENTICATE);
+    }
     headers.insert(
         header::X_CONTENT_TYPE_OPTIONS,
         HeaderValue::from_static("nosniff"),
@@ -300,10 +424,16 @@ async fn proxy(state: &GatewayState, request: Request<Body>, target: &str, api: 
         HeaderValue::from_static("no-referrer"),
     );
     if forget_view && status.is_success() {
-        state
-            .supervisor
-            .forget_view(path.trim_start_matches("/v1/machine/views/"))
-            .await;
+        if let Some(remote) = &state.supervisor.remote {
+            remote
+                .forget_view(path.trim_start_matches("/v1/machine/views/"))
+                .await;
+        } else {
+            state
+                .supervisor
+                .forget_view(path.trim_start_matches("/v1/machine/views/"))
+                .await;
+        }
     }
     let body = if track_view && status.is_success() {
         // Only this bounded control response is decoded; files and event streams stay streaming.
@@ -312,12 +442,33 @@ async fn proxy(state: &GatewayState, request: Request<Body>, target: &str, api: 
             return unavailable(StatusCode::BAD_GATEWAY);
         };
         if let Ok(value) = serde_json::from_slice(&bytes) {
-            state.supervisor.register_view(&value).await;
+            if let Some(remote) = &state.supervisor.remote {
+                remote
+                    .register_view(
+                        &value,
+                        &organization,
+                        presentation.unwrap_or_default(),
+                        state
+                            .supervisor
+                            .visible
+                            .load(std::sync::atomic::Ordering::Acquire),
+                    )
+                    .await;
+            } else {
+                state.supervisor.register_view(&value).await;
+            }
         }
         Body::from(bytes)
     } else {
         let shutdown = state.shutdown.clone();
-        Body::from_stream(reply.bytes_stream().take_until(shutdown.cancelled_owned()))
+        let guard = if status.is_success() {
+            session_guard.unwrap_or_default()
+        } else {
+            CancellationToken::new()
+        };
+        Body::from_stream(reply.bytes_stream().take_until(async move {
+            tokio::select! { _ = shutdown.cancelled() => {}, _ = guard.cancelled() => {} }
+        }))
     };
     (status, headers, body).into_response()
 }
@@ -414,8 +565,77 @@ async fn upgrade_vite(
         .into_response()
 }
 
+async fn upgrade_media(state: Arc<GatewayState>, request: Request<Body>) -> Response {
+    use base64::{Engine, engine::general_purpose::STANDARD};
+    let remote = state.supervisor.remote.as_ref().unwrap();
+    let path = request.uri().path();
+    let segments: Vec<_> = path.split('/').collect();
+    if segments.len() != 6
+        || segments[..4] != ["", "v1", "machine", "viewer"]
+        || segments[5] != "media"
+        || segments[4].len() != 64
+        || !segments[4].bytes().all(|b| b.is_ascii_hexdigit())
+    {
+        return StatusCode::FORBIDDEN.into_response();
+    }
+    let Ok(access) = remote.authorization().await else {
+        return StatusCode::UNAUTHORIZED.into_response();
+    };
+    let guard = remote.stream_guard().await;
+    let target = format!(
+        "{}{}",
+        remote.origin,
+        request.uri().path_and_query().unwrap()
+    );
+    let (mut parts, _) = request.into_parts();
+    let Ok(upgrade) = WebSocketUpgrade::from_request_parts(&mut parts, &()).await else {
+        return StatusCode::BAD_REQUEST.into_response();
+    };
+    let key = STANDARD.encode(uuid::Uuid::new_v4().as_bytes());
+    let expected = tokio_tungstenite::tungstenite::handshake::derive_accept_key(key.as_bytes());
+    let reply = remote
+        .client
+        .get(target)
+        .bearer_auth(access)
+        .header(header::ORIGIN, &remote.origin)
+        .header(header::CONNECTION, "Upgrade")
+        .header(header::UPGRADE, "websocket")
+        .header("Sec-WebSocket-Version", "13")
+        .header("Sec-WebSocket-Key", key)
+        .timeout(std::time::Duration::from_secs(10))
+        .send()
+        .await;
+    let Ok(reply) = reply else {
+        return unavailable(StatusCode::BAD_GATEWAY);
+    };
+    if reply.status() != StatusCode::SWITCHING_PROTOCOLS
+        || reply
+            .headers()
+            .get("sec-websocket-accept")
+            .and_then(|v| v.to_str().ok())
+            != Some(&expected)
+    {
+        return StatusCode::UNAUTHORIZED.into_response();
+    }
+    let Ok(peer) = reply.upgrade().await else {
+        return unavailable(StatusCode::BAD_GATEWAY);
+    };
+    upgrade
+        .max_message_size(65536)
+        .on_upgrade(move |socket| async move {
+            let peer = tokio_tungstenite::WebSocketStream::from_raw_socket(
+                peer,
+                tokio_tungstenite::tungstenite::protocol::Role::Client,
+                None,
+            )
+            .await;
+            bridge_socket(state, socket, peer, guard).await;
+        })
+        .into_response()
+}
+
 async fn bridge_vite(state: Arc<GatewayState>, socket: WebSocket, target: url::Url) {
-    use tokio_tungstenite::tungstenite::{Message as PeerMessage, client::IntoClientRequest};
+    use tokio_tungstenite::tungstenite::client::IntoClientRequest;
     let Ok(mut request) = target.as_str().into_client_request() else {
         return;
     };
@@ -426,10 +646,23 @@ async fn bridge_vite(state: Arc<GatewayState>, socket: WebSocket, target: url::U
     let Ok((peer, _)) = tokio_tungstenite::connect_async(request).await else {
         return;
     };
+    bridge_socket(state, socket, peer, CancellationToken::new()).await;
+}
+
+async fn bridge_socket<S>(
+    state: Arc<GatewayState>,
+    socket: WebSocket,
+    peer: tokio_tungstenite::WebSocketStream<S>,
+    guard: CancellationToken,
+) where
+    S: tokio::io::AsyncRead + tokio::io::AsyncWrite + Unpin,
+{
+    use tokio_tungstenite::tungstenite::Message as PeerMessage;
     let (mut send, mut receive) = socket.split();
     let (mut upstream, mut downstream) = peer.split();
     tokio::select! {
         _ = state.shutdown.cancelled() => {},
+        _ = guard.cancelled() => {},
         _ = async {
             while let Some(Ok(message)) = receive.next().await {
                 let message = match message {

@@ -388,7 +388,7 @@
     "ticket": "NMA-081",
     "title": "Tauri remote profiles and secure user sessions",
     "plan": "Harness-first",
-    "status": "Backlog",
+    "status": "Done",
     "order": 16.79,
     "layer": "Desktop / Web client host",
     "depends_on": [

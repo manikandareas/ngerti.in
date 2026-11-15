@@ -1,0 +1,52 @@
+bun test v1.3.10 (30e609e0)
+
+tests/organizations/readiness.test.ts:
+(pass) every installed account surface declares authentication/scope and rejects missing credentials before input validation [1802.43ms]
+(pass) normal HTTP admission and both broker executors keep two users of one Team agent private [8160.74ms]
+(pass) revoking membership during native work retains the matching cancelled outcome without late publication [2716.17ms]
+(pass) revoking membership during native work retains the matching unknown outcome without late publication [2676.15ms]
+(pass) authority replacement fences accepted scoped work and preserves the queued lane without resubmitting [1866.55ms]
+(pass) generic entity inventory and organization switches never grant another actor's private data [2820.32ms]
+(pass) concurrent scoped queries reuse their authorization fence without exhausting the auth pool [965.31ms]
+(pass) opening a fourth private transport cannot evict another actor's active native writer [5463.15ms]
+(pass) native credential callbacks retain current resource grants after the opening browser session logs out [1677.14ms]
+(pass) commit subscribers cannot borrow the writing user's request scope [773.84ms]
+(pass) a native stop timeout still fences an unknown outcome after membership revocation [3624.99ms]
+
+tests/auth/security.test.ts:
+(pass) account mode fails closed on missing secrets, insecure origins or unsafe callbacks [2.66ms]
+(pass) native callback rejects wrong state, issuer, redirect, duplicate fields and replay [417.82ms]
+(pass) token endpoint rejects wrong verifier, redirect, audience, code replay and client registration [536.13ms]
+(pass) expired access/device sessions fail API, SSE and renewal without affecting another device [437.27ms]
+(pass) revocation closes an existing HTTP SSE stream and preserves another device [474.03ms]
+(pass) viewer tickets are bound to a live device and cannot be renewed from another device [500.31ms]
+(pass) password recovery revokes native offline credentials and leaves no auth secrets in domain records [550.85ms]
+(pass) account-mode export identifies auth classes and the verified multi-user API gate [540.36ms]
+(pass) HTTPS configuration serializes Secure cookies and ignores spoofed proxy addresses [536.36ms]
+(pass) rate limits survive changing untrusted forwarding headers [324.34ms]
+(pass) a native device outlives browser logout and access-token revocation closes its stream [1013.72ms]
+
+tests/auth/schema.test.ts:
+(pass) retained authentication schema exactly matches the pinned plugins [131.07ms]
+
+tests/auth/http.test.ts:
+(pass) verified login uses HttpOnly cookies, redacts tokens and denies installation credentials [495.83ms]
+(pass) Owner bootstrap requires verified intended identity, expires and consumes once under a race [590.66ms]
+(pass) one device can renew, revoke and logout without ending another device or durable work [530.86ms]
+(pass) cross-origin and missing-origin cookie mutations fail without disclosing input [479.18ms]
+(pass) recovery uses controlled email delivery and retires old sessions [621.80ms]
+(pass) native loopback PKCE exchange, rotation and per-device revocation complete over real HTTP [472.28ms]
+(pass) persisted sessions and Owner mapping survive reopening the auth service [459.47ms]
+
+tests/auth/compatibility.test.ts:
+(pass) pinned Better Auth, PostgreSQL, Elysia and public-client PKCE complete real HTTP [162.60ms]
+
+tests/machines/authorization.test.ts:
+(pass) real user sessions resolve private machines and a copied viewer ticket cannot cross users or devices [987.19ms]
+(pass) revoking the actual issuing login closes existing media and rejects further viewer RPCs [3621.74ms]
+(pass) removing an organization member closes their already-open media and invalidates clipboard/file access [2809.11ms]
+
+ 34 pass
+ 0 fail
+ 811 expect() calls
+Ran 34 tests across 6 files. [50.52s]

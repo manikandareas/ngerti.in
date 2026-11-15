@@ -1,0 +1,17 @@
+bun test v1.3.10 (30e609e0)
+
+tests/machines/authorization.test.ts:
+fixture public media open
+fixture upstream media request
+fixture upstream media open
+fixture frame received
+fixture session revoked
+fixture cleanup begins
+(fail) revoking the actual issuing login closes existing media and rejects further viewer RPCs [48581.22ms]
+  ^ a beforeEach/afterEach hook timed out for this test.
+
+ 0 pass
+ 2 filtered out
+ 1 fail
+ 5 expect() calls
+Ran 1 test across 1 file. [49.31s]

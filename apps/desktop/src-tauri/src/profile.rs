@@ -11,13 +11,42 @@ use std::{
 pub struct Profile {
     pub version: u32,
     pub manager_id: String,
+    #[serde(default)]
+    pub mode: ProfileMode,
+    pub server_origin: Option<String>,
+    pub server_certificate: Option<PathBuf>,
+    pub initial_path: Option<String>,
+    #[serde(default)]
     pub state_directory: PathBuf,
+    #[serde(default)]
     pub project_root: PathBuf,
+    #[serde(default)]
     pub config_file: PathBuf,
+    #[serde(default)]
     pub bun_executable: PathBuf,
     pub codex_executable: Option<PathBuf>,
     pub muse_executable: Option<PathBuf>,
     pub ui_port: u16,
+}
+
+#[derive(Clone, Copy, Debug, Default, Deserialize, Serialize, PartialEq, Eq)]
+#[serde(rename_all = "kebab-case")]
+pub enum ProfileMode {
+    #[default]
+    LocalDevelopment,
+    Remote,
+}
+
+pub fn server_origin(value: &str) -> Result<url::Url> {
+    let url = url::Url::parse(value)?;
+    anyhow::ensure!(
+        url.scheme() == "https"
+            && url.origin().ascii_serialization() == value
+            && url.username().is_empty()
+            && url.password().is_none(),
+        "The remote server must be one canonical HTTPS origin."
+    );
+    Ok(url)
 }
 
 pub fn desktop_home() -> Result<PathBuf> {
@@ -101,19 +130,48 @@ impl Profile {
         if value.version != 1
             || uuid::Uuid::parse_str(&value.manager_id).is_err()
             || value.ui_port < 1024
-            || [
-                &value.state_directory,
-                &value.project_root,
-                &value.config_file,
-                &value.bun_executable,
-            ]
-            .iter()
-            .any(|path| !path.is_absolute())
+            || (value.mode == ProfileMode::LocalDevelopment
+                && [
+                    &value.state_directory,
+                    &value.project_root,
+                    &value.config_file,
+                    &value.bun_executable,
+                ]
+                .iter()
+                .any(|path| !path.is_absolute()))
             || [&value.codex_executable, &value.muse_executable]
                 .iter()
                 .any(|path| path.as_ref().is_some_and(|path| !path.is_absolute()))
         {
             bail!("The desktop profile is invalid. Run setup:desktop again.");
+        }
+        if value.mode == ProfileMode::Remote {
+            server_origin(
+                value
+                    .server_origin
+                    .as_deref()
+                    .context("Select an HTTPS server.")?,
+            )?;
+            anyhow::ensure!(
+                value
+                    .server_certificate
+                    .as_ref()
+                    .is_none_or(|path| path.is_absolute()),
+                "The server certificate path must be absolute."
+            );
+            if let Some(path) = &value.initial_path {
+                let id = path
+                    .strip_prefix("/invitations/")
+                    .context("Invalid invitation handoff.")?;
+                uuid::Uuid::parse_str(id).context("Invalid invitation handoff.")?;
+            }
+        } else {
+            anyhow::ensure!(
+                value.server_origin.is_none()
+                    && value.server_certificate.is_none()
+                    && value.initial_path.is_none(),
+                "Remote settings require an explicitly remote profile."
+            );
         }
         Ok(value)
     }
@@ -184,7 +242,7 @@ impl RuntimePaths {
         let packaged = executable
             .parent()
             .is_some_and(|path| path.ends_with("Contents/MacOS"))
-            && resource.join("runtime/apps/server/src/main.ts").is_file();
+            && resource.join("web/index.html").is_file();
         let root = if packaged {
             resource.join("runtime")
         } else {
@@ -203,7 +261,9 @@ impl RuntimePaths {
         } else {
             root.join("apps/web-client/dist")
         };
-        if !bun.is_file() || !root.join("apps/server/src/main.ts").is_file() {
+        if profile.mode == ProfileMode::LocalDevelopment
+            && (!bun.is_file() || !root.join("apps/server/src/main.ts").is_file())
+        {
             bail!("The bundled backend is missing. Rebuild the desktop application.");
         }
         Ok(Self {

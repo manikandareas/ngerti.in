@@ -1,0 +1,21 @@
+{
+  "owned_fixture_processes_remaining": [],
+  "labelled_postgres_containers_remaining": [],
+  "execution_domains": [
+    {
+      "fixture_domain": "3c495f00-a1d8-4677-bd00-f333e6180144",
+      "containers": [],
+      "networks": [],
+      "volumes": []
+    },
+    {
+      "fixture_domain": "e6db2ebc-b5b2-4e8e-a262-5696c7a3047a",
+      "containers": [],
+      "networks": [],
+      "volumes": []
+    }
+  ],
+  "credential_cleanup": "credential-cleanup.json",
+  "installed_user_profiles_or_databases_reset": false,
+  "only_named_disposable_resources_touched": true
+}

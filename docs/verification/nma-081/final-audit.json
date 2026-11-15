@@ -1,0 +1,15 @@
+{
+  "source_files_match_final_manifest": 580,
+  "native_binary_matches_final_manifest": true,
+  "nma081_status": "Done",
+  "nma082_nma083_status": "Backlog",
+  "whitespace_check": "pass",
+  "evidence_secret_scan": {
+    "files": 110,
+    "findings": 0,
+    "credential_values_printed": false
+  },
+  "full_docs_check": "8 pre-existing imported GPUI link failures",
+  "scoped_docs_check": "pass; excluded files verified unchanged from HEAD",
+  "unrelated_changes_staged_or_committed": false
+}

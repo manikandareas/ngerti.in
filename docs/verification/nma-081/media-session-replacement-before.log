@@ -1,0 +1,20 @@
+bun test v1.3.10 (30e609e0)
+
+tests/machines/authorization.test.ts:
+(pass) real user sessions resolve private machines and a copied viewer ticket cannot cross users or devices [4649.25ms]
+163 |   );
+164 |   sockets.add(socket);
+165 |   socket.onmessage = () => frame.resolve();
+166 |   socket.onclose = (event) => {
+167 |     closed.resolve();
+168 |     frame.reject(new Error(`Fixture media closed before a frame (${event.code}).`));
+                           ^
+error: Fixture media closed before a frame (1008).
+      at <anonymous> (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/tests/machines/authorization.test.ts:168:22)
+(fail) revoking the actual issuing login closes existing media and rejects further viewer RPCs [3468.33ms]
+(pass) removing an organization member closes their already-open media and invalidates clipboard/file access [3470.64ms]
+
+ 2 pass
+ 1 fail
+ 19 expect() calls
+Ran 3 tests across 1 file. [12.66s]

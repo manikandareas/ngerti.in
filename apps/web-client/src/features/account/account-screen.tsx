@@ -194,92 +194,120 @@ export function AccountScreen() {
                 </Button>
               </p>
             )}
-            <form className="account-form" onSubmit={(event) => void authenticate(event)}>
-              {mode === "signup" && (
-                <AccountField label="Name">
-                  <Input
-                    name="name"
-                    required
-                    maxLength={120}
-                    autoComplete="name"
-                    disabled={action.busy}
-                  />
-                </AccountField>
-              )}
-              {mode !== "reset" && (
-                <AccountField label="Email">
-                  <Input
-                    name="email"
-                    type="email"
-                    value={email}
-                    onChange={(event) => setEmail(event.target.value)}
-                    required
-                    autoComplete="email"
-                    disabled={action.busy}
-                  />
-                </AccountField>
-              )}
-              {mode !== "recover" && (
-                <AccountField label={mode === "reset" ? "New password" : "Password"}>
-                  <Input
-                    name="password"
-                    type="password"
-                    required
-                    minLength={mode === "login" ? 1 : 12}
-                    maxLength={128}
-                    autoComplete={mode === "login" ? "current-password" : "new-password"}
-                    disabled={action.busy}
-                  />
-                  {mode !== "login" && (
-                    <span className="account-muted">At least 12 characters.</span>
-                  )}
-                </AccountField>
-              )}
-              <Button disabled={action.busy || (mode === "reset" && !token.current)}>
-                {action.busy
-                  ? "Please wait…"
-                  : mode === "signup"
-                    ? "Create account"
-                    : mode === "recover"
-                      ? "Send reset link"
-                      : mode === "reset"
-                        ? "Save password"
-                        : "Sign in"}
-              </Button>
-            </form>
-            <div className="account-links">
-              {mode === "login" ? (
-                <>
-                  <Button variant="link" onClick={() => changeMode("recover")}>
-                    Forgot password?
-                  </Button>
-                  <Button variant="link" onClick={() => changeMode("signup")}>
-                    Create account
-                  </Button>
-                </>
-              ) : (
-                <Button variant="link" onClick={() => changeMode("login")}>
-                  Back to sign in
-                </Button>
-              )}
-              {mode === "login" && (notice || action.error) && (
+            {window.ngertiinDesktop?.remote ? (
+              <div className="account-form">
+                <p className="account-muted">{account.server}</p>
                 <Button
-                  variant="link"
-                  disabled={action.busy || !email}
+                  disabled={action.busy}
                   onClick={() =>
                     void action.run(async () => {
-                      await request("/api/auth/send-verification-email", {
-                        email,
-                        callbackURL: `${location.origin}${location.pathname}`,
-                      });
-                      setNotice("Verification email sent. Check your inbox.");
+                      await window.ngertiinDesktop?.signIn?.();
+                      if (location.pathname === "/sign-in") location.assign("/");
+                      else await account.refresh();
                     })
                   }
                 >
-                  Resend verification email
+                  {action.busy ? "Finish signing in in your browser…" : "Sign in with browser"}
                 </Button>
-              )}
-            </div>
+                {action.busy && (
+                  <Button
+                    variant="ghost"
+                    onClick={() => void window.ngertiinDesktop?.cancelSignIn?.()}
+                  >
+                    Cancel
+                  </Button>
+                )}
+              </div>
+            ) : (
+              <form className="account-form" onSubmit={(event) => void authenticate(event)}>
+                {mode === "signup" && (
+                  <AccountField label="Name">
+                    <Input
+                      name="name"
+                      required
+                      maxLength={120}
+                      autoComplete="name"
+                      disabled={action.busy}
+                    />
+                  </AccountField>
+                )}
+                {mode !== "reset" && (
+                  <AccountField label="Email">
+                    <Input
+                      name="email"
+                      type="email"
+                      value={email}
+                      onChange={(event) => setEmail(event.target.value)}
+                      required
+                      autoComplete="email"
+                      disabled={action.busy}
+                    />
+                  </AccountField>
+                )}
+                {mode !== "recover" && (
+                  <AccountField label={mode === "reset" ? "New password" : "Password"}>
+                    <Input
+                      name="password"
+                      type="password"
+                      required
+                      minLength={mode === "login" ? 1 : 12}
+                      maxLength={128}
+                      autoComplete={mode === "login" ? "current-password" : "new-password"}
+                      disabled={action.busy}
+                    />
+                    {mode !== "login" && (
+                      <span className="account-muted">At least 12 characters.</span>
+                    )}
+                  </AccountField>
+                )}
+                <Button disabled={action.busy || (mode === "reset" && !token.current)}>
+                  {action.busy
+                    ? "Please wait…"
+                    : mode === "signup"
+                      ? "Create account"
+                      : mode === "recover"
+                        ? "Send reset link"
+                        : mode === "reset"
+                          ? "Save password"
+                          : "Sign in"}
+                </Button>
+              </form>
+            )}
+            {!window.ngertiinDesktop?.remote && (
+              <div className="account-links">
+                {mode === "login" ? (
+                  <>
+                    <Button variant="link" onClick={() => changeMode("recover")}>
+                      Forgot password?
+                    </Button>
+                    <Button variant="link" onClick={() => changeMode("signup")}>
+                      Create account
+                    </Button>
+                  </>
+                ) : (
+                  <Button variant="link" onClick={() => changeMode("login")}>
+                    Back to sign in
+                  </Button>
+                )}
+                {mode === "login" && (notice || action.error) && (
+                  <Button
+                    variant="link"
+                    disabled={action.busy || !email}
+                    onClick={() =>
+                      void action.run(async () => {
+                        await request("/api/auth/send-verification-email", {
+                          email,
+                          callbackURL: `${location.origin}${location.pathname}`,
+                        });
+                        setNotice("Verification email sent. Check your inbox.");
+                      })
+                    }
+                  >
+                    Resend verification email
+                  </Button>
+                )}
+              </div>
+            )}
           </>
         )}
       </div>

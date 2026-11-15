@@ -188,17 +188,19 @@ export function httpContract(routes: readonly Route[], accounts = false) {
         params: inputSchema(hooks.params),
       },
       response_transport:
-        path === "/v1/events/stream"
-          ? "sse"
-          : /^\/v1\/(artifacts\/[^/]+\/content|workspaces\/[^/]+\/file)$/.test(path)
-            ? "bytes"
-            : viewer
-              ? "upstream_viewer"
-              : path === "/v1/machine/file"
-                ? "bytes"
-                : mcp
-                  ? "json_rpc"
-                  : "json",
+        method === "WS"
+          ? "websocket"
+          : path === "/v1/events/stream"
+            ? "sse"
+            : /^\/v1\/(artifacts\/[^/]+\/content|workspaces\/[^/]+\/file)$/.test(path)
+              ? "bytes"
+              : viewer
+                ? "upstream_viewer"
+                : path === "/v1/machine/file"
+                  ? "bytes"
+                  : mcp
+                    ? "json_rpc"
+                    : "json",
       response: operationResponse(method, path),
     };
   });
@@ -242,7 +244,8 @@ export function consumerContract(machineRuntime = false) {
       machine_viewer: {
         path: "/v1/machine/viewer/:viewerId/*",
         http: "upstream_static_and_grpc_web",
-        websocket: "Loopback URL returned by StreamService/OpenMedia",
+        websocket:
+          "Issuing-session authenticated /v1/machine/viewer/:viewerId/media for account clients; legacy local profiles retain loopback media",
         credential: "scoped_viewer_ticket",
         activation: "current_human_lease_revision",
         revocation: "close_media_and_reject_stale_ticket_reuse",

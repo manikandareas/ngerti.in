@@ -13,10 +13,14 @@ import { delimiter, isAbsolute, join, resolve } from "node:path";
 export type Profile = {
   version: 1;
   managerId: string;
-  stateDirectory: string;
+  mode?: "local-development" | "remote";
+  serverOrigin?: string;
+  serverCertificate?: string;
+  initialPath?: string;
+  stateDirectory?: string;
   projectRoot: string;
-  configFile: string;
-  bunExecutable: string;
+  configFile?: string;
+  bunExecutable?: string;
   codexExecutable?: string;
   museExecutable?: string;
   uiPort: number;
@@ -43,9 +47,14 @@ export function loadProfile(home = desktopHome()): Profile {
   if (
     profile.version !== 1 ||
     !/^[a-f0-9-]{36}$/.test(profile.managerId) ||
-    ![profile.stateDirectory, profile.projectRoot, profile.configFile, profile.bunExecutable].every(
-      (value) => typeof value === "string" && isAbsolute(value),
-    ) ||
+    ![undefined, "local-development", "remote"].includes(profile.mode) ||
+    (profile.mode !== "remote" &&
+      ![
+        profile.stateDirectory,
+        profile.projectRoot,
+        profile.configFile,
+        profile.bunExecutable,
+      ].every((value) => typeof value === "string" && isAbsolute(value))) ||
     !Number.isInteger(profile.uiPort) ||
     profile.uiPort < 1024 ||
     profile.uiPort > 65535 ||
@@ -54,7 +63,21 @@ export function loadProfile(home = desktopHome()): Profile {
     )
   )
     throw new Error("The desktop profile is invalid. Run setup:desktop again.");
+  if (profile.mode === "remote") {
+    validateServerOrigin(profile.serverOrigin ?? "");
+    if (profile.serverCertificate && !isAbsolute(profile.serverCertificate))
+      throw new Error("The server certificate must be an absolute path.");
+    if (profile.initialPath && !/^\/invitations\/[a-f0-9-]{36}$/.test(profile.initialPath))
+      throw new Error("Invalid invitation handoff.");
+  } else if (profile.serverOrigin || profile.serverCertificate || profile.initialPath)
+    throw new Error("Remote settings require a remote profile.");
   return profile;
+}
+export function validateServerOrigin(value: string) {
+  const url = new URL(value);
+  if (url.protocol !== "https:" || url.origin !== value || url.username || url.password)
+    throw new Error("The remote server must be one canonical HTTPS origin.");
+  return value;
 }
 export function findExecutable(command: string | undefined): string | undefined {
   if (!command) return undefined;

@@ -48,6 +48,10 @@ impl Fixture {
         let port = listener.local_addr().unwrap().port();
         let profile = Profile {
             version: 1,
+            mode: Default::default(),
+            server_origin: None,
+            server_certificate: None,
+            initial_path: None,
             manager_id: uuid::Uuid::new_v4().to_string(),
             state_directory: state,
             project_root: root,

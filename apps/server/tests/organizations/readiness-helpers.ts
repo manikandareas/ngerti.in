@@ -14,6 +14,7 @@ import { DomainRuntime } from "../../src/machines/domain-runtime";
 import { ExecutionDomains } from "../../src/machines/domains";
 import { Machines } from "../../src/machines/service";
 import { ScopedData } from "../../src/organizations/data";
+import type { AuthFixtureTransport } from "../auth/helpers";
 import { organizationFixture } from "./helpers";
 
 export const fixtureCapabilities = {
@@ -75,8 +76,9 @@ export async function readinessFixture(
   timeouts = { request_ms: 30_000, close_ms: 1000 },
   httpPort = 0,
   nativeCua = false,
+  transport?: AuthFixtureTransport,
 ) {
-  const f = await organizationFixture(undefined, httpPort);
+  const f = await organizationFixture(undefined, httpPort, transport);
   const { lifecycle, store } = f.domain;
   await f.success(
     f.write(f.owner.cookie, "/v1/data/legacy-binding", {
@@ -318,7 +320,10 @@ export async function readinessFixture(
       await background.stop();
       await broker.close();
       tools.revokeAll();
-      await api.stop(true);
+      // Bun 1.3.10 can retain a stale WebSocket counter after observed media closes.
+      const server = api.server;
+      await Promise.race([api.stop(true), Bun.sleep(1000)]);
+      server?.unref();
       await domains.close();
       if (nativeCua) {
         const domains = await f.domain.administrativeQuery(

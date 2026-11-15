@@ -44,6 +44,7 @@ struct State {
 }
 
 pub struct Supervisor {
+    pub remote: Option<Arc<crate::remote::Remote>>,
     pub profile: Profile,
     pub paths: RuntimePaths,
     pub log: Log,
@@ -61,8 +62,24 @@ pub struct Supervisor {
 
 impl Supervisor {
     pub fn new(profile: Profile, paths: RuntimePaths, log: Log) -> Result<Arc<Self>> {
-        let environment = profile.environment(&paths.bun)?;
+        let remote = if profile.mode == crate::profile::ProfileMode::Remote {
+            Some(crate::remote::Remote::new(&profile)?)
+        } else {
+            None
+        };
+        let environment = if remote.is_some() {
+            HashMap::new()
+        } else {
+            profile.environment(&paths.bun)?
+        };
+        let backend = remote.as_ref().map(|value| value.origin.clone());
+        let state_name = if remote.is_some() {
+            "ready"
+        } else {
+            "starting"
+        };
         Ok(Arc::new(Self {
+            remote,
             profile,
             paths,
             log,
@@ -74,11 +91,11 @@ impl Supervisor {
                 .build()?,
             state: RwLock::new(State {
                 status: Status {
-                    state: "starting".into(),
+                    state: state_name.into(),
                     message: "Preparing your workspace…".into(),
                     ownership: None,
                 },
-                backend: None,
+                backend,
                 record: None,
             }),
             transition: Mutex::new(()),
@@ -92,6 +109,10 @@ impl Supervisor {
     }
 
     pub fn token(&self) -> Result<String> {
+        anyhow::ensure!(
+            self.remote.is_none(),
+            "Remote sessions use native authentication."
+        );
         let installation: Value =
             private_json(&self.profile.state_directory.join("installation.json"))?;
         Ok(installation["token"]
@@ -104,6 +125,9 @@ impl Supervisor {
         self.state.read().await.status.clone()
     }
     pub async fn backend(&self) -> Option<String> {
+        if let Some(remote) = &self.remote {
+            return Some(remote.origin.clone());
+        }
         self.state.read().await.backend.clone()
     }
 
@@ -166,8 +190,8 @@ impl Supervisor {
             .collect();
         value["api_readiness_gate"] == "ready"
             && parts.len() == 3
-            && parts[0] == "1"
-            && parts[1].parse::<u32>().is_ok_and(|n| n >= 30)
+            && ((parts[0] == "1" && parts[1].parse::<u32>().is_ok_and(|n| n >= 30))
+                || (parts[0] == "2" && parts[1].parse::<u32>().is_ok()))
     }
 
     async fn ready(&self, url: String, record: Option<RuntimeRecord>) {
@@ -199,6 +223,9 @@ impl Supervisor {
     }
 
     pub async fn start(&self) {
+        if self.remote.is_some() {
+            return;
+        }
         let _transition = self.transition.lock().await;
         if self.closed.load(Ordering::Acquire) || self.state.read().await.status.state == "ready" {
             return;
@@ -311,6 +338,9 @@ impl Supervisor {
     }
 
     pub async fn check(&self) {
+        if self.remote.is_some() {
+            return;
+        }
         if self.closed.load(Ordering::Acquire) {
             return;
         }
@@ -397,6 +427,10 @@ impl Supervisor {
     }
 
     pub async fn release_views(&self) {
+        if let Some(remote) = &self.remote {
+            remote.release_views().await;
+            return;
+        }
         let views = { std::mem::take(&mut *self.views.lock().await) };
         let revision = self.human_revision.lock().await.take();
         let Some(backend) = self.backend().await else {
@@ -452,6 +486,9 @@ impl Supervisor {
     }
 
     pub async fn start_machine(&self) {
+        if self.remote.is_some() {
+            return;
+        }
         if self.closed.load(Ordering::Acquire) {
             return;
         }
@@ -497,6 +534,10 @@ impl Supervisor {
     }
 
     pub async fn stop(&self) {
+        if let Some(remote) = &self.remote {
+            remote.close().await;
+            return;
+        }
         self.closed.store(true, Ordering::Release);
         let _transition = self.transition.lock().await;
         self.release_views().await;

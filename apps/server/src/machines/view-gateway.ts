@@ -2,12 +2,13 @@ import type { SessionLease } from "../auth/service";
 import { DomainError } from "../contracts";
 import type { Lifecycle } from "../lifecycle";
 import { resolvedMachine } from "./domains";
-import { MachineViews } from "./view";
+import { MachineViews, type ViewerPeer } from "./view";
 
 /** Opaque viewer handles route to one domain; cookies/organization headers cannot retarget them. */
 export class MachineViewGateway {
   readonly #domains = new Map<string, MachineViews>();
   readonly #tickets = new Map<string, MachineViews>();
+  readonly #peers = new Map<ViewerPeer, MachineViews>();
   constructor(readonly lifecycle: Lifecycle) {}
   private owner(id: string) {
     const views = this.#tickets.get(id);
@@ -61,6 +62,27 @@ export class MachineViewGateway {
     const id = new URL(request.url).pathname.split("/")[4] ?? "";
     return this.owner(id).proxy(request);
   }
+  async open(request: Request, peer: ViewerPeer) {
+    try {
+      const id = new URL(request.url).pathname.split("/")[4] ?? "";
+      const views = this.owner(id);
+      await views.authorize(request);
+      this.#peers.set(peer, views);
+      await views.open(request, peer, false);
+    } catch {
+      this.#peers.delete(peer);
+      peer.close(1008, "Machine view denied.");
+    }
+  }
+  async message(peer: ViewerPeer, message: unknown) {
+    const views = this.#peers.get(peer);
+    if (!views) return peer.close(1008, "Machine view denied.");
+    await views.message(peer, message);
+  }
+  closePeer(peer: ViewerPeer) {
+    this.#peers.get(peer)?.closePeer(peer);
+    this.#peers.delete(peer);
+  }
   async renew(id: string, origin: string, session?: string) {
     return this.owner(id).renew(id, origin, session);
   }
@@ -73,5 +95,6 @@ export class MachineViewGateway {
     await Promise.allSettled([...this.#domains.values()].map((views) => views.close()));
     this.#domains.clear();
     this.#tickets.clear();
+    this.#peers.clear();
   }
 }

@@ -1,0 +1,24 @@
+bun test v1.3.10 (30e609e0)
+
+apps/web-client/verification/client-scope.test.ts:
+(pass) changing server, user, organization or session aborts the previous immutable request [2.31ms]
+(pass) a lost acknowledgement retains its original private operation and cannot become another scope's submission [0.97ms]
+(pass) event resume carries the signed snapshot context and drops it at a scope boundary [2.45ms]
+(pass) external images and links receive no organization or event capability headers [0.07ms]
+(pass) an unavailable explicit connection stays selected rather than inheriting organization billing [0.15ms]
+(pass) native login forwards only signed provider parameters and accepts only the pinned callback [0.58ms]
+
+apps/web-client/verification/event-connection.test.ts:
+(pass) a stalled open event connection is aborted so its caller can reconcile and reconnect [20.92ms]
+(pass) heartbeats keep an idle event stream alive beyond one inactivity window [70.61ms]
+
+apps/web-client/verification/request.test.ts:
+(pass) snapshot reads have a deadline even when the transport never settles [20.69ms]
+(pass) the request deadline includes reading the response body [20.91ms]
+(pass) cancelling a connection generation rejects its snapshot read immediately
+(pass) invalid successful JSON is a recoverable API failure rather than a null snapshot
+
+ 12 pass
+ 0 fail
+ 33 expect() calls
+Ran 12 tests across 3 files. [195.00ms]

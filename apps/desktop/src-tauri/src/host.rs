@@ -70,7 +70,11 @@ pub fn setup(app: &mut tauri::App) -> Result<()> {
         return Ok(());
     }
     let paths = RuntimePaths::resolve(&profile, &app.path().resource_dir()?)?;
-    let environment = profile.environment(&paths.bun)?;
+    let environment = if profile.mode == profile::ProfileMode::Remote {
+        std::collections::HashMap::new()
+    } else {
+        profile.environment(&paths.bun)?
+    };
     let mut secrets: Vec<String> = environment
         .iter()
         .filter(|(key, _)| {
@@ -81,8 +85,9 @@ pub fn setup(app: &mut tauri::App) -> Result<()> {
         })
         .map(|(_, value)| value.clone())
         .collect();
-    if let Ok(value) =
-        private_json::<serde_json::Value>(&profile.state_directory.join("installation.json"))
+    if profile.mode == profile::ProfileMode::LocalDevelopment
+        && let Ok(value) =
+            private_json::<serde_json::Value>(&profile.state_directory.join("installation.json"))
         && let Some(token) = value["token"].as_str()
     {
         secrets.push(token.into());
@@ -120,7 +125,11 @@ pub fn setup(app: &mut tauri::App) -> Result<()> {
     let popup_app = app.handle().clone();
     let download_origin = origin.clone();
     let download_log = log.clone();
-    let mut builder = WebviewWindowBuilder::new(app, "main", WebviewUrl::External(origin.parse()?))
+    let initial_url = format!(
+        "{origin}{}",
+        supervisor.profile.initial_path.as_deref().unwrap_or("/")
+    );
+    let mut builder = WebviewWindowBuilder::new(app, "main", WebviewUrl::External(initial_url.parse()?))
         .title("Ngertiin")
         .inner_size(width, height)
         .min_inner_size(720., 500.)
@@ -129,7 +138,7 @@ pub fn setup(app: &mut tauri::App) -> Result<()> {
         .data_directory(native_data)
         .data_store_identifier(data_store)
         .disable_drag_drop_handler()
-        .initialization_script(include_str!("bridge.js"))
+        .initialization_script(include_str!("bridge.js").replace("__NGERTIIN_REMOTE__", if supervisor.remote.is_some() { "true" } else { "false" }))
         .on_navigation(move |url| {
             if url.origin().ascii_serialization() == navigation_origin || trusted_blob(url, &navigation_origin) {
                 return true;
@@ -223,20 +232,22 @@ pub fn setup(app: &mut tauri::App) -> Result<()> {
     window.show()?;
     window.set_focus()?;
     log.event("desktop.started", json!({"framework": "tauri", "version": tauri::VERSION, "packaged": supervisor.paths.packaged}));
-    tauri::async_runtime::spawn(async move {
-        supervisor.start().await;
-        let machine = supervisor.clone();
-        tokio::spawn(async move {
-            machine.start_machine().await;
-        });
-        loop {
-            tokio::time::sleep(std::time::Duration::from_secs(5)).await;
-            supervisor.check().await;
-            if supervisor.status().await.state == "stopped" {
-                break;
+    if supervisor.remote.is_none() {
+        tauri::async_runtime::spawn(async move {
+            supervisor.start().await;
+            let machine = supervisor.clone();
+            tokio::spawn(async move {
+                machine.start_machine().await;
+            });
+            loop {
+                tokio::time::sleep(std::time::Duration::from_secs(5)).await;
+                supervisor.check().await;
+                if supervisor.status().await.state == "stopped" {
+                    break;
+                }
             }
-        }
-    });
+        });
+    }
     signals(app.handle());
     Ok(())
 }

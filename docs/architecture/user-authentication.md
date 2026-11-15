@@ -8,7 +8,7 @@ NMA-079 amendment: the [2.0.0 server-organizations consumer contract](server-org
 
 The web-client implements account onboarding and consumes the verified [2.1.0 contract delta](server-organizations-api.md#additive-web-consumer-delta--210). Browser credentials remain HttpOnly; private workspace reads/writes and SSE carry explicit organization context. Sign-in, invitations, password reset, browser renewal and logout retain the server's current session checks. The [NMA-080 report](../verification/nma-080/README.md) separates real HTTP/browser behavior from controlled delivery/provider adapters and native Cua observations.
 
-For the loopback Vite bridge, explicitly select `NGERTIIN_AUTH_MODE=accounts` when starting the web client. This disables development installation-bearer injection and forwards the allowlisted `/api/auth` protocol alongside `/v1`; the existing Host/Origin guard remains active. `NGERTIIN_AUTH_URL` must match the browser-visible origin. Loopback HTTP still requires the explicit development cookie exception described below. A failed account connection never chooses the local-owner profile automatically. Remote Tauri token transport remains NMA-081.
+For the loopback Vite bridge, explicitly select `NGERTIIN_AUTH_MODE=accounts` when starting the web client. This disables development installation-bearer injection and forwards the allowlisted `/api/auth` protocol alongside `/v1`; the existing Host/Origin guard remains active. `NGERTIIN_AUTH_URL` must match the browser-visible origin. Loopback HTTP still requires the explicit development cookie exception described below. A failed account connection never chooses the local-owner profile automatically. NMA-081 implements the [remote Tauri token transport](tauri-remote-client.md); its evidence and remaining conditions are recorded separately.
 
 ## Modes and installation boundary
 
@@ -70,13 +70,13 @@ Web cookies are Secure, HttpOnly, SameSite=Lax and host scoped. Sessions last se
 
 ## Public native client and renewal
 
-The only registered client is `ngertiin-tauri`, with no client secret, `authorization_code`/`refresh_token`, required S256 PKCE, exact callback and scopes `ngertiin offline_access`. The first-party client is operator pinned and skips the generic OAuth consent screen; an external browser login is still required. Dynamic registration/client administration are disabled. Login/consent product screens and OS credential storage are NMA-080/081, not part of the headless proof.
+The only registered client is `ngertiin-tauri`, with no client secret, `authorization_code`/`refresh_token`, required S256 PKCE, exact callback and scopes `ngertiin offline_access`. The first-party client is operator pinned and skips the generic OAuth consent screen; an external browser login is still required. Dynamic registration/client administration are disabled. NMA-080 implements the browser login screen and NMA-081 implements native callback/OS storage; their reports remain separate from the original headless proof.
 
 The native gateway creates random state/verifier, opens the configured authorization endpoint in the system browser, and accepts one callback on loopback. Validate callback origin/path, state, issuer, duplicate parameters, bounded deadline and one-use consumption before exchanging a code. Exchange over the selected HTTPS origin with `resource=<server origin>`. [The headless helper](../../apps/server/src/auth/native-client.ts) demonstrates the five-minute state/issuer/callback contract; it does not install a Tauri callback listener.
 
 Opaque `ng_at_` access tokens last five minutes; rotating `ng_rt_` renewal credentials last up to 30 days. At code exchange Ngertiin rebinds the issued tokens to a separate native device session, preserving the authorizing browser's session independently. Native token verification checks provider lookup, issuer, exact API audience, native client, required scope, subject, expiry, current verified user and live matching session. Native renewal additionally rejects absent, expired or revoked device sessions, including the upstream offline-access behavior that would otherwise detach credentials from an ended session. ID tokens, first-party session tokens, installation bearers, run leases and viewer tickets are not interchangeable.
 
-Tauri stores long-lived renewal credentials in OS secure storage and short-lived access tokens in native memory in NMA-081; renderer JavaScript must never receive them. This backend milestone does not claim that integration is already installed.
+NMA-081 stores long-lived renewal credentials in macOS Keychain and short-lived access tokens in native memory; renderer JavaScript never receives them. The [native contract](tauri-remote-client.md) and [verification report](../verification/nma-081/README.md) retain the implementation and actual proof separately from this backend milestone.
 
 ## Revocation and continuous delivery
 

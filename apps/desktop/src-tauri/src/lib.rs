@@ -1,8 +1,11 @@
+mod credential_store;
 mod gateway;
 mod host;
 mod log;
+mod native_auth;
 mod power;
 mod profile;
+mod remote;
 mod supervisor;
 #[cfg(test)]
 mod tests;

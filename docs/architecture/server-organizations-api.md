@@ -6,6 +6,12 @@ Contract **2.0.0**, verified by NMA-079, is the breaking transition from the own
 
 NMA-080 adds `GET /v1/data/access` with an executable response schema. It returns `invocable_team_agent_ids` and `allowed_organization_connection_ids` for the current authenticated organization/user context. Management visibility does not grant invocation. Clients filter sidebar/model choices with this response while the server rechecks grants before dispatch. Web onboarding requires compatible major 2 and minor 1 or newer before applying pending writes. The [2.1.0 export](../contracts/2.1.0.json) and [NMA-080 evidence](../verification/nma-080/README.md) retain the delta separately from the historical NMA-079 gate.
 
+## Native remote-client media delta — 2.2.0
+
+NMA-081 adds the issuing-session authenticated WebSocket route `/v1/machine/viewer/:viewerId/media` on the application server. Account-mode `StreamService/OpenMedia` returns `media?ticket=...`, resolved against the opaque viewer API base; it must not be resolved against the installation root. The pinned viewer performs that resolution and uses the current origin's WS/WSS scheme. The outer account server owns the upgrade. Ticket, issuing native/browser device, membership, execution domain and control-generation checks remain live for the connection and frames. Native access tokens remain in the native gateway's headers and never become media query credentials.
+
+The [2.2.0 export](../contracts/2.2.0.json), [Tauri transport contract](tauri-remote-client.md) and [NMA-081 evidence](../verification/nma-081/README.md) retain this delta independently from earlier API/browser/provider gates. Deployed HTTPS/WSS ingress remains NMA-082.
+
 ## Authentication and resource selection
 
 | Class | Authority and scope |

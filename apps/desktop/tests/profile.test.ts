@@ -30,3 +30,37 @@ test("private desktop profile validation rejects unsafe files", () => {
     rmSync(home, { recursive: true, force: true });
   }
 });
+
+test("remote profiles validate the selected HTTPS origin without any local runtime paths", () => {
+  const home = mkdtempSync(join(tmpdir(), "ngertiin-remote-profile-"));
+  const path = join(home, "profile.json");
+  const profile = {
+    version: 1,
+    mode: "remote",
+    managerId: crypto.randomUUID(),
+    serverOrigin: "https://workspace.example.test",
+    uiPort: 4312,
+  };
+  try {
+    writePrivate(path, profile);
+    expect(loadProfile(home).serverOrigin).toBe(profile.serverOrigin);
+    for (const serverOrigin of [
+      "http://workspace.example.test",
+      "https://workspace.example.test/",
+      "https://workspace.example.test/path",
+      "https://user:secret@workspace.example.test",
+      "https://workspace.example.test#fragment",
+    ]) {
+      writePrivate(path, { ...profile, serverOrigin });
+      expect(() => loadProfile(home)).toThrow();
+    }
+    writePrivate(path, { ...profile, mode: "automatic" });
+    expect(() => loadProfile(home)).toThrow();
+    writePrivate(path, { ...profile, mode: "local-development" });
+    expect(() => loadProfile(home)).toThrow();
+    writePrivate(path, { ...profile, initialPath: "//foreign.invalid/path" });
+    expect(() => loadProfile(home)).toThrow();
+  } finally {
+    rmSync(home, { recursive: true, force: true });
+  }
+});

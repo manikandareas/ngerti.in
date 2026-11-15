@@ -1,0 +1,11 @@
+bun test v1.3.10 (30e609e0)
+
+tests/machines/authorization.test.ts:
+(pass) real user sessions resolve private machines and a copied viewer ticket cannot cross users or devices [3302.01ms]
+(pass) revoking the actual issuing login closes existing media and rejects further viewer RPCs [3267.94ms]
+(pass) removing an organization member closes their already-open media and invalidates clipboard/file access [4518.12ms]
+
+ 3 pass
+ 0 fail
+ 17 expect() calls
+Ran 3 tests across 1 file. [12.14s]

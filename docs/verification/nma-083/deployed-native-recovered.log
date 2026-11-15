@@ -1,0 +1,12 @@
+{"harness":"muse","run_id":"e6938dfc-7715-41ed-a594-8784bb86dce7","admitted":true}
+276 |       save();
+277 |       console.log(JSON.stringify({ harness, verified: true }));
+278 |     }),
+279 |   );
+280 |   if (outcomes.some((entry) => entry.status === "rejected"))
+281 |     throw new Error("Inspect both retained native outcomes before an explicit recovery or retry.");
+                    ^
+error: Inspect both retained native outcomes before an explicit recovery or retry.
+      at /Users/vitoandareasmanik/Development/project/ngertiin/scripts/verification/nma083/deployed.ts:281:15
+
+Bun v1.3.10 (macOS arm64)

@@ -1,0 +1,7 @@
+error: unable to verify the first certificate
+  path: "https://127.0.0.1:44433/api/auth/sign-up/email",
+ errno: 0,
+  code: "UNABLE_TO_VERIFY_LEAF_SIGNATURE"
+
+
+Bun v1.3.10 (macOS arm64)

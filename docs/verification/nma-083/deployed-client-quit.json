@@ -1,0 +1,11 @@
+{
+  "native_client_quit_observed": true,
+  "quit_observed_at": "2026-11-15T11:19:30.271860+00:00",
+  "gateway_origin": "http://127.0.0.1:54985",
+  "scheduled_at": "2026-11-15T11:19:52.829Z",
+  "relaunch_requested_at": "2026-11-15T11:22:11.189042+00:00",
+  "relaunch_observed_scope": "Ngertiin Demo / NMA-083 codex",
+  "draft_restored": "NMA083 deployed native draft survives Quit",
+  "routine_answer_visible": "NMA083-RESPONSIBILITY-SURVIVED",
+  "routine_completed_while_client_closed": true
+}

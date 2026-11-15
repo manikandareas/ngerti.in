@@ -1,0 +1,35 @@
+bun test v1.3.10 (30e609e0)
+
+tests/organizations/attachments.test.ts:
+(pass) a scoped attachment-bearing admission reaches the harness with its private document context [7770.16ms]
+
+tests/organizations/readiness.test.ts:
+(pass) every installed account surface declares authentication/scope and rejects missing credentials before input validation [1322.90ms]
+(pass) normal HTTP admission and both broker executors keep two users of one Team agent private [13749.64ms]
+(pass) revoking membership during native work retains the matching cancelled outcome without late publication [4833.48ms]
+(pass) revoking membership during native work retains the matching unknown outcome without late publication [4246.51ms]
+(pass) authority replacement fences accepted scoped work and preserves the queued lane without resubmitting [2774.55ms]
+(pass) generic entity inventory and organization switches never grant another actor's private data [4130.46ms]
+(pass) concurrent scoped queries reuse their authorization fence without exhausting the auth pool [1654.83ms]
+(pass) opening a fourth private transport cannot evict another actor's active native writer [10030.39ms]
+(pass) native credential callbacks retain current resource grants after the opening browser session logs out [3222.12ms]
+(pass) commit subscribers cannot borrow the writing user's request scope [1111.83ms]
+(pass) a native stop timeout still fences an unknown outcome after membership revocation [4920.91ms]
+
+tests/organizations/surfaces.test.ts:
+(pass) account consumers exercise administrative metadata, conversation creation and private learning surfaces [3784.85ms]
+(pass) account consumers exercise private group routing, Team publication and assignment [2510.37ms]
+(pass) account consumers exercise run-owned publication and durable responsibility commands [5299.59ms]
+(pass) account consumers exercise private human replies and device-bound Computer renewal [3900.90ms]
+(pass) account consumers exercise selected-provider metadata, preparation and private run controls [6782.83ms]
+(pass) account consumers exercise private working-file, derived-artifact and responsibility surfaces [3615.37ms]
+(pass) account consumers exercise app discovery, reconnect and private revocation without ambient app identity [1741.14ms]
+(pass) only the issued live run lease enters the private MCP endpoint [7265.25ms]
+
+tests/organizations/preparation.test.ts:
+(pass) a blocked scoped preparation retries through HTTP and replays one JSON command receipt [6566.73ms]
+
+ 21 pass
+ 0 fail
+ 862 expect() calls
+Ran 21 tests across 4 files. [102.22s]

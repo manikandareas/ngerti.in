@@ -2,7 +2,7 @@
 
 This repository is the authority for Ngertiin product decisions, implementation scope, acceptance and delivery status. Start with [the documentation index](docs/README.md), [feature decisions](docs/product/feature-decisions.md), and [the local backlog](docs/backlog/README.md). Explicit user decisions take precedence and must be recorded locally when they change scope.
 
-Ngertiin is a persistent agent workspace. The November 12 direction promotes one owner-operated server with PostgreSQL, authenticated users, multiple organizations, Owner/Admin/Member roles, Workgroups, and private or organization-owned agents. Implementation is planned in [the server-organizations plan](docs/architecture/server-organizations-plan-2026-11-12.md) and NMA-072–083; the installed baseline still serves one human owner. Agents can use tools, collaborate, retain scoped memory, and continue durable responsibilities through Goals and Routine while the backend and harness host remain alive. Closing a client does not stop server work; a sleeping or powered-off server cannot execute.
+Ngertiin is a persistent agent workspace. The November 12 direction promotes one owner-operated server with PostgreSQL, authenticated users, multiple organizations, Owner/Admin/Member roles, Workgroups, and private or organization-owned agents. Implementation and focused acceptance are recorded in [the server-organizations plan](docs/architecture/server-organizations-plan-2026-11-12.md) and NMA-072–083; the historical installed baseline serves one human owner. Agents can use tools, collaborate, retain scoped memory, and continue durable responsibilities through Goals and Routine while the backend and harness host remain alive. Closing a client does not stop server work; a sleeping or powered-off server cannot execute.
 
 ## Server organizations direction — 2026-11-12
 
@@ -33,7 +33,7 @@ The retained single-owner baseline shares one persistent local Linux desktop thr
 
 Composio supplies app connections. Application skills and inherited harness skills are separate: agents create/repair only app-owned packages. Source availability does not promote an upstream feature into scope.
 
-NMA-082 is Done for the [selected owner-operated server deployment](docs/architecture/server-deployment.md). The [deployed Ubuntu AMD64 report](docs/verification/nma-082/README.md) verifies real web/Tauri access, private controls/domains, both selected providers, encrypted off-host recovery and actual token rotation, with declared snapshot RPO, measured RTO and capacity. Historical ARM64 evidence and final target limits remain separate; NMA-083 integrated acceptance and general distribution retain their own gates.
+NMA-082 is Done for the [selected owner-operated server deployment](docs/architecture/server-deployment.md). The [deployed Ubuntu AMD64 report](docs/verification/nma-082/README.md) verifies real web/Tauri access, private controls/domains, both selected providers, encrypted off-host recovery and actual token rotation, with declared snapshot RPO, measured RTO and capacity. Historical ARM64 evidence and final target limits remain separate. NMA-083 is Done for [focused integrated organization/web/Tauri acceptance](docs/verification/nma-083/README.md), including scoped native file work, client-Quit responsibility survival and a declared concurrent workload. NMA-063 full-product acceptance and NMA-064 fresh-device distribution remain separate.
 
 ## Optional and deferred work
 

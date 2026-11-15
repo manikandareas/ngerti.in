@@ -29,6 +29,8 @@ Connection inspection exposes optional nullable `account_plan`, the provider's o
 
 An admitted scoped run records `provider_selection`: connection ID and grant generation, observed account identity, harness, model, reasoning and selected billing source. Account identities are non-secret hashes. Preparation and dispatch recheck current authorization, generation, account and effective billing. An unconfigured run cannot acquire a provider from a later UI selection. Inspect/configure a connection before submitting work. A changed authorization/account snapshot requires explicit new work; retries cannot rewrite it.
 
+NMA-083 separates Muse's account-wide catalog from MSP's pinned-process model projection. A native singleton projection for the selected startup model does not replace an already discovered account catalog or advance its grant generation. The broker caches the native projection separately and validates the selected model/reasoning against it; retaining account choices never broadens native support. Preparation retry omits cleared optional metadata from its JSON receipt and retains the same undispatched run/input. The [integrated report](../verification/nma-083/README.md) preserves cold-start failures, explicit stale-choice cancellation and final native evidence.
+
 Goals and Routine retain the creating run's selection, or resolve it explicitly at direct responsibility creation. Their later occurrences use that stored selection and the existing durable organization/user execution principal. Changing a UI preference cannot move a schedule to another connection. Membership removal retains the NMA-074/075 private-work suspension and rejoin fences.
 
 ## Native storage and credential delivery

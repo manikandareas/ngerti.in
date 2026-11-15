@@ -1,0 +1,29 @@
+bun test v1.3.10 (30e609e0)
+
+tests/conversation-latency.test.ts:
+(pass) commit notifications coalesce nested writes and ignore rolled-back commands [999.73ms]
+(pass) SSE wakes on a committed event without waiting for its periodic heartbeat [561.29ms]
+(pass) committed admission and settlement drain FIFO without waiting for a 60-second scheduler tick [860.18ms]
+(pass) configuration preparation failures stay explicit and retry the exact queued input [777.28ms]
+(pass) repairing configuration resumes the same blocked input without a polling delay [1102.76ms]
+(pass) a rejected claim does not spin or let later queued inputs bypass the blocked head [945.92ms]
+(pass) Jev makes one typed SDK request and keeps its API key out of the routing state [14.22ms]
+(pass) Jev rate limits do not trigger the SDK's default retry cascade [7.49ms]
+(pass) a persisted unfinished pure decision recomputes once and rejects the old attempt [557.95ms]
+(pass) Jev selects one valid member without creating a native routing session or importing DM history [486.89ms]
+(pass) explicit mentions bypass Jev and stale membership fences a late decision [421.45ms]
+(pass) ambiguous Jev results create exactly one explicit member-model fallback [509.51ms]
+(pass) switching back to the member router drains a persisted pure Jev decision without replaying work [437.24ms]
+(pass) Jev service failures reject the original route and can retry without duplicate messages [471.79ms]
+(pass) ordinary complete handoffs settle the task without a third model run [944.97ms]
+
+tests/organizations/attachments.test.ts:
+(pass) a scoped attachment-bearing admission reaches the harness with its private document context [16415.17ms]
+
+tests/organizations/preparation.test.ts:
+(pass) a blocked scoped preparation retries through HTTP and replays one JSON command receipt [8270.94ms]
+
+ 17 pass
+ 0 fail
+ 73 expect() calls
+Ran 17 tests across 3 files. [35.24s]

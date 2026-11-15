@@ -1,0 +1,89 @@
+bun test v1.3.10 (30e609e0)
+
+tests/organizations/workspace-access.test.ts:
+73 |     expect((await read()).status).toBe(401);
+74 |     expect((await read(outsider.cookie)).status).toBe(403);
+75 |     expect((await read(alice.cookie, crypto.randomUUID())).status).toBe(403);
+76 |     expect((await f.http("/v1/data/access", undefined, alice.cookie)).status).toBe(403);
+77 |     const contract = await f.success(f.http("/v1/contracts", undefined, f.owner.cookie));
+78 |     expect(contract.version).toBe("2.1.0");
+                                  ^
+error: expect(received).toBe(expected)
+
+Expected: "2.1.0"
+Received: "2.2.0"
+
+      at <anonymous> (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/tests/organizations/workspace-access.test.ts:78:30)
+(fail) workspace choices distinguish management visibility from current invocation grants [1661.99ms]
+
+tests/organizations/data.test.ts:
+(pass) random default names come from the single-syllable library subset and exhaust unused names first [1.78ms]
+(pass) membership provisioning creates one private randomly named default agent, DM and authored welcome without inference [1172.50ms]
+(pass) two users share Team configuration while their DM, memory, uploads and receipts stay private even from an administrator [1391.43ms]
+(pass) personal preference overlays and explicit published knowledge cannot rewrite or automatically publish private context [962.80ms]
+(pass) RLS uses a non-owner role and transaction-local settings across pooled users and organization boundaries [1011.90ms]
+(pass) context-bound replay rejects cross-user cursors and permission changes close old event access [937.35ms]
+(pass) private file publication, immutable downloads, parsed data and command replay stay in the initiating organization [1427.19ms]
+(pass) Workgroup invocation is distinct from administration and Team ownership survives creator offboarding [1055.86ms]
+(pass) removed/rejoined membership cannot replay prior receipts or resume its private work implicitly [1378.12ms]
+(pass) database references reject cross-user scope and concurrent organization tabs retain independent commands [1349.57ms]
+(pass) SSE retains its captured private context outside the request and closes on membership revocation [858.81ms]
+(pass) guarded legacy binding backfills retained private entities/events and blocks old owner-wide routes [986.24ms]
+(pass) scoped application SQL also works through a real non-owner, non-superuser database login [1244.68ms]
+(pass) private Goals/Routine schedule under their retained execution principal without borrowing a UI session or shared native resources [1532.54ms]
+(pass) private groups and routing cannot enroll another user's agent or another organization's Team agent [939.85ms]
+(pass) Team-agent native-binding metadata is actor-private and cannot reference another user's connection [1230.72ms]
+(pass) immutable command receipts recheck current Team-agent invocation grants before replay [1112.66ms]
+
+tests/organizations/providers.test.ts:
+(pass) personal provider connections remain private; organization connections require management and an explicit audience [936.03ms]
+(pass) private conversation and user choices inherit only when unset and freeze connection/model on admission [1427.45ms]
+(pass) provider snapshots cannot be rewritten or forged across actors even through SQL-backed entity writes [1116.73ms]
+(pass) pre-provider scoped queued records can normalize a missing null snapshot without accepting a different selection [907.76ms]
+(pass) same organization account has distinct native homes for each actor, conversation and connection generation [1055.01ms]
+(pass) scheduled responsibilities retain their selected connection after private preferences change [1104.49ms]
+(pass) scoped API key submission and rotation retain encrypted bytes and secret-free receipts without selecting a replacement implicitly [1109.13ms]
+
+tests/organizations/readiness.test.ts:
+(pass) every installed account surface declares authentication/scope and rejects missing credentials before input validation [1012.81ms]
+(pass) normal HTTP admission and both broker executors keep two users of one Team agent private [11462.05ms]
+(pass) revoking membership during native work retains the matching cancelled outcome without late publication [3690.87ms]
+(pass) revoking membership during native work retains the matching unknown outcome without late publication [3923.54ms]
+(pass) authority replacement fences accepted scoped work and preserves the queued lane without resubmitting [2325.29ms]
+(pass) generic entity inventory and organization switches never grant another actor's private data [4115.72ms]
+(pass) concurrent scoped queries reuse their authorization fence without exhausting the auth pool [1297.08ms]
+(pass) opening a fourth private transport cannot evict another actor's active native writer [9598.68ms]
+(pass) native credential callbacks retain current resource grants after the opening browser session logs out [2165.32ms]
+(pass) commit subscribers cannot borrow the writing user's request scope [1328.60ms]
+(pass) a native stop timeout still fences an unknown outcome after membership revocation [4641.27ms]
+
+tests/organizations/surfaces.test.ts:
+(pass) account consumers exercise administrative metadata, conversation creation and private learning surfaces [3635.62ms]
+(pass) account consumers exercise private group routing, Team publication and assignment [2486.35ms]
+(pass) account consumers exercise run-owned publication and durable responsibility commands [7282.15ms]
+(pass) account consumers exercise private human replies and device-bound Computer renewal [4881.08ms]
+(pass) account consumers exercise selected-provider metadata, preparation and private run controls [4615.09ms]
+(pass) account consumers exercise private working-file, derived-artifact and responsibility surfaces [3321.51ms]
+(pass) account consumers exercise app discovery, reconnect and private revocation without ambient app identity [1263.10ms]
+(pass) only the issued live run lease enters the private MCP endpoint [3023.75ms]
+
+tests/organizations/integrations.test.ts:
+(pass) organization accounts require management; personal identity and account routing stay private [1492.62ms]
+(pass) shared app execution enforces resource arguments and persists actor-attributed receipts [1572.86ms]
+(pass) OAuth completion cannot publish after the initiating member is removed [894.45ms]
+(pass) revocation after async native preflight blocks dispatch; stale sessions cannot expose disabled schemas [1616.27ms]
+(pass) membership revocation suppresses the result while retaining a known completed external effect [1395.64ms]
+(pass) unknown effects hold a shared account across different members and command identities [3363.12ms]
+(pass) pending OAuth stays bound to its initiator even after an unsuccessful refresh [2981.85ms]
+(pass) Workgroup removal invalidates retained app sessions and new requests cannot see the account [3203.23ms]
+(pass) refresh refuses another connected account and never falls back to an active account of the same toolkit [3149.64ms]
+(pass) selected provider bindings isolate inherited packages and do not change app account routing [6456.58ms]
+(pass) Team skill publication is management-only, immutable and pinned; private overlays cannot replace it [6995.14ms]
+
+1 tests failed:
+(fail) workspace choices distinguish management visibility from current invocation grants [1661.99ms]
+
+ 54 pass
+ 1 fail
+ 1119 expect() calls
+Ran 55 tests across 6 files. [138.12s]

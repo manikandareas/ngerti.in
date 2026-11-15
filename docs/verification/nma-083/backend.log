@@ -1,0 +1,141 @@
+bun test v1.3.10 (30e609e0)
+
+tests/run-recovery.test.ts:
+(pass) unknown work is reconciled automatically with backoff and no prompt replay [1873.59ms]
+(pass) a lost native completion is recovered through the executing owner and fences late output [1654.21ms]
+(pass) silence with no terminal receipt preserves running work and its tools [1719.54ms]
+(pass) current native observations postpone stale checks during a long valid run [2284.09ms]
+(pass) foreign receipts and unexpected cancellation cannot release an unknown lane [1374.79ms]
+(pass) an unrequested native interruption remains unresolved [1999.85ms]
+(pass) closing recovery cancels timers and prevents further receipt reads [1387.53ms]
+(pass) automatic group recovery keeps the writer fenced until its owned transport is quiescent [1759.34ms]
+
+tests/interaction-journal.test.ts:
+(pass) normalized observations persist once, redact key shapes and remain conversation scoped [1570.88ms]
+(pass) user_input acknowledgement survives completion/restart without asserting action completion [1931.95ms]
+(pass) approval acknowledgement survives completion/restart without asserting action completion [1658.56ms]
+(pass) lost HTTP acknowledgement and concurrent retries dispatch once; changed answers conflict [1334.28ms]
+(pass) ambiguous errors fence retries and do not store opaque native failures [1359.69ms]
+(pass) timeout stays unknown until the same attempt receives a late acknowledgement without retransmission [1260.52ms]
+(pass) restart turns persisted in-flight responses unknown even with no live broker [1142.75ms]
+(pass) definitive non-dispatch may retry; run cancellation remains a separate observation [1449.98ms]
+(pass) revocation during a pending read fences observation persistence and response dispatch [471.05ms]
+(pass) approval stages are distinct; disappearance without a response never means completion [1625.02ms]
+(pass) response fingerprints use original input while persisted answer displays redact secrets [811.83ms]
+(pass) oversized observations fail explicitly without truncating retained history or dispatching [770.39ms]
+(pass) a changed request payload cannot overwrite the question associated with a settled answer [963.83ms]
+(pass) first observed transcript anchor uses UTF-16 offset and immutable prefix hash through append, replacement and restart [1294.04ms]
+(pass) a request observed before agent output stays anchored to input with no invented text position [1615.92ms]
+(pass) a later message in another conversation is never selected as this run's question anchor [714.12ms]
+(pass) old journal records default anchor metadata to null and are never retroactively positioned [825.35ms]
+
+tests/product-interactions.test.ts:
+(pass) DM questions survive restart and owner submission admits exactly one bound continuation [343.44ms]
+(pass) topic changes do not consume a question; a later natural answer uses its existing turn [364.78ms]
+(pass) approval gates exact arguments and one effect command; agents cannot approve their own request [360.60ms]
+(pass) group native turns and DM use the same durable request service [347.72ms]
+(pass) an existing Goal waits for a DM question and transfers to its one continuation [346.22ms]
+(pass) pausing a Goal after a DM question fences its old response and continuation [342.03ms]
+(pass) an approval without its protected operation cannot create a misleading unguarded card [204.41ms]
+
+tests/organizations/workspace-access.test.ts:
+(pass) workspace choices distinguish management visibility from current invocation grants [1220.69ms]
+
+tests/organizations/data.test.ts:
+(pass) random default names come from the single-syllable library subset and exhaust unused names first [1.19ms]
+(pass) membership provisioning creates one private randomly named default agent, DM and authored welcome without inference [863.79ms]
+(pass) two users share Team configuration while their DM, memory, uploads and receipts stay private even from an administrator [992.35ms]
+(pass) personal preference overlays and explicit published knowledge cannot rewrite or automatically publish private context [764.38ms]
+(pass) RLS uses a non-owner role and transaction-local settings across pooled users and organization boundaries [959.16ms]
+(pass) context-bound replay rejects cross-user cursors and permission changes close old event access [783.99ms]
+(pass) private file publication, immutable downloads, parsed data and command replay stay in the initiating organization [1139.46ms]
+(pass) Workgroup invocation is distinct from administration and Team ownership survives creator offboarding [819.01ms]
+(pass) removed/rejoined membership cannot replay prior receipts or resume its private work implicitly [946.67ms]
+(pass) database references reject cross-user scope and concurrent organization tabs retain independent commands [899.10ms]
+(pass) SSE retains its captured private context outside the request and closes on membership revocation [735.33ms]
+(pass) guarded legacy binding backfills retained private entities/events and blocks old owner-wide routes [804.19ms]
+(pass) scoped application SQL also works through a real non-owner, non-superuser database login [571.47ms]
+(pass) private Goals/Routine schedule under their retained execution principal without borrowing a UI session or shared native resources [1156.20ms]
+(pass) private groups and routing cannot enroll another user's agent or another organization's Team agent [800.23ms]
+(pass) Team-agent native-binding metadata is actor-private and cannot reference another user's connection [992.54ms]
+(pass) immutable command receipts recheck current Team-agent invocation grants before replay [934.53ms]
+
+tests/organizations/providers.test.ts:
+(pass) personal provider connections remain private; organization connections require management and an explicit audience [1070.65ms]
+(pass) private conversation and user choices inherit only when unset and freeze connection/model on admission [2007.67ms]
+(pass) provider snapshots cannot be rewritten or forged across actors even through SQL-backed entity writes [1541.50ms]
+(pass) pre-provider scoped queued records can normalize a missing null snapshot without accepting a different selection [1210.61ms]
+(pass) same organization account has distinct native homes for each actor, conversation and connection generation [906.48ms]
+(pass) scheduled responsibilities retain their selected connection after private preferences change [1376.12ms]
+(pass) scoped API key submission and rotation retain encrypted bytes and secret-free receipts without selecting a replacement implicitly [1043.50ms]
+
+tests/organizations/readiness.test.ts:
+(pass) every installed account surface declares authentication/scope and rejects missing credentials before input validation [1339.39ms]
+(pass) normal HTTP admission and both broker executors keep two users of one Team agent private [9626.38ms]
+(pass) revoking membership during native work retains the matching cancelled outcome without late publication [3350.33ms]
+(pass) revoking membership during native work retains the matching unknown outcome without late publication [3473.70ms]
+(pass) authority replacement fences accepted scoped work and preserves the queued lane without resubmitting [2137.29ms]
+(pass) generic entity inventory and organization switches never grant another actor's private data [2946.71ms]
+(pass) concurrent scoped queries reuse their authorization fence without exhausting the auth pool [1133.66ms]
+(pass) opening a fourth private transport cannot evict another actor's active native writer [6726.15ms]
+(pass) native credential callbacks retain current resource grants after the opening browser session logs out [2166.02ms]
+(pass) commit subscribers cannot borrow the writing user's request scope [1104.08ms]
+(pass) a native stop timeout still fences an unknown outcome after membership revocation [4114.93ms]
+
+tests/organizations/surfaces.test.ts:
+(pass) account consumers exercise administrative metadata, conversation creation and private learning surfaces [2756.25ms]
+(pass) account consumers exercise private group routing, Team publication and assignment [3614.65ms]
+(pass) account consumers exercise run-owned publication and durable responsibility commands [5203.51ms]
+(pass) account consumers exercise private human replies and device-bound Computer renewal [2757.51ms]
+(pass) account consumers exercise selected-provider metadata, preparation and private run controls [2544.99ms]
+(pass) account consumers exercise private working-file, derived-artifact and responsibility surfaces [2708.57ms]
+(pass) account consumers exercise app discovery, reconnect and private revocation without ambient app identity [1260.99ms]
+(pass) only the issued live run lease enters the private MCP endpoint [3824.03ms]
+
+tests/organizations/integrations.test.ts:
+(pass) organization accounts require management; personal identity and account routing stay private [2095.91ms]
+(pass) shared app execution enforces resource arguments and persists actor-attributed receipts [2014.57ms]
+(pass) OAuth completion cannot publish after the initiating member is removed [1479.33ms]
+(pass) revocation after async native preflight blocks dispatch; stale sessions cannot expose disabled schemas [3571.94ms]
+(pass) membership revocation suppresses the result while retaining a known completed external effect [4549.31ms]
+(pass) unknown effects hold a shared account across different members and command identities [7032.21ms]
+(pass) pending OAuth stays bound to its initiator even after an unsuccessful refresh [5248.43ms]
+(pass) Workgroup removal invalidates retained app sessions and new requests cannot see the account [5127.37ms]
+(pass) refresh refuses another connected account and never falls back to an active account of the same toolkit [4417.69ms]
+(pass) selected provider bindings isolate inherited packages and do not change app account routing [18771.28ms]
+(pass) Team skill publication is management-only, immutable and pinned; private overlays cannot replace it [9770.99ms]
+
+tests/auth/security.test.ts:
+(pass) account mode fails closed on missing secrets, insecure origins or unsafe callbacks [11.53ms]
+(pass) native callback rejects wrong state, issuer, redirect, duplicate fields and replay [1349.01ms]
+(pass) token endpoint rejects wrong verifier, redirect, audience, code replay and client registration [1591.47ms]
+(pass) expired access/device sessions fail API, SSE and renewal without affecting another device [798.49ms]
+(pass) revocation closes an existing HTTP SSE stream and preserves another device [795.47ms]
+(pass) viewer tickets are bound to a live device and cannot be renewed from another device [999.46ms]
+(pass) password recovery revokes native offline credentials and leaves no auth secrets in domain records [1039.19ms]
+(pass) account-mode export identifies auth classes and the verified multi-user API gate [792.83ms]
+(pass) HTTPS configuration serializes Secure cookies and ignores spoofed proxy addresses [785.32ms]
+(pass) rate limits survive changing untrusted forwarding headers [558.91ms]
+(pass) a native device outlives browser logout and access-token revocation closes its stream [1944.43ms]
+
+tests/auth/http.test.ts:
+(pass) verified login uses HttpOnly cookies, redacts tokens and denies installation credentials [905.84ms]
+(pass) Owner bootstrap requires verified intended identity, expires and consumes once under a race [827.35ms]
+(pass) one device can renew, revoke and logout without ending another device or durable work [801.69ms]
+(pass) cross-origin and missing-origin cookie mutations fail without disclosing input [732.47ms]
+(pass) recovery uses controlled email delivery and retires old sessions [952.62ms]
+(pass) native loopback PKCE exchange, rotation and per-device revocation complete over real HTTP [927.80ms]
+(pass) persisted sessions and Owner mapping survive reopening the auth service [785.89ms]
+
+tests/machines/view-sessions.test.ts:
+(pass) viewer renewals keep the gateway identity and independent consumers cannot revoke each other [292.96ms]
+(pass) a renewal racing explicit revocation never resurrects the view [238.60ms]
+
+tests/machines/viewer-transport.test.ts:
+(pass) viewer RPCs include the issuing cookie only inside their same-origin opaque gateway [0.92ms]
+(pass) viewer transport preserves a Request body and leaves device credentials to the browser [0.40ms]
+
+ 109 pass
+ 0 fail
+ 1422 expect() calls
+Ran 109 tests across 13 files. [207.01s]

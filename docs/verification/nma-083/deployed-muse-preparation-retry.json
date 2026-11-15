@@ -1,0 +1,19 @@
+{
+  "run_id": "e6938dfc-7715-41ed-a594-8784bb86dce7",
+  "before": {
+    "state": "blocked",
+    "attempts": 1,
+    "next_attempt_at": null,
+    "configuration_revision": "1:5:1",
+    "runtime_revision": "/opt/ngertiin/bin/muse:2049:7625079:414927192:1794719226599:unprobed:unknown"
+  },
+  "diagnostic": {
+    "code": "NATIVE_UNKNOWN",
+    "category": "unknown",
+    "outcome": "unknown"
+  },
+  "explicit_same_run_retry": true,
+  "after": null,
+  "replay_same_run": true,
+  "duplicate_admission": false
+}

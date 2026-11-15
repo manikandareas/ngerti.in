@@ -1,0 +1,33 @@
+bun test v1.3.10 (30e609e0)
+
+../../scripts/verification/nma083/browser.test.ts:
+9277 | 
+9278 | // packages/utils/stackTrace.ts
+9279 | function captureRawStack() {
+9280 |   const stackTraceLimit = Error.stackTraceLimit;
+9281 |   Error.stackTraceLimit = 50;
+9282 |   const error = new Error();
+                           ^
+error: expect(received).toBe(expected) // Object.is equality
+
+Expected: "succeeded"
+Received: "running"
+
+Call Log:
+- Timeout 45000ms exceeded while waiting on the predicate
+ matcherResult: {
+  pass: false,
+  message: "expect(received).toBe(expected) // Object.is equality\n\nExpected: \"succeeded\"\nReceived: \"running\"\n\nCall Log:\n- Timeout 45000ms exceeded while waiting on the predicate",
+  name: "toBe",
+},
+
+      at captureRawStack (/Users/vitoandareasmanik/Development/project/ngertiin/node_modules/.bun/playwright-core@1.64.1/node_modules/playwright-core/lib/coreBundle.js:9282:21)
+      at callMatcherAsStep (/Users/vitoandareasmanik/Development/project/ngertiin/node_modules/.bun/playwright@1.64.1/node_modules/playwright/lib/matchers/expect.js:13316:57)
+      at /Users/vitoandareasmanik/Development/project/ngertiin/scripts/verification/nma083/browser.test.ts:137:27
+      at processTicksAndRejections (native:7:39)
+(fail) desktop: simultaneous Team-agent conversations, cross-organization drafts and live member removal [63408.24ms]
+
+ 0 pass
+ 1 filtered out
+ 1 fail
+Ran 1 test across 1 file. [64.37s]

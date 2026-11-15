@@ -1057,7 +1057,10 @@ export class Lifecycle {
         run.preparation?.state !== "blocked"
       )
         throw new DomainError("CONFLICT");
-      return await this.update(run, { preparation: undefined, diagnostic: null });
+      // Command receipts must omit optional metadata rather than retain an undefined value.
+      const ready = { ...run };
+      delete ready.preparation;
+      return await this.update(ready, { diagnostic: null });
     });
   }
 

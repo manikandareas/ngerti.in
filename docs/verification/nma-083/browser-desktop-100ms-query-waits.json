@@ -1,0 +1,2027 @@
+[
+  {
+    "at": "2026-11-15T11:40:02.413Z",
+    "active": 0,
+    "rows": [
+      {
+        "pid": 94,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "COMMIT",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 95,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "COMMIT",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 96,
+        "state": "idle in transaction",
+        "wait_event_type": null,
+        "wait_event": null,
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": "-0.000820"
+      },
+      {
+        "pid": 97,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "COMMIT",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 98,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT id,body->>'audience_id' AS audience_id FROM entities WHERE organization_id=$1 AND actor_id IS NULL AND kind=$2",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 99,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "COMMIT",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 100,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "COMMIT",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 101,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT s.id FROM session s JOIN \"user\" u ON u.id=s.\"userId\" WHERE s.id=$1 AND s.\"userId\"=$2 AND s.\"expiresAt\">now() AND u.\"emailVerified\"=true",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 102,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 103,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 104,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 105,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT s.id FROM session s JOIN \"user\" u ON u.id=s.\"userId\" WHERE s.id=$1 AND s.\"userId\"=$2 AND s.\"expiresAt\">now() AND u.\"emailVerified\"=true",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 106,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT id,body->>'audience_id' AS audience_id FROM entities WHERE organization_id=$1 AND actor_id IS NULL AND kind=$2",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 107,
+        "state": "active",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT seq,body FROM entities WHERE owner_id=$1 AND kind=$2 AND seq>$3 ORDER BY seq LIMIT $4",
+        "transaction_seconds": "-0.003885"
+      },
+      {
+        "pid": 108,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "COMMIT",
+        "transaction_seconds": null
+      }
+    ]
+  },
+  {
+    "at": "2026-11-15T11:40:07.421Z",
+    "active": 0,
+    "rows": [
+      {
+        "pid": 94,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "COMMIT",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 95,
+        "state": "active",
+        "wait_event_type": "Lock",
+        "wait_event": "tuple",
+        "blockers": [
+          108,
+          112
+        ],
+        "statement": "SELECT event_clock FROM installation WHERE id=1 FOR UPDATE",
+        "transaction_seconds": "0.138981"
+      },
+      {
+        "pid": 96,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": "0.075036"
+      },
+      {
+        "pid": 97,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": "0.073951"
+      },
+      {
+        "pid": 98,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT id,body->>'audience_id' AS audience_id FROM entities WHERE organization_id=$1 AND actor_id IS NULL AND kind=$2",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 99,
+        "state": "active",
+        "wait_event_type": "Lock",
+        "wait_event": "tuple",
+        "blockers": [
+          108,
+          112,
+          95,
+          110,
+          107
+        ],
+        "statement": "SELECT event_clock FROM installation WHERE id=1 FOR UPDATE",
+        "transaction_seconds": "0.020942"
+      },
+      {
+        "pid": 100,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SAVEPOINT s_629c461911dc41b6bc370576760ceb95",
+        "transaction_seconds": "0.743148"
+      },
+      {
+        "pid": 101,
+        "state": "active",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "select \"primary\".* from (select * from \"user\" where \"user\".\"id\" = $1) as \"primary\"",
+        "transaction_seconds": "-0.006958"
+      },
+      {
+        "pid": 102,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": "0.337781"
+      },
+      {
+        "pid": 103,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": "0.071112"
+      },
+      {
+        "pid": 104,
+        "state": "active",
+        "wait_event_type": null,
+        "wait_event": null,
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": "0.752100"
+      },
+      {
+        "pid": 105,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": "0.431910"
+      },
+      {
+        "pid": 106,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT id,body->>'audience_id' AS audience_id FROM entities WHERE organization_id=$1 AND actor_id IS NULL AND kind=$2",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 107,
+        "state": "active",
+        "wait_event_type": "Lock",
+        "wait_event": "tuple",
+        "blockers": [
+          108,
+          112,
+          95,
+          110
+        ],
+        "statement": "SELECT event_clock FROM installation WHERE id=1 FOR UPDATE",
+        "transaction_seconds": "0.030049"
+      },
+      {
+        "pid": 108,
+        "state": "active",
+        "wait_event_type": "Lock",
+        "wait_event": "transactionid",
+        "blockers": [
+          100
+        ],
+        "statement": "SELECT event_clock FROM installation WHERE id=1 FOR UPDATE",
+        "transaction_seconds": "0.403941"
+      },
+      {
+        "pid": 110,
+        "state": "active",
+        "wait_event_type": "Lock",
+        "wait_event": "tuple",
+        "blockers": [
+          108,
+          112,
+          95
+        ],
+        "statement": "SELECT event_clock FROM installation WHERE id=1 FOR UPDATE",
+        "transaction_seconds": "0.035316"
+      },
+      {
+        "pid": 111,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": "0.153346"
+      },
+      {
+        "pid": 112,
+        "state": "active",
+        "wait_event_type": "Lock",
+        "wait_event": "tuple",
+        "blockers": [
+          108
+        ],
+        "statement": "SELECT event_clock FROM installation WHERE id=1 FOR UPDATE",
+        "transaction_seconds": "0.266081"
+      },
+      {
+        "pid": 113,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "COMMIT",
+        "transaction_seconds": null
+      }
+    ]
+  },
+  {
+    "at": "2026-11-15T11:40:12.425Z",
+    "active": 0,
+    "rows": [
+      {
+        "pid": 94,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "COMMIT",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 95,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "COMMIT",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 96,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": "0.023215"
+      },
+      {
+        "pid": 97,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": "0.006807"
+      },
+      {
+        "pid": 98,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT id,body->>'audience_id' AS audience_id FROM entities WHERE organization_id=$1 AND actor_id IS NULL AND kind=$2",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 99,
+        "state": "active",
+        "wait_event_type": "Lock",
+        "wait_event": "transactionid",
+        "blockers": [
+          113
+        ],
+        "statement": "SELECT event_clock FROM installation WHERE id=1 FOR UPDATE",
+        "transaction_seconds": "0.211438"
+      },
+      {
+        "pid": 100,
+        "state": "active",
+        "wait_event_type": "Lock",
+        "wait_event": "tuple",
+        "blockers": [
+          99,
+          110
+        ],
+        "statement": "SELECT event_clock FROM installation WHERE id=1 FOR UPDATE",
+        "transaction_seconds": "0.057501"
+      },
+      {
+        "pid": 101,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "ROLLBACK",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 102,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": "0.163219"
+      },
+      {
+        "pid": 103,
+        "state": "idle",
+        "wait_event_type": null,
+        "wait_event": null,
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 104,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": "0.069391"
+      },
+      {
+        "pid": 105,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": "0.212932"
+      },
+      {
+        "pid": 106,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT 1 FROM entities WHERE organization_id IS NULL LIMIT 1",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 107,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SET LOCAL ROLE ngertiin_runtime",
+        "transaction_seconds": "0.006991"
+      },
+      {
+        "pid": 108,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "BEGIN",
+        "transaction_seconds": "-0.003917"
+      },
+      {
+        "pid": 110,
+        "state": "active",
+        "wait_event_type": "Lock",
+        "wait_event": "tuple",
+        "blockers": [
+          99
+        ],
+        "statement": "SELECT event_clock FROM installation WHERE id=1 FOR UPDATE",
+        "transaction_seconds": "0.145049"
+      },
+      {
+        "pid": 111,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": "0.261891"
+      },
+      {
+        "pid": 112,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "COMMIT",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 113,
+        "state": "active",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT body FROM entities WHERE owner_id=$1 AND kind=$2 AND id=$3",
+        "transaction_seconds": "0.255615"
+      }
+    ]
+  },
+  {
+    "at": "2026-11-15T11:40:17.442Z",
+    "active": 0,
+    "rows": [
+      {
+        "pid": 94,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "COMMIT",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 95,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "COMMIT",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 96,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": "0.235213"
+      },
+      {
+        "pid": 97,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT s.id FROM session s JOIN \"user\" u ON u.id=s.\"userId\" WHERE s.id=$1 AND s.\"userId\"=$2 AND s.\"expiresAt\">now() AND u.\"emailVerified\"=true FOR SHARE OF s,u",
+        "transaction_seconds": "-0.002538"
+      },
+      {
+        "pid": 98,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT id,body->>'audience_id' AS audience_id FROM entities WHERE organization_id=$1 AND actor_id IS NULL AND kind=$2",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 99,
+        "state": "active",
+        "wait_event_type": null,
+        "wait_event": null,
+        "blockers": [],
+        "statement": "SELECT seq,body FROM entities WHERE owner_id=$1 AND kind=$2 AND seq>$3 AND body->>'agent_id'=$4 AND body->>'state'=$5 ORDER BY seq LIMIT $6",
+        "transaction_seconds": "0.017714"
+      },
+      {
+        "pid": 100,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "COMMIT",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 101,
+        "state": "active",
+        "wait_event_type": null,
+        "wait_event": null,
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": "-0.003941"
+      },
+      {
+        "pid": 102,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "ROLLBACK",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 103,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": "0.000532"
+      },
+      {
+        "pid": 104,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": "0.578788"
+      },
+      {
+        "pid": 105,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": "0.043283"
+      },
+      {
+        "pid": 106,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT id,body->>'audience_id' AS audience_id FROM entities WHERE organization_id=$1 AND actor_id IS NULL AND kind=$2",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 107,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "COMMIT",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 108,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "COMMIT",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 110,
+        "state": "active",
+        "wait_event_type": "Lock",
+        "wait_event": "transactionid",
+        "blockers": [
+          113
+        ],
+        "statement": "SELECT event_clock FROM installation WHERE id=1 FOR UPDATE",
+        "transaction_seconds": "0.565270"
+      },
+      {
+        "pid": 111,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": "0.294430"
+      },
+      {
+        "pid": 112,
+        "state": "active",
+        "wait_event_type": "Lock",
+        "wait_event": "tuple",
+        "blockers": [
+          110
+        ],
+        "statement": "SELECT event_clock FROM installation WHERE id=1 FOR UPDATE",
+        "transaction_seconds": "0.281482"
+      },
+      {
+        "pid": 113,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT seq,body FROM entities WHERE owner_id=$1 AND kind=$2 AND seq>$3 ORDER BY seq LIMIT $4",
+        "transaction_seconds": "0.227937"
+      }
+    ]
+  },
+  {
+    "at": "2026-11-15T11:40:22.456Z",
+    "active": 2,
+    "rows": [
+      {
+        "pid": 94,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "COMMIT",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 95,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "COMMIT",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 96,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": "0.441973"
+      },
+      {
+        "pid": 97,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": "0.301222"
+      },
+      {
+        "pid": 98,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT 1 FROM entities WHERE organization_id IS NULL LIMIT 1",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 99,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT event_clock FROM installation WHERE id=1 FOR UPDATE",
+        "transaction_seconds": "0.769331"
+      },
+      {
+        "pid": 100,
+        "state": "active",
+        "wait_event_type": "Lock",
+        "wait_event": "tuple",
+        "blockers": [
+          110,
+          113
+        ],
+        "statement": "SELECT event_clock FROM installation WHERE id=1 FOR UPDATE",
+        "transaction_seconds": "0.436186"
+      },
+      {
+        "pid": 101,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": "0.482359"
+      },
+      {
+        "pid": 102,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "ROLLBACK",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 103,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "ROLLBACK",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 104,
+        "state": "idle in transaction",
+        "wait_event_type": null,
+        "wait_event": null,
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": "0.780309"
+      },
+      {
+        "pid": 105,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": "0.309083"
+      },
+      {
+        "pid": 106,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT 1 FROM entities WHERE organization_id IS NULL LIMIT 1",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 107,
+        "state": "active",
+        "wait_event_type": "Lock",
+        "wait_event": "tuple",
+        "blockers": [
+          110,
+          113,
+          100
+        ],
+        "statement": "SELECT event_clock FROM installation WHERE id=1 FOR UPDATE",
+        "transaction_seconds": "0.293703"
+      },
+      {
+        "pid": 108,
+        "state": "active",
+        "wait_event_type": "Lock",
+        "wait_event": "tuple",
+        "blockers": [
+          110,
+          113,
+          100,
+          107
+        ],
+        "statement": "SELECT event_clock FROM installation WHERE id=1 FOR UPDATE",
+        "transaction_seconds": "0.293338"
+      },
+      {
+        "pid": 110,
+        "state": "active",
+        "wait_event_type": "Lock",
+        "wait_event": "transactionid",
+        "blockers": [
+          99
+        ],
+        "statement": "SELECT event_clock FROM installation WHERE id=1 FOR UPDATE",
+        "transaction_seconds": "0.478907"
+      },
+      {
+        "pid": 111,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": "0.483320"
+      },
+      {
+        "pid": 112,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "COMMIT",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 113,
+        "state": "active",
+        "wait_event_type": "Lock",
+        "wait_event": "tuple",
+        "blockers": [
+          110
+        ],
+        "statement": "SELECT event_clock FROM installation WHERE id=1 FOR UPDATE",
+        "transaction_seconds": "0.477082"
+      }
+    ]
+  },
+  {
+    "at": "2026-11-15T11:40:27.465Z",
+    "active": 3,
+    "rows": [
+      {
+        "pid": 94,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "COMMIT",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 95,
+        "state": "active",
+        "wait_event_type": null,
+        "wait_event": null,
+        "blockers": [],
+        "statement": "SELECT body FROM entities WHERE owner_id=$1 AND kind=$2 AND id=$3",
+        "transaction_seconds": "0.003477"
+      },
+      {
+        "pid": 96,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": "0.306614"
+      },
+      {
+        "pid": 97,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": "0.009667"
+      },
+      {
+        "pid": 98,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT id,body->>'audience_id' AS audience_id FROM entities WHERE organization_id=$1 AND actor_id IS NULL AND kind=$2",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 99,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "COMMIT",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 100,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "COMMIT",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 101,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT s.id FROM session s JOIN \"user\" u ON u.id=s.\"userId\" WHERE s.id=$1 AND s.\"userId\"=$2 AND s.\"expiresAt\">now() AND u.\"emailVerified\"=true",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 102,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT s.id FROM session s JOIN \"user\" u ON u.id=s.\"userId\" WHERE s.id=$1 AND s.\"userId\"=$2 AND s.\"expiresAt\">now() AND u.\"emailVerified\"=true",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 103,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": "0.009750"
+      },
+      {
+        "pid": 104,
+        "state": "active",
+        "wait_event_type": null,
+        "wait_event": null,
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": "0.026088"
+      },
+      {
+        "pid": 105,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT s.id FROM session s JOIN \"user\" u ON u.id=s.\"userId\" WHERE s.id=$1 AND s.\"userId\"=$2 AND s.\"expiresAt\">now() AND u.\"emailVerified\"=true",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 106,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT id,body->>'audience_id' AS audience_id FROM entities WHERE organization_id=$1 AND actor_id IS NULL AND kind=$2",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 107,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT body FROM entities WHERE owner_id=$1 AND kind=$2 AND id=$3",
+        "transaction_seconds": "0.303738"
+      },
+      {
+        "pid": 108,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT seq,body FROM entities WHERE owner_id=$1 AND kind=$2 AND seq>$3 AND body->>'agent_id'=$4 ORDER BY seq LIMIT $5",
+        "transaction_seconds": "0.006727"
+      },
+      {
+        "pid": 110,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "COMMIT",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 111,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 112,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT set_config('ngertiin.mode',$1,true),set_config('ngertiin.organization_id',$2,true),set_config('ngertiin.actor_id',$3,true),set_config('ngertiin.agents',$4,true),set_config('",
+        "transaction_seconds": "0.003367"
+      },
+      {
+        "pid": 113,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "COMMIT",
+        "transaction_seconds": null
+      }
+    ]
+  },
+  {
+    "at": "2026-11-15T11:40:32.524Z",
+    "active": 3,
+    "rows": [
+      {
+        "pid": 94,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "COMMIT",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 95,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "COMMIT",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 96,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": "0.339006"
+      },
+      {
+        "pid": 97,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": "0.670529"
+      },
+      {
+        "pid": 98,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT id,body->>'audience_id' AS audience_id FROM entities WHERE organization_id=$1 AND actor_id IS NULL AND kind=$2",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 99,
+        "state": "active",
+        "wait_event_type": "Lock",
+        "wait_event": "tuple",
+        "blockers": [
+          110,
+          107
+        ],
+        "statement": "SELECT event_clock FROM installation WHERE id=1 FOR UPDATE",
+        "transaction_seconds": "0.336870"
+      },
+      {
+        "pid": 100,
+        "state": "active",
+        "wait_event_type": "Lock",
+        "wait_event": "tuple",
+        "blockers": [
+          110,
+          107,
+          99,
+          112
+        ],
+        "statement": "SELECT event_clock FROM installation WHERE id=1 FOR UPDATE",
+        "transaction_seconds": "0.129260"
+      },
+      {
+        "pid": 101,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": "0.685933"
+      },
+      {
+        "pid": 102,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": "0.091135"
+      },
+      {
+        "pid": 103,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": "0.353507"
+      },
+      {
+        "pid": 104,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": "0.688701"
+      },
+      {
+        "pid": 105,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": "0.153782"
+      },
+      {
+        "pid": 106,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT id,body->>'audience_id' AS audience_id FROM entities WHERE organization_id=$1 AND actor_id IS NULL AND kind=$2",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 107,
+        "state": "active",
+        "wait_event_type": "Lock",
+        "wait_event": "tuple",
+        "blockers": [
+          110
+        ],
+        "statement": "SELECT event_clock FROM installation WHERE id=1 FOR UPDATE",
+        "transaction_seconds": "0.665752"
+      },
+      {
+        "pid": 108,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "COMMIT",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 110,
+        "state": "active",
+        "wait_event_type": "Lock",
+        "wait_event": "transactionid",
+        "blockers": [
+          113
+        ],
+        "statement": "SELECT event_clock FROM installation WHERE id=1 FOR UPDATE",
+        "transaction_seconds": "0.670990"
+      },
+      {
+        "pid": 111,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": "0.683832"
+      },
+      {
+        "pid": 112,
+        "state": "active",
+        "wait_event_type": "Lock",
+        "wait_event": "tuple",
+        "blockers": [
+          110,
+          107,
+          99
+        ],
+        "statement": "SELECT event_clock FROM installation WHERE id=1 FOR UPDATE",
+        "transaction_seconds": "0.334151"
+      },
+      {
+        "pid": 113,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT event_clock FROM installation WHERE id=1 FOR UPDATE",
+        "transaction_seconds": "0.677189"
+      }
+    ]
+  },
+  {
+    "at": "2026-11-15T11:40:37.525Z",
+    "active": 3,
+    "rows": [
+      {
+        "pid": 94,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "COMMIT",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 95,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT seq,body FROM entities WHERE owner_id=$1 AND kind=$2 AND seq>$3 ORDER BY seq LIMIT $4",
+        "transaction_seconds": "0.018441"
+      },
+      {
+        "pid": 96,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": "0.037265"
+      },
+      {
+        "pid": 97,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": "0.589350"
+      },
+      {
+        "pid": 98,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT id,body->>'audience_id' AS audience_id FROM entities WHERE organization_id=$1 AND actor_id IS NULL AND kind=$2",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 99,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "COMMIT",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 100,
+        "state": "active",
+        "wait_event_type": "Lock",
+        "wait_event": "tuple",
+        "blockers": [
+          112,
+          108,
+          113
+        ],
+        "statement": "SELECT event_clock FROM installation WHERE id=1 FOR UPDATE",
+        "transaction_seconds": "0.493902"
+      },
+      {
+        "pid": 101,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": "2.047771"
+      },
+      {
+        "pid": 102,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT s.id FROM session s JOIN \"user\" u ON u.id=s.\"userId\" WHERE s.id=$1 AND s.\"userId\"=$2 AND s.\"expiresAt\">now() AND u.\"emailVerified\"=true",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 103,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": "1.960913"
+      },
+      {
+        "pid": 104,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": "0.015865"
+      },
+      {
+        "pid": 105,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": "0.548672"
+      },
+      {
+        "pid": 106,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT id,body->>'audience_id' AS audience_id FROM entities WHERE organization_id=$1 AND actor_id IS NULL AND kind=$2",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 107,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT body FROM entities WHERE owner_id=$1 AND kind=$2 AND id=$3",
+        "transaction_seconds": "2.372145"
+      },
+      {
+        "pid": 108,
+        "state": "active",
+        "wait_event_type": "Lock",
+        "wait_event": "tuple",
+        "blockers": [
+          112
+        ],
+        "statement": "SELECT event_clock FROM installation WHERE id=1 FOR UPDATE",
+        "transaction_seconds": "1.955183"
+      },
+      {
+        "pid": 110,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "BEGIN",
+        "transaction_seconds": "0.000736"
+      },
+      {
+        "pid": 111,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": "2.374604"
+      },
+      {
+        "pid": 112,
+        "state": "active",
+        "wait_event_type": "Lock",
+        "wait_event": "transactionid",
+        "blockers": [
+          107
+        ],
+        "statement": "SELECT event_clock FROM installation WHERE id=1 FOR UPDATE",
+        "transaction_seconds": "2.019230"
+      },
+      {
+        "pid": 113,
+        "state": "active",
+        "wait_event_type": "Lock",
+        "wait_event": "tuple",
+        "blockers": [
+          112,
+          108
+        ],
+        "statement": "SELECT event_clock FROM installation WHERE id=1 FOR UPDATE",
+        "transaction_seconds": "0.545795"
+      }
+    ]
+  },
+  {
+    "at": "2026-11-15T11:40:42.650Z",
+    "active": 3,
+    "rows": [
+      {
+        "pid": 94,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "COMMIT",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 95,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "BEGIN",
+        "transaction_seconds": "-0.023532"
+      },
+      {
+        "pid": 96,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": "1.066925"
+      },
+      {
+        "pid": 97,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": "0.918238"
+      },
+      {
+        "pid": 98,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT id,body->>'audience_id' AS audience_id FROM entities WHERE organization_id=$1 AND actor_id IS NULL AND kind=$2",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 99,
+        "state": "active",
+        "wait_event_type": "Lock",
+        "wait_event": "tuple",
+        "blockers": [
+          113
+        ],
+        "statement": "SELECT event_clock FROM installation WHERE id=1 FOR UPDATE",
+        "transaction_seconds": "0.908388"
+      },
+      {
+        "pid": 100,
+        "state": "active",
+        "wait_event_type": "Lock",
+        "wait_event": "tuple",
+        "blockers": [
+          113,
+          99,
+          107
+        ],
+        "statement": "SELECT event_clock FROM installation WHERE id=1 FOR UPDATE",
+        "transaction_seconds": "0.603627"
+      },
+      {
+        "pid": 101,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": "0.092939"
+      },
+      {
+        "pid": 102,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": "0.061404"
+      },
+      {
+        "pid": 103,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": "0.903570"
+      },
+      {
+        "pid": 104,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": "1.065611"
+      },
+      {
+        "pid": 105,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": "0.631752"
+      },
+      {
+        "pid": 106,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT 1 FROM entities WHERE organization_id IS NULL LIMIT 1",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 107,
+        "state": "active",
+        "wait_event_type": "Lock",
+        "wait_event": "tuple",
+        "blockers": [
+          113,
+          99
+        ],
+        "statement": "SELECT event_clock FROM installation WHERE id=1 FOR UPDATE",
+        "transaction_seconds": "0.898947"
+      },
+      {
+        "pid": 108,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT seq,body FROM entities WHERE owner_id=$1 AND kind=$2 AND seq>$3 AND body->>'agent_id'=$4 AND body->>'state'=$5 ORDER BY seq LIMIT $6",
+        "transaction_seconds": "1.054760"
+      },
+      {
+        "pid": 110,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT set_config('ngertiin.mode',$1,true),set_config('ngertiin.organization_id',$2,true),set_config('ngertiin.actor_id',$3,true),set_config('ngertiin.agents',$4,true),set_config('",
+        "transaction_seconds": "0.021508"
+      },
+      {
+        "pid": 111,
+        "state": "idle in transaction",
+        "wait_event_type": null,
+        "wait_event": null,
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": "0.123384"
+      },
+      {
+        "pid": 112,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "COMMIT",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 113,
+        "state": "active",
+        "wait_event_type": "Lock",
+        "wait_event": "transactionid",
+        "blockers": [
+          108
+        ],
+        "statement": "SELECT event_clock FROM installation WHERE id=1 FOR UPDATE",
+        "transaction_seconds": "1.047417"
+      }
+    ]
+  },
+  {
+    "at": "2026-11-15T11:40:47.449Z",
+    "active": 3,
+    "rows": [
+      {
+        "pid": 94,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "COMMIT",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 95,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "COMMIT",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 96,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "ROLLBACK",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 97,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": "0.160394"
+      },
+      {
+        "pid": 98,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT id,body->>'audience_id' AS audience_id FROM entities WHERE organization_id=$1 AND actor_id IS NULL AND kind=$2",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 99,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "COMMIT",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 100,
+        "state": "active",
+        "wait_event_type": "Lock",
+        "wait_event": "transactionid",
+        "blockers": [
+          108
+        ],
+        "statement": "SELECT event_clock FROM installation WHERE id=1 FOR UPDATE",
+        "transaction_seconds": "1.760116"
+      },
+      {
+        "pid": 101,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": "0.256755"
+      },
+      {
+        "pid": 102,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "ROLLBACK",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 103,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": "1.745140"
+      },
+      {
+        "pid": 104,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": "0.347446"
+      },
+      {
+        "pid": 105,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": "1.766143"
+      },
+      {
+        "pid": 106,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT 1 FROM entities WHERE organization_id IS NULL LIMIT 1",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 107,
+        "state": "active",
+        "wait_event_type": "Lock",
+        "wait_event": "tuple",
+        "blockers": [
+          113,
+          112
+        ],
+        "statement": "SELECT event_clock FROM installation WHERE id=1 FOR UPDATE",
+        "transaction_seconds": "0.158010"
+      },
+      {
+        "pid": 108,
+        "state": "active",
+        "wait_event_type": null,
+        "wait_event": null,
+        "blockers": [],
+        "statement": "SELECT seq,body FROM entities WHERE owner_id=$1 AND kind=$2 AND seq>$3 AND body->>'thread_id'=$4 ORDER BY seq LIMIT $5",
+        "transaction_seconds": "0.342869"
+      },
+      {
+        "pid": 110,
+        "state": "active",
+        "wait_event_type": "Lock",
+        "wait_event": "tuple",
+        "blockers": [
+          100
+        ],
+        "statement": "SELECT event_clock FROM installation WHERE id=1 FOR UPDATE",
+        "transaction_seconds": "1.743216"
+      },
+      {
+        "pid": 111,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": "0.259789"
+      },
+      {
+        "pid": 112,
+        "state": "active",
+        "wait_event_type": "Lock",
+        "wait_event": "tuple",
+        "blockers": [
+          113
+        ],
+        "statement": "SELECT event_clock FROM installation WHERE id=1 FOR UPDATE",
+        "transaction_seconds": "0.251139"
+      },
+      {
+        "pid": 113,
+        "state": "active",
+        "wait_event_type": "Lock",
+        "wait_event": "transactionid",
+        "blockers": [
+          108
+        ],
+        "statement": "SELECT event_clock FROM installation WHERE id=1 FOR UPDATE",
+        "transaction_seconds": "0.256504"
+      }
+    ]
+  },
+  {
+    "at": "2026-11-15T11:40:52.676Z",
+    "active": 3,
+    "rows": [
+      {
+        "pid": 94,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "COMMIT",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 95,
+        "state": "active",
+        "wait_event_type": "Lock",
+        "wait_event": "tuple",
+        "blockers": [
+          100,
+          113
+        ],
+        "statement": "SELECT event_clock FROM installation WHERE id=1 FOR UPDATE",
+        "transaction_seconds": "0.661096"
+      },
+      {
+        "pid": 96,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": "0.781187"
+      },
+      {
+        "pid": 97,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": "1.000593"
+      },
+      {
+        "pid": 98,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT id,body->>'audience_id' AS audience_id FROM entities WHERE organization_id=$1 AND actor_id IS NULL AND kind=$2",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 99,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "COMMIT",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 100,
+        "state": "active",
+        "wait_event_type": "Lock",
+        "wait_event": "transactionid",
+        "blockers": [
+          107
+        ],
+        "statement": "SELECT event_clock FROM installation WHERE id=1 FOR UPDATE",
+        "transaction_seconds": "0.775628"
+      },
+      {
+        "pid": 101,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": "0.592338"
+      },
+      {
+        "pid": 102,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": "0.565933"
+      },
+      {
+        "pid": 103,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": "0.664922"
+      },
+      {
+        "pid": 104,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT s.id FROM session s JOIN \"user\" u ON u.id=s.\"userId\" WHERE s.id=$1 AND s.\"userId\"=$2 AND s.\"expiresAt\">now() AND u.\"emailVerified\"=true",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 105,
+        "state": "idle in transaction",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT m.id,m.role,s.generation,s.private_work_suspended,p.authorization_generation,\n      ARRAY(SELECT tm.\"teamId\" FROM \"teamMember\" tm JOIN team t ON t.id=tm.\"teamId\"\n        WHE",
+        "transaction_seconds": "0.688304"
+      },
+      {
+        "pid": 106,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "SELECT agent_id,audience_id FROM team_agent_grants WHERE organization_id=$1",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 107,
+        "state": "active",
+        "wait_event_type": null,
+        "wait_event": null,
+        "blockers": [],
+        "statement": "SELECT authority_epoch=$1 AND EXISTS(\n      SELECT 1 FROM pg_locks WHERE locktype='advisory' AND pid=$2 AND granted\n      AND classid=$3::oid AND objid=($4::bigint & 4294967295)::o",
+        "transaction_seconds": "0.998064"
+      },
+      {
+        "pid": 108,
+        "state": "active",
+        "wait_event_type": "Lock",
+        "wait_event": "tuple",
+        "blockers": [
+          100,
+          113,
+          95,
+          110
+        ],
+        "statement": "SELECT event_clock FROM installation WHERE id=1 FOR UPDATE",
+        "transaction_seconds": "0.556487"
+      },
+      {
+        "pid": 110,
+        "state": "active",
+        "wait_event_type": "Lock",
+        "wait_event": "tuple",
+        "blockers": [
+          100,
+          113,
+          95
+        ],
+        "statement": "SELECT event_clock FROM installation WHERE id=1 FOR UPDATE",
+        "transaction_seconds": "0.588896"
+      },
+      {
+        "pid": 111,
+        "state": "active",
+        "wait_event_type": null,
+        "wait_event": null,
+        "blockers": [],
+        "statement": "SELECT s.id FROM session s JOIN \"user\" u ON u.id=s.\"userId\" WHERE s.id=$1 AND s.\"userId\"=$2 AND s.\"expiresAt\">now() AND u.\"emailVerified\"=true",
+        "transaction_seconds": "-0.014848"
+      },
+      {
+        "pid": 112,
+        "state": "idle",
+        "wait_event_type": "Client",
+        "wait_event": "ClientRead",
+        "blockers": [],
+        "statement": "COMMIT",
+        "transaction_seconds": null
+      },
+      {
+        "pid": 113,
+        "state": "active",
+        "wait_event_type": "Lock",
+        "wait_event": "tuple",
+        "blockers": [
+          100
+        ],
+        "statement": "SELECT event_clock FROM installation WHERE id=1 FOR UPDATE",
+        "transaction_seconds": "0.685340"
+      }
+    ]
+  }
+]

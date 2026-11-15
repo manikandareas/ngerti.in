@@ -1,4 +1,5 @@
 import { expect, test } from "bun:test";
+import { CONTRACT_VERSION } from "../../src/contracts";
 import { workspaceAccess } from "../../src/organizations/workspace-access";
 import { organizationFixture } from "./helpers";
 
@@ -75,7 +76,7 @@ test("workspace choices distinguish management visibility from current invocatio
     expect((await read(alice.cookie, crypto.randomUUID())).status).toBe(403);
     expect((await f.http("/v1/data/access", undefined, alice.cookie)).status).toBe(403);
     const contract = await f.success(f.http("/v1/contracts", undefined, f.owner.cookie));
-    expect(contract.version).toBe("2.1.0");
+    expect(contract.version).toBe(CONTRACT_VERSION);
     const route = contract.http.find(
       (item: { method: string; path: string }) =>
         item.method === "GET" && item.path === "/v1/data/access",

@@ -1,0 +1,92 @@
+bun test v1.3.10 (30e609e0)
+
+../../scripts/verification/nma083/browser.test.ts:
+9277 | 
+9278 | // packages/utils/stackTrace.ts
+9279 | function captureRawStack() {
+9280 |   const stackTraceLimit = Error.stackTraceLimit;
+9281 |   Error.stackTraceLimit = 50;
+9282 |   const error = new Error();
+                           ^
+error: expect(locator).toHaveCount(expected) failed
+
+Locator:  getByRole('main', { name: 'Percakapan aktif' }).getByText('NMA083 desktop private person 1 4839bf65-4264-46d0-8113-d1553f6cdcf9', { exact: true })
+Expected: 2
+Received: 1
+Timeout:  45000ms
+
+Call log:
+  - Expect "toHaveCount" getByRole('main', { name: 'Percakapan aktif' }).getByText('NMA083 desktop private person 1 4839bf65-4264-46d0-8113-d1553f6cdcf9', { exact: true }) with timeout 45000ms
+  - waiting for getByRole('main', { name: 'Percakapan aktif' }).getByText('NMA083 desktop private person 1 4839bf65-4264-46d0-8113-d1553f6cdcf9', { exact: true })
+    5 × locator resolved to 1 element
+      - unexpected value "1"
+    - locator resolved to 0 elements
+    - unexpected value "0"
+    80 × locator resolved to 1 element
+       - unexpected value "1"
+
+ matcherResult: {
+  actual: 1,
+  expected: 2,
+  message: "expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('main', { name: 'Percakapan aktif' }).getByText('NMA083 desktop private person 1 4839bf65-4264-46d0-8113-d1553f6cdcf9', { exact: true })\nExpected: 2\nReceived: 1\nTimeout:  45000ms\n\nCall log:\n  - Expect \"toHaveCount\" getByRole('main', { name: 'Percakapan aktif' }).getByText('NMA083 desktop private person 1 4839bf65-4264-46d0-8113-d1553f6cdcf9', { exact: true }) with timeout 45000ms\n  - waiting for getByRole('main', { name: 'Percakapan aktif' }).getByText('NMA083 desktop private person 1 4839bf65-4264-46d0-8113-d1553f6cdcf9', { exact: true })\n    5 × locator resolved to 1 element\n      - unexpected value \"1\"\n    - locator resolved to 0 elements\n    - unexpected value \"0\"\n    80 × locator resolved to 1 element\n       - unexpected value \"1\"\n",
+  name: "toHaveCount",
+  pass: false,
+  log: [ "  - Expect \"toHaveCount\" getByRole('main', { name: 'Percakapan aktif' }).getByText('NMA083 desktop private person 1 4839bf65-4264-46d0-8113-d1553f6cdcf9', { exact: true }) with timeout 45000ms",
+    "  - waiting for getByRole('main', { name: 'Percakapan aktif' }).getByText('NMA083 desktop private person 1 4839bf65-4264-46d0-8113-d1553f6cdcf9', { exact: true })",
+    "    5 × locator resolved to 1 element", "      - unexpected value \"1\"", "    - locator resolved to 0 elements",
+    "    - unexpected value \"0\"", "    80 × locator resolved to 1 element", "       - unexpected value \"1\""
+  ],
+  timeout: 45000,
+  ariaSnapshot: undefined,
+},
+
+      at captureRawStack (/Users/vitoandareasmanik/Development/project/ngertiin/node_modules/.bun/playwright-core@1.64.1/node_modules/playwright-core/lib/coreBundle.js:9282:21)
+      at callMatcherAsStep (/Users/vitoandareasmanik/Development/project/ngertiin/node_modules/.bun/playwright@1.64.1/node_modules/playwright/lib/matchers/expect.js:13316:57)
+      at /Users/vitoandareasmanik/Development/project/ngertiin/scripts/verification/nma083/browser.test.ts:56:81
+      at /Users/vitoandareasmanik/Development/project/ngertiin/scripts/verification/nma083/browser.test.ts:53:28
+      at processTicksAndRejections (native:7:39)
+(fail) desktop: simultaneous Team-agent conversations, cross-organization drafts and live member removal [59070.98ms]
+9277 | 
+9278 | // packages/utils/stackTrace.ts
+9279 | function captureRawStack() {
+9280 |   const stackTraceLimit = Error.stackTraceLimit;
+9281 |   Error.stackTraceLimit = 50;
+9282 |   const error = new Error();
+                           ^
+error: expect(locator).toHaveCount(expected) failed
+
+Locator:  getByRole('main', { name: 'Percakapan aktif' })
+Expected: 0
+Received: 1
+Timeout:  30000ms
+
+Call log:
+  - Expect "toHaveCount" getByRole('main', { name: 'Percakapan aktif' }) with timeout 30000ms
+  - waiting for getByRole('main', { name: 'Percakapan aktif' })
+    63 × locator resolved to 1 element
+       - unexpected value "1"
+
+ matcherResult: {
+  actual: 1,
+  expected: 0,
+  message: "expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('main', { name: 'Percakapan aktif' })\nExpected: 0\nReceived: 1\nTimeout:  30000ms\n\nCall log:\n  - Expect \"toHaveCount\" getByRole('main', { name: 'Percakapan aktif' }) with timeout 30000ms\n  - waiting for getByRole('main', { name: 'Percakapan aktif' })\n    63 × locator resolved to 1 element\n       - unexpected value \"1\"\n",
+  name: "toHaveCount",
+  pass: false,
+  log: [ "  - Expect \"toHaveCount\" getByRole('main', { name: 'Percakapan aktif' }) with timeout 30000ms",
+    "  - waiting for getByRole('main', { name: 'Percakapan aktif' })", "    63 × locator resolved to 1 element",
+    "       - unexpected value \"1\""
+  ],
+  timeout: 30000,
+  ariaSnapshot: undefined,
+},
+
+      at captureRawStack (/Users/vitoandareasmanik/Development/project/ngertiin/node_modules/.bun/playwright-core@1.64.1/node_modules/playwright-core/lib/coreBundle.js:9282:21)
+      at callMatcherAsStep (/Users/vitoandareasmanik/Development/project/ngertiin/node_modules/.bun/playwright@1.64.1/node_modules/playwright/lib/matchers/expect.js:13316:57)
+      at /Users/vitoandareasmanik/Development/project/ngertiin/scripts/verification/nma083/browser.test.ts:85:70
+      at processTicksAndRejections (native:7:39)
+(fail) mobile: simultaneous Team-agent conversations, cross-organization drafts and live member removal [66657.15ms]
+
+ 0 pass
+ 2 fail
+ 4 expect() calls
+Ran 2 tests across 1 file. [126.75s]

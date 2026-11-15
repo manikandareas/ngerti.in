@@ -412,7 +412,7 @@
     "ticket": "NMA-083",
     "title": "Integrated multi-organization web and Tauri acceptance",
     "plan": "Harness-first",
-    "status": "Backlog",
+    "status": "Done",
     "order": 16.81,
     "layer": "Product / Verification",
     "depends_on": [

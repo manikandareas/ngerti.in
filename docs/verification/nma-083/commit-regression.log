@@ -1,0 +1,25 @@
+bun test v1.3.10 (30e609e0)
+
+tests/organizations/attachments.test.ts:
+(pass) a scoped attachment-bearing admission reaches the harness with its private document context [5576.10ms]
+
+tests/organizations/preparation.test.ts:
+(pass) a blocked scoped preparation retries through HTTP and replays one JSON command receipt [4159.24ms]
+
+tests/organizations/muse-catalog.test.ts:
+(pass) Muse's selected-process model catalog cannot invalidate the frozen account selection during preparation [3842.85ms]
+(pass) retaining Muse account choices never broadens the native session's reasoning support [1730.06ms]
+
+tests/organizations/workspace-access.test.ts:
+(pass) workspace choices distinguish management visibility from current invocation grants [1171.98ms]
+
+../../scripts/verification/nma083/acceptance.test.ts:
+(pass) three people retain private Team-agent work across organizations, concurrency, lost acknowledgements and removal [12506.44ms]
+
+../../scripts/verification/nma083/workload.test.ts:
+(pass) declared three-client HTTP/SSE workload measures admission and event delivery with private streams [3839.45ms]
+
+ 7 pass
+ 0 fail
+ 153 expect() calls
+Ran 7 tests across 6 files. [33.93s]

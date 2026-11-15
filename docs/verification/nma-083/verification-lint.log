@@ -1,0 +1,16 @@
+/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/biome.json configuration ━━━━━━━━━━
+
+  × Found a nested root configuration, but there's already a root configuration.
+  
+  i The other configuration was found in /Users/vitoandareasmanik/Development/project/ngertiin.
+  
+  i Use the migration command from the root of the project to update the configuration.
+  
+  $ biome migrate --write
+  
+
+configuration ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  × Biome exited because the configuration resulted in errors. Please fix them.
+  
+

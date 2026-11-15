@@ -1,0 +1,18 @@
+bun test v1.3.10 (30e609e0)
+
+tests/organizations/muse-catalog.test.ts:
+(pass) Muse's selected-process model catalog cannot invalidate the frozen account selection during preparation [7081.20ms]
+
+tests/organizations/providers.test.ts:
+(pass) personal provider connections remain private; organization connections require management and an explicit audience [2483.03ms]
+(pass) private conversation and user choices inherit only when unset and freeze connection/model on admission [2169.87ms]
+(pass) provider snapshots cannot be rewritten or forged across actors even through SQL-backed entity writes [1705.23ms]
+(pass) pre-provider scoped queued records can normalize a missing null snapshot without accepting a different selection [1685.77ms]
+(pass) same organization account has distinct native homes for each actor, conversation and connection generation [1087.61ms]
+(pass) scheduled responsibilities retain their selected connection after private preferences change [1876.77ms]
+(pass) scoped API key submission and rotation retain encrypted bytes and secret-free receipts without selecting a replacement implicitly [1210.83ms]
+
+ 8 pass
+ 0 fail
+ 42 expect() calls
+Ran 8 tests across 2 files. [20.63s]

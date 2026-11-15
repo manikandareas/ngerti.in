@@ -2,6 +2,8 @@
 
 Contract **2.0.0**, verified by NMA-079, is the breaking transition from the owner-only consumer model to authenticated organization/user scope. The installed `/v1/contracts` is authoritative for registered routes, request/response schemas, entity/command/event schemas, product tools, authentication and scope classes. The retained 1.x exports describe their captured versions; they are not edited or relabeled as multi-user acceptance. [Verification](../verification/nma-079/README.md) owns the actual gate outcome and limitations.
 
+[NMA-083](../verification/nma-083/README.md) records integrated actor/web/Tauri acceptance against installed contract **2.2.0**, including an affected authentication/surface inventory, native provider/file/Computer workflows, deployed transport and bounded workload observations. Its internal materialization, preparation-receipt and Muse catalog corrections do not change the API schema. Full-product and installation gates remain NMA-063/NMA-064.
+
 ## Additive web-consumer delta — 2.1.0
 
 NMA-080 adds `GET /v1/data/access` with an executable response schema. It returns `invocable_team_agent_ids` and `allowed_organization_connection_ids` for the current authenticated organization/user context. Management visibility does not grant invocation. Clients filter sidebar/model choices with this response while the server rechecks grants before dispatch. Web onboarding requires compatible major 2 and minor 1 or newer before applying pending writes. The [2.1.0 export](../contracts/2.1.0.json) and [NMA-080 evidence](../verification/nma-080/README.md) retain the delta separately from the historical NMA-079 gate.

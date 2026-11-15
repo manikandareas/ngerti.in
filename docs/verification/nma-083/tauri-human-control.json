@@ -1,0 +1,13 @@
+{
+  "state": "ready",
+  "machine_id": "f7fa9e5b-8ff3-4101-8aee-89b775383bf4",
+  "lease": {
+    "holder": "human",
+    "agent_id": null,
+    "run_id": null,
+    "revision": 1,
+    "state": "active",
+    "expires_at": "2026-11-15T11:18:08.939Z",
+    "session_id": "f2fd644a-9b59-4967-b895-8952514ec239"
+  }
+}

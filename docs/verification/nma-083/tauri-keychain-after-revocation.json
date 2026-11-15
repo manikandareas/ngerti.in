@@ -1,0 +1,7 @@
+{
+  "scope": "isolated_nma083_native_profile",
+  "metadata_only": true,
+  "credential_bytes_read": false,
+  "exit_code": 44,
+  "credential_absent_after_revocation": true
+}

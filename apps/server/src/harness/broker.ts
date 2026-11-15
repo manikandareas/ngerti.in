@@ -98,7 +98,7 @@ export class HarnessBroker {
   readonly #idleTimers = new Map<string, ReturnType<typeof setTimeout>>();
   readonly #modelCatalogs = new Map<
     string,
-    { at: number; grant: number; version: string | null }
+    { at: number; grant: number; version: string | null; models: Entity<"connection">["models"] }
   >();
   constructor(
     readonly lifecycle: Lifecycle,
@@ -472,6 +472,7 @@ export class HarnessBroker {
       if (current.login !== "authenticated")
         throw new HarnessError(current.login === "rejected" ? "AUTH_REJECTED" : "LOGIN_REQUIRED");
       const beforeDiscovery = current.grant_revision;
+      let nativeModels = current.models;
       try {
         const cached = this.#modelCatalogs.get(current.id);
         const fresh =
@@ -479,20 +480,31 @@ export class HarnessBroker {
           Date.now() - cached.at < 60_000 &&
           cached.grant === current.grant_revision &&
           cached.version === availability.version &&
-          current.models.some((model) => model.id === selected.model_id);
-        const models = fresh
-          ? current.models
+          cached.models.some((model) => model.id === selected.model_id);
+        nativeModels = fresh
+          ? cached.models
           : await bounded(client.discoverModels(), this.timeouts.request_ms);
         if (this.#closed) throw new HarnessError("ADAPTER_UNAVAILABLE");
         current = (await this.member(threadId, agentId)).connection;
         if (current.grant_revision !== beforeDiscovery) throw new DomainError("STALE_DISPATCH");
-        if (launch.redactor.text(JSON.stringify(models)) !== JSON.stringify(models))
+        if (launch.redactor.text(JSON.stringify(nativeModels)) !== JSON.stringify(nativeModels))
           throw new HarnessError("PROTOCOL_ERROR");
-        current = await this.connections.update(current, { discovery: "succeeded", models });
+        // Muse MSP reports its pinned startup model, rather than the account-wide catalog.
+        const processCatalog =
+          current.harness === "muse" &&
+          current.discovery === "succeeded" &&
+          nativeModels.length === 1 &&
+          nativeModels[0]?.id === selected.model_id &&
+          current.models.some((model) => model.id === selected.model_id);
+        current = await this.connections.update(current, {
+          discovery: "succeeded",
+          models: processCatalog ? current.models : nativeModels,
+        });
         this.#modelCatalogs.set(current.id, {
           at: fresh ? cached.at : Date.now(),
           grant: current.grant_revision,
           version: availability.version,
+          models: nativeModels,
         });
       } catch (error) {
         if (!this.#closed) {
@@ -502,7 +514,7 @@ export class HarnessBroker {
         }
         throw error;
       }
-      const chosen = current.models.find((model) => model.id === selected.model_id);
+      const chosen = nativeModels.find((model) => model.id === selected.model_id);
       if (
         !chosen ||
         (selected.reasoning !== null && !chosen.reasoning.includes(selected.reasoning))

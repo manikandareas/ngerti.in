@@ -1,0 +1,13 @@
+{
+  "server": "https://demo.ngerti.in",
+  "source_release": "/opt/ngertiin/releases/nma082-20261115-cdcbb7c94bbf",
+  "changed_file": "apps/server/src/artifacts.ts",
+  "before_sha256": "9266991eb272c84e0064a88a29761ed887e3c322cd7ee00c18bb3685a44a6910",
+  "after_sha256": "c364e2e698f3f045851e551ff57cb1109d6cdd676b292c1ac63f0208817e38b5",
+  "backup_verified": true,
+  "old_pid": "2752579",
+  "new_pid": "2759472",
+  "namespace_health": 200,
+  "elapsed_seconds": 2.307919502258301,
+  "schema_or_credentials_changed": false
+}

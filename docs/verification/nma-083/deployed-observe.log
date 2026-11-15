@@ -1,0 +1,13 @@
+{"harness":"codex","run_id":"645a3593-6812-448a-a425-da756e4e14bf","admitted":true}
+{"harness":"muse","run_id":"90ec1ce7-de7a-47ba-b834-6a005ad55238","admitted":true}
+107 |     if (run.status !== "succeeded" || !observation.grounded_marker_in_answer || !observation.selected_connection_preserved || observation.billing !== provider.billing_source || !observation.replay_same_run)
+108 |       throw new Error(`The ${harness} native lane failed; inspect the retained report before retrying.`);
+109 |     lane.verified = true; save(); console.log(JSON.stringify({ harness, verified: true }));
+110 |   }));
+111 |   if (outcomes.some((entry) => entry.status === "rejected"))
+112 |     throw new Error("Inspect both retained native outcomes before an explicit recovery or retry.");
+                    ^
+error: Inspect both retained native outcomes before an explicit recovery or retry.
+      at /Users/vitoandareasmanik/Development/project/ngertiin/scripts/verification/nma083/deployed.ts:112:15
+
+Bun v1.3.10 (macOS arm64)

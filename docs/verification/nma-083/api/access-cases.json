@@ -1,0 +1,792 @@
+[
+  {
+    "method": "GET",
+    "path": "/v1/auth/native",
+    "own_status": 200,
+    "foreign_status": null,
+    "cross_organization_status": null,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/organizations/:organizationId",
+    "own_status": 200,
+    "foreign_status": null,
+    "cross_organization_status": null,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/organizations/:organizationId/workgroups",
+    "own_status": 200,
+    "foreign_status": null,
+    "cross_organization_status": null,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/organizations/:organizationId/workgroups/:workgroupId",
+    "own_status": 200,
+    "foreign_status": null,
+    "cross_organization_status": null,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/organizations/:organizationId/audiences",
+    "own_status": 200,
+    "foreign_status": null,
+    "cross_organization_status": null,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/organizations/:organizationId/invitations",
+    "own_status": 200,
+    "foreign_status": null,
+    "cross_organization_status": null,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "DELETE",
+    "path": "/v1/organizations/:organizationId",
+    "own_status": 403,
+    "foreign_status": null,
+    "cross_organization_status": null,
+    "behavior": "organization_deletion_explicitly_disabled"
+  },
+  {
+    "method": "GET",
+    "path": "/health/ready",
+    "own_status": 200,
+    "foreign_status": 403,
+    "cross_organization_status": null,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/setup",
+    "own_status": 200,
+    "foreign_status": null,
+    "cross_organization_status": null,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/agents/activity",
+    "own_status": 200,
+    "foreign_status": null,
+    "cross_organization_status": null,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/conversations/previews",
+    "own_status": 200,
+    "foreign_status": null,
+    "cross_organization_status": null,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/creation/agents",
+    "own_status": 200,
+    "foreign_status": null,
+    "cross_organization_status": null,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/threads/:id/opening",
+    "own_status": 200,
+    "foreign_status": 404,
+    "cross_organization_status": 404,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/threads/:id/opening/retry",
+    "own_status": 409,
+    "foreign_status": 404,
+    "cross_organization_status": 404,
+    "behavior": "authorized_resource_state_error"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/threads/:id/history",
+    "own_status": 200,
+    "foreign_status": 404,
+    "cross_organization_status": 404,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/threads/:id/timeline",
+    "own_status": 200,
+    "foreign_status": 404,
+    "cross_organization_status": 404,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/agents",
+    "own_status": 200,
+    "foreign_status": null,
+    "cross_organization_status": null,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/agents/:id/configuration",
+    "own_status": 200,
+    "foreign_status": 404,
+    "cross_organization_status": 404,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/threads",
+    "own_status": 200,
+    "foreign_status": null,
+    "cross_organization_status": null,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/learning/memories/write",
+    "own_status": 200,
+    "foreign_status": 404,
+    "cross_organization_status": 404,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/learning/memories",
+    "own_status": 200,
+    "foreign_status": 404,
+    "cross_organization_status": 404,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/learning/memories/delete",
+    "own_status": 200,
+    "foreign_status": 404,
+    "cross_organization_status": 404,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/learning/skills/create",
+    "own_status": 200,
+    "foreign_status": 404,
+    "cross_organization_status": 404,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/learning/skills",
+    "own_status": 200,
+    "foreign_status": 404,
+    "cross_organization_status": 404,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/learning/skills/read",
+    "own_status": 200,
+    "foreign_status": 404,
+    "cross_organization_status": 404,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/learning/skills/revise",
+    "own_status": 200,
+    "foreign_status": 404,
+    "cross_organization_status": 404,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/learning/skills/assign",
+    "own_status": 200,
+    "foreign_status": 404,
+    "cross_organization_status": 404,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/entities/:kind/:id",
+    "own_status": 200,
+    "foreign_status": null,
+    "cross_organization_status": null,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/data/team-agents/:id/configuration",
+    "own_status": 200,
+    "foreign_status": null,
+    "cross_organization_status": null,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/creation/groups",
+    "own_status": 200,
+    "foreign_status": null,
+    "cross_organization_status": null,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/groups/:id/configuration",
+    "own_status": 200,
+    "foreign_status": 404,
+    "cross_organization_status": 404,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/groups/:id/membership",
+    "own_status": 200,
+    "foreign_status": 404,
+    "cross_organization_status": 404,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/groups/:id/messages",
+    "own_status": 200,
+    "foreign_status": 404,
+    "cross_organization_status": 404,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/groups/:id/routes/:routeId/decision",
+    "own_status": 200,
+    "foreign_status": 404,
+    "cross_organization_status": 404,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/groups/:id/routes/:routeId/retry",
+    "own_status": 409,
+    "foreign_status": 404,
+    "cross_organization_status": 404,
+    "behavior": "authorized_resource_state_error"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/goals",
+    "own_status": 200,
+    "foreign_status": null,
+    "cross_organization_status": null,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/goals/:id/assignment",
+    "own_status": 200,
+    "foreign_status": 404,
+    "cross_organization_status": 404,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/data/team-agents/:id/skills/publish",
+    "own_status": 200,
+    "foreign_status": null,
+    "cross_organization_status": null,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/data/team-agents/:id/skills/assign",
+    "own_status": 200,
+    "foreign_status": null,
+    "cross_organization_status": null,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/runs",
+    "own_status": 200,
+    "foreign_status": null,
+    "cross_organization_status": null,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/entities/:kind/:id",
+    "own_status": 200,
+    "foreign_status": null,
+    "cross_organization_status": null,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/artifacts",
+    "own_status": 200,
+    "foreign_status": 404,
+    "cross_organization_status": 404,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/goals/capture",
+    "own_status": 200,
+    "foreign_status": null,
+    "cross_organization_status": null,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/routines/write",
+    "own_status": 200,
+    "foreign_status": null,
+    "cross_organization_status": null,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/goals/:id/recover-completion",
+    "own_status": 409,
+    "foreign_status": 404,
+    "cross_organization_status": 404,
+    "behavior": "authorized_resource_state_error"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/goals/:id/progress",
+    "own_status": 200,
+    "foreign_status": 404,
+    "cross_organization_status": 404,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/message-submissions/:id",
+    "own_status": 200,
+    "foreign_status": null,
+    "cross_organization_status": null,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/runs",
+    "own_status": 200,
+    "foreign_status": null,
+    "cross_organization_status": null,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/human-requests/:id/reply",
+    "own_status": 200,
+    "foreign_status": 404,
+    "cross_organization_status": 404,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/machine/view",
+    "own_status": 200,
+    "foreign_status": null,
+    "cross_organization_status": null,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/machine/views/:viewerId/renew",
+    "own_status": 200,
+    "foreign_status": 403,
+    "cross_organization_status": 403,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "DELETE",
+    "path": "/v1/machine/views/:viewerId",
+    "own_status": 200,
+    "foreign_status": 403,
+    "cross_organization_status": 403,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/machine/processes/control",
+    "own_status": 200,
+    "foreign_status": null,
+    "cross_organization_status": null,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/harness/contracts",
+    "own_status": 200,
+    "foreign_status": null,
+    "cross_organization_status": null,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/harnesses",
+    "own_status": 200,
+    "foreign_status": null,
+    "cross_organization_status": null,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/connections/:id/inspect",
+    "own_status": 200,
+    "foreign_status": 404,
+    "cross_organization_status": 404,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/connections/:id/login",
+    "own_status": 200,
+    "foreign_status": 404,
+    "cross_organization_status": 404,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/connections/:id/login/cancel",
+    "own_status": 200,
+    "foreign_status": 404,
+    "cross_organization_status": 404,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/threads/:id/prepare",
+    "own_status": 200,
+    "foreign_status": 404,
+    "cross_organization_status": 404,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/runs",
+    "own_status": 200,
+    "foreign_status": null,
+    "cross_organization_status": null,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/messages/:id/edit",
+    "own_status": 200,
+    "foreign_status": 404,
+    "cross_organization_status": 404,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/runs/:id/steer",
+    "own_status": 409,
+    "foreign_status": 404,
+    "cross_organization_status": 404,
+    "behavior": "authorized_resource_state_error"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/runs/:id/interactions/history",
+    "own_status": 200,
+    "foreign_status": 404,
+    "cross_organization_status": 404,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/runs/:id/interactions",
+    "own_status": 409,
+    "foreign_status": 404,
+    "cross_organization_status": 404,
+    "behavior": "authorized_resource_state_error"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/runs/:id/interactions",
+    "own_status": 409,
+    "foreign_status": 404,
+    "cross_organization_status": 404,
+    "behavior": "authorized_resource_state_error"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/runs/:id/reconcile",
+    "own_status": 200,
+    "foreign_status": 404,
+    "cross_organization_status": 404,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/runs/:id/retry",
+    "own_status": 409,
+    "foreign_status": 404,
+    "cross_organization_status": 404,
+    "behavior": "authorized_resource_state_error"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/runs/:id/retry-preparation",
+    "own_status": 409,
+    "foreign_status": 404,
+    "cross_organization_status": 404,
+    "behavior": "authorized_resource_state_error"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/entities/:kind/:id",
+    "own_status": 200,
+    "foreign_status": null,
+    "cross_organization_status": null,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/messages/:id/delete",
+    "own_status": 200,
+    "foreign_status": 404,
+    "cross_organization_status": 404,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/runs/:id/cancel",
+    "own_status": 200,
+    "foreign_status": 404,
+    "cross_organization_status": 404,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/workspaces",
+    "own_status": 200,
+    "foreign_status": null,
+    "cross_organization_status": null,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/threads/:id/workspace",
+    "own_status": 200,
+    "foreign_status": 404,
+    "cross_organization_status": 404,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/workspaces/:id/uploads",
+    "own_status": 200,
+    "foreign_status": 404,
+    "cross_organization_status": 404,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/workspaces/:id/files",
+    "own_status": 200,
+    "foreign_status": 404,
+    "cross_organization_status": 404,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/workspaces/:id/file",
+    "own_status": 200,
+    "foreign_status": 404,
+    "cross_organization_status": 404,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/artifacts/:id/share",
+    "own_status": 200,
+    "foreign_status": 404,
+    "cross_organization_status": 404,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/machine/files",
+    "own_status": 200,
+    "foreign_status": null,
+    "cross_organization_status": null,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/machine/file",
+    "own_status": 200,
+    "foreign_status": null,
+    "cross_organization_status": null,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/machine/operations",
+    "own_status": 200,
+    "foreign_status": null,
+    "cross_organization_status": null,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/machine/processes",
+    "own_status": 200,
+    "foreign_status": null,
+    "cross_organization_status": null,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/machine/windows",
+    "own_status": 200,
+    "foreign_status": null,
+    "cross_organization_status": null,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/machine",
+    "own_status": 200,
+    "foreign_status": null,
+    "cross_organization_status": null,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/machine/control",
+    "own_status": 200,
+    "foreign_status": null,
+    "cross_organization_status": null,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/goals",
+    "own_status": 200,
+    "foreign_status": null,
+    "cross_organization_status": null,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/threads/:id/goals",
+    "own_status": 200,
+    "foreign_status": 404,
+    "cross_organization_status": 404,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/goals/:id/control",
+    "own_status": 200,
+    "foreign_status": 404,
+    "cross_organization_status": 404,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/routines",
+    "own_status": 200,
+    "foreign_status": null,
+    "cross_organization_status": null,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/routines/:id/control",
+    "own_status": 200,
+    "foreign_status": 404,
+    "cross_organization_status": 404,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/workspaces/:id/revoke",
+    "own_status": 200,
+    "foreign_status": 404,
+    "cross_organization_status": 404,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/apps/catalog",
+    "own_status": 200,
+    "foreign_status": null,
+    "cross_organization_status": null,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/apps/connect",
+    "own_status": 200,
+    "foreign_status": null,
+    "cross_organization_status": null,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/apps/connections",
+    "own_status": 200,
+    "foreign_status": null,
+    "cross_organization_status": null,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/apps/connections/:id/refresh",
+    "own_status": 200,
+    "foreign_status": 404,
+    "cross_organization_status": 404,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/apps/search",
+    "own_status": 200,
+    "foreign_status": 404,
+    "cross_organization_status": 404,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/apps/connections/:id/reconnect",
+    "own_status": 200,
+    "foreign_status": 404,
+    "cross_organization_status": 404,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/apps/connections/:id/revoke",
+    "own_status": 200,
+    "foreign_status": 404,
+    "cross_organization_status": 404,
+    "behavior": "authorized_success"
+  },
+  {
+    "method": "GET",
+    "path": "/v1/harness/tools",
+    "own_status": 405,
+    "foreign_status": 401,
+    "behavior": "authorized_run_lease_method_explicitly_disabled"
+  },
+  {
+    "method": "POST",
+    "path": "/v1/harness/tools",
+    "own_status": 200,
+    "foreign_status": 401,
+    "behavior": "authorized_run_lease_success"
+  }
+]

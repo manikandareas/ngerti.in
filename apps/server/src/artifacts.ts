@@ -173,10 +173,11 @@ export class Artifacts {
     );
   }
   async materialize(artifactId: string) {
-    if (this.lifecycle.store.dataContext) return this.lifecycle.store.get("artifact", artifactId);
     const item = await this.lifecycle.store.get("artifact", artifactId);
     if (!item.workspace_id || !item.source_path) throw new DomainError("SCOPE_DENIED", 403);
     const workspace = await this.workspaces.get(item.workspace_id);
+    if (this.lifecycle.store.dataContext && !workspace.machine_id)
+      throw new DomainError("SCOPE_DENIED", 403);
     if (item.materialization !== "pending" && !workspace.machine_id) return item;
     const { bytes } = await this.download(item.id, item.workspace_id);
     await this.stage(item.workspace_id, (await this.inputPath(item)) as string, bytes);

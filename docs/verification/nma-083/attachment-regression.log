@@ -1,0 +1,40 @@
+bun test v1.3.10 (30e609e0)
+
+../../scripts/verification/nma083/attachments.test.ts:
+(pass) a scoped attachment-bearing admission reaches the harness with its private document context [23736.95ms]
+
+tests/attachments.test.ts:
+(pass) private uploads appear in neither workspace nor artifacts until one message commits [396.61ms]
+(pass) a missing second upload rolls back all artifact and message publication [211.24ms]
+{"event":"attachments.materialization_pending"}
+(pass) HTTP lost acknowledgement, exact replay and restart publish one message and artifact [527.76ms]
+(pass) restart finishes a committed pending projection and expiry only removes uncommitted bytes [471.47ms]
+(pass) PDF extraction supplies real page text, search locations and bounded read receipts [2022.20ms]
+(pass) follow-up context finds prior sent files but excludes drafts, future messages and foreign lanes [1222.49ms]
+(pass) unsupported, empty and invalid documents have explicit failures without a fabricated read [698.46ms]
+(pass) cached document reads recheck revoked access and immutable source corruption [783.94ms]
+(pass) an interrupted derived text cache is recomputed without changing source bytes [291.93ms]
+
+tests/organizations/data.test.ts:
+(pass) random default names come from the single-syllable library subset and exhaust unused names first [1.89ms]
+(pass) membership provisioning creates one private randomly named default agent, DM and authored welcome without inference [1329.71ms]
+(pass) two users share Team configuration while their DM, memory, uploads and receipts stay private even from an administrator [1715.53ms]
+(pass) personal preference overlays and explicit published knowledge cannot rewrite or automatically publish private context [1095.26ms]
+(pass) RLS uses a non-owner role and transaction-local settings across pooled users and organization boundaries [1189.69ms]
+(pass) context-bound replay rejects cross-user cursors and permission changes close old event access [816.12ms]
+(pass) private file publication, immutable downloads, parsed data and command replay stay in the initiating organization [1249.42ms]
+(pass) Workgroup invocation is distinct from administration and Team ownership survives creator offboarding [858.78ms]
+(pass) removed/rejoined membership cannot replay prior receipts or resume its private work implicitly [1015.68ms]
+(pass) database references reject cross-user scope and concurrent organization tabs retain independent commands [920.66ms]
+(pass) SSE retains its captured private context outside the request and closes on membership revocation [781.00ms]
+(pass) guarded legacy binding backfills retained private entities/events and blocks old owner-wide routes [778.43ms]
+(pass) scoped application SQL also works through a real non-owner, non-superuser database login [678.47ms]
+(pass) private Goals/Routine schedule under their retained execution principal without borrowing a UI session or shared native resources [1185.20ms]
+(pass) private groups and routing cannot enroll another user's agent or another organization's Team agent [799.99ms]
+(pass) Team-agent native-binding metadata is actor-private and cannot reference another user's connection [1025.44ms]
+(pass) immutable command receipts recheck current Team-agent invocation grants before replay [846.53ms]
+
+ 27 pass
+ 0 fail
+ 202 expect() calls
+Ran 27 tests across 3 files. [48.76s]

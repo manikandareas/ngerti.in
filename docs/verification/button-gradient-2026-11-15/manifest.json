@@ -1,0 +1,22 @@
+{
+  "base_revision": "af57a7435601819c6ac94e0d993bb6cdf12fbfca",
+  "verification": {
+    "build": "pass",
+    "browser_pass": 10,
+    "browser_fail": 4,
+    "further_work": "stopped at owner request"
+  },
+  "source_sha256": {
+    "apps/web-client/src/components/ui/button.tsx": "36abdce451771801a65c77fe09f07e08e73e0e4851fdbc39b148e7837f8ca07d",
+    "apps/web-client/src/components/ui/button.css": "6e1551a59001debddd6cbcc45a752b4679588108fa36ad893ce79d6e93cbdf9c",
+    "apps/web-client/src/features/account/account-screen.tsx": "669dfb4fa1c46b349e8665445253e0f8c14fbd26bc913846ff2dbcbee77af7e8",
+    "apps/web-client/src/features/account/account.css": "cc9bc8294a42386be22f34a1fd04abb5f3886cfecde4d35b2872c97be90982b4",
+    "apps/web-client/tests/account-entry.spec.ts": "53a1121722ec5362be2656198ea88b2cd88da50c2445ada0937e90851aed8332",
+    "apps/web-client/tests/button-surface.spec.ts": "25b2731bec81392f2a78e1c7939beea049001722d1434fb58dcc8d8b13a493d3",
+    "apps/web-client/playwright.account-entry.config.ts": "d0fb7eb9f3a9f1eca42f54efb8018fbc999d49688255364d8c61b3478cc201e1",
+    "apps/web-client/DESIGN_SYSTEM.md": "77926a73a55f111aedebb35278b07f4aab4dd44dd2049e32be07ffc83d56439d",
+    "docs/product/interface.md": "320f1f7f31326ea27b95efa5b24c781b945656f6289a105584292a8094dd6bc5",
+    "docs/backlog/NMA-080.md": "564322e79d0009f7a5abb8bae1eda47c62d20dbcd49bb77003a714e2d2b5b841",
+    "docs/backlog/NMA-081.md": "2ac0460630c19d6e089864e17f1355553a814c3c4137180760ff97e7c4a95e4f"
+  }
+}

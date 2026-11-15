@@ -1,0 +1,74 @@
+{
+  "created_at": "2026-11-15",
+  "office": {
+    "file": "retro-office.webp",
+    "dimensions": [
+      1024,
+      1536
+    ],
+    "source": "OpenAI built-in image_gen, generated fictional office photograph",
+    "source_artifact": "exec-369e7c87-ed95-4bd9-b6d3-a92a2bc0b8cf.png",
+    "reference_artifact": "exec-d02a3c6b-dbb7-4331-b418-0f69cdfa9e9f.png",
+    "conversion": "cwebp -q 85",
+    "final_prompt": "Change ONLY the camera viewpoint and framing of this busy retro office photograph to a convincing high-corner CCTV viewpoint. The camera is mounted at the ceiling corner and looks DOWN at a steep 50-degree angle across the office cubicle grid. NO CEILING is visible at all: the frame is filled by desk surfaces, chair backs, tops of cubicle dividers, people's heads and shoulders, and walkways seen from above. Keep the 1980s/early 1990s office, beige CRT computers, busy workers, desaturated natural colors, soft archival photographic quality. Include at least 8 visible human coworkers across the cubicle rows, with a few standing and walking. 2:3 portrait framing. It must feel like an unobtrusive security camera observing the whole busy room from very high up, not a camera at human eye level. Photographic, no cartoon, no CGI. No timestamp or CCTV interface, no words, no letters, no border, no watermark, no baked-in dither."
+  },
+  "avatars": {
+    "files": [
+      "welcome-triangle.webp",
+      "welcome-circle.webp",
+      "welcome-squircle.webp"
+    ],
+    "source_module": "src/features/avatar/engine/render.ts#renderAvatarSvg",
+    "recipe_module": "@ngertiin/avatar/config#createAvatar",
+    "recipes": [
+      {
+        "seed": "account-welcome-triangle",
+        "shape": "triangle",
+        "color": "sky",
+        "face": "curious"
+      },
+      {
+        "seed": "account-welcome-circle",
+        "shape": "circle",
+        "color": "matcha",
+        "face": "happy"
+      },
+      {
+        "seed": "account-welcome-squircle",
+        "shape": "squircle",
+        "color": "peach",
+        "face": "calm"
+      }
+    ],
+    "conversion": "Render SVG with id auth-{shape}, then sharp resize(176, 176).webp({quality: 90}); transparent background retained",
+    "upgrade_check": "Regenerate exports after a deliberate shared avatar-renderer update and inspect light/dark entry screenshots. These are decorative brand assets, not stored user agents."
+  },
+  "effect": {
+    "reference": "https://21st.dev/community/ascii/editor?from=e05cb032-35be-4bcd-999b-cbf5b1588bac",
+    "component": "Owner-supplied AsciiArt React snippet, 2026-11-15; adapted in src/components/ui/vignette-bloom.tsx",
+    "reference_video": "https://assets.21st.dev/ascii-recipes/videos/user_2nElBLvklOKlAURm6W1PTu6yYFh/ce2c1d6e-d203-4519-8bd5-8fabf950352b.mp4",
+    "reference_video_sha256": "294cd8794e89b8500cb37621602a1e7c3e6e7c08d9dfd99b118116d909ab490b",
+    "reference_poster_sha256": "495a0421be53d41d7dbfa91614cc6e05b4deafb454d5eb166154ee687fc9b143",
+    "owner_choice": "Apply a similar style and motion to the CCTV photograph; do not use the reference video embedded image",
+    "implementation": "Independent rounded-cell/bloom/vignette/exposure-wave raster authoring; no original editor shader code was supplied or adopted",
+    "authoring_script": "scripts/design/bake-account-artwork.mjs",
+    "files": [
+      "vignette-bloom-office.mp4",
+      "vignette-bloom-office.webp"
+    ],
+    "video": {
+      "dimensions": [
+        768,
+        1152
+      ],
+      "duration_seconds": 2.5,
+      "frame_rate": 24,
+      "frames": 60,
+      "codec": "H.264",
+      "audio": false
+    },
+    "dependencies": "No new runtime dependency; authoring uses existing desktop sharp 0.35.5 plus ffmpeg",
+    "local_adaptation": "Self-hosted media, matching poster, visibility/offscreen pause, reduced-motion still, autoplay rejection fallback",
+    "upgrade_check": "Compare reference recipe/media changes and rerun Chromium/WebKit motion, poster fallback, accessibility and responsive entry checks after deliberate updates."
+  }
+}

@@ -1,0 +1,84 @@
+{
+  "captured_at": "2026-11-15T15:38:55.551267+00:00",
+  "base_revision": "af57a7435601819c6ac94e0d993bb6cdf12fbfca",
+  "worktree": "Uncommitted scoped auth redesign; unrelated PostgreSQL changes preserved",
+  "proof": {
+    "presentation": {
+      "pass": 10,
+      "fail": 0,
+      "engines": [
+        "chromium",
+        "webkit"
+      ]
+    },
+    "real_account": {
+      "pass": 4,
+      "fail": 0,
+      "scope": "Before final media-only replacement; auth form and endpoints unchanged"
+    },
+    "native": "debug build and matching staged assets; actual native window not observed"
+  },
+  "video": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "width": 768,
+        "height": 1152,
+        "pix_fmt": "yuv420p",
+        "r_frame_rate": "24/1"
+      }
+    ],
+    "format": {
+      "duration": "2.500000",
+      "size": "458050"
+    }
+  },
+  "assets": {
+    "vignette-bloom-office.mp4": {
+      "sha256": "0b41c1434e89087613e5595bc4b340b927d0584eeeb14b25ed9f27477c2b36aa",
+      "identical_in_web_build_and_tauri_stage": true
+    },
+    "vignette-bloom-office.webp": {
+      "sha256": "41d751ab73abaebd27513f02230342e5c13c1e81bbd9c89068fbad5bc0acb60e",
+      "identical_in_web_build_and_tauri_stage": true
+    },
+    "welcome-circle.webp": {
+      "sha256": "fdd74ac1d60848955e175f7be915ae885bd37809ff813bb5336a4f3421e1b86a",
+      "identical_in_web_build_and_tauri_stage": true
+    },
+    "welcome-triangle.webp": {
+      "sha256": "8421e87b18df334395752c4405884e6fd905e43ffe816b0b0b16da51f0e49134",
+      "identical_in_web_build_and_tauri_stage": true
+    },
+    "welcome-squircle.webp": {
+      "sha256": "fdd1afcff577076dc00ea55ac64c5dfceb1a69081927ec101a1bc5406e4135fa",
+      "identical_in_web_build_and_tauri_stage": true
+    },
+    "provenance.json": {
+      "sha256": "1b01e1439e6f30cfceb2cfae1cdea382e2b3f0104936e387d1c49e27516f2411",
+      "identical_in_web_build_and_tauri_stage": true
+    }
+  },
+  "sources": {
+    "apps/web-client/src/components/ui/vignette-bloom.tsx": "a2b3ef9c7f7a7f8b57d980e9e049cbdd032e6d8a6132849c12db3278c4b928a3",
+    "apps/web-client/src/features/account/account-artwork.tsx": "623f469f0dfcb1b4759adb8a3c2a8ba47b3873d9067e42c6cd6806eba7245d4d",
+    "apps/web-client/src/features/account/account-screen.tsx": "d5b4e9689729522f27908afa92d819e068b10e5c2809094933854b11a42e5c23",
+    "apps/web-client/src/features/account/account.css": "a08b65f7031a43d0b5faacf699db4b500953381007361dbbe3cf480f0f794261",
+    "apps/web-client/tests/account-entry.spec.ts": "1aace884decf902bbd50e06e9ac7ef78ba6ac70d4b954f587f79738a552587b2",
+    "apps/web-client/playwright.account-entry.config.ts": "d1c02c21b2b76a29d32bfed9cc58b2021425a7df226b96d4b619da305d771e09",
+    "scripts/design/bake-account-artwork.mjs": "09431913bf03e866e21bd244683393ac19c72695597486eb7bf9464e154f2c04",
+    "apps/web-client/DESIGN_SYSTEM.md": "e535228695db1b2fc8175fbe607c947bfe32d29622e447d5784771ab2030a69b",
+    "docs/product/interface.md": "3904e2414ce8b19630be1601b964e531a469e032e74d397352ac8fadb6fe3349",
+    "docs/backlog/NMA-080.md": "3e13b38ba93f8d7baf79365a2cde59c2aa5ca83fdeef24828939230bc7793eda",
+    "docs/backlog/NMA-081.md": "57285f28d5e33caec5106a40a933f579bfb272fab8ae34320ed3e1783cb397d4",
+    "apps/web-client/public/images/sign-in/provenance.json": "1b01e1439e6f30cfceb2cfae1cdea382e2b3f0104936e387d1c49e27516f2411",
+    "apps/web-client/public/images/sign-in/retro-office.webp": "9907c766242d8fb5232cf168156a2c53558f9de8ca3be6113b6acc50d3d8138e",
+    "apps/web-client/public/images/sign-in/vignette-bloom-office.mp4": "0b41c1434e89087613e5595bc4b340b927d0584eeeb14b25ed9f27477c2b36aa",
+    "apps/web-client/public/images/sign-in/vignette-bloom-office.webp": "41d751ab73abaebd27513f02230342e5c13c1e81bbd9c89068fbad5bc0acb60e",
+    "apps/web-client/public/images/sign-in/welcome-circle.webp": "fdd74ac1d60848955e175f7be915ae885bd37809ff813bb5336a4f3421e1b86a",
+    "apps/web-client/public/images/sign-in/welcome-squircle.webp": "fdd1afcff577076dc00ea55ac64c5dfceb1a69081927ec101a1bc5406e4135fa",
+    "apps/web-client/public/images/sign-in/welcome-triangle.webp": "8421e87b18df334395752c4405884e6fd905e43ffe816b0b0b16da51f0e49134"
+  }
+}

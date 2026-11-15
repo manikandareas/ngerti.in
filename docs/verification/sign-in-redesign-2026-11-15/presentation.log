@@ -1,0 +1,21 @@
+[WebServer] (node:99364) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 10 tests using 2 workers
+
+(node:99371) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:99372) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [chromium] › tests/account-entry.spec.ts:22:1 › responsive light and dark forms remain usable and accessible (13.6s)
+  ✓   2 [webkit] › tests/account-entry.spec.ts:22:1 › responsive light and dark forms remain usable and accessible (15.1s)
+  ✓   3 [chromium] › tests/account-entry.spec.ts:65:1 › registration, sign-in errors and password recovery retain their actions (5.2s)
+  ✓   4 [webkit] › tests/account-entry.spec.ts:65:1 › registration, sign-in errors and password recovery retain their actions (5.5s)
+  ✓   5 [chromium] › tests/account-entry.spec.ts:99:1 › artwork pauses for reduced motion and hidden documents (3.0s)
+  ✓   7 [chromium] › tests/account-entry.spec.ts:133:1 › desktop browser handoff keeps waiting, cancel and retry usable (1.7s)
+  ✓   6 [webkit] › tests/account-entry.spec.ts:99:1 › artwork pauses for reduced motion and hidden documents (3.1s)
+  ✓   8 [chromium] › tests/account-entry.spec.ts:161:1 › sign-in and the poster remain available if the video fails (1.2s)
+  ✓   9 [webkit] › tests/account-entry.spec.ts:133:1 › desktop browser handoff keeps waiting, cancel and retry usable (2.3s)
+  ✓  10 [webkit] › tests/account-entry.spec.ts:161:1 › sign-in and the poster remain available if the video fails (1.5s)
+
+  10 passed (32.6s)

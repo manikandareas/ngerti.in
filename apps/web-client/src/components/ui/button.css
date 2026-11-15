@@ -1,0 +1,18 @@
+@layer components {
+  .button-surface {
+    background-image: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--thumb) var(--button-highlight-strength, 8%), transparent),
+      transparent 48%,
+      var(--elevation-shadow-soft)
+    );
+    box-shadow:
+      inset 0 1px 0 color-mix(in srgb, var(--thumb) 20%, transparent),
+      inset 0 -1px 0 var(--elevation-shadow);
+  }
+
+  .button-surface:active:not(:disabled) {
+    background-image: linear-gradient(180deg, var(--elevation-shadow), transparent 72%);
+    box-shadow: inset 0 1px 2px var(--elevation-shadow);
+  }
+}

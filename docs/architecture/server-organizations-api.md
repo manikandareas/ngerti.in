@@ -10,7 +10,7 @@ NMA-080 adds `GET /v1/data/access` with an executable response schema. It return
 
 NMA-081 adds the issuing-session authenticated WebSocket route `/v1/machine/viewer/:viewerId/media` on the application server. Account-mode `StreamService/OpenMedia` returns `media?ticket=...`, resolved against the opaque viewer API base; it must not be resolved against the installation root. The pinned viewer performs that resolution and uses the current origin's WS/WSS scheme. The outer account server owns the upgrade. Ticket, issuing native/browser device, membership, execution domain and control-generation checks remain live for the connection and frames. Native access tokens remain in the native gateway's headers and never become media query credentials.
 
-The [2.2.0 export](../contracts/2.2.0.json), [Tauri transport contract](tauri-remote-client.md) and [NMA-081 evidence](../verification/nma-081/README.md) retain this delta independently from earlier API/browser/provider gates. Deployed HTTPS/WSS ingress remains NMA-082.
+The [2.2.0 export](../contracts/2.2.0.json), [Tauri transport contract](tauri-remote-client.md) and [NMA-081 evidence](../verification/nma-081/README.md) retain this delta independently from earlier API/browser/provider gates. NMA-082 implements a [pinned HTTPS/WSS deployment profile](server-deployment.md) with [bounded disposable Linux proof](../verification/nma-082/README.md); selected-host and actual-client acceptance remain open.
 
 ## Authentication and resource selection
 

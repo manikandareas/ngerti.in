@@ -1,0 +1,17 @@
+{
+  "pass": 1,
+  "fail": 1,
+  "results": [
+    {
+      "harness": "codex",
+      "status": "fail",
+      "code": "PROTOCOL_PROBE_FAILED"
+    },
+    {
+      "harness": "muse",
+      "status": "pass",
+      "login": "required"
+    }
+  ],
+  "boundary": "Actual adapters initialize, inspect unauthenticated native state and close on Linux. No provider credentials, login, inference, billing or useful product tools are claimed."
+}

@@ -1,5 +1,5 @@
 import { lstatSync, mkdirSync, readFileSync, renameSync, writeFileSync } from "node:fs";
-import { join } from "node:path";
+import { isAbsolute, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { z } from "zod";
 import { DomainError } from "../contracts";
@@ -8,6 +8,7 @@ import { CuaMachine } from "./cua";
 
 export const DOMAIN_IMAGE =
   "ghcr.io/trycua/linux:24.04@sha256:9ac0d6f6f7dd95392554ec95163f83c5061de3db05b64977696c78d71cd4861c";
+const runtimeTmpfs = "rw,noexec,nosuid,nodev,size=64m,mode=755";
 export const domainPolicy = z.strictObject({
   version: z.literal(1),
   max_domains: z.int().min(1).max(100),
@@ -63,6 +64,7 @@ type Inspection = {
     MemorySwap: number;
     NanoCpus: number;
     PidsLimit: number;
+    Tmpfs?: Record<string, string>;
   };
   Mounts: { Type: string; Name?: string; Source: string; Destination: string; RW: boolean }[];
   NetworkSettings: {
@@ -77,6 +79,13 @@ const assets = [
   ["start-browser.sh", "/etc/ngertiin/start-browser.sh"],
 ] as const;
 
+export function machineAssetsRoot() {
+  const directory = process.env.NGERTIIN_MACHINE_ASSETS_DIR;
+  if (directory && !isAbsolute(directory))
+    throw new Error("Machine assets require an absolute operator-owned directory.");
+  return directory ?? fileURLToPath(new URL("../../../../infra/machine/", import.meta.url));
+}
+
 /** Only this operator-owned module can create/inspect containers. No Docker API reaches agents. */
 export class DomainRuntime {
   #tail = Promise.resolve();
@@ -84,7 +93,11 @@ export class DomainRuntime {
     readonly directory: string,
     readonly installation: string,
     readonly policy: DomainPolicy | null,
-  ) {}
+    readonly assetRoot = machineAssetsRoot(),
+  ) {
+    if (!isAbsolute(assetRoot))
+      throw new Error("Machine assets require an absolute operator-owned directory.");
+  }
   private exclusive<T>(action: () => Promise<T>): Promise<T> {
     const result = this.#tail.then(action);
     this.#tail = result.then(
@@ -169,7 +182,7 @@ export class DomainRuntime {
           `io.ngertiin.domain=${configuration.id}`,
           volume,
         ]);
-        const assetRoot = fileURLToPath(new URL("../../../../infra/machine/", import.meta.url));
+        const assetRoot = this.assetRoot;
         const id = await docker([
           "create",
           "--name",
@@ -205,6 +218,10 @@ export class DomainRuntime {
           String(policy.pids),
           "--shm-size",
           "128m",
+          // A Docker restart retains the writable layer. Stale desktop.env/bus
+          // files must not let spacesd race ahead of the new X/DBus session.
+          "--tmpfs",
+          `/run:${runtimeTmpfs}`,
           "--publish",
           "127.0.0.1::3211",
           "--env",
@@ -246,12 +263,13 @@ export class DomainRuntime {
       return observed;
     });
   }
-  private attest(observed: Inspection, configuration: Retained) {
+  /** Operator recovery also attests stopped domains before reading their retained volumes. */
+  attest(observed: Inspection, configuration: Retained) {
     const policy = this.policy;
     const name = `ngertiin-domain-${configuration.id}`;
     const host = observed.HostConfig;
     const ports = observed.NetworkSettings.Ports["3211/tcp"];
-    const assetRoot = fileURLToPath(new URL("../../../../infra/machine/", import.meta.url));
+    const assetRoot = this.assetRoot;
     if (
       !policy ||
       (configuration.container_id && observed.Id !== configuration.container_id) ||
@@ -270,6 +288,7 @@ export class DomainRuntime {
       host.MemorySwap !== host.Memory ||
       host.NanoCpus !== policy.cpus * 1e9 ||
       host.PidsLimit !== policy.pids ||
+      JSON.stringify(host.Tmpfs) !== JSON.stringify({ "/run": runtimeTmpfs }) ||
       (ports && (ports.length !== 1 || ports[0]?.HostIp !== "127.0.0.1")) ||
       observed.Mounts.length !== assets.length + 1 ||
       !observed.Mounts.some(
@@ -335,6 +354,28 @@ export class DomainCuaMachine extends CuaMachine {
             await Bun.sleep(250);
           }
           const client = await super.client();
+          const capabilities = z
+            .object({
+              features: z.array(
+                z.object({
+                  name: z.string(),
+                  supported: z.boolean().default(false),
+                }),
+              ),
+            })
+            .parse(
+              JSON.parse(
+                await client.callJson("SystemService/GetCapabilities", "{}", undefined, {
+                  signal: AbortSignal.timeout(10_000),
+                }),
+              ),
+            );
+          if (
+            !capabilities.features.some(
+              (feature) => feature.name === "desktop_stream" && feature.supported,
+            )
+          )
+            throw new DomainError("MACHINE_UNAVAILABLE", 503);
           for (const directory of [
             this.configuration.root,
             `${this.configuration.root}/inputs`,

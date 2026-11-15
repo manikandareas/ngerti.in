@@ -1,0 +1,4 @@
+{"checkpoint":"captured","owner_verified":true,"memberships":3,"pending_runs":0,"goals":0,"routines":0}
+{"event":"operations.backup-offline.completed","version":1,"snapshot_at":"2026-11-15T07:07:13.769Z","backup_sha256":"cab7fcc5b7ddb649e0d1a4f7b0641d1ba84929da21a102aad26d588c98336102","domains":2,"tables":42,"stopped_ms":7631}
+{"event":"operations.verify.completed","version":1,"snapshot_at":"2026-11-15T07:07:13.769Z","backup_sha256":"cab7fcc5b7ddb649e0d1a4f7b0641d1ba84929da21a102aad26d588c98336102","domains":2,"tables":42}
+{"synthetic_connection_revoked_after_snapshot":true,"real_providers_unchanged":true}

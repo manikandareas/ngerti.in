@@ -1,0 +1,46 @@
+name: ngertiin-server
+services:
+  postgres:
+    image: postgres:18.1-alpine@sha256:aa6eb304ddb6dd26df23d05db4e5cb05af8951cda3e0dc57731b771e0ef4ab29
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ngertiin
+      POSTGRES_USER: ngertiin
+      POSTGRES_PASSWORD: ${NGERTIIN_POSTGRES_PASSWORD:?Set the private database password}
+    ports:
+      - "127.0.0.1:55482:5432"
+    volumes:
+      - ${NGERTIIN_SERVER_DATABASE_DIR:?Select private encrypted storage}:/var/lib/postgresql
+    healthcheck:
+      test: [CMD-SHELL, "pg_isready -U ngertiin -d ngertiin"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+    logging:
+      driver: local
+      options:
+        max-size: "10m"
+        max-file: "3"
+  ingress:
+    image: caddy:2.11.2-alpine@sha256:834468128c7696cec0ceea6172f7d692daf645ae51983ca76e39da54a97c570d
+    restart: unless-stopped
+    # Linux only: backend and Cua control ports remain on host loopback.
+    network_mode: host
+    environment:
+      NGERTIIN_SERVER_HOST: ${NGERTIIN_SERVER_HOST:?Select the certificate hostname}
+      NGERTIIN_SERVER_TLS: ${NGERTIIN_SERVER_TLS:-}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - ${NGERTIIN_SERVER_RELEASE:?Select the verified release}/apps/web-client/dist:/srv/web:ro
+      - ${NGERTIIN_SERVER_TLS_DIR:?Select private certificate storage}:/data
+    read_only: true
+    tmpfs:
+      - /config
+    cap_drop: [ALL]
+    cap_add: [NET_BIND_SERVICE]
+    security_opt: [no-new-privileges:true]
+    logging:
+      driver: local
+      options:
+        max-size: "10m"
+        max-file: "3"

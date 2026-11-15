@@ -68,6 +68,8 @@ The application authentication endpoints are:
 
 Web cookies are Secure, HttpOnly, SameSite=Lax and host scoped. Sessions last seven days, with a one-day renewal interval and no cookie session cache. Every request checks current server state and email verification. Cookie mutations require exact Origin; foreign Origin or cross-site fetch metadata is rejected. The only HTTP-cookie exception requires explicit `NGERTIIN_AUTH_ALLOW_INSECURE_LOOPBACK=true` in development on loopback. There is no frontend session-token storage.
 
+NMA-082's deployed email follow-up permits external document navigation only for the allowlisted GET verification/recovery links, with no Origin header and navigation/document fetch metadata when present. The pinned provider still validates the signed verification token or one-use recovery token and the same-origin callback. Cross-site fetches and all cookie mutations retain their Origin checks; email verification does not automatically sign in a browser. This fixes links opened from webmail without changing API schemas or weakening general request authentication.
+
 ## Public native client and renewal
 
 The only registered client is `ngertiin-tauri`, with no client secret, `authorization_code`/`refresh_token`, required S256 PKCE, exact callback and scopes `ngertiin offline_access`. The first-party client is operator pinned and skips the generic OAuth consent screen; an external browser login is still required. Dynamic registration/client administration are disabled. NMA-080 implements the browser login screen and NMA-081 implements native callback/OS storage; their reports remain separate from the original headless proof.

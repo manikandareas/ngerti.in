@@ -215,7 +215,40 @@ test("revoking the actual issuing login closes existing media and rejects furthe
   await Bun.sleep(1500);
   expect(nextMedia.socket.readyState).toBe(WebSocket.OPEN);
   expect((await request(replacement.cookie, nextView.viewer_url)).status).toBe(200);
-});
+}, 10000);
+test("account HTTP shutdown completes after its authenticated public media socket is closed", async () => {
+  await setup();
+  let stopped = 0;
+  api.onStop(() => {
+    stopped++;
+  });
+  const media = await connect(f.owner.cookie, await viewer());
+  const listener = api.server;
+  try {
+    await Promise.race([
+      api.stop(true),
+      Bun.sleep(3000).then(() => {
+        throw new Error("Account listener shutdown did not complete.");
+      }),
+    ]);
+    await media.closed;
+    expect(media.socket.readyState).toBe(WebSocket.CLOSED);
+    expect(listener?.pendingRequests).toBe(0);
+    expect(stopped).toBe(1);
+  } catch (error) {
+    console.log(
+      JSON.stringify({
+        event: "shutdown.fixture",
+        requests: listener?.pendingRequests,
+        sockets: listener?.pendingWebSockets,
+        client_state: media.socket.readyState,
+      }),
+    );
+    throw error;
+  } finally {
+    listener?.unref();
+  }
+}, 10000);
 test("removing an organization member closes their already-open media and invalidates clipboard/file access", async () => {
   await setup();
   const alice = await f.account("alice@example.test");
@@ -235,4 +268,44 @@ test("removing an organization member closes their already-open media and invali
   expect(closedMedia).toContain(media.media.mediaSessionId);
   expect((await request(alice.cookie, view.viewer_url)).status).toBe(401);
   expect((await request(alice.cookie, "/v1/machine/files?path=")).status).toBe(403);
+});
+
+test("TLS-terminated viewer uses its configured account origin and ignores forged forwarding headers", async () => {
+  await setup();
+  const origin = "https://central.example.test";
+  f.auth.config.origin = origin;
+  const headers = {
+    Cookie: f.owner.cookie,
+    Origin: origin,
+    "X-Ngertiin-Organization": f.initial.organization.id,
+    "X-Forwarded-Host": "untrusted.example.test",
+    "X-Forwarded-Proto": "http",
+    "Content-Type": "application/json",
+  };
+  const view = await ok(
+    api.handle(
+      new Request("http://central.example.test/v1/machine/view", {
+        method: "POST",
+        headers,
+        body: JSON.stringify({ interactive: false }),
+      }),
+    ),
+  );
+  expect(
+    (await api.handle(new Request(`http://central.example.test${view.viewer_url}`, { headers })))
+      .status,
+  ).toBe(200);
+  expect(
+    (await api.handle(new Request(`http://untrusted.example.test${view.viewer_url}`, { headers })))
+      .status,
+  ).toBe(401);
+  expect(
+    (
+      await api.handle(
+        new Request(`http://central.example.test${view.viewer_url}`, {
+          headers: { Origin: origin },
+        }),
+      )
+    ).status,
+  ).toBe(401);
 });

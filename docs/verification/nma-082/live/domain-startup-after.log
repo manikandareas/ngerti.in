@@ -1,0 +1,10 @@
+bun test v1.3.10 (30e609e0)
+
+tests/machines/domain-startup.test.ts:
+(pass) healthy control HTTP without the required desktop provider never admits a ready domain [28.32ms]
+(pass) a domain with native desktop capability completes scoped startup [2.05ms]
+
+ 2 pass
+ 0 fail
+ 4 expect() calls
+Ran 2 tests across 1 file. [388.00ms]

@@ -1,0 +1,9 @@
+{"version": 1, "environment_file": "/etc/ngertiin/server.env", "state_dir": "/srv/ngertiin/state", "trust_dir": "/srv/ngertiin/trust", "backup_key_file": "/etc/ngertiin/backup.key", "database_container": "ngertiin-server-postgres-1", "database_name": "ngertiin", "database_user": "ngertiin", "service": "ngertiin.service", "service_user": "ngertiin"}
+{"id": "1fc20b62-d9c9-4db8-a282-d64f75afac90", "phase": "retained", "container_id": "9ef0fc3576871ff102f5356f14fefe3382bee7ca0db73faab7a82758337cc17d", "generation": 1}
+{"id": "f7fa9e5b-8ff3-4101-8aee-89b775383bf4", "phase": "retained", "container_id": "542e022ee97068447a142ae868df5b465514fc24781e218f0ad1ef43949e5cf0", "generation": 1}
+ngertiin-domain-1fc20b62-d9c9-4db8-a282-d64f75afac90 187.4MiB / 1.5GiB 4.52% 88
+ngertiin-domain-f7fa9e5b-8ff3-4101-8aee-89b775383bf4 341.9MiB / 1.5GiB 0.02% 83
+ngertiin-server-postgres-1 164.4MiB / 31.34GiB 20.73% 16
+ngertiin-server-ingress-1 52.62MiB / 31.34GiB 0.00% 16
+Filesystem                    Size  Used Avail Use% Mounted on
+/dev/mapper/ngertiin-private   63G  3.8G   59G   7% /srv/ngertiin

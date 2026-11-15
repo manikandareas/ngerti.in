@@ -33,6 +33,8 @@ The retained single-owner baseline shares one persistent local Linux desktop thr
 
 Composio supplies app connections. Application skills and inherited harness skills are separate: agents create/repair only app-owned packages. Source availability does not promote an upstream feature into scope.
 
+NMA-082 is Done for the [selected owner-operated server deployment](docs/architecture/server-deployment.md). The [deployed Ubuntu AMD64 report](docs/verification/nma-082/README.md) verifies real web/Tauri access, private controls/domains, both selected providers, encrypted off-host recovery and actual token rotation, with declared snapshot RPO, measured RTO and capacity. Historical ARM64 evidence and final target limits remain separate; NMA-083 integrated acceptance and general distribution retain their own gates.
+
 ## Optional and deferred work
 
 The [83-row decision register](docs/product/feature-decisions.md) retains every selected decision and note. The owner-operated server, account login and organization access model are promoted by the November 12 plan. Other optional work requires an explicit promotion before becoming an acceptance commitment: advanced CLI editor, managed harness updates, full connection/usage dashboards, context meter/cross-thread search/fork UI, temporary subagents, webhooks, image/document generation and app previews.

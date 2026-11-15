@@ -88,6 +88,7 @@ import {
   conversationActivity,
   waitingForUser,
 } from "@/features/conversation/lib/conversation-activity";
+import { mergeConversationHistory } from "@/features/conversation/lib/conversation-history";
 import { conversationEntries } from "@/features/conversation/lib/conversation-parts";
 import { conversationRows } from "@/features/conversation/lib/conversation-rows";
 import { referenceTarget } from "@/features/conversation/lib/inline-references";
@@ -213,14 +214,10 @@ export default function Workspace() {
   const [historyLoaded, setHistoryLoaded] = useState(false);
   useEffect(() => {
     if (!snapshot || snapshot.thread.id !== threadId) return;
-    setOlder((current) => [
-      ...new Map(
-        [...current, ...snapshot.timeline.messages].map((message) => [message.id, message]),
-      ).values(),
-    ]);
-    setOlderParts((current) => [
-      ...new Map([...current, ...snapshot.timeline.parts].map((part) => [part.id, part])).values(),
-    ]);
+    setOlder((current) => mergeConversationHistory(threadId, current, snapshot.timeline.messages));
+    setOlderParts((current) =>
+      mergeConversationHistory(threadId, current, snapshot.timeline.parts),
+    );
   }, [snapshot, threadId]);
   const mobile = useIsMobile();
   const narrowNavigation = useMediaQuery("(max-width: 1343.98px)");
@@ -627,12 +624,12 @@ export default function Workspace() {
     />
   ) : null;
   const messages = useMemo(
-    () => [
-      ...older.filter((m) => !snapshot?.messages.some((current) => current.id === m.id)),
-      ...(snapshot?.timeline.messages ?? []),
-      ...(snapshot?.messages ?? []),
-    ],
-    [older, snapshot?.messages, snapshot?.timeline.messages],
+    () =>
+      mergeConversationHistory(threadId, older, [
+        ...(snapshot?.timeline.messages ?? []),
+        ...(snapshot?.messages ?? []),
+      ]),
+    [threadId, older, snapshot?.messages, snapshot?.timeline.messages],
   );
   function hasPendingNative(run: Run) {
     return (run.native_interactions ?? []).some(
@@ -640,8 +637,8 @@ export default function Workspace() {
     );
   }
   const parts = useMemo(
-    () => [...olderParts, ...(snapshot?.timeline.parts ?? [])],
-    [olderParts, snapshot?.timeline.parts],
+    () => mergeConversationHistory(threadId, olderParts, snapshot?.timeline.parts ?? []),
+    [threadId, olderParts, snapshot?.timeline.parts],
   );
   const entries = useMemo(() => conversationEntries(parts, messages), [parts, messages]);
   const latestUserEntry = entries.findLast(
@@ -1141,6 +1138,7 @@ export default function Workspace() {
                               const result = await request<ConversationTimeline>(
                                 `/v1/threads/${threadId}/timeline?before=${historyLoaded ? before : snapshot.timeline.next_before}`,
                               );
+                              if (currentThread.current !== threadId) return;
                               setOlder((current) => [...result.messages, ...current]);
                               setOlderParts((current) => [...result.parts, ...current]);
                               setBefore(result.next_before);

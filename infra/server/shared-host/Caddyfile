@@ -1,0 +1,35 @@
+{
+  admin off
+  auto_https off
+}
+
+http://:8082 {
+  root * /srv/web
+  header {
+    Referrer-Policy no-referrer
+    X-Content-Type-Options nosniff
+    Strict-Transport-Security "max-age=31536000"
+    -Server
+  }
+  route {
+    @private path /v1/harness/tools /v1/harness/tools/* /health/ready
+    respond @private 404
+    @api path /v1 /v1/* /api/auth /api/auth/* /health/live
+    handle @api {
+      request_body {
+        max_size 25165824
+      }
+      reverse_proxy 127.0.0.1:8000 {
+        header_up Host {$NGERTIIN_SERVER_HOST}
+        header_up X-Forwarded-Host {$NGERTIIN_SERVER_HOST}
+        header_up X-Forwarded-Proto https
+        header_up -Forwarded
+      }
+    }
+    handle {
+      try_files {path} /index.html
+      header Cache-Control no-cache
+      file_server
+    }
+  }
+}

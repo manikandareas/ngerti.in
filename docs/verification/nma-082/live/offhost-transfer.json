@@ -1,0 +1,7 @@
+{
+  "resumed_from_verified_bytes": 38384640,
+  "completed_bytes": 65228846,
+  "ciphertext_sha256": "1f9ac2fb2d955ea075d096ba312950a3339924f89580390c83a7d9fd33503b98",
+  "ssh_encryption_unchanged": true,
+  "transport_option": "IPQoS=none"
+}

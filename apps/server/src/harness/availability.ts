@@ -59,7 +59,11 @@ export function versionState(
   }
   return { state: comparison < 0 ? "too_old" : "supported", version };
 }
-export async function detectHarness(harness: HarnessId, override?: string): Promise<Availability> {
+export async function detectHarness(
+  harness: HarnessId,
+  override?: string,
+  timeoutMs = 3000,
+): Promise<Availability> {
   const manifest = manifests[harness];
   const executable = Bun.which(override ?? manifest.executable);
   if (!executable) return { harness, manifest, state: "missing", version: null, executable: null };
@@ -86,7 +90,7 @@ export async function detectHarness(harness: HarnessId, override?: string): Prom
         return value;
       })(),
       new Promise<never>((_, reject) => {
-        timeout = setTimeout(() => reject(new Error("Version probe timed out.")), 3000);
+        timeout = setTimeout(() => reject(new Error("Version probe timed out.")), timeoutMs);
       }),
     ]);
     return { harness, manifest, executable, ...versionState(output, manifest.minimum_version) };

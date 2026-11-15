@@ -1,0 +1,10 @@
+bun test v1.3.10 (30e609e0)
+
+scripts/verification/nma082/schema-startup.test.ts:
+(pass) forty sequential authentication initializations match the pinned schema on the deployment target [42735.78ms]
+(pass) forty concurrent-batch authentication initializations match the pinned schema on the deployment target [29992.85ms]
+
+ 2 pass
+ 0 fail
+ 80 expect() calls
+Ran 2 tests across 1 file. [73.64s]

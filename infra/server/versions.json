@@ -1,0 +1,18 @@
+{
+  "profile": "ubuntu-24.04-arm64",
+  "bun": "1.3.10",
+  "codex": "0.169.0",
+  "muse": "1.4.14-R7309.1",
+  "muse_sdk": "1.4.14",
+  "cua_sdk": "0.10.1",
+  "spacesd": "0.8.0",
+  "driver_contract": "1",
+  "postgres": "postgres:18.1-alpine@sha256:aa6eb304ddb6dd26df23d05db4e5cb05af8951cda3e0dc57731b771e0ef4ab29",
+  "caddy": "caddy:2.11.2-alpine@sha256:834468128c7696cec0ceea6172f7d692daf645ae51983ca76e39da54a97c570d",
+  "cua": "ghcr.io/trycua/linux:24.04@sha256:9ac0d6f6f7dd95392554ec95163f83c5061de3db05b64977696c78d71cd4861c",
+  "artifacts": {
+    "bun": { "url": "https://github.com/oven-sh/bun/releases/download/bun-v1.3.10/bun-linux-aarch64.zip", "sha256": "fa5ecb25cafa8e8f5c87a0f833719d46dd0af0a86c7837d806531212d55636d3" },
+    "codex": { "url": "https://registry.npmjs.org/@openai/codex/-/codex-0.169.0-linux-arm64.tgz", "sha256": "c1555c8ad3913e703d736584ff15e98eaeda685bf6eaedc83ae15943badbc1ff" },
+    "muse": { "url": "https://lookaside.facebook.com/lookaside/muse/download/?channel=muse&version=1.4.14-R7309.1&file=muse-aarch64-linux", "sha256": "3dc39b8fa26f9963cc2038f2966c0932ed5a39f0f9efb39cc0266a261cbbcf76" }
+  }
+}

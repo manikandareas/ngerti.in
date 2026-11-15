@@ -1,0 +1,35 @@
+{
+  "scope": "Preexisting tracked diffs outside the shared backlog index",
+  "paths": [
+    {
+      "path": ".env.example",
+      "preexisting_diff_unchanged": true,
+      "diff_sha256": "4d1e3d40e93aaab38a94a98bd90ad562e8ff7be72c115d798534a55cea017cb9"
+    },
+    {
+      "path": "README.md",
+      "preexisting_diff_unchanged": true,
+      "diff_sha256": "345503b15e53e4b4749c3913880d918c30e5b6f858c0c8ac4277bbf6def5969f"
+    },
+    {
+      "path": "apps/server/src/persistence/sqlite-import.ts",
+      "preexisting_diff_unchanged": true,
+      "diff_sha256": "6745738188230b8c1398c83594d23e73c2da38ef600b7059e44efbc296929f9f"
+    },
+    {
+      "path": "docs/architecture/postgresql-persistence.md",
+      "preexisting_diff_unchanged": true,
+      "diff_sha256": "891f845f7c43f04635842a0f41ad862986be2cdfdb02fa076abbb8051c6631d9"
+    },
+    {
+      "path": "docs/backlog/NMA-072.md",
+      "preexisting_diff_unchanged": true,
+      "diff_sha256": "6a70904417f879ba3d62938e76de36cd17254a0b221dd256a48b45fb949f302f"
+    },
+    {
+      "path": "package.json",
+      "preexisting_diff_unchanged": true,
+      "diff_sha256": "33b4fac40a3a23f30cd48dd5310d3c992d3c52be12cc06fdec5834461c6d98c6"
+    }
+  ]
+}

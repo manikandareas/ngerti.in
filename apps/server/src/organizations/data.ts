@@ -12,6 +12,7 @@ import { databaseDomainError } from "../persistence/errors";
 import type { AccessContext } from "./contracts";
 import { preferenceChanges, teamAgentWrite } from "./data-contracts";
 import { accessContext, audit, deny } from "./database";
+import { accountHttpAdapter } from "./http-adapter";
 import { isOrganizationPath } from "./paths";
 import { Organizations } from "./service";
 import { audienceAllows } from "./workgroups";
@@ -383,7 +384,7 @@ export class ScopedData {
   }
   wrap(api: Elysia) {
     const store = this.lifecycle.store;
-    const edge = new Elysia()
+    const edge = new Elysia({ adapter: accountHttpAdapter })
       .onError(({ error: source, set }) => {
         const error = databaseDomainError(source) ?? source;
         let status = 500;

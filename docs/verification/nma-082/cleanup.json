@@ -1,0 +1,9 @@
+{
+  "resource": "disposable OrbStack rehearsal VM",
+  "name": "ngertiin-nma082",
+  "id": "01M7EDKNDJRHDF3EM3Q1HPA6GQ",
+  "deleted": true,
+  "confirmed_absent_from_machine_list": true,
+  "timestamp_utc": "2026-11-15T03:29:17.364519+00:00",
+  "scope": "Only the VM created for NMA-082 and its synthetic data were removed. Workstation development state and credentials were not reset."
+}

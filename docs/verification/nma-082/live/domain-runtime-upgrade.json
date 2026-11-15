@@ -1,0 +1,47 @@
+{
+  "domains": [
+    {
+      "id": "1fc20b62-d9c9-4db8-a282-d64f75afac90",
+      "previous_container_id": "8e0d294ab93c3a9755c756d8a240afb78e4c7b3afe2ec4d75635972f6cafdff1"
+    },
+    {
+      "id": "f7fa9e5b-8ff3-4101-8aee-89b775383bf4",
+      "previous_container_id": "c88ea9772336cdbe42a9769d91d591ddb9ee8eaa8790e67314017fcac4ef34df"
+    }
+  ],
+  "checks": [
+    {
+      "action": "verify",
+      "domain_id": "1fc20b62-d9c9-4db8-a282-d64f75afac90",
+      "desktop_stream": true,
+      "different_physical_container": true,
+      "ephemeral_runtime": false,
+      "private_working_bytes": "separate-fixture-checked-through-HTTP"
+    },
+    {
+      "action": "verify",
+      "domain_id": "f7fa9e5b-8ff3-4101-8aee-89b775383bf4",
+      "desktop_stream": true,
+      "different_physical_container": true,
+      "ephemeral_runtime": false,
+      "private_working_bytes": 4
+    },
+    {
+      "action": "cycle",
+      "domain_id": "1fc20b62-d9c9-4db8-a282-d64f75afac90",
+      "desktop_stream": true,
+      "different_physical_container": true,
+      "ephemeral_runtime": true,
+      "private_working_bytes": "separate-fixture-checked-through-HTTP"
+    },
+    {
+      "action": "cycle",
+      "domain_id": "f7fa9e5b-8ff3-4101-8aee-89b775383bf4",
+      "desktop_stream": true,
+      "different_physical_container": true,
+      "ephemeral_runtime": true,
+      "private_working_bytes": 4
+    }
+  ],
+  "retired": true
+}

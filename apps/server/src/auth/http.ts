@@ -49,7 +49,18 @@ export function registerAuthenticationRoutes(api: Elysia, auth: Authentication) 
           );
         const oauthToken = path === "/api/auth/oauth2/token";
         const oauthProtocol = oauthToken || path === "/api/auth/oauth2/revoke";
-        auth.checkOrigin(request, request.method === "POST" && !oauthProtocol);
+        // Signed email links enter through a document navigation from an external mail client.
+        // The provider still validates their token and same-origin callback; cookie mutations
+        // and cross-origin fetches retain the ordinary Origin/fetch-metadata checks.
+        const emailNavigation =
+          request.method === "GET" &&
+          (path === "/api/auth/verify-email" ||
+            /^\/api\/auth\/reset-password\/[A-Za-z0-9_-]{1,256}$/.test(path)) &&
+          !request.headers.has("Origin") &&
+          [null, "navigate"].includes(request.headers.get("Sec-Fetch-Mode")) &&
+          [null, "document"].includes(request.headers.get("Sec-Fetch-Dest"));
+        if (!emailNavigation)
+          auth.checkOrigin(request, request.method === "POST" && !oauthProtocol);
         let codeExchange = false;
         if (oauthToken) {
           const form = new URLSearchParams(await request.clone().text());

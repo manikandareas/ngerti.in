@@ -1,0 +1,26 @@
+[Unit]
+Description=Ngertiin private encrypted Docker engine
+Requires=ngertiin-network.service
+After=ngertiin-network.service
+ConditionPathIsMountPoint=/srv/ngertiin
+
+[Service]
+Type=notify
+Group=ngertiin
+NetworkNamespacePath=/run/netns/ngertiin
+BindReadOnlyPaths=/etc/netns/ngertiin/resolv.conf:/etc/resolv.conf
+RuntimeDirectory=ngertiin-docker
+RuntimeDirectoryMode=0750
+ExecStartPre=/bin/bash /opt/ngertiin/current/infra/server/shared-host/verify-storage.sh
+ExecStart=/bin/bash /opt/ngertiin/current/infra/server/shared-host/start-engine.sh
+NotifyAccess=main
+Restart=on-failure
+RestartSec=10
+TimeoutStartSec=120
+TimeoutStopSec=120
+Delegate=yes
+KillMode=control-group
+LimitNOFILE=1048576
+
+[Install]
+WantedBy=multi-user.target

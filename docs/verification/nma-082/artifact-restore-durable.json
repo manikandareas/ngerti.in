@@ -1,0 +1,38 @@
+{
+  "pass": 10,
+  "fail": 0,
+  "checks": [
+    "real immutable artifact API bytes before backup",
+    "cross-organization artifact denied before backup",
+    "offline backup leaves application stopped",
+    "provider master key and encrypted credential restore together",
+    "independently retained newer revocation is enforced",
+    "issuing browser session survives the exact snapshot",
+    "real immutable artifact API bytes after restore",
+    "cross-organization artifact remains denied after restore",
+    "restored private Computer recreates on the stable asset path",
+    "restored private Computer recreates on the stable asset path"
+  ],
+  "backup": {
+    "version": 1,
+    "snapshot_at": "2026-11-15T02:59:02.506Z",
+    "backup_sha256": "bde26122a9d4965af5e96b40990295224c692d02cb07fccfc2b65e26c5e5cb49",
+    "domains": 2,
+    "tables": 42,
+    "stopped_ms": 30234
+  },
+  "restore": {
+    "version": 1,
+    "snapshot_at": "2026-11-15T02:59:02.506Z",
+    "domains": 2,
+    "tables": 42,
+    "restore_ms": 7625,
+    "service_started": false
+  },
+  "cached_host_recovery_to_api_ms": 33260,
+  "table_fingerprint_mismatches": 0,
+  "limitations": [
+    "Synthetic provider API key; no actual provider refresh or inference.",
+    "Recovery timing excludes new host provisioning, image download and DNS/certificate cutover."
+  ]
+}

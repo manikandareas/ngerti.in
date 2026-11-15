@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { selectedAgent } from "@/features/account/selection";
 import type { AISelection, WorkspaceAccess } from "@/features/account/types";
 import { command, durableCommand, followEvents, request } from "@/lib/api-client";
@@ -285,6 +285,18 @@ export function useWorkspace(composer: HTMLElement | null) {
     localStorage.setItem(threadKey, id);
     selectThread(id);
   };
+  const selectedSnapshot = useMemo(
+    () =>
+      scope && snapshot
+        ? {
+            ...snapshot,
+            agents: snapshot.agents.map((agent) =>
+              selectedAgent(agent, snapshot.thread.id, selections, connections),
+            ),
+          }
+        : snapshot,
+    [scope, snapshot, selections, connections],
+  );
   return {
     agents,
     access,
@@ -300,15 +312,7 @@ export function useWorkspace(composer: HTMLElement | null) {
     connections,
     selections,
     appConnectionCursor,
-    snapshot:
-      scope && snapshot
-        ? {
-            ...snapshot,
-            agents: snapshot.agents.map((agent) =>
-              selectedAgent(agent, snapshot.thread.id, selections, connections),
-            ),
-          }
-        : snapshot,
+    snapshot: selectedSnapshot,
     opening,
     threadId,
     select,

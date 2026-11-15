@@ -12,6 +12,8 @@ Resolution creates metadata without starting Docker. The first native operation 
 
 Each domain has a named home volume, its own browser profile, PID/IPC/network namespaces, private control token, loopback control port and resource limits. Containers use the pinned full Cua image, default Docker seccomp/capability constraints, explicit dangerous-capability drops and `no-new-privileges`. The only host bind mounts are the three fixed, read-only browser startup/policy assets. Backend data, host homes, provider homes, installation credentials and the Docker socket are not mounted.
 
+NMA-082 adds an attested 64-MiB `noexec,nosuid,nodev` tmpfs at `/run` so Docker stop/start cannot reuse stale X/DBus session files. Authenticated domain startup requires native `desktop_stream` support before publishing readiness; healthy control HTTP alone is insufficient. Existing containers require an explicit operator recreation with their named home volume retained. The [deployed report](../verification/nma-082/README.md) records the original startup race, two-domain recreation and repeated restart proof.
+
 This is container isolation on a trusted operator's kernel, not hypervisor certification or protection against the infrastructure administrator. Cua control authority is trusted within its own domain. The same human's authorized agents cooperate inside that domain; their working copies and browser state are mutually visible. Conversation provenance, private metadata and immutable artifact bytes retain their separate application scope.
 
 ## Files, processes and adapters

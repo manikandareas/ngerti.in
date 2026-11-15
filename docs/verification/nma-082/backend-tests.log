@@ -1,0 +1,45 @@
+bun test v1.3.10 (30e609e0)
+
+tests/bootstrap.test.ts:
+{"event":"foundation.started","url":"http://127.0.0.1:56967","credentials_file":"/var/folders/j1/p1582yhj20z58phnf_zrzy7w0000gn/T/ngertiin-bootstrap-jBqnL7/installation.json","registered_executors":2,"api_readiness_gate":"ready"}
+{"event":"foundation.started","url":"http://127.0.0.1:56974","credentials_file":"/var/folders/j1/p1582yhj20z58phnf_zrzy7w0000gn/T/ngertiin-bootstrap-jBqnL7/installation.json","registered_executors":2,"api_readiness_gate":"ready"}
+(pass) bootstrap exposes discovery, enforces one authority, and preserves state across restart [881.33ms]
+
+tests/auth/security.test.ts:
+(pass) account mode fails closed on missing secrets, insecure origins or unsafe callbacks [3.26ms]
+(pass) native callback rejects wrong state, issuer, redirect, duplicate fields and replay [514.54ms]
+(pass) token endpoint rejects wrong verifier, redirect, audience, code replay and client registration [539.48ms]
+(pass) expired access/device sessions fail API, SSE and renewal without affecting another device [474.79ms]
+(pass) revocation closes an existing HTTP SSE stream and preserves another device [527.89ms]
+(pass) viewer tickets are bound to a live device and cannot be renewed from another device [533.53ms]
+(pass) password recovery revokes native offline credentials and leaves no auth secrets in domain records [653.42ms]
+(pass) account-mode export identifies auth classes and the verified multi-user API gate [772.80ms]
+(pass) HTTPS configuration serializes Secure cookies and ignores spoofed proxy addresses [675.73ms]
+(pass) rate limits survive changing untrusted forwarding headers [423.09ms]
+(pass) a native device outlives browser logout and access-token revocation closes its stream [1051.82ms]
+
+tests/auth/schema.test.ts:
+(pass) retained authentication schema exactly matches the pinned plugins [129.78ms]
+
+tests/operations/authority.test.ts:
+(pass) offline recovery and application lifecycle authority are mutually exclusive [178.05ms]
+
+tests/operations/encryption.test.ts:
+(pass) backup authenticates large opaque bytes and fails before exposing tampered plaintext [58.52ms]
+
+tests/operations/files.test.ts:
+(pass) operator metadata publishes privately and exclusive writes preserve existing recovery state [2.11ms]
+
+tests/operations/config.test.ts:
+(pass) production bootstrap fails closed and preserves an account origin with explicit state [234.80ms]
+
+tests/machines/authorization.test.ts:
+(pass) real user sessions resolve private machines and a copied viewer ticket cannot cross users or devices [1187.65ms]
+(pass) revoking the actual issuing login closes existing media and rejects further viewer RPCs [3843.28ms]
+(pass) removing an organization member closes their already-open media and invalidates clipboard/file access [4099.45ms]
+(pass) TLS-terminated viewer uses its configured account origin and ignores forged forwarding headers [737.89ms]
+
+ 21 pass
+ 0 fail
+ 132 expect() calls
+Ran 21 tests across 8 files. [18.28s]

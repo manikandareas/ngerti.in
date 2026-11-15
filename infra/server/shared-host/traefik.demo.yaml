@@ -1,0 +1,27 @@
+# A dedicated file for the existing Dokploy file provider; no proxy restart is needed.
+http:
+  routers:
+    ngertiin-demo-http:
+      rule: Host(`demo.ngerti.in`)
+      entryPoints: [web]
+      middlewares: [ngertiin-demo-https]
+      service: ngertiin-demo
+    ngertiin-demo:
+      rule: Host(`demo.ngerti.in`)
+      entryPoints: [websecure]
+      service: ngertiin-demo
+      tls:
+        certResolver: letsencrypt
+  middlewares:
+    ngertiin-demo-https:
+      redirectScheme:
+        scheme: https
+        permanent: true
+  services:
+    ngertiin-demo:
+      loadBalancer:
+        passHostHeader: true
+        responseForwarding:
+          flushInterval: -1ms
+        servers:
+          - url: http://172.31.82.2:8082

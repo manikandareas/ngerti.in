@@ -64,9 +64,11 @@ export function registerMachineRoutes(
         const lease = authentication?.lease(request);
         try {
           return await views.issue(
-            request.headers.get("Origin") ?? new URL(request.url).origin,
+            request.headers.get("Origin") ??
+              authentication?.config.origin ??
+              new URL(request.url).origin,
             body.interactive,
-            new URL(request.url).origin,
+            authentication?.config.origin ?? new URL(request.url).origin,
             lease,
           );
         } catch (error) {
@@ -81,7 +83,9 @@ export function registerMachineRoutes(
       async ({ params, request }) =>
         views.renew(
           params.viewerId,
-          request.headers.get("Origin") ?? new URL(request.url).origin,
+          request.headers.get("Origin") ??
+            authentication?.config.origin ??
+            new URL(request.url).origin,
           authentication?.principal(request).sessionId,
         ),
       { body: z.strictObject({}) },

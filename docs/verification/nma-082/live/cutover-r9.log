@@ -1,0 +1,12 @@
+{"event":"operations.backup-offline.completed","version":1,"snapshot_at":"2026-11-15T08:00:27.981Z","backup_sha256":"b2d93a441b14b1d2cc9b0270422dde69ad18f48943c4d1736760ce1a4e55ae23","domains":2,"tables":42,"stopped_ms":9833}
+{"action":"retire","domains":2,"checks":0,"homes_preserved":true,"application_started":false}
+{"action":"verify","domains":2,"checks":2,"homes_preserved":true,"application_started":false}
+{"action":"cycle","domains":2,"checks":4,"homes_preserved":true,"application_started":false}
+ Container ngertiin-server-ingress-1 Recreate 
+ Container ngertiin-server-ingress-1 Recreated 
+ Container ngertiin-server-ingress-1 Starting 
+ Container ngertiin-server-ingress-1 Started 
+ephemeral_runtime_started=2026-11-15T08:00:48Z
+Result=success
+NRestarts=0
+ActiveState=active

@@ -1,0 +1,70 @@
+{
+  "phase": "before",
+  "checks": [
+    {
+      "name": "synthetic actor signs in through public HTTPS",
+      "pass": true
+    },
+    {
+      "name": "fixture cannot read Owner resource 1",
+      "pass": true
+    },
+    {
+      "name": "Owner cannot read fixture resource 1",
+      "pass": true
+    },
+    {
+      "name": "fixture cannot read Owner resource 2",
+      "pass": true
+    },
+    {
+      "name": "Owner cannot read fixture resource 2",
+      "pass": true
+    },
+    {
+      "name": "fixture cannot read Owner resource 3",
+      "pass": true
+    },
+    {
+      "name": "Owner cannot read fixture resource 3",
+      "pass": true
+    },
+    {
+      "name": "fixture cannot select Owner organization",
+      "pass": true
+    },
+    {
+      "name": "Owner cannot select fixture organization",
+      "pass": true
+    },
+    {
+      "name": "fixture upload bytes remain private and intact",
+      "pass": true
+    },
+    {
+      "name": "owner machine is healthy",
+      "pass": true
+    },
+    {
+      "name": "fixture machine is healthy",
+      "pass": true
+    },
+    {
+      "name": "execution-domain identities differ",
+      "pass": true
+    }
+  ],
+  "completed": true,
+  "machines": [
+    {
+      "id": "f7fa9e5b-8ff3-4101-8aee-89b775383bf4",
+      "state": "ready",
+      "generation": 1
+    },
+    {
+      "id": "1fc20b62-d9c9-4db8-a282-d64f75afac90",
+      "state": "ready",
+      "generation": 1
+    }
+  ]
+}

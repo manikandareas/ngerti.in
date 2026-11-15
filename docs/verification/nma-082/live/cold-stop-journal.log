@@ -1,0 +1,8 @@
+Stopping ngertiin.service - Ngertiin central server...
+ngertiin.service: State 'stop-sigterm' timed out. Killing.
+ngertiin.service: Killing process 2119399 (bun) with signal SIGKILL.
+ngertiin.service: Failed to kill control group /system.slice/ngertiin.service, ignoring: Invalid argument
+ngertiin.service: Main process exited, code=killed, status=9/KILL
+ngertiin.service: Failed with result 'timeout'.
+Stopped ngertiin.service - Ngertiin central server.
+ngertiin.service: Consumed 2min 47.621s CPU time, 457.3M memory peak, 0B memory swap peak.

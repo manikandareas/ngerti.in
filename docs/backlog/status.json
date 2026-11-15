@@ -400,7 +400,7 @@
     "ticket": "NMA-082",
     "title": "Single-server HTTPS deployment and recovery runbook",
     "plan": "Harness-first",
-    "status": "Backlog",
+    "status": "Done",
     "order": 16.8,
     "layer": "Deployment / Operations",
     "depends_on": [

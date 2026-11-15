@@ -1,0 +1,23 @@
+bun test v1.3.10 (30e609e0)
+
+apps/server/tests/machines/domain-startup.test.ts:
+25 |   return { machine: new DomainCuaMachine(runtime, retained, async (state) => { states.push(state); }), states };
+26 | }
+27 | 
+28 | test("healthy control HTTP without the required desktop provider never admits a ready domain", async () => {
+29 |   const f = startup(false);
+30 |   await expect(f.machine.client()).rejects.toMatchObject({ code: "MACHINE_UNAVAILABLE" });
+                                                ^
+error: 
+
+Expected promise that rejects
+Received promise that resolved: Promise { <resolved> }
+
+      at <anonymous> (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/tests/machines/domain-startup.test.ts:30:44)
+(fail) healthy control HTTP without the required desktop provider never admits a ready domain [18.33ms]
+(pass) a domain with native desktop capability completes scoped startup [2.04ms]
+
+ 1 pass
+ 1 fail
+ 3 expect() calls
+Ran 2 tests across 1 file. [513.00ms]

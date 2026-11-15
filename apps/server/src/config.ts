@@ -11,8 +11,9 @@ const installationSchema = z.strictObject({
   token: z.string().regex(/^[a-f0-9]{64}$/),
 });
 export function developmentConfig() {
-  if ((process.env.APP_ENV ?? "development") !== "development")
-    throw new Error("This bootstrap supports development only.");
+  const environment = process.env.APP_ENV ?? "development";
+  if (!["development", "production"].includes(environment))
+    throw new Error("Unsupported application environment.");
   const root = resolve(
     process.env.NGERTIIN_PROJECT_ROOT ?? fileURLToPath(new URL("../../../", import.meta.url)),
   );
@@ -30,6 +31,15 @@ export function developmentConfig() {
     .parse(process.env.NGERTIIN_GROUP_ROUTER ?? (typesafeApiKey ? "jev" : "member"));
   if (groupRouter === "jev" && !typesafeApiKey)
     throw new Error("TYPESAFE_API_KEY is required for Jev group routing.");
+  const authentication = authenticationConfig({ ...rootEnvironment, ...process.env });
+  if (environment === "production") {
+    if (!authentication || authentication.allowInsecureLoopback)
+      throw new Error("Server deployment requires certificate-validated account authentication.");
+    if (!process.env.NGERTIIN_STATE_DIR?.startsWith("/"))
+      throw new Error("Server deployment requires an absolute private state directory.");
+    if (!process.env.NGERTIIN_DATABASE_URL)
+      throw new Error("Server deployment requires an explicit PostgreSQL connection.");
+  }
   const stateDir = resolve(root, process.env.NGERTIIN_STATE_DIR || ".dev/harness-first");
   mkdirSync(stateDir, { recursive: true, mode: 0o700 });
   const installationFile = resolve(stateDir, "installation.json");
@@ -65,7 +75,7 @@ export function developmentConfig() {
     port,
     groupRouter,
     typesafeApiKey,
-    authentication: authenticationConfig({ ...rootEnvironment, ...process.env }),
+    authentication,
     harnessExecutables: {
       codex: process.env.NGERTIIN_CODEX_EXECUTABLE ?? rootEnvironment.NGERTIIN_CODEX_EXECUTABLE,
       muse: process.env.NGERTIIN_MUSE_EXECUTABLE ?? rootEnvironment.NGERTIIN_MUSE_EXECUTABLE,

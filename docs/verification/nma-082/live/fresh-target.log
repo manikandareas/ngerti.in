@@ -1,0 +1,38 @@
+/srv/ngertiin/backups/deployed-recovery-offhost.ngb: OK
+fresh_target_start=2026-11-15T07:10:26Z
+Loaded image ID: sha256:60bca98e4b496d1d9639c3d0ac3d14db668fca243236e0133a5daeab306a6517
+Loaded image ID: sha256:04468c397044e22f2311a8fd8e5ddb478ab686b67634da068b9bd4b2d2eb3252
+Loaded image ID: sha256:2ad4f81b9a44d531eff80b8d8c65c495c8a867648dc9a3e3720224d7418b3f90
+docker.io/library/postgres@sha256:aa6eb304ddb6dd26df23d05db4e5cb05af8951cda3e0dc57731b771e0ef4ab29: Pulling from library/postgres
+Digest: sha256:aa6eb304ddb6dd26df23d05db4e5cb05af8951cda3e0dc57731b771e0ef4ab29
+Status: Downloaded newer image for postgres@sha256:aa6eb304ddb6dd26df23d05db4e5cb05af8951cda3e0dc57731b771e0ef4ab29
+docker.io/library/postgres:18.1-alpine@sha256:aa6eb304ddb6dd26df23d05db4e5cb05af8951cda3e0dc57731b771e0ef4ab29
+docker.io/library/caddy@sha256:834468128c7696cec0ceea6172f7d692daf645ae51983ca76e39da54a97c570d: Pulling from library/caddy
+Digest: sha256:834468128c7696cec0ceea6172f7d692daf645ae51983ca76e39da54a97c570d
+Status: Downloaded newer image for caddy@sha256:834468128c7696cec0ceea6172f7d692daf645ae51983ca76e39da54a97c570d
+docker.io/library/caddy:2.11.2-alpine@sha256:834468128c7696cec0ceea6172f7d692daf645ae51983ca76e39da54a97c570d
+ghcr.io/trycua/linux@sha256:9ac0d6f6f7dd95392554ec95163f83c5061de3db05b64977696c78d71cd4861c: Pulling from trycua/linux
+Digest: sha256:9ac0d6f6f7dd95392554ec95163f83c5061de3db05b64977696c78d71cd4861c
+Status: Downloaded newer image for ghcr.io/trycua/linux@sha256:9ac0d6f6f7dd95392554ec95163f83c5061de3db05b64977696c78d71cd4861c
+ghcr.io/trycua/linux:24.04@sha256:9ac0d6f6f7dd95392554ec95163f83c5061de3db05b64977696c78d71cd4861c
+ Network ngertiin-server_default Creating 
+ Network ngertiin-server_default Created 
+ Container ngertiin-server-postgres-1 Creating 
+ Container ngertiin-server-postgres-1 Created 
+ Container ngertiin-server-postgres-1 Starting 
+ Container ngertiin-server-postgres-1 Started 
+/var/run/postgresql:5432 - no response
+/var/run/postgresql:5432 - no response
+/var/run/postgresql:5432 - accepting connections
+{"event":"operations.database-login.completed","created":true,"role":"ngertiin_client"}
+{"event":"operations.restore.completed","version":1,"snapshot_at":"2026-11-15T07:07:13.769Z","domains":2,"tables":42,"restore_ms":4574,"service_started":false}
+{"checkpoint":"reconciled-before-start","owner_binding":true,"memberships":3,"provider_identity_and_refresh_bytes":true,"latest_revocation":true,"pending_runs":0,"goals":0,"routines":0}
+{"refresh_requested":true,"account_unchanged":true,"billing":"subscription","access_token_rotated":true,"refresh_token_rotated":true,"native_last_refresh_changed":true}
+ Container ngertiin-server-ingress-1 Creating 
+ Container ngertiin-server-ingress-1 Created 
+ Container ngertiin-server-ingress-1 Starting 
+ Container ngertiin-server-ingress-1 Started 
+{"event":"operations.check.completed","profile":"ubuntu-24.04-amd64","bun":"1.3.10","binaries":[{"harness":"codex","version":"0.169.0","sha256":"b452ca20f838a8855a88a41050ee4a694033fff4ea3ecdad5633e6e0e8d13f2b"},{"harness":"muse","version":"1.4.14-R7309.1","sha256":"0809aac7cb58d18f5022b6d05e02aa1974683c0ec430e5f04d25b60ed17de2da"}],"ready":true}
+application_started=2026-11-15T07:12:09Z
+NRestarts=0
+ActiveState=active

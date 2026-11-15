@@ -63,7 +63,15 @@ export async function initializeAuthentication(
       changes.schemaProblems.length ||
       changes.unsafeChanges.length
     )
-      throw new Error("Authentication schema does not match the pinned provider.");
+      throw new Error(
+        `Authentication schema does not match the pinned provider: ${JSON.stringify({
+          missing_tables: changes.toBeCreated.length,
+          missing_columns: changes.toBeAdded.length,
+          missing_indexes: changes.toBeAddedIndexes.length,
+          schema_problems: changes.schemaProblems.length,
+          unsafe_changes: changes.unsafeChanges.length,
+        })}`,
+      );
     await client.query(
       "INSERT INTO ngertiin_owner_binding(id,legacy_owner_id) VALUES(1,$1) ON CONFLICT DO NOTHING",
       [legacyOwnerId],

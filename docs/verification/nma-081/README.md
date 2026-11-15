@@ -72,6 +72,8 @@ Two intermittent pinned authentication schema-introspection startup failures wer
 
 Rebuilding the unsigned development application also produced a macOS Keychain read waiting for OS interaction on one existing disposable credential. No ACL or OS protection was weakened. The final replay uses a separately named disposable profile and the same final binary for login/relaunch. Quit now bounds cleanup while credential access is waiting; secure-store persistence is proved separately from distribution/code-signing acceptance.
 
+NMA-082 follow-up: its [separate deployed Linux report](../nma-082/README.md) verifies actual public HTTPS/WSS, web/Tauri, useful native provider recovery/token rotation, cold off-host restore and corrected shutdown, alongside historical disposable results and additional passing schema initializations. The historical mismatch remains unconfirmed; the deployed report retains its exact target and operational limits. This does not alter the captured NMA-081 results above.
+
 ## Cleanup
 
 All four named disposable Keychain accounts are removed or already absent. The native app and both fixture servers are stopped; their labelled PostgreSQL containers, the two actual Cua execution domains, networks and volumes are absent. Only named test resources were touched; installed user profiles/databases and the pre-existing trusted CA remain unchanged. [Resource receipt](cleanup.json), [credential receipt](credential-cleanup.json). The final development bundle is retained as the built artifact.

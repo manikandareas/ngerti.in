@@ -88,13 +88,22 @@ export class MachineViews {
     const id = url.pathname.slice(prefix.length).split("/")[0];
     const view = id ? this.#views.get(id) : undefined;
     const origin = request.headers.get("Origin");
+    // TLS terminates at the loopback proxy. Bind to the configured account origin and exact
+    // public Host, never to caller-supplied Forwarded/X-Forwarded-* values.
+    const requestOrigin =
+      view?.lease &&
+      view.apiOrigin.startsWith("https:") &&
+      url.protocol === "http:" &&
+      url.host === new URL(view.apiOrigin).host
+        ? view.apiOrigin
+        : url.origin;
     if (
       !url.pathname.startsWith(prefix) ||
       !view ||
       (origin && origin !== view.origin) ||
       (media
         ? url.origin !== this.#mediaServer?.url.origin
-        : ![view.origin, view.apiOrigin].includes(url.origin))
+        : ![view.origin, view.apiOrigin].includes(requestOrigin))
     )
       throw new DomainError("UNAUTHORIZED", 401);
     const organization = request.headers.get("X-Ngertiin-Organization");

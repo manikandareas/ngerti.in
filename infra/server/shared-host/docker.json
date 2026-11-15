@@ -1,0 +1,17 @@
+{
+  "hosts": ["unix:///run/ngertiin-docker/docker.sock"],
+  "group": "ngertiin",
+  "containerd": "/run/ngertiin-docker/containerd.sock",
+  "containerd-namespace": "ngertiin",
+  "containerd-plugins-namespace": "ngertiin-plugins",
+  "data-root": "/srv/ngertiin/docker",
+  "exec-root": "/run/ngertiin-docker/engine",
+  "pidfile": "/run/ngertiin-docker/dockerd.pid",
+  "storage-driver": "overlay2",
+  "features": {"containerd-snapshotter": false},
+  "bip": "172.28.0.1/24",
+  "default-address-pools": [{"base": "172.29.0.0/16", "size": 24}],
+  "dns": ["1.1.1.1", "1.0.0.1"],
+  "log-driver": "local",
+  "log-opts": {"max-size": "10m", "max-file": "3"}
+}

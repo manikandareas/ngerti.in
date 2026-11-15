@@ -1,0 +1,37 @@
+{
+  "checks": [
+    {
+      "name": "codex: original completed run retained",
+      "pass": true
+    },
+    {
+      "name": "codex: original receipt replays without inference",
+      "pass": true
+    },
+    {
+      "name": "codex: private working bytes restored",
+      "pass": true
+    },
+    {
+      "name": "codex: artifact bytes restored",
+      "pass": true
+    },
+    {
+      "name": "muse: original completed run retained",
+      "pass": true
+    },
+    {
+      "name": "muse: original receipt replays without inference",
+      "pass": true
+    },
+    {
+      "name": "muse: private working bytes restored",
+      "pass": true
+    },
+    {
+      "name": "muse: artifact bytes restored",
+      "pass": true
+    }
+  ],
+  "completed": true
+}

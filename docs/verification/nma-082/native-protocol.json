@@ -1,0 +1,17 @@
+{
+  "pass": 2,
+  "fail": 0,
+  "results": [
+    {
+      "harness": "codex",
+      "status": "pass",
+      "login": "required"
+    },
+    {
+      "harness": "muse",
+      "status": "pass",
+      "login": "required"
+    }
+  ],
+  "boundary": "Actual adapters initialize, inspect unauthenticated native state and close on Linux. No provider credentials, login, inference, billing or useful product tools are claimed."
+}

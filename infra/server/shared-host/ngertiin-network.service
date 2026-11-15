@@ -1,0 +1,12 @@
+[Unit]
+Description=Ngertiin private network namespace
+After=network-online.target docker.service
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/bin/bash /opt/ngertiin/current/infra/server/shared-host/network.sh
+
+[Install]
+WantedBy=multi-user.target

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useApiResource } from "@/hooks/use-api-resource";
@@ -46,7 +47,7 @@ export function MembersSettings() {
                   },
                 );
                 if (result.invitation.delivery === "failed") {
-                  action.setError(
+                  toast.warning(
                     "Invitation saved. Email delivery failed; use Resend to try again.",
                   );
                 }
@@ -219,11 +220,6 @@ export function MembersSettings() {
             )}
         </ResourceState>
       </section>
-      {action.error && (
-        <p role="alert" className="account-error">
-          {action.error}
-        </p>
-      )}
     </div>
   );
 }

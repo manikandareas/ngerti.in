@@ -11,7 +11,6 @@ import {
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Link } from "@tanstack/react-router";
 import { useLayoutEffect, useRef } from "react";
-import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AccountSettings } from "@/features/account/account-settings";
 import { MembersSettings } from "@/features/account/members-settings";
 import { OrganizationSettings } from "@/features/account/organization-settings";
@@ -30,7 +29,6 @@ import {
 import { SettingsRow, SettingsSection } from "@/features/settings/components/shared";
 import { useSettings } from "@/features/settings/hooks/use-settings";
 import type { SettingsSectionId } from "@/features/settings/lib/settings-search";
-import { usePreferences } from "@/hooks/use-preferences";
 import "../settings.css";
 
 const sections = [
@@ -58,7 +56,6 @@ export default function SettingsPage() {
     return true;
   });
   const { section, open } = useSettings();
-  const { error } = usePreferences();
   const page = visibleSections.some((item) => item.id === section) ? section : "general";
   const organizationPages = ["organization", "members", "workgroups", "team-agents"];
   const navigationSections = visibleSections.filter(
@@ -117,11 +114,6 @@ export default function SettingsPage() {
         </header>
         <div className="settings-scroll" key={page} data-settings-scroll>
           <div className="settings-content">
-            {error && (
-              <Alert variant="destructive">
-                <AlertDescription>{error}</AlertDescription>
-              </Alert>
-            )}
             {page === "general" && <GeneralSettings />}
             {page === "account" && <AccountSettings />}
             {page === "organization" && <OrganizationSettings />}

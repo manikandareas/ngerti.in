@@ -32,11 +32,6 @@ export function InvitationReview({ id }: { id: string }) {
           <p className="account-muted">
             {review.invitation.email} · {review.invitation.role === "admin" ? "Admin" : "Member"}
           </p>
-          {operation.error && (
-            <p role="alert" className="account-error">
-              {operation.error}
-            </p>
-          )}
           <Button
             disabled={operation.busy}
             onClick={() =>

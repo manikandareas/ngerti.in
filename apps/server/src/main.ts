@@ -10,10 +10,13 @@ import { CodexAccounts } from "./harness/codex/accounts";
 import { CodexAdapter } from "./harness/codex/adapter";
 import { CredentialContexts } from "./harness/context";
 import { CredentialStorage } from "./harness/credential-storage";
+import { HarnessLoginReadiness } from "./harness/login-readiness";
 import { MuseAccounts } from "./harness/muse/accounts";
 import { MuseAdapter } from "./harness/muse/adapter";
+import { configureNativeStorage } from "./harness/native-storage";
 import { HarnessRuntime } from "./harness/runtime";
 import { ProductTools } from "./harness/tools";
+import { HarnessUpdater } from "./harness/updater";
 import { Lifecycle } from "./lifecycle";
 import { readMachineConfiguration } from "./machines/config";
 import { ExecutionDomains } from "./machines/domains";
@@ -57,7 +60,14 @@ export async function startApplication(config: ApplicationConfig = developmentCo
       );
     });
     const credentials = new CredentialContexts(config.stateDir);
+    await configureNativeStorage(
+      config.stateDir,
+      process.env.APP_ENV !== "production" && config.authentication.allowInsecureLoopback,
+    );
     const runtime = new HarnessRuntime(config.harnessExecutables);
+    const updater = new HarnessUpdater(runtime, config.stateDir);
+    await updater.recover();
+    cleanup.push(() => updater.close());
     const broker = new HarnessBroker(
       lifecycle,
       credentials,
@@ -92,6 +102,8 @@ export async function startApplication(config: ApplicationConfig = developmentCo
       accounts,
       credentialStorage: new CredentialStorage(config.stateDir),
       detect: runtime.detect,
+      updater,
+      loginReadiness: new HarnessLoginReadiness(runtime, config.stateDir),
     });
     cleanup.push(async () => {
       if (app.server) await app.stop(true);

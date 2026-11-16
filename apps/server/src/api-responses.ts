@@ -8,6 +8,8 @@ import { conversationPreviews } from "./conversations/previews";
 import { routingDecisionTrace } from "./groups/decision-trace";
 import { capabilities } from "./harness/contracts";
 import { nativeInteractionJournal } from "./harness/interaction-contracts";
+import { loginReadiness } from "./harness/login-readiness";
+import { maintenanceJob } from "./harness/maintenance-jobs";
 import { approval, userInput } from "./harness/muse/protocol";
 import { inheritedSkill, nativeSkillMetadata } from "./learning/contracts";
 import {
@@ -241,6 +243,17 @@ reference("GET", "/v1/contracts", "contract_document");
 reference("GET", "/v1/harness/contracts", "harness");
 reference("GET", "/v1/browser/contracts", "browser");
 routes("GET", ["/v1/harnesses"], operationSchemas.harness_availability);
+routes(
+  "GET",
+  ["/v1/harnesses/maintenance"],
+  z.strictObject({
+    can_update: z.boolean(),
+    updating: z.array(z.enum(["codex", "muse"])),
+    operations: z.array(maintenanceJob),
+    native_login: z.array(loginReadiness),
+  }),
+);
+routes("POST", ["/v1/harnesses/:harness/update"], maintenanceJob);
 reference("POST", "/v1/setup", "setup");
 reference("POST", "/v1/runs", "admission");
 routes("POST", ["/v1/message-uploads"], schemas.attachment_upload);

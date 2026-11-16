@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useApiResource } from "@/hooks/use-api-resource";
+import { useFeedbackToast } from "@/hooks/use-feedback-toast";
 import { command } from "@/lib/api-client";
 import { useAccountAction } from "./account-forms";
 import { useAccount } from "./session";
@@ -17,6 +18,7 @@ export function AccountSettings() {
   const [tick, setTick] = useState(0);
   const devices = useApiResource<{ sessions: Device[] }>("/v1/auth/sessions", tick);
   const action = useAccountAction();
+  useFeedbackToast(devices.error, { retry: devices.retry });
   return (
     <div className="organization-settings">
       <section>
@@ -62,23 +64,10 @@ export function AccountSettings() {
             )}
           </div>
         ))}
-        {devices.error && (
-          <p role="alert" className="account-error">
-            {devices.error}
-            <Button variant="ghost" onClick={devices.retry}>
-              Retry
-            </Button>
-          </p>
-        )}
         {!devices.data && !devices.error && (
           <div role="status" aria-label="Loading devices" className="account-loading-row" />
         )}
       </section>
-      {action.error && (
-        <p role="alert" className="account-error">
-          {action.error}
-        </p>
-      )}
     </div>
   );
 }

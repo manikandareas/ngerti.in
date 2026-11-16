@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Alert, AlertDescription } from "@/components/ui/alert";
+import { toast } from "sonner";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -22,8 +22,6 @@ export function DataSettings() {
   const { snapshot } = useSettingsWorkspace();
   const { reset } = usePreferences();
   const [busy, setBusy] = useState(false);
-  const [error, setError] = useState("");
-  const [notice, setNotice] = useState("");
   const operation = useRef<AbortController | null>(null);
   useEffect(() => () => operation.current?.abort(), []);
   async function download() {
@@ -31,8 +29,6 @@ export function DataSettings() {
     const abort = new AbortController();
     operation.current = abort;
     setBusy(true);
-    setError("");
-    setNotice("");
     try {
       const data = await exportConversation(snapshot, abort.signal);
       const url = URL.createObjectURL(
@@ -43,10 +39,10 @@ export function DataSettings() {
       anchor.download = `ngertiin-conversation-${snapshot.thread.id}.json`;
       anchor.click();
       setTimeout(() => URL.revokeObjectURL(url), 1000);
-      setNotice("Ekspor percakapan siap diunduh.");
+      toast.success("Ekspor percakapan siap diunduh.");
     } catch (failure) {
       if (!abort.signal.aborted)
-        setError(failure instanceof Error ? failure.message : "Ekspor belum berhasil.");
+        toast.error(failure instanceof Error ? failure.message : "Ekspor belum berhasil.");
     } finally {
       operation.current = null;
       if (!abort.signal.aborted) setBusy(false);
@@ -92,8 +88,7 @@ export function DataSettings() {
                 <AlertDialogCancel>Batal</AlertDialogCancel>
                 <AlertDialogAction
                   onClick={() => {
-                    reset();
-                    setNotice("Preferensi dikembalikan ke pilihan awal.");
+                    if (reset()) toast.success("Preferensi dikembalikan ke pilihan awal.");
                   }}
                 >
                   Atur ulang
@@ -103,16 +98,6 @@ export function DataSettings() {
           </AlertDialog>
         </SettingsRow>
       </SettingsSection>
-      {error && (
-        <Alert variant="destructive">
-          <AlertDescription>{error}</AlertDescription>
-        </Alert>
-      )}
-      {notice && (
-        <p role="status" className="text-sm text-muted-foreground">
-          {notice}
-        </p>
-      )}
     </>
   );
 }

@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useSettingsWorkspace } from "@/hooks/settings-workspace";
@@ -87,7 +88,7 @@ export function ScopedProviderSettings() {
                 setAdding(false);
                 await workspace.refresh();
                 if (connection.login !== "authenticated" && method === "api_key")
-                  action.setError(
+                  toast.info(
                     "Key saved. Refresh this connection to verify its models and billing.",
                   );
               });
@@ -190,11 +191,6 @@ export function ScopedProviderSettings() {
           ))}
         {!workspace.connections.some((connection) => connection.state === "active") && !adding && (
           <p className="account-muted">Connect an AI account to start working with your agents.</p>
-        )}
-        {action.error && (
-          <p role="alert" className="account-error">
-            {action.error}
-          </p>
         )}
       </section>
     </div>

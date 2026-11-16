@@ -105,6 +105,7 @@ const durablePaths = new Set([
   "/v1/apps/connections/:id/assign",
 ]);
 const operationPaths = new Set([
+  "/v1/harnesses/:harness/update",
   "/v1/data/legacy-binding",
   "/v1/machine/views/:viewerId/renew",
   "/v1/connections/:id/inspect",
@@ -169,7 +170,8 @@ export function httpContract(routes: readonly Route[]) {
       authentication: routeAuthentication(path),
       access: routeAccess(path),
       idempotency:
-        method === "POST" && (durablePaths.has(path) || organizationCommand)
+        method === "POST" &&
+        (durablePaths.has(path) || organizationCommand || path === "/v1/harnesses/:harness/update")
           ? "required_uuid"
           : ["/v1/machine/control", "/v1/machine/processes/control"].includes(path)
             ? "required_body_command_id"

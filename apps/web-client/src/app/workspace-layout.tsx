@@ -20,6 +20,7 @@ import {
   useState,
 } from "react";
 import { WorkspaceRail } from "@/app/workspace-rail";
+import { useFeedbackToast } from "@/hooks/use-feedback-toast";
 import {
   Conversation,
   ConversationContent,
@@ -172,6 +173,10 @@ export default function Workspace() {
     error,
     setError,
   } = workspace;
+  useFeedbackToast(error, {
+    retry: workspace.retry,
+    cancel: { label: "Periksa pengaturan", onClick: () => openSettings() },
+  });
   const [draft, setDraft] = useConversationDraft(threadId);
   const composerRequests = useComposerRequests(threadId);
   const reply = composerRequests.active;
@@ -1090,22 +1095,6 @@ export default function Workspace() {
                   )}
                 </div>
               </header>
-              {error && (
-                <Alert
-                  variant="destructive"
-                  className="workspace-error [width:auto] [margin:8px_24px]"
-                >
-                  <AlertDescription className="flex flex-wrap items-center gap-2">
-                    <span>{error}</span>
-                    <Button size="sm" variant="outline" onClick={workspace.retry}>
-                      Coba hubungkan lagi
-                    </Button>
-                    <Button size="sm" variant="ghost" onClick={() => openSettings()}>
-                      Periksa pengaturan
-                    </Button>
-                  </AlertDescription>
-                </Alert>
-              )}
               {!snapshot ? (
                 <ConversationLoading error={error} />
               ) : (

@@ -110,6 +110,16 @@ const settingsRoute = createRoute({
   },
 });
 
+const onboardingRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/onboarding",
+  validateSearch: (search: Record<string, unknown>): { create?: true; step?: 2 } => ({
+    create: search.create === true || search.create === "true" ? true : undefined,
+    step: search.step === 2 || search.step === "2" ? 2 : undefined,
+  }),
+  component: () => null,
+});
+
 const themePreviewRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/theme-preview",
@@ -159,6 +169,7 @@ const designSystemRoute = createRoute({
 export const router = createRouter({
   routeTree: rootRoute.addChildren([
     homeRoute.addChildren([conversationRoute, signInRoute, resetPasswordRoute, invitationRoute]),
+    onboardingRoute,
     settingsRoute,
     designSystemRoute,
     themePreviewRoute,

@@ -1,7 +1,7 @@
 import { Add01Icon, UserGroupIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { type ReactNode, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -25,6 +25,7 @@ export function ConversationNavigation({
   createAgent,
   createGroup,
   choose,
+  organizationHeader,
 }: {
   agents: Agent[];
   threads: Thread[];
@@ -38,6 +39,7 @@ export function ConversationNavigation({
   createAgent: () => void;
   createGroup: () => void;
   choose: (id: string) => void;
+  organizationHeader?: ReactNode;
 }) {
   const [search, setSearch] = useState("");
   const [opening, setOpening] = useState<string | null>(null);
@@ -69,7 +71,7 @@ export function ConversationNavigation({
   }
   return (
     <div className="conversation-navigation relative p-3 flex flex-col h-full min-h-0">
-      <OrganizationSwitcher />
+      {organizationHeader ?? <OrganizationSwitcher />}
       <div className="navigation-heading mb-2 flex shrink-0 items-center justify-end gap-2">
         <Link to="/" className="sr-only" aria-label="Ngertiin">
           ngertiin<span>.</span>

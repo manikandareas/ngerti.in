@@ -7,8 +7,7 @@ import {
   useRef,
   useState,
 } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { type ExternalToast, toast } from "sonner";
 import { ApiError, durableCommand } from "@/lib/api-client";
 import type { Organization } from "./types";
 
@@ -19,6 +18,16 @@ const accountErrors: Record<string, string> = {
   CONFLICT: "This changed elsewhere. Refresh and try again.",
   INVALID_REQUEST: "Check the details and try again.",
   NOT_FOUND: "This item is no longer available.",
+  EXECUTABLE_MISSING: "This harness is not installed on the server.",
+  VERSION_TOO_OLD: "Update this harness to a supported version before connecting.",
+  CAPABILITY_UNSUPPORTED: "This installation does not support that action yet.",
+  NATIVE_STORAGE_REQUIRED:
+    "The server owner needs to configure encrypted account storage before connecting Codex.",
+  SERVICE_UNAVAILABLE: "The operation could not finish. Check the server connection and try again.",
+  PROTOCOL_ERROR: "The harness could not connect. Check its version and try again.",
+  NATIVE_REJECTED: "The harness did not accept the connection. Try signing in again.",
+  BILLING_MISMATCH:
+    "This account uses a different billing method. Manage its connection in Settings.",
 };
 
 export function AccountField({ label, children }: { label: string; children: ReactNode }) {
@@ -32,91 +41,52 @@ export function AccountField({ label, children }: { label: string; children: Rea
     </div>
   );
 }
-export function useAccountAction() {
+export function useAccountAction(
+  options: { id?: string; errorAction?: (failure: unknown) => ExternalToast["action"] } = {},
+) {
   const [busy, setBusy] = useState(false);
-  const [error, setError] = useState("");
+  const id = useId();
   const lock = useRef(false);
   async function run(action: () => Promise<unknown>) {
     if (lock.current) return;
     lock.current = true;
     setBusy(true);
-    setError("");
     try {
       await action();
     } catch (failure) {
-      if (!(failure instanceof DOMException && failure.name === "AbortError"))
-        setError(
+      if (!(failure instanceof DOMException && failure.name === "AbortError")) {
+        const errorAction = options.errorAction?.(failure);
+        toast.error(
           failure instanceof ApiError
             ? (accountErrors[failure.code] ?? failure.message)
             : failure instanceof Error
               ? failure.message
               : "Could not save. Try again.",
+          {
+            id: options.id ?? id,
+            duration: errorAction ? Infinity : 8000,
+            action: errorAction,
+          },
         );
+      }
     } finally {
       lock.current = false;
       setBusy(false);
     }
   }
-  return { busy, error, setError, run };
+  return { busy, run };
 }
-export function CreateOrganization({
-  created,
-  cancel,
-}: {
-  created: (id: string) => Promise<void>;
-  cancel?: () => void;
-}) {
-  const [name, setName] = useState("");
-  const operation = useAccountAction();
-  const suffix = useRef(crypto.randomUUID().slice(0, 6));
-  return (
-    <form
-      className="account-form"
-      onSubmit={(event) => {
-        event.preventDefault();
-        void operation.run(async () => {
-          const base =
-            name
-              .toLowerCase()
-              .normalize("NFKD")
-              .replace(/[^a-z0-9]+/g, "-")
-              .replace(/^-|-$/g, "")
-              .slice(0, 70) || "workspace";
-          const result = await durableCommand<{ organization: Organization }>(
-            "create-organization",
-            "/v1/organizations",
-            { name: name.trim(), slug: `${base}-${suffix.current}` },
-          );
-          await created(result.organization.id);
-        });
-      }}
-    >
-      <AccountField label="Organization name">
-        <Input
-          value={name}
-          onChange={(event) => setName(event.target.value)}
-          maxLength={120}
-          required
-          autoFocus
-          autoComplete="organization"
-          disabled={operation.busy}
-        />
-      </AccountField>
-      {operation.error && (
-        <p role="alert" className="account-error">
-          {operation.error}
-        </p>
-      )}
-      <div className="account-actions">
-        <Button disabled={operation.busy || !name.trim()}>
-          {operation.busy ? "Creating…" : "Create organization"}
-        </Button>
-        {cancel && (
-          <Button type="button" variant="ghost" onClick={cancel}>
-            Cancel
-          </Button>
-        )}
-      </div>
-    </form>
+export function createOrganization(name: string) {
+  const base =
+    name
+      .toLowerCase()
+      .normalize("NFKD")
+      .replace(/[^a-z0-9]+/g, "-")
+      .slice(0, 70)
+      .replace(/^-|-$/g, "") || "workspace";
+  return durableCommand<{ organization: Organization }>(
+    "create-organization",
+    "/v1/organizations",
+    { name: name.trim(), slug: `${base}-${crypto.randomUUID().slice(0, 6)}` },
   );
 }

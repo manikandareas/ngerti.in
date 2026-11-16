@@ -1,0 +1,46 @@
+{
+  "collection": "https://icons.computer/",
+  "retrieved_at": "2026-11-16",
+  "icons": [
+    {
+      "file": "codex.png",
+      "name": "ChatGPT",
+      "publisher": "OpenAI OpCo, LLC",
+      "source": "https://icons.computer/icons/6448311069.png",
+      "original_source": "https://apps.apple.com/us/app/chatgpt/id6448311069",
+      "bytes": 66401
+    },
+    {
+      "file": "muse.png",
+      "name": "Muse",
+      "publisher": "Meta Platforms, Inc.",
+      "source": "https://icons.computer/icons/6760173601.png",
+      "original_source": "https://apps.apple.com/us/app/muse-from-meta/id6760173601",
+      "bytes": 47631
+    },
+    {
+      "file": "claude.png",
+      "name": "Claude",
+      "publisher": "Anthropic PBC",
+      "source": "https://icons.computer/icons/6473753684.png",
+      "original_source": "https://apps.apple.com/us/app/claude-by-anthropic/id6473753684",
+      "bytes": 37420
+    },
+    {
+      "file": "gemini.png",
+      "name": "Google Gemini",
+      "publisher": "Google",
+      "source": "https://icons.computer/icons/6477489729.png",
+      "original_source": "https://apps.apple.com/us/app/google-gemini/id6477489729",
+      "bytes": 50177
+    },
+    {
+      "file": "cursor.png",
+      "name": "Cursor",
+      "publisher": "Anysphere",
+      "source": "https://icons.computer/icons/mac-cursor.png",
+      "original_source": "https://cursor.com/download",
+      "bytes": 27580
+    }
+  ]
+}

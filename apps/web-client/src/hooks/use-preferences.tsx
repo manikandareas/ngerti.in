@@ -6,6 +6,7 @@ import {
   useLayoutEffect,
   useState,
 } from "react";
+import { useFeedbackToast } from "@/hooks/use-feedback-toast";
 import { clientScope, scopedStorageKey } from "@/lib/client-scope";
 
 export const preferencesKey = "ngertiin:preferences:v1";
@@ -63,7 +64,7 @@ function readPreferences() {
 const PreferencesContext = createContext<{
   preferences: Preferences;
   update: <K extends keyof Preferences>(key: K, value: Preferences[K]) => void;
-  reset: () => void;
+  reset: () => boolean;
   error: string;
 } | null>(null);
 
@@ -72,13 +73,16 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
   const scopePrefix = clientScope()?.key;
   const [preferences, setPreferences] = useState(readPreferences);
   const [error, setError] = useState("");
+  useFeedbackToast(error, { tone: "warning" });
   function save(next: Preferences) {
     setPreferences(next);
     try {
       localStorage.setItem(storageKey, JSON.stringify({ version: 1, ...next }));
       setError("");
+      return true;
     } catch {
       setError("Preferensi berlaku saat ini, tetapi belum dapat disimpan di perangkat ini.");
+      return false;
     }
   }
   useEffect(() => {

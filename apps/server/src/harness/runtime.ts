@@ -1,5 +1,8 @@
 import { statSync } from "node:fs";
+import { homedir } from "node:os";
+import { join } from "node:path";
 import { type Availability, detectHarness, type HarnessId, manifests } from "./availability";
+import { HarnessError } from "./contracts";
 
 export type HarnessDetector = typeof detectHarness & {
   fingerprint?: (harness: HarnessId) => string;
@@ -17,17 +20,37 @@ export class HarnessRuntime {
     for (const harness of ["codex", "muse"] as const) {
       const command = overrides[harness] ?? manifests[harness].executable;
       this.#commands.set(harness, command);
-      this.#paths.set(harness, Bun.which(command));
+      this.#paths.set(harness, this.locate(harness));
     }
     this.detect = Object.assign((harness: HarnessId) => this.observe(harness), {
       fingerprint: (harness: HarnessId) => this.fingerprint(harness),
     });
   }
 
+  installationPath(harness: HarnessId) {
+    if (this.#commands.get(harness) !== manifests[harness].executable)
+      throw new HarnessError("CAPABILITY_UNSUPPORTED");
+    return join(
+      homedir(),
+      ".local/share/ngertiin/harnesses",
+      harness,
+      "bin",
+      manifests[harness].executable,
+    );
+  }
+
+  private locate(harness: HarnessId) {
+    const command = this.#commands.get(harness) ?? manifests[harness].executable;
+    return (
+      Bun.which(command) ??
+      (command === manifests[harness].executable ? Bun.which(this.installationPath(harness)) : null)
+    );
+  }
+
   private stamp(harness: HarnessId) {
     let path = this.#paths.get(harness);
     if (!path) {
-      path = Bun.which(this.#commands.get(harness) ?? manifests[harness].executable);
+      path = this.locate(harness);
       this.#paths.set(harness, path);
     }
     if (!path) return "missing";
@@ -42,6 +65,13 @@ export class HarnessRuntime {
   fingerprint(harness: HarnessId) {
     const value = this.#cache.get(harness)?.value;
     return `${this.stamp(harness)}:${value?.state ?? "unprobed"}:${value?.version ?? "unknown"}`;
+  }
+
+  async refresh(harness: HarnessId) {
+    await this.#pending.get(harness);
+    this.#paths.set(harness, this.locate(harness));
+    this.#cache.delete(harness);
+    return this.observe(harness);
   }
 
   private async observe(harness: HarnessId): Promise<Availability> {

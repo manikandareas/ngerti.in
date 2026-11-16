@@ -1,3 +1,4 @@
+import { Navigate, useLocation } from "@tanstack/react-router";
 import {
   createContext,
   Fragment,
@@ -8,12 +9,22 @@ import {
   useRef,
   useState,
 } from "react";
-import { Button } from "@/components/ui/button";
+import { useFeedbackToast } from "@/hooks/use-feedback-toast";
 import { PreferencesProvider } from "@/hooks/use-preferences";
 import { ApiError, command, request } from "@/lib/api-client";
 import { clearPrivateStorage, clientScope, setClientScope } from "@/lib/client-scope";
+import type { Connection } from "@/types/workspace";
+import { createOrganization as createOrganizationRecord } from "./account-forms";
 import { AccountScreen } from "./account-screen";
-import type { Organization, OrganizationAccess, OrganizationList, UserSession } from "./types";
+import { availableAIConnections, connectionReady } from "./ai-integration";
+import Onboarding from "./onboarding";
+import type {
+  Organization,
+  OrganizationAccess,
+  OrganizationList,
+  UserSession,
+  WorkspaceAccess,
+} from "./types";
 import "./account.css";
 
 interface AccountState {
@@ -23,6 +34,7 @@ interface AccountState {
   list: OrganizationList;
   organization: Organization | null;
   access: OrganizationAccess | null;
+  hasAIIntegration: boolean | null;
   error: string;
 }
 const emptyList: OrganizationList = { organizations: [], creation_limit: 0, created_count: 0 };
@@ -33,11 +45,13 @@ const initial: AccountState = {
   list: emptyList,
   organization: null,
   access: null,
+  hasAIIntegration: null,
   error: "",
 };
 type Account = AccountState & {
   refresh: () => Promise<void>;
   select: (id: string) => Promise<void>;
+  createOrganization: (name: string) => Promise<Organization>;
   logout: () => Promise<void>;
   leaveWorkspace: () => void;
 };
@@ -53,12 +67,14 @@ const selectedKey = (server: string, user: string) =>
 const organizationStorage = () => (window.ngertiinDesktop?.remote ? localStorage : sessionStorage);
 
 export default function WorkspaceEntry({ children }: { children: ReactNode }) {
+  const pathname = useLocation({ select: (location) => location.pathname });
   const [state, setState] = useState(initial);
   const stateRef = useRef(state);
   stateRef.current = state;
   const sequence = useRef(0);
   const mounted = useRef(true);
   const latestRefresh = useRef<Promise<void> | null>(null);
+  const creatingOrganization = useRef(false);
   const load = useCallback(async (choice?: string) => {
     const generation = ++sequence.current;
     const current = () => mounted.current && generation === sequence.current;
@@ -97,12 +113,14 @@ export default function WorkspaceEntry({ children }: { children: ReactNode }) {
         saved;
       const organization =
         list.organizations.find((item) => item.id === requested) ??
-        (list.organizations.length === 1 ? list.organizations[0] : null);
+        (!creatingOrganization.current && list.organizations.length === 1
+          ? list.organizations[0]
+          : null);
       const access = organization
         ? await request<OrganizationAccess>(`/v1/organizations/${organization.id}`)
         : null;
       if (!current()) return;
-      setClientScope(
+      const scope = setClientScope(
         organization && access
           ? {
               server,
@@ -115,7 +133,52 @@ export default function WorkspaceEntry({ children }: { children: ReactNode }) {
       );
       if (organization)
         organizationStorage().setItem(selectedKey(server, session.user.id), organization.id);
-      setState({ status: "ready", server, session, list, organization, access, error: "" });
+      let hasAIIntegration: boolean | null = null;
+      let integrationError = "";
+      if (scope) {
+        try {
+          const [connections, grants] = await Promise.all([
+            request<Connection[]>(
+              "/v1/entities/connection",
+              undefined,
+              undefined,
+              undefined,
+              15000,
+              scope,
+            ),
+            request<WorkspaceAccess>(
+              "/v1/data/access",
+              undefined,
+              undefined,
+              undefined,
+              15000,
+              scope,
+            ),
+          ]);
+          hasAIIntegration = availableAIConnections(
+            connections,
+            session.user.id,
+            grants.allowed_organization_connection_ids,
+          ).some(connectionReady);
+        } catch (failure) {
+          if (failure instanceof DOMException && failure.name === "AbortError") return;
+          integrationError =
+            failure instanceof Error
+              ? failure.message
+              : "Could not check your AI connections. Try again.";
+        }
+      }
+      if (!current()) return;
+      setState({
+        status: "ready",
+        server,
+        session,
+        list,
+        organization,
+        access,
+        hasAIIntegration,
+        error: integrationError,
+      });
     } catch (error) {
       if (!current() || (error instanceof DOMException && error.name === "AbortError")) return;
       if (
@@ -162,7 +225,7 @@ export default function WorkspaceEntry({ children }: { children: ReactNode }) {
     };
   }, [refresh]);
   useEffect(() => {
-    if (!state.session) return;
+    if (!state.session && !state.error && !window.ngertiinDesktop?.remote) return;
     const check = () => {
       if (document.visibilityState === "visible") void refresh();
     };
@@ -175,7 +238,7 @@ export default function WorkspaceEntry({ children }: { children: ReactNode }) {
       // Remove private surfaces before rechecking the shared browser cookie.
       sequence.current++;
       setClientScope(null);
-      setState((value) => ({ ...value, organization: null, access: null }));
+      setState((value) => ({ ...value, organization: null, access: null, hasAIIntegration: null }));
       void refresh();
     };
     const timer = setInterval(check, 15_000);
@@ -190,19 +253,36 @@ export default function WorkspaceEntry({ children }: { children: ReactNode }) {
       window.removeEventListener("ngertiin:access-changed", changed);
       document.removeEventListener("visibilitychange", check);
     };
-  }, [state.session, refresh]);
+  }, [state.session, state.error, refresh]);
+  useFeedbackToast(state.error, { retry: () => void refresh() });
   const account: Account = {
     ...state,
     refresh: () => refresh(),
+    createOrganization: async (name) => {
+      if (creatingOrganization.current)
+        throw new Error("Organization creation is already in progress.");
+      creatingOrganization.current = true;
+      try {
+        return (await createOrganizationRecord(name)).organization;
+      } finally {
+        creatingOrganization.current = false;
+      }
+    },
     select: async (id) => {
       setClientScope(null);
-      setState((value) => ({ ...value, organization: null, access: null, error: "" }));
+      setState((value) => ({
+        ...value,
+        organization: null,
+        access: null,
+        hasAIIntegration: null,
+        error: "",
+      }));
       await refresh(id);
     },
     leaveWorkspace: () => {
       sequence.current++;
       setClientScope(null);
-      setState((value) => ({ ...value, organization: null, access: null }));
+      setState((value) => ({ ...value, organization: null, access: null, hasAIIntegration: null }));
     },
     logout: async () => {
       await command("/v1/auth/logout");
@@ -215,12 +295,21 @@ export default function WorkspaceEntry({ children }: { children: ReactNode }) {
       setState({ ...initial, status: "ready", server: state.server });
     },
   };
-  const special = /^\/(invitations|sign-in|reset-password)(\/|$)/.test(location.pathname);
-  const active = !!state.session && !!state.organization && !!state.access && !special;
+  const special = /^\/(invitations|sign-in|reset-password)(\/|$)/.test(pathname);
+  const onboarding = pathname === "/onboarding";
+  const active = !!state.session && !!state.organization && !!state.access;
   return (
     <AccountContext.Provider value={account}>
       {state.status === "loading" ? (
         <div className="account-loading" role="status" aria-label="Loading workspace" />
+      ) : !state.session || special ? (
+        <AccountScreen />
+      ) : onboarding ? (
+        <Onboarding key={`${state.server}:${state.session.user.id}`} />
+      ) : active && state.hasAIIntegration === null ? (
+        <div className="account-loading" role="status" aria-label="Checking AI connections" />
+      ) : active && !state.hasAIIntegration ? (
+        <Navigate to="/onboarding" search={{ step: 2 }} replace />
       ) : active ? (
         <PreferencesProvider key={clientScope()?.key ?? "account"}>
           <Fragment key={`${clientScope()?.key ?? "account"}:${clientScope()?.epoch ?? 0}`}>
@@ -228,15 +317,7 @@ export default function WorkspaceEntry({ children }: { children: ReactNode }) {
           </Fragment>
         </PreferencesProvider>
       ) : (
-        <AccountScreen />
-      )}
-      {active && state.error && (
-        <div className="account-connection-error" role="alert">
-          {state.error}
-          <Button size="sm" variant="ghost" onClick={() => void refresh()}>
-            Retry
-          </Button>
-        </div>
+        <Navigate to="/onboarding" replace />
       )}
     </AccountContext.Provider>
   );

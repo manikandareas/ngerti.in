@@ -1,10 +1,13 @@
 import { Add01Icon, ArrowDown01Icon, Tick02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
+import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useSettings } from "@/features/settings/hooks/use-settings";
 import { useAccountAction } from "./account-forms";
+import { organizationLogo } from "./organization-branding";
+import { OrganizationLogo } from "./organization-logo";
 import { useAccount } from "./session";
 
 export function OrganizationSwitcher() {
@@ -12,7 +15,7 @@ export function OrganizationSwitcher() {
   const settings = useSettings();
   const [open, setOpen] = useState(false);
   const action = useAccountAction();
-  if (!account?.organization) return null;
+  if (!account?.organization || !account.session) return null;
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -21,7 +24,17 @@ export function OrganizationSwitcher() {
           type="button"
           aria-label={`Organization: ${account.organization.name}`}
         >
-          <span>{account.organization.name}</span>
+          <span className="organization-switcher-identity">
+            <OrganizationLogo
+              name={account.organization.name}
+              src={organizationLogo({
+                server: account.server,
+                user: account.session.user.id,
+                organization: account.organization.id,
+              })}
+            />
+            <span>{account.organization.name}</span>
+          </span>
           <HugeiconsIcon icon={ArrowDown01Icon} size={14} aria-hidden="true" />
         </button>
       </PopoverTrigger>
@@ -45,16 +58,11 @@ export function OrganizationSwitcher() {
           </Button>
         ))}
         {account.list.created_count < account.list.creation_limit && (
-          <Button
-            variant="ghost"
-            className="w-full justify-start text-muted-foreground"
-            onClick={() => {
-              setOpen(false);
-              void settings.open("organization");
-            }}
-          >
-            <HugeiconsIcon icon={Add01Icon} size={14} aria-hidden="true" />
-            New organization
+          <Button asChild variant="ghost" className="w-full justify-start text-muted-foreground">
+            <Link to="/onboarding" search={{ create: true }} onClick={() => setOpen(false)}>
+              <HugeiconsIcon icon={Add01Icon} size={14} aria-hidden="true" />
+              New organization
+            </Link>
           </Button>
         )}
         <div className="my-1 border-t border-border" />

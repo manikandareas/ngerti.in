@@ -1,5 +1,6 @@
 import { type ReactNode, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { useFeedbackToast } from "@/hooks/use-feedback-toast";
 import { AccountField } from "./account-forms";
 import type { Workgroup } from "./types";
 
@@ -14,15 +15,8 @@ export function ResourceState({
   loading: boolean;
   children: ReactNode;
 }) {
-  if (error)
-    return (
-      <div role="alert" className="account-error">
-        {error}
-        <Button variant="ghost" size="sm" onClick={retry}>
-          Retry
-        </Button>
-      </div>
-    );
+  useFeedbackToast(error, { retry });
+  if (error) return null;
   if (loading)
     return <div role="status" aria-label="Loading settings" className="account-loading-row" />;
   return children;

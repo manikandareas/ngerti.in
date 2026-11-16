@@ -5,8 +5,8 @@ export type HarnessId = z.infer<typeof harnessId>;
 export const manifests = {
   codex: {
     executable: "codex",
-    minimum_version: "0.165.0",
-    tested_native_version: "0.166.0",
+    minimum_version: "0.169.0",
+    tested_native_version: "0.169.0",
     protocol: "app_server",
     sdk_version: null,
     evidence: "native_subscription_http",
@@ -15,10 +15,10 @@ export const manifests = {
   },
   muse: {
     executable: "muse",
-    minimum_version: "1.4.14",
-    tested_native_version: "1.4.14-R7309.1",
+    minimum_version: "1.4.20",
+    tested_native_version: "1.4.20-R8619.1",
     protocol: "msp_v1",
-    sdk_version: "1.4.14",
+    sdk_version: "1.4.20",
     evidence: "native_api_key_http_subscription_unverified",
     authentication_methods: ["native_login", "api_key"],
     capabilities: { ...unknownCapabilities },
@@ -71,7 +71,7 @@ export async function detectHarness(
   let timeout: ReturnType<typeof setTimeout> | undefined;
   try {
     child = Bun.spawn([executable, "--version"], {
-      env: { PATH: process.env.PATH, LANG: "C" },
+      env: { PATH: process.env.PATH, HOME: process.env.HOME, MUSE_NO_AUTO_UPDATE: "1", LANG: "C" },
       stdout: "pipe",
       stderr: "ignore",
     });

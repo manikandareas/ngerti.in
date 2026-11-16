@@ -34,7 +34,7 @@ export class MuseTransport {
         context.env.MUSE_CONTRIBUTOR_MODE === "1" ? "on" : "off",
         ...(modelId ? ["--model", modelId] : []),
       ],
-      env: { ...context.env },
+      env: { ...context.env, MUSE_NO_AUTO_UPDATE: "1" },
       cwd: context.state_directory,
       shutdownTimeoutMs: 500,
       onStderr: (text) => diagnostics.push(new TextEncoder().encode(text)),

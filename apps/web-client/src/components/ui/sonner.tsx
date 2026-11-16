@@ -8,6 +8,7 @@ import {
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useTheme } from "next-themes";
 import { Toaster as Sonner, type ToasterProps } from "sonner";
+import "./sonner.css";
 
 const Toaster = ({ ...props }: ToasterProps) => {
   const { theme = "system" } = useTheme();
@@ -16,6 +17,9 @@ const Toaster = ({ ...props }: ToasterProps) => {
     <Sonner
       theme={theme as ToasterProps["theme"]}
       className="toaster group"
+      closeButton
+      expand
+      duration={5000}
       icons={{
         success: (
           <HugeiconsIcon icon={CheckmarkCircle02Icon} strokeWidth={1.75} className="size-4" />
@@ -35,6 +39,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
       }}
       style={
         {
+          fontFamily: "var(--font-sans)",
           "--normal-bg": "var(--popover)",
           "--normal-text": "var(--popover-foreground)",
           "--normal-border": "var(--border)",
@@ -48,6 +53,9 @@ const Toaster = ({ ...props }: ToasterProps) => {
           "--warning-bg": "var(--warning)",
           "--warning-text": "var(--warning-foreground)",
           "--warning-border": "var(--warning-foreground)",
+          "--info-bg": "color-mix(in srgb, var(--link) 8%, var(--popover))",
+          "--info-text": "var(--link)",
+          "--info-border": "color-mix(in srgb, var(--link) 24%, var(--border))",
         } as React.CSSProperties
       }
       toastOptions={{

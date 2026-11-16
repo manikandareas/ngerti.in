@@ -27,7 +27,12 @@ export function routeAccess(path: string) {
       scope: "server_derived_run_and_binding",
       visibility: "private",
     } as const;
-  if (path === "/v1/data/legacy-binding" || path === "/health/ready")
+  if (
+    path === "/v1/data/legacy-binding" ||
+    path === "/health/ready" ||
+    path === "/v1/harnesses/:harness/update" ||
+    /^\/v1\/harnesses\/(codex|muse)\/update$/.test(path)
+  )
     return {
       authentication_class: "bootstrap_owner_session",
       scope: "guarded_installation",

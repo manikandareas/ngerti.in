@@ -76,23 +76,22 @@
   color: var(--muted-foreground);
 }
 .account-screen--entry {
-  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
-  align-items: stretch;
-  gap: 12px;
-  padding: 12px;
-  background: var(--frame);
+  display: flex;
+  padding: 0;
 }
 .account-screen--entry .account-panel {
-  display: flex;
-  flex-direction: column;
+  position: relative;
+  display: grid;
+  place-items: center;
   width: 100%;
   min-width: 0;
-  min-height: calc(100dvh - 24px);
-  padding: clamp(28px, 4vw, 64px);
-  background: var(--background);
-  border-radius: var(--radius-card);
+  min-height: 100dvh;
+  padding: 96px 24px;
 }
 .account-screen--entry .account-wordmark {
+  position: absolute;
+  top: 32px;
+  left: clamp(24px, 4vw, 64px);
   margin: 0;
   font-size: 21px;
   letter-spacing: -0.035em;
@@ -100,14 +99,14 @@
 }
 .account-screen--entry .account-content {
   width: min(100%, 352px);
-  margin: auto;
-  padding-block: 56px 88px;
   gap: 28px;
 }
 .account-heading {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 8px;
+  text-align: center;
 }
 .account-heading > p {
   margin: 0;
@@ -119,7 +118,7 @@
   display: flex;
   align-items: flex-end;
   width: max-content;
-  margin: 0 0 20px -10px;
+  margin: 0 0 20px;
 }
 .account-welcome img {
   display: block;
@@ -165,11 +164,23 @@
 .account-auth-controls {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 16px;
 }
 .account-screen--entry .account-links {
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.account-switch {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
   justify-content: center;
-  gap: 12px 24px;
+  column-gap: 4px;
+  margin: 0;
+  color: var(--muted-foreground);
+  font-size: 13px;
+  line-height: 1.6;
 }
 .account-screen--entry .account-links [data-variant="link"],
 .account-screen--entry .account-forgot {
@@ -192,66 +203,24 @@
 .account-native-form {
   text-align: center;
 }
-.account-native-form > .account-muted {
-  margin: 0;
-}
-.account-alternative {
-  width: 100%;
-  height: var(--spacing-control-lg);
-}
-.account-artwork {
-  position: relative;
-  width: 100%;
-  min-width: 0;
-  overflow: hidden;
-  border-radius: var(--radius-card);
-  background: #101a16 url("/images/sign-in/vignette-bloom-office.webp") center / cover;
-}
-.account-artwork video {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-}
-@media (min-width: 900px) and (max-height: 640px) {
-  .account-screen--entry .account-panel {
-    padding-block: 24px;
-  }
-  .account-screen--entry .account-content {
-    padding-block: 24px;
-  }
-  .account-welcome {
-    display: none;
-  }
-}
 @media (max-width: 899px) {
-  .account-screen--entry {
-    display: flex;
-    padding: 0;
-  }
   .account-screen--entry .account-panel {
-    min-height: 100dvh;
-    padding: 32px 28px;
-    border: 0;
-    border-radius: 0;
+    padding-block: 80px;
   }
-  .account-screen--entry .account-content {
-    padding-block: 64px;
+  .account-screen--entry .account-wordmark {
+    top: 24px;
+    left: 24px;
   }
   .account-screen--entry h1 {
     font-size: var(--text-heading-mobile);
     line-height: var(--text-heading-mobile--line-height);
   }
   .account-screen--entry .account-field > input,
-  .account-screen--entry .account-submit,
-  .account-screen--entry .account-alternative {
+  .account-screen--entry .account-submit {
     height: 44px;
   }
   .account-screen--entry .account-field > input {
     font-size: 16px;
-  }
-  .account-artwork {
-    display: none;
   }
 }
 .account-setup {
@@ -265,19 +234,6 @@
   margin-top: 20px;
   color: var(--foreground);
 }
-.account-signout {
-  align-self: flex-start;
-  color: var(--muted-foreground);
-}
-.account-organizations {
-  display: grid;
-  gap: 4px;
-}
-.account-organization {
-  justify-content: flex-start;
-  min-height: 44px;
-  width: 100%;
-}
 .account-loading {
   min-height: 100dvh;
   background: var(--background);
@@ -286,23 +242,6 @@
   height: 44px;
   border-radius: 8px;
   background: var(--muted);
-}
-.account-connection-error {
-  position: fixed;
-  z-index: 60;
-  bottom: 12px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  max-width: calc(100vw - 32px);
-  padding: 8px 12px;
-  border-radius: 8px;
-  background: var(--popover);
-  color: var(--foreground);
-  font-size: 13px;
-  box-shadow: 0 4px 20px #0002;
 }
 .organization-switcher {
   display: flex;
@@ -325,6 +264,34 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+.organization-switcher-identity {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+.organization-switcher-identity > span:last-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.organization-logo {
+  display: inline-grid;
+  flex: none;
+  width: 24px;
+  height: 24px;
+  place-items: center;
+  overflow: hidden;
+  border-radius: var(--radius-control);
+  background: var(--secondary);
+  color: var(--foreground);
+  font-size: 12px;
+  font-weight: 600;
+}
+.organization-logo-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 .organization-menu {
   max-width: calc(100vw - 24px);

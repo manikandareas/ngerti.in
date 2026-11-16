@@ -4,6 +4,7 @@ import { join } from "node:path";
 import type { Entity } from "../contracts";
 import { HarnessError } from "./contracts";
 import { CredentialStorage } from "./credential-storage";
+import { nativeStorageReady } from "./native-storage";
 
 export class Redactor {
   readonly #values = new Set<string>();
@@ -169,7 +170,7 @@ export class CredentialContexts {
       connection.authentication.method === "native_login"
     ) {
       const provider = this.codexTokens;
-      if (!provider || process.env.NGERTIIN_PROVIDER_NATIVE_STORAGE !== "encrypted-volume")
+      if (!provider || !nativeStorageReady(this.root))
         throw new HarnessError("CAPABILITY_UNSUPPORTED");
       return {
         scoped: !!binding,

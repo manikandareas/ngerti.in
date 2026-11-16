@@ -116,11 +116,6 @@ export function TeamAgentsSettings() {
         {!agents.length && !creating && (
           <p className="account-muted">Create an agent for everyone or selected workgroups.</p>
         )}
-        {action.error && (
-          <p role="alert" className="account-error">
-            {action.error}
-          </p>
-        )}
       </section>
     </div>
   );

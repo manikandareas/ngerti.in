@@ -1,13 +1,13 @@
+import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { command, durableCommand } from "@/lib/api-client";
-import { AccountField, CreateOrganization, useAccountAction } from "./account-forms";
+import { AccountField, useAccountAction } from "./account-forms";
 import { useAccount } from "./session";
 
 export function OrganizationSettings() {
   const account = useAccount();
-  const [creating, setCreating] = useState(false);
   const [editing, setEditing] = useState(false);
   const action = useAccountAction();
   if (!account?.organization || !account.access) return null;
@@ -75,22 +75,12 @@ export function OrganizationSettings() {
       )}
       {account.list.created_count < account.list.creation_limit && (
         <section>
-          {creating ? (
-            <>
-              <h2>New organization</h2>
-              <CreateOrganization created={account.select} cancel={() => setCreating(false)} />
-            </>
-          ) : (
-            <Button variant="outline" onClick={() => setCreating(true)}>
+          <Button variant="outline" asChild>
+            <Link to="/onboarding" search={{ create: true }}>
               New organization
-            </Button>
-          )}
+            </Link>
+          </Button>
         </section>
-      )}
-      {action.error && (
-        <p role="alert" className="account-error">
-          {action.error}
-        </p>
       )}
     </div>
   );

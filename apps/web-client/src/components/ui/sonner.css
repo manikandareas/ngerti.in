@@ -1,0 +1,92 @@
+.toaster [data-sonner-toast][data-styled="true"] {
+  --toast-accent: var(--normal-text);
+  --toast-action-bg: var(--normal-text);
+  --toast-action-text: var(--normal-bg);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: inherit;
+}
+
+.toaster [data-sonner-toast][data-type="success"] {
+  --toast-accent: var(--success-foreground);
+}
+
+.toaster [data-sonner-toast][data-type="error"] {
+  --toast-accent: var(--destructive);
+}
+
+.toaster [data-sonner-toast][data-type="warning"] {
+  --toast-accent: var(--warning-foreground);
+}
+
+.toaster [data-sonner-toast][data-type="info"] {
+  --toast-accent: var(--link);
+}
+
+.toaster
+  [data-sonner-toast][data-styled="true"]:is(
+    [data-type="success"],
+    [data-type="error"],
+    [data-type="warning"],
+    [data-type="info"]
+  ) {
+  --toast-action-bg: color-mix(in srgb, var(--toast-accent) 12%, var(--normal-bg));
+  --toast-action-text: var(--toast-accent);
+}
+
+.toaster [data-sonner-toast][data-styled="true"] [data-icon] {
+  margin: 0;
+  color: var(--toast-accent);
+}
+
+.toaster [data-sonner-toast][data-styled="true"] [data-content] {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.toaster [data-sonner-toast][data-styled="true"] [data-description] {
+  color: var(--muted-foreground);
+}
+
+.toaster [data-sonner-toast][data-styled="true"][data-rich-colors="true"] [data-description] {
+  color: inherit;
+}
+
+.toaster [data-sonner-toast][data-styled="true"] [data-button] {
+  flex: 0 1 auto;
+  justify-content: center;
+  min-width: 0;
+  max-width: 45%;
+  height: auto;
+  min-height: 32px;
+  margin: 0;
+  padding: 6px 12px;
+  border-radius: var(--radius-control);
+  background: var(--toast-action-bg);
+  color: var(--toast-action-text);
+  font-family: inherit;
+  font-weight: 500;
+  line-height: 1.35;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+.toaster [data-sonner-toast][data-styled="true"] [data-button]:hover {
+  background: color-mix(in srgb, var(--toast-action-bg), var(--toast-action-text) 8%);
+}
+
+.toaster [data-sonner-toast][data-styled="true"] [data-button]:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.toaster[data-sonner-theme] [data-sonner-toast][data-styled="true"] [data-cancel="true"] {
+  background: color-mix(in srgb, var(--normal-text) 8%, var(--normal-bg));
+  color: var(--normal-text);
+}
+
+.toaster[data-sonner-theme] [data-sonner-toast][data-styled="true"] [data-cancel="true"]:hover {
+  background: color-mix(in srgb, var(--normal-text) 14%, var(--normal-bg));
+}

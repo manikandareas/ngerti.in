@@ -1,29 +1,62 @@
-import { type FormEvent, useRef, useState } from "react";
+import { useNavigate } from "@tanstack/react-router";
+import { type FormEvent, useId, useRef, useState } from "react";
+import { type Action, toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { request } from "@/lib/api-client";
-import { AccountField, CreateOrganization, useAccountAction } from "./account-forms";
-import { AccountArtwork } from "./account-artwork";
+import { ApiError, request } from "@/lib/api-client";
+import { AccountField, useAccountAction } from "./account-forms";
 import { InvitationReview } from "./invitation-review";
 import { nativeContinuation, signedOAuthQuery } from "./oauth-continuation";
 import { useAccount } from "./session";
 
 export function AccountScreen() {
   const account = useAccount();
+  const navigate = useNavigate();
   const params = new URLSearchParams(location.search);
   const [mode, setMode] = useState<"login" | "signup" | "recover" | "reset">(() =>
     location.pathname === "/reset-password" ? "reset" : "login",
   );
-  const [notice, setNotice] = useState("");
-  const [creating, setCreating] = useState(false);
   const [email, setEmail] = useState("");
   const token = useRef(params.get("token") ?? "");
-  const action = useAccountAction();
+  const notificationId = useId();
+  const callbackURL = signedOAuthQuery(location.search)
+    ? `${location.origin}${location.pathname}`
+    : `${location.origin}/onboarding`;
+  const action = useAccountAction({
+    id: notificationId,
+    errorAction: (failure) =>
+      mode === "login" && failure instanceof ApiError && failure.code === "AUTHENTICATION_FAILED"
+        ? verificationAction(email)
+        : undefined,
+  });
   if (!account) return null;
   function changeMode(value: typeof mode) {
     setMode(value);
-    setNotice("");
-    action.setError("");
+    toast.dismiss(notificationId);
+  }
+  function verificationAction(address: string): Action {
+    return {
+      label: "Resend verification email",
+      onClick: (event) => {
+        event.preventDefault();
+        void action.run(async () => {
+          toast.loading("Sending verification email…", {
+            id: notificationId,
+            duration: Infinity,
+            action: undefined,
+          });
+          await request("/api/auth/send-verification-email", {
+            email: address,
+            callbackURL,
+          });
+          toast.success("Verification email sent. Check your inbox.", {
+            id: notificationId,
+            duration: 5000,
+            action: undefined,
+          });
+        });
+      },
+    };
   }
   async function authenticate(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -35,21 +68,35 @@ export function AccountScreen() {
           name: String(data.get("name")),
           email,
           password,
-          callbackURL: `${location.origin}${location.pathname}`,
+          callbackURL,
         });
-        setNotice("Check your email to verify your account, then sign in.");
+        toast.info("Check your email to verify your account, then sign in.", {
+          id: notificationId,
+          duration: Infinity,
+          action: verificationAction(email),
+        });
         setMode("login");
+        if (!signedOAuthQuery(location.search))
+          await navigate({ to: "/onboarding", replace: true });
       } else if (mode === "recover") {
         await request("/api/auth/request-password-reset", {
           email,
           redirectTo: `${location.origin}/reset-password`,
         });
-        setNotice("If this email has an account, a reset link is on its way.");
+        toast.info("If this email has an account, a reset link is on its way.", {
+          id: notificationId,
+          duration: 5000,
+          action: undefined,
+        });
       } else if (mode === "reset") {
         await request("/api/auth/reset-password", { token: token.current, newPassword: password });
         token.current = "";
         setMode("login");
-        setNotice("Password updated. Sign in to continue.");
+        toast.success("Password updated. Sign in to continue.", {
+          id: notificationId,
+          duration: 5000,
+          action: undefined,
+        });
       } else {
         const result = await request<{ redirect?: boolean; url?: string }>(
           "/api/auth/sign-in/email",
@@ -69,14 +116,19 @@ export function AccountScreen() {
           window.location.assign(continuation);
           return;
         }
+        toast.dismiss(notificationId);
         localStorage.setItem("ngertiin:session-change", crypto.randomUUID());
         if (location.pathname.startsWith("/invitations/")) await account?.refresh();
-        else window.location.assign("/");
+        else {
+          await navigate({ to: "/onboarding", replace: true });
+          await account.refresh();
+        }
       }
     });
   }
   const invitation = /^\/invitations\/([0-9a-f-]{36})$/i.exec(location.pathname)?.[1];
   const authenticating = !account.session || location.pathname === "/sign-in";
+  const showWelcome = mode === "login" || mode === "signup";
   return (
     <main className={`account-screen${authenticating ? " account-screen--entry" : ""}`}>
       <section className="account-panel" aria-label="Account">
@@ -86,92 +138,10 @@ export function AccountScreen() {
         <div className="account-content">
           {account.session && invitation ? (
             <InvitationReview id={invitation} />
-          ) : account.session && location.pathname !== "/sign-in" ? (
-            <>
-              <h1>
-                {creating
-                  ? "New organization"
-                  : account.list.organizations.length
-                    ? "Choose an organization"
-                    : "Your workspace"}
-              </h1>
-              {account.error && (
-                <p role="alert" className="account-error">
-                  {account.error}
-                </p>
-              )}
-              {creating ? (
-                <CreateOrganization created={account.select} cancel={() => setCreating(false)} />
-              ) : (
-                <>
-                  <div className="account-organizations">
-                    {account.list.organizations.map((organization) => (
-                      <Button
-                        key={organization.id}
-                        variant="ghost"
-                        className="account-organization"
-                        onClick={() => void action.run(() => account.select(organization.id))}
-                        disabled={action.busy}
-                      >
-                        {organization.name}
-                      </Button>
-                    ))}
-                  </div>
-                  {account.list.created_count < account.list.creation_limit ? (
-                    <Button onClick={() => setCreating(true)}>Create organization</Button>
-                  ) : account.list.organizations.length === 0 ? (
-                    <p className="account-muted">Open your invitation to join an organization.</p>
-                  ) : null}
-                  {account.list.organizations.length === 0 && account.list.creation_limit === 0 && (
-                    <details className="account-setup">
-                      <summary>Set up this server</summary>
-                      <form
-                        className="account-form"
-                        onSubmit={(event) => {
-                          event.preventDefault();
-                          const form = event.currentTarget;
-                          const grant = String(new FormData(form).get("grant"));
-                          void action.run(async () => {
-                            await request("/v1/auth/bootstrap", { token: grant });
-                            form.reset();
-                            await account.refresh();
-                          });
-                        }}
-                      >
-                        <AccountField label="Owner setup token">
-                          <Input
-                            name="grant"
-                            type="password"
-                            minLength={32}
-                            maxLength={128}
-                            required
-                            autoComplete="off"
-                          />
-                        </AccountField>
-                        <Button disabled={action.busy}>Complete setup</Button>
-                      </form>
-                    </details>
-                  )}
-                </>
-              )}
-              {action.error && (
-                <p role="alert" className="account-error">
-                  {action.error}
-                </p>
-              )}
-              <Button
-                variant="ghost"
-                className="account-signout"
-                onClick={() => void action.run(account.logout)}
-                disabled={action.busy}
-              >
-                Sign out
-              </Button>
-            </>
           ) : (
             <>
               <header className="account-heading">
-                {mode === "login" && (
+                {showWelcome && (
                   <div className="account-welcome" aria-hidden="true">
                     <img
                       src="/images/sign-in/welcome-triangle.webp"
@@ -190,33 +160,15 @@ export function AccountScreen() {
                 )}
                 <h1>
                   {mode === "signup"
-                    ? "Create your account"
+                    ? "Sign up"
                     : mode === "recover"
                       ? "Reset your password"
                       : mode === "reset"
                         ? "Choose a new password"
                         : "Sign in"}
                 </h1>
-                {mode === "login" && <p>A place for you and your agents.</p>}
+                {showWelcome && <p>A place for you and your agents.</p>}
               </header>
-              {notice && (
-                <p role="status" className="account-muted">
-                  {notice}
-                </p>
-              )}
-              {(action.error || account.error) && (
-                <p role="alert" className="account-error">
-                  {action.error || account.error}
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => void account.refresh()}
-                  >
-                    Retry
-                  </Button>
-                </p>
-              )}
               <div className="account-auth-controls">
                 {window.ngertiinDesktop?.remote ? (
                   <div className="account-form account-native-form">
@@ -226,25 +178,20 @@ export function AccountScreen() {
                       onClick={() =>
                         void action.run(async () => {
                           await window.ngertiinDesktop?.signIn?.();
-                          if (location.pathname === "/sign-in") location.assign("/");
-                          else await account.refresh();
+                          await navigate({ to: "/onboarding", replace: true });
+                          await account.refresh();
                         })
                       }
                     >
                       {action.busy ? "Waiting for browser…" : "Sign in with browser"}
                     </Button>
                     {action.busy && (
-                      <>
-                        <p className="account-muted" role="status">
-                          Finish signing in in your browser.
-                        </p>
-                        <Button
-                          variant="ghost"
-                          onClick={() => void window.ngertiinDesktop?.cancelSignIn?.()}
-                        >
-                          Cancel
-                        </Button>
-                      </>
+                      <Button
+                        variant="ghost"
+                        onClick={() => void window.ngertiinDesktop?.cancelSignIn?.()}
+                      >
+                        Cancel
+                      </Button>
                     )}
                   </div>
                 ) : (
@@ -319,44 +266,28 @@ export function AccountScreen() {
                 )}
                 {!window.ngertiinDesktop?.remote && (
                   <div className="account-links">
-                    {mode === "login" ? (
-                      <>
+                    {showWelcome ? (
+                      <p className="account-switch">
+                        <span>
+                          {mode === "login" ? "Don't have an account?" : "Already have an account?"}
+                        </span>
                         <Button
-                          variant="secondary"
-                          size="lg"
-                          className="account-alternative"
+                          type="button"
+                          variant="link"
                           disabled={action.busy}
-                          onClick={() => changeMode("signup")}
+                          onClick={() => changeMode(mode === "login" ? "signup" : "login")}
                         >
-                          Create account
+                          {mode === "login" ? "Sign up" : "Sign in"}
                         </Button>
-                      </>
+                      </p>
                     ) : (
                       <Button
-                        variant={mode === "signup" ? "secondary" : "link"}
-                        size={mode === "signup" ? "lg" : "default"}
-                        className={mode === "signup" ? "account-alternative" : undefined}
+                        type="button"
+                        variant="link"
                         disabled={action.busy}
                         onClick={() => changeMode("login")}
                       >
-                        {mode === "signup" ? "Sign in" : "Back to sign in"}
-                      </Button>
-                    )}
-                    {mode === "login" && (notice || action.error) && (
-                      <Button
-                        variant="link"
-                        disabled={action.busy || !email}
-                        onClick={() =>
-                          void action.run(async () => {
-                            await request("/api/auth/send-verification-email", {
-                              email,
-                              callbackURL: `${location.origin}${location.pathname}`,
-                            });
-                            setNotice("Verification email sent. Check your inbox.");
-                          })
-                        }
-                      >
-                        Resend verification email
+                        Back to sign in
                       </Button>
                     )}
                   </div>
@@ -366,7 +297,6 @@ export function AccountScreen() {
           )}
         </div>
       </section>
-      {authenticating && <AccountArtwork />}
     </main>
   );
 }

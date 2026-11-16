@@ -7,6 +7,7 @@ import { detectHarness, requireAvailable, versionState } from "../availability";
 import type { Connections } from "../connections";
 import type { CredentialContexts } from "../context";
 import { HarnessError } from "../contracts";
+import { nativeStorageReady } from "../native-storage";
 import { CodexClient } from "./client";
 
 type AccountTokens = { accessToken: string; chatgptAccountId: string; chatgptPlanType?: string };
@@ -138,11 +139,8 @@ export class CodexAccounts {
     }
   }
   async login(connectionId: string, mode?: "browser" | "device") {
-    if (
-      this.connections.lifecycle.store.dataContext &&
-      process.env.NGERTIIN_PROVIDER_NATIVE_STORAGE !== "encrypted-volume"
-    )
-      throw new HarnessError("CAPABILITY_UNSUPPORTED");
+    if (this.connections.lifecycle.store.dataContext && !nativeStorageReady(this.credentials.root))
+      throw new HarnessError("NATIVE_STORAGE_REQUIRED");
     if ((await this.connections.get(connectionId)).authentication.method !== "native_login")
       throw new HarnessError("BILLING_MISMATCH");
     if (this.#logins.has(connectionId) || this.#starting.has(connectionId))

@@ -227,11 +227,6 @@ export function ConnectionRow({
           </Button>
         </div>
       )}
-      {action.error && (
-        <p role="alert" className="account-error">
-          {action.error}
-        </p>
-      )}
     </div>
   );
 }

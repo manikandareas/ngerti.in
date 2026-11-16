@@ -7,6 +7,7 @@ import {
   brokerContract,
   connectionInput,
   HarnessError,
+  harnessId,
 } from "../harness/contracts";
 import { selectionInput } from "../harness/selection-contracts";
 import type { ApiServices, Command } from "./services";
@@ -28,6 +29,58 @@ export function registerHarnessRoutes(api: Elysia, services: ApiServices, comman
       Promise.all(
         (["codex", "muse"] as const).map(async (id) => (services.detect ?? detectHarness)(id)),
       ),
+    )
+    .get("/v1/harnesses/maintenance", async ({ request }) => {
+      let canUpdate = false;
+      try {
+        await services.authentication.assertOwner(request);
+        canUpdate = !!services.updater;
+      } catch (error) {
+        if (!(error instanceof DomainError) || error.code !== "SCOPE_DENIED") throw error;
+      }
+      return {
+        can_update: canUpdate,
+        updating: services.updater?.updating ?? [],
+        operations: services.updater?.jobs.operations ?? [],
+        native_login: await Promise.all(
+          (["codex", "muse"] as const).map(
+            (harness) =>
+              services.loginReadiness?.check(harness) ?? {
+                harness,
+                ready: false,
+                reason: "The server cannot check account sign-in readiness yet.",
+              },
+          ),
+        ),
+      };
+    })
+    .post(
+      "/v1/harnesses/:harness/update",
+      async ({ request, params, body, set }) => {
+        await services.authentication.assertOwner(request);
+        const commandId = id.parse(request.headers.get("Idempotency-Key"));
+        if (!services.updater) throw new HarnessError("ADAPTER_UNAVAILABLE");
+        const lease = services.authentication.lease(request);
+        try {
+          await lease.assert();
+          const result = await services.updater.start(
+            params.harness,
+            body.expected_version,
+            commandId,
+            lease.signal,
+          );
+          void result.completion.finally(lease.release).catch(() => {});
+          set.status = 202;
+          return result.job;
+        } catch (error) {
+          lease.release();
+          throw error;
+        }
+      },
+      {
+        params: z.object({ harness: harnessId }),
+        body: z.strictObject({ expected_version: z.string().max(100).nullable() }),
+      },
     )
     .post(
       "/v1/connections",

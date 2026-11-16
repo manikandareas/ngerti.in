@@ -162,11 +162,6 @@ export function WorkgroupsSettings() {
             <p className="account-muted">Create a workgroup to give a team access to agents.</p>
           )}
         </ResourceState>
-        {action.error && (
-          <p role="alert" className="account-error">
-            {action.error}
-          </p>
-        )}
       </section>
     </div>
   );

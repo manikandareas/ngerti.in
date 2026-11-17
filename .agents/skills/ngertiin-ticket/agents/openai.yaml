@@ -1,4 +1,0 @@
-interface:
-  display_name: "Ngertiin Ticket"
-  short_description: "Work on local Ngertiin scope, milestones and evidence"
-  default_prompt: "Use $ngertiin-ticket NMA-063 to audit the local acceptance scope."

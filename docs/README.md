@@ -1,6 +1,6 @@
 # Ngertiin documentation
 
-This repository is the authority for product decisions, local backlog, implementation and acceptance. Start with [PRODUCT.md](../PRODUCT.md) for scope and [the repository guide](../README.md) for setup. [The local workflow](development/workflow.md) explains how to maintain these documents and milestones together.
+Use the [development loop](../AGENTS.md#development-loop) for implementation and focused real verification. Consult [PRODUCT.md](../PRODUCT.md) for product scope, [the repository guide](../README.md) for setup, and the relevant document below when the task needs it.
 
 ## Product and work
 
@@ -45,4 +45,4 @@ The handoff reconciled eleven decision documents and nineteen milestone records,
 
 Sixteen earlier active milestones and six Desktop Rust milestones are Done for their recorded scope. NMA-072 adds the verified PostgreSQL/import foundation; NMA-073 adds the [verified account/device-session backend](architecture/user-authentication.md); NMA-074 adds verified organization administration; NMA-075 implements scoped application data; NMA-076 adds verified execution domains; NMA-077 adds verified provider connections and NMA-078 adds [scoped app accounts and Team skills](verification/nma-078/README.md); NMA-079 verifies the 2.0.0 API/isolation gate; NMA-080 implements the verified web-client scope at contract 2.1.0; NMA-081 is Done for its verified Tauri remote scope; NMA-082 is Done for deployment/recovery and NMA-083 is Done for focused integrated acceptance; NMA-063 full-product acceptance now depends on its focused acceptance, and NMA-064 remains distribution. Both GPUI implementations were removed on November 15; historical evidence is retained. Native/provider, billing, API, browser/Tauri and installation claims retain separate evidence boundaries.
 
-Run `make docs-check` or `bun run docs:check` to validate local links and backlog consistency. Only byte-identical registered historical captures may resolve missing targets in pinned Git trees. Current guides resolve against the working tree.
+`bun run docs:check` is an optional tool for requested documentation/backlog maintenance. It validates local links and backlog consistency. Only byte-identical registered historical captures may resolve missing targets in pinned Git trees. Current guides resolve against the working tree.

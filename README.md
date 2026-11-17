@@ -30,11 +30,12 @@ The default bootstrap registers **two native executors: Codex and Muse**. Select
 
 ## Verification
 
+For daily iterations, follow the [development loop](AGENTS.md#development-loop): implement the change, exercise the affected flow in the running app with computer use or focused API calls, and report the result. Choose the commands below individually when they help verify the change.
+
 ```sh
 make check
 bun run verify:foundation
 make build
-make docs-check
 ```
 
 `make check` lints and typechecks the active backend and `apps/web-client`, then runs backend contract/integration tests. The foundation probes exercise PostgreSQL lifecycle, HTTP/bootstrap, commit-order races, authority loss/SIGKILL, SQLite import and verified restore. Backend tests provision and remove an isolated disposable PostgreSQL container unless `NGERTIIN_TEST_DATABASE_URL` explicitly supplies a disposable database. `make build` builds the shared web client used by Tauri; `bun run package:desktop` builds the native application.

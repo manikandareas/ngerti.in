@@ -1,5 +1,7 @@
 # Acceptance and readiness gates
 
+This reference applies to explicitly requested milestone closure, readiness audits and releases. Daily implementation follows the [development loop](../../AGENTS.md#development-loop): implement, verify the affected behavior directly and report the result briefly in chat. The gates below are scoped acceptance criteria, not prerequisites for each iteration.
+
 The November 16 owner-promoted [ACP migration](../architecture/acp-harnesses.md) is In Progress. Its [cutover capture](../verification/acp-2026-11-16/cutover/README.md) records implemented Codex execution retirement, retained Muse, shared onboarding/app model picker and real-API desktop/mobile/Tauri journeys using SDK subprocess fixtures. Live Codex subscription/control proof is separate. The full multi-profile inference/account-isolation cohort remains open; native Claude stays unverified by explicit owner choice. Setup/fixture results do not close this gate or relabel earlier provider acceptance.
 
 The later [Pi context/native API 2.4 capture](../verification/acp-2026-11-16/pi-context/README.md) adds real Pi context/skill isolation and Tauri native configuration import. It records the complete backend run's 600 passes and one stale contract-version assertion, followed by a passing focused rerun after that assertion is corrected. This combined result does not claim a single all-green full-suite run, distinct vendor identities or actual credential expiry/renewal.
@@ -16,13 +18,13 @@ NMA-082 is Done for the [selected owner-operated deployment/recovery profile](..
 
 NMA-083 is **Done** for its [focused integrated organization/web/Tauri scope](../verification/nma-083/README.md) at contract 2.2.0. Its report records final denominators, three scoped runtime corrections, actual provider/file/Computer work and responsibility completion while the real Tauri client was Quit. It separates controlled actors/adapters, deployed native results, inherited refresh/restore proof, measured workload limits and installation. NMA-063/NMA-064 remain open.
 
-## Evidence to record
+## Retained native acceptance
 
 The [Desktop Rust plan](../architecture/desktop-rs-plan-2026-11-07.md) adds NMA-066–071 as a separate native parity sequence. NMA-066/NMA-067 are **Done** under the [2026-11-08 owner acceptance decision](nma-066-067-closure-2026-11-08.md): their implemented foundation/components are accepted and remaining technical verification is non-blocking. [Foundation](../verification/nma-066/README.md) and [component evidence](../verification/nma-067/README.md) retain actual pass/fail/inconclusive/unexecuted results; closure does not assert blanket native parity. NMA-068 is Done for the implemented native workspace/conversation with bounded native/API evidence; NMA-069 is Done for native contextual workflows with [bounded evidence](../verification/nma-069/README.md); NMA-070 is Done for native Computer/host lifecycle with [bounded evidence](../verification/nma-070/README.md); NMA-071 is Done for integrated native development acceptance under the focused November 9 scope. NMA-071 covers integrated native parity and a local macOS ARM64 development bundle. NMA-063 product-wide real-API acceptance and NMA-064 fresh-device installation remain separate. Tauri remains the active reference host until an explicit replacement decision.
 
 Historical native parity required a [rendering ownership audit](../architecture/desktop-rs-plan-2026-11-07.md#rendering-ownership-contract): the main UI, composer, avatar, panels, Settings, files and PDF controls/rendering used Rust/GPUI/native adapters. The November 15 owner cleanup removed that implementation; its rendering contract applies only to retained evidence and is not a gate for the active web/Tauri clients. See [source recovery](history.md#retired-gpui-clients--2026-11-15).
 
-For each responsibility slice record source/module/commit, dependency/CLI/SDK/config versions, setup/command, planned/executed denominator, pass/fail/skip, observed output, unknown outcomes and limitations. Distinguish product decision, source observed, contract/fixture tested, native/live verified, API readiness, UI acceptance and distribution.
+For requested acceptance work, report the agreed scope, observed results and remaining limitations. Retained captures keep their original versions and outcomes.
 
 Provider login, model catalog, completed inference and a useful scoped product-tool round trip are different proof stages. Build/typecheck or static screenshots do not prove browser/native behavior. Backend milestones use HTTP/events/native clients or headless scripts; frontend acceptance uses real API state/events/receipts and actual desktop/mobile journeys.
 
@@ -64,10 +66,8 @@ Start after NMA-063 is Done. Choose supported OS/package/installer based on actu
 
 Document data/secret directories, process ownership, OS/support matrix, diagnostics, update and uninstall behavior using real tests. Binaries/containers do not automatically inherit host CLI/login. VPS is optional; remote enrollment, general native-client release and full access login/pairing are separate decisions. Normal upgrades preserve new-runtime user data; no old development-data migration is required.
 
-## Done and maintenance
+## Requested milestone closure
 
 Mark Done only when scope, acceptance, dependencies and relevant gates are fulfilled with traceable evidence. Otherwise preserve the actual Backlog/In Progress/Review/Blocked state and a concrete remaining condition. Optional/deferred features are not hidden gates. Historical Done applies to its captured scope.
-
-Write backend code, authored runtime text and technical instructions in English; preserve user content in its original language. Update the local milestone, backlog status/index and affected product/API guides together. Use [the local workflow](workflow.md) for ongoing work.
 
 For NMA-071, the [2026-11-09 owner instruction](nma-071-closure-scope-2026-11-09.md) defines focused completion: all assistant-studio states are source-audited, affected native journeys are exercised, and unchanged retained evidence is reused. Exhaustive Cartesian screenshots and paired 1:1 performance are not closure prerequisites. Source audit, native UI, authoritative API and provider execution remain distinct evidence classes.

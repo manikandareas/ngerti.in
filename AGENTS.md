@@ -1,17 +1,17 @@
 # Ngertiin repository guidance
 
-Ngertiin is a persistent agent workspace with authenticated accounts, organizations, private DMs, groups, automatic Goals and Routine. The central-server organization model extends the historical single-owner foundation; milestone evidence defines its accepted scope. The repository is the authority for product decisions, scope, acceptance and delivery status. Explicit user instructions take precedence; record resulting scope changes locally.
+Ngertiin is a persistent agent workspace with authenticated accounts, organizations, private DMs, groups, automatic Goals and Routine. Implement the user's current scope in `apps/server`, `apps/web-client` and `apps/desktop` (Tauri). Explicit user instructions take precedence.
 
-## Read for the task
+## Development loop
 
-- Product/runtime design or implementation: read [PRODUCT.md](PRODUCT.md), the relevant [feature decisions](docs/product/feature-decisions.md), [architecture](docs/architecture/overview.md), and the applicable local API guide.
-- Harness/provider or model-picker changes: read the current [ACP migration and consumer requirements](docs/architecture/acp-harnesses.md).
-- PostgreSQL, authentication, organization/Workgroup access, personal/Team agents, or remote clients: read [the server-organizations plan](docs/architecture/server-organizations-plan-2026-11-12.md) and NMA-072–083. Implement in server/web-client/Tauri. GPUI implementations were removed by the November 15 owner instruction; use [historical recovery](docs/development/history.md) for their source and retained evidence.
-- A named milestone: read its file in [the local backlog](docs/backlog/README.md), including acceptance and `Depends on`. NMA-051 is deferred; historical milestones are not an active queue.
-- Readiness or completion claims: use [acceptance gates](docs/development/acceptance.md) and the relevant retained evidence. [The local workflow](docs/development/workflow.md) owns status and documentation maintenance.
-- Machine changes: read [the shared-machine trust/implementation plan](docs/architecture/shared-machine-cua-plan-2026-11-04.md) and [setup/native evidence](docs/verification/shared-machine/README.md). Desktop-host changes use [Tauri development](docs/architecture/tauri-development.md).
+1. Inspect the working tree and the affected implementation, then make the concrete change. Read only the documentation needed to resolve a relevant product, API or architecture question.
+2. Verify the changed behavior directly. For UI work, use computer use in the running browser or Tauri app and exercise the affected flow against the real API. For backend work, use focused API/event requests or a native probe. Fix observed failures and repeat the affected flow.
+3. Add focused automated checks when they resolve a concrete uncertainty. Choose full suites, builds or new tests only when the change, an observed failure or the user request warrants them. Stop verification once the affected behavior is established.
+4. Report the implementation, the observed verification result and any remaining limitation briefly in chat. Keep routine iteration results in that response.
 
-Keep detailed policy in these documents; update the affected local specification, milestone/checklist, backlog status and evidence together when behavior or decisions change. Research, old planning text and historical Done apply only to their captured scope.
+Update documentation only when requested or when a public contract or lasting product decision changes; edit the directly affected guide. Milestone status synchronization, formal evidence reports and [acceptance gates](docs/development/acceptance.md) apply to explicitly requested milestone closure, readiness audits or releases. Routine implementation finishes without that administrative work or a documentation check.
+
+Use a named [milestone](docs/backlog/README.md) for its requested scope and acceptance criteria. Questions and audits remain read-only unless implementation or saving is requested. Product context is in [PRODUCT.md](PRODUCT.md); harness changes use the [ACP guide](docs/architecture/acp-harnesses.md), access/isolation changes use the [organization plan](docs/architecture/server-organizations-plan-2026-11-12.md), and desktop-host changes use [Tauri development](docs/architecture/tauri-development.md). Historical records describe their captured scope.
 
 ## Runtime and product invariants
 
@@ -26,13 +26,9 @@ Keep detailed policy in these documents; update the affected local specification
 - Composio supplies app connections. App-owned and inherited harness skills remain separate; agents only create/repair app-owned packages. Tauri is the sole macOS ARM64 development host; fresh-device distribution and other platforms remain separate.
 - Optional/deferred features require an explicit scope decision before becoming implementation commitments. Upstream source availability does not expand scope.
 
-## Delivery, data and evidence
+## Delivery and data
 
-Engine/backend precedes the NMA-060 API gate, followed by UI and NMA-063 product acceptance, then NMA-064 installation. Check current local status; later API deltas require affected verification before UI consumption. A development bundle or completed API gate does not imply installation or production readiness.
-
-Use HTTP/events/native clients or headless probes for backend proof; use real API desktop/mobile journeys for UI acceptance. Record exact source/config/versions, setup, denominator, pass/fail/skip, unknowns and limitations. Distinguish login, catalog discovery, completed inference and useful product-tool execution.
-
-Openbot is the primary application-flow source reference. Follow [source adoption](docs/development/source-adoption.md): record exact module/revision, reuse reasons, local adaptation, dependency pin and upgrade checks. License administration is handled separately by the user; preserve provenance.
+Openbot is the primary application-flow source reference. Preserve provenance when adopting external source or dependencies; consult [source adoption](docs/development/source-adoption.md) for the dependency being changed. License administration is handled separately by the user.
 
 Historical development data may be reset within the authorized scope without an old-data migration. Preserve unrelated work, credentials and retained evidence. New-runtime persistence/recovery/isolation remain mandatory. Rollback uses Git and verified backups. A commit request authorizes a scoped local commit, not push or deployment.
 

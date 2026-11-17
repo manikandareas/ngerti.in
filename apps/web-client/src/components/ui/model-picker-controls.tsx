@@ -22,7 +22,7 @@ export const THINKING_LABEL: Record<ThinkingEffort, string> = {
 export function CapabilityChips({ capabilities }: { capabilities?: readonly ModelCapability[] }) {
   if (!capabilities?.length) return null;
   return (
-    <span className="inline-flex shrink-0 items-center gap-1 rounded-full px-1.5 py-1 ring-1 ring-border/70 ring-inset">
+    <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full px-2 py-1.5 ring-1 ring-border/70 ring-inset">
       {capabilities.map((capability, index) => {
         const { label, icon: Icon, accent } = CAPABILITY[capability];
         return (
@@ -31,7 +31,7 @@ export function CapabilityChips({ capabilities }: { capabilities?: readonly Mode
             <Tooltip>
               <TooltipTrigger asChild>
                 <span className={cn("inline-flex size-4 items-center justify-center", accent)}>
-                  <Icon aria-hidden="true" className="size-3" strokeWidth={2} />
+                  <Icon aria-hidden="true" className="size-3.5" strokeWidth={2} />
                   <span className="sr-only">{label}</span>
                 </span>
               </TooltipTrigger>
@@ -105,7 +105,7 @@ export function ThinkingTrack({
             width: `calc((100% - 0.5rem) / ${levels.length})`,
             transform: `translateX(${activeIndex * 100}%)`,
           }}
-          className="pointer-events-none absolute inset-y-1 left-1 rounded-full bg-popover ring-1 ring-border/70 ring-inset transition-transform duration-300 ease-out motion-reduce:transition-none"
+          className="pointer-events-none absolute inset-y-1 left-1 rounded-full bg-popover ring-1 ring-border/70 ring-inset transition-transform duration-150 ease-out motion-reduce:transition-none"
         />
       )}
       {levels.map((effort, index) => (
@@ -125,7 +125,7 @@ export function ThinkingTrack({
             onKeyDown={onKeyDown}
             className="peer sr-only"
           />
-          <span className="block rounded-full px-1 py-2 text-[11px] leading-none font-medium whitespace-nowrap text-muted-foreground transition-colors peer-checked:text-foreground peer-focus-visible:ring-2 peer-focus-visible:ring-ring motion-reduce:transition-none touch:py-3.5">
+          <span className="block rounded-full px-1 py-2 text-[13px] leading-none font-medium whitespace-nowrap text-muted-foreground transition-colors peer-checked:text-foreground peer-focus-visible:ring-2 peer-focus-visible:ring-ring motion-reduce:transition-none touch:py-3.5">
             {THINKING_LABEL[effort] ?? effort}
           </span>
         </label>

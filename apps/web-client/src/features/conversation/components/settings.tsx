@@ -8,7 +8,6 @@ type AgentModelRowProps = {
   connections: Connection[];
   refresh: () => Promise<unknown>;
   report: (error: string) => void;
-  manageProviders: () => void;
 };
 
 // OpenMausBot DetailsTab: a compact Model row reuses the shared account/model menu.

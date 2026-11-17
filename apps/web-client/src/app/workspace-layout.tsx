@@ -96,6 +96,7 @@ import {
   prepareSubmission,
   RejectedSubmission,
 } from "@/features/conversation/lib/message-submission";
+import { waitForModelSelection } from "@/features/conversation/lib/model-selection";
 import {
   type NativeTranscriptFragment,
   useNativeTranscript,
@@ -425,6 +426,10 @@ export default function Workspace() {
             throw error;
           });
       if (currentThread.current !== threadId) return;
+      if (!pending && !submission.pending && snapshot?.thread.type === "dm") {
+        await waitForModelSelection(threadId, agent.id);
+        if (currentThread.current !== threadId) return;
+      }
       const content = pending
         ? { text, artifact_ids: [], sources: [] }
         : composerFiles.message(text, context);
@@ -1060,7 +1065,6 @@ export default function Workspace() {
                           connections={connections}
                           refresh={refresh}
                           report={report}
-                          manageProviders={() => openSettings("providers")}
                         />
                       )}
                       <Button

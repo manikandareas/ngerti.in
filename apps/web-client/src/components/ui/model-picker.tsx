@@ -32,7 +32,7 @@ export type {
   ThinkingEffort,
 } from "./model-picker-types";
 
-function findModel(providers: readonly ModelPickerProvider[], id?: string) {
+function findModel(providers: readonly ModelPickerProvider[], id?: string | null) {
   if (!id) return;
   for (const provider of providers) {
     const model = provider.models.find((item) => item.id === id && item.available !== false);
@@ -50,7 +50,6 @@ export function ModelPicker({
   onValueChange,
   thinking,
   defaultThinking,
-  closeOnSelect = false,
   open,
   defaultOpen = false,
   onOpenChange,
@@ -70,7 +69,7 @@ export function ModelPicker({
   const panelId = `${id}-panel`;
   const [internalOpen, setInternalOpen] = useState(defaultOpen);
   const [internalValue, setInternalValue] = useState(defaultValue);
-  const selectedId = value ?? internalValue;
+  const selectedId = value !== undefined ? value : internalValue;
   const selected = findModel(providers, selectedId);
   const isOpen = open ?? internalOpen;
   const rails = useMemo(
@@ -189,11 +188,10 @@ export function ModelPicker({
     setActiveProviderId(providerId);
     onProviderChange?.(providerId);
     onValueChange?.(modelId, providerId, effort);
-    if (closeOnSelect) changeOpen(false);
   }
 
-  function selectThinking(effort: ThinkingEffort | null) {
-    if (disabled || !selected || (effort !== null && !levels?.includes(effort))) return;
+  function selectThinking(effort: ThinkingEffort) {
+    if (disabled || !selected || !levels?.includes(effort)) return;
     setInternalThinking({ modelId: selected.model.id, effort });
     onValueChange?.(selected.model.id, selected.provider.id, effort);
   }
@@ -272,8 +270,7 @@ export function ModelPicker({
       aria-controls={panelId}
       onClick={inline ? () => changeOpen(!isOpen) : undefined}
       className={cn(
-        "inline-flex h-11 max-w-full touch-manipulation items-center gap-2 rounded-full bg-background px-4 text-sm font-medium tracking-tight text-foreground ring-1 ring-border/80 ring-inset transition-[background-color,box-shadow,transform] duration-300 ease-out hover:bg-muted/70 active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transform-none motion-reduce:transition-none",
-        isOpen && "bg-muted/70",
+        "inline-flex h-11 max-w-full touch-manipulation items-center gap-3 rounded-full bg-muted/80 px-5 text-base font-medium tracking-tight text-foreground ring-1 ring-border/80 ring-inset transition-colors duration-150 hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none",
         className,
       )}
     >
@@ -300,18 +297,18 @@ export function ModelPicker({
   );
 
   const panel = (
-    <div className="@container/modelpicker flex min-w-0 flex-col">
+    <div className="@container/modelpicker flex min-w-0 flex-col bg-popover">
       {!rails.length || !activeProvider ? (
         <p className="px-4 py-6 text-sm text-muted-foreground">No models available</p>
       ) : (
-        <div className="flex min-h-64 min-w-0 bg-muted">
-          <div className="relative w-12 shrink-0 bg-muted @min-[380px]/modelpicker:w-14">
+        <div className="flex min-h-72 min-w-0 bg-muted">
+          <div className="relative w-14 shrink-0 bg-muted @min-[380px]/modelpicker:w-16">
             <div
               role="tablist"
               aria-label="Harnesses"
               aria-orientation="vertical"
               ref={railRef}
-              className="absolute inset-0 flex flex-col gap-1.5 overflow-y-auto overscroll-contain p-1.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+              className="absolute inset-0 flex flex-col gap-2 overflow-y-auto overscroll-contain px-2 py-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
             >
               {rails.map((provider, index) => (
                 <Tooltip key={provider.id}>
@@ -334,13 +331,13 @@ export function ModelPicker({
                       }}
                       onKeyDown={(event) => onRailKeyDown(event, index)}
                       className={cn(
-                        "inline-flex size-9 shrink-0 touch-manipulation items-center justify-center rounded-xl text-muted-foreground transition-colors duration-300 hover:bg-popover/70 hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none @min-[380px]/modelpicker:size-11",
+                        "inline-flex size-10 shrink-0 touch-manipulation items-center justify-center rounded-2xl text-muted-foreground transition-colors duration-150 hover:bg-popover/70 hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none @min-[380px]/modelpicker:size-12",
                         provider.id === activeProvider.id &&
                           !searching &&
-                          "bg-popover text-foreground ring-1 ring-border/60 ring-inset",
+                          "bg-popover text-foreground",
                       )}
                     >
-                      <ProviderGlyph provider={provider} />
+                      <ProviderGlyph provider={provider} className="size-5" />
                     </button>
                   </TooltipTrigger>
                   <TooltipContent side="left" translate="no">
@@ -351,8 +348,8 @@ export function ModelPicker({
             </div>
           </div>
           <div className="flex min-w-0 flex-1 flex-col">
-            <div className="flex shrink-0 items-center gap-2 bg-muted px-3 py-2">
-              <Search aria-hidden="true" className="size-3.5 shrink-0 text-muted-foreground" />
+            <div className="flex h-12 shrink-0 items-center gap-2.5 bg-muted px-3.5">
+              <Search aria-hidden="true" className="size-4 shrink-0 text-muted-foreground" />
               <input
                 ref={searchRef}
                 type="text"
@@ -364,7 +361,7 @@ export function ModelPicker({
                 aria-controls={listId}
                 autoComplete="off"
                 spellCheck={false}
-                className="h-6 w-full min-w-0 bg-transparent text-sm tracking-tight text-foreground placeholder:text-muted-foreground focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-ring touch:h-9 touch:text-base"
+                className="h-full w-full min-w-0 bg-transparent text-base tracking-tight text-foreground caret-foreground outline-none placeholder:text-muted-foreground"
               />
               {query && (
                 <button
@@ -384,10 +381,10 @@ export function ModelPicker({
               role="tabpanel"
               id={`${id}-provider-panel`}
               aria-labelledby={`${id}-tab-${activeProvider.id}`}
-              className="flex min-w-0 flex-1 flex-col rounded-tl-lg bg-popover p-2"
+              className="flex min-w-0 flex-1 flex-col rounded-tl-2xl bg-popover p-2"
             >
               <p
-                className="px-2.5 pt-1 pb-1.5 text-[11px] text-muted-foreground"
+                className="px-3 pt-1.5 pb-2 text-[13px] text-muted-foreground"
                 translate="no"
                 aria-live="polite"
               >
@@ -399,7 +396,7 @@ export function ModelPicker({
                 role="listbox"
                 id={listId}
                 aria-label={searching ? "Search results" : `${activeProvider.name} models`}
-                className="-mr-1 flex max-h-[min(16rem,42dvh)] min-w-0 flex-col gap-0.5 overflow-y-auto overscroll-contain pr-1"
+                className="flex max-h-[min(18rem,42dvh)] min-w-0 flex-col gap-0.5 overflow-y-auto overscroll-contain [scrollbar-color:var(--border)_transparent] [scrollbar-width:thin]"
               >
                 {!rows.length && (
                   <p className="px-2.5 py-6 text-center text-xs text-muted-foreground">
@@ -421,25 +418,25 @@ export function ModelPicker({
                     onClick={() => selectModel(model.id, provider.id)}
                     onKeyDown={(event) => onListKeyDown(event, index)}
                     className={cn(
-                      "flex min-h-14 w-full min-w-0 touch-manipulation items-center justify-between gap-2 rounded-xl px-2.5 py-2 text-left transition-colors duration-300 hover:bg-muted focus-visible:bg-muted focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset motion-reduce:transition-none",
+                      "flex min-h-16 w-full min-w-0 touch-manipulation items-center justify-between gap-3 rounded-2xl px-3 py-2.5 text-left transition-colors duration-150 hover:bg-muted focus-visible:bg-muted focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset motion-reduce:transition-none",
                       model.id === selectedId && "bg-muted",
                     )}
                   >
                     {searching && <ProviderGlyph provider={provider} className="size-4" />}
-                    <span className="flex min-w-0 flex-1 flex-col gap-0.5">
-                      <span className="flex min-w-0 items-center gap-1.5">
+                    <span className="flex min-w-0 flex-1 flex-col gap-1">
+                      <span className="flex min-w-0 items-center gap-2">
                         <span
-                          className="min-w-0 truncate text-sm font-medium tracking-tight"
+                          className="min-w-0 truncate text-base font-semibold tracking-tight"
                           translate="no"
                         >
                           {model.name}
                         </span>
                         {model.id === selectedId && (
-                          <Check aria-hidden="true" className="size-3.5 shrink-0" />
+                          <Check aria-hidden="true" className="size-4 shrink-0" />
                         )}
                       </span>
                       {model.description && (
-                        <span className="truncate text-[11px] leading-snug text-muted-foreground">
+                        <span className="truncate text-[13px] leading-snug text-muted-foreground">
                           {model.description}
                         </span>
                       )}
@@ -449,35 +446,15 @@ export function ModelPicker({
                 ))}
               </div>
             </div>
-            <div className="flex flex-col gap-2 bg-popover p-2 @min-[440px]/modelpicker:flex-row @min-[440px]/modelpicker:items-center @min-[440px]/modelpicker:gap-3 @min-[440px]/modelpicker:px-3">
-              <span className="flex shrink-0 items-center gap-2 px-1">
-                <EffortMeter levels={levels ?? []} value={selectedThinking} />
-                <span className="text-[11px] text-muted-foreground">Thinking</span>
-              </span>
-              {levels?.length ? (
-                <>
-                  {thinking !== undefined && (
-                    <button
-                      type="button"
-                      onClick={() => selectThinking(null)}
-                      aria-pressed={thinking === null}
-                      className="rounded-full px-2 py-1 text-xs text-muted-foreground hover:bg-muted aria-pressed:text-foreground"
-                    >
-                      Default
-                    </button>
-                  )}
-                  <ThinkingTrack
-                    levels={levels}
-                    value={selectedThinking}
-                    onChange={selectThinking}
-                  />
-                </>
-              ) : (
-                <span className="px-1 text-[11px] text-muted-foreground">
-                  {selected ? "Not available for this model" : "Select a model to set the effort"}
+            {!!levels?.length && (
+              <div className="flex flex-col gap-2 bg-popover px-3 pt-3 pb-2.5 @min-[440px]/modelpicker:flex-row @min-[440px]/modelpicker:items-center @min-[440px]/modelpicker:gap-3">
+                <span className="flex shrink-0 items-center gap-2 px-1">
+                  <EffortMeter levels={levels} value={selectedThinking} />
+                  <span className="text-[13px] text-muted-foreground">Thinking</span>
                 </span>
-              )}
-            </div>
+                <ThinkingTrack levels={levels} value={selectedThinking} onChange={selectThinking} />
+              </div>
+            )}
           </div>
         </div>
       )}
@@ -493,7 +470,7 @@ export function ModelPicker({
           {isOpen && (
             <div
               id={panelId}
-              className="w-full overflow-hidden rounded-xl bg-popover text-popover-foreground ring-1 ring-border/80"
+              className="w-full overflow-hidden rounded-2xl bg-popover text-popover-foreground ring-1 ring-border/80"
             >
               <fieldset disabled={disabled} className="contents">
                 {panel}
@@ -506,11 +483,18 @@ export function ModelPicker({
           <PopoverTrigger asChild>{trigger}</PopoverTrigger>
           <PopoverContent
             id={panelId}
+            data-model-picker-content
             side={side}
             align={align}
             sideOffset={10}
             collisionPadding={12}
-            className="max-h-[var(--radix-popover-content-available-height)] w-[min(26rem,calc(100vw-1.5rem))] gap-0 overflow-y-auto overscroll-contain rounded-xl p-0"
+            className="max-h-[var(--radix-popover-content-available-height)] w-[min(30rem,calc(100vw-1.5rem))] gap-0 overflow-y-auto overscroll-contain rounded-2xl p-0 shadow-none"
+            onEscapeKeyDown={(event) => {
+              if (!query) return;
+              event.preventDefault();
+              setQuery("");
+              searchRef.current?.focus();
+            }}
             onOpenAutoFocus={(event) => {
               event.preventDefault();
               requestAnimationFrame(() => searchRef.current?.focus());

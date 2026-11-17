@@ -27,12 +27,11 @@ export type ModelPickerProps = {
   onProviderChange?: (providerId: string) => void;
   /** Retain unconnected harnesses in preview rails even before their models are discovered. */
   showEmptyProviders?: boolean;
-  value?: string;
+  value?: string | null;
   defaultValue?: string;
   onValueChange?: (modelId: string, providerId: string, thinking?: ThinkingEffort | null) => void;
   thinking?: ThinkingEffort | null;
   defaultThinking?: ThinkingEffort;
-  closeOnSelect?: boolean;
   open?: boolean;
   defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;

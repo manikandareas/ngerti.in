@@ -61,6 +61,7 @@ export function ModelPicker({
   hideTrigger = false,
   disabled = false,
   ariaLabel,
+  dropdownIcon,
   footer,
   emptyProvider,
 }: ModelPickerProps) {
@@ -286,13 +287,15 @@ export function ModelPicker({
           </span>
         </span>
       ) : null}
-      <ChevronDown
-        aria-hidden="true"
-        className={cn(
-          "size-3.5 shrink-0 text-muted-foreground transition-transform duration-300 motion-reduce:transition-none",
-          isOpen && "rotate-180",
-        )}
-      />
+      {dropdownIcon ?? (
+        <ChevronDown
+          aria-hidden="true"
+          className={cn(
+            "size-3.5 shrink-0 text-muted-foreground transition-transform duration-300 motion-reduce:transition-none",
+            isOpen && "rotate-180",
+          )}
+        />
+      )}
     </button>
   );
 

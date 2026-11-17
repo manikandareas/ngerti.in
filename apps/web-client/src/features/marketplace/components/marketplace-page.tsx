@@ -8,6 +8,7 @@ import {
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useCallback, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { SlidingPanel } from "@/app/sliding-panel";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -27,7 +28,13 @@ import { PluginFeedback, PluginInstall } from "./plugin-install";
 import { PluginManagement } from "./plugin-management";
 import "../marketplace.css";
 
-export default function MarketplacePage({ onPrompt }: { onPrompt: (prompt: string) => void }) {
+export default function MarketplacePage({
+  onPrompt,
+  sidebarOpen = true,
+}: {
+  onPrompt: (prompt: string) => void;
+  sidebarOpen?: boolean;
+}) {
   const { section, item, category, open } = useMarketplace();
   const { snapshot, agents, appConnectionCursor } = useSettingsWorkspace();
   const [query, setQuery] = useState("");
@@ -267,73 +274,75 @@ export default function MarketplacePage({ onPrompt }: { onPrompt: (prompt: strin
 
   return (
     <div className="app-screen marketplace-screen" data-marketplace-screen>
-      <aside
-        className="app-sidebar app-sidebar-menu marketplace-sidebar"
-        aria-label="Marketplace menu"
-      >
-        <div className="app-sidebar-header marketplace-sidebar-header">
-          <span className="app-sidebar-title marketplace-sidebar-heading">Marketplace</span>
-        </div>
-        <nav
-          className="app-sidebar-navigation marketplace-navigation"
-          aria-label="Marketplace navigation"
+      <SlidingPanel open={sidebarOpen} width={280}>
+        <aside
+          className="app-sidebar app-sidebar-menu marketplace-sidebar"
+          aria-label="Marketplace menu"
         >
-          {(
-            [
-              { id: "plugins", label: "Plugins", icon: Plug01Icon },
-              { id: "skills", label: "Skills", icon: PackageIcon },
-            ] as const
-          ).map((destination) => (
-            <button
-              key={destination.id}
-              type="button"
-              className="app-sidebar-link marketplace-nav-item"
-              aria-current={section === destination.id && !item ? "page" : undefined}
-              onClick={() => changeSection(destination.id)}
-            >
-              <HugeiconsIcon icon={destination.icon} size={18} strokeWidth={1.5} />
-              <span>{destination.label}</span>
-            </button>
-          ))}
-        </nav>
-        <section
-          className="marketplace-sidebar-available"
-          aria-labelledby="marketplace-installed-heading"
-        >
-          <h2 id="marketplace-installed-heading">Installed</h2>
+          <div className="app-sidebar-header marketplace-sidebar-header">
+            <span className="app-sidebar-title marketplace-sidebar-heading">Marketplace</span>
+          </div>
           <nav
-            className="app-sidebar-navigation marketplace-installed-navigation"
-            aria-label="Installed plugins"
+            className="app-sidebar-navigation marketplace-navigation"
+            aria-label="Marketplace navigation"
           >
-            {installed.map((entry) => (
+            {(
+              [
+                { id: "plugins", label: "Plugins", icon: Plug01Icon },
+                { id: "skills", label: "Skills", icon: PackageIcon },
+              ] as const
+            ).map((destination) => (
               <button
-                key={entry.id}
+                key={destination.id}
                 type="button"
                 className="app-sidebar-link marketplace-nav-item"
-                aria-current={plugin && item === entry.id ? "page" : undefined}
-                title={entry.name}
-                onClick={() => void open("plugins", entry.id)}
+                aria-current={section === destination.id && !item ? "page" : undefined}
+                onClick={() => changeSection(destination.id)}
               >
-                <EntryIcon entry={entry} plugin />
-                <span>{entry.name}</span>
+                <HugeiconsIcon icon={destination.icon} size={18} strokeWidth={1.5} />
+                <span>{destination.label}</span>
               </button>
             ))}
-            {!installed.length && !connections.error && !connections.data && (
-              <div
-                className="marketplace-sidebar-skeleton"
-                role="status"
-                aria-label="Loading installed plugins"
-              >
-                <Skeleton className="h-4 w-28" />
-                <Skeleton className="h-4 w-36" />
-              </div>
-            )}
-            {!installed.length && connections.data && !connections.error && (
-              <span className="marketplace-sidebar-hint">No plugins installed.</span>
-            )}
           </nav>
-        </section>
-      </aside>
+          <section
+            className="marketplace-sidebar-available"
+            aria-labelledby="marketplace-installed-heading"
+          >
+            <h2 id="marketplace-installed-heading">Installed</h2>
+            <nav
+              className="app-sidebar-navigation marketplace-installed-navigation"
+              aria-label="Installed plugins"
+            >
+              {installed.map((entry) => (
+                <button
+                  key={entry.id}
+                  type="button"
+                  className="app-sidebar-link marketplace-nav-item"
+                  aria-current={plugin && item === entry.id ? "page" : undefined}
+                  title={entry.name}
+                  onClick={() => void open("plugins", entry.id)}
+                >
+                  <EntryIcon entry={entry} plugin />
+                  <span>{entry.name}</span>
+                </button>
+              ))}
+              {!installed.length && !connections.error && !connections.data && (
+                <div
+                  className="marketplace-sidebar-skeleton"
+                  role="status"
+                  aria-label="Loading installed plugins"
+                >
+                  <Skeleton className="h-4 w-28" />
+                  <Skeleton className="h-4 w-36" />
+                </div>
+              )}
+              {!installed.length && connections.data && !connections.error && (
+                <span className="marketplace-sidebar-hint">No plugins installed.</span>
+              )}
+            </nav>
+          </section>
+        </aside>
+      </SlidingPanel>
       <main ref={content} className="app-surface marketplace-pane" aria-label="Marketplace">
         {item ? (
           <>

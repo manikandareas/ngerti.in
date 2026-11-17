@@ -134,6 +134,8 @@ async fn handle(State(state): State<Arc<GatewayState>>, request: Request<Body>) 
                         | "/_desktop/open-external"
                         | "/_desktop/retry"
                         | "/_desktop/focus"
+                        | "/_desktop/window/drag"
+                        | "/_desktop/window/toggle-maximize"
                 )
         {
             return StatusCode::FORBIDDEN.into_response();
@@ -163,6 +165,36 @@ async fn handle(State(state): State<Arc<GatewayState>>, request: Request<Body>) 
             crate::host::show(app);
         }
         return StatusCode::NO_CONTENT.into_response();
+    }
+    if matches!(
+        path,
+        "/_desktop/window/drag" | "/_desktop/window/toggle-maximize"
+    ) {
+        if request.method() != Method::POST || origin != Some(&state.origin) {
+            return StatusCode::FORBIDDEN.into_response();
+        }
+        let Some(app) = &state.app else {
+            return StatusCode::SERVICE_UNAVAILABLE.into_response();
+        };
+        use tauri::Manager;
+        let Some(window) = app.get_webview_window("main") else {
+            return StatusCode::SERVICE_UNAVAILABLE.into_response();
+        };
+        let result = if path.ends_with("/drag") {
+            window.start_dragging()
+        } else {
+            window.is_maximized().and_then(|maximized| {
+                if maximized {
+                    window.unmaximize()
+                } else {
+                    window.maximize()
+                }
+            })
+        };
+        return match result {
+            Ok(()) => StatusCode::NO_CONTENT.into_response(),
+            Err(_) => StatusCode::INTERNAL_SERVER_ERROR.into_response(),
+        };
     }
     if is_api(path) {
         let backend = state.session.remote.origin.clone();

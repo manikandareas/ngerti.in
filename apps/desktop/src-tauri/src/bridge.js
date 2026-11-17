@@ -6,6 +6,15 @@
     configurable: false,
     value: Object.freeze({
       platform: "darwin",
+      customTitlebar: true,
+      async windowAction(action) {
+        if (action !== "drag" && action !== "toggle-maximize") return;
+        const response = await fetch(`/_desktop/window/${action}`, {
+          method: "POST",
+          signal: AbortSignal.timeout(10000),
+        });
+        if (!response.ok) throw new Error("The window action could not finish.");
+      },
       nativeVisibility: true,
       remote: true,
       async signIn() {

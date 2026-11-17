@@ -1,6 +1,12 @@
+import { UnfoldMoreIcon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { type ReactNode, useContext, useMemo, useState } from "react";
 import { HarnessIcon } from "@/components/harness-icon";
-import { ModelPicker as HarnessModelPicker } from "@/components/ui/model-picker";
+import {
+  ClaudeIcon,
+  ModelPicker as HarnessModelPicker,
+  OpenAIIcon,
+} from "@/components/ui/model-picker";
 import { SettingsWorkspaceContext } from "@/hooks/settings-workspace";
 import { harnessModelCatalog, harnessModelKey } from "@/lib/harness-models";
 import { type HarnessId, harnesses, isHarness } from "@/lib/harnesses";
@@ -17,6 +23,7 @@ export interface ModelPickerProps {
   className?: string;
   contained?: boolean;
   label?: ReactNode;
+  titlebar?: boolean;
 }
 
 /** Account selection and persistence only. The picker and observed catalog are shared with onboarding. */
@@ -29,6 +36,7 @@ export function ModelPicker({
   className,
   contained = false,
   label,
+  titlebar = false,
 }: ModelPickerProps) {
   const workspace = useContext(SettingsWorkspaceContext);
   const [open, setOpen] = useState(false);
@@ -73,9 +81,16 @@ export function ModelPicker({
     () =>
       catalog.providers.map((provider) => ({
         ...provider,
-        icon: <HarnessIcon id={provider.id as HarnessId} size={20} className="rounded-sm" />,
+        icon:
+          titlebar && provider.id === "codex" ? (
+            <OpenAIIcon />
+          ) : titlebar && provider.id === "claude" ? (
+            <ClaudeIcon />
+          ) : (
+            <HarnessIcon id={provider.id} size={20} className="rounded-sm" />
+          ),
       })),
-    [catalog.providers],
+    [catalog.providers, titlebar],
   );
   const current = allowed.find((connection) => connection.id === selection?.connection_id);
   const running = workspace?.snapshot?.runs.find(
@@ -131,6 +146,7 @@ export function ModelPicker({
         }}
         value={selected}
         thinking={selection?.reasoning ?? null}
+        side={titlebar ? "bottom" : "top"}
         onValueChange={select}
         showEmptyProviders
         open={open}
@@ -143,6 +159,16 @@ export function ModelPicker({
         }}
         disabled={disabled || !agent}
         ariaLabel="Pilih model"
+        dropdownIcon={
+          titlebar ? (
+            <HugeiconsIcon
+              icon={UnfoldMoreIcon}
+              size={14}
+              aria-hidden="true"
+              className="shrink-0 text-muted-foreground"
+            />
+          ) : undefined
+        }
         placeholder={agent?.model_id ?? "Pilih model"}
         align="end"
         className={cn(

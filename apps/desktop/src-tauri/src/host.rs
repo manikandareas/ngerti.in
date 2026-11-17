@@ -182,6 +182,13 @@ pub fn setup(app: &mut tauri::App) -> Result<()> {
                 let _ = window.eval_with_callback("JSON.stringify({ready:document.readyState,hidden:document.hidden,online:navigator.onLine,bridge:!!window.ngertiinDesktop})", move |result| { log.event("desktop.webview.ready", json!({"diagnostic":result})); });
             }
         });
+    #[cfg(target_os = "macos")]
+    {
+        builder = builder
+            .title_bar_style(tauri::TitleBarStyle::Overlay)
+            .hidden_title(true)
+            .traffic_light_position(tauri::LogicalPosition::new(12., 24.));
+    }
     if let (Some(x), Some(y)) = (geometry.x, geometry.y) {
         let visible = app.available_monitors()?.iter().any(|monitor| {
             let origin = monitor.position().to_logical::<f64>(monitor.scale_factor());

@@ -11,6 +11,12 @@ declare global {
       openExternal?(url: string): Promise<void>;
       reportComputerView(active: boolean, revision: number): void;
       onVisibility(callback: (visible: boolean) => void): () => void;
-    };
+    } & (
+      | {
+          customTitlebar: true;
+          windowAction(action: "drag" | "toggle-maximize"): Promise<void>;
+        }
+      | { customTitlebar?: false }
+    );
   }
 }

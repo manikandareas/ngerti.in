@@ -11,6 +11,7 @@ import {
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Link } from "@tanstack/react-router";
 import { useLayoutEffect, useRef } from "react";
+import { SlidingPanel } from "@/app/sliding-panel";
 import { AccountSettings } from "@/features/account/account-settings";
 import { MembersSettings } from "@/features/account/members-settings";
 import { OrganizationSettings } from "@/features/account/organization-settings";
@@ -28,7 +29,6 @@ import {
 } from "@/features/settings/components/preference-sections";
 import { SettingsRow, SettingsSection } from "@/features/settings/components/shared";
 import { useSettings } from "@/features/settings/hooks/use-settings";
-import type { SettingsSectionId } from "@/features/settings/lib/settings-search";
 import "../settings.css";
 
 const sections = [
@@ -47,7 +47,7 @@ const sections = [
   { id: "about", label: "Tentang", icon: InformationCircleIcon },
 ] as const;
 
-export default function SettingsPage() {
+export default function SettingsPage({ sidebarOpen = true }: { sidebarOpen?: boolean }) {
   const account = useAccount();
   const visibleSections = sections.filter((item) => {
     if (item.id === "members") return !!account?.access?.capabilities.invite_members;
@@ -73,39 +73,46 @@ export default function SettingsPage() {
 
   return (
     <div className="app-screen settings-screen" data-settings-screen>
-      <aside className="app-sidebar app-sidebar-menu settings-sidebar">
-        <div className="app-sidebar-header settings-sidebar-header">
-          <span className="app-sidebar-title settings-sidebar-title">Pengaturan</span>
-        </div>
-        <nav aria-label="Menu pengaturan" className="app-sidebar-navigation settings-navigation">
-          {navigationSections.map((item) => (
-            <Link
-              key={item.id}
-              from="/"
-              search={(previous) => ({ ...previous, settings: item.id, provider: undefined })}
-              resetScroll={false}
-              className={`app-sidebar-link settings-nav-item ${["members", "workgroups", "team-agents"].includes(item.id) ? "pl-8! text-[13px]!" : ""}`}
-              data-settings-page={item.id}
-              aria-current={page === item.id ? "page" : undefined}
-            >
-              <HugeiconsIcon icon={item.icon} size={18} strokeWidth={1.5} aria-hidden="true" />
-              <span>{item.label}</span>
-            </Link>
-          ))}
-        </nav>
-        <select
-          className="settings-select settings-mobile-section"
-          aria-label="Menu pengaturan"
-          value={page}
-          onChange={(event) => void open(event.target.value as SettingsSectionId)}
-        >
-          {visibleSections.map((item) => (
-            <option key={item.id} value={item.id}>
-              {item.label}
-            </option>
-          ))}
-        </select>
-      </aside>
+      <SlidingPanel open={sidebarOpen} width={280}>
+        <aside className="app-sidebar app-sidebar-menu settings-sidebar">
+          <div className="app-sidebar-header settings-sidebar-header">
+            <span className="app-sidebar-title settings-sidebar-title">Pengaturan</span>
+          </div>
+          <nav aria-label="Menu pengaturan" className="app-sidebar-navigation settings-navigation">
+            {navigationSections.map((item) => (
+              <Link
+                key={item.id}
+                from="/"
+                search={(previous) => ({ ...previous, settings: item.id, provider: undefined })}
+                resetScroll={false}
+                className={`app-sidebar-link settings-nav-item ${["members", "workgroups", "team-agents"].includes(item.id) ? "pl-8! text-[13px]!" : ""}`}
+                data-settings-page={item.id}
+                aria-current={page === item.id ? "page" : undefined}
+              >
+                <HugeiconsIcon icon={item.icon} size={18} strokeWidth={1.5} aria-hidden="true" />
+                <span>{item.label}</span>
+              </Link>
+            ))}
+          </nav>
+          <select
+            className="settings-select settings-mobile-section"
+            aria-label="Menu pengaturan"
+            value={page}
+            onChange={(event) => {
+              const selected = visibleSections.find(
+                (item) => item.id === event.currentTarget.value,
+              );
+              if (selected) void open(selected.id);
+            }}
+          >
+            {visibleSections.map((item) => (
+              <option key={item.id} value={item.id}>
+                {item.label}
+              </option>
+            ))}
+          </select>
+        </aside>
+      </SlidingPanel>
       <main className="app-surface settings-pane" aria-label="Pengaturan">
         <header className="settings-content-header">
           <h1 ref={heading} tabIndex={-1}>

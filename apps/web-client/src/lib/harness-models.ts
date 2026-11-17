@@ -24,7 +24,7 @@ export function harnessModelCatalog(
     string,
     { connection: Connection; model: Connection["models"][number] }
   >();
-  const providers: ModelPickerProvider[] = harnessIds.map((id) => {
+  const providers: (ModelPickerProvider & { id: HarnessId })[] = harnessIds.map((id) => {
     const accounts = connections.filter(
       (connection) =>
         connection.harness === id &&

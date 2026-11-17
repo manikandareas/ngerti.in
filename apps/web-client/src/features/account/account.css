@@ -260,6 +260,71 @@
 .organization-switcher:hover {
   background: var(--accent);
 }
+.organization-switcher:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+.organization-switcher > svg {
+  flex-shrink: 0;
+  color: var(--muted-foreground);
+}
+.organization-switcher-compact {
+  height: 32px;
+  flex: 1;
+  padding-inline: 6px;
+}
+.organization-menu {
+  width: 272px;
+  max-width: calc(100vw - 24px);
+  gap: 2px;
+  padding: 6px;
+  border-radius: 12px;
+}
+.organization-menu-label {
+  padding: 8px 10px 6px;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  font-weight: 500;
+}
+.organization-menu .organization-menu-item {
+  width: 100%;
+  height: 42px;
+  justify-content: flex-start;
+  gap: 10px;
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 13px;
+  font-weight: 400;
+}
+.organization-menu-name {
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.organization-menu-separator {
+  height: 1px;
+  margin: 6px -6px;
+  background: var(--border);
+}
+.organization-menu-create {
+  color: var(--muted-foreground);
+}
+.organization-menu .organization-menu-create:disabled {
+  background: transparent;
+  color: var(--muted-foreground);
+}
+.organization-menu-add {
+  display: grid;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  place-items: center;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control);
+}
 .organization-switcher > span {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -293,8 +358,9 @@
   height: 100%;
   object-fit: contain;
 }
-.organization-menu {
-  max-width: calc(100vw - 24px);
+.organization-switcher-compact .organization-logo {
+  width: 22px;
+  height: 22px;
 }
 .agent-section-label {
   color: var(--muted-foreground);

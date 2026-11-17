@@ -29,6 +29,7 @@ export function WorkspaceRail({
             onClick={onConversation}
           >
             <HugeiconsIcon icon={ChatBotIcon} className="size-5" strokeWidth={1.5} />
+            <span className="workspace-rail-label">Percakapan</span>
           </Button>
         </TooltipTrigger>
         <TooltipContent side="right" sideOffset={8}>
@@ -47,6 +48,7 @@ export function WorkspaceRail({
               onClick={onMarketplace}
             >
               <HugeiconsIcon icon={Store02Icon} className="size-5" strokeWidth={1.5} />
+              <span className="workspace-rail-label">Marketplace</span>
             </Button>
           </TooltipTrigger>
           <TooltipContent side="right" sideOffset={8}>
@@ -64,6 +66,7 @@ export function WorkspaceRail({
               onClick={onSettings}
             >
               <HugeiconsIcon icon={Settings01Icon} className="size-5" strokeWidth={1.5} />
+              <span className="workspace-rail-label">Pengaturan</span>
             </Button>
           </TooltipTrigger>
           <TooltipContent side="right" sideOffset={8}>

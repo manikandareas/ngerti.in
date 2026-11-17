@@ -71,7 +71,7 @@ export function ConversationNavigation({
   }
   return (
     <div className="conversation-navigation relative p-3 flex flex-col h-full min-h-0">
-      {organizationHeader ?? <OrganizationSwitcher />}
+      {organizationHeader !== undefined ? organizationHeader : <OrganizationSwitcher />}
       <div className="navigation-heading mb-2 flex shrink-0 items-center justify-end gap-2">
         <Link to="/" className="sr-only" aria-label="Ngertiin">
           ngertiin<span>.</span>

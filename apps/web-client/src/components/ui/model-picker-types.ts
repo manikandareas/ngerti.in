@@ -41,6 +41,7 @@ export type ModelPickerProps = {
   className?: string;
   disabled?: boolean;
   ariaLabel?: string;
+  dropdownIcon?: ReactNode;
   footer?: ReactNode;
   emptyProvider?: (providerId: string) => ReactNode;
   /** Keep the panel in document flow for embedded previews without moving form focus. */

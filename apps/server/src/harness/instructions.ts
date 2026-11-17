@@ -45,32 +45,55 @@ export async function sessionInstructions(
         .join("\n\n");
 }
 
-export async function runLearningContext(lifecycle: Lifecycle, run: Entity<"run">) {
-  return (await lifecycle.store.get("thread", run.thread_id)).purpose === "routing"
-    ? ""
-    : [
-        await publicReferences(lifecycle.store, run),
-        run.workspace_id && (await lifecycle.store.get("workspace", run.workspace_id)).machine_id
-          ? machineWindowGuidance
-          : "",
-        await new Groups(lifecycle).context(run),
-        await new Interactions(lifecycle).context(run),
-        run.retry_of_run_id
-          ? `This is a retry of failed run ${run.retry_of_run_id}. Preserve completed tool receipts and reconcile uncertain effects. Do not repeat completed external effects. Continue from the existing conversation and original attachments.`
-          : "",
-        await new Goals(lifecycle).context(run),
-        "Current authoritative learning state. Use these identities/revisions instead of obsolete facts in native history. Deleted records must remain deleted. Do not recreate them from older transcript or tool receipts. Use ngertiin.list_memories for fresh scoped recall and ngertiin.write_memory/delete_memory for changes; new identities start at expected_revision 0. Changes are committed when their tool receipt succeeds, even if this run later stops. Use a fresh UUID command_id for a distinct mutation and the same UUID on retries. Visibility is explicit: dm_private, group or shared (across this agent's conversations). Never promote private content into shared memory or a shared skill without an explicit sharing request.",
-        JSON.stringify(
-          await new Memories(lifecycle).recall(
-            { agent_id: run.agent_id, thread_id: run.thread_id },
-            { include_deleted: true },
+export async function prepareLearningContext(
+  lifecycle: Lifecycle,
+  run: Entity<"run">,
+  previous?: readonly string[],
+) {
+  const sections =
+    (await lifecycle.store.get("thread", run.thread_id)).purpose === "routing"
+      ? []
+      : [
+          await publicReferences(lifecycle.store, run),
+          run.workspace_id && (await lifecycle.store.get("workspace", run.workspace_id)).machine_id
+            ? machineWindowGuidance
+            : "",
+          await new Groups(lifecycle).context(run),
+          await new Interactions(lifecycle).context(run),
+          run.retry_of_run_id
+            ? `This is a retry of failed run ${run.retry_of_run_id}. Preserve completed tool receipts and reconcile uncertain effects. Do not repeat completed external effects. Continue from the existing conversation and original attachments.`
+            : "",
+          ...(await new Goals(lifecycle).contextSections(run)),
+          "Current authoritative learning state. Use these identities/revisions instead of obsolete facts in native history. Deleted records must remain deleted. Do not recreate them from older transcript or tool receipts. Use ngertiin.list_memories for fresh scoped recall and ngertiin.write_memory/delete_memory for changes; new identities start at expected_revision 0. Changes are committed when their tool receipt succeeds, even if this run later stops. Use a fresh UUID command_id for a distinct mutation and the same UUID on retries. Visibility is explicit: dm_private, group or shared (across this agent's conversations). Never promote private content into shared memory or a shared skill without an explicit sharing request.",
+          JSON.stringify(
+            await new Memories(lifecycle).recall(
+              { agent_id: run.agent_id, thread_id: run.thread_id },
+              { include_deleted: true },
+            ),
           ),
-        ),
-        await skillInstructions(lifecycle, {
-          agent_id: run.agent_id,
-          thread_id: run.thread_id,
-        }),
-      ].join("\n\n");
+          await skillInstructions(lifecycle, {
+            agent_id: run.agent_id,
+            thread_id: run.thread_id,
+          }),
+        ].map((value) => value || "");
+  const text = sections
+    .flatMap((section, index) => {
+      if (section === previous?.[index] || (!section && !previous?.[index])) return [];
+      return [
+        `Current context section ${index + 1} (replaces its earlier version):\n${section || "No current entries."}`,
+      ];
+    })
+    .join("\n\n");
+  return {
+    text: [text, ...(sections.length ? [`Dates now: ${new Date().toISOString()}.`] : [])]
+      .filter(Boolean)
+      .join("\n\n"),
+    sections,
+  };
+}
+
+export async function runLearningContext(lifecycle: Lifecycle, run: Entity<"run">) {
+  return (await prepareLearningContext(lifecycle, run)).text;
 }
 
 async function historyContext(

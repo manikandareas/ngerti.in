@@ -129,7 +129,11 @@ export class WorkspaceSync {
     const through = connection.seen;
     connection.dirty = new Set();
     connection.refresh = Promise.resolve()
-      .then(() => this.options.refresh(connection.abort.signal, projections ?? undefined))
+      .then(() =>
+        projections?.size === 0
+          ? undefined
+          : this.options.refresh(connection.abort.signal, projections ?? undefined),
+      )
       .then((cursor) => {
         if (!this.current(connection)) return;
         // Only initial full snapshots skip replay. Later batches acknowledge events only

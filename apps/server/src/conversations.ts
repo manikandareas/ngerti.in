@@ -149,7 +149,7 @@ export class Conversations {
 
   async snapshot(threadId: string) {
     const { store } = this.lifecycle;
-    return await store.transaction(async () => {
+    return await store.read(async () => {
       const thread = await store.get("thread", threadId);
       return conversationSnapshot.parse({
         cursor: await store.cursor,
@@ -204,7 +204,7 @@ export class Conversations {
     const { before, limit } = timelineQuery.parse(input);
     const { store } = this.lifecycle;
     await store.get("thread", threadId);
-    return await store.transaction(async () => {
+    return await store.read(async () => {
       const page = await store.journal.page(threadId, before, limit);
       const ids = new Set(
         page.parts.flatMap((part) =>

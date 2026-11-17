@@ -10,6 +10,7 @@ import {
 import { harness, id } from "./contracts/base";
 import { DomainError, errorCodes } from "./contracts/errors";
 import { message, thread, threadInput } from "./conversations/contracts";
+import { conversationPart } from "./conversations/parts";
 import {
   goal,
   goalCommands,
@@ -154,6 +155,7 @@ export type Entity<K extends Kind = Kind> = z.infer<(typeof schemas)[K]>;
 export const kindSchema = z.enum(Object.keys(schemas) as [Kind, ...Kind[]]);
 export const domainEvent = z.strictObject({
   conversation_thread_id: z.uuid().optional(),
+  conversation_part: conversationPart.optional(),
   schema_version: z.literal(1),
   cursor: z.int().positive(),
   owner_id: id,

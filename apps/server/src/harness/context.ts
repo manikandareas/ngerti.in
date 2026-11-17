@@ -26,16 +26,25 @@ export class Redactor {
   /** Withhold possible secret prefixes across native chunks before publishing a text snapshot. */
   stream(input: string, final = false) {
     if (final) return this.text(input);
-    let cut = Math.max(
-      0,
-      input.length - Math.max(8, ...[...this.#values].map((value) => value.length)),
-    );
+    let cut = Math.max(0, input.length - 8);
     for (const value of this.#values) {
-      const index = input.lastIndexOf(value, cut);
-      if (index >= 0 && index + value.length > cut) cut = index;
+      for (let size = Math.min(value.length, input.length); size > input.length - cut; size--) {
+        if (input.endsWith(value.slice(0, size))) {
+          cut = input.length - size;
+          break;
+        }
+      }
     }
     const open = /(?:Bearer\s+\S*|\bsk-[\w-]*)$/i.exec(input);
     if (open) cut = Math.min(cut, open.index);
+    let previous: number;
+    do {
+      previous = cut;
+      for (const value of this.#values) {
+        const index = input.lastIndexOf(value, cut);
+        if (index >= 0 && index + value.length > cut) cut = index;
+      }
+    } while (cut !== previous);
     return this.text(input.slice(0, cut));
   }
 }

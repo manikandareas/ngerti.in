@@ -2,7 +2,6 @@ import type { SessionLease } from "./auth/service";
 import { conversationEvent } from "./conversations/projection";
 import type { Store } from "./store";
 
-/** Pull one committed envelope at a time; check the device before every delivery. */
 export function eventStream(
   store: Store,
   after: number,
@@ -51,21 +50,30 @@ export function eventStream(
               if (closed) return;
               if (signal.aborted || store.closed || Date.now() >= deadline) break;
               await lease?.assert();
-              const page = await store.replay(cursor, { limit: 1 });
-              const event = page.events[0];
-              if (!event) cursor = page.next_cursor;
-              if (event) {
-                const value = await conversationEvent(store, event);
+              const { page, events } = await store.read(async () => {
+                const page = await store.replay(cursor, { limit: 16 });
+                const events = [];
+                for (const event of page.events) events.push(await conversationEvent(store, event));
+                return { page, events };
+              });
+              if (events.length) {
                 await lease?.assert();
+                await scope?.validate();
                 if (closed) return;
-                cursor = event.cursor;
+                cursor = events[events.length - 1].cursor;
                 controller.enqueue(
                   encoder.encode(
-                    `id: ${cursor}\nevent: domain\ndata: ${JSON.stringify(value)}\n\n`,
+                    events
+                      .map(
+                        (event) =>
+                          `id: ${event.cursor}\nevent: domain\ndata: ${JSON.stringify(event)}\n\n`,
+                      )
+                      .join(""),
                   ),
                 );
                 return;
               }
+              cursor = page.next_cursor;
               await store.waitForEvents(cursor, signal, Math.min(10_000, deadline - Date.now()));
             }
             if (closed) return;

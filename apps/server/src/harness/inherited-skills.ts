@@ -122,10 +122,12 @@ export async function persistInheritedSkills(
     native_state: "unknown",
   },
 ) {
-  const binding = await lifecycle.store.get("binding", bindingId);
-  const current = (await lifecycle.store.list("harness_inventory", { binding_id: bindingId })).find(
-    (item) => item.binding_id === bindingId,
-  );
+  const { binding, current } = await lifecycle.store.read(async () => ({
+    binding: await lifecycle.store.get("binding", bindingId),
+    current: (await lifecycle.store.list("harness_inventory", { binding_id: bindingId })).find(
+      (item) => item.binding_id === bindingId,
+    ),
+  }));
   const inventory = inheritedSkills(context, binding.harness);
   const service = new ApplicationSkills(lifecycle);
   const fields = {

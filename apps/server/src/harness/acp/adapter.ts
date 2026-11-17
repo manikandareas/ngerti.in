@@ -48,7 +48,9 @@ export class AcpAdapter implements HarnessAdapter {
 
 /** Small compatibility seam for the application's lifecycle. No second ACP execution loop. */
 export class AcpClient implements HarnessClient {
-  readonly closeAfterRun = true;
+  get closeAfterRun() {
+    return this.#peer?.session.closeAfterRun ?? true;
+  }
   #peer: Peer | null = null;
   #opening: Promise<Peer> | null = null;
   #closed = false;
@@ -104,9 +106,11 @@ export class AcpClient implements HarnessClient {
       this.endpoint,
       this.context.purpose !== "routing",
       !!this.context.machine,
+      this.harness === "codex",
     );
     this.context.redactor.add(tools.token);
     let session: AcpSession | undefined;
+    let correlatedTools = false;
     let connection: AcpConnection | undefined;
     try {
       connection = new AcpConnection(
@@ -167,12 +171,14 @@ export class AcpClient implements HarnessClient {
             version: z.literal(1),
             externalTokens: z.literal(true),
             turnReceipts: z.literal(true),
+            turnToolCorrelation: z.boolean().optional(),
             accountCatalog: z.literal(true),
             messagePhases: z.literal(true),
             skillCatalog: z.literal(true),
           })
           .parse(await connection.bounded(connection.agent.request("_ngertiin/capabilities", {})));
         if (!hook) throw new HarnessError("CAPABILITY_UNSUPPORTED");
+        correlatedTools = hook.turnToolCorrelation === true;
         if (selection.authentication === "native_login") {
           if (!this.context.codexAuth) throw new HarnessError("CAPABILITY_UNSUPPORTED");
           const tokens = await this.context.codexAuth();
@@ -199,6 +205,7 @@ export class AcpClient implements HarnessClient {
           unknown_error_codes: this.harness === "codex" ? [1001] : [],
           preview_roots: [cwd, ...(this.context.machine ? [this.context.machine.root] : [])],
           message_phases: this.harness === "codex",
+          reusable: correlatedTools,
         },
       );
       const peer = { session, launch };

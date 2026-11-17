@@ -8,6 +8,8 @@ import {
   type RoutingPacket,
 } from "../src/groups/router";
 import { Groups } from "../src/groups/service";
+import { prepareLearningContext } from "../src/harness/instructions";
+import { Memories } from "../src/learning/memories";
 import { Lifecycle } from "../src/lifecycle";
 import { fixture } from "./helpers";
 
@@ -482,4 +484,125 @@ test("ordinary complete handoffs settle the task without a third model run", asy
   expect((await f.store.get("peer_task", task.id)).state).toBe("completed");
   expect(await f.store.list("run")).toHaveLength(2);
   expect((await f.store.get("peer_task", task.id)).continuation).toBe(0);
+});
+
+test("settlement prepares the next turn only after durable completion", async () => {
+  f = await fixture();
+  await f.bind();
+  const settled: string[] = [];
+  background = new Background(f.lifecycle, {
+    codex: {
+      async execute(run, context) {
+        await context.started(run.id);
+        return "succeeded";
+      },
+      async settled(run) {
+        expect((await f.store.get("run", run.id)).status).toBe("succeeded");
+        settled.push(run.id);
+      },
+    },
+  });
+  const receipt = await f.admit();
+  await background.tick();
+  await background.idle();
+  await until(() => settled.length === 1);
+  expect(settled).toEqual([receipt.run.id]);
+});
+
+test("ready dispatch starts before routine maintenance", async () => {
+  f = await fixture();
+  await f.bind();
+  const order: string[] = [];
+  const originalList = f.store.list.bind(f.store);
+  f.store.list = async (kind, options) => {
+    if (kind === "routine") order.push("routines");
+    return originalList(kind, options);
+  };
+  background = new Background(f.lifecycle, {
+    codex: {
+      async prepare() {
+        order.push("prepare");
+      },
+      async execute(run, context) {
+        await context.started(run.id);
+        return "succeeded";
+      },
+    },
+  });
+  await f.admit();
+  order.length = 0;
+  await background.tick();
+  await background.idle();
+  const run = (await f.store.list("run"))[0];
+  expect(run.preparation?.state).toBe("ready");
+  expect(run.timings?.ready_at).toBe(run.timings?.dispatched_at);
+  expect(order.indexOf("prepare")).toBeGreaterThanOrEqual(0);
+  expect(order.indexOf("prepare")).toBeLessThan(order.lastIndexOf("routines"));
+});
+
+test("direct admission dispatches while routine maintenance is stalled", async () => {
+  f = await fixture();
+  await f.bind();
+  let entered = false;
+  let release = () => {};
+  const gate = new Promise<void>((resolve) => {
+    release = resolve;
+  });
+  const originalList = f.store.list.bind(f.store);
+  f.store.list = async (kind, options) => {
+    if (kind === "routine") {
+      entered = true;
+      await gate;
+    }
+    return originalList(kind, options);
+  };
+  const visited: string[] = [];
+  background = new Background(f.lifecycle, {
+    codex: {
+      async execute(run, context) {
+        visited.push(run.id);
+        await context.started(run.id);
+        return "succeeded";
+      },
+    },
+  });
+  const tick = background.tick();
+  try {
+    await until(() => entered);
+    const receipt = await f.admit();
+    background.notifyAdmission(f.thread.id, f.agent.id);
+    background.notifyAdmission(f.thread.id, f.agent.id);
+    await until(() => visited.length === 1);
+    expect(visited).toEqual([receipt.run.id]);
+  } finally {
+    release();
+    await tick;
+    await background.idle();
+  }
+});
+
+test("warm context omits unchanged sections but delivers memory deletion and restores full context on a new session", async () => {
+  f = await fixture();
+  const { run } = await f.admit();
+  const context = { agent_id: run.agent_id, thread_id: run.thread_id };
+  const memories = new Memories(f.lifecycle);
+  const memory = await memories.write(context, {
+    memory_id: crypto.randomUUID(),
+    expected_revision: 0,
+    visibility: "dm_private",
+    text: "Fixture preference for concise answers",
+  });
+  const first = await prepareLearningContext(f.lifecycle, run);
+  expect(first.text).toContain(memory.text);
+  const unchanged = await prepareLearningContext(f.lifecycle, run, first.sections);
+  expect(unchanged.sections).toEqual(first.sections);
+  expect(unchanged.text).toMatch(/^Dates now: [^\n]+\.$/);
+  await memories.remove(context, { memory_id: memory.id, expected_revision: memory.revision });
+  const changed = await prepareLearningContext(f.lifecycle, run, first.sections);
+  expect(changed.text).toContain('"state":"deleted"');
+  expect(changed.text).not.toContain(memory.text);
+  expect(changed.text).not.toContain("Skills have separate owners");
+  expect((await prepareLearningContext(f.lifecycle, run)).text).toContain(
+    "Skills have separate owners",
+  );
 });

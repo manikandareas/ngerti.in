@@ -28,7 +28,7 @@ import {
   terminal,
 } from "./contracts";
 import { persistInheritedSkills } from "./inherited-skills";
-import { runLearningContext, sessionInstructions } from "./instructions";
+import { prepareLearningContext, sessionInstructions } from "./instructions";
 import { type RecoveryPolicy, RunRecovery } from "./recovery";
 import type { HarnessDetector } from "./runtime";
 import type { ProductTools } from "./tools";
@@ -44,6 +44,7 @@ type Session = {
   agent_revision: number;
   agent_config: string;
   touched_at: number;
+  learningSections?: string[];
   skills?: {
     at: number;
     value: { native_catalog: NativeSkillMetadata[]; native_state: "supported" | "unknown" };
@@ -154,6 +155,9 @@ export class HarnessBroker {
         {
           preparationRevision: () => this.detect.fingerprint?.(id as HarnessId) ?? "",
           prepare: async (threadId: string, agentId: string) => this.openSession(threadId, agentId),
+          settled: async (run: Entity<"run">) => {
+            if (run.status === "succeeded") await this.prewarm(run.thread_id, run.agent_id);
+          },
           execute: async (run: Entity<"run">, context: ExecutorContext) =>
             this.execute(run, context),
         },
@@ -165,20 +169,22 @@ export class HarnessBroker {
     return settings.parse({ model_id: agent.model_id, reasoning: agent.reasoning });
   }
   private async member(threadId: string, agentId: string) {
-    const thread = await this.lifecycle.store.get("thread", threadId);
-    if (
-      !thread.member_agent_ids.includes(agentId) ||
-      (thread.purpose === "routing" &&
-        thread.group_thread_id &&
-        !(
-          await this.lifecycle.store.get("thread", thread.group_thread_id)
-        ).member_agent_ids.includes(agentId))
-    )
-      throw new DomainError("SCOPE_DENIED", 403);
-    return await this.connections.forAgent(agentId, threadId);
+    return this.lifecycle.store.read(async () => {
+      const thread = await this.lifecycle.store.get("thread", threadId);
+      if (
+        !thread.member_agent_ids.includes(agentId) ||
+        (thread.purpose === "routing" &&
+          thread.group_thread_id &&
+          !(
+            await this.lifecycle.store.get("thread", thread.group_thread_id)
+          ).member_agent_ids.includes(agentId))
+      )
+        throw new DomainError("SCOPE_DENIED", 403);
+      return await this.connections.forAgent(agentId, threadId);
+    });
   }
   async openSession(threadId: string, agentId: string): Promise<Entity<"binding">> {
-    return (await this.session(threadId, agentId)).binding;
+    return (await this.session(threadId, agentId)).session.binding;
   }
 
   /** Prepare only an idle DM. No prompt, tool lease or model run is admitted. */
@@ -205,7 +211,9 @@ export class HarnessBroker {
     if (
       this.#warming ||
       (await this.lifecycle.store.list("run")).some((run) =>
-        ["queued", "dispatching", "running", "cancel_requested", "unknown"].includes(run.status),
+        run.thread_id === threadId && run.agent_id === agentId
+          ? ["queued", "dispatching", "running", "cancel_requested", "unknown"].includes(run.status)
+          : ["dispatching", "running", "cancel_requested", "unknown"].includes(run.status),
       )
     )
       return { state: "skipped" };
@@ -262,7 +270,7 @@ export class HarnessBroker {
       this.#sessions.delete(lane);
       session.controller.abort();
       void bounded(session.client.close(), this.timeouts.close_ms).catch(() => {});
-    }, 180_000);
+    }, 30 * 60_000);
     timer.unref?.();
     this.#idleTimers.set(lane, timer);
   }
@@ -290,42 +298,52 @@ export class HarnessBroker {
     }
   }
 
-  private async session(threadId: string, agentId: string): Promise<Session> {
+  private async session(
+    threadId: string,
+    agentId: string,
+  ): Promise<{ session: Session; connection: Entity<"connection"> }> {
     if (this.#closed) throw new HarnessError("ADAPTER_UNAVAILABLE");
     const lane = `${threadId}:${agentId}`;
     const existing = this.#sessions.get(lane);
     if (existing) {
-      const current = await this.member(threadId, agentId);
-      if (
-        existing.agent_revision !== current.agent.revision &&
-        existing.agent_config === executionConfiguration(current.agent) &&
-        existing.connection_revision === current.connection.grant_revision
-      ) {
+      const observed = await this.lifecycle.store.read(async () => {
+        const current = await this.member(threadId, agentId);
         const binding = await this.lifecycle.store.get("binding", existing.binding.id);
-        if (binding.active && binding.revision === existing.binding.revision) {
-          existing.binding = await this.lifecycle.store.put(
-            {
-              ...binding,
-              agent_revision: current.agent.revision,
-              revision: binding.revision + 1,
-              updated_at: new Date().toISOString(),
-            },
-            binding.revision,
-          );
-          existing.agent_revision = current.agent.revision;
-        }
+        const reusable = existing.agent_revision === current.agent.revision && binding.active;
+        if (reusable) await this.check(existing, threadId, agentId, { ...current, binding });
+        return { ...current, binding, reusable };
+      });
+      if (observed.reusable) {
+        this.touch(lane, existing);
+        return { session: existing, connection: observed.connection };
       }
       if (
-        existing.agent_revision === current.agent.revision &&
-        (await this.lifecycle.store.get("binding", existing.binding.id)).active
+        existing.agent_revision !== observed.agent.revision &&
+        existing.agent_config === executionConfiguration(observed.agent) &&
+        existing.connection_revision === observed.connection.grant_revision &&
+        observed.binding.active &&
+        observed.binding.revision === existing.binding.revision
       ) {
-        await this.check(existing, threadId, agentId);
+        existing.binding = await this.lifecycle.store.put(
+          {
+            ...observed.binding,
+            agent_revision: observed.agent.revision,
+            revision: observed.binding.revision + 1,
+            updated_at: new Date().toISOString(),
+          },
+          observed.binding.revision,
+        );
+        existing.agent_revision = observed.agent.revision;
+        const connection = await this.check(existing, threadId, agentId);
         this.touch(lane, existing);
-        return existing;
+        return { session: existing, connection };
       }
     }
     const pending = this.#opening.get(lane);
-    if (pending) return pending;
+    if (pending) {
+      const session = await pending;
+      return { session, connection: await this.check(session, threadId, agentId) };
+    }
     const promise = this.serializedOpen(threadId, agentId)
       .then(async (session) => {
         this.#sessions.set(lane, session);
@@ -335,7 +353,8 @@ export class HarnessBroker {
       })
       .finally(() => this.#opening.delete(lane));
     this.#opening.set(lane, promise);
-    return promise;
+    const session = await promise;
+    return { session, connection: await this.check(session, threadId, agentId) };
   }
   private async serializedOpen(threadId: string, agentId: string) {
     const connectionId = (await this.member(threadId, agentId)).connection.id;
@@ -636,26 +655,38 @@ export class HarnessBroker {
       throw new HarnessError("PROTOCOL_ERROR");
     }
   }
-  private async check(session: Session, threadId: string, agentId: string) {
-    const { agent, connection } = await this.member(threadId, agentId);
-    const binding = await this.lifecycle.store.get("binding", session.binding.id);
-    if (
-      !binding.active ||
-      binding.revision !== session.binding.revision ||
-      binding.native_session_id !== session.binding.native_session_id ||
-      session.binding.connection_id !== connection.id ||
-      session.binding.harness !== agent.harness ||
-      session.connection_revision !== connection.grant_revision ||
-      session.agent_revision !== agent.revision ||
-      canonical(session.selected) !== canonical(this.selection(agent))
-    )
-      throw new DomainError("STALE_DISPATCH");
-    if (binding.workspace_id) {
-      const workspace = await new Workspaces(this.lifecycle).get(binding.workspace_id);
-      if (workspace.revision !== binding.workspace_revision)
+  private async check(
+    session: Session,
+    threadId: string,
+    agentId: string,
+    observed?: {
+      agent: Entity<"agent">;
+      connection: Entity<"connection">;
+      binding: Entity<"binding">;
+    },
+  ) {
+    return this.lifecycle.store.read(async () => {
+      const { agent, connection } = observed ?? (await this.member(threadId, agentId));
+      const binding =
+        observed?.binding ?? (await this.lifecycle.store.get("binding", session.binding.id));
+      if (
+        !binding.active ||
+        binding.revision !== session.binding.revision ||
+        binding.native_session_id !== session.binding.native_session_id ||
+        session.binding.connection_id !== connection.id ||
+        session.binding.harness !== agent.harness ||
+        session.connection_revision !== connection.grant_revision ||
+        session.agent_revision !== agent.revision ||
+        canonical(session.selected) !== canonical(this.selection(agent))
+      )
         throw new DomainError("STALE_DISPATCH");
-    }
-    return connection;
+      if (binding.workspace_id) {
+        const workspace = await new Workspaces(this.lifecycle).get(binding.workspace_id);
+        if (workspace.revision !== binding.workspace_revision)
+          throw new DomainError("STALE_DISPATCH");
+      }
+      return connection;
+    });
   }
   async dispatchSteer(controlId: string): Promise<Entity<"control">> {
     const pending = this.#controls.get(controlId);
@@ -872,11 +903,8 @@ export class HarnessBroker {
     if (!run.dispatch_token || run.status !== "running" || run.cancellation !== "none")
       throw new DomainError("CONFLICT");
     await this.lifecycle.authorizeDispatch(run.id, run.dispatch_token);
-    const session = await this.session(run.thread_id, run.agent_id);
-    this.requireCapability(
-      await this.check(session, run.thread_id, run.agent_id),
-      "permission_requests",
-    );
+    const { session, connection } = await this.session(run.thread_id, run.agent_id);
+    this.requireCapability(connection, "permission_requests");
     await this.lifecycle.authorizeDispatch(run.id, run.dispatch_token);
     return session;
   }
@@ -985,6 +1013,11 @@ export class HarnessBroker {
     run: Entity<"run">,
     context: ExecutorContext,
   ): Promise<Entity<"run">["outcome"] & ("succeeded" | "failed" | "cancelled" | "unknown")> {
+    const began = performance.now();
+    const phases: Record<string, number> = {};
+    const mark = (phase: string) => {
+      phases[phase] ??= Math.round(performance.now() - began);
+    };
     const lane = `${run.thread_id}:${run.agent_id}`;
     this.#executingLanes.add(lane);
     let lease: ToolLease | undefined;
@@ -1002,12 +1035,14 @@ export class HarnessBroker {
     let nativeEvents = Promise.resolve();
     let nativeEventError: unknown;
     let nativeEventPending = 0;
+    let pendingSnapshot: { event: NativeEvent; completion: Promise<void> } | undefined;
     try {
-      const session = await this.session(run.thread_id, run.agent_id);
-      const connection = await this.check(session, run.thread_id, run.agent_id);
+      const { session, connection } = await this.session(run.thread_id, run.agent_id);
+      mark("session_ready");
       this.requireCapability(connection, "product_tools");
       if (run.binding_id !== session.binding.id || !run.dispatch_token)
         throw new DomainError("STALE_DISPATCH");
+      const dispatchToken = run.dispatch_token;
       this.requireCapability(connection, "settings");
       const observed = await bounded(session.client.inspect(), this.timeouts.request_ms);
       if (
@@ -1028,37 +1063,52 @@ export class HarnessBroker {
         ),
         this.timeouts.request_ms,
       );
-      await this.check(session, run.thread_id, run.agent_id);
-      await this.lifecycle.authorizeDispatch(run.id, run.dispatch_token);
-      if (run.workspace_id) await new Artifacts(this.lifecycle).verifyInputs(run);
-      const attachments = new Attachments(this.lifecycle);
-      const authorizeAttachments = async () => {
+      mark("account_settings_ready");
+      const input = await this.lifecycle.store.read(async () => {
         await this.check(session, run.thread_id, run.agent_id);
-        await this.lifecycle.authorizeDispatch(run.id, run.dispatch_token as string);
-      };
-      const attachmentContext = await attachments.context(run, authorizeAttachments);
-      const visual = await prepareVisualInputs(
-        this.lifecycle,
-        run,
-        connection,
-        session.selected.model_id,
-      );
-      await this.check(session, run.thread_id, run.agent_id);
-      await this.lifecycle.authorizeDispatch(run.id, run.dispatch_token);
-      if (visual.receipts.length)
+        await this.lifecycle.authorizeDispatch(run.id, dispatchToken);
+        return this.lifecycle.store.get("message", run.input_message_id);
+      });
+      const attachments = new Attachments(this.lifecycle);
+      const authorizeAttachments = () =>
+        this.lifecycle.store.read(async () => {
+          await this.check(session, run.thread_id, run.agent_id);
+          await this.lifecycle.authorizeDispatch(run.id, dispatchToken);
+        });
+      if (run.workspace_id && input.artifact_ids.length)
+        await new Artifacts(this.lifecycle).verifyInputs(run);
+      const attachmentContext = input.artifact_ids.length
+        ? await attachments.context(run, authorizeAttachments)
+        : await this.lifecycle.store.read(() => attachments.context(run, authorizeAttachments));
+      const visual = input.artifact_ids.length
+        ? await prepareVisualInputs(this.lifecycle, run, connection, session.selected.model_id)
+        : { images: [], receipts: [] };
+      if (visual.receipts.length) {
+        await authorizeAttachments();
         await this.lifecycle.observe(run.id, run.dispatch_token, {
           visual_inputs: visual.receipts,
         });
+      }
+      mark("inputs_ready");
       const inherited =
         session.launch.purpose === "routing" ? undefined : await this.sessionSkills(session);
-      await this.lifecycle.authorizeDispatch(run.id, run.dispatch_token);
-      await this.check(session, run.thread_id, run.agent_id);
-      if (inherited)
+      if (inherited) {
+        await authorizeAttachments();
         await persistInheritedSkills(this.lifecycle, session.launch, session.binding.id, inherited);
-      lease = await this.tools.issue(run, async () => {
-        await nativeEvents;
-        if (nativeEventError) throw nativeEventError;
+      }
+      mark("skills_ready");
+      const prepared = await this.lifecycle.store.read(async () => {
+        await this.check(session, run.thread_id, run.agent_id);
+        lease = await this.tools.issue(run, async () => {
+          await nativeEvents;
+          if (nativeEventError) throw nativeEventError;
+        });
+        return {
+          learning: await prepareLearningContext(this.lifecycle, run, session.learningSections),
+        };
       });
+      const learning = prepared.learning;
+      if (!lease) throw new HarnessError("PROTOCOL_ERROR");
       session.launch.redactor.add(lease.token);
       let stopped: (result: unknown) => void = () => {};
       const stopResult = new Promise<unknown>((resolve) => {
@@ -1121,6 +1171,7 @@ export class HarnessBroker {
         recovered(receipt);
       });
       removeWatch = watch.dispose;
+      mark("prompt_sent");
       dispatched = true;
       const observation = await Promise.race([
         stopResult,
@@ -1129,22 +1180,35 @@ export class HarnessBroker {
           identity: { native_session_id: session.binding.native_session_id },
           run_id: run.id,
           images: visual.images,
-          text: (await this.lifecycle.store.get("message", run.input_message_id)).text,
-          learning_context: [await runLearningContext(this.lifecycle, run), attachmentContext.text]
-            .filter(Boolean)
-            .join("\n\n"),
+          text: input.text,
+          learning_context: [learning.text, attachmentContext.text].filter(Boolean).join("\n\n"),
           settings: { ...session.selected },
           tools: lease,
           signal: context.signal,
           // Native sockets and embedded MCP servers may deliver outside the caller's async
           // context. Restore the admitted resource principal, never a transport's ambient scope.
           onEvent: AsyncResource.bind((raw: NativeEvent) => {
+            if (raw.type === "accepted") mark("native_accepted");
+            if (raw.type === "text" || raw.type === "text_snapshot") mark("native_first_text");
             watch.observe();
+            if (raw.type === "text_snapshot" && raw.text && pendingSnapshot) {
+              const parsed = nativeEvent.safeParse(raw);
+              if (parsed.success) {
+                pendingSnapshot.event = parsed.data;
+                return pendingSnapshot.completion;
+              }
+            }
+            const queued = { event: raw, completion: Promise.resolve() };
+            pendingSnapshot =
+              raw.type === "text_snapshot" && raw.text && nativeEvent.safeParse(raw).success
+                ? queued
+                : undefined;
             nativeEventPending++;
             nativeEvents = nativeEvents
               .then(async () => {
+                if (pendingSnapshot === queued) pendingSnapshot = undefined;
                 if (finished || this.#closed) return;
-                const event = nativeEvent.parse(raw);
+                const event = nativeEvent.parse(queued.event);
                 watch.observe();
                 if (event.type === "accepted") {
                   if (
@@ -1175,12 +1239,12 @@ export class HarnessBroker {
                 else if (event.type === "dispatch") {
                   if (session.launch.redactor.text(event.native_run_id) !== event.native_run_id)
                     throw new HarnessError("PROTOCOL_ERROR", "unknown");
-                  await this.lifecycle.observe(run.id, run.dispatch_token as string, {
+                  await this.lifecycle.observe(run.id, dispatchToken, {
                     native_dispatch_id: event.native_run_id,
                   });
                 } else if (event.type === "activity") {
                   const current = await this.lifecycle.store.get("run", run.id);
-                  await this.lifecycle.observe(run.id, run.dispatch_token as string, {
+                  await this.lifecycle.observe(run.id, dispatchToken, {
                     activity: current.active_tools.length ? "tool_running" : event.activity,
                   });
                   if (event.activity === "generating") await context.controlReady?.();
@@ -1188,7 +1252,7 @@ export class HarnessBroker {
                   await observeToolActivity(
                     this.lifecycle,
                     run.id,
-                    run.dispatch_token as string,
+                    dispatchToken,
                     {
                       call_id: event.call_id,
                       kind: event.kind,
@@ -1212,7 +1276,7 @@ export class HarnessBroker {
                       title: session.launch.redactor.text(event.title),
                       operation: event.operation,
                     };
-                    await this.lifecycle.observe(run.id, run.dispatch_token as string, {
+                    await this.lifecycle.observe(run.id, dispatchToken, {
                       sources: [
                         ...current.sources.filter((s) => s.url !== source.url),
                         source,
@@ -1231,15 +1295,15 @@ export class HarnessBroker {
                     state: event.state,
                     exit_code: event.exit_code,
                   });
-                  await this.lifecycle.observe(run.id, run.dispatch_token as string, {
+                  await this.lifecycle.observe(run.id, dispatchToken, {
                     native_tools: tools.slice(-200),
                   });
                 } else if (event.type === "progress") {
-                  await this.lifecycle.observe(run.id, run.dispatch_token as string, {
+                  await this.lifecycle.observe(run.id, dispatchToken, {
                     native_progress: event.progress,
                   });
                 } else if (event.type === "failure") {
-                  await this.lifecycle.observe(run.id, run.dispatch_token as string, {
+                  await this.lifecycle.observe(run.id, dispatchToken, {
                     diagnostic: { ...diagnostic(new HarnessError(event.code)), outcome: "failed" },
                   });
                   if (event.code === "LOGIN_REQUIRED" || event.code === "AUTH_REJECTED") {
@@ -1269,6 +1333,7 @@ export class HarnessBroker {
                 nativeEventPending--;
                 watch.observe();
               });
+            queued.completion = nativeEvents;
             return nativeEvents;
           }),
         }),
@@ -1282,6 +1347,7 @@ export class HarnessBroker {
         (result.status === "succeeded" && !processingObserved)
       )
         throw new HarnessError("PROTOCOL_ERROR", "unknown");
+      if (result.status === "succeeded") session.learningSections = learning.sections;
       outcome = result.status;
     } catch (error) {
       await nativeEvents;
@@ -1382,6 +1448,8 @@ export class HarnessBroker {
         }
       }
     }
+    mark("completed");
+    console.info(JSON.stringify({ event: "harness.turn_timing", run_id: run.id, outcome, phases }));
     return outcome;
   }
   async close() {

@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { base, billingSource, harness, id } from "../contracts/base";
-import { activeTool } from "../runs/activity";
+import { activeTool } from "../runs/activity-contracts";
 import { nativeProgress } from "../runs/native-progress";
 
 export const harnessId = harness;
@@ -210,11 +210,12 @@ export const brokerErrorCodes = [
 ] as const;
 /** Native messages/causes are deliberately excluded from public errors. */
 export class HarnessError extends Error {
-  constructor(
-    readonly code: (typeof brokerErrorCodes)[number],
-    readonly outcome: "not_dispatched" | "unknown" = "not_dispatched",
-  ) {
+  readonly code: (typeof brokerErrorCodes)[number];
+  readonly outcome: "not_dispatched" | "unknown";
+  constructor(code: HarnessError["code"], outcome: HarnessError["outcome"] = "not_dispatched") {
     super(code);
+    this.code = code;
+    this.outcome = outcome;
   }
 }
 /** Internal adapter evidence only; public diagnostics retain the existing safe rejection code. */

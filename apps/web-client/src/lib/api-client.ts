@@ -128,6 +128,7 @@ export async function durableCommand<T>(slot: string, path: string, body: unknow
 
 /** Complete SSE frames only; UTF-8 and network chunks need not align with events. */
 export interface WorkspaceEvent {
+  conversation_part?: import("@/types/workspace").ConversationPart;
   conversation_thread_id?: string;
   cursor: number;
   entity_kind: string;

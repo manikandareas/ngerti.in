@@ -121,6 +121,9 @@ acp
         .filter((block) => block.type === "text")
         .map((block) => block.text)
         .at(-1) ?? "";
+    const turnId = crypto.randomUUID();
+    const correlated = process.env.NGERTIIN_TEST_CORRELATION === "yes";
+    if (correlated) await client.notify("_ngertiin/turn", { sessionId: params.sessionId, turnId });
     const emit = (update: acp.SessionUpdate) =>
       client.notify("session/update", { sessionId: params.sessionId, update });
     if (text === "disconnect") process.exit(0);
@@ -147,6 +150,31 @@ acp
       throw acp.RequestError.internalError();
     }
     if (text === "refusal") return { stopReason: "refusal" };
+    if (text === "stream-boundary") {
+      for (let index = 0; index < 100; index++)
+        await emit({
+          sessionUpdate: "agent_message_chunk",
+          content: { type: "text", text: "x".repeat(100) },
+        });
+      await emit({
+        sessionUpdate: "tool_call",
+        toolCallId: "stream-boundary",
+        title: "Read fixture",
+        kind: "read",
+        status: "in_progress",
+      });
+      for (let index = 0; index < 100; index++)
+        await emit({
+          sessionUpdate: "agent_message_chunk",
+          content: { type: "text", text: "y".repeat(100) },
+        });
+      await emit({
+        sessionUpdate: "tool_call_update",
+        toolCallId: "stream-boundary",
+        status: "completed",
+      });
+      return { stopReason: "end_turn" };
+    }
     if (text === "stream") {
       for (let index = 0; index < 200; index++)
         await emit({
@@ -243,7 +271,17 @@ acp
           jsonrpc: "2.0",
           id: 1,
           method: "tools/call",
-          params: { name: "ngertiin.read_run_context", arguments: {} },
+          params: {
+            name: "ngertiin.read_run_context",
+            arguments: {},
+            ...(correlated
+              ? {
+                  _meta: {
+                    "x-codex-turn-metadata": { thread_id: params.sessionId, turn_id: turnId },
+                  },
+                }
+              : {}),
+          },
         }),
       });
       const receipt = (await response.json()) as { result?: { isError: boolean } };

@@ -182,7 +182,7 @@ function ComposerBridge(props: Props) {
       focusNow(end);
     }
   }, [editable, props.readOnly, focusNow]);
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (editor.getEditorState().read(() => $getRoot().getTextContent()) === props.value) return;
     editor.update(
       () => {

@@ -132,10 +132,15 @@ export class Organizations {
       tx.release();
     }
   }
-  async assertCurrent(context: AccessContext, privateWork = false, transaction?: Transaction) {
+  async assertCurrent(
+    context: AccessContext,
+    privateWork = false,
+    transaction?: Transaction,
+    lock = false,
+  ) {
     const tx = transaction ?? (await this.auth.pool.connect());
     try {
-      const current = await accessContext(tx, context.user_id, context.organization_id);
+      const current = await accessContext(tx, context.user_id, context.organization_id, lock);
       if (
         current.membership_id !== context.membership_id ||
         current.membership_generation !== context.membership_generation ||

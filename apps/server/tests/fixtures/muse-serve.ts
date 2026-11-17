@@ -275,6 +275,20 @@ async function handle(request: {
       notify("item/started", {
         item: { itemId, kind: "agentMessage", turnId, revision: 0, status: "inProgress" },
       });
+      if (input === "snapshot-burst") {
+        for (let revision = 1; revision <= 200; revision++)
+          notify("item/updated", {
+            item: {
+              itemId,
+              kind: "agentMessage",
+              turnId,
+              revision,
+              status: "inProgress",
+              text: `Snapshot ${revision}: selected-key ${"streaming ".repeat(revision)}`,
+            },
+          });
+        return finish("Authoritative burst answer.");
+      }
       notify("item/delta", { itemId, field: "text", delta: "selected-" });
       notify("item/delta", { itemId, field: "text", delta: "key" });
       // Authoritative history repairs ephemeral deltas and carries the actual HTTP tool result.

@@ -27,6 +27,7 @@ type Transaction = {
   client: PoolClient;
   active: boolean;
   changed: boolean;
+  readOnly?: boolean;
   tail: Promise<unknown>;
   root?: Transaction;
   validate?: (privateWork?: boolean) => Promise<unknown>;
@@ -604,10 +605,15 @@ export class Store {
       ],
     );
   }
-  async transaction<T>(fn: () => T | Promise<T>): Promise<T> {
+  async read<T>(fn: () => T | Promise<T>): Promise<T> {
+    return this.transaction(fn, true);
+  }
+
+  async transaction<T>(fn: () => T | Promise<T>, readOnly = false): Promise<T> {
     if (this.closed) throw new DomainError("STALE_DISPATCH");
     const parent = this.#transactions.getStore();
     if (parent) {
+      if (parent.readOnly && !readOnly) throw new Error("Cannot write inside a read snapshot.");
       const run = async () => {
         if (!parent.active) throw new Error("Transaction context has expired.");
         const name = `s_${crypto.randomUUID().replaceAll("-", "")}`;
@@ -619,6 +625,7 @@ export class Store {
           tail: Promise.resolve(),
           root: parent.root ?? parent,
           validate: parent.validate,
+          readOnly: parent.readOnly,
         };
         try {
           const result = await this.#transactions.run(child, fn);
@@ -656,13 +663,15 @@ export class Store {
       changed: false,
       tail: Promise.resolve(),
       validate: release?.validate,
+      readOnly,
     };
     try {
-      await client.query("BEGIN");
+      await client.query(readOnly ? "BEGIN ISOLATION LEVEL REPEATABLE READ READ ONLY" : "BEGIN");
       await this.configureScope(client, release?.validate);
       const result = await this.#transactions.run(context, async () => {
         // The clock row serializes writers through commit, including receipts and projections.
-        await client.query("SELECT event_clock FROM installation WHERE id=1 FOR UPDATE");
+        if (!readOnly)
+          await client.query("SELECT event_clock FROM installation WHERE id=1 FOR UPDATE");
         await this.assertAuthority();
         const value = await fn();
         await context.tail;
@@ -1128,7 +1137,7 @@ export class Store {
     });
   }
   async replay(after: number, options: { limit?: number; thread_id?: string } = {}) {
-    return this.transaction(async () => {
+    return this.read(async () => {
       if (options.thread_id) await this.get("thread", options.thread_id);
       const high = await this.cursor;
       const limit = Math.max(1, Math.min(options.limit ?? 100, 1000));

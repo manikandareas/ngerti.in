@@ -23,12 +23,16 @@ type ActivePrompt = {
   projection: AcpProjection;
   lastTextAt: number;
   finishing: boolean;
+  nativeTurnId?: string;
   failure?: "PROVIDER_LIMIT";
 };
 
 /** Application session behavior shared by every ACP launch/auth profile. One prompt per process. */
 export class AcpSession {
-  readonly closeAfterRun = true;
+  get closeAfterRun() {
+    return !this.options.reusable || this.#spent;
+  }
+  readonly #seenTurns = new Set<string>();
   #session: string | null = null;
   #options: acp.SessionConfigOption[] = [];
   #commands: acp.AvailableCommand[] = [];
@@ -36,6 +40,11 @@ export class AcpSession {
   #active: ActivePrompt | null = null;
   #spent = false;
   #updates = Promise.resolve();
+  #pendingText?: {
+    active: ActivePrompt;
+    update: acp.SessionNotification["update"];
+    completion: Promise<void>;
+  };
   #updateError: unknown;
   #textTimer?: ReturnType<typeof setTimeout>;
   #closing?: Promise<void>;
@@ -61,6 +70,7 @@ export class AcpSession {
       unknown_error_codes?: readonly number[];
       preview_roots?: readonly string[];
       message_phases?: boolean;
+      reusable?: boolean;
     } = {},
   ) {}
 
@@ -203,10 +213,33 @@ export class AcpSession {
     }
     const active = this.#active;
     if (!active || notification.sessionId !== this.#session) return;
+    const incoming = notification.update;
+    const pending = this.#pendingText;
+    const isText =
+      incoming.sessionUpdate === "agent_message_chunk" && incoming.content.type === "text";
+    if (
+      isText &&
+      incoming.content.type === "text" &&
+      pending?.active === active &&
+      pending.update.sessionUpdate === "agent_message_chunk" &&
+      pending.update.content.type === "text" &&
+      pending.update.messageId === incoming.messageId &&
+      JSON.stringify(pending.update._meta) === JSON.stringify(incoming._meta)
+    ) {
+      if (pending.update.content.text.length + incoming.content.text.length > 100_000) {
+        this.updateFailed(new HarnessError("PROTOCOL_ERROR", "unknown"));
+        return;
+      }
+      pending.update.content.text += incoming.content.text;
+      return pending.completion;
+    }
+    const queued = { active, update: incoming, completion: Promise.resolve() };
+    this.#pendingText = isText ? queued : undefined;
     this.#updates = this.#updates
       .then(async () => {
+        if (this.#pendingText === queued) this.#pendingText = undefined;
         if (this.#active !== active) return;
-        const update = notification.update;
+        const update = queued.update;
         if (update.sessionUpdate === "config_option_update") {
           if (
             update.configOptions.some(
@@ -233,6 +266,7 @@ export class AcpSession {
         }
       })
       .catch((error) => this.updateFailed(error));
+    queued.completion = this.#updates;
     await this.#updates;
   }
 
@@ -288,7 +322,11 @@ export class AcpSession {
 
   async nativeTurn(event: { sessionId: string; turnId: string }) {
     const active = this.#active;
-    if (!active || event.sessionId !== this.#session) return;
+    if (!active || event.sessionId !== this.#session || this.#seenTurns.has(event.turnId)) return;
+    if (active.nativeTurnId && active.nativeTurnId !== event.turnId)
+      throw new HarnessError("PROTOCOL_ERROR", "unknown");
+    active.nativeTurnId = event.turnId;
+    this.#seenTurns.add(event.turnId);
     await this.observed();
     await active.request.onEvent({ type: "dispatch", native_run_id: event.turnId });
   }
@@ -328,6 +366,24 @@ export class AcpSession {
       lease: request.tools,
       signal: request.signal,
       beforeCall: () => this.observed(),
+      ...(this.options.reusable
+        ? {
+            validateCall: (metadata: unknown) => {
+              const correlation = z
+                .object({
+                  "x-codex-turn-metadata": z.object({ thread_id: z.string(), turn_id: z.string() }),
+                })
+                .safeParse(metadata);
+              if (
+                !correlation.success ||
+                !active.nativeTurnId ||
+                correlation.data["x-codex-turn-metadata"].thread_id !== this.#session ||
+                correlation.data["x-codex-turn-metadata"].turn_id !== active.nativeTurnId
+              )
+                throw new HarnessError("NATIVE_REJECTED");
+            },
+          }
+        : {}),
       accepted: () => this.#active === active && active.observed,
       delivered: () => {
         void request.onEvent({ type: "activity", activity: "generating" });
@@ -354,8 +410,12 @@ export class AcpSession {
       if (this.#updateError) throw this.#updateError;
       if (active.failure) throw new HarnessError(active.failure);
       const status = promptOutcome(response.stopReason);
+      if (this.options.reusable && !active.nativeTurnId)
+        throw new HarnessError("NATIVE_UNKNOWN", "unknown");
       await this.observed();
       await request.onEvent(active.projection.final());
+      if (this.options.reusable && status === "succeeded" && !request.signal.aborted)
+        this.#spent = false;
       return { status, native_session_id: this.#session, native_run_id: null };
     } catch (error) {
       active.finishing = true;
@@ -380,7 +440,8 @@ export class AcpSession {
     } finally {
       clearTimeout(this.#textTimer);
       request.signal.removeEventListener("abort", cancel);
-      this.tools.revoke();
+      if (this.options.reusable && !this.#spent) this.tools.active = null;
+      else this.tools.revoke();
       this.clearPermissions();
       this.#active = null;
     }

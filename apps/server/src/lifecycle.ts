@@ -650,7 +650,11 @@ export class Lifecycle {
   }
 
   /** Adapter seam only; no executor is registered by this foundation. */
-  async claimNext(threadId: string, agentId: string): Promise<Entity<"run"> | null> {
+  async claimNext(
+    threadId: string,
+    agentId: string,
+    preparedRunId?: string,
+  ): Promise<Entity<"run"> | null> {
     return await this.store.transaction(async () => {
       await this.store.validateDataContext(true);
       const { thread } = await this.scope(threadId, agentId);
@@ -672,6 +676,8 @@ export class Lifecycle {
       if (lane.some((run) => active.has(run.status) || run.status === "unknown")) return null;
       const next = lane.find((run) => run.status === "queued");
       if (next?.delivery !== "pending") return null;
+      if (preparedRunId && (next.id !== preparedRunId || next.preparation?.state !== "preparing"))
+        return null;
       if (next.thread_revision !== null && next.thread_revision !== thread.revision)
         throw new DomainError("STALE_DISPATCH");
       await this.responsibility(next);
@@ -698,9 +704,19 @@ export class Lifecycle {
         binding.agent_revision !== agent.revision
       )
         throw new DomainError("STALE_DISPATCH");
+      const dispatchedAt = new Date().toISOString();
       return await this.update(next, {
         status: "dispatching",
-        timings: { ...next.timings, dispatched_at: new Date().toISOString() },
+        ...(preparedRunId && next.preparation
+          ? {
+              preparation: { ...next.preparation, state: "ready" as const, next_attempt_at: null },
+            }
+          : {}),
+        timings: {
+          ...next.timings,
+          ...(preparedRunId ? { ready_at: dispatchedAt } : {}),
+          dispatched_at: dispatchedAt,
+        },
         dispatch_token: crypto.randomUUID(),
         authority_epoch: this.epoch,
         binding_id: binding.id,
@@ -752,7 +768,7 @@ export class Lifecycle {
   }
 
   async authorizeDispatch(runId: string, token: string) {
-    return await this.store.transaction(async () => {
+    return await this.store.read(async () => {
       await this.store.validateDataContext(true);
       const run = await this.dispatch(runId, token);
       const { thread } = await this.scope(run.thread_id, run.agent_id);
@@ -794,10 +810,16 @@ export class Lifecycle {
   /** Recover this durable principal after authority replacement, without replaying native input. */
   async recoverScopedRuns() {
     if (!this.store.dataContext) return;
+    const candidates = (await this.store.list("run", { statuses: [...active] })).filter(
+      (run) => run.authority_epoch !== this.epoch,
+    );
+    if (!candidates.length) return;
     await this.store.transaction(async () => {
-      for (const run of await this.store.list("run"))
+      for (const candidate of candidates) {
+        const run = await this.store.get("run", candidate.id);
         if (active.has(run.status) && run.authority_epoch !== this.epoch)
           await this.update(run, { status: "unknown", outcome: "unknown", activity: "unknown" });
+      }
     });
   }
 

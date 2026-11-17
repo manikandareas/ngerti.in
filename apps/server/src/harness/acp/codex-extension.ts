@@ -52,7 +52,7 @@ async function ngertiinNative(agent, client) {
 `;
 
 const handlers = `
-.onRequest("_ngertiin/capabilities", emptyExtensionParamsParser, () => ({ version: 1, externalTokens: true, turnReceipts: true, accountCatalog: true, messagePhases: true, skillCatalog: true }))
+.onRequest("_ngertiin/capabilities", emptyExtensionParamsParser, () => ({ version: 1, externalTokens: true, turnReceipts: true, turnToolCorrelation: true, accountCatalog: true, messagePhases: true, skillCatalog: true }))
 .onRequest("_ngertiin/skills", ngertiinObject, async (ctx) => {
   if (typeof ctx.params.cwd !== "string" || ctx.params.cwd.length > 4000) throw RequestError.invalidParams();
   const native = await ngertiinNative(getAgent(), ctx.client);

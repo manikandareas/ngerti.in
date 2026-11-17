@@ -431,3 +431,38 @@ test("a changed applied migration refuses startup without changing domain histor
   await f.restart();
   expect(await f.store.cursor).toBe(before);
 });
+
+test("read snapshots do not wait for the writer clock and cannot mutate data", async () => {
+  f = await fixture();
+  let release!: () => void;
+  let entered!: () => void;
+  const locked = new Promise<void>((resolve) => {
+    entered = resolve;
+  });
+  const hold = new Promise<void>((resolve) => {
+    release = resolve;
+  });
+  const writer = f.store.transaction(async () => {
+    entered();
+    await hold;
+  });
+  await locked;
+  try {
+    const result = await Promise.race([
+      f.store.read(async () => {
+        await f.store.replay(0);
+        return f.store.get("thread", f.thread.id);
+      }),
+      Bun.sleep(1000).then(() => {
+        throw new Error("Read blocked on writer clock");
+      }),
+    ]);
+    expect(result.id).toBe(f.thread.id);
+    await expect(f.store.read(() => f.admit("Must not be written"))).rejects.toThrow(
+      "Cannot write",
+    );
+  } finally {
+    release();
+    await writer;
+  }
+});

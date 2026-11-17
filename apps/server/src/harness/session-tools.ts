@@ -10,6 +10,7 @@ export type ActiveToolLease = {
   signal: AbortSignal;
   accepted: () => boolean;
   beforeCall?: () => Promise<void>;
+  validateCall?: (metadata: unknown) => void;
   delivered?: () => void;
 };
 
@@ -17,6 +18,7 @@ export type ActiveToolLease = {
 const toolCall = z.object({
   name: z.string().refine((name) => productToolNames.includes(name)),
   arguments: z.record(z.string(), z.unknown()),
+  _meta: z.unknown().optional(),
 });
 /** Per-session native endpoint. Its token cannot access the application's MCP endpoint. */
 export class SessionTools {
@@ -151,8 +153,10 @@ export class SessionTools {
   private async call(params: z.infer<typeof toolCall>) {
     const active = this.active;
     if (!active) throw new HarnessError("NATIVE_REJECTED");
+    active.validateCall?.(params._meta);
     await active.beforeCall?.();
     const check = () => {
+      active.validateCall?.(params._meta);
       if (!active || this.active !== active || active.signal.aborted || !active.accepted())
         throw new HarnessError("NATIVE_REJECTED");
     };
@@ -202,7 +206,7 @@ export class SessionTools {
           isError: z.boolean(),
         }),
       })
-      .parse(await rpc("tools/call", params));
+      .parse(await rpc("tools/call", { name: params.name, arguments: params.arguments }));
     return value.result;
   }
   close() {

@@ -527,3 +527,17 @@ test("authoritative empty Muse history clears ephemeral text without minting a s
   expect(answer).toMatchObject({ text: "", state: "complete" });
   expect((await f.store.list("message")).filter((item) => item.author === "agent")).toHaveLength(1);
 });
+
+test("Muse snapshot bursts settle to authoritative text without leaking an intermediate credential", async () => {
+  const lane = await setup(true);
+  const run = await admit(lane, "snapshot-burst");
+  await background.idle();
+  expect((await f.store.get("run", run.id)).status).toBe("succeeded");
+  expect(await f.store.answer(run.id)).toMatchObject({
+    text: "Authoritative burst answer.",
+    state: "complete",
+  });
+  const answers = (await f.store.list("message")).filter((message) => message.author === "agent");
+  expect(answers).toHaveLength(1);
+  expect(JSON.stringify(answers)).not.toContain("selected-key");
+});

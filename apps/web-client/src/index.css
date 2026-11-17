@@ -473,6 +473,7 @@
 /* Messages scroll behind both transparent controls, fading across their full
    height. Resize measurements also keep the first and latest messages clear. */
 .conversation-scroll {
+  overflow-anchor: none;
   scroll-padding-block: calc(var(--conversation-top, 0px) + var(--conversation-edge-fade))
     calc(
       var(--conversation-bottom, 0px) +

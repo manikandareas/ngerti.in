@@ -24,6 +24,7 @@ import {
 import { blockDirection } from "@/features/conversation/lib/text-direction";
 import type { Snapshot } from "@/types/workspace";
 import { useStreamingText } from "../lib/use-streaming-text";
+import { ActivityStatus } from "./activity-status";
 import { InlineReferenceChip, useInlineReferences } from "./inline-references";
 import { MessageActions } from "./message-actions";
 import { type ResearchSource, ResearchSources, SourceCitation } from "./research-sources";
@@ -222,7 +223,9 @@ export const Answer = memo(function Answer({
   showSources = true,
   retry,
   busy,
+  activity,
 }: {
+  activity?: { name: string; label: string; loading: boolean };
   text: string;
   streaming?: boolean;
   showSources?: boolean;
@@ -242,15 +245,15 @@ export const Answer = memo(function Answer({
         data-reply-blocks
         className="assistant-answer flex w-full max-w-full flex-col items-start gap-1"
       >
-        <MessageActions text={incomingText} retry={retry} busy={busy}>
+        <MessageActions text={activity?.label ?? incomingText} retry={retry} busy={busy}>
           <Bubble
             variant="secondary"
             data-chat-bubble={sender ? "group" : "simple"}
-            className={`chat-agent-bubble${sender ? " group-agent-bubble" : ""}`}
+            className={`chat-agent-bubble${sender ? " group-agent-bubble" : ""}${activity ? " agent-activity-bubble" : ""}`}
             style={sender?.style}
           >
             <BubbleContent className="chat-bubble-content text-[15px] leading-[22px]">
-              <MarkdownBody text={text} />
+              {activity ? <ActivityStatus {...activity} /> : <MarkdownBody text={text} />}
               <MessageTime at={sentAt} className={sender ? "group-bubble-time" : undefined} />
             </BubbleContent>
           </Bubble>

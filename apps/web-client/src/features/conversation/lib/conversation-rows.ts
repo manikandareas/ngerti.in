@@ -78,12 +78,27 @@ export function conversationRows(
     let at = request?.created_at ?? part.created_at;
     inputTimes.set(message.id, at);
     const anchors = native.anchors.get(message.id) ?? [];
+    if (
+      message.author === "agent" &&
+      !message.text.trim() &&
+      !message.artifact_ids.length &&
+      !request &&
+      !anchors.length
+    )
+      continue;
     let start = 0;
     let first = true;
     function textRow(end: number, last: boolean) {
       rows.push({
         type: "message",
-        key: `message:${message.id}:${start}`,
+        key:
+          first &&
+          message.author === "agent" &&
+          message.run_id &&
+          message.purpose === "conversation" &&
+          !request
+            ? `response:${message.run_id}`
+            : `message:${message.id}:${start}`,
         at,
         entry: messageEntry,
         text: message.text.slice(start, end),
@@ -148,7 +163,17 @@ export function conversationRows(
         run.computer_activity || anchor?.type !== "message"
           ? run.input_message_id
           : anchor.entry.message.id;
-      insert({ type: "run", key: `run:${run.id}`, at, run }, after);
+      const hasAnswer = entries.some(
+        (entry) =>
+          entry.type === "message" &&
+          entry.message.author === "agent" &&
+          entry.message.run_id === run.id &&
+          entry.message.text?.trim(),
+      );
+      insert(
+        { type: "run", key: hasAnswer ? `run:${run.id}:status` : `response:${run.id}`, at, run },
+        after,
+      );
     }
   for (const fragment of native.fallback)
     for (const row of nativeRows(fragment, true)) insert(row, fragment.run.input_message_id);

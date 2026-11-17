@@ -12,6 +12,7 @@ import { MessageActions } from "./message-actions";
 import { MessageTime } from "./message-time";
 
 export function AgentActivityBubble({
+  embedded = false,
   agent,
   run,
   at = run.created_at,
@@ -26,6 +27,7 @@ export function AgentActivityBubble({
   retryResponse,
   reconcile,
 }: {
+  embedded?: boolean;
   agent: Agent;
   run: Run;
   at?: string;
@@ -45,6 +47,45 @@ export function AgentActivityBubble({
     run.diagnostic && (run.status === "failed" || run.preparation?.state === "blocked")
       ? activityGuidance(run.diagnostic.code)
       : undefined;
+  const content = (
+    <MessageActions
+      text={view.label}
+      busy={busy || !online}
+      retry={
+        run.preparation?.state === "blocked" && run.status === "queued"
+          ? retryPreparation
+          : run.status === "failed"
+            ? retryResponse
+            : undefined
+      }
+    >
+      <Bubble variant="secondary" className="agent-activity-bubble" data-tone={view.tone}>
+        <BubbleContent>
+          <ActivityStatus name={agent.name} label={view.label} loading={view.isLoading} />
+          {guidance && (
+            <p className="message-diagnostic text-[12px] leading-[18px] text-muted-foreground">
+              {guidance}
+            </p>
+          )}
+          {run.status === "unknown" && (
+            <Button size="sm" variant="ghost" disabled={busy || !online} onClick={reconcile}>
+              Check status
+            </Button>
+          )}
+          {(run.preparation?.state === "blocked" ||
+            (run.diagnostic &&
+              !["succeeded", "cancelled", "unknown"].includes(run.status) &&
+              run.diagnostic.outcome !== "not_dispatched")) && (
+            <Button size="sm" variant="ghost" onClick={openSettings}>
+              Open settings
+            </Button>
+          )}
+          <MessageTime at={at} />
+        </BubbleContent>
+      </Bubble>
+    </MessageActions>
+  );
+  if (embedded) return content;
   return (
     <Message
       className="agent-activity-row"
@@ -71,44 +112,7 @@ export function AgentActivityBubble({
           />
         </button>
       )}
-      <MessageContent>
-        <MessageActions
-          text={view.label}
-          busy={busy || !online}
-          retry={
-            run.preparation?.state === "blocked" && run.status === "queued"
-              ? retryPreparation
-              : run.status === "failed"
-                ? retryResponse
-                : undefined
-          }
-        >
-          <Bubble variant="secondary" className="agent-activity-bubble" data-tone={view.tone}>
-            <BubbleContent>
-              <ActivityStatus name={agent.name} label={view.label} loading={view.isLoading} />
-              {guidance && (
-                <p className="message-diagnostic text-[12px] leading-[18px] text-muted-foreground">
-                  {guidance}
-                </p>
-              )}
-              {run.status === "unknown" && (
-                <Button size="sm" variant="ghost" disabled={busy || !online} onClick={reconcile}>
-                  Check status
-                </Button>
-              )}
-              {(run.preparation?.state === "blocked" ||
-                (run.diagnostic &&
-                  !["succeeded", "cancelled", "unknown"].includes(run.status) &&
-                  run.diagnostic.outcome !== "not_dispatched")) && (
-                <Button size="sm" variant="ghost" onClick={openSettings}>
-                  Open settings
-                </Button>
-              )}
-              <MessageTime at={at} />
-            </BubbleContent>
-          </Bubble>
-        </MessageActions>
-      </MessageContent>
+      <MessageContent>{content}</MessageContent>
     </Message>
   );
 }

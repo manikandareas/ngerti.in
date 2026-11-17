@@ -76,16 +76,19 @@ export class ScopedData {
         await connection.query("SELECT id FROM organization WHERE id=$1 FOR SHARE", [
           organizationId,
         ]);
+        if (session && principal) {
+          const active = await connection.query(
+            'SELECT s.id FROM session s JOIN "user" u ON u.id=s."userId" WHERE s.id=$1 AND s."userId"=$2 AND s."expiresAt">now() AND u."emailVerified"=true FOR SHARE OF s,u',
+            [principal.sessionId, principal.userId],
+          );
+          if (!active.rowCount) throw new DomainError("UNAUTHORIZED", 401);
+        }
+        const current = await this.organizations.assertCurrent(access, !session, connection, true);
         const validate = async (privateWork = false) => {
-          if (session && principal) {
-            const current = await connection.query(
-              'SELECT s.id FROM session s JOIN "user" u ON u.id=s."userId" WHERE s.id=$1 AND s."userId"=$2 AND s."expiresAt">now() AND u."emailVerified"=true FOR SHARE OF s,u',
-              [principal.sessionId, principal.userId],
-            );
-            if (!current.rowCount || Date.now() >= principal.expires)
-              throw new DomainError("UNAUTHORIZED", 401);
-          }
-          return this.organizations.assertCurrent(access, !session || privateWork, connection);
+          if (session && principal && Date.now() >= principal.expires)
+            throw new DomainError("UNAUTHORIZED", 401);
+          if ((!session || privateWork) && current.private_work_suspended) throw deny();
+          return current;
         };
         await validate();
         const release = async () => {

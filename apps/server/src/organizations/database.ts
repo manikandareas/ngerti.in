@@ -21,6 +21,7 @@ export async function accessContext(
   tx: Transaction,
   userId: string,
   organizationId: string,
+  lock = false,
 ): Promise<AccessContext> {
   const row = (
     await tx.query(
@@ -29,7 +30,7 @@ export async function accessContext(
         WHERE tm.organization_id=$2 AND t."organizationId"=$2 AND tm."userId"=$1 ORDER BY tm."teamId") AS workgroup_ids
      FROM member m JOIN ngertiin_membership_state s ON s.organization_id=m."organizationId" AND s.user_id=m."userId" AND s.membership_id=m.id
      JOIN ngertiin_organization_policy p ON p.organization_id=m."organizationId"
-     WHERE m."userId"=$1 AND m."organizationId"=$2 AND s.status='active'`,
+     WHERE m."userId"=$1 AND m."organizationId"=$2 AND s.status='active'${lock ? " FOR SHARE OF m,s,p" : ""}`,
       [userId, organizationId],
     )
   ).rows[0];

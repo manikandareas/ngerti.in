@@ -78,6 +78,7 @@ import { TimelineActivity } from "@/features/conversation/components/timeline-ac
 import { UserMessageText } from "@/features/conversation/components/user-message-text";
 import { WorkActivity } from "@/features/conversation/components/work-activity";
 import { WorkspaceProviders } from "@/features/conversation/components/workspace-providers";
+import { activityPresentation } from "@/features/conversation/lib/activity-presentation";
 import { attachmentParts } from "@/features/conversation/lib/attachment-references";
 import { useComposerRequests } from "@/features/conversation/lib/composer-requests";
 import {
@@ -197,6 +198,8 @@ export default function Workspace() {
   const queuedEditInput = useRef<ComposerInputHandle>(null);
   const [multiline, setMultiline] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [optimisticInput, setOptimisticInput] = useState<MessageEntity | null>(null);
+  const messageKeys = useRef(new Map<string, string>());
   const lock = useRef(false);
   const [navigation, setNavigation] = useState(false);
   const [details, setDetails] = useState(false);
@@ -305,37 +308,6 @@ export default function Workspace() {
     submission.loading ||
     !!submission.failure;
   useLayoutEffect(() => {
-    const surface = conversationSurface;
-    if (!surface) return;
-    const header = surface.querySelector<HTMLElement>(".workspace-chat-header");
-    const notice = error ? surface.querySelector<HTMLElement>(".workspace-error") : null;
-    const dock = snapshot?.thread.id ? surface.querySelector<HTMLElement>(".composer-dock") : null;
-    let previousDockHeight: number | null = null;
-    const measure = () => {
-      const top = surface.getBoundingClientRect().top;
-      const headerBottom = (notice ?? header)?.getBoundingClientRect().bottom ?? top;
-      const dockHeight = dock?.getBoundingClientRect().height ?? 0;
-      const scroll = surface.querySelector<HTMLElement>(".conversation-scroll");
-      const previousScrollHeight = scroll?.scrollHeight ?? 0;
-      const previousScrollTop = scroll?.scrollTop ?? 0;
-      // Match use-stick-to-bottom's near-bottom range. Its content-box observer
-      // does not see padding changes when the overlaid composer resizes.
-      const keepEndPosition =
-        scroll && scroll.scrollHeight - scroll.clientHeight - scroll.scrollTop <= 70;
-      surface.style.setProperty("--conversation-top", `${headerBottom - top}px`);
-      surface.style.setProperty("--conversation-bottom", `${dockHeight}px`);
-      if (keepEndPosition && previousDockHeight !== null && dockHeight !== previousDockHeight)
-        scroll.scrollTop = previousScrollTop + scroll.scrollHeight - previousScrollHeight;
-      previousDockHeight = dockHeight;
-    };
-    const observer = new ResizeObserver(measure);
-    for (const element of [header, notice, dock]) {
-      if (element) observer.observe(element);
-    }
-    measure();
-    return () => observer.disconnect();
-  }, [conversationSurface, snapshot?.thread.id, error]);
-  useLayoutEffect(() => {
     const input = queuedEditInput.current;
     if (!input || !editing?.id) return;
     input.focus(true);
@@ -361,14 +333,14 @@ export default function Workspace() {
     setEditText("");
     locate({ tab: "detail", id: null });
   }
-  async function act(action: () => Promise<void>) {
+  async function act(action: () => Promise<void>, refreshAfter = true) {
     if (lock.current) return;
     lock.current = true;
     setBusy(true);
     setError("");
     try {
       await action();
-      await refresh();
+      if (refreshAfter) await refresh();
     } catch (error) {
       setError(error instanceof Error ? error.message : "Permintaan gagal");
     } finally {
@@ -418,69 +390,104 @@ export default function Workspace() {
     if (!agent || !threadId || !(pending ?? draft).trim() || (!pending && attachmentsBlocked))
       return;
     const text = pending ?? draft;
-    void act(async () => {
-      const context = pending
-        ? undefined
-        : await viewer.attachment().catch((error) => {
-            if (currentThread.current !== threadId) return undefined;
-            throw error;
-          });
-      if (currentThread.current !== threadId) return;
-      if (!pending && !submission.pending && snapshot?.thread.type === "dm") {
-        await waitForModelSelection(threadId, agent.id);
-        if (currentThread.current !== threadId) return;
-      }
-      const content = pending
-        ? { text, artifact_ids: [], sources: [] }
-        : composerFiles.message(text, context);
-      if (submission.failure) throw new Error(submission.failure);
-      if (submission.pending || content.artifact_ids.length) {
-        const operation =
-          submission.pending ??
-          prepareSubmission(
-            threadId,
-            agent.id,
-            content.text,
-            content.sources,
-            snapshot?.thread.type ?? "dm",
-          );
-        if (!submission.pending && snapshot?.thread.type === "group") {
-          const target = referenceTarget(content.text);
-          if (target) operation.body.agent_id = target;
-        }
-        composerFiles.restore(operation);
-        try {
-          await submission.send(operation, (id, state) =>
-            composerFiles.progress(threadId, id, state),
-          );
-        } catch (error) {
-          if (error instanceof RejectedSubmission && currentThread.current === threadId) {
-            composerFiles.restore(error.operation);
-            viewer.removeContext();
-            setDraft(error.operation.body.text);
-          }
-          throw error;
-        }
-      } else
-        await durableCommand(
-          `message:${threadId}`,
-          snapshot?.thread.type === "group" ? `/v1/groups/${threadId}/messages` : "/v1/runs",
-          snapshot?.thread.type === "group"
-            ? { text: content.text, agent_id: referenceTarget(content.text) }
-            : {
-                thread_id: threadId,
-                agent_id: agent.id,
-                text: content.text,
-                artifact_ids: content.artifact_ids,
-              },
-        );
-      if (currentThread.current !== threadId) return;
-      viewer.clear();
-      setDetails(false);
+    if (lock.current) return;
+    if (!attachments.length && !submission.pending) {
       setDraft("");
-      void conversationScroll.current?.scrollToBottom({ animation: "instant" });
-      requestAnimationFrame(() => composerInput.current?.focus());
-    });
+      setMultiline(false);
+      setOptimisticInput({
+        id: crypto.randomUUID(),
+        revision: 1,
+        created_at: new Date().toISOString(),
+        thread_id: threadId,
+        text,
+        author: "user",
+        author_agent_id: null,
+        state: "complete",
+        run_id: null,
+        artifact_ids: [],
+        purpose: "conversation",
+      });
+    } else setOptimisticInput(null);
+    void act(async () => {
+      try {
+        const context = pending
+          ? undefined
+          : await viewer.attachment().catch((error) => {
+              if (currentThread.current !== threadId) return undefined;
+              throw error;
+            });
+        if (currentThread.current !== threadId) return;
+        if (!pending && !submission.pending && snapshot?.thread.type === "dm") {
+          await waitForModelSelection(threadId, agent.id);
+          if (currentThread.current !== threadId) return;
+        }
+        const content = pending
+          ? { text, artifact_ids: [], sources: [] }
+          : composerFiles.message(text, context);
+        if (submission.failure) throw new Error(submission.failure);
+        if (submission.pending || content.artifact_ids.length) {
+          const operation =
+            submission.pending ??
+            prepareSubmission(
+              threadId,
+              agent.id,
+              content.text,
+              content.sources,
+              snapshot?.thread.type ?? "dm",
+            );
+          if (!submission.pending && snapshot?.thread.type === "group") {
+            const target = referenceTarget(content.text);
+            if (target) operation.body.agent_id = target;
+          }
+          composerFiles.restore(operation);
+          try {
+            await submission.send(operation, (id, state) =>
+              composerFiles.progress(threadId, id, state),
+            );
+          } catch (error) {
+            if (error instanceof RejectedSubmission && currentThread.current === threadId) {
+              composerFiles.restore(error.operation);
+              viewer.removeContext();
+              setDraft(error.operation.body.text);
+            }
+            throw error;
+          }
+        } else
+          await durableCommand<{ message?: MessageEntity }>(
+            `message:${threadId}`,
+            snapshot?.thread.type === "group" ? `/v1/groups/${threadId}/messages` : "/v1/runs",
+            snapshot?.thread.type === "group"
+              ? { text: content.text, agent_id: referenceTarget(content.text) }
+              : {
+                  thread_id: threadId,
+                  agent_id: agent.id,
+                  text: content.text,
+                  artifact_ids: content.artifact_ids,
+                },
+          ).then((receipt) => {
+            const message = receipt.message;
+            if (message)
+              setOptimisticInput((current) => {
+                if (current?.thread_id !== threadId) return current;
+                messageKeys.current.set(
+                  message.id,
+                  messageKeys.current.get(current.id) ?? current.id,
+                );
+                return message;
+              });
+          });
+        if (currentThread.current !== threadId) return;
+        viewer.clear();
+        setDetails(false);
+        setDraft("");
+        requestAnimationFrame(() => composerInput.current?.focus());
+      } catch (error) {
+        setOptimisticInput(null);
+        if (currentThread.current === threadId && !attachments.length && !submission.pending)
+          setDraft(text);
+        throw error;
+      }
+    }, false);
   }
 
   async function queueCommand<T>(slot: string, path: string, body: unknown): Promise<T> {
@@ -634,7 +641,7 @@ export default function Workspace() {
       closeLabel={mobile ? "Close" : "Tutup detail"}
     />
   ) : null;
-  const messages = useMemo(
+  const publishedMessages = useMemo(
     () =>
       mergeConversationHistory(threadId, older, [
         ...(snapshot?.timeline.messages ?? []),
@@ -642,29 +649,107 @@ export default function Workspace() {
       ]),
     [threadId, older, snapshot?.messages, snapshot?.timeline.messages],
   );
+  const confirmedInput =
+    optimisticInput?.thread_id === threadId
+      ? publishedMessages.find(
+          (message) =>
+            message.id === optimisticInput.id ||
+            (message.author === "user" &&
+              message.text === optimisticInput.text &&
+              message.created_at >= optimisticInput.created_at),
+        )
+      : undefined;
+  if (confirmedInput && optimisticInput)
+    messageKeys.current.set(
+      confirmedInput.id,
+      messageKeys.current.get(optimisticInput.id) ?? optimisticInput.id,
+    );
+  const pendingInput =
+    optimisticInput?.thread_id === threadId && !confirmedInput ? optimisticInput : null;
+  const messages = useMemo(
+    () => (pendingInput ? [...publishedMessages, pendingInput] : publishedMessages),
+    [publishedMessages, pendingInput],
+  );
   function hasPendingNative(run: Run) {
     return (run.native_interactions ?? []).some(
       (record) => record.observed_state === "pending" && record.submission?.state !== "submitted",
     );
   }
-  const parts = useMemo(
-    () => mergeConversationHistory(threadId, olderParts, snapshot?.timeline.parts ?? []),
-    [threadId, olderParts, snapshot?.timeline.parts],
-  );
+  const parts = useMemo(() => {
+    const published = mergeConversationHistory(
+      threadId,
+      olderParts,
+      snapshot?.timeline.parts ?? [],
+    );
+    if (!pendingInput) return published;
+    const part: ConversationPart = {
+      id: `optimistic:${pendingInput.id}`,
+      sequence: (published.at(-1)?.sequence ?? 0) + 1,
+      source_cursor: snapshot?.cursor ?? 0,
+      thread_id: pendingInput.thread_id,
+      created_at: pendingInput.created_at,
+      kind: "message",
+      message_id: pendingInput.id,
+      resource_id: null,
+      source_message_id: null,
+      actors: [],
+      name: "",
+      summary: null,
+    };
+    return [...published, part];
+  }, [threadId, olderParts, snapshot?.timeline.parts, snapshot?.cursor, pendingInput]);
   const entries = useMemo(() => conversationEntries(parts, messages), [parts, messages]);
   const latestUserEntry = entries.findLast(
     (entry) => entry.type === "message" && entry.message.author === "user",
   );
   const conversationScroll = useConversationScroll(
     snapshot?.thread.id ?? null,
-    latestUserEntry?.type === "message" ? latestUserEntry.part.sequence : 0,
+    latestUserEntry?.type === "message"
+      ? (messageKeys.current.get(latestUserEntry.message.id) ?? latestUserEntry.message.id)
+      : null,
     !isSecondaryScreen && !(mobile && navigation),
   );
+  const measureConversation = useRef<() => void>(() => {});
+  useLayoutEffect(() => {
+    const surface = conversationSurface;
+    if (!surface) return;
+    const header = surface.querySelector<HTMLElement>(".workspace-chat-header");
+    const notice = error ? surface.querySelector<HTMLElement>(".workspace-error") : null;
+    const dock = snapshot?.thread.id ? surface.querySelector<HTMLElement>(".composer-dock") : null;
+    let previousDockHeight: number | null = null;
+    const measure = () => {
+      const top = surface.getBoundingClientRect().top;
+      const headerBottom = (notice ?? header)?.getBoundingClientRect().bottom ?? top;
+      const dockHeight = dock?.getBoundingClientRect().height ?? 0;
+      const keepEndPosition = conversationScroll.current?.state.isNearBottom;
+      surface.style.setProperty("--conversation-top", `${headerBottom - top}px`);
+      surface.style.setProperty("--conversation-bottom", `${dockHeight}px`);
+      if (keepEndPosition && previousDockHeight !== null && dockHeight !== previousDockHeight) {
+        const context = conversationScroll.current;
+        if (context) {
+          context.state.scrollTop = context.state.calculatedTargetScrollTop;
+          context.state.lastScrollTop = context.state.scrollTop;
+        }
+      }
+      previousDockHeight = dockHeight;
+    };
+    measureConversation.current = measure;
+    const observer = new ResizeObserver(measure);
+    for (const element of [header, notice, dock]) {
+      if (element) observer.observe(element);
+    }
+    measure();
+    return () => {
+      observer.disconnect();
+      measureConversation.current = () => {};
+    };
+  }, [conversationSurface, snapshot?.thread.id, error, conversationScroll]);
+  useLayoutEffect(() => measureConversation.current());
   const activityByEntry = useMemo(
     () => conversationActivity(snapshot, entries),
     [snapshot, entries],
   );
-  function runActivity(run: Run, at: string) {
+  function runActivity(run: Run, at: string, embedded = false) {
     if (!snapshot) return null;
     const actor = snapshot.agents.find((agent) => agent.id === run.agent_id);
     if (!actor) return null;
@@ -690,8 +775,26 @@ export default function Workspace() {
           />
         </AssistantMessage>
       );
+    if (embedded && !run.diagnostic && ["queued", "dispatching", "running"].includes(run.status)) {
+      const view = activityPresentation(run, {
+        online: workspace.online,
+        waitingForUser: waitingForUser(run, snapshot),
+        targetName: target?.name,
+      });
+      return (
+        <Answer
+          text=""
+          sentAt={at}
+          busy={busy}
+          agentId={actor.id}
+          activity={{ name: actor.name, label: view.label, loading: view.isLoading }}
+          sender={snapshot.thread.type === "group" ? { style: agentStyle(actor) } : undefined}
+        />
+      );
+    }
     return (
       <AgentActivityBubble
+        embedded={embedded}
         key={run.id}
         agent={actor}
         run={run}
@@ -862,6 +965,7 @@ export default function Workspace() {
         : undefined;
     const streaming =
       message.author === "agent" &&
+      message.state === "partial" &&
       message.purpose !== "announcement" &&
       snapshot?.runs.some((run) => run.id === message.run_id && run.status === "running") === true;
     const author = publishedAuthor(message);
@@ -1146,10 +1250,45 @@ export default function Workspace() {
                           );
                         if (row.type === "run")
                           return (
-                            <Fragment key={row.key}>
+                            <div
+                              key={row.key}
+                              data-response-slot={row.key}
+                              className="flex flex-col gap-4"
+                            >
                               {date}
-                              {runActivity(row.run, row.at)}
-                            </Fragment>
+                              {row.run.computer_activity ? (
+                                runActivity(row.run, row.at)
+                              ) : (
+                                <Message
+                                  className="conversation-message"
+                                  data-agent-activity={row.run.id}
+                                  data-loading={
+                                    ["queued", "dispatching", "running"].includes(row.run.status) &&
+                                    row.run.preparation?.state !== "blocked"
+                                  }
+                                >
+                                  {snapshot.thread.type === "group" && (
+                                    <AgentMessageAvatar
+                                      agent={snapshot.agents.find(
+                                        (agent) => agent.id === row.run.agent_id,
+                                      )}
+                                      loading
+                                      open={() => openResource("agent", row.run.agent_id)}
+                                    />
+                                  )}
+                                  <MessageContent>
+                                    {snapshot.thread.type !== "group" && (
+                                      <MessageHeader className="sr-only">
+                                        {snapshot.agents.find(
+                                          (agent) => agent.id === row.run.agent_id,
+                                        )?.name ?? "Agent"}
+                                      </MessageHeader>
+                                    )}
+                                    {runActivity(row.run, row.at, true)}
+                                  </MessageContent>
+                                </Message>
+                              )}
+                            </div>
                           );
                         if (row.type === "native")
                           return (
@@ -1187,7 +1326,18 @@ export default function Workspace() {
                             : [],
                         );
                         return (
-                          <Fragment key={row.key}>
+                          <div
+                            key={row.key.replace(
+                              message.id,
+                              messageKeys.current.get(message.id) ?? message.id,
+                            )}
+                            data-response-slot={
+                              row.key.startsWith("response:") ? row.key : undefined
+                            }
+                            className={
+                              row.key.startsWith("response:") ? "flex flex-col gap-4" : "contents"
+                            }
+                          >
                             {date}
                             <Message
                               data-timeline-part={row.first ? entry.part.id : undefined}
@@ -1300,13 +1450,6 @@ export default function Workspace() {
                                         refresh={refresh}
                                       />
                                     ))}
-                                {row.last &&
-                                  run?.status === "queued" &&
-                                  (!run.preparation || run.preparation.state === "ready") && (
-                                    <div className="message-run-state text-caption text-muted-foreground">
-                                      {runStatusLabel(run)}
-                                    </div>
-                                  )}
                               </MessageContent>
                             </Message>
                             {row.last && (
@@ -1336,7 +1479,7 @@ export default function Workspace() {
                                 busy={busy}
                               />
                             )}
-                          </Fragment>
+                          </div>
                         );
                       })}
                       {snapshot.controls.map((control) => (
@@ -1519,7 +1662,13 @@ export default function Workspace() {
                           key={`editor:${snapshot.thread.id}`}
                           ref={bindComposerInput}
                           label={undefined}
-                          value={pending ?? reply?.restoreText ?? draft}
+                          value={
+                            pending !== null &&
+                            optimisticInput?.thread_id === threadId &&
+                            optimisticInput.text === pending
+                              ? ""
+                              : (pending ?? reply?.restoreText ?? draft)
+                          }
                           readOnly={busy || pending !== null || !!reply?.busy || !!reply?.locked}
                           placeholder={`Pesan${agent ? ` untuk ${agent.name}` : ""}…`}
                           lookup={composerFiles.lookup}

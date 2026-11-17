@@ -1,5 +1,11 @@
 import { expect, test } from "bun:test";
-import { inputMessage, samplePart, sampleRun } from "../src/features/assistant-studio/fixtures";
+import {
+  inputMessage,
+  samplePart,
+  sampleRun,
+  sampleSnapshot,
+} from "../src/features/assistant-studio/fixtures";
+import { conversationActivity } from "../src/features/conversation/lib/conversation-activity";
 import {
   type ConversationEntry,
   conversationEntries,
@@ -203,4 +209,67 @@ test("a product card retains its request date when the decision changes or the p
   request.state = "answered";
   expect(render([entry], { requests: [request] })).toEqual(pending);
   expect(pending[0].at).toBe(request.created_at);
+});
+
+test("one assistant response slot survives preparing, ready, dispatch, streaming and settlement", () => {
+  const base = sampleRun();
+  const input = message("smooth-input", 1, local(17));
+  const output = message("smooth-output", 2, local(17), {
+    author: "agent",
+    author_agent_id: base.agent_id,
+    run_id: base.id,
+    text: "A streamed answer",
+    state: "partial",
+  });
+  const phases = [
+    { status: "queued", preparation: { state: "preparing" } },
+    { status: "queued", preparation: { state: "ready" } },
+    { status: "dispatching" },
+    { status: "running" },
+    { status: "running", output: true, empty: true },
+    { status: "running", output: true },
+    { status: "running", output: true, complete: true },
+    { status: "succeeded", output: true, complete: true },
+  ];
+  const keys = [];
+  for (const phase of phases) {
+    const run = {
+      ...base,
+      input_message_id: input.message.id,
+      ...phase,
+      publication: "immediate",
+      native_interactions: [],
+      computer_activity: null,
+    };
+    const entries = phase.output
+      ? [
+          input,
+          {
+            ...output,
+            message: {
+              ...output.message,
+              state: phase.complete ? "complete" : "partial",
+              text: phase.empty ? "" : output.message.text,
+            },
+          },
+        ]
+      : [input];
+    const snapshot = sampleSnapshot({
+      runs: [run],
+      thread: { ...sampleSnapshot().thread, member_agent_ids: [run.agent_id] },
+      tasks: [],
+      human_requests: [],
+    });
+    const rows = render(entries, {
+      runs: [run],
+      activity: conversationActivity(snapshot, entries),
+    });
+    const response = rows.filter(
+      (row) =>
+        row.type === "run" || (row.type === "message" && row.entry.message.author === "agent"),
+    );
+    expect(response.length, JSON.stringify(phase)).toBe(1);
+    keys.push(response[0]?.key);
+  }
+  expect(new Set(keys).size).toBe(1);
 });

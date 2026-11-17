@@ -17,11 +17,14 @@ export function conversationActivity(snapshot: Snapshot | null, entries: Convers
   if (!snapshot) return byEntry;
   const inputAnchors = new Map<string, string>();
   const outputAnchors = new Map<string, string>();
+  const visibleAnswers = new Set<string>();
   for (const entry of entries) {
     if (entry.type === "message") {
       inputAnchors.set(entry.message.id, entry.part.id);
-      if (entry.message.author === "agent" && entry.message.run_id)
+      if (entry.message.author === "agent" && entry.message.run_id) {
         outputAnchors.set(entry.message.run_id, entry.part.id);
+        if (entry.message.text?.trim()) visibleAnswers.add(entry.message.run_id);
+      }
     } else {
       for (const part of entry.parts)
         if (part.message_id) inputAnchors.set(part.message_id, entry.parts[0].id);
@@ -65,6 +68,12 @@ export function conversationActivity(snapshot: Snapshot | null, entries: Convers
       !snapshot.thread.member_agent_ids.includes(run.agent_id)
     )
       continue;
+    if (
+      visibleAnswers.has(run.id) &&
+      ["running", "dispatching"].includes(run.status) &&
+      !run.computer_activity
+    )
+      continue;
     const waiting = waitingForUser(run, snapshot);
     // The question or approval already explains what is needed in the timeline.
     if (waiting && !["failed", "unknown", "cancel_requested", "cancelled"].includes(run.status))
@@ -84,7 +93,7 @@ export function conversationActivity(snapshot: Snapshot | null, entries: Convers
       run.status === "queued" &&
       !run.retry_of_run_id &&
       !handoffInputs.has(taskInputs.get(run.id) ?? run.input_message_id) &&
-      (!run.preparation || run.preparation.state === "ready" || busyAgents.has(run.agent_id))
+      (!run.preparation || busyAgents.has(run.agent_id))
     )
       continue;
     const requestId = replyInputs.get(run.id) ?? taskInputs.get(run.id) ?? run.input_message_id;

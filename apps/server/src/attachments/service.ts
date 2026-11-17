@@ -159,7 +159,7 @@ export class Attachments {
           ),
         );
     }
-    const context = await this.current(run);
+    const context = await this.lifecycle.store.read(() => this.current(run));
     if (!context.attachments.length && !context.previous_attachments.length)
       return { text: "", observations };
     return {

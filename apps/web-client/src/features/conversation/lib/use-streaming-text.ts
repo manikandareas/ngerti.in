@@ -17,6 +17,7 @@ export function useStreamingText(text: string, streaming: boolean) {
     };
     if (
       !streaming ||
+      !displayed.current ||
       !preferences.smoothStreaming ||
       motion.matches ||
       !isPageVisible() ||
@@ -53,5 +54,7 @@ export function useStreamingText(text: string, streaming: boolean) {
       motion.removeEventListener("change", finish);
     };
   }, [text, streaming, preferences.smoothStreaming]);
-  return !streaming || !preferences.smoothStreaming || !text.startsWith(visible) ? text : visible;
+  return !streaming || !visible || !preferences.smoothStreaming || !text.startsWith(visible)
+    ? text
+    : visible;
 }

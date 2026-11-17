@@ -18,7 +18,7 @@ export const conversationPreviews = z.strictObject({
 export async function readConversationPreviews(
   store: Store,
 ): Promise<z.infer<typeof conversationPreviews>> {
-  return await store.transaction(async () => {
+  return await store.read(async () => {
     const latest = new Map<string, z.infer<typeof latestMessage>>();
     for (const current of await store.list("message")) {
       if (

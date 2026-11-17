@@ -181,6 +181,15 @@ test("DM prewarm performs no inference and reuses skills, transport and presenta
   expect(await f.store.list("run")).toHaveLength(0);
   expect(prompts).toBe(0);
   expect((await native.prewarm(lane.thread.id, lane.agent.id)).state).toBe("ready");
+  const get = f.store.get.bind(f.store);
+  let connectionReads = 0;
+  f.store.get = async (kind, id) => {
+    if (kind === "connection") connectionReads++;
+    return get(kind, id);
+  };
+  await native.openSession(lane.thread.id, lane.agent.id);
+  f.store.get = get;
+  expect(connectionReads).toBe(1);
   await dispatch(lane, native);
   await f.lifecycle.updateAgent(lane.agent.id, {
     expected_revision: lane.agent.revision,
@@ -241,6 +250,22 @@ test("DM prewarm replaces the least recently used idle transport and preserves n
   expect(resumed.native_session_id).toBe(evictedBinding.native_session_id);
   expect(await f.store.list("run")).toHaveLength(0);
   expect(prompts).toBe(0);
+});
+
+test("unrelated queued work does not prevent preparing the next DM turn", async () => {
+  const connections = await setup();
+  const connection = await connections.create({
+    harness: "codex",
+    authentication: { method: "native_login", billing_source: "subscription" },
+  });
+  const busy = await assign(connection, "Queued");
+  const target = await assign(connection, "Ready");
+  const native = await makeBroker({ codex: adapter("codex", async () => client({})) });
+  await f.lifecycle.admit({ thread_id: busy.thread.id, agent_id: busy.agent.id, text: "Pending" });
+  expect((await native.prewarm(busy.thread.id, busy.agent.id)).state).toBe("skipped");
+  expect((await native.prewarm(target.thread.id, target.agent.id)).state).toBe("preparing");
+  await native.openSession(target.thread.id, target.agent.id);
+  expect((await native.prewarm(target.thread.id, target.agent.id)).state).toBe("ready");
 });
 
 test("speculative DM preparation never evicts transports while active or unknown work exists", async () => {

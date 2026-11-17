@@ -196,3 +196,18 @@ test("pending product and native interactions suppress duplicate waiting activit
   active.status = "unknown";
   expect(conversationActivity(state, entries).get("part:input")).toEqual([active]);
 });
+
+test("streaming and completed answers replace loading but preserve actionable states", () => {
+  const active = run("answer-run", "input");
+  const answer = entry("answer", active.id);
+  if (answer.type !== "message") throw new Error("Expected message");
+  answer.message.state = "complete";
+  answer.message.text = "The final answer.";
+  const entries = [entry("input"), answer];
+  expect(conversationActivity(snapshot([active]), entries).size).toBe(0);
+  for (const status of ["failed", "unknown", "cancel_requested"]) {
+    expect(conversationActivity(snapshot([{ ...active, status }]), entries).size).toBe(1);
+  }
+  answer.message.state = "partial";
+  expect(conversationActivity(snapshot([active]), entries).size).toBe(0);
+});

@@ -4,7 +4,7 @@ import { attachmentObservation } from "../attachments/contracts";
 import { base, id, text } from "../contracts/base";
 import { nativeInteractionJournal } from "../harness/interaction-contracts";
 import { providerSelection } from "../harness/selection-contracts";
-import { activeTool } from "./activity";
+import { activeTool } from "./activity-contracts";
 import { nativeProgress } from "./native-progress";
 
 export const runStatus = z.enum([

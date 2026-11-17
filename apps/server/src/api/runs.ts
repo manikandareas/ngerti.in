@@ -82,6 +82,7 @@ export function registerRunRoutes(
             : await controls.send(body),
         );
         void submissions.materialize(result.message).catch(() => {});
+        background.notifyAdmission(result.run.thread_id, result.run.agent_id);
         await background.notifyControls();
         return result;
       },

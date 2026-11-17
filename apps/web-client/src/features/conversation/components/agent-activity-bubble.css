@@ -2,7 +2,7 @@
   position: relative;
   display: block;
   padding-inline-start: 41px;
-  margin-block: 3px;
+  margin-block: 0;
 }
 .agent-activity-avatar {
   position: absolute;
@@ -21,16 +21,22 @@
 .agent-activity-bubble > [data-slot="bubble-content"] {
   gap: 3px;
   border: 0;
-  border-radius: 14px;
-  padding: 9px 13px 10px;
+  border-radius: 18px;
+  padding: 7px 12px;
+  font-size: var(--conversation-font-size, 15px);
+  line-height: 1.5;
 }
 .agent-activity-label {
   position: relative;
   display: inline-block;
-  overflow-wrap: anywhere;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: top;
   color: var(--text-secondary);
   font-size: 14px;
-  line-height: 21px;
+  line-height: inherit;
 }
 .agent-activity-label[data-shimmer="true"]::after {
   content: attr(data-text);
@@ -70,7 +76,7 @@
   position: relative;
   z-index: 1;
 }
-.agent-activity-row[data-loading="true"]
+:is(.agent-activity-row, .conversation-message)[data-loading="true"]
   .agent-activity-bubble
   > [data-slot="bubble-content"]::before {
   content: "";
@@ -96,7 +102,7 @@
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .agent-activity-row[data-loading="true"]
+  :is(.agent-activity-row, .conversation-message)[data-loading="true"]
     .agent-activity-bubble
     > [data-slot="bubble-content"]::before {
     display: none;

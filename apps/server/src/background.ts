@@ -18,6 +18,7 @@ export interface ExecutorContext {
   controlReady?(): Promise<void>;
 }
 export interface HarnessExecutor {
+  settled?(run: Entity<"run">): Promise<unknown>;
   preparationRevision?(): string;
   prepare?(threadId: string, agentId: string): Promise<unknown>;
   execute(
@@ -45,6 +46,7 @@ export class Background {
   #wakePending = false;
   #ticking: Promise<void> | undefined;
   #tickAgain = false;
+  #dispatching: Promise<void> = Promise.resolve();
   readonly #routing: RoutingWorker;
   constructor(
     readonly lifecycle: Lifecycle,
@@ -112,7 +114,7 @@ export class Background {
       await this.dispatchTick(now, checkControls);
       await this.lifecycle.store.scopeRunner?.(async () => {
         await this.lifecycle.store.dataContext?.validate(true);
-        await this.lifecycle.recoverScopedRuns();
+        if (checkControls) await this.lifecycle.recoverScopedRuns();
         await this.dispatchTick(now, checkControls);
       });
     })().finally(() => {
@@ -127,6 +129,14 @@ export class Background {
 
   private async dispatchTick(now: Date, checkControls: boolean) {
     if (this.#stopping || this.lifecycle.store.closed) return;
+    await this.dispatchReady(now, checkControls);
+    if (checkControls) {
+      await this.advanceSchedules(now);
+      await this.dispatchReady(now, checkControls);
+    }
+  }
+
+  private async advanceSchedules(now: Date) {
     if (now.getTime() - this.#lastAttachmentSweep >= 60_000) {
       this.#lastAttachmentSweep = now.getTime();
       try {
@@ -140,13 +150,37 @@ export class Background {
     await this.#routing.advance();
     await new Goals(this.lifecycle).advance(now);
     await new GroupSchedules(this.lifecycle).advance();
-    for (const routine of await this.lifecycle.store.list("routine")) {
+    for (const routine of await this.lifecycle.store.list("routine", { state: "active" })) {
       try {
         await this.lifecycle.fireRoutine(routine.id, now);
       } catch (error) {
         await this.report(error instanceof DomainError ? error.code : "SCHEDULER_ERROR");
       }
     }
+  }
+
+  notifyAdmission(threadId: string, agentId: string) {
+    void this.dispatchReady(new Date(), false, { threadId, agentId }).catch(() =>
+      this.report("DISPATCH_ERROR"),
+    );
+  }
+
+  private dispatchReady(
+    now: Date,
+    checkControls: boolean,
+    lane?: { threadId: string; agentId: string },
+  ): Promise<void> {
+    const pending = this.#dispatching.then(() => this.dispatchQueued(now, checkControls, lane));
+    this.#dispatching = pending.catch(() => {});
+    return pending;
+  }
+
+  private async dispatchQueued(
+    now: Date,
+    checkControls: boolean,
+    target?: { threadId: string; agentId: string },
+  ) {
+    if (this.#stopping || this.lifecycle.store.closed) return;
     // Owner controls call notifyControls immediately. A commit wake must not abort a native
     // self-stop tool before its committed receipt has crossed the tool transport.
     for (const work of checkControls ? this.#work.values() : []) {
@@ -163,6 +197,7 @@ export class Background {
         work.controller.abort();
     }
     const runs = await this.lifecycle.store.list("run", {
+      ...(target ? { thread_id: target.threadId, agent_id: target.agentId } : {}),
       statuses: ["queued", "dispatching", "running", "cancel_requested", "unknown"],
     });
     const heads = new Map<string, string>();
@@ -178,8 +213,13 @@ export class Background {
     for (let queued of [...runs.slice(offset), ...runs.slice(0, offset)]) {
       if (this.#work.size + this.#preparing.size >= this.concurrency) break;
       if (queued.status !== "queued" || queued.delivery !== "pending") continue;
+      if (target && (queued.thread_id !== target.threadId || queued.agent_id !== target.agentId))
+        continue;
       if (heads.get(`${queued.thread_id}:${queued.agent_id}`) !== queued.id) continue;
-      const executionAgent = await this.lifecycle.store.get("agent", queued.agent_id);
+      const { executionAgent, thread } = await this.lifecycle.store.read(async () => ({
+        executionAgent: await this.lifecycle.store.get("agent", queued.agent_id),
+        thread: await this.lifecycle.store.get("thread", queued.thread_id),
+      }));
       const execution = this.executors[executionAgent.harness];
       if (queued.preparation?.state === "blocked") {
         if (
@@ -197,7 +237,6 @@ export class Background {
         queued.preparation.next_attempt_at > now.toISOString()
       )
         continue;
-      const thread = await this.lifecycle.store.get("thread", queued.thread_id);
       if (
         thread.type === "group" &&
         thread.purpose === "conversation" &&
@@ -209,11 +248,7 @@ export class Background {
       )
         continue;
       if (
-        (
-          await this.lifecycle.store.list("run", {
-            statuses: ["queued", "dispatching", "running", "cancel_requested", "unknown"],
-          })
-        ).some(
+        runs.some(
           (run) =>
             run.thread_id === queued.thread_id &&
             run.agent_id === queued.agent_id &&
@@ -221,8 +256,7 @@ export class Background {
         )
       )
         continue;
-      const agent = await this.lifecycle.store.get("agent", queued.agent_id);
-      const executor = this.executors[agent.harness];
+      const executor = execution;
       // Missing adapters keep work queued. Never fall back to another provider or engine.
       if (!executor) continue;
       const lane = `${queued.thread_id}:${queued.agent_id}`;
@@ -235,8 +269,7 @@ export class Background {
           .prepare(queued.thread_id, queued.agent_id)
           .then(async () => {
             if (!this.#stopping && !this.#closed) {
-              await this.lifecycle.prepared(queued.id);
-              await this.claim(queued.thread_id, queued.agent_id);
+              await this.claim(queued.thread_id, queued.agent_id, queued.id);
             }
           })
           .catch(async (error) => {
@@ -276,13 +309,13 @@ export class Background {
     }
   }
 
-  private async claim(threadId: string, agentId: string) {
+  private async claim(threadId: string, agentId: string, preparedRunId?: string) {
     if (this.#work.size >= this.concurrency) return;
     const agent = await this.lifecycle.store.get("agent", agentId);
     const executor = this.executors[agent.harness];
     if (!executor) return;
     try {
-      const run = await this.lifecycle.claimNext(threadId, agentId);
+      const run = await this.lifecycle.claimNext(threadId, agentId, preparedRunId);
       if (!run) return;
       const controller = new AbortController();
       const work: Work = {
@@ -334,6 +367,8 @@ export class Background {
       if (this.#closed || this.lifecycle.store.closed) return;
       try {
         await this.lifecycle.settle(run.id, token, outcome);
+        if (!this.#stopping && executor.settled)
+          void executor.settled(await this.lifecycle.store.get("run", run.id)).catch(() => {});
       } catch (error) {
         if (!work.scope) throw error;
         await this.lifecycle.store.fenceScopedRun(work.run, outcome);
@@ -358,6 +393,7 @@ export class Background {
 
   async idle() {
     await this.#ticking;
+    await this.#dispatching;
     await this.#routing.idle();
     await Promise.all([...this.#preparing.values()]);
     await Promise.all([...this.#work.values()].map((work) => work.done));

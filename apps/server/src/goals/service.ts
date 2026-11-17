@@ -464,7 +464,7 @@ export class Goals {
   }
   /** Called only by Background. Unknown native work and peer/HITL work keep their existing owner. */
   async advance(now = new Date()) {
-    for (const item of await this.store.list("goal")) {
+    for (const item of await this.store.list("goal", { state: "active" })) {
       try {
         await this.store.transaction(async () => await this.advanceGoal(item.id, now));
       } catch (error) {
@@ -682,6 +682,11 @@ export class Goals {
     );
   }
   async context(run: Entity<"run">) {
+    return [...(await this.contextSections(run)), `Dates now: ${new Date().toISOString()}.`].join(
+      "\n\n",
+    );
+  }
+  async contextSections(run: Entity<"run">) {
     const state = await this.list(run);
     // Bound automatic injection; the scoped list tool supplies the complete authoritative inventory.
     const goals = state.goals
@@ -695,6 +700,9 @@ export class Goals {
         source_message_ids: g.source_message_ids.slice(-5),
         source_run_ids: g.source_run_ids.slice(-5),
       }));
-    return `${responsibilityInstructions}\n\nCurrent authoritative responsibility state. Dates now: ${new Date().toISOString()}.\n${JSON.stringify({ goal_id: run.goal_id, routine_id: run.routine_id, goals, routines: state.routines.slice(-20).map((r) => ({ ...r, instruction: r.instruction.slice(0, 500) })), truncated: state.goals.length > goals.length || state.routines.length > 20 })}`;
+    return [
+      responsibilityInstructions,
+      `Current authoritative responsibility state.\n${JSON.stringify({ goal_id: run.goal_id, routine_id: run.routine_id, goals, routines: state.routines.slice(-20).map((r) => ({ ...r, instruction: r.instruction.slice(0, 500) })), truncated: state.goals.length > goals.length || state.routines.length > 20 })}`,
+    ];
   }
 }

@@ -15,7 +15,7 @@ const cleanups: (() => unknown | Promise<unknown>)[] = [];
 afterEach(async () => {
   for (const cleanup of cleanups.splice(0).reverse()) await cleanup();
 });
-async function setup(root?: string, commands = true, nativeEvents = false) {
+async function setup(root?: string, commands = true, nativeEvents = false, reusable = false) {
   const directory = root ?? mkdtempSync(join(tmpdir(), "ngertiin-acp-test-"));
   if (!root) cleanups.push(() => rmSync(directory, { recursive: true, force: true }));
   mkdirSync(join(directory, "home"), { recursive: true });
@@ -39,7 +39,12 @@ async function setup(root?: string, commands = true, nativeEvents = false) {
     },
   });
   cleanups.push(() => gateway.stop(true));
-  const tools = new SessionTools(() => `http://127.0.0.1:${gateway.port}/tools`);
+  const tools = new SessionTools(
+    () => `http://127.0.0.1:${gateway.port}/tools`,
+    true,
+    false,
+    reusable,
+  );
   const redactor = new Redactor();
   const prefix = nativeEvents ? `NATIVE_${crypto.randomUUID()}` : undefined;
   let session: AcpSession | undefined;
@@ -52,11 +57,15 @@ async function setup(root?: string, commands = true, nativeEvents = false) {
         PATH: process.env.PATH ?? "/usr/bin:/bin",
         HOME: join(directory, "home"),
         NGERTIIN_TEST_COMMANDS: commands ? "yes" : "no",
+        NGERTIIN_TEST_CORRELATION: reusable ? "yes" : "no",
         ...(prefix ? { NGERTIIN_TEST_NATIVE_EVENTS: prefix } : {}),
       },
       redactor,
     },
     {
+      nativeTurn: async (event) => {
+        await session?.nativeTurn(event);
+      },
       update: async (update) => {
         await session?.update(update);
       },
@@ -82,6 +91,7 @@ async function setup(root?: string, commands = true, nativeEvents = false) {
     redactor,
     directory,
     "Private application instructions",
+    { reusable },
   );
   session = opened;
   const events: NativeEvent[] = [];
@@ -600,3 +610,120 @@ async function until(check: () => boolean) {
   }
   throw new Error("Expected fixture observation was not received.");
 }
+
+test("correlated ACP turns reuse one process, reject stale tool metadata and retire after cancellation", async () => {
+  const f = await setup(undefined, true, false, true);
+  const identity = await f.session.open();
+  expect((await f.prompt(identity, "tool")).status).toBe("succeeded");
+  expect(f.session.closeAfterRun).toBe(false);
+  expect(f.tools.active).toBeNull();
+  const first = f.events.find((event) => event.type === "dispatch");
+  expect(first?.type).toBe("dispatch");
+  const second = f.prompt(identity, "cancel");
+  while (f.events.filter((event) => event.type === "dispatch").length < 2) await Bun.sleep(5);
+  const dispatches = f.events.filter((event) => event.type === "dispatch");
+  const call = async (metadata?: unknown) => {
+    const response = await fetch(`http://127.0.0.1:${f.tools.server.port}/mcp`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${f.tools.token}`, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        jsonrpc: "2.0",
+        id: 1,
+        method: "tools/call",
+        params: {
+          name: "ngertiin.read_run_context",
+          arguments: {},
+          _meta: metadata,
+        },
+      }),
+    });
+    return response.json();
+  };
+  for (const metadata of [
+    undefined,
+    {
+      "x-codex-turn-metadata": {
+        thread_id: identity.native_session_id,
+        turn_id: dispatches[0].native_run_id,
+      },
+    },
+    {
+      "x-codex-turn-metadata": { thread_id: "other-session", turn_id: dispatches[1].native_run_id },
+    },
+  ])
+    expect((await call(metadata)).error.data.code).toBe("NATIVE_REJECTED");
+  expect(f.forwarded).toHaveLength(1);
+  expect(
+    (
+      await call({
+        "x-codex-turn-metadata": {
+          thread_id: identity.native_session_id,
+          turn_id: dispatches[1].native_run_id,
+        },
+      })
+    ).result.isError,
+  ).toBe(false);
+  expect(f.forwarded).toHaveLength(2);
+  await f.session.stop(identity, f.lease.scope.run_id);
+  expect((await second).status).toBe("cancelled");
+  expect(f.session.closeAfterRun).toBe(true);
+  await expect(f.prompt(identity, "again")).rejects.toMatchObject({ code: "NATIVE_REJECTED" });
+});
+
+test("slow persistence coalesces a text burst instead of queuing one write per token", async () => {
+  const f = await setup();
+  const identity = await f.session.open();
+  const pending = f.session.prompt({
+    identity,
+    text: "stream",
+    run_id: f.lease.scope.run_id,
+    settings: { model_id: "model-b", reasoning: "low" },
+    tools: f.lease,
+    signal: f.controller.signal,
+    async onEvent(event) {
+      f.events.push(event);
+      if (event.type === "text_snapshot") await Bun.sleep(60);
+    },
+  });
+  try {
+    await until(() =>
+      f.events.some((event) => event.type === "text_snapshot" && event.text.length === 19_992),
+    );
+    expect(f.events.filter((event) => event.type === "text_snapshot").length).toBeLessThan(8);
+  } finally {
+    await f.session.steer(identity, f.lease.scope.run_id, "finish");
+    await pending;
+  }
+  expect(f.events.at(-1)).toEqual({ type: "text_snapshot", text: "x".repeat(20_000) });
+});
+
+test("coalesced text stays on its side of an intervening tool update", async () => {
+  const f = await setup();
+  const identity = await f.session.open();
+  const result = await f.session.prompt({
+    identity,
+    text: "stream-boundary",
+    run_id: f.lease.scope.run_id,
+    settings: { model_id: "model-b", reasoning: "low" },
+    tools: f.lease,
+    signal: f.controller.signal,
+    async onEvent(event) {
+      f.events.push(event);
+      if (event.type === "text_snapshot") await Bun.sleep(60);
+    },
+  });
+  expect(result.status).toBe("succeeded");
+  const tool = f.events.findIndex(
+    (event) => event.type === "tool_activity" && event.state === "started",
+  );
+  expect(tool).toBeGreaterThan(0);
+  const before = f.events
+    .slice(0, tool)
+    .filter((event) => event.type === "text_snapshot")
+    .at(-1);
+  expect(before?.type === "text_snapshot" ? before.text : "").toBe("x".repeat(9992));
+  expect(f.events.at(-1)).toEqual({
+    type: "text_snapshot",
+    text: "x".repeat(10_000) + "y".repeat(10_000),
+  });
+});

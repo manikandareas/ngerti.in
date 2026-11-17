@@ -13,6 +13,7 @@ import type {
   Snapshot,
   Thread,
 } from "@/types/workspace";
+import { applyConversationEvent, reconcileConversationSnapshot } from "./conversation-events";
 import { observePreparation, type SessionPreparation } from "./conversation-preparation";
 import { usePreferences } from "./use-preferences";
 import { eventProjections, mergeEntity, type Projection } from "./workspace-events";
@@ -105,7 +106,9 @@ export function useWorkspace(composer: HTMLElement | null) {
     });
     const results = await Promise.allSettled([
       navigationRead,
-      load<AISelection[]>("/v1/entities/ai_selection", setSelections),
+      full || projections.has("opening")
+        ? load<AISelection[]>("/v1/entities/ai_selection", setSelections)
+        : undefined,
       full
         ? load<Connection[]>("/v1/entities/connection", (value) =>
             setConnections((previous) => value.reduce(mergeEntity, previous)),
@@ -115,6 +118,7 @@ export function useWorkspace(composer: HTMLElement | null) {
         ? load<Snapshot>(`/v1/threads/${selected}/snapshot`, (value) => {
             if (!current() || value.cursor < latestCursor.current) return;
             latestCursor.current = value.cursor;
+            value = reconcileConversationSnapshot(value, snapshots.current.get(value.thread.id));
             snapshots.current.delete(value.thread.id);
             snapshots.current.set(value.thread.id, value);
             const oldest = snapshots.current.keys().next().value;
@@ -178,7 +182,32 @@ export function useWorkspace(composer: HTMLElement | null) {
           setConnections((previous) => mergeEntity(previous, event.data as unknown as Connection));
         if (event.data.thread_id && event.data.thread_id !== selectedThread.current)
           snapshots.current.delete(event.data.thread_id);
-        return eventProjections(event, selectedThread.current, openingMessage.current);
+        const projections = eventProjections(event, selectedThread.current, openingMessage.current);
+        const selected = selectedThread.current;
+        const previous = selected ? snapshots.current.get(selected) : undefined;
+        const patched = previous ? applyConversationEvent(previous, event) : null;
+        if (patched) {
+          snapshots.current.set(patched.thread.id, patched);
+          setSnapshot(patched);
+          projections.delete("conversation");
+        }
+        if (event.entity_kind === "message" && event.data.state === "partial")
+          projections.delete("previews");
+        if (event.entity_kind === "run") {
+          projections.delete("previews");
+          const old = previous?.runs.find((run) => run.id === event.entity_id);
+          if (
+            old &&
+            old.status === event.data.status &&
+            old.activity === event.data.activity &&
+            JSON.stringify(old.active_tools) === JSON.stringify(event.data.active_tools) &&
+            JSON.stringify(old.preparation) === JSON.stringify(event.data.preparation) &&
+            JSON.stringify(old.native_interactions) ===
+              JSON.stringify(event.data.native_interactions)
+          )
+            projections.delete("activity");
+        }
+        return projections;
       },
     });
     synchronizer.current = sync;
@@ -218,6 +247,30 @@ export function useWorkspace(composer: HTMLElement | null) {
     });
     return () => abort.abort();
   }, [threadId, ready, refresh]);
+
+  const selectedDm = threads.find((thread) => thread.id === threadId && thread.type === "dm");
+  const earlyAgentId = selectedDm?.member_agent_ids[0];
+  useEffect(() => {
+    if (!navigationReady || !threadId || !earlyAgentId || !isPageVisible()) return;
+    const abort = new AbortController();
+    const prepare = () => {
+      if (!isPageVisible()) return;
+      void request<SessionPreparation>(
+        `/v1/threads/${threadId}/prepare`,
+        { agent_id: earlyAgentId },
+        undefined,
+        AbortSignal.any([abort.signal, AbortSignal.timeout(5000)]),
+      ).catch(() => {});
+    };
+    prepare();
+    const timer = setInterval(prepare, 60_000);
+    const unsubscribe = subscribePageVisibility(prepare);
+    return () => {
+      abort.abort();
+      clearInterval(timer);
+      unsubscribe();
+    };
+  }, [navigationReady, threadId, earlyAgentId]);
 
   const dmAgent =
     snapshot?.thread.type === "dm"

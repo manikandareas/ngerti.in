@@ -1,5 +1,6 @@
 import type { DomainEvent, Entity } from "../contracts";
 import type { Store } from "../store";
+import { conversationPart } from "./parts";
 
 export async function conversationMessage(store: Store, message: Entity<"message">) {
   if (["handoff", "review"].includes(message.purpose)) {
@@ -23,8 +24,25 @@ export async function conversationEvent(store: Store, event: DomainEvent): Promi
   const internal =
     message.purpose === "continuation" ||
     (await store.get("thread", message.thread_id)).purpose === "routing";
+  const row = internal
+    ? undefined
+    : (
+        await store.query<{ sequence: string; body: object }>(
+          "SELECT sequence,body FROM conversation_parts WHERE id=$1 AND thread_id=$2 AND (body->>'source_cursor')::bigint<=$3",
+          [`message:${message.id}`, message.thread_id, event.cursor],
+        )
+      ).rows[0];
   return {
     ...event,
+    ...(row
+      ? {
+          conversation_part: conversationPart.parse({
+            summary: null,
+            ...row.body,
+            sequence: Number(row.sequence),
+          }),
+        }
+      : {}),
     data: internal
       ? { ...message, text: "[Internal execution input]", artifact_ids: [] }
       : await conversationMessage(store, message),

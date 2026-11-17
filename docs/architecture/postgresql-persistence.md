@@ -65,6 +65,8 @@ The report retains the legacy owner and an explicit unbound user/organization ma
 
 Backups include a serialized consistent SQLite database and hash-verified state files. Credentials, connection-native homes and `installation.json` are copied only with `--include-private-state`. Without that option, the manifest records hashes of external private files, and restore requires a verified unchanged source reference; those private files still require explicit operator binding. Symlinks, special files, destination reuse, missing artifacts and changed hashes fail verification.
 
+Serialized WAL snapshots normalize only the copied image's read/write format bytes to rollback mode, following [SQLite's standalone-image guidance](https://www.sqlite.org/c3ref/deserialize.html). `source_sha256` identifies this portable serialized image. The source file and its WAL are never edited. A dedicated regression retains an uncheckpointed commit and opens the restored file read-only without sidecars.
+
 Restore writes a new directory and verifies bytes. It does not redirect a running installation or combine divergent database writers. A real switch stops the old authority and selects one consistent database/blob/credential/configuration set and matching Git revision. NMA-082 owns final operational cutover, PostgreSQL backup/restore, provider refresh-state coordination, RPO/RTO and deployment rehearsal. Live provider, browser/Tauri and distribution acceptance remain separate.
 
 ## Development verification
@@ -72,3 +74,5 @@ Restore writes a new directory and verifies bytes. It does not redirect a runnin
 `bun run test:server` creates an isolated, loopback-only disposable PostgreSQL container when `NGERTIIN_TEST_DATABASE_URL` is unset and removes that container on completion. Docker must be available. To use an already provisioned disposable database, set that explicit variable. Fixtures allocate and remove their own schemas and state directories; they never fall back to `NGERTIIN_DATABASE_URL`.
 
 `compose.postgres.yml` is an optional fixed-port disposable setup. `bun run verify:foundation` runs lifecycle, PostgreSQL race/crash/import/restore and bootstrap tests. Current web verification server helpers require `NGERTIIN_TEST_DATABASE_URL`. Historical SQLite-native probes remain pinned to their captured revision; consult [the inventory](../verification/nma-072/inventory.md) before reusing them.
+
+For persistent local development through OrbStack, `compose.postgres.local.yml` uses the separate `ngertiin_postgres18_data` volume and binds port 55472 to loopback. Set `NGERTIIN_POSTGRES_PASSWORD` privately, keep it consistent with `NGERTIIN_DATABASE_URL`, then run `docker --context orbstack compose -f compose.postgres.local.yml up -d`. This configuration is separate from the disposable test database and retired PostgreSQL volumes. It does not establish the NMA-082 central-server deployment gate.

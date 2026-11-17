@@ -8,6 +8,8 @@ The harness-first backend uses **Bun, TypeScript, Elysia and PostgreSQL**. One a
 
 Requirements: Bun **1.3.10**, PostgreSQL **18.1**, Rust stable (minimum 1.90) and Xcode Command Line Tools for Tauri. Configure `NGERTIIN_DATABASE_URL`. `bun dev` starts the API, web, Tauri and the local email inbox together. Account authentication and organizations are always enabled. See [authentication defaults](docs/architecture/user-authentication.md) and [PostgreSQL persistence](docs/architecture/postgresql-persistence.md).
 
+The persistent local OrbStack database uses [compose.postgres.local.yml](compose.postgres.local.yml), a dedicated volume and loopback port 55472. With its matching private credentials in `.env`, run `docker --context orbstack compose -f compose.postgres.local.yml up -d`. The separate `compose.postgres.yml` remains disposable verification infrastructure.
+
 ```sh
 make install
 make setup

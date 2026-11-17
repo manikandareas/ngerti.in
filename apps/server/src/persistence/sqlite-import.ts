@@ -13,6 +13,17 @@ import { basename, dirname, join, relative, resolve } from "node:path";
 import { canonical, Store, type StoreOptions } from "../store";
 
 const digest = (bytes: Uint8Array | string) => createHash("sha256").update(bytes).digest("hex");
+/** A complete SQLite image that can reopen without WAL sidecars; never edit the source file. */
+export function serializeSQLiteSnapshot(database: Database) {
+  const bytes = new Uint8Array(database.serialize());
+  // SQLite documents these format flags for standalone serialized WAL images:
+  // https://www.sqlite.org/c3ref/deserialize.html
+  if (bytes[18] === 2 && bytes[19] === 2) {
+    bytes[18] = 1;
+    bytes[19] = 1;
+  }
+  return bytes;
+}
 const tables = [
   "entities",
   "events",
@@ -70,7 +81,7 @@ export function inspectSQLite(source: string): ImportSnapshot {
           : [],
       ]),
     ) as Record<Table, Row[]>;
-    const bytes = db.serialize();
+    const bytes = serializeSQLiteSnapshot(db);
     return {
       owner_id: owner.owner_id,
       source_sha256: digest(bytes),
@@ -135,7 +146,15 @@ export function backupSQLite(
           stat = lstatSync(file);
         if (stat.isSymbolicLink()) throw new Error("Backup refuses symbolic links.");
         if (
-          [sqlite, `${sqlite}-wal`, `${sqlite}-shm`, `${sqlite}.authority`].includes(file) ||
+          [
+            sqlite,
+            `${sqlite}-wal`,
+            `${sqlite}-shm`,
+            `${sqlite}.authority`,
+            `${sqlite}.authority-journal`,
+            `${sqlite}.authority-wal`,
+            `${sqlite}.authority-shm`,
+          ].includes(file) ||
           ["runtime.json", "runtime.lock"].includes(rel)
         )
           continue;
@@ -165,7 +184,7 @@ export function backupSQLite(
     walk(sourceRoot);
     const db = new Database(sqlite, { readonly: true });
     try {
-      const bytes = db.serialize();
+      const bytes = serializeSQLiteSnapshot(db);
       writeFileSync(join(target, manifest.database), bytes, { mode: 0o600, flag: "wx" });
       manifest.files.push({ path: manifest.database, sha256: digest(bytes), mode: 0o600 });
     } finally {

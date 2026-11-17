@@ -1,0 +1,10 @@
+{
+  "docs-check.log": "5efb0b5810fe668cd10d1d0a8a485523c4cf8240d0adf089291545eebac215bf",
+  "source-hashes.json": "bf44b97a42f04e768c4759177bce8dc5253376b10cbf5a9e76fb467a5e6589fe",
+  "result.json": "7719fe5f5b32d622bcf67822c09f8e1e9483752d047a1aacc3cf2f84be640e61",
+  "lint.log": "4de1f7c49611cbb46119ca4d223c01504bac1011e573a5e3d52fe8255c3894f3",
+  "typecheck.log": "61766a3a5683935e7882088a4d1c3c810c31ae5343f3d6d339ae52e0cdf03e4b",
+  "foundation.log": "cc8548d128aa4c64e0e2816786b5ce2f0f327fe5a669223843e07b7111ef7077",
+  "persistence-tests.log": "cacb517f38487fe027d36d960be5aa2f3532981b95ac0633ca3e86a143577b76",
+  "../local-orbstack-2026-11-13.md": "23abf6fa3102fe5a6bbc97c8ccbe5ff6c105999559fa9bec47bb2cf6cf188240"
+}

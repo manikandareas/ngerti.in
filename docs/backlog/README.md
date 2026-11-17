@@ -68,7 +68,7 @@ The owner requested this [main implementation plan](../architecture/server-organ
 | 16.8 | [NMA-082 · Single-server HTTPS deployment and recovery runbook](NMA-082.md) | Done | Deployment / Operations | [NMA-079](NMA-079.md), [NMA-081](NMA-081.md) |
 | 16.81 | [NMA-083 · Integrated multi-organization web and Tauri acceptance](NMA-083.md) | Done | Product / Verification | [NMA-080](NMA-080.md), [NMA-081](NMA-081.md), [NMA-082](NMA-082.md) |
 
-The dependency diagram, implementation defaults, migration approach and evidence matrix live in the main plan. A personal interaction remains private even when another person uses the same Team agent. Separate users/organizations cannot rely on a common sudo-capable desktop for private working files.
+The dependency diagram, implementation defaults, migration approach and evidence matrix live in the main plan. The explicitly requested [November 13 local OrbStack cutover](../verification/nma-072/local-orbstack-2026-11-13.md) migrates the retained development installation under NMA-072; the central-server deployment gate remains NMA-082. A personal interaction remains private even when another person uses the same Team agent. Separate users/organizations cannot rely on a common sudo-capable desktop for private working files.
 
 ## Desktop Rust parity plan (historical)
 

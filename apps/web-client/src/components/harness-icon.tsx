@@ -1,4 +1,4 @@
-import { type HarnessId, harnesses } from "@/lib/harnesses";
+import type { HarnessId } from "@/lib/harnesses";
 
 export function HarnessIcon({
   id,
@@ -9,23 +9,36 @@ export function HarnessIcon({
   size?: number;
   className?: string;
 }) {
-  if (id === "codex" || id === "muse" || id === "claude")
+  if (id === "opencode")
     return (
-      <img
-        src={`/images/harnesses/${id}.png`}
-        alt=""
-        width={size}
-        height={size}
-        className={`shrink-0 object-contain ${className}`}
-      />
+      <span
+        aria-hidden="true"
+        className={`inline-flex shrink-0 items-center justify-center ${className}`}
+        style={{ width: size, height: size }}
+      >
+        <img
+          src="/images/harnesses/opencode-light.svg"
+          alt=""
+          width={size * 0.8}
+          height={size}
+          className="h-full w-auto dark:hidden"
+        />
+        <img
+          src="/images/harnesses/opencode-dark.svg"
+          alt=""
+          width={size * 0.8}
+          height={size}
+          className="hidden h-full w-auto dark:block"
+        />
+      </span>
     );
   return (
-    <span
-      aria-hidden="true"
-      className={`inline-flex shrink-0 items-center justify-center font-mono font-semibold ${className}`}
-      style={{ width: size, height: size, fontSize: size * 0.55 }}
-    >
-      {harnesses[id].mark}
-    </span>
+    <img
+      src={`/images/harnesses/${id}.${id === "pi" ? "svg" : "png"}`}
+      alt=""
+      width={size}
+      height={size}
+      className={`shrink-0 object-contain ${id === "pi" ? "scale-[1.6] invert dark:invert-0" : ""} ${className}`}
+    />
   );
 }

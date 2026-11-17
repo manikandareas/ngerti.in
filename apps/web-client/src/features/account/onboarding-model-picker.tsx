@@ -18,7 +18,7 @@ export function OnboardingModelPicker({
     () =>
       harnessModelCatalog(connection ? [connection] : []).providers.map((provider) => ({
         ...provider,
-        icon: <HarnessIcon id={provider.id as HarnessId} className="rounded-sm" />,
+        icon: <HarnessIcon id={provider.id as HarnessId} size={20} className="rounded-sm" />,
       })),
     [connection],
   );

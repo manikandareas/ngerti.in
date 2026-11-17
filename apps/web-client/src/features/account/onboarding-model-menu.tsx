@@ -7,7 +7,7 @@ import type { OnboardingHarness } from "./onboarding-harnesses";
 export function OnboardingModelMenu({ harness }: { harness: OnboardingHarness }) {
   const providers = harnessModelCatalog([]).providers.map((provider) => ({
     ...provider,
-    icon: <HarnessIcon id={provider.id as HarnessId} />,
+    icon: <HarnessIcon id={provider.id as HarnessId} size={20} />,
   }));
   return (
     <div className="onboarding-preview-model-menu rounded-menu bg-popover text-popover-foreground">

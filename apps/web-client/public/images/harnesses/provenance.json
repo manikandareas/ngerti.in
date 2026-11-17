@@ -41,6 +41,33 @@
       "source": "https://icons.computer/icons/mac-cursor.png",
       "original_source": "https://cursor.com/download",
       "bytes": 27580
+    },
+    {
+      "file": "opencode-light.svg",
+      "name": "OpenCode",
+      "publisher": "Anomaly",
+      "source": "https://opencode.ai/brand/files/opencode-logo-light.svg",
+      "original_source": "https://opencode.ai/brand",
+      "retrieved_at": "2026-11-17",
+      "bytes": 593
+    },
+    {
+      "file": "opencode-dark.svg",
+      "name": "OpenCode",
+      "publisher": "Anomaly",
+      "source": "https://opencode.ai/brand/files/opencode-logo-dark.svg",
+      "original_source": "https://opencode.ai/brand",
+      "retrieved_at": "2026-11-17",
+      "bytes": 593
+    },
+    {
+      "file": "pi.svg",
+      "name": "Pi Coding Agent",
+      "publisher": "Pi",
+      "source": "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/pi-coding-agent.svg",
+      "original_source": "https://dashboardicons.com/icons/pi-coding-agent",
+      "retrieved_at": "2026-11-17",
+      "bytes": 473
     }
   ]
 }

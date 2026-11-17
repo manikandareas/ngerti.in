@@ -87,7 +87,7 @@ for (const id of ids) {
   cleaned.push(id);
 }
 await Bun.write(
-  "docs/verification/nma-062/cleanup.json",
+  ".dev/verification/nma-062/cleanup.json",
   JSON.stringify(
     {
       proof_connections_revoked: connections.length,

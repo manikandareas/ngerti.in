@@ -6,7 +6,7 @@ const base = process.argv[2];
 const directory = resolve(process.argv[3]);
 assert(base?.startsWith("http://127.0.0.1:"));
 const { token } = await Bun.file(join(directory, "installation.json")).json();
-const proof = await Bun.file("docs/verification/nma-056/native/initial.json").json();
+const proof = await Bun.file(".dev/verification/nma-056/native/initial.json").json();
 const get = async (path: string) => {
   const r = await fetch(`${base}${path}`, { headers: { Authorization: `Bearer ${token}` } });
   assert.equal(r.status, 200);
@@ -54,7 +54,7 @@ const report = {
   user_data_reset: false,
 };
 await Bun.write(
-  "docs/verification/nma-056/native/cleanup.json",
+  ".dev/verification/nma-056/native/cleanup.json",
   `${JSON.stringify(report, null, 2)}\n`,
 );
 console.log(JSON.stringify(report));

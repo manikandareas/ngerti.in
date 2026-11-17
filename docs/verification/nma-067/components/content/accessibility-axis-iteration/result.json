@@ -1,9 +1,0 @@
-{
-  "passed": false,
-  "native_pid": 6010,
-  "work_p95_ms": 17.301503,
-  "missed_refreshes": 14,
-  "drawn_frames": 134,
-  "axis_regression": "Vertical scroll preserved Column 1; right/left wheel executed independently.",
-  "next_hypothesis": "Optimize lyon_tessellation, which appears in active native draw stacks."
-}

@@ -1,3 +1,0 @@
-bun ../../node_modules/@biomejs/biome/bin/biome format --config-path . scripts reference package.json biome.json
-Checked 12 files in 4ms. No fixes applied.
-Exit code: 0

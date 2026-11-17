@@ -57,4 +57,4 @@ The HTML fixture renders inside an iframe with an empty sandbox and a restrictiv
 
 The prototype source at `prototype/conversation-content-viewer-2026-11-07:apps/web-client/src/features/conversation/prototypes/viewer/viewer-prototype.tsx` uses existing Ngertiin tokens, Hugeicons, avatars, Button/DropdownMenu, Lexical composer and Markdown/code renderers. All content is authored fixture data; Grok Bot inspired the interaction discussion, but no Grok Bot source was copied.
 
-The archived prototype is development-only and uses fixtures. Its Assistant Studio entry and variant search parameter have been removed from the production checkout after the Focus decision. See [verification and screenshots](../verification/conversation-viewer-prototype-2026-11-07/README.md).
+The archived prototype is development-only and uses fixtures. Its Assistant Studio entry and variant search parameter have been removed from the production checkout after the Focus decision. See [verification and screenshots](../development/history.md#verification-archive--2026-11-17 "Archive: docs/verification/conversation-viewer-prototype-2026-11-07/README.md at 043f7c9").

@@ -6,7 +6,7 @@ import type { Entity } from "../../../apps/server/src/contracts";
 const base = "http://127.0.0.1:49959";
 const state = ".dev/nma049-native";
 const privatePath = ".dev/nma060/cancellation-proof.json";
-const output = "docs/verification/nma-060/cancellation";
+const output = ".dev/verification/nma-060/cancellation";
 const phase = process.argv[2];
 type Family = "codex" | "muse";
 type Lane = {
@@ -258,7 +258,7 @@ try {
     const original = await api(`/v1/entities/connection/${codex.connection_id}`);
     assert.equal(original.state, "active");
     assert.equal(original.authentication.billing_source, "subscription");
-    const retained = await Bun.file("docs/verification/nma-059/receipts-cleanup.json").json();
+    const retained = await Bun.file(".dev/verification/nma-059/receipts-cleanup.json").json();
     const unknowns = retained.effects.filter(
       (effect: { state: string }) => effect.state === "unknown",
     );

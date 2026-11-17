@@ -1,8 +1,0 @@
-22809     1 Sun Nov  1 21:07:59 2026     /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.Networking.xpc/Contents/MacOS/com.apple.WebKit.Networking
-31905     1 Sat Nov  7 21:07:46 2026     /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.GPU.xpc/Contents/MacOS/com.apple.WebKit.GPU
-31906     1 Sat Nov  7 21:07:46 2026     /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent
-32070     1 Sun Nov  8 00:52:49 2026     /Users/vitoandareasmanik/Development/project/ngertiin/apps/desktop-rs/dist/Ngertiin Rust Development.app/Contents/MacOS/ngertiin-desktop
-58260     1 Sun Nov  8 01:18:41 2026     /Users/vitoandareasmanik/Development/project/ngertiin/apps/desktop/src-tauri/target/debug/ngertiin-desktop
-58379     1 Sun Nov  8 01:18:43 2026     /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.GPU.xpc/Contents/MacOS/com.apple.WebKit.GPU
-58380     1 Sun Nov  8 01:18:43 2026     /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.Networking.xpc/Contents/MacOS/com.apple.WebKit.Networking
-58381     1 Sun Nov  8 01:18:43 2026     /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent

@@ -7,7 +7,7 @@ import { createApi } from "../../../apps/server/src/api";
 // Verification-only observer: no bodies, cookies, tokens, response payloads or production hooks.
 const installedCreateApi = createApi;
 const root = resolve(import.meta.dir, "../../..");
-const inventory = JSON.parse(readFileSync(join(root, "docs/verification/nma-079/contract.json"), "utf8")).http as { method: string; path: string }[];
+const inventory = JSON.parse(readFileSync(join(root, "apps/server/tests/organizations/fixtures/http-contract.json"), "utf8")).http as { method: string; path: string }[];
 const routes = inventory.map(route => ({ ...route, pattern: new RegExp(`^${route.path.split("/").map(part => part === "*" ? ".*" : part.startsWith(":") ? "[^/]+" : part.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("/")}$`) }));
 const observations = new Map<string, { method: string; path: string; mode: string; status: number; actor: string | null; organization: string | null; count: number }>();
 const fingerprint = (value: string | null) => value ? createHash("sha256").update(value).digest("hex").slice(0, 12) : null;

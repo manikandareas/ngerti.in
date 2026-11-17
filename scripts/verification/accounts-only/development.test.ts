@@ -15,7 +15,7 @@ test.skipIf(process.platform !== "darwin")(
     if (!process.env.NGERTIIN_TEST_DATABASE_URL)
       throw new Error("Use the disposable PostgreSQL runner.");
     const root = resolve(import.meta.dir, "../../..");
-    const report = join(root, "docs/verification/accounts-only-2026-11-15");
+    const report = join(root, ".dev/verification/accounts-only-2026-11-15");
     const state = mkdtempSync(join(tmpdir(), "ngertiin-account-dev-"));
     const home = join(state, "desktop");
     const suffix = crypto.randomUUID().replaceAll("-", "");

@@ -1,7 +1,0 @@
-{
-  "passed": [],
-  "failed": [],
-  "limits": [
-    "Real local API and configured provider on isolated QA account. No external tools requested. No production deployment."
-  ]
-}

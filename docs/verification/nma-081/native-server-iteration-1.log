@@ -1,9 +1,0 @@
-NMA-081 disposable HTTPS API ready at https://127.0.0.1:44431; control at http://127.0.0.1:8441
-[Bun.serve]: request timed out after 10 seconds. Pass `idleTimeout` to configure.
-Elysia isn't running. Call `app.listen` to start the server. Error
-    at stop (/Users/vitoandareasmanik/Development/project/ngertiin/node_modules/.bun/elysia@1.4.30+6c81576b6e24dad9/node_modules/elysia/dist/adapter/bun/index.mjs:234:13)
-    at <anonymous> (/Users/vitoandareasmanik/Development/project/ngertiin/node_modules/.bun/elysia@1.4.30+6c81576b6e24dad9/node_modules/elysia/dist/index.mjs:188:75)
-    at close (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/tests/auth/helpers.ts:137:18)
-    at async close (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/tests/organizations/readiness-helpers.ts:341:15)
-    at async stop (/Users/vitoandareasmanik/Development/project/ngertiin/scripts/verification/nma081/serve.ts:55:98)
-    at processTicksAndRejections (native:7:39)

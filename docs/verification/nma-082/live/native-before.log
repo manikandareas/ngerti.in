@@ -1,4 +1,0 @@
-{"event":"deployed.native.admitted","harness":"codex","cohort":"before","run_id":"aeb6699c-7e14-4cf7-962f-531840102b27"}
-{"event":"deployed.native.verified","harness":"codex","cohort":"before","status":"succeeded","product_tools":["ngertiin.describe_tools","ngertiin.computer_tools","ngertiin.create_file","ngertiin.read_file","ngertiin.computer_call","ngertiin.publish_artifact","ngertiin.list_attachments"]}
-{"event":"deployed.native.admitted","harness":"muse","cohort":"before","run_id":"5620d94c-68cf-4e6b-9d90-28dda0e19e30"}
-{"event":"deployed.native.verified","harness":"muse","cohort":"before","status":"succeeded","product_tools":["ngertiin.describe_tools","ngertiin.computer_tools","ngertiin.get_workspace","ngertiin.create_file","ngertiin.computer_tools","ngertiin.read_file","ngertiin.computer_call","ngertiin.publish_artifact"]}

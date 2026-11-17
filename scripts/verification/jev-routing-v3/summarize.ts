@@ -19,11 +19,11 @@ type Native = {
   status: string;
   error: string | null;
 };
-const test = await Bun.file("docs/verification/jev-routing-v3/semantic-test.json").json();
+const test = await Bun.file(".dev/verification/jev-routing-v3/semantic-test.json").json();
 const invariance = await Bun.file(
-  "docs/verification/jev-routing-v3/semantic-invariance.json",
+  ".dev/verification/jev-routing-v3/semantic-invariance.json",
 ).json();
-const fallback = await Bun.file("docs/verification/jev-routing-v3/fallback-quality.json").json();
+const fallback = await Bun.file(".dev/verification/jev-routing-v3/fallback-quality.json").json();
 for (const report of [test, invariance, fallback])
   assert.equal(report.dataset_sha256, datasetHash());
 const native = new Map<string, Native>(fallback.results.map((row: Native) => [row.id, row]));
@@ -148,7 +148,7 @@ const report = {
     "Measured Jev wall time plus separately measured isolated native classification time. Not production task latency or a provider SLO. Native fallback classification executed no scenario work or tools.",
 };
 await Bun.write(
-  "docs/verification/jev-routing-v3/quality.json",
+  ".dev/verification/jev-routing-v3/quality.json",
   JSON.stringify(report, null, 2) + "\n",
 );
 console.log(

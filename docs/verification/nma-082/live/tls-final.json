@@ -1,8 +1,0 @@
-{
-  "public_url": "https://demo.ngerti.in/health/live",
-  "public_http": 200,
-  "public_tls_verify_result": 0,
-  "direct_origin_http": 200,
-  "direct_origin_tls_verify_result": 0,
-  "trust": "ordinary system certificate validation; no insecure flags"
-}

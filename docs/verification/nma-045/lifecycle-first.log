@@ -1,7 +1,0 @@
-PASS OAuth pending restores attempt after reload and cancels durably
-FAIL API key save, replace and local disconnect retain account identity TimeoutError: locator.waitFor: Timeout 20000ms exceeded.
-Call log:
-[2m  - waiting for getByText(/Koneksi diputus lokal/) to be visible[22m
-
-PASS Permission denial and reload recovery are visible
-PASS Advanced inference remains reachable and does not replace unavailable selection

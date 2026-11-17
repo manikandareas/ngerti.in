@@ -6,7 +6,7 @@ const base = process.argv[2];
 const directory = resolve(process.argv[3]);
 assert(base?.startsWith("http://127.0.0.1:"));
 const { token } = await Bun.file(join(directory, "installation.json")).json();
-const proof = await Bun.file("docs/verification/nma-056/native/initial.json").json();
+const proof = await Bun.file(".dev/verification/nma-056/native/initial.json").json();
 async function api(path: string, body?: unknown, key?: string) {
   const response = await fetch(`${base}${path}`, {
     method: body === undefined ? "GET" : "POST",
@@ -75,7 +75,7 @@ const report = {
   proof_only_pre_dispatch_cancelled_runs: proof.proof_only_cancelled_runs,
 };
 await Bun.write(
-  "docs/verification/nma-056/native/receipts.json",
+  ".dev/verification/nma-056/native/receipts.json",
   `${JSON.stringify(report, null, 2)}\n`,
 );
 console.log(JSON.stringify(report));

@@ -1,6 +1,6 @@
 # Execution domains — NMA-076
 
-Contract **1.33.0** adds durable organization/user execution domains to the retained Cua integration. [The verification report](../verification/nma-076/README.md) separates PostgreSQL/HTTP fixtures, native Cua, native harnesses and remaining delivery gates. [The main plan](server-organizations-plan-2026-11-12.md#8-agent-sharing-memory-and-files) owns the product privacy model.
+Contract **1.33.0** adds durable organization/user execution domains to the retained Cua integration. [The verification report](../development/history.md#verification-archive--2026-11-17 "Archive: docs/verification/nma-076/README.md at 043f7c9") separates PostgreSQL/HTTP fixtures, native Cua, native harnesses and remaining delivery gates. [The main plan](server-organizations-plan-2026-11-12.md#8-agent-sharing-memory-and-files) owns the product privacy model.
 
 ## Resolution and persistence
 
@@ -12,7 +12,7 @@ Resolution creates metadata without starting Docker. The first native operation 
 
 Each domain has a named home volume, its own browser profile, PID/IPC/network namespaces, private control token, loopback control port and resource limits. Containers use the pinned full Cua image, default Docker seccomp/capability constraints, explicit dangerous-capability drops and `no-new-privileges`. The only host bind mounts are the three fixed, read-only browser startup/policy assets. Backend data, host homes, provider homes, installation credentials and the Docker socket are not mounted.
 
-NMA-082 adds an attested 64-MiB `noexec,nosuid,nodev` tmpfs at `/run` so Docker stop/start cannot reuse stale X/DBus session files. Authenticated domain startup requires native `desktop_stream` support before publishing readiness; healthy control HTTP alone is insufficient. Existing containers require an explicit operator recreation with their named home volume retained. The [deployed report](../verification/nma-082/README.md) records the original startup race, two-domain recreation and repeated restart proof.
+NMA-082 adds an attested 64-MiB `noexec,nosuid,nodev` tmpfs at `/run` so Docker stop/start cannot reuse stale X/DBus session files. Authenticated domain startup requires native `desktop_stream` support before publishing readiness; healthy control HTTP alone is insufficient. Existing containers require an explicit operator recreation with their named home volume retained. The [deployed report](../development/history.md#verification-archive--2026-11-17 "Archive: docs/verification/nma-082/README.md at 043f7c9") records the original startup race, two-domain recreation and repeated restart proof.
 
 This is container isolation on a trusted operator's kernel, not hypervisor certification or protection against the infrastructure administrator. Cua control authority is trusted within its own domain. The same human's authorized agents cooperate inside that domain; their working copies and browser state are mutually visible. Conversation provenance, private metadata and immutable artifact bytes retain their separate application scope.
 
@@ -24,7 +24,7 @@ Asynchronous collectors use a resource context bound to the principal and author
 
 Codex continues to disable native shell/unified exec and deny host work-file writes through its permissions profile. Muse retains the MCP-only toolset and disabled native shell/write tools. Harness control directories and provider credentials remain on the trusted backend. Session instructions name the authorized domain and its cooperative limit.
 
-NMA-077 verifies private provider credential routing. NMA-078 supplies app/MCP/skill isolation and NMA-079 verifies normal scoped `claimNext`/broker execution at [contract 2.0.0](server-organizations-api.md), with [fresh native Cua/provider evidence](../verification/nma-079/README.md). NMA-076's native adapter probe uses a single-owner fixture attached to an environment resolved for a fixture principal. It proves useful native tool execution and absence of the requested forbidden host write; it does not claim public multi-user provider admission.
+NMA-077 verifies private provider credential routing. NMA-078 supplies app/MCP/skill isolation and NMA-079 verifies normal scoped `claimNext`/broker execution at [contract 2.0.0](server-organizations-api.md), with [fresh native Cua/provider evidence](../development/history.md#verification-archive--2026-11-17 "Archive: docs/verification/nma-079/README.md at 043f7c9"). NMA-076's native adapter probe uses a single-owner fixture attached to an environment resolved for a fixture principal. It proves useful native tool execution and absence of the requested forbidden host write; it does not claim public multi-user provider admission.
 
 ## Viewer and input authority
 

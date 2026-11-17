@@ -1,7 +1,0 @@
-{
-  "compose.postgres.local.yml": "7da1020674b1bfbc4e2e1e8601abcad7b7698e6cbca7cd9a857ac07754cba706",
-  ".env.example": "65c784546371d245cb7cc90a35981f6de5a1b8bafc2091d55d71e25a22838de7",
-  "apps/server/src/persistence/sqlite-import.ts": "9d175c317704eeff98cd816a76dab84f07bb9e1dcc1ad5f32991225f0285dfa5",
-  "apps/server/tests/persistence/sqlite-backup.test.ts": "2aaa45827a6e8a45deea41984901941d72fed32bf5fad7b178284dee9c6a0a31",
-  "package.json": "cb74ec99e0b95b6659f511d708395e40bccef4c13518e639145fea4b52edb269"
-}

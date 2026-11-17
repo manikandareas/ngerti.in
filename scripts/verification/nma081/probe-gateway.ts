@@ -44,6 +44,6 @@ const result = {
   download_bytes_match: source.equals(await readFile(downloaded)),
   attachment_sha256: createHash("sha256").update(source).digest("hex"),
 };
-await Bun.write(resolve(root, `docs/verification/nma-081/gateway-probe${finalProfile ? "-final" : ""}.json`), `${JSON.stringify(result, null, 2)}\n`);
+await Bun.write(resolve(root, `.dev/verification/nma-081/gateway-probe${finalProfile ? "-final" : ""}.json`), `${JSON.stringify(result, null, 2)}\n`);
 if (Object.values(result).some(value => value === false)) throw new Error("A native gateway assertion failed.");
 console.log(JSON.stringify(result));

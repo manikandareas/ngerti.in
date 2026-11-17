@@ -62,7 +62,7 @@ try {
   process.exitCode = 1;
 } finally {
   await save();
-  await Bun.write("docs/verification/nma-050/interactions/question-native.json", JSON.stringify({
+  await Bun.write(".dev/verification/nma-050/interactions/question-native.json", JSON.stringify({
     evidence_level: "native_question_answer_not_permission_approval", run: proof.run,
     pending: proof.pending, answer: proof.answer, pass: proof.pass ?? false, error: proof.error ?? null,
     native_requests: 1, permission_approval_verified: false,

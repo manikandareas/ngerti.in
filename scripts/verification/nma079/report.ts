@@ -2,9 +2,9 @@ import { existsSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { captureSource } from "./source";
 
-const directory = resolve(import.meta.dir, "../../../docs/verification/nma-079");
+const directory = resolve(import.meta.dir, "../../../.dev/verification/nma-079");
 const read = (name: string) => JSON.parse(readFileSync(join(directory, name), "utf8"));
-const contract = read("contract.json");
+const contract = JSON.parse(readFileSync(resolve(import.meta.dir, "../../../apps/server/tests/organizations/fixtures/http-contract.json"), "utf8"));
 const observations = ["http-observations-full.json", "http-observations.json"].flatMap(name => existsSync(join(directory, name)) ? read(name).observations : []);
 const native = read("native/report.json");
 const source = captureSource();

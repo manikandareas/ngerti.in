@@ -9,4 +9,4 @@ for(const a of proof.agents){const scope={agent_id:a.id,thread_id:a.thread_id};c
  for(const suffix of ["", "/view"]){const response=await fetch(`${base}/v1/browser/sessions/${a.session_id}${suffix}${suffix?"":`?agent_id=${a.id}&thread_id=${a.thread_id}`}`,{method:suffix?"POST":"GET",headers:{Authorization:`Bearer ${token}`,"Content-Type":"application/json"},...(suffix?{body:JSON.stringify(scope)}:{})});assert.equal(response.status,409);}
  report.profiles.push(changed);report.checks.push(`${a.harness}_view_ticket_and_old_generation_revoked`);
 }
-const revoked=await fetch("http://127.0.0.1:49958/revoke",{method:"POST"});assert(revoked.ok);report.checks.push("fixture_website_sessions_revoked_without_deleting_browser_profiles");await Bun.write("docs/verification/nma-058/auth-policy.json",JSON.stringify(report,null,2));
+const revoked=await fetch("http://127.0.0.1:49958/revoke",{method:"POST"});assert(revoked.ok);report.checks.push("fixture_website_sessions_revoked_without_deleting_browser_profiles");await Bun.write(".dev/verification/nma-058/auth-policy.json",JSON.stringify(report,null,2));

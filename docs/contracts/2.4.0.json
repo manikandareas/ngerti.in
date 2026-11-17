@@ -57279,7 +57279,7 @@
     "ticket": "NMA-060",
     "state": "ready",
     "scope": "engine_backend_api_only",
-    "evidence": "docs/verification/shared-machine/README.md"
+    "evidence": "docs/development/history.md#verification-archive--2026-11-17"
   },
   "http": [
     {

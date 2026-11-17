@@ -1,6 +1,6 @@
 # Persistent responsibilities and Routine API
 
-NMA-079 amendment: the [2.0.0 server-organizations consumer contract](server-organizations-api.md) and [verification report](../verification/nma-079/README.md) own current account-mode authentication, scope, normal native dispatch and readiness. Earlier versioned examples and pending-gate statements below retain their captured scope. Web/Tauri UI and deployment remain later milestones.
+NMA-079 amendment: the [2.0.0 server-organizations consumer contract](server-organizations-api.md) and [verification report](../development/history.md#verification-archive--2026-11-17 "Archive: docs/verification/nma-079/README.md at 043f7c9") own current account-mode authentication, scope, normal native dispatch and readiness. Earlier versioned examples and pending-gate statements below retain their captured scope. Web/Tauri UI and deployment remain later milestones.
 
 Planned November 12 amendment: [the server-organizations plan](server-organizations-plan-2026-11-12.md) and NMA-072–083 define PostgreSQL, authenticated organization/user scope, private Team-agent interactions and explicit connections. This guide retains its current/recorded implementation boundary until the new NMA-079 API gate verifies the changed contract; its owner-only examples do not establish multi-user authorization.
 
@@ -82,4 +82,4 @@ All routes except liveness require the private development bearer token. Mutatio
 - Thread snapshots include `goals`, `routines`, `occurrences`, and their authoritative cursor. Existing events/SSE replay exposes committed revisions and stable run/message identities.
 - `GET /v1/contracts` publishes all entity/command/error schemas, version 1.24.0. Semantic capture guidance and tool descriptions do not change command payload shapes or require data migration.
 
-The HTTP capability is backend readiness evidence only. UI/API-wide readiness, installers, deployment, webhooks, additional providers and general desktop/computer use are outside this ticket. See [verification evidence](../verification/nma-057/README.md) for actual denominators, versions, retained failures and native limitations.
+The HTTP capability is backend readiness evidence only. UI/API-wide readiness, installers, deployment, webhooks, additional providers and general desktop/computer use are outside this ticket. See [verification evidence](../development/history.md#verification-archive--2026-11-17 "Archive: docs/verification/nma-057/README.md at 043f7c9") for actual denominators, versions, retained failures and native limitations.

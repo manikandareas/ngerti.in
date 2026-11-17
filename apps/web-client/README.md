@@ -2,7 +2,7 @@
 
 Shared React + TypeScript application built with Vite, used by the Tauri desktop host and the browser development preview. The active conversation workspace consumes the harness-first API 1.18.0. Its visual and interaction reference is OpenMausBot 0.1.137; the component catalog remains available.
 
-The [existing-feature redesign evidence](../../docs/verification/openmaus-fidelity-2026-11-01/README.md) maps 19 surfaces to the pinned reference, with 122 passing unique browser cases and retained screenshots. Provider fixtures, real API persistence and managed-browser verification have separate evidence boundaries.
+The [existing-feature redesign evidence](../../docs/development/history.md#verification-archive--2026-11-17 "Archive: docs/verification/openmaus-fidelity-2026-11-01/README.md at 043f7c9") maps 19 surfaces to the pinned reference, with 122 passing unique browser cases and retained screenshots. Provider fixtures, real API persistence and managed-browser verification have separate evidence boundaries.
 
 ## Development
 
@@ -64,11 +64,11 @@ cd apps/web-client
 bun run test:conversation
 ```
 
-These desktop/mobile checks use the real API and isolated temporary SQLite state without native executors. Native browser verification and limitations are recorded in [NMA-061 evidence](../../docs/verification/nma-061/README.md).
+These desktop/mobile checks use the real API and isolated temporary SQLite state without native executors. Native browser verification and limitations are recorded in [NMA-061 evidence](../../docs/development/history.md#verification-archive--2026-11-17 "Archive: docs/verification/nma-061/README.md at 043f7c9").
 
 Creation defaults use the configured Tobi connection/model. Configure them in Settings; a missing account/model keeps the new agent and DM available for repair. Pending creation/message operations retain their exact idempotency key and body across reloads. Unknown native outcomes require reconciliation, not a new send.
 
-Create group and contextual Agent/Anggota, File, Goals and Routine panels consume the real API. They include scoped memory/skills, workspace files and artifacts, browser/VNC and Composio access, responsibilities, group membership, native questions and stop/recovery controls. See [NMA-062 evidence](../../docs/verification/nma-062/README.md). Test harnesses and external-provider fixtures are distinguished from native acceptance in each evidence cohort.
+Create group and contextual Agent/Anggota, File, Goals and Routine panels consume the real API. They include scoped memory/skills, workspace files and artifacts, browser/VNC and Composio access, responsibilities, group membership, native questions and stop/recovery controls. See [NMA-062 evidence](../../docs/development/history.md#verification-archive--2026-11-17 "Archive: docs/verification/nma-062/README.md at 043f7c9"). Test harnesses and external-provider fixtures are distinguished from native acceptance in each evidence cohort.
 
 Settings opens over the mounted conversation; closing it restores the draft and focus. Providers expand inline, while the selected account/provider remains URL-backed. The header and agent profile share one account/model/reasoning popup, with server-discovered choices and explicit billing.
 
@@ -101,8 +101,8 @@ Light, dark, and system modes use `next-themes` with the `ngertiin-web-client-th
 - [shadcn CLI](https://ui.shadcn.com/docs/cli)
 - [Hugeicons React](https://hugeicons.com/docs/integrations/react/quick-start)
 
-The approved conversation redesign is applied to the existing composer, questions/approvals, supported recovery actions, file chips and research sources. Text-only requests use the main composer; successful replies do not add saved-answer receipts. [Verification, screenshots and the remaining feature gaps](../../docs/verification/conversation-redesign-2026-11-05/README.md) distinguish UI changes from new runtime work.
+The approved conversation redesign is applied to the existing composer, questions/approvals, supported recovery actions, file chips and research sources. Text-only requests use the main composer; successful replies do not add saved-answer receipts. [Verification, screenshots and the remaining feature gaps](../../docs/development/history.md#verification-archive--2026-11-17 "Archive: docs/verification/conversation-redesign-2026-11-05/README.md at 043f7c9") distinguish UI changes from new runtime work.
 
-The 1.31.0 interaction update adds the Computer category with preparing/live/completed states. Preparing and completed activity use the same card shell without a historical image or viewer. Compact live previews hide upstream viewer controls and recover automatically without a manual reconnect action. The live preview requires the local backend and configured machine; the other local examples still work without them. See [the implementation evidence](../../docs/verification/conversation-implementation-2026-11-06/README.md) for product-owned DM/group questions, approval gates, failed-response retry, and live viewer proof boundaries.
+The 1.31.0 interaction update adds the Computer category with preparing/live/completed states. Preparing and completed activity use the same card shell without a historical image or viewer. Compact live previews hide upstream viewer controls and recover automatically without a manual reconnect action. The live preview requires the local backend and configured machine; the other local examples still work without them. See [the implementation evidence](../../docs/development/history.md#verification-archive--2026-11-17 "Archive: docs/verification/conversation-implementation-2026-11-06/README.md at 043f7c9") for product-owned DM/group questions, approval gates, failed-response retry, and live viewer proof boundaries.
 
-Only active Computer cards offer Open Computer. Custom answers appear as selectable, editable options. Approval details use an always-visible bounded scroll area with overflow-aware edge shadows. These presenters are shared with conversations; [follow-up verification and screenshots](../../docs/verification/conversation-implementation-2026-11-06/interaction-ui-refinement/README.md).
+Only active Computer cards offer Open Computer. Custom answers appear as selectable, editable options. Approval details use an always-visible bounded scroll area with overflow-aware edge shadows. These presenters are shared with conversations; [follow-up verification and screenshots](../../docs/development/history.md#verification-archive--2026-11-17 "Archive: docs/verification/conversation-implementation-2026-11-06/interaction-ui-refinement/README.md at 043f7c9").

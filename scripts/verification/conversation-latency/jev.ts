@@ -3,7 +3,7 @@ import { mkdirSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { JevRouter, type RoutingPacket } from "../../../apps/server/src/groups/router";
 
-const output = resolve(process.argv[2] ?? "docs/verification/conversation-latency/jev.json");
+const output = resolve(process.argv[2] ?? ".dev/verification/conversation-latency/jev.json");
 assert(
   process.env.TYPESAFE_API_KEY,
   "TYPESAFE_API_KEY is required; run with the root environment file.",

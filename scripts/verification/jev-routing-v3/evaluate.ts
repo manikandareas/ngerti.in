@@ -13,7 +13,7 @@ import { routingEvidence as legacyEvidence } from "./legacy/routing-policy";
 
 const variant = process.argv[2] ?? "semantic";
 const split = process.argv[3] ?? "development";
-const output = process.argv[4] ?? `docs/verification/jev-routing-v3/${variant}-${split}.json`;
+const output = process.argv[4] ?? `.dev/verification/jev-routing-v3/${variant}-${split}.json`;
 assert(["legacy", "single", "batch", "semantic"].includes(variant));
 assert(process.env.TYPESAFE_API_KEY);
 const base = routingCases().filter((sample) =>

@@ -3,7 +3,7 @@ import { createHash } from "node:crypto";
 import { readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
-const root = "docs/verification/nma-062";
+const root = ".dev/verification/nma-062";
 function files(directory: string): string[] {
   return readdirSync(directory, { withFileTypes: true }).flatMap((entry) =>
     entry.isDirectory() ? files(join(directory, entry.name)) : [join(directory, entry.name)],

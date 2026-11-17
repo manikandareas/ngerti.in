@@ -28,7 +28,7 @@ try {
   assert.equal((await all("app_effect")).filter((e: any) => e.agent_id === proof.agent.id).length, 3);
   report.checks.push("original_admission_receipts_replay_without_new_runs_or_app_effects");
   if (phase === "after") {
-    const before = await Bun.file("docs/verification/nma-059/receipts-before.json").json();
+    const before = await Bun.file(".dev/verification/nma-059/receipts-before.json").json();
     assert.deepEqual(report.effects, before.effects); assert.deepEqual(report.sessions, before.sessions); assert.deepEqual(report.runs, before.runs);
     report.checks.push("application_sessions_effects_and_run_observations_persist_after_backend_restart");
   }
@@ -44,4 +44,4 @@ try {
     report.checks.push("proof_grants_removed_user_connections_and_unknown_receipts_retained_zero_proof_goals_or_routines");
   }
 } catch (error) { report.error = String(error); process.exitCode = 1; }
-await Bun.write(`docs/verification/nma-059/receipts-${phase}.json`, JSON.stringify(report,null,2));
+await Bun.write(`.dev/verification/nma-059/receipts-${phase}.json`, JSON.stringify(report,null,2));

@@ -1,9 +1,0 @@
-{
-  "passed": [
-    "API key save, replace and local disconnect retain account identity"
-  ],
-  "failed": [],
-  "limits": [
-    "No paid inference or real remote provider revocation; disposable local connection records only. Fault injection is presentation evidence."
-  ]
-}

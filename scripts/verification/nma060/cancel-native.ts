@@ -31,4 +31,4 @@ try {
  }
  proof.pass=true;
 }catch(error){proof.error=String(error);process.exitCode=1;}
-finally{await save();await Bun.write("docs/verification/nma-060/final-cohort/cancel-native.json",JSON.stringify(proof,null,2));console.log(JSON.stringify({pass:proof.pass??false,error:proof.error??null}));}
+finally{await save();await Bun.write(".dev/verification/nma-060/final-cohort/cancel-native.json",JSON.stringify(proof,null,2));console.log(JSON.stringify({pass:proof.pass??false,error:proof.error??null}));}

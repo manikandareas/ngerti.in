@@ -4,7 +4,7 @@ import { expect, test } from "@playwright/test";
 
 const evidence = resolve(
   process.env.NGERTIIN_ACCOUNT_ENTRY_EVIDENCE ??
-    "../../docs/verification/sign-in-redesign-2026-11-15",
+    "../../.dev/verification/sign-in-redesign-2026-11-15",
 );
 const require = createRequire(import.meta.url);
 const errors = new WeakMap<object, string[]>();

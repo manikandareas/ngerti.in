@@ -11,7 +11,7 @@ const phase = process.argv[5] ?? "initial";
 assert(base?.startsWith("http://127.0.0.1:"));
 assert(harness === "codex" || harness === "muse");
 const { token } = await Bun.file(join(directory, "installation.json")).json();
-const output = `docs/verification/nma-055/native/native-${harness}-${phase}.json`;
+const output = `.dev/verification/nma-055/native/native-${harness}-${phase}.json`;
 const report: Record<string, any> = {
   harness,
   phase,
@@ -113,7 +113,7 @@ function nativeBytes(connectionId: string, workspaceId: string) {
 try {
   if (phase === "resume") {
     const previous = await Bun.file(
-      `docs/verification/nma-055/native/native-${harness}-initial.json`,
+      `.dev/verification/nma-055/native/native-${harness}-initial.json`,
     ).json();
     for (const key of [
       "agent_id",

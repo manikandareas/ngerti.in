@@ -1,4 +1,0 @@
-$ bun run --filter @ngertiin/server typecheck && bun run typecheck:web-client
-@ngertiin/server typecheck: Exited with code 0
-$ bun --filter @ngertiin/web-client typecheck
-@ngertiin/web-client typecheck: Exited with code 0

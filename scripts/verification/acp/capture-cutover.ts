@@ -3,7 +3,7 @@ import { copyFileSync, existsSync, mkdirSync, readFileSync, rmSync } from "node:
 import { join, resolve } from "node:path";
 
 const root = resolve(import.meta.dir, "../../..");
-const output = join(root, "docs/verification/acp-2026-11-16/cutover");
+const output = join(root, ".dev/verification/acp-2026-11-16/cutover");
 if (existsSync(join(output, "source-archive.json")))
   throw new Error("This cutover capture is already sealed.");
 mkdirSync(output, { recursive: true });

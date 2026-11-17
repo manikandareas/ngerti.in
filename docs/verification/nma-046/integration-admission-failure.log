@@ -1,8 +1,0 @@
-FAIL Real send, streamed reply and two-tab convergence without duplicate publication AssertionError [ERR_ASSERTION]: Run ended with failed: RUNTIME_FAILED
-+ actual - expected
-
-+ 'failed'
-- 'succeeded'
-
-PASS Refresh preserves message identities, private route and read state
-PASS Offline disables send, exposes reconnect and keeps draft until recovery

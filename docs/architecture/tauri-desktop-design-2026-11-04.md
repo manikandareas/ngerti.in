@@ -4,7 +4,7 @@
 
 Date: 2026-11-04. Status: proposed design, requested by the user after using the Electron development app. No Tauri runtime, installation, benchmark, or feature acceptance is claimed. This document proposes a macOS ARM64 development trial; it does not close distribution or other-platform work.
 
-Implementation update (2026-11-05): the user subsequently authorized implementation. See [the implemented development host](tauri-development.md) and [current verification](../verification/tauri-development/README.md). The original proposal and its benchmark gates below remain a design record, not claims that every gate has passed.
+Implementation update (2026-11-05): the user subsequently authorized implementation. See [the implemented development host](tauri-development.md) and [current verification](../development/history.md#verification-archive--2026-11-17 "Archive: docs/verification/tauri-development/README.md at 043f7c9"). The original proposal and its benchmark gates below remain a design record, not claims that every gate has passed.
 
 ## Recommendation
 
@@ -22,8 +22,8 @@ The investigation reviewed product scope, architecture, feature decisions, roadm
 - [Roadmap](../backlog/README.md), [acceptance](../development/acceptance.md), [NMA-060](../backlog/NMA-060.md), [NMA-064](../backlog/NMA-064.md).
 - Electron baseline: `1226b91f697bbb063d993e4a1043e00fca597fde`; latest frontend optimization: `807bfa08b984cdbaa3feb9387b661f1e02b2e873`.
 - At proposal time, package manifests pinned Electron 45.2.2 and Bun 1.3.10. That host served the React/Vite UI through a saved loopback origin and launched or attached the Bun backend. Its retired design is available in the [historical Git snapshot](../development/history.md); [Tauri development](tauri-development.md) describes the current host.
-- Existing [performance evidence](../verification/electron-development/ui-performance-2026-11-04.md) reports zero historical Markdown rerenders on repeated Detail/composer interactions after optimization, and a median p95 Detail-open frame interval of 17.5 ms across three opens. Some approximately 33 ms frames and a 94 ms first-open task in a content-heavy group remain. This small cohort is not a general smoothness guarantee.
-- Computer now uses a Cua iframe and media protocol, with one retained Linux machine. The old noVNC UI was removed. See [machine evidence](../verification/shared-machine/README.md).
+- Existing [performance evidence](../development/history.md#verification-archive--2026-11-17 "Archive: docs/verification/electron-development/ui-performance-2026-11-04.md at 043f7c9") reports zero historical Markdown rerenders on repeated Detail/composer interactions after optimization, and a median p95 Detail-open frame interval of 17.5 ms across three opens. Some approximately 33 ms frames and a 94 ms first-open task in a content-heavy group remain. This small cohort is not a general smoothness guarantee.
+- Computer now uses a Cua iframe and media protocol, with one retained Linux machine. The old noVNC UI was removed. See [machine evidence](../development/history.md#verification-archive--2026-11-17 "Archive: docs/verification/shared-machine/README.md at 043f7c9").
 
 The project knowledge-graph tools were unavailable, so discovery used local source search. This was a source/evidence audit, not a fresh functional walkthrough.
 

@@ -1,8 +1,0 @@
-The following is a diff from the previous accessibility tree for Window: "Ngertiin · Web Client" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
-~																		1220 text 22.47 s
-~							1227 text Network data available 
-+								1228 container
-+									1229 text Connection lost. Reconnecting…
-+									1230 button Coba hubungkan lagi
-+									1231 button Periksa pengaturan
-The focused UI element is 955 pop up button Throttling, Value: Presets: Offline

@@ -19,7 +19,7 @@ const report: any = { phase, checks: [], completed: false };
 function check(name: string, pass: boolean) {
   report.checks.push({ name, pass });
   writeFileSync(
-    "docs/verification/nma-083/deployed-transport.json",
+    ".dev/verification/nma-083/deployed-transport.json",
     JSON.stringify(report, null, 2),
     { mode: 0o600 },
   );
@@ -152,7 +152,7 @@ for (const path of ["/health/ready", "/v1/harness/tools", "/v1/machine/native/st
 }
 report.completed = true;
 writeFileSync(
-  "docs/verification/nma-083/deployed-transport.json",
+  ".dev/verification/nma-083/deployed-transport.json",
   JSON.stringify(report, null, 2),
   { mode: 0o600 },
 );

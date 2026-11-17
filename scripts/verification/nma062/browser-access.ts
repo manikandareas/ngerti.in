@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { chromium } from "playwright";
 
 const proof = await Bun.file(".dev/nma062-native/proof.json").json();
-const recorded = await Bun.file("docs/verification/nma-062/native-browser.json").json();
+const recorded = await Bun.file(".dev/verification/nma-062/native-browser.json").json();
 const base = "http://127.0.0.1:4322";
 const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
@@ -20,7 +20,7 @@ try {
   await page.getByText("Browser percakapan", { exact: true }).click();
   await page.getByRole("button", { name: "Lihat browser", exact: true }).click();
   await page.getByText("Tampilan terhubung", { exact: true }).waitFor({ timeout: 30000 });
-  await page.screenshot({ path: "docs/verification/nma-062/restart-browser.png" });
+  await page.screenshot({ path: ".dev/verification/nma-062/restart-browser.png" });
   const profile = await (
     await page.request.get(`${base}/v1/entities/browser_profile/${recorded.profile_id}`)
   ).json();
@@ -53,7 +53,7 @@ try {
       { exact: true },
     )
     .waitFor();
-  await page.screenshot({ path: "docs/verification/nma-062/browser-auth-required.png" });
+  await page.screenshot({ path: ".dev/verification/nma-062/browser-auth-required.png" });
   const profiles = await (
     await page.request.get(
       `${base}/v1/browser/profiles?agent_id=${proof.codex.agent.id}&thread_id=${proof.codex.thread_id}`,
@@ -65,7 +65,7 @@ try {
     .length;
   assert.equal(after, count);
   await Bun.write(
-    "docs/verification/nma-062/browser-access.json",
+    ".dev/verification/nma-062/browser-access.json",
     JSON.stringify(
       {
         restart_view_connected: true,

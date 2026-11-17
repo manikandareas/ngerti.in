@@ -15,7 +15,7 @@ const streamAbort = new AbortController();
 let streamTask: Promise<void> | undefined;
 let agentId: string | undefined;
 let threadId: string | undefined;
-const reportPath = `docs/verification/nma-053/native-${harness}.json`;
+const reportPath = `.dev/verification/nma-053/native-${harness}.json`;
 const digest = (text: string) => createHash("sha256").update(text).digest("hex");
 async function api(path: string, body?: object, key = crypto.randomUUID()) {
   const response = await fetch(`${base}${path}`, {
@@ -116,7 +116,7 @@ async function capture(after: number) {
 try {
   if (phase === "replay") {
     const previous = await Bun.file(
-      "docs/verification/nma-053/native-muse-replay-limit.json",
+      ".dev/verification/nma-053/native-muse-replay-limit.json",
     ).json();
     agentId = previous.agent_id;
     threadId = previous.thread_id;

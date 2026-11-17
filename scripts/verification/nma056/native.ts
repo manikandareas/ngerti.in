@@ -7,7 +7,7 @@ import type { Entity } from "../../../apps/server/src/contracts";
 const base = process.argv[2];
 const directory = resolve(process.argv[3]);
 const phase = process.argv[4] ?? "initial";
-const output = process.argv[5] ?? `docs/verification/nma-056/native/${phase}.json`;
+const output = process.argv[5] ?? `.dev/verification/nma-056/native/${phase}.json`;
 assert(base?.startsWith("http://127.0.0.1:"));
 const { token } = await Bun.file(join(directory, "installation.json")).json();
 const report: Record<string, any> = {
@@ -250,7 +250,7 @@ try {
     );
     report.waiting_bindings = snapshot.bindings;
   } else {
-    const previous = await Bun.file("docs/verification/nma-056/native/initial.json").json();
+    const previous = await Bun.file(".dev/verification/nma-056/native/initial.json").json();
     for (const key of [
       "coordinator_id",
       "reviewer_id",

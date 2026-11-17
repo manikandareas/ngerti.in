@@ -106,7 +106,7 @@ if (process.argv[3] === "child") {
         replayed_native_requests: 0,
         artifacts: 1,
       };
-      await Bun.write("docs/verification/nma-054/crash.json", JSON.stringify(report, null, 2));
+      await Bun.write(".dev/verification/nma-054/crash.json", JSON.stringify(report, null, 2));
       console.log(JSON.stringify(report));
     } finally {
       store.close();

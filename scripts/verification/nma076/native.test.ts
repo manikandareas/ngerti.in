@@ -13,7 +13,7 @@ import { captureSource } from "./evidence";
 test("native retained Cua domains isolate two people and two organizations on the declared host", async () => {
   const f = await fixture();
   const stamp = new Date().toISOString().replaceAll(":", "-");
-  const directory = join(import.meta.dir, "../../../docs/verification/nma-076", stamp);
+  const directory = join(import.meta.dir, "../../../.dev/verification/nma-076", stamp);
   mkdirSync(directory, { recursive: true });
   const runtime = new DomainRuntime(f.dir, f.owner, {
     version: 1,

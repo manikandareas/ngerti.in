@@ -12,7 +12,7 @@ const report: any = { phase, checks: [], completed: false };
 function check(name: string, pass: boolean) {
   report.checks.push({ name, pass });
   writeFileSync(
-    "docs/verification/nma-083/deployed-isolation.json",
+    ".dev/verification/nma-083/deployed-isolation.json",
     JSON.stringify(report, null, 2),
     { mode: 0o600 },
   );
@@ -93,7 +93,7 @@ check("execution-domain identities differ", machines[0].id !== machines[1].id);
 report.machines = machines.map((v) => ({ id: v.id, state: v.state, generation: v.generation }));
 report.completed = true;
 writeFileSync(
-  "docs/verification/nma-083/deployed-isolation.json",
+  ".dev/verification/nma-083/deployed-isolation.json",
   JSON.stringify(report, null, 2),
   { mode: 0o600 },
 );

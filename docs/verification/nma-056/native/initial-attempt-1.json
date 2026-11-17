@@ -1,7 +1,0 @@
-{
-  "phase": "initial",
-  "started_at": "2026-10-31T05:37:46.665Z",
-  "checks": [],
-  "native_approvals": [],
-  "error": "/v1/connections: INVALID_REQUEST\n\n422 !== 200\n"
-}

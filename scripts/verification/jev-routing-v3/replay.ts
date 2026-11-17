@@ -222,8 +222,8 @@ report.source_sha256 = Object.fromEntries(
 );
 const output =
   process.argv[2] === "rename"
-    ? "docs/verification/jev-routing-v3/historical-replay-renamed.json"
-    : "docs/verification/jev-routing-v3/historical-replay.json";
+    ? ".dev/verification/jev-routing-v3/historical-replay-renamed.json"
+    : ".dev/verification/jev-routing-v3/historical-replay.json";
 await Bun.write(
   ".dev/jev-routing-v3/historical-packets.json",
   JSON.stringify(

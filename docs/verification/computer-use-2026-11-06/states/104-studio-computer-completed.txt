@@ -1,3 +1,0 @@
-The following is a diff from the previous accessibility tree for Window: "Assistant studio · Ngertiin" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
-Removed element IDs: 452
-The focused UI element is 446 toggle button Selesai, Value: 1

@@ -1,6 +1,6 @@
 # Scoped application accounts, MCP catalogs and Team skills
 
-NMA-079 amendment: the [2.0.0 server-organizations consumer contract](server-organizations-api.md) and [verification report](../verification/nma-079/README.md) own current account-mode authentication, scope, normal native dispatch and readiness. Earlier versioned examples and pending-gate statements below retain their captured scope. Web/Tauri UI and deployment remain later milestones.
+NMA-079 amendment: the [2.0.0 server-organizations consumer contract](server-organizations-api.md) and [verification report](../development/history.md#verification-archive--2026-11-17 "Archive: docs/verification/nma-079/README.md at 043f7c9") own current account-mode authentication, scope, normal native dispatch and readiness. Earlier versioned examples and pending-gate statements below retain their captured scope. Web/Tauri UI and deployment remain later milestones.
 
 NMA-078 extends the NMA-077 provider boundary. Model-provider selection and app-account selection are independent. This backend contract targets the server and later web/Tauri consumers; desktop-rs source was retired on November 15. The complete multi-user API gate remains NMA-079.
 
@@ -65,4 +65,4 @@ Before sending an operation, persist the actor/organization/run/account, command
 
 The narrow server-authority `settleAppEffect` operation may update only a previously reserved matching effect. This preserves a real late outcome after membership is revoked, with its original private attribution. Current authorization is checked before returning the result, so a revoked actor cannot receive it. Startup retains unacknowledged operations as unknown. No provider tokens, raw arguments or SDK exception bodies enter these receipts.
 
-See [NMA-078](../backlog/NMA-078.md), [verification](../verification/nma-078/README.md), [application APIs](apps-research-visual-api.md), and [memory/skills APIs](memory-skills-api.md).
+See [NMA-078](../backlog/NMA-078.md), [verification](../development/history.md#verification-archive--2026-11-17 "Archive: docs/verification/nma-078/README.md at 043f7c9"), [application APIs](apps-research-visual-api.md), and [memory/skills APIs](memory-skills-api.md).

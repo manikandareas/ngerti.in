@@ -14,7 +14,7 @@ The API uses Elysia for routing, lifecycle hooks and standard-schema validation.
 
 ## Source audit and local adaptations
 
-Primary observed source: [Openbot](https://github.com/nightly-labs/openbot/tree/01e4b18e238e5de72a3570162c9f4275bb585786), exact revision `01e4b18e238e5de72a3570162c9f4275bb585786`. Source hashes and module paths are recorded in [provenance.json](../verification/nma-047/provenance.json).
+Primary observed source: [Openbot](https://github.com/nightly-labs/openbot/tree/01e4b18e238e5de72a3570162c9f4275bb585786), exact revision `01e4b18e238e5de72a3570162c9f4275bb585786`. Source hashes and module paths are recorded in [provenance.json](../development/history.md#verification-archive--2026-11-17 "Archive: docs/verification/nma-047/provenance.json at 043f7c9").
 
 | Observed module/flow | Adoption and changes |
 | --- | --- |
@@ -36,7 +36,7 @@ This is a small behavioral port with Ngertiin-specific contracts, not vendoring 
 - `@muse-code/sdk@1.4.12` completed its real spawn/handshake/request/close path under Bun against an MSP protocol fixture. This proves SDK runtime compatibility; native Muse Code, login, subscriptions, inference, resume and product-tools are unverified here.
 - No native executor is registered by the default bootstrap. Queued work remains queued. NMA-048–050 establish supported versions, capabilities, billing/credential ownership and the native adapters.
 
-See [retained evidence](../verification/nma-047/README.md). SDK/protocol fixtures and native handshakes are labeled separately.
+See [retained evidence](../development/history.md#verification-archive--2026-11-17 "Archive: docs/verification/nma-047/README.md at 043f7c9"). SDK/protocol fixtures and native handshakes are labeled separately.
 
 ## Storage and background execution
 

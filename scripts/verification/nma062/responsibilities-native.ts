@@ -75,12 +75,12 @@ try {
     await page.getByRole("button", { name: `${artifact.name} →`, exact: true }).click();
     await page.getByRole("button", { name: `Buka ${artifact.name}`, exact: true }).click();
     await page.getByText(bytes.toString(), { exact: true }).waitFor();
-    await page.screenshot({ path: `docs/verification/nma-062/native-${family}-file.png` });
+    await page.screenshot({ path: `.dev/verification/nma-062/native-${family}-file.png` });
     await page.getByRole("button", { name: "Close", exact: true }).click();
     await page.getByRole("tab", { name: "Routine", exact: true }).click();
     await page.getByRole("button", { name: current.routines[0]?.instruction, exact: true }).click();
     await page.getByText("Asia/Makassar", { exact: true }).waitFor();
-    await page.screenshot({ path: `docs/verification/nma-062/native-${family}-routine.png` });
+    await page.screenshot({ path: `.dev/verification/nma-062/native-${family}-routine.png` });
     if (goal.state === "active") {
       await page.getByRole("tab", { name: "Goals", exact: true }).click();
       await page.getByRole("button", { name: goal.title, exact: true }).click();
@@ -92,7 +92,7 @@ try {
       (s) => s.goals[0]?.state === "paused" && s.routines[0]?.state === "paused",
     );
     await Bun.write(
-      `docs/verification/nma-062/responsibility-${family}.json`,
+      `.dev/verification/nma-062/responsibility-${family}.json`,
       JSON.stringify(
         {
           goals: current.goals,
@@ -110,7 +110,7 @@ try {
   assert.deepEqual(errors, []);
 } finally {
   await page
-    .screenshot({ path: "docs/verification/nma-062/responsibility-last.png" })
+    .screenshot({ path: ".dev/verification/nma-062/responsibility-last.png" })
     .catch(() => {});
   await browser.close();
 }

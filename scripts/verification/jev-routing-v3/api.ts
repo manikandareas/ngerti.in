@@ -134,7 +134,7 @@ try {
     JSON.stringify(contract, null, 2) + "\n",
   );
   await Bun.write(
-    "docs/verification/jev-routing-v3/api.json",
+    ".dev/verification/jev-routing-v3/api.json",
     JSON.stringify(
       {
         captured_at: new Date().toISOString(),

@@ -31,7 +31,7 @@ try {
   let observed;
   do { observed = await call("get_browser_state", { pid: window.pid, window_id: Number(window.window_id) }); if (observed.tabs.some((item: { title?: string }) => item.title?.includes("Example Domain"))) break; await Bun.sleep(500); } while (Date.now() < deadline);
   assert(observed.tabs.some((item: { title?: string }) => item.title?.includes("Example Domain")), JSON.stringify(observed));
-  await Bun.write("docs/verification/shared-machine/online.json", JSON.stringify({ date: "2026-11-04", local_runtime: base, machine_state: current.state, exact_browser_binding: true, url: "https://example.com/", observed_title: "Example Domain", login_tested: false, provider_inference: false }, null, 2));
+  await Bun.write(".dev/verification/shared-machine/online.json", JSON.stringify({ date: "2026-11-04", local_runtime: base, machine_state: current.state, exact_browser_binding: true, url: "https://example.com/", observed_title: "Example Domain", login_tested: false, provider_inference: false }, null, 2));
   console.log("Live installation: exact retained browser reached https://example.com and observed Example Domain.");
 } finally {
   await call("end_session").catch(() => {});

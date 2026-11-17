@@ -1,5 +1,0 @@
-{
-  "started_at": "2026-10-31T08:03:14.670Z",
-  "checks": [],
-  "error": "TypeError: undefined is not an object (evaluating 'info.Config')"
-}

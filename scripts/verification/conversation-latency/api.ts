@@ -74,7 +74,7 @@ try {
     `${JSON.stringify(contract, null, 2)}\n`,
   );
   await Bun.write(
-    join(projectRoot, "docs/verification/conversation-latency/api.json"),
+    join(projectRoot, ".dev/verification/conversation-latency/api.json"),
     `${JSON.stringify(
       {
         captured_at: new Date().toISOString(),

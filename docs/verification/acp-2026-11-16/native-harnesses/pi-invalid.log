@@ -1,9 +1,0 @@
-bun test v1.3.10 (30e609e0)
-
-../../scripts/verification/acp/selected-providers.test.ts:
-(pass) native ACP uses OpenCode GLM Flash Free and the existing Pi Sumopod DeepSeek configuration [9119.13ms]
-
- 1 pass
- 0 fail
- 10 expect() calls
-Ran 1 test across 1 file. [9.82s]

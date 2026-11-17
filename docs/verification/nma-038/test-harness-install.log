@@ -1,9 +1,0 @@
-Using CPython 3.14.9 interpreter at: .dev/nma-033/production/bin/python
-Resolved 5 packages in 222ms
-Prepared 1 package in 366ms
-Installed 5 packages in 24ms
- + iniconfig==2.3.1
- + packaging==26.3
- + pluggy==1.7.0
- + pygments==2.21.0
- + pytest==8.4.2

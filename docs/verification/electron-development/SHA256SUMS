@@ -1,8 +1,0 @@
-ead92c9a95384dc7d4efb390f090ac941a15b8a8d14a5fecf26dc8bc12eeae43  apps/desktop/src/main.ts
-8e7752ee529ace68a2593f76d81c1a0d4da4a15b2e8e9f13b9962a7d1373fbf8  apps/desktop/src/supervisor.ts
-cffe341ecc7f107b946acdb9f717b15f820a3882501fb962e64d2b7539402a89  apps/desktop/src/gateway.ts
-057c2554c9c7fd16ad9f5eb2d31f3fa0f453b3ba46e4619380e373f47b50d173  apps/desktop/src/profile.ts
-d2a4edc9b8e473ba06b3182e29d225c45a90cf268379cb360363bd2ed0bab585  apps/desktop/src/preload.ts
-acff6d3c823b0cb91690cd7e88347c04364c46a40f6eaa690ae63d8a4c2129ae  apps/server/src/main.ts
-5f2cc5012419b08e6fefa11f6c6e348b60bfc6cb8342d554d4d043e4ebbb6054  apps/server/src/runtime-record.ts
-e6b5dafbdaa7e1a0929213bca4e446002285623dcc3a186ac0e28b6caf196a8b  apps/desktop/out/Ngertiin Dev-darwin-arm64/Ngertiin Dev.app/Contents/Resources/app.asar

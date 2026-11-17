@@ -38,4 +38,4 @@ try {
  const sorted=report.actions.map((a:any)=>a.elapsed_ms).sort((a:number,b:number)=>a-b);report.action_latency_ms={count:sorted.length,min:sorted[0],p50:sorted[Math.floor(sorted.length*.5)],p95:sorted[Math.min(sorted.length-1,Math.floor(sorted.length*.95))],max:sorted.at(-1)};
  report.native_runs=report.runs.length;report.succeeded=report.runs.filter((r:any)=>r.status==="succeeded").length;report.failed=0;report.unknown=0;
 } catch(error){report.error=String(error);process.exitCode=1;}
-finally {await Bun.write(".dev/nma058/native-proof.json",JSON.stringify(proof,null,2));await Bun.write(`docs/verification/nma-058/receipts-${mode}.json`,JSON.stringify(report,null,2));}
+finally {await Bun.write(".dev/nma058/native-proof.json",JSON.stringify(proof,null,2));await Bun.write(`.dev/verification/nma-058/receipts-${mode}.json`,JSON.stringify(report,null,2));}

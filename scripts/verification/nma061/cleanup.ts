@@ -10,5 +10,5 @@ for (const connection of [proof.codex, proof.muse].filter(Boolean)) {
 }
 if (proof.credential_ref) unlinkSync(`${state}/credentials/${proof.credential_ref}`);
 unlinkSync(`${state}/connections/${proof.codex.id}/codex/auth.json`);
-await Bun.write('docs/verification/nma-061/cleanup.json', JSON.stringify({ connections: results, copied_credentials_removed: true, original_credentials_untouched: true }, null, 2));
+await Bun.write('.dev/verification/nma-061/cleanup.json', JSON.stringify({ connections: results, copied_credentials_removed: true, original_credentials_untouched: true }, null, 2));
 console.log('Revoked only the two proof connections and removed their credential copies.');

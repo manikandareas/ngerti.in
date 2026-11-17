@@ -1,6 +1,6 @@
 # PostgreSQL persistence and offline SQLite import
 
-NMA-072 replaces the synchronous SQLite application store with PostgreSQL. The existing single-owner HTTP contract remains in place; account login, organization binding, RLS and multi-user access remain NMA-073–075 and the NMA-079 API gate. See [implementation evidence](../verification/nma-072/README.md) and [the main plan](server-organizations-plan-2026-11-12.md).
+NMA-072 replaces the synchronous SQLite application store with PostgreSQL. The existing single-owner HTTP contract remains in place; account login, organization binding, RLS and multi-user access remain NMA-073–075 and the NMA-079 API gate. See [implementation evidence](../development/history.md#verification-archive--2026-11-17 "Archive: docs/verification/nma-072/README.md at 043f7c9") and [the main plan](server-organizations-plan-2026-11-12.md).
 
 ## Runtime and schema
 
@@ -73,6 +73,6 @@ Restore writes a new directory and verifies bytes. It does not redirect a runnin
 
 `bun run test:server` creates an isolated, loopback-only disposable PostgreSQL container when `NGERTIIN_TEST_DATABASE_URL` is unset and removes that container on completion. Docker must be available. To use an already provisioned disposable database, set that explicit variable. Fixtures allocate and remove their own schemas and state directories; they never fall back to `NGERTIIN_DATABASE_URL`.
 
-`compose.postgres.yml` is an optional fixed-port disposable setup. `bun run verify:foundation` runs lifecycle, PostgreSQL race/crash/import/restore and bootstrap tests. Current web verification server helpers require `NGERTIIN_TEST_DATABASE_URL`. Historical SQLite-native probes remain pinned to their captured revision; consult [the inventory](../verification/nma-072/inventory.md) before reusing them.
+`compose.postgres.yml` is an optional fixed-port disposable setup. `bun run verify:foundation` runs lifecycle, PostgreSQL race/crash/import/restore and bootstrap tests. Current web verification server helpers require `NGERTIIN_TEST_DATABASE_URL`. Historical SQLite-native probes remain pinned to their captured revision; consult [the inventory](../development/history.md#verification-archive--2026-11-17 "Archive: docs/verification/nma-072/inventory.md at 043f7c9") before reusing them.
 
 For persistent local development through OrbStack, `compose.postgres.local.yml` uses the separate `ngertiin_postgres18_data` volume and binds port 55472 to loopback. Set `NGERTIIN_POSTGRES_PASSWORD` privately, keep it consistent with `NGERTIIN_DATABASE_URL`, then run `docker --context orbstack compose -f compose.postgres.local.yml up -d`. This configuration is separate from the disposable test database and retired PostgreSQL volumes. It does not establish the NMA-082 central-server deployment gate.

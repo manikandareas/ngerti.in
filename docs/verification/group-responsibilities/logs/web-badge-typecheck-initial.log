@@ -1,3 +1,0 @@
-$ tsc -b && vite build
-src/features/conversation/components/work-activity.tsx(93,16): error TS2339: Property 'active' does not exist on type '{ paused: string; stopped: string; }'.
-error: script "build" exited with code 1

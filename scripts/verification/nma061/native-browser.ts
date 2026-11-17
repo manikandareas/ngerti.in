@@ -40,9 +40,9 @@ try {
   assert(final.messages.some((m: { author: string; text: string }) => m.author === 'agent' && /3.?151/.test(m.text)));
   await page.reload(); await page.getByRole('button', { name: `Detail UI proof ${family}`, exact: true }).waitFor();
   const after = await snapshot(threadId); assert.equal(after.runs.length, 2);
-  await page.screenshot({ path: `docs/verification/nma-061/native-${family}.png` });
+  await page.screenshot({ path: `.dev/verification/nma-061/native-${family}.png` });
   results.push({ family, thread_id: threadId, agent_id: receipt.agent.id, opening_status: opening.runs[0].status, run: final.runs.at(-1), billing: connection.effective_billing_source, reload_run_count: after.runs.length });
-  await Bun.write('docs/verification/nma-061/native.json', JSON.stringify({ results, errors }, null, 2));
+  await Bun.write('.dev/verification/nma-061/native.json', JSON.stringify({ results, errors }, null, 2));
   await page.getByRole('button', { name: /Tobi.*Asisten personal/ }).click();
  }
  assert.deepEqual(errors, []);

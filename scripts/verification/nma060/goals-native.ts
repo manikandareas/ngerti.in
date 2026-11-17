@@ -8,7 +8,7 @@ const base = process.argv[2];
 const directory = resolve(process.argv[3]);
 const phase = process.argv[4];
 assert(base?.startsWith("http://127.0.0.1:"));
-const output = process.argv[5] ?? `docs/verification/nma-060/final-cohort/goals/${phase}.json`;
+const output = process.argv[5] ?? `.dev/verification/nma-060/final-cohort/goals/${phase}.json`;
 const proofFile = resolve(".dev/nma060-goals-proof.json");
 mkdirSync(resolve(".dev/nma057"), { recursive: true, mode: 0o700 });
 const proof: any = existsSync(proofFile)
@@ -297,7 +297,7 @@ try {
   } else if (phase === "resume" || phase === "resume-codex" || phase === "resume-muse") {
     await cohort(async (a: any) => {
       if (!a.native_session) {
-        const baseline = await Bun.file("docs/verification/nma-060/final-cohort/goals/correct.json").json();
+        const baseline = await Bun.file(".dev/verification/nma-060/final-cohort/goals/correct.json").json();
         a.native_session = baseline.observations[a.harness].bindings.find(
           (b: any) => b.active && b.agent_id === a.id,
         ).native_session_id;

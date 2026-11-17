@@ -1,7 +1,0 @@
-PASS Native clarify survives reload, accepts one answer across two tabs
-PASS Native clarify cancellation withdraws the original question
-PASS Draft survives offline reconnect and reload without a new message
-PASS Empty group, real peer reply and private artifact isolation
-PASS Group history export preserves author attribution in selected archive
-PASS All adopted capability entry points retain responsive and keyboard behavior
-PASS Long conversation text and 320px reflow

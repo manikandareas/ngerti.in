@@ -1,9 +1,0 @@
-{
-  "original_container_count": 24,
-  "current_container_count": 24,
-  "same_container_identities": true,
-  "all_running": true,
-  "host_docker_active_since": "Fri 2026-10-16 22:54:49 UTC",
-  "health_baseline_recorded": false,
-  "same_container_identities_after_final_runtime": true
-}

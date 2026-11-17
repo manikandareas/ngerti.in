@@ -87,7 +87,7 @@ try {
     limits:
       "Direct VM IP connection from macOS is unavailable in this isolated VM configuration. Public DNS/ACME, direct-network reachability and actual Tauri journeys remain unverified.",
   };
-  writeFileSync("docs/verification/nma-082/remote-ingress.json", JSON.stringify(report, null, 2));
+  writeFileSync(".dev/verification/nma-082/remote-ingress.json", JSON.stringify(report, null, 2));
   console.log(JSON.stringify({ pass: report.pass, fail: report.fail }));
   if (report.fail) process.exitCode = 1;
 } finally {

@@ -48,7 +48,7 @@ The earlier remaining-feature list is narrowed by these decisions: general regen
 
 The source contract is currently `1.30.0`; the server pins Cua SDK `0.10.1` and Muse SDK `1.4.14`. The shared-machine evidence records spacesd `0.8.0` for the pinned image. Recheck the exact tuple before implementation or a dependency upgrade.
 
-The [5 November UI report](../verification/conversation-redesign-2026-11-05/README.md) records its own historical build, browser and fixture results. Those results do not prove the new backend and streaming behavior in this plan. NMA-060 is currently Done for its accepted scope; new contract changes require verification before UI consumption.
+The [5 November UI report](../development/history.md#verification-archive--2026-11-17 "Archive: docs/verification/conversation-redesign-2026-11-05/README.md at 043f7c9") records its own historical build, browser and fixture results. Those results do not prove the new backend and streaming behavior in this plan. NMA-060 is currently Done for its accepted scope; new contract changes require verification before UI consumption.
 
 ## Target module responsibilities
 
@@ -373,9 +373,9 @@ Store new evidence under a dated directory following `docs/verification/`. Inclu
 
 ### Repository implementation and evidence
 
-- [Conversation redesign and screenshots](../verification/conversation-redesign-2026-11-05/README.md)
+- [Conversation redesign and screenshots](../development/history.md#verification-archive--2026-11-17 "Archive: docs/verification/conversation-redesign-2026-11-05/README.md at 043f7c9")
 - [Shared-machine architecture](shared-machine-cua-plan-2026-11-04.md)
-- [Shared-machine verification](../verification/shared-machine/README.md)
+- [Shared-machine verification](../development/history.md#verification-archive--2026-11-17 "Archive: docs/verification/shared-machine/README.md at 043f7c9")
 - [Group request contracts](../../apps/server/src/groups/contracts.ts)
 - [Group request and continuation lifecycle](../../apps/server/src/groups/service.ts)
 - [Product tool catalog](../../apps/server/src/harness/product-tool-contracts.ts)
@@ -399,11 +399,11 @@ Latest user decisions in the current conversation govern the interaction and UI 
 
 ## Working-tree implementation — 2026-11-06
 
-The shared product-interaction service, typed protected-action decisions, failure-only response retry, natural composer flow, attributed live Computer activity, stable viewer renewal and the updated UI are implemented under contract 1.31.0. See the [implementation report, screenshots, test results and remaining proof boundaries](../verification/conversation-implementation-2026-11-06/README.md). This is a local working-tree delivery; no additional milestone or production/package acceptance is implied. Separate viewer grants were selected for simultaneous surfaces, with in-place gateway credential renewal; no shared decoder capability is assumed.
+The shared product-interaction service, typed protected-action decisions, failure-only response retry, natural composer flow, attributed live Computer activity, stable viewer renewal and the updated UI are implemented under contract 1.31.0. See the [implementation report, screenshots, test results and remaining proof boundaries](../development/history.md#verification-archive--2026-11-17 "Archive: docs/verification/conversation-implementation-2026-11-06/README.md at 043f7c9"). This is a local working-tree delivery; no additional milestone or production/package acceptance is implied. Separate viewer grants were selected for simultaneous surfaces, with in-place gateway credential renewal; no shared decoder capability is assumed.
 
 
 ## Studio and Computer presentation refinement
 
-The latest user direction replaces Computer preparation/completed bubbles with the same card shell, removes the preview mode/status footer and manual reconnect button, and hides upstream controls on compact previews. Studio presents application-owned questions and decisions without separate native-question/approval/history categories. Native permission delivery remains an adapter responsibility. [Updated screenshots and verification](../verification/conversation-implementation-2026-11-06/ui-refinement/README.md).
+The latest user direction replaces Computer preparation/completed bubbles with the same card shell, removes the preview mode/status footer and manual reconnect button, and hides upstream controls on compact previews. Studio presents application-owned questions and decisions without separate native-question/approval/history categories. Native permission delivery remains an adapter responsibility. [Updated screenshots and verification](../development/history.md#verification-archive--2026-11-17 "Archive: docs/verification/conversation-implementation-2026-11-06/ui-refinement/README.md at 043f7c9").
 
-The next presentation update removes Open Computer from connecting/completed cards, models custom answers as selectable editable options, and exposes approval details directly in a bounded scroll area with edge shadows. It preserves contract 1.31.0 and native/application decision semantics. [Follow-up evidence](../verification/conversation-implementation-2026-11-06/interaction-ui-refinement/README.md).
+The next presentation update removes Open Computer from connecting/completed cards, models custom answers as selectable editable options, and exposes approval details directly in a bounded scroll area with edge shadows. It preserves contract 1.31.0 and native/application decision semantics. [Follow-up evidence](../development/history.md#verification-archive--2026-11-17 "Archive: docs/verification/conversation-implementation-2026-11-06/interaction-ui-refinement/README.md at 043f7c9").

@@ -175,7 +175,7 @@ try {
       ),
     );
   } else if (phase === "continuity") {
-    const previous = await Bun.file("docs/verification/nma-052/native-muse-initial.json").json();
+    const previous = await Bun.file(".dev/verification/nma-052/native-muse-initial.json").json();
     const created = previous.results.find(
       (result: any) => result.case === "native_create_update_tools",
     );
@@ -263,7 +263,7 @@ try {
     results,
   };
   await Bun.write(
-    resolve(`docs/verification/nma-052/native-${harness}-${phase}.json`),
+    resolve(`.dev/verification/nma-052/native-${harness}-${phase}.json`),
     JSON.stringify(report, null, 2),
   );
   console.log(JSON.stringify(report, null, 2));

@@ -48,11 +48,11 @@ try {
           ),
         );
         await page.getByRole("button", { name: "Allow once", exact: true }).waitFor();
-        await page.screenshot({ path: `docs/verification/nma-062/native-permission-${tool}.png` });
+        await page.screenshot({ path: `.dev/verification/nma-062/native-permission-${tool}.png` });
         await page.getByRole("button", { name: "Allow once", exact: true }).click();
         decisions.push({ tool, request_id: approval.approvalId, scope: "once" });
         await Bun.write(
-          "docs/verification/nma-062/native-permissions.json",
+          ".dev/verification/nma-062/native-permissions.json",
           JSON.stringify(
             {
               decisions,

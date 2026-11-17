@@ -1,5 +1,0 @@
-{"completed":1,"total":4,"id":"renamed_members","correct":true,"status":"succeeded"}
-{"completed":2,"total":4,"id":"exact_historical","correct":true,"status":"succeeded"}
-{"completed":3,"total":4,"id":"renamed_members","correct":true,"status":"succeeded"}
-{"completed":4,"total":4,"id":"renamed_members","correct":true,"status":"succeeded"}
-{"output":"docs/verification/jev-routing-v3/historical-fallback.json","summary":{"cases":4,"correct":4,"tool_calls":0,"executed_tasks":0}}

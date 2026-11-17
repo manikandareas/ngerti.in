@@ -1,6 +1,6 @@
 # Tauri development application
 
-The November 15 owner instruction makes account authentication the sole supported path. Tauri is an account client of the server, including the loopback server started by `bun dev`. The launcher owns development processes; quitting the client leaves server work alive. The local supervisor and installation-token gateway are removed. See [account sessions](tauri-remote-client.md) and [current verification](../verification/accounts-only-2026-11-15/README.md).
+The November 15 owner instruction makes account authentication the sole supported path. Tauri is an account client of the server, including the loopback server started by `bun dev`. The launcher owns development processes; quitting the client leaves server work alive. The local supervisor and installation-token gateway are removed. See [account sessions](tauri-remote-client.md) and [current verification](../development/history.md#verification-archive--2026-11-17 "Archive: docs/verification/accounts-only-2026-11-15/README.md at 043f7c9").
 
 ## Run and build
 
@@ -31,4 +31,4 @@ Native code owns the narrow gateway, PKCE callback, renewal/Keychain storage, do
 
 The bundle contains the Rust client and built web assets without a Bun sidecar, backend source/dependencies, private configuration or credentials. Asset preparation removes obsolete generated sidecar staging. Shared UI has HMR; Rust/backend changes require restarting their owning development command.
 
-Run `bun run test:desktop`, `bun run typecheck:desktop` and `bun run lint:desktop`. The [current report](../verification/accounts-only-2026-11-15/README.md) separates source/contract, native tests, browser development journeys and unchanged provider evidence. NMA-063/NMA-064 remain separate product/distribution gates. The retired supervisor source and its [original evidence](../verification/tauri-development/README.md) are available through [historical recovery](../development/history.md#retired-installation-token-authentication--2026-11-15).
+Run `bun run test:desktop`, `bun run typecheck:desktop` and `bun run lint:desktop`. The [current report](../development/history.md#verification-archive--2026-11-17 "Archive: docs/verification/accounts-only-2026-11-15/README.md at 043f7c9") separates source/contract, native tests, browser development journeys and unchanged provider evidence. NMA-063/NMA-064 remain separate product/distribution gates. The retired supervisor source and its [original evidence](../development/history.md#verification-archive--2026-11-17 "Archive: docs/verification/tauri-development/README.md at 043f7c9") are available through [historical recovery](../development/history.md#retired-installation-token-authentication--2026-11-15).

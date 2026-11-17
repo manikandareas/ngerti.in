@@ -114,11 +114,11 @@ try {
       (t: { target_id: string }) => t.target_id === observation.binding.target_id,
     ),
   );
-  await page.screenshot({ path: "docs/verification/nma-062/native-agent-vnc.png" });
+  await page.screenshot({ path: ".dev/verification/nma-062/native-agent-vnc.png" });
   await page.getByRole("button", { name: "Close", exact: true }).click();
   await page.getByRole("button", { name: "Tutup detail", exact: true }).click();
   await Bun.write(
-    "docs/verification/nma-062/native-browser.json",
+    ".dev/verification/nma-062/native-browser.json",
     JSON.stringify(
       { profile_id: profile.id, session_id: session.id, observation, receipts, errors },
       null,
@@ -135,7 +135,7 @@ try {
   if (!visual.messages.length) {
     await page
       .getByLabel("Lampirkan file ke pesan", { exact: true })
-      .setInputFiles("docs/verification/nma-059/visual-input.png");
+      .setInputFiles("scripts/verification/nma059/fixtures/visual-input.png");
     await page
       .getByRole("button", { name: "Hapus lampiran visual-input.png", exact: true })
       .waitFor();
@@ -154,9 +154,9 @@ try {
   assert.match(answer, /RAVEN\s*7146/i);
   assert.match(answer, /blue/i);
   assert.match(answer, /triangle/i);
-  await page.screenshot({ path: "docs/verification/nma-062/native-image.png" });
+  await page.screenshot({ path: ".dev/verification/nma-062/native-image.png" });
   await Bun.write(
-    "docs/verification/nma-062/native-image.json",
+    ".dev/verification/nma-062/native-image.json",
     JSON.stringify(
       { messages: visual.messages, runs: visual.runs, artifacts: visual.artifacts, errors },
       null,
@@ -173,15 +173,15 @@ try {
   assert(response.ok());
   const data = await response.json();
   assert(data.items.length > 0);
-  await page.screenshot({ path: "docs/verification/nma-062/live-composio-catalog.png" });
+  await page.screenshot({ path: ".dev/verification/nma-062/live-composio-catalog.png" });
   await Bun.write(
-    "docs/verification/nma-062/live-composio-catalog.json",
+    ".dev/verification/nma-062/live-composio-catalog.json",
     JSON.stringify({ items: data.items, external_connect_or_execute: false, errors }, null, 2),
   );
   assert.deepEqual(errors, []);
 } finally {
   await page
-    .screenshot({ path: "docs/verification/nma-062/browser-native-last.png" })
+    .screenshot({ path: ".dev/verification/nma-062/browser-native-last.png" })
     .catch(() => {});
   await browser.close();
   site.stop(true);

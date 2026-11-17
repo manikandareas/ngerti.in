@@ -2,7 +2,7 @@
 
 Product scope and delivery order are maintained in [PRODUCT.md](../../PRODUCT.md) and [the local backlog](../backlog/README.md). Start with the [documentation index](../README.md) for implemented APIs and setup. A research recommendation is not implementation or acceptance evidence.
 
-- [Persistent shared machine and Cua source assessment](agent-desktop-machine-options-2026-11-03.md): source pins, compatibility findings and the shared-machine decision. The [architecture plan](../architecture/shared-machine-cua-plan-2026-11-04.md) and [verification](../verification/shared-machine/README.md) record its subsequent implementation.
+- [Persistent shared machine and Cua source assessment](agent-desktop-machine-options-2026-11-03.md): source pins, compatibility findings and the shared-machine decision. The [architecture plan](../architecture/shared-machine-cua-plan-2026-11-04.md) and [verification](../development/history.md#verification-archive--2026-11-17 "Archive: docs/verification/shared-machine/README.md at 043f7c9") record its subsequent implementation.
 - [Computer preview transport](computer-preview-transport-2026-11-06.md): viewer behavior, protocol versions and source constraints for the current Cua integration.
 - [Tauri feasibility and platform boundaries](tauri-v2-desktop-feasibility-2026-11-04.md): source research behind the [current Tauri application](../architecture/tauri-development.md).
 - [GPUI compared with Tauri](gpui-vs-tauri-2026-11-06.md): native Rust rendering, experimental WebView reuse, platform boundaries and implications for the existing React client.

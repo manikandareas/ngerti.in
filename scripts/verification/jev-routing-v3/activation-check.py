@@ -52,7 +52,7 @@ report = {
     'frontend_status': frontend, 'original_bad_route_unchanged': True,
     'test_messages_added_to_user_group': 0, 'user_data_reset': False, 'result': 'passed',
 }
-Path('docs/verification/jev-routing-v3/activation.json').write_text(json.dumps(report, indent=2) + '\n')
+Path('.dev/verification/jev-routing-v3/activation.json').write_text(json.dumps(report, indent=2) + '\n')
 print(json.dumps({key: report[key] for key in ['declared_operations', 'baseline_records',
     'byte_identical_records', 'active_runs_after', 'frontend_status', 'result']}))
 connection.close()

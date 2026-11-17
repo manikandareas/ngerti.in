@@ -75,14 +75,13 @@ const sourceFiles = [
   "scripts/verification/acp/native-credentials.ts",
   "docs/contracts/2.3.0.json",
   "docs/contracts/2.4.0.json",
-  "docs/verification/acp-2026-11-16/retired-source.json",
+  "scripts/verification/acp/fixtures/retired-source.json",
   "docs/architecture/acp-harnesses.md",
   "docs/architecture/api-consumer-contract.md",
   "docs/architecture/server-organizations-api.md",
   "docs/architecture/provider-connections.md",
   "docs/development/source-adoption.md",
-  "docs/verification/acp-2026-11-16/native-harnesses/README.md",
-  "docs/verification/acp-2026-11-16/pi-context/README.md",
+  "docs/development/history.md",
   "docs/README.md",
   "docs/backlog/README.md",
   "docs/development/acceptance.md",
@@ -137,7 +136,7 @@ const sourceFiles = [
     .map((file) => `scripts/verification/acp/${file}`),
 ];
 const retirement = JSON.parse(
-  readFileSync(join(root, "docs/verification/acp-2026-11-16/retired-source.json"), "utf8"),
+  readFileSync(join(root, "scripts/verification/acp/fixtures/retired-source.json"), "utf8"),
 ) as { revision: string; paths: string[] };
 const changedWeb = Bun.spawnSync(["git", "diff", "--name-only", "--", "apps/web-client/src"], {
   cwd: root,

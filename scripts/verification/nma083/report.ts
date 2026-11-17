@@ -4,7 +4,7 @@ import { readFileSync, readdirSync } from "node:fs";
 import { join, resolve } from "node:path";
 
 const root = resolve(import.meta.dir, "../../..");
-const directory = join(root, "docs/verification/nma-083");
+const directory = join(root, ".dev/verification/nma-083");
 const read = (name: string) => JSON.parse(readFileSync(join(directory, name), "utf8"));
 const hash = (path: string) =>
   createHash("sha256")
@@ -112,7 +112,7 @@ requireProof(
   "Clear the revoked native renewal credential.",
 );
 const baseline = JSON.parse(
-  readFileSync(join(root, "docs/verification/nma-082/live/release-r9-manifest.json"), "utf8"),
+  readFileSync(join(root, ".dev/verification/nma-082/live/release-r9-manifest.json"), "utf8"),
 );
 const runtime = Object.fromEntries(
   Object.keys(baseline.files)
@@ -183,14 +183,14 @@ for (const name of ["attachments", "preparation", "muse-catalog", "workspace-acc
   sources[path] = hash(path);
 }
 const inherited = [
-  "docs/verification/nma-078/README.md",
-  "docs/verification/nma-079/native/report.json",
-  "docs/verification/nma-079/README.md",
-  "docs/verification/nma-080/README.md",
-  "docs/verification/nma-081/README.md",
-  "docs/verification/nma-082/README.md",
-  "docs/verification/nma-082/manifest.json",
-  "docs/verification/nma-082/live/release-r9-manifest.json",
+  ".dev/verification/nma-078/README.md",
+  ".dev/verification/nma-079/native/report.json",
+  ".dev/verification/nma-079/README.md",
+  ".dev/verification/nma-080/README.md",
+  ".dev/verification/nma-081/README.md",
+  ".dev/verification/nma-082/README.md",
+  ".dev/verification/nma-082/manifest.json",
+  ".dev/verification/nma-082/live/release-r9-manifest.json",
 ];
 const manifest = {
   milestone: "NMA-083",
@@ -246,7 +246,7 @@ const manifest = {
     "docs/backlog/NMA-083.md",
     "docs/backlog/README.md",
     "docs/backlog/status.json",
-    "docs/verification/nma-083/README.md",
+    ".dev/verification/nma-083/README.md",
   ].map((path) => ({ path, sha256: hash(path) })),
   inherited_evidence: inherited.map((path) => ({ path, sha256: hash(path) })),
   reused_internal_modules: [

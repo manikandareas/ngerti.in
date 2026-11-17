@@ -11,7 +11,7 @@ const phase = process.argv[5] ?? "initial";
 assert(base?.startsWith("http://127.0.0.1:"));
 assert(harness === "codex" || harness === "muse");
 const { token } = await Bun.file(join(directory, "installation.json")).json();
-const reportPath = `docs/verification/nma-054/native-${harness}-${phase}.json`;
+const reportPath = `.dev/verification/nma-054/native-${harness}-${phase}.json`;
 const results: object[] = [];
 type RunReport = {
   id: string;
@@ -92,7 +92,7 @@ async function submit(threadId: string, agentId: string, text: string, artifactI
 try {
   if (phase.startsWith("resume")) {
     const previous = await Bun.file(
-      `docs/verification/nma-054/native-${harness}-${process.argv[6] ?? "initial"}.json`,
+      `.dev/verification/nma-054/native-${harness}-${process.argv[6] ?? "initial"}.json`,
     ).json();
     Object.assign(report, {
       agent_id: previous.agent_id,

@@ -5,7 +5,7 @@ import { acceptanceFixture } from "./fixture";
 
 test("declared three-client HTTP/SSE workload measures admission and event delivery with private streams", async () => {
   const f = await acceptanceFixture();
-  const directory = resolve(import.meta.dir, "../../../docs/verification/nma-083");
+  const directory = resolve(import.meta.dir, "../../../.dev/verification/nma-083");
   mkdirSync(directory, { recursive: true });
   const readers: ReadableStreamDefaultReader<Uint8Array>[] = [];
   const pumps: Promise<void>[] = [];

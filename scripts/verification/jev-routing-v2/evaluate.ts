@@ -11,7 +11,7 @@ import {
 import { routingCases } from "./cases";
 
 assert(process.env.TYPESAFE_API_KEY, "The TypeSafe API key is required.");
-const output = resolve(process.argv[2] ?? "docs/verification/jev-routing-v2/evaluation.json");
+const output = resolve(process.argv[2] ?? ".dev/verification/jev-routing-v2/evaluation.json");
 const limit = Number(process.argv[3] ?? "220");
 const variants: RoutingVariant[] = ["single", "batch"];
 const cases = routingCases().slice(0, limit);

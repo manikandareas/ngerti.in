@@ -1,1 +1,0 @@
-The earlier .dev/nma-001/runtime profile has MCP but lacks acp. gateway.session_local_mcp.validate_servers imports acp.schema, causing three capability fixtures to refuse before any connector dispatch. Re-run uses the configured .dev/nma-033/production Python 3.14.9 profile with ACP installed; no capability policy is relaxed.

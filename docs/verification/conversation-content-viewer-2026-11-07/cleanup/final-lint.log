@@ -1,3 +1,0 @@
-$ bun --filter @ngertiin/web-client lint
-@ngertiin/web-client lint: Checked 322 files in 344ms. No fixes applied.
-@ngertiin/web-client lint: Exited with code 0

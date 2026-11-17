@@ -1,8 +1,0 @@
-{
-  "passed": [
-    "Authenticated group archive import, real viewer and download preserve authors and selected bytes"
-  ],
-  "failed": [],
-  "sha256": "90daa221aad2f667d9cb9fc7b7357c5f05c71ebbda964ab854d36314a0f2059c",
-  "selectedMessages": 6
-}

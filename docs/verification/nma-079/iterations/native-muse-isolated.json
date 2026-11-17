@@ -1,9 +1,0 @@
-{
-  "planned_lanes": 4,
-  "lanes": [],
-  "completed": false,
-  "scope": "real HTTP account principals, normal admission/claim/dispatch, real native inference and product tools",
-  "credential_handling": "read-only existing short-lived Codex access token; no refresh token copying or authority mutation; explicit Muse API key",
-  "synthetic_dispatch": false,
-  "failure": "Error"
-}

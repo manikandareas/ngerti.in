@@ -4,7 +4,7 @@ import { expect, webkit } from "@playwright/test";
 const origin = process.argv[2];
 if (!origin || !/^http:\/\/127\.0\.0\.1:\d+$/.test(origin))
   throw new Error("Provide the isolated local application origin as the first argument.");
-const output = process.argv[3] ?? "docs/verification/settings-screen-2026-11-11";
+const output = process.argv[3] ?? ".dev/verification/settings-screen-2026-11-11";
 await mkdir(`${output}/screenshots`, { recursive: true });
 const browser = await webkit.launch();
 const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });

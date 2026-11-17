@@ -42,7 +42,7 @@ type WindowList = { windows?: { ref: { id: string; epoch: string } }[] };
 const nativeWindows = async () => ((await machines.host!.rpc("WindowsService/ListWindows", { filter: { includeSystem: false } })) as WindowList).windows ?? [];
 const checks: { name: string; detail?: unknown }[] = [];
 const record = (name: string, detail?: unknown) => { checks.push({ name, detail }); console.log(JSON.stringify({ check: name, passed: true })); };
-const evidence = "docs/verification/shared-machine";
+const evidence = ".dev/verification/shared-machine";
 let failed: string | undefined;
 try {
   await machines.ready();

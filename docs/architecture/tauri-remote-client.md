@@ -1,6 +1,6 @@
 # Tauri account client
 
-[NMA-081](../backlog/NMA-081.md) implements remote sessions in the existing macOS ARM64 Tauri host and shared web-client. The [authentication contract](user-authentication.md) defines the server's native OAuth protocol. The [verification report](../verification/nma-081/README.md) owns executed results and remaining acceptance conditions.
+[NMA-081](../backlog/NMA-081.md) implements remote sessions in the existing macOS ARM64 Tauri host and shared web-client. The [authentication contract](user-authentication.md) defines the server's native OAuth protocol. The [verification report](../development/history.md#verification-archive--2026-11-17 "Archive: docs/verification/nma-081/README.md at 043f7c9") owns executed results and remaining acceptance conditions.
 
 ## Profiles and server identity
 

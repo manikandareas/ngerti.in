@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { chromium } from 'playwright';
-const native = await Bun.file('docs/verification/nma-061/native.json').json();
+const native = await Bun.file('.dev/verification/nma-061/native.json').json();
 const browser = await chromium.launch();
 const results = [];
 try {
@@ -18,10 +18,10 @@ try {
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
   await page.getByRole('button', { name: `Detail UI proof ${lane.family}` }).click();
   await page.getByRole('tab', { name: 'Agent', exact: true }).waitFor();
-  await page.screenshot({ path: `docs/verification/nma-061/native-${lane.family}-mobile.png` });
+  await page.screenshot({ path: `.dev/verification/nma-061/native-${lane.family}-mobile.png` });
   results.push({ family: lane.family, runs: after.runs.length, messages: after.messages.length, restart_read_only: true });
   await context.close();
  }
- await Bun.write('docs/verification/nma-061/restart.json', JSON.stringify({ results, pass: results.length, fail: 0 }, null, 2));
+ await Bun.write('.dev/verification/nma-061/restart.json', JSON.stringify({ results, pass: results.length, fail: 0 }, null, 2));
  console.log(JSON.stringify({ pass: results.length, fail: 0 }));
 } finally { await browser.close(); }

@@ -1,2 +1,0 @@
-There has been no change in the accessibility tree for Window: "Assistant studio · Ngertiin".
-The focused UI element is 428 toggle button DM, Value: 1

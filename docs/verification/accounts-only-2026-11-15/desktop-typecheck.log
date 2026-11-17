@@ -1,3 +1,0 @@
-$ bun --filter @ngertiin/desktop typecheck
-@ngertiin/desktop typecheck:     Finished `dev` profile [unoptimized] target(s) in 1.19s
-@ngertiin/desktop typecheck: Exited with code 0

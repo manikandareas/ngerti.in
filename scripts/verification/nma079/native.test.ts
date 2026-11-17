@@ -23,7 +23,7 @@ import { captureSource } from "./source";
 
 test.skipIf(process.env.NGERTIIN_NMA079_NATIVE !== "1")("real account-mode admission executes both native harnesses through private Cua domains", async () => {
   const root = resolve(import.meta.dir, "../../..");
-  const directory = join(root, "docs/verification/nma-079/native");
+  const directory = join(root, ".dev/verification/nma-079/native");
   mkdirSync(directory, { recursive: true });
   const report: Record<string, unknown> = { planned_lanes: process.env.NGERTIIN_NMA079_HARNESS ? 2 : 4, lanes: [], completed: false,
     source: captureSource(),

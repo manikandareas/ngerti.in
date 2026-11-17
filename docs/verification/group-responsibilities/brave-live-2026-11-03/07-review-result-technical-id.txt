@@ -1,3 +1,0 @@
-Browser tab: 1365715784, Title: "Ngertiin · Web Client", URL: "http://localhost:3001/".
-There has been no change in the accessibility tree.
-The focused UI element is 1 AXWebArea Ngertiin · Web Client, URL: localhost:3001/

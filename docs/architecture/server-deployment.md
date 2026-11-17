@@ -1,6 +1,6 @@
 # Single-server deployment and recovery
 
-NMA-082 implements the owner-operated profile in `infra/server/`. Its [verification report](../verification/nma-082/README.md) owns the executed results and remaining gates. The owner selected SSH alias `mamvps` and `https://demo.ngerti.in` on November 15, 2026. That existing Ubuntu 24.04 AMD64 host uses the [shared-host profile](../../infra/server/shared-host/README.md), preserving Dokploy/Traefik and unrelated applications. The historical disposable ARM64 rehearsal and actual deployment are recorded separately in the report.
+NMA-082 implements the owner-operated profile in `infra/server/`. Its [verification report](../development/history.md#verification-archive--2026-11-17 "Archive: docs/verification/nma-082/README.md at 043f7c9") owns the executed results and remaining gates. The owner selected SSH alias `mamvps` and `https://demo.ngerti.in` on November 15, 2026. That existing Ubuntu 24.04 AMD64 host uses the [shared-host profile](../../infra/server/shared-host/README.md), preserving Dokploy/Traefik and unrelated applications. The historical disposable ARM64 rehearsal and actual deployment are recorded separately in the report.
 
 ## Profile and storage
 

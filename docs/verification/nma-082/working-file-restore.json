@@ -1,8 +1,0 @@
-{
-  "pass": 2,
-  "fail": 0,
-  "checks": [
-    "Actual workspace file API returns the restored uploaded bytes",
-    "Cross-organization workspace file API remains denied"
-  ]
-}

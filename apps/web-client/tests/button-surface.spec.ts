@@ -3,7 +3,7 @@ import { expect, type Locator, test } from "@playwright/test";
 
 const evidence = resolve(
   process.env.NGERTIIN_ACCOUNT_ENTRY_EVIDENCE ??
-    "../../docs/verification/button-gradient-2026-11-15",
+    "../../.dev/verification/button-gradient-2026-11-15",
 );
 
 // Measure actual computed gradient stops against the text, including alpha over the parent surface.

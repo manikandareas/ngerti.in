@@ -21,7 +21,7 @@ try {
  const routes = new Set(contract.http.map((r: any) => `${r.method} ${r.path}`));
  for (const route of required) assert(routes.has(route));
  assert(contract.product_tools.some((t: any) => t.name === "ngertiin.update_group"));
- await Bun.write("docs/verification/nma-065/creation-consumer.json", JSON.stringify({ missing, opening, group, configured, pass: 5, fail: 0 }, null, 2));
- await Bun.write("docs/verification/nma-065/gate-amendment.json", JSON.stringify({ gate: "NMA-060", prerequisite: "NMA-065", contract: contract.version, decisions: ["A03", "C02", "C03", "C04", "D01", "D02", "D05", "E01", "F01", "H01", "H02", "H03", "H06"], routes: required, tools: ["ngertiin.update_agent", "ngertiin.update_group"], events: ["agent", "thread", "message", "run", "group_route", "peer_task"], tests: ["apps/server/tests/creation.test.ts"], evidence: "docs/verification/nma-065/README.md", scope: "Creation/personalization amendment only; existing prerequisite mappings and API readiness gate remain separate." }, null, 2));
+ await Bun.write(".dev/verification/nma-065/creation-consumer.json", JSON.stringify({ missing, opening, group, configured, pass: 5, fail: 0 }, null, 2));
+ await Bun.write(".dev/verification/nma-065/gate-amendment.json", JSON.stringify({ gate: "NMA-060", prerequisite: "NMA-065", contract: contract.version, decisions: ["A03", "C02", "C03", "C04", "D01", "D02", "D05", "E01", "F01", "H01", "H02", "H03", "H06"], routes: required, tools: ["ngertiin.update_agent", "ngertiin.update_group"], events: ["agent", "thread", "message", "run", "group_route", "peer_task"], tests: ["apps/server/tests/creation.test.ts"], evidence: ".dev/verification/nma-065/README.md", scope: "Creation/personalization amendment only; existing prerequisite mappings and API readiness gate remain separate." }, null, 2));
  console.log("Creation consumer examples and gate amendment references passed.");
 } finally { f.close(); }

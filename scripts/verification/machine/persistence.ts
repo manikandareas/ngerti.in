@@ -60,7 +60,7 @@ try {
   await server();
   state = await attach(); state = await navigate(state);
   assert((await cookie()).includes(marker), "Persistent browser cookie was lost.");
-  await Bun.write("docs/verification/shared-machine/persistence.json", JSON.stringify({ date: "2026-11-04", same_retained_container: true, shared_file_hash_verified: true, os_writable_layer_retained: true, owned_test_site_persistent_cookie_retained: true, external_account_login_tested: false, machine_recreation_tested: false, running_jobs_survive_reboot: false }, null, 2));
+  await Bun.write(".dev/verification/shared-machine/persistence.json", JSON.stringify({ date: "2026-11-04", same_retained_container: true, shared_file_hash_verified: true, os_writable_layer_retained: true, owned_test_site_persistent_cookie_retained: true, external_account_login_tested: false, machine_recreation_tested: false, running_jobs_survive_reboot: false }, null, 2));
   console.log("Retained file, OS layer and owned-site browser cookie survived container restart.");
 } finally {
   await call("end_session").catch(() => {});

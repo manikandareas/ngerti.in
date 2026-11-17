@@ -226,7 +226,7 @@ const contract = (await Bun.file("docs/contracts/1.16.0.json").json()) as Return
   typeof contractDocument
 > &
   ReturnType<typeof consumerContract> & { http: ReturnType<typeof httpContract> };
-const scope = (await Bun.file("docs/verification/nma-060/scope.json").json()) as {
+const scope = (await Bun.file(".dev/verification/nma-060/scope.json").json()) as {
   decisions: { id: string; disposition: string }[];
 };
 const seen = new Set<string>(),
@@ -237,7 +237,7 @@ const coverage = mappings.flatMap((mapping) => {
   for (const tool of mapping.tools ?? []) assert(tools.has(tool), tool);
   for (const kind of mapping.events) assert(kind in contract.entities, kind);
   for (const test of mapping.tests) assert(existsSync(`apps/server/tests/${test}`), test);
-  const evidence = `docs/verification/${mapping.owner.toLowerCase()}/README.md`;
+  const evidence = `.dev/verification/${mapping.owner.toLowerCase()}/README.md`;
   assert(existsSync(evidence), evidence);
   return mapping.ids.split(" ").map((id) => {
     assert(!seen.has(id), `Duplicate feature ${id}`);
@@ -251,8 +251,8 @@ const coverage = mappings.flatMap((mapping) => {
       tests: mapping.tests.map((t) => `apps/server/tests/${t}`),
       retained_evidence: evidence,
       ...(id === "C07" ? {
-        current_evidence: "docs/verification/nma-060/cancellation/README.md",
-        decision_amendment: "docs/verification/nma-060/cancellation/decision.json",
+        current_evidence: ".dev/verification/nma-060/cancellation/README.md",
+        decision_amendment: ".dev/verification/nma-060/cancellation/decision.json",
       } : {}),
       limits: mapping.limits ?? [],
       acceptance: "mapped_with_gate_evidence",
@@ -266,14 +266,14 @@ assert.deepEqual(
     .map((d) => d.id)
     .sort(),
 );
-const creation = await Bun.file("docs/verification/nma-065/gate-amendment.json").json();
+const creation = await Bun.file(".dev/verification/nma-065/gate-amendment.json").json();
 for (const route of creation.routes) assert(contract.http.some(r => `${r.method} ${r.path}` === route), route);
 for (const tool of creation.tools) assert(contract.product_tools.some(t => t.name === tool), tool);
 for (const kind of creation.events) assert(kind in contract.entities, kind);
 for (const test of creation.tests) assert(existsSync(test), test);
 assert(existsSync(creation.evidence));
 await Bun.write(
-  `${process.argv[2] ?? "docs/verification/nma-060/final-cohort"}/coverage.json`,
+  `${process.argv[2] ?? ".dev/verification/nma-060/final-cohort"}/coverage.json`,
   `${JSON.stringify(
     {
       contract_version: contract.version,

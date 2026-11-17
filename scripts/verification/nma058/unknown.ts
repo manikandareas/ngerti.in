@@ -43,4 +43,4 @@ try {
  report.checks.push("real_effect_completed_ack_lost","unknown_receipt_persisted","same_profile_observed_after_reconnect","no_second_click_after_restart");
  await Bun.write(`${root}/proof.json`,JSON.stringify({owner,profile_id:profile.id,run_id:run.id,session_id:session.id}));
 } catch(error){report.error=String(error);process.exitCode=1;}
-finally{if(profile)await host.close(profile.id);await tools.browsers.shutdown();store.close();await Bun.write("docs/verification/nma-058/unknown-browser.json",JSON.stringify(report,null,2));}
+finally{if(profile)await host.close(profile.id);await tools.browsers.shutdown();store.close();await Bun.write(".dev/verification/nma-058/unknown-browser.json",JSON.stringify(report,null,2));}

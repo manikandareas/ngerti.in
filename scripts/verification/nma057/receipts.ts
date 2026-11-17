@@ -102,7 +102,7 @@ if (mode === "receipts") {
 }
 report.status = "pass";
 await Bun.write(
-  `docs/verification/nma-057/native/${mode}.json`,
+  `.dev/verification/nma-057/native/${mode}.json`,
   `${JSON.stringify(report, null, 2)}\n`,
 );
 console.log(

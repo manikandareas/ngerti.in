@@ -91,7 +91,7 @@ if (process.argv[3] === "child") {
   );
   await new Promise(() => {});
 } else {
-  const reportPath = process.argv[3] ?? "docs/verification/nma-055/crash.json";
+  const reportPath = process.argv[3] ?? ".dev/verification/nma-055/crash.json";
   const owner = crypto.randomUUID();
   const child = Bun.spawn([process.execPath, import.meta.path, root, "child", owner], {
     stdout: "pipe",

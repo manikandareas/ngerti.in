@@ -1,9 +1,0 @@
-Broken local links:
-.agents/skills/gpui-kit-design-guides/references/design-guides.md -> ./style
-.agents/skills/gpui-kit-design-guides/references/design-guides.md -> ./action
-.agents/skills/gpui-kit-design-guides/references/design-guides.md -> ./keybinding
-.agents/skills/gpui-kit-design-guides/references/design-guides.md -> ./coding-guides.md
-.agents/skills/gpui-kit/references/coding-guides.md -> ./design-guides.md
-.agents/skills/gpui-kit/references/coding-guides.md -> ./design-guides.md
-.agents/skills/gpui-kit/references/coding-guides.md -> ./getting-started.md
-.agents/skills/gpui-kit/references/usage.md -> ../../../examples/ai_recipes/src/bootstrap.rs

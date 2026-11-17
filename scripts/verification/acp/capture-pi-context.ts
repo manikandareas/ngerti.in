@@ -5,7 +5,7 @@ import { HarnessRuntime } from "../../../apps/server/src/harness/runtime";
 import { selectedPiSumopod } from "./native-credentials";
 
 const root = resolve(import.meta.dir, "../../..");
-const output = join(root, "docs/verification/acp-2026-11-16/pi-context");
+const output = join(root, ".dev/verification/acp-2026-11-16/pi-context");
 if (existsSync(join(output, "source-archive.json")))
   throw new Error("This Pi context capture is already sealed.");
 mkdirSync(output, { recursive: true });
@@ -91,7 +91,7 @@ if (
   throw new Error("The executed Pi probe source does not match its report.");
 
 const previous = ["profiles", "cutover", "native-context", "native-harnesses"].map((phase) => {
-  const directory = join(root, "docs/verification/acp-2026-11-16", phase);
+  const directory = join(root, ".dev/verification/acp-2026-11-16", phase);
   const receipt = JSON.parse(readFileSync(join(directory, "source-archive.json"), "utf8"));
   const expectedPatch =
     receipt.source_patch_gzip_sha256 ?? receipt.patch_gzip_sha256 ?? receipt.archive_sha256;

@@ -9,7 +9,7 @@ import { Store } from "../../../apps/server/src/store";
 
 const mode = process.argv[2];
 const directory = resolve(process.argv[3] ?? ".dev/nma057/crash-state");
-const output = process.argv[4] ?? "docs/verification/nma-057/crash.json";
+const output = process.argv[4] ?? ".dev/verification/nma-057/crash.json";
 if (mode === "seed") {
   mkdirSync(directory, { recursive: true, mode: 0o700 });
   const owner = crypto.randomUUID();

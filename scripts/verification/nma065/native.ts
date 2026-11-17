@@ -56,7 +56,7 @@ if (phase === "provision") {
   assert.equal(router.status, "succeeded");
   checks.push({ family, dm_run: after.runs[0], group_run: group.runs[0], router_run: router, profile: after.agents[0], group: group.thread, replay_cursor: after.cursor });
  }
- await Bun.write("docs/verification/nma-065/native-verified.json", JSON.stringify({ checks, native_runs: 6, pass: 6, fail: 0, skip: 0, unknown: 0 }, null, 2));
+ await Bun.write(".dev/verification/nma-065/native-verified.json", JSON.stringify({ checks, native_runs: 6, pass: 6, fail: 0, skip: 0, unknown: 0 }, null, 2));
  console.log("Verified six native runs, both scoped mutations, restart persistence and admission replay.");
 } else if (phase === "cleanup") {
  await api(`/v1/connections/${proof.connection.id}/revoke`, {});
@@ -70,6 +70,6 @@ if (phase === "provision") {
   results.push({ family, snapshot });
   if (lane.group) results.push({ family: `${family}-group`, snapshot: await api(`/v1/threads/${lane.group.thread.id}/snapshot`) });
  }
- await Bun.write("docs/verification/nma-065/native.json", JSON.stringify(results, null, 2));
+ await Bun.write(".dev/verification/nma-065/native.json", JSON.stringify(results, null, 2));
  console.log(JSON.stringify(results.map((r:any) => ({family:r.family, runs:r.snapshot.runs.map((v:any)=>({status:v.status,diagnostic:v.diagnostic,tools:v.product_tools})), agents:r.snapshot.agents.map((a:any)=>({name:a.name,revision:a.revision})), messages:r.snapshot.messages.map((m:any)=>m.text)}))));
 }

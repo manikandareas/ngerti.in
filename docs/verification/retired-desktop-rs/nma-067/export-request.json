@@ -1,7 +1,0 @@
-{
-  "recipe": { "version": 1, "seed": "tobi-circle", "shape": "circle", "color": "lilac", "face": "calm" },
-  "state": "idle",
-  "time_ms": 0,
-  "reduced_motion": true,
-  "size": 768
-}

@@ -17,11 +17,11 @@ try {
   report.navigation = await host.call(proof.profile, "browser_navigate", { url: "https://example.com" });
   report.state = await host.call(proof.profile, "browser_get_state", { include_screenshot: true });
   for (const item of report.state.content) if (item.type === "image") {
-    await Bun.write("docs/verification/nma-058/host-browser.png", Buffer.from(item.data, "base64"));
+    await Bun.write(".dev/verification/nma-058/host-browser.png", Buffer.from(item.data, "base64"));
     item.data = "[retained as host-browser.png]";
   }
   assert(report.state.content.some((c: any) => c.type === "text" && JSON.parse(c.text).binding.target_id));
   report.vnc_port_bound = Number.isInteger(await host.vncPort(proof.profile));
   report.checks.push("direct_mcp_state_native_target", "managed_loopback_rfb");
 } catch (error) { report.error = String(error); process.exitCode = 1; }
-finally { host.detach(proof.profile); await Bun.write("docs/verification/nma-058/host-smoke.json", JSON.stringify(report, null, 2)); }
+finally { host.detach(proof.profile); await Bun.write(".dev/verification/nma-058/host-smoke.json", JSON.stringify(report, null, 2)); }

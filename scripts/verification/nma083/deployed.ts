@@ -5,7 +5,7 @@ import { resolve } from "node:path";
 if (process.env.NGERTIIN_NMA083_DEPLOYED !== "demo.ngerti.in")
   throw new Error("Select the retained owner-operated acceptance deployment explicitly.");
 process.umask(0o077);
-const directory = resolve("docs/verification/nma-083");
+const directory = resolve(".dev/verification/nma-083");
 mkdirSync(directory, { recursive: true });
 const workspace = JSON.parse(readFileSync(".dev/nma082-live/workspace.json", "utf8"));
 const providers = JSON.parse(readFileSync(".dev/nma082-live/provider-target.json", "utf8"));

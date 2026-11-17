@@ -1,8 +1,0 @@
-..........................                                               [100%]
-=============================== warnings summary ===============================
-.dev/nma-001/source/tests/gateway/test_normal_runtime_boot.py:186
-  /Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma-001/source/tests/gateway/test_normal_runtime_boot.py:186: PytestUnknownMarkWarning: Unknown pytest.mark.asyncio - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
-    @pytest.mark.asyncio
-
--- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
-26 passed, 1 warning in 55.53s

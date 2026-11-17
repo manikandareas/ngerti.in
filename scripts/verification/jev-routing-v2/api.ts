@@ -109,7 +109,7 @@ try {
     `${JSON.stringify(contract, null, 2)}\n`,
   );
   await Bun.write(
-    join(projectRoot, "docs/verification/jev-routing-v2/api.json"),
+    join(projectRoot, ".dev/verification/jev-routing-v2/api.json"),
     `${JSON.stringify(
       {
         captured_at: new Date().toISOString(),

@@ -19,4 +19,4 @@ try{
  }
  proof.pass=true;
 }catch(error){proof.error=String(error);process.exitCode=1;}
-finally{await save();await Bun.write("docs/verification/nma-060/final-cohort/publication-native.json",JSON.stringify(proof,null,2));console.log({pass:proof.pass??false,error:proof.error??null});}
+finally{await save();await Bun.write(".dev/verification/nma-060/final-cohort/publication-native.json",JSON.stringify(proof,null,2));console.log({pass:proof.pass??false,error:proof.error??null});}

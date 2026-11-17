@@ -8,7 +8,7 @@ const stateDir = ".dev/nma062-native";
 type Lane = { connection: Entity<"connection">; agent: Entity<"agent">; thread_id?: string };
 const proof = (await Bun.file(`${stateDir}/proof.json`).json()) as Record<"codex" | "muse", Lane>;
 const base = "http://127.0.0.1:4322";
-mkdirSync("docs/verification/nma-062", { recursive: true });
+mkdirSync(".dev/verification/nma-062", { recursive: true });
 const browser = await chromium.launch();
 const context = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
 const page = await context.newPage();
@@ -102,14 +102,14 @@ try {
     await page
       .getByText("Research together with clear evidence.", { exact: true })
       .waitFor({ state: "visible" });
-    await page.screenshot({ path: `docs/verification/nma-062/native-${family}-group.png` });
+    await page.screenshot({ path: `.dev/verification/nma-062/native-${family}-group.png` });
     await page.getByRole("button", { name: "Tutup detail", exact: true }).click();
     await page.reload();
     await page.getByRole("button", { name: `Detail UI work ${family}`, exact: true }).waitFor();
     const after = await snapshot(threadId);
     assert.equal(after.runs.length, current.runs.length);
     await Bun.write(
-      `docs/verification/nma-062/native-${family}.json`,
+      `.dev/verification/nma-062/native-${family}.json`,
       JSON.stringify(
         {
           billing: lane.connection.effective_billing_source,
@@ -128,6 +128,6 @@ try {
   }
   assert.deepEqual(errors, []);
 } finally {
-  await page.screenshot({ path: "docs/verification/nma-062/native-last.png" }).catch(() => {});
+  await page.screenshot({ path: ".dev/verification/nma-062/native-last.png" }).catch(() => {});
   await browser.close();
 }

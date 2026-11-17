@@ -4,7 +4,7 @@ import { dirname, join, resolve } from "node:path";
 import { HarnessRuntime } from "../../../apps/server/src/harness/runtime";
 
 const root = resolve(import.meta.dir, "../../..");
-const output = join(root, "docs/verification/acp-2026-11-16/native-harnesses");
+const output = join(root, ".dev/verification/acp-2026-11-16/native-harnesses");
 if (existsSync(join(output, "source-archive.json"))) throw new Error("This native harness capture is already sealed.");
 mkdirSync(output, { recursive: true });
 const sha = (bytes: Uint8Array) => createHash("sha256").update(bytes).digest("hex");

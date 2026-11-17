@@ -26,7 +26,7 @@ The UI distinguishes sending stop intent from confirmed native stop. Edit/delete
 
 A group has one human owner and owned persistent agents. Valid explicit mentions retain their direct target behavior. Otherwise the selected semantic router chooses the first actor asked to act, including unique shortened names and compact shared context. For “Skinny, ask Tobi to greet me”, Skinny acts first and its harness performs the handoff.
 
-TypeSafe Jev is the selected member-routing integration; the existing member-model route can be selected explicitly. Current routing-policy details and calibration are in [group collaboration](../architecture/group-collaboration-api.md) and [routing verification](../verification/jev-routing-v3/README.md). Confidence/ambiguity handling, bounded native fallback, authoritative writer ownership and receipt recovery remain explicit. This routing chooses a group actor; advanced provider/credential/billing routing remains deferred.
+TypeSafe Jev is the selected member-routing integration; the existing member-model route can be selected explicitly. Current routing-policy details and calibration are in [group collaboration](../architecture/group-collaboration-api.md) and [routing verification](../development/history.md#verification-archive--2026-11-17 "Archive: docs/verification/jev-routing-v3/README.md at 043f7c9"). Confidence/ambiguity handling, bounded native fallback, authoritative writer ownership and receipt recovery remain explicit. This routing chooses a group actor; advanced provider/credential/billing routing remains deferred.
 
 Only the selected member answers. Nonselected agents emit no pass/skip bubbles or mass greetings. Handoff/review creates attributable tasks, scoped context and traceable results; the human is not the relay. Temporary subagents are optional and do not become permanent group members automatically.
 
@@ -34,7 +34,7 @@ Groups own their shared attachment workspace, Goals and Routine. Responsibility 
 
 ## Input, privacy and presentation
 
-Human questions/review/approval bind to the correct work and revision. Relevant work waits; restart/replay cannot bind an old request to an unrelated answer. Approval is contextual, not universal. Current natural answers, selection cards, native interactions and failed-response Retry follow [the interaction implementation](../verification/conversation-implementation-2026-11-06/README.md) and [later refinements](../verification/conversation-followup-2026-11-06/report.html).
+Human questions/review/approval bind to the correct work and revision. Relevant work waits; restart/replay cannot bind an old request to an unrelated answer. Approval is contextual, not universal. Current natural answers, selection cards, native interactions and failed-response Retry follow [the interaction implementation](../development/history.md#verification-archive--2026-11-17 "Archive: docs/verification/conversation-implementation-2026-11-06/README.md at 043f7c9") and [later refinements](../development/history.md#verification-archive--2026-11-17 "Archive: docs/verification/conversation-followup-2026-11-06/report.html at 043f7c9").
 
 Public history keeps useful answers, results, review findings and human questions. Normal handoff instructions, native prompts, shell commands and raw tool output stay private. Activity remains agent-attributed, transient and friendly; waiting/failure/input states stay actionable. Streaming polish preserves final/history content and reduced-motion behavior.
 

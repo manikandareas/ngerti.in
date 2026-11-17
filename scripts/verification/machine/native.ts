@@ -23,7 +23,7 @@ const peerThread = f.lifecycle.create("thread", { type: "dm", member_agent_ids: 
 const cohort = crypto.randomUUID();
 const directory = `.ngertiin-verification/${cohort}`;
 const results: { name: string; passed: boolean; detail?: unknown }[] = [];
-const evidence = "docs/verification/shared-machine";
+const evidence = ".dev/verification/shared-machine";
 mkdirSync(evidence, { recursive: true });
 const record = (name: string, detail?: unknown) => { results.push({ name, passed: true, detail }); console.log(JSON.stringify({ check: name, passed: true })); };
 const start = (agentId: string, threadId: string) => {

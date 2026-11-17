@@ -30,7 +30,7 @@ const report = {
 };
 for (const number of tickets) {
   const ticket = `NMA-${String(number).padStart(3, "0")}`;
-  const prefix = `docs/verification/${ticket.toLowerCase()}/`;
+  const prefix = `.dev/verification/${ticket.toLowerCase()}/`;
   const entry = {
     ticket,
     retained_files: 0,
@@ -109,7 +109,7 @@ try {
   database.close();
 }
 await Bun.write(
-  `${process.argv[2] ?? "docs/verification/nma-060/final-cohort"}/retained.json`,
+  `${process.argv[2] ?? ".dev/verification/nma-060/final-cohort"}/retained.json`,
   `${JSON.stringify(report, null, 2)}\n`,
 );
 assert.equal(

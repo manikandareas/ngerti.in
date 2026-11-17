@@ -345,9 +345,7 @@ export function consumerContract(machineRuntime = false) {
       ticket: "NMA-060",
       state: API_READINESS_GATE,
       scope: "engine_backend_api_only",
-      evidence: machineRuntime
-        ? "docs/verification/shared-machine/README.md"
-        : "docs/verification/nma-060/final-cohort/README.md",
+      evidence: "docs/development/history.md#verification-archive--2026-11-17",
     },
   };
 }

@@ -1,9 +1,0 @@
-bun test v1.3.10 (30e609e0)
-
-../../scripts/verification/acp/native-accounts.test.ts:
-(pass) native ACP Team-agent users retain separate HTTP records, Cua files and revocable selected connections [92507.32ms]
-
- 1 pass
- 0 fail
- 40 expect() calls
-Ran 1 test across 1 file. [93.26s]

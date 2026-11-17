@@ -1,7 +1,0 @@
-PASS Tobi reaches authenticated conversation with durable real artifact
-PASS History search, rename, usage and keyboard accessibility
-PASS Selected history and artifact export has actual downloaded bytes
-PASS Import preview, conflict, lost acknowledgement and reload deduplicate
-PASS Second owner cannot read or export source conversation
-PASS Personality preset updates editor and saved config persists
-PASS Branch inherits text, preserves primary DM and starts no work

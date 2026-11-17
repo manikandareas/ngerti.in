@@ -1,5 +1,0 @@
-﻿Kasus,Input,Hasil
-28. File hanya berisi header,"sku,jumlah,lokasi,tanggal tanpa data",Ditolak: tidak ada data untuk diimpor
-26. Header ganda,"sku,jumlah,lokasi,lokasi",Ditolak: nama kolom berulang
-25. Header wajib hilang,"sku,jumlah,tanggal",Ditolak: kolom lokasi tidak ada
-24. Header benar,"sku,jumlah,lokasi,tanggal",Dikenali sebagai header

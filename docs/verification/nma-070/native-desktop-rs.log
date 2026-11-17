@@ -1,4 +1,0 @@
-{"at":"2026-11-08T10:54:18.895705+00:00","event":"desktop.backend.ready","detail":"{\"ownership\":\"external\"}"}
-{"at":"2026-11-08T10:54:19.664177+00:00","event":"desktop.machine.start","detail":"{\"success\":true}"}
-{"at":"2026-11-08T11:11:08.795029+00:00","event":"desktop.backend.ready","detail":"{\"ownership\":\"external\"}"}
-{"at":"2026-11-08T11:11:09.483041+00:00","event":"desktop.machine.start","detail":"{\"success\":true}"}

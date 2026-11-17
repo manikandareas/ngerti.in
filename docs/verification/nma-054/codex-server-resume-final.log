@@ -1,4 +1,0 @@
-{"event":"foundation.started","url":"http://127.0.0.1:49954","credentials_file":"/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma049-native/installation.json","registered_executors":2,"api_readiness_gate":"pending"}
-{"event":"product_tool.completed","run_id":"24ae7a2f-0521-4ef7-a395-f90d9f89709a","thread_id":"50cf92da-e060-4c59-a6b9-1d84ef566838","agent_id":"de1c5b1d-c687-41ae-ae79-7f285a868a96","name":"ngertiin.read_run_context"}
-{"event":"product_tool.completed","run_id":"24ae7a2f-0521-4ef7-a395-f90d9f89709a","thread_id":"50cf92da-e060-4c59-a6b9-1d84ef566838","agent_id":"de1c5b1d-c687-41ae-ae79-7f285a868a96","name":"ngertiin.read_file"}
-{"event":"product_tool.completed","run_id":"24ae7a2f-0521-4ef7-a395-f90d9f89709a","thread_id":"50cf92da-e060-4c59-a6b9-1d84ef566838","agent_id":"de1c5b1d-c687-41ae-ae79-7f285a868a96","name":"ngertiin.read_file"}

@@ -2,7 +2,7 @@ import { mkdirSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 
 const root = resolve(import.meta.dir, "../../..");
-const directory = join(root, "docs/verification/nma-079");
+const directory = join(root, ".dev/verification/nma-079");
 mkdirSync(directory, { recursive: true });
 async function run(name: string, args: string[]) {
   mkdirSync(dirname(join(directory, name)), { recursive: true });

@@ -9,6 +9,6 @@ out=json.loads(subprocess.check_output(['docker','exec',name,'python','-c',code]
 image=json.loads(subprocess.check_output(['docker','image','inspect','ngertiin-browser:nma058'],text=True))[0]
 out.update({'image_id':image['Id'],'image_repo_digests':image['RepoDigests'],'architecture':image['Architecture'],'base_image':'python:3.12.12-slim-bookworm@sha256:593bd06efe90efa80dc4eee3948be7c0fde4134606dd40d8dd8dbcade98e669c','system_packages':subprocess.check_output(['docker','exec',name,'dpkg-query','-W','chromium','xvfb','x11vnc'],text=True).strip().splitlines()})
 assert out['original_mcp_server_wheel_record_sha256']=='696aee232f331ca215bb6e5ed21d5400dda1e4e530a6af6ade923e928acb2bd3'
-Path('docs/verification/nma-058/browser-image.json').write_text(json.dumps(out,indent=2)+'\n')
+Path('.dev/verification/nma-058/browser-image.json').write_text(json.dumps(out,indent=2)+'\n')
 subprocess.run(['docker','stop','--time=15',name],check=True,stdout=subprocess.DEVNULL)
 print(json.dumps(out,indent=2))

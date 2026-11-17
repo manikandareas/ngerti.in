@@ -11,7 +11,7 @@ import {
 } from "../../../apps/server/src/contracts";
 import { fixture } from "../../../apps/server/tests/helpers";
 
-const directory = process.argv[2] ?? "docs/verification/nma-060/final-cohort";
+const directory = process.argv[2] ?? ".dev/verification/nma-060/final-cohort";
 const f = fixture(),
   token = "c".repeat(64);
 let app = createApi(f.lifecycle, new Background(f.lifecycle), token);

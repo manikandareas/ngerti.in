@@ -155,7 +155,7 @@ if (mode === "seed") {
   assert.equal(store.get("peer_task", probe.root).state, "waiting_peer");
   checks.push("unknown_native_outcome_keeps_parent_held_without_replay");
   store.close();
-  const report = process.argv[4] ?? "docs/verification/nma-056/logs/crash.json";
+  const report = process.argv[4] ?? ".dev/verification/nma-056/logs/crash.json";
   await Bun.write(
     report,
     `${JSON.stringify({ planned: 5, passed: checks.length, failed: 0, skipped: 0, checks, scope: "application SIGKILL/SQLite recovery fixture; no provider crash or power-loss claim" }, null, 2)}\n`,

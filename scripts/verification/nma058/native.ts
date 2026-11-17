@@ -5,7 +5,7 @@ import { resolve, join } from "node:path";
 import { captureRfb } from "./rfb";
 
 const base="http://127.0.0.1:49959",directory=resolve(".dev/nma049-native"),phase=process.argv[2];
-const proofPath=resolve(".dev/nma058/native-proof.json"),out=`docs/verification/nma-058/native-${phase}.json`;
+const proofPath=resolve(".dev/nma058/native-proof.json"),out=`.dev/verification/nma-058/native-${phase}.json`;
 const proof:any=await Bun.file(proofPath).exists()?await Bun.file(proofPath).json():{agents:[],runs:{}};
 const {token}=await Bun.file(join(directory,"installation.json")).json();
 const report:any={phase,started_at:new Date().toISOString(),checks:[],observations:{}};
@@ -69,9 +69,9 @@ try {
    } else { assert.equal(observation.auth,"required"); assert(state.url.endsWith("/login")); }
    report[`${a.harness}_admission_to_settlement_ms`]=Date.parse(run.updated_at)-Date.parse(run.created_at);
    report[`${a.harness}_task_success`]=true;
-   for(const c of observation.content)if(c.type==="image"){await Bun.write(`docs/verification/nma-058/${phase}-${a.harness}-dom.png`,Buffer.from(c.data,"base64"));c.data="[retained as adjacent PNG]";}
+   for(const c of observation.content)if(c.type==="image"){await Bun.write(`.dev/verification/nma-058/${phase}-${a.harness}-dom.png`,Buffer.from(c.data,"base64"));c.data="[retained as adjacent PNG]";}
    report[`${a.harness}_browser_observation`]=observation;
-   const view=await api(`/v1/browser/sessions/${session.id}/view`,{agent_id:a.id,thread_id:a.thread_id});const rfb=await captureRfb(view.url);await Bun.write(`docs/verification/nma-058/${phase}-${a.harness}-vnc.png`,rfb.png);report[`${a.harness}_vnc`]={width:rfb.width,height:rfb.height,rectangles:rfb.rectangles,mode:view.mode,session_id:view.session_id,generation:view.generation};
+   const view=await api(`/v1/browser/sessions/${session.id}/view`,{agent_id:a.id,thread_id:a.thread_id});const rfb=await captureRfb(view.url);await Bun.write(`.dev/verification/nma-058/${phase}-${a.harness}-vnc.png`,rfb.png);report[`${a.harness}_vnc`]={width:rfb.width,height:rfb.height,rectangles:rfb.rectangles,mode:view.mode,session_id:view.session_id,generation:view.generation};
    report.checks.push(`${a.harness}_native_browser_and_rfb`);await save();
   }
  } else if(phase==="close") {

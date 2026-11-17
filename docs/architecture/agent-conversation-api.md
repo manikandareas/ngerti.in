@@ -1,6 +1,6 @@
 # Persistent agents and conversation API
 
-NMA-079 amendment: the [2.0.0 server-organizations consumer contract](server-organizations-api.md) and [verification report](../verification/nma-079/README.md) own current account-mode authentication, scope, normal native dispatch and readiness. Earlier versioned examples and pending-gate statements below retain their captured scope. Web/Tauri UI and deployment remain later milestones.
+NMA-079 amendment: the [2.0.0 server-organizations consumer contract](server-organizations-api.md) and [verification report](../development/history.md#verification-archive--2026-11-17 "Archive: docs/verification/nma-079/README.md at 043f7c9") own current account-mode authentication, scope, normal native dispatch and readiness. Earlier versioned examples and pending-gate statements below retain their captured scope. Web/Tauri UI and deployment remain later milestones.
 
 Planned November 12 amendment: [the server-organizations plan](server-organizations-plan-2026-11-12.md) and NMA-072–083 define PostgreSQL, authenticated organization/user scope, private Team-agent interactions and explicit connections. This guide retains its current/recorded implementation boundary until the new NMA-079 API gate verifies the changed contract; its owner-only examples do not establish multi-user authorization.
 
@@ -88,6 +88,6 @@ Storage remains the existing single-authority Bun/SQLite store. New fields have 
 
 ## Source and verification
 
-Openbot revision `01e4b18e238e5de72a3570162c9f4275bb585786`: `agent-service.ts`, `agent/profile-tools.ts`, `agent/thread-lifecycle.ts`, and `agent/developer-instructions.ts`. Local changes use existing Ngertiin domain schemas, atomic command receipts, per-thread native processes and server-side tool leases. Openbot's required initial model message, desktop/cloud dependencies and provider fallback are omitted. Exact hashes, adopted flows, versions and upgrade steps are in [provenance](../verification/nma-052/provenance.json).
+Openbot revision `01e4b18e238e5de72a3570162c9f4275bb585786`: `agent-service.ts`, `agent/profile-tools.ts`, `agent/thread-lifecycle.ts`, and `agent/developer-instructions.ts`. Local changes use existing Ngertiin domain schemas, atomic command receipts, per-thread native processes and server-side tool leases. Openbot's required initial model message, desktop/cloud dependencies and provider fallback are omitted. Exact hashes, adopted flows, versions and upgrade steps are in [provenance](../development/history.md#verification-archive--2026-11-17 "Archive: docs/verification/nma-052/provenance.json at 043f7c9").
 
-See [verification and remaining dependency](../verification/nma-052/README.md). Contract/process fixtures, subscription Codex evidence and API-key/dev-credit Muse evidence are separate. API readiness, UI, installer and production acceptance remain outside this ticket.
+See [verification and remaining dependency](../development/history.md#verification-archive--2026-11-17 "Archive: docs/verification/nma-052/README.md at 043f7c9"). Contract/process fixtures, subscription Codex evidence and API-key/dev-credit Muse evidence are separate. API readiness, UI, installer and production acceptance remain outside this ticket.

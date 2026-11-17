@@ -9,7 +9,7 @@ const path = resolve(".dev/nma060-modalities-final-proof.json");
 const proof: any = await Bun.file(path).exists() ? await Bun.file(path).json() : { runs: {} };
 const phase = process.argv[2];
 const report: any = { phase, started_at: new Date().toISOString(), checks: [] };
-const out = `docs/verification/nma-060/final-cohort/modality-final-${phase}.json`;
+const out = `.dev/verification/nma-060/final-cohort/modality-final-${phase}.json`;
 async function save() { await Bun.write(path, JSON.stringify(proof, null, 2)); await Bun.write(out, JSON.stringify(report, null, 2)); }
 async function api(path: string, body?: unknown, key = crypto.randomUUID()) {
   const response = await fetch(base + path, { method: body === undefined ? "GET" : "POST", headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json", "Idempotency-Key": key }, ...(body === undefined ? {} : { body: JSON.stringify(body) }) });
@@ -46,7 +46,7 @@ try {
     assert(workspace);
     const svg = `<svg width="600" height="360" xmlns="http://www.w3.org/2000/svg"><rect width="600" height="360" fill="white"/><rect x="50" y="40" width="120" height="120" fill="#135fea"/><polygon points="360,40 435,170 285,170" fill="#edab13"/><text x="48" y="280" font-family="Arial" font-size="52" fill="black">RAVEN 7146</text></svg>`;
     const image = await sharp(Buffer.from(svg)).png().toBuffer();
-    await Bun.write("docs/verification/nma-060/final-cohort/visual-input.png", image);
+    await Bun.write(".dev/verification/nma-060/final-cohort/visual-input.png", image);
     proof.image ??= await api(`/v1/workspaces/${workspace.id}/uploads`, { name: "visual.png", media_type: "image/png", content_base64: image.toString("base64") }); await save();
     const current = await run("image", "Visually read the attached image. Report the exact printed code and describe the two shapes and their colors. Use the native image input already supplied; do not call shell, read_file, OCR, browser or other tools. Keep the answer concise.", [proof.image.id]);
     assert.equal(current.visual_inputs.length, 1); assert.equal(current.native_tools.length, 0); assert.match(report.answer, /7146/); assert.match(report.answer, /blue/i); assert.match(report.answer, /triangle/i);

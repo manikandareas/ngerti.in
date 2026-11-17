@@ -16,10 +16,7 @@ const cases: {
   behavior: string;
 }[] = [];
 const contract = JSON.parse(
-  readFileSync(
-    resolve(import.meta.dir, "../../../../docs/verification/nma-079/contract.json"),
-    "utf8",
-  ),
+  readFileSync(resolve(import.meta.dir, "fixtures/http-contract.json"), "utf8"),
 );
 function template(method: string, path: string): string {
   const found = contract.http.find(

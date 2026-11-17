@@ -1,8 +1,0 @@
-{
-  "phase": "close",
-  "started_at": "2026-11-01T08:26:19.197Z",
-  "checks": [
-    "managed_browser_closed_profiles_retained"
-  ],
-  "observations": {}
-}

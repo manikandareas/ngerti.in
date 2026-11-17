@@ -1,3 +1,0 @@
-$ bun apps/desktop/scripts/setup.ts --remote "https://127.0.0.1:44431" --certificate "/Users/vitoandareasmanik/Library/Application Support/mkcert/rootCA.pem"
-Desktop profile created. It references the selected development state without copying credentials.
-Profile: /Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma081/client-final/profile.json

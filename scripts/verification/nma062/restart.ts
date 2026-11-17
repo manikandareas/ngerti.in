@@ -95,7 +95,7 @@ if (process.argv[2] === "before") {
           .isVisible(),
       );
       assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
-      await page.screenshot({ path: `docs/verification/nma-062/restart-mobile-${family}.png` });
+      await page.screenshot({ path: `.dev/verification/nma-062/restart-mobile-${family}.png` });
       await page.getByRole("button", { name: "Close", exact: true }).click();
       await page.reload();
       await page.getByRole("button", { name: `Detail UI work ${family}`, exact: true }).waitFor();
@@ -103,7 +103,7 @@ if (process.argv[2] === "before") {
     const finalRuns = await api<{ id: string }[]>("/v1/entities/run");
     assert.deepEqual(finalRuns, before.runs);
     await Bun.write(
-      "docs/verification/nma-062/restart.json",
+      ".dev/verification/nma-062/restart.json",
       JSON.stringify(
         {
           native_runs_before: before.runs.length,

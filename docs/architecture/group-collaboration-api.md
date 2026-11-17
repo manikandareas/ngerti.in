@@ -1,6 +1,6 @@
 # Group routing, peer tasks and human input
 
-NMA-079 amendment: the [2.0.0 server-organizations consumer contract](server-organizations-api.md) and [verification report](../verification/nma-079/README.md) own current account-mode authentication, scope, normal native dispatch and readiness. Earlier versioned examples and pending-gate statements below retain their captured scope. Web/Tauri UI and deployment remain later milestones.
+NMA-079 amendment: the [2.0.0 server-organizations consumer contract](server-organizations-api.md) and [verification report](../development/history.md#verification-archive--2026-11-17 "Archive: docs/verification/nma-079/README.md at 043f7c9") own current account-mode authentication, scope, normal native dispatch and readiness. Earlier versioned examples and pending-gate statements below retain their captured scope. Web/Tauri UI and deployment remain later milestones.
 
 Planned November 12 amendment: [the server-organizations plan](server-organizations-plan-2026-11-12.md) and NMA-072–083 define PostgreSQL, authenticated organization/user scope, private Team-agent interactions and explicit connections. This guide retains its current/recorded implementation boundary until the new NMA-079 API gate verifies the changed contract; its owner-only examples do not establish multi-user authorization.
 
@@ -70,4 +70,4 @@ Groups also own Goals and Routine with separately assigned coordinators/executor
 
 Run controls, native stop confirmation and unknown receipts retain their existing semantics; deletion of a message is not an undo of committed handoff effects. [Conversation control contracts](conversation-control-api.md) remain available for explicitly targeted run controls.
 
-See [verification](../verification/nma-056/README.md) for exact source/stack versions, protocol/process checks, real Codex-to-Muse review/HITL/restart evidence and retained failures.
+See [verification](../development/history.md#verification-archive--2026-11-17 "Archive: docs/verification/nma-056/README.md at 043f7c9") for exact source/stack versions, protocol/process checks, real Codex-to-Muse review/HITL/restart evidence and retained failures.

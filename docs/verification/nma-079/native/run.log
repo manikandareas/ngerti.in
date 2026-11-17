@@ -1,9 +1,0 @@
-bun test v1.3.10 (30e609e0)
-
-../../scripts/verification/nma079/native.test.ts:
-(pass) real account-mode admission executes both native harnesses through private Cua domains [110451.61ms]
-
- 1 pass
- 0 fail
- 28 expect() calls
-Ran 1 test across 1 file. [111.17s]

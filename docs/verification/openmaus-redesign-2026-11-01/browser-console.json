@@ -1,8 +1,0 @@
-[
-  {
-    "level": "error",
-    "message": "Encountered a script tag while rendering React component. Scripts inside React components are never executed when rendering on the client. Consider using template tag instead (https://developer.mozilla.org/en-US/docs/Web/HTML/Element/template).",
-    "timestamp": "2026-11-01T10:14:43.147Z",
-    "url": "http://127.0.0.1:3002/@vite/client"
-  }
-]

@@ -1,12 +1,12 @@
 # User authentication and device sessions
 
-November 15 owner amendment: account authentication is always enabled. The mode selector, installation-bearer API path and local desktop supervisor are removed. The [current report](../verification/accounts-only-2026-11-15/README.md) records development defaults and verification. Earlier evidence retains its captured source/configuration; the executable account contract remains 2.2.0.
+November 15 owner amendment: account authentication is always enabled. The mode selector, installation-bearer API path and local desktop supervisor are removed. The [current report](../development/history.md#verification-archive--2026-11-17 "Archive: docs/verification/accounts-only-2026-11-15/README.md at 043f7c9") records development defaults and verification. Earlier evidence retains its captured source/configuration; the executable account contract remains 2.2.0.
 
-[NMA-073](../backlog/NMA-073.md) implements account authentication in the server on Bun 1.3.10, Better Auth 1.7.23, `@better-auth/oauth-provider` 1.7.23, Elysia 1.4.30 and `pg` 8.23.1. [Evidence](../verification/nma-073/README.md) distinguishes HTTP/PostgreSQL and headless native-client proof from product UI, real email-provider delivery and deployment.
+[NMA-073](../backlog/NMA-073.md) implements account authentication in the server on Bun 1.3.10, Better Auth 1.7.23, `@better-auth/oauth-provider` 1.7.23, Elysia 1.4.30 and `pg` 8.23.1. [Evidence](../development/history.md#verification-archive--2026-11-17 "Archive: docs/verification/nma-073/README.md at 043f7c9") distinguishes HTTP/PostgreSQL and headless native-client proof from product UI, real email-provider delivery and deployment.
 
 ## Web consumer — NMA-080
 
-The web-client implements account onboarding and consumes the verified [2.1.0 contract delta](server-organizations-api.md#additive-web-consumer-delta--210). Browser credentials remain HttpOnly; private workspace reads/writes and SSE carry explicit organization context. Sign-in, invitations, password reset, browser renewal and logout retain the server's current session checks. The [NMA-080 report](../verification/nma-080/README.md) separates real HTTP/browser behavior from controlled delivery/provider adapters and native Cua observations.
+The web-client implements account onboarding and consumes the verified [2.1.0 contract delta](server-organizations-api.md#additive-web-consumer-delta--210). Browser credentials remain HttpOnly; private workspace reads/writes and SSE carry explicit organization context. Sign-in, invitations, password reset, browser renewal and logout retain the server's current session checks. The [NMA-080 report](../development/history.md#verification-archive--2026-11-17 "Archive: docs/verification/nma-080/README.md at 043f7c9") separates real HTTP/browser behavior from controlled delivery/provider adapters and native Cua observations.
 
 The loopback Vite bridge forwards cookie/native-token authentication and never reads installation credentials or injects an owner bearer. Its Host/Origin/fetch-site guard runs before forwarding; upstream Origin matches the browser-visible auth origin. Tauri always uses [native account transport](tauri-remote-client.md). A missing server/session produces a connection or sign-in state, never another auth mode.
 
@@ -80,7 +80,7 @@ The native gateway creates random state/verifier, opens the configured authoriza
 
 Opaque `ng_at_` access tokens last five minutes; rotating `ng_rt_` renewal credentials last up to 30 days. At code exchange Ngertiin rebinds the issued tokens to a separate native device session, preserving the authorizing browser's session independently. Native token verification checks provider lookup, issuer, exact API audience, native client, required scope, subject, expiry, current verified user and live matching session. Native renewal additionally rejects absent, expired or revoked device sessions, including the upstream offline-access behavior that would otherwise detach credentials from an ended session. ID tokens, first-party session tokens, installation bearers, run leases and viewer tickets are not interchangeable.
 
-NMA-081 stores long-lived renewal credentials in macOS Keychain and short-lived access tokens in native memory; renderer JavaScript never receives them. The [native contract](tauri-remote-client.md) and [verification report](../verification/nma-081/README.md) retain the implementation and actual proof separately from this backend milestone.
+NMA-081 stores long-lived renewal credentials in macOS Keychain and short-lived access tokens in native memory; renderer JavaScript never receives them. The [native contract](tauri-remote-client.md) and [verification report](../development/history.md#verification-archive--2026-11-17 "Archive: docs/verification/nma-081/README.md at 043f7c9") retain the implementation and actual proof separately from this backend milestone.
 
 ## Revocation and continuous delivery
 

@@ -1,6 +1,0 @@
-PASS Create schedule through chat with explicit timezone
-PASS Pause future schedule through chat
-FAIL Compress and reset preserve product transcript TimeoutError: locator.waitFor: Timeout 90000ms exceeded.
-Call log:
-[2m  - waiting for getByText(/Konteks masih ringkas|Konteks dirangkum/) to be visible[22m
-

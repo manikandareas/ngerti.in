@@ -1,9 +1,0 @@
-{
-  "restart_view_connected": true,
-  "changed_grant_closed_old_view": true,
-  "fresh_view_generation": 2,
-  "synthetic_site_auth_required_visible": true,
-  "browser_actions_before": 4,
-  "browser_actions_after": 4,
-  "native_inference": 0
-}

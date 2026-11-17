@@ -1,9 +1,0 @@
-{
-  "passed": [
-    "Save permission errors remain inside provider and app dialogs"
-  ],
-  "failed": [],
-  "limits": [
-    "Faults change transport presentation only; no claim of external OAuth/provider acceptance."
-  ]
-}

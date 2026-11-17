@@ -1,3 +1,0 @@
-There has been no change in the accessibility tree for Window: "Ngertiin · Web Client".
-The focused UI element is 278 text entry area (settable) Pesan, Placeholder: Pesan untuk Tobi…, Value: - Python: `DictReader` memakai baris pertama sebagai header jika `fieldnames` tidak diberikan; delimiter dapat diatur sebagai satu karakter. [Dokumentasi Python CSV](https://docs.python.org/3/library/csv.html)
-- RFC 4180: header bersifat opsional, jumlah kolom harus konsisten, dan pemisah kolomnya koma. [RFC 4180 §2](https://www.rfc-editor.org/rfc/rfc4180.html#section-2)

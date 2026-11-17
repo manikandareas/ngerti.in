@@ -1,7 +1,0 @@
-{"event":"foundation.started","url":"http://127.0.0.1:49958","credentials_file":"/Users/vitoandareasmanik/Development/project/ngertiin/.dev/nma050/state/installation.json","registered_executors":2,"api_readiness_gate":"pending"}
-{"event":"product_tool.completed","run_id":"87ba8850-b15d-4188-9b07-a7f4c192bed2","thread_id":"c807cead-4ff1-450e-94a6-4836692969cb","agent_id":"c144ad26-8aa6-4a98-bc5e-f3da1543df9d","name":"ngertiin.describe_tools"}
-{"event":"product_tool.completed","run_id":"87ba8850-b15d-4188-9b07-a7f4c192bed2","thread_id":"c807cead-4ff1-450e-94a6-4836692969cb","agent_id":"c144ad26-8aa6-4a98-bc5e-f3da1543df9d","name":"ngertiin.write_memory"}
-{"event":"product_tool.completed","run_id":"87ba8850-b15d-4188-9b07-a7f4c192bed2","thread_id":"c807cead-4ff1-450e-94a6-4836692969cb","agent_id":"c144ad26-8aa6-4a98-bc5e-f3da1543df9d","name":"ngertiin.list_memories"}
-{"event":"product_tool.completed","run_id":"87ba8850-b15d-4188-9b07-a7f4c192bed2","thread_id":"c807cead-4ff1-450e-94a6-4836692969cb","agent_id":"c144ad26-8aa6-4a98-bc5e-f3da1543df9d","name":"ngertiin.read_skill"}
-{"event":"product_tool.completed","run_id":"87ba8850-b15d-4188-9b07-a7f4c192bed2","thread_id":"c807cead-4ff1-450e-94a6-4836692969cb","agent_id":"c144ad26-8aa6-4a98-bc5e-f3da1543df9d","name":"ngertiin.read_skill"}
-{"event":"product_tool.completed","run_id":"87ba8850-b15d-4188-9b07-a7f4c192bed2","thread_id":"c807cead-4ff1-450e-94a6-4836692969cb","agent_id":"c144ad26-8aa6-4a98-bc5e-f3da1543df9d","name":"ngertiin.list_skills"}

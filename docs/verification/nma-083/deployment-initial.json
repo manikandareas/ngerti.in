@@ -1,9 +1,0 @@
-{
-  "candidate_installed": true,
-  "automatic_rollback": true,
-  "rollback_hash": "9266991eb272c84e0064a88a29761ed887e3c322cd7ee00c18bb3685a44a6910",
-  "service_after_rollback": "active",
-  "server_self_public_health": 403,
-  "mac_public_health": 200,
-  "correction": "Validate namespace-local health on the server and certificate-validated public health separately from the Mac."
-}

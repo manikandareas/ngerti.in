@@ -1,1 +1,0 @@
-{"phase":"stop-goals","status":"pass","checks":["codex_conversational_goal_stop_disables_future_occurrences","muse_conversational_goal_stop_disables_future_occurrences"]}

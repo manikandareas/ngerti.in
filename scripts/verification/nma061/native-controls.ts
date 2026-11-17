@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { chromium } from 'playwright';
-const proof = await Bun.file('docs/verification/nma-061/native.json').json();
+const proof = await Bun.file('.dev/verification/nma-061/native.json').json();
 const browser = await chromium.launch();
 const results: unknown[] = [];
 const base = 'http://127.0.0.1:4312';
@@ -39,10 +39,10 @@ try {
    await new Promise(r => setTimeout(r, 1000));
   }
   results.push({ family: lane.family, run, mode: lane.family === 'codex' ? 'queued_edit_steer_conversational_stop' : 'queued_edit_delete_button_stop' });
-  await Bun.write('docs/verification/nma-061/native-controls.json', JSON.stringify({ results }, null, 2));
+  await Bun.write('.dev/verification/nma-061/native-controls.json', JSON.stringify({ results }, null, 2));
   assert.equal(run.status, 'cancelled'); assert.equal(run.cancellation, 'confirmed');
   await page.getByText('Stop terkonfirmasi', { exact: true }).last().waitFor();
-  await page.screenshot({ path: `docs/verification/nma-061/control-${lane.family}.png` });
+  await page.screenshot({ path: `.dev/verification/nma-061/control-${lane.family}.png` });
   await context.close();
  }
  console.log(JSON.stringify({ pass: results.length, fail: 0 }));

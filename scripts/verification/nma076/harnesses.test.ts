@@ -41,7 +41,7 @@ test("both native harnesses perform useful isolated work without writing to the 
   }
   const f = await fixture();
   const stamp = new Date().toISOString().replaceAll(":", "-");
-  const directory = join(project, "docs/verification/nma-076", stamp);
+  const directory = join(project, ".dev/verification/nma-076", stamp);
   mkdirSync(directory, { recursive: true });
   const report: { [key: string]: unknown } = {
     started_at: new Date().toISOString(),

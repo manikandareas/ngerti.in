@@ -1,2 +1,0 @@
-Temporary checker copy: repository root fixed to this checkout; Markdown file discovery excludes only .agents/skills/gpui-kit*. Backlog, decision coverage and contract checks are unchanged.
-Docs: 230 Markdown files, 2239 local links OK (101 verified in pinned historical Git trees); 25 milestones, 83 decisions, contract 1.31.0.

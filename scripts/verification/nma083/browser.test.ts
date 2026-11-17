@@ -5,7 +5,7 @@ import { chromium, expect as browserExpect, type Page } from "playwright/test";
 import { fixturePassword } from "../../../apps/server/tests/auth/helpers";
 import { acceptanceFixture } from "./fixture";
 
-const directory = resolve(import.meta.dir, "../../../docs/verification/nma-083");
+const directory = resolve(import.meta.dir, "../../../.dev/verification/nma-083");
 const dist = resolve(import.meta.dir, "../../../apps/web-client/dist");
 mkdirSync(resolve(directory, "screenshots"), { recursive: true });
 async function navigation(page: Page) {

@@ -3,7 +3,7 @@ import json
 from pathlib import Path
 from PIL import Image
 
-root = Path('docs/verification/nma-058')
+root = Path('.dev/verification/nma-058')
 report = {}
 for harness in ('codex', 'muse'):
     dom = Image.open(root / f'start-{harness}-dom.png').convert('RGB')

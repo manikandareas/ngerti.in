@@ -4,7 +4,7 @@ import { resolve } from "node:path";
 import { acceptanceFixture } from "./fixture";
 
 test("three people retain private Team-agent work across organizations, concurrency, lost acknowledgements and removal", async () => {
-  const directory = resolve(import.meta.dir, "../../../docs/verification/nma-083");
+  const directory = resolve(import.meta.dir, "../../../.dev/verification/nma-083");
   mkdirSync(directory, { recursive: true });
   const checks: { name: string; status: "pass"; observations?: unknown }[] = [];
   const report = {

@@ -1,2 +1,0 @@
-Biome check --write via server-configured stdin: exit 0.
-Formatter output is byte-identical to the audit source.

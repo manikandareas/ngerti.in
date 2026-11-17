@@ -1,0 +1,275 @@
+$ bun --filter @ngertiin/web-client lint
+@ngertiin/web-client lint: tests/account-entry.spec.ts:49:14 lint/style/noNonNullAssertion  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━━━
+@ngertiin/web-client lint: 
+@ngertiin/web-client lint:   ! Forbidden non-null assertion.
+@ngertiin/web-client lint:   
+@ngertiin/web-client lint:     47 │       const bounds = await page.getByLabel(name, { exact: true }).boundingBox();
+@ngertiin/web-client lint:     48 │       expect(bounds?.height).toBeGreaterThanOrEqual(width < 900 ? 44 : 36);
+@ngertiin/web-client lint:   > 49 │       expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(width);
+@ngertiin/web-client lint:        │              ^^^^^^^
+@ngertiin/web-client lint:     50 │     }
+@ngertiin/web-client lint:     51 │     await page.screenshot({
+@ngertiin/web-client lint:   
+@ngertiin/web-client lint:   i Unsafe fix: Replace with optional chain operator ?. This operator includes runtime checks, so it is safer than the compile-only non-null assertion operator
+@ngertiin/web-client lint:   
+@ngertiin/web-client lint:      47  47 │         const bounds = await page.getByLabel(name, { exact: true }).boundingBox();
+@ngertiin/web-client lint:      48  48 │         expect(bounds?.height).toBeGreaterThanOrEqual(width < 900 ? 44 : 36);
+@ngertiin/web-client lint:      49     │ - ······expect(bounds!.x·+·bounds!.width).toBeLessThanOrEqual(width);
+@ngertiin/web-client lint:          49 │ + ······expect(bounds?.x·+·bounds!.width).toBeLessThanOrEqual(width);
+@ngertiin/web-client lint:      50  50 │       }
+@ngertiin/web-client lint:      51  51 │       await page.screenshot({
+@ngertiin/web-client lint:   
+@ngertiin/web-client lint: 
+@ngertiin/web-client lint: tests/account-entry.spec.ts:49:26 lint/style/noNonNullAssertion  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━━━
+@ngertiin/web-client lint: 
+@ngertiin/web-client lint:   ! Forbidden non-null assertion.
+@ngertiin/web-client lint:   
+@ngertiin/web-client lint:     47 │       const bounds = await page.getByLabel(name, { exact: true }).boundingBox();
+@ngertiin/web-client lint:     48 │       expect(bounds?.height).toBeGreaterThanOrEqual(width < 900 ? 44 : 36);
+@ngertiin/web-client lint:   > 49 │       expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(width);
+@ngertiin/web-client lint:        │                          ^^^^^^^
+@ngertiin/web-client lint:     50 │     }
+@ngertiin/web-client lint:     51 │     await page.screenshot({
+@ngertiin/web-client lint:   
+@ngertiin/web-client lint:   i Unsafe fix: Replace with optional chain operator ?. This operator includes runtime checks, so it is safer than the compile-only non-null assertion operator
+@ngertiin/web-client lint:   
+@ngertiin/web-client lint:      47  47 │         const bounds = await page.getByLabel(name, { exact: true }).boundingBox();
+@ngertiin/web-client lint:      48  48 │         expect(bounds?.height).toBeGreaterThanOrEqual(width < 900 ? 44 : 36);
+@ngertiin/web-client lint:      49     │ - ······expect(bounds!.x·+·bounds!.width).toBeLessThanOrEqual(width);
+@ngertiin/web-client lint:          49 │ + ······expect(bounds!.x·+·bounds?.width).toBeLessThanOrEqual(width);
+@ngertiin/web-client lint:      50  50 │       }
+@ngertiin/web-client lint:      51  51 │       await page.screenshot({
+@ngertiin/web-client lint:   
+@ngertiin/web-client lint: 
+@ngertiin/web-client lint: tests/account-entry.spec.ts:74:12 lint/style/noNonNullAssertion  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━━━
+@ngertiin/web-client lint: 
+@ngertiin/web-client lint:   ! Forbidden non-null assertion.
+@ngertiin/web-client lint:   
+@ngertiin/web-client lint:     72 │     const top = await page.getByRole("button", { name: primary, exact: true }).boundingBox();
+@ngertiin/web-client lint:     73 │     const bottom = await page.getByRole("button", { name: secondary, exact: true }).boundingBox();
+@ngertiin/web-client lint:   > 74 │     expect(bottom!.y - top!.y - top!.height).toBe(12);
+@ngertiin/web-client lint:        │            ^^^^^^^
+@ngertiin/web-client lint:     75 │     expect(bottom!.width).toBe(top!.width);
+@ngertiin/web-client lint:     76 │   }
+@ngertiin/web-client lint:   
+@ngertiin/web-client lint:   i Unsafe fix: Replace with optional chain operator ?. This operator includes runtime checks, so it is safer than the compile-only non-null assertion operator
+@ngertiin/web-client lint:   
+@ngertiin/web-client lint:      72  72 │       const top = await page.getByRole("button", { name: primary, exact: true }).boundingBox();
+@ngertiin/web-client lint:      73  73 │       const bottom = await page.getByRole("button", { name: secondary, exact: true }).boundingBox();
+@ngertiin/web-client lint:      74     │ - ····expect(bottom!.y·-·top!.y·-·top!.height).toBe(12);
+@ngertiin/web-client lint:          74 │ + ····expect(bottom?.y·-·top!.y·-·top!.height).toBe(12);
+@ngertiin/web-client lint:      75  75 │       expect(bottom!.width).toBe(top!.width);
+@ngertiin/web-client lint:      76  76 │     }
+@ngertiin/web-client lint:   
+@ngertiin/web-client lint: 
+@ngertiin/web-client lint: tests/account-entry.spec.ts:74:24 lint/style/noNonNullAssertion  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━━━
+@ngertiin/web-client lint: 
+@ngertiin/web-client lint:   ! Forbidden non-null assertion.
+@ngertiin/web-client lint:   
+@ngertiin/web-client lint:     72 │     const top = await page.getByRole("button", { name: primary, exact: true }).boundingBox();
+@ngertiin/web-client lint:     73 │     const bottom = await page.getByRole("button", { name: secondary, exact: true }).boundingBox();
+@ngertiin/web-client lint:   > 74 │     expect(bottom!.y - top!.y - top!.height).toBe(12);
+@ngertiin/web-client lint:        │                        ^^^^
+@ngertiin/web-client lint:     75 │     expect(bottom!.width).toBe(top!.width);
+@ngertiin/web-client lint:     76 │   }
+@ngertiin/web-client lint:   
+@ngertiin/web-client lint:   i Unsafe fix: Replace with optional chain operator ?. This operator includes runtime checks, so it is safer than the compile-only non-null assertion operator
+@ngertiin/web-client lint:   
+@ngertiin/web-client lint:      72  72 │       const top = await page.getByRole("button", { name: primary, exact: true }).boundingBox();
+@ngertiin/web-client lint:      73  73 │       const bottom = await page.getByRole("button", { name: secondary, exact: true }).boundingBox();
+@ngertiin/web-client lint:      74     │ - ····expect(bottom!.y·-·top!.y·-·top!.height).toBe(12);
+@ngertiin/web-client lint:          74 │ + ····expect(bottom!.y·-·top?.y·-·top!.height).toBe(12);
+@ngertiin/web-client lint:      75  75 │       expect(bottom!.width).toBe(top!.width);
+@ngertiin/web-client lint:      76  76 │     }
+@ngertiin/web-client lint:   
+@ngertiin/web-client lint: 
+@ngertiin/web-client lint: tests/account-entry.spec.ts:74:33 lint/style/noNonNullAssertion  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━━━
+@ngertiin/web-client lint: 
+@ngertiin/web-client lint:   ! Forbidden non-null assertion.
+@ngertiin/web-client lint:   
+@ngertiin/web-client lint:     72 │     const top = await page.getByRole("button", { name: primary, exact: true }).boundingBox();
+@ngertiin/web-client lint:     73 │     const bottom = await page.getByRole("button", { name: secondary, exact: true }).boundingBox();
+@ngertiin/web-client lint:   > 74 │     expect(bottom!.y - top!.y - top!.height).toBe(12);
+@ngertiin/web-client lint:        │                                 ^^^^
+@ngertiin/web-client lint:     75 │     expect(bottom!.width).toBe(top!.width);
+@ngertiin/web-client lint:     76 │   }
+@ngertiin/web-client lint:   
+@ngertiin/web-client lint:   i Unsafe fix: Replace with optional chain operator ?. This operator includes runtime checks, so it is safer than the compile-only non-null assertion operator
+@ngertiin/web-client lint:   
+@ngertiin/web-client lint:      72  72 │       const top = await page.getByRole("button", { name: primary, exact: true }).boundingBox();
+@ngertiin/web-client lint:      73  73 │       const bottom = await page.getByRole("button", { name: secondary, exact: true }).boundingBox();
+@ngertiin/web-client lint:      74     │ - ····expect(bottom!.y·-·top!.y·-·top!.height).toBe(12);
+@ngertiin/web-client lint:          74 │ + ····expect(bottom!.y·-·top!.y·-·top?.height).toBe(12);
+@ngertiin/web-client lint:      75  75 │       expect(bottom!.width).toBe(top!.width);
+@ngertiin/web-client lint:      76  76 │     }
+@ngertiin/web-client lint:   
+@ngertiin/web-client lint: 
+@ngertiin/web-client lint: tests/account-entry.spec.ts:75:12 lint/style/noNonNullAssertion  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━━━
+@ngertiin/web-client lint: 
+@ngertiin/web-client lint:   ! Forbidden non-null assertion.
+@ngertiin/web-client lint:   
+@ngertiin/web-client lint:     73 │     const bottom = await page.getByRole("button", { name: secondary, exact: true }).boundingBox();
+@ngertiin/web-client lint:     74 │     expect(bottom!.y - top!.y - top!.height).toBe(12);
+@ngertiin/web-client lint:   > 75 │     expect(bottom!.width).toBe(top!.width);
+@ngertiin/web-client lint:        │            ^^^^^^^
+@ngertiin/web-client lint:     76 │   }
+@ngertiin/web-client lint:     77 │   await page.route("**/api/auth/**", (route) =>
+@ngertiin/web-client lint:   
+@ngertiin/web-client lint:   i Unsafe fix: Replace with optional chain operator ?. This operator includes runtime checks, so it is safer than the compile-only non-null assertion operator
+@ngertiin/web-client lint:   
+@ngertiin/web-client lint:      73  73 │       const bottom = await page.getByRole("button", { name: secondary, exact: true }).boundingBox();
+@ngertiin/web-client lint:      74  74 │       expect(bottom!.y - top!.y - top!.height).toBe(12);
+@ngertiin/web-client lint:      75     │ - ····expect(bottom!.width).toBe(top!.width);
+@ngertiin/web-client lint:          75 │ + ····expect(bottom?.width).toBe(top!.width);
+@ngertiin/web-client lint:      76  76 │     }
+@ngertiin/web-client lint:      77  77 │     await page.route("**/api/auth/**", (route) =>
+@ngertiin/web-client lint:   
+@ngertiin/web-client lint: 
+@ngertiin/web-client lint: tests/account-entry.spec.ts:75:32 lint/style/noNonNullAssertion  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━━━
+@ngertiin/web-client lint: 
+@ngertiin/web-client lint:   ! Forbidden non-null assertion.
+@ngertiin/web-client lint:   
+@ngertiin/web-client lint:     73 │     const bottom = await page.getByRole("button", { name: secondary, exact: true }).boundingBox();
+@ngertiin/web-client lint:     74 │     expect(bottom!.y - top!.y - top!.height).toBe(12);
+@ngertiin/web-client lint:   > 75 │     expect(bottom!.width).toBe(top!.width);
+@ngertiin/web-client lint:        │                                ^^^^
+@ngertiin/web-client lint:     76 │   }
+@ngertiin/web-client lint:     77 │   await page.route("**/api/auth/**", (route) =>
+@ngertiin/web-client lint:   
+@ngertiin/web-client lint:   i Unsafe fix: Replace with optional chain operator ?. This operator includes runtime checks, so it is safer than the compile-only non-null assertion operator
+@ngertiin/web-client lint:   
+@ngertiin/web-client lint:      73  73 │       const bottom = await page.getByRole("button", { name: secondary, exact: true }).boundingBox();
+@ngertiin/web-client lint:      74  74 │       expect(bottom!.y - top!.y - top!.height).toBe(12);
+@ngertiin/web-client lint:      75     │ - ····expect(bottom!.width).toBe(top!.width);
+@ngertiin/web-client lint:          75 │ + ····expect(bottom!.width).toBe(top?.width);
+@ngertiin/web-client lint:      76  76 │     }
+@ngertiin/web-client lint:      77  77 │     await page.route("**/api/auth/**", (route) =>
+@ngertiin/web-client lint:   
+@ngertiin/web-client lint: 
+@ngertiin/web-client lint: tests/button-surface.spec.ts:15:7 lint/style/noNonNullAssertion  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━━━
+@ngertiin/web-client lint: 
+@ngertiin/web-client lint:   ! Forbidden non-null assertion.
+@ngertiin/web-client lint:   
+@ngertiin/web-client lint:     13 │     if (!context) throw new Error("Color sampling requires Canvas2D.");
+@ngertiin/web-client lint:     14 │     function rgba(value: string) {
+@ngertiin/web-client lint:   > 15 │       context!.clearRect(0, 0, 1, 1);
+@ngertiin/web-client lint:        │       ^^^^^^^^
+@ngertiin/web-client lint:     16 │       context!.fillStyle = value;
+@ngertiin/web-client lint:     17 │       context!.fillRect(0, 0, 1, 1);
+@ngertiin/web-client lint:   
+@ngertiin/web-client lint:   i Unsafe fix: Replace with optional chain operator ?. This operator includes runtime checks, so it is safer than the compile-only non-null assertion operator
+@ngertiin/web-client lint:   
+@ngertiin/web-client lint:      13  13 │       if (!context) throw new Error("Color sampling requires Canvas2D.");
+@ngertiin/web-client lint:      14  14 │       function rgba(value: string) {
+@ngertiin/web-client lint:      15     │ - ······context!.clearRect(0,·0,·1,·1);
+@ngertiin/web-client lint:          15 │ + ······context?.clearRect(0,·0,·1,·1);
+@ngertiin/web-client lint:      16  16 │         context!.fillStyle = value;
+@ngertiin/web-client lint:      17  17 │         context!.fillRect(0, 0, 1, 1);
+@ngertiin/web-client lint:   
+@ngertiin/web-client lint: 
+@ngertiin/web-client lint: tests/button-surface.spec.ts:16:7 lint/style/noNonNullAssertion ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+@ngertiin/web-client lint: 
+@ngertiin/web-client lint:   ! Forbidden non-null assertion.
+@ngertiin/web-client lint:   
+@ngertiin/web-client lint:     14 │     function rgba(value: string) {
+@ngertiin/web-client lint:     15 │       context!.clearRect(0, 0, 1, 1);
+@ngertiin/web-client lint:   > 16 │       context!.fillStyle = value;
+@ngertiin/web-client lint:        │       ^^^^^^^^
+@ngertiin/web-client lint:     17 │       context!.fillRect(0, 0, 1, 1);
+@ngertiin/web-client lint:     18 │       return Array.from(context!.getImageData(0, 0, 1, 1).data);
+@ngertiin/web-client lint:   
+@ngertiin/web-client lint: 
+@ngertiin/web-client lint: tests/button-surface.spec.ts:17:7 lint/style/noNonNullAssertion  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━━━
+@ngertiin/web-client lint: 
+@ngertiin/web-client lint:   ! Forbidden non-null assertion.
+@ngertiin/web-client lint:   
+@ngertiin/web-client lint:     15 │       context!.clearRect(0, 0, 1, 1);
+@ngertiin/web-client lint:     16 │       context!.fillStyle = value;
+@ngertiin/web-client lint:   > 17 │       context!.fillRect(0, 0, 1, 1);
+@ngertiin/web-client lint:        │       ^^^^^^^^
+@ngertiin/web-client lint:     18 │       return Array.from(context!.getImageData(0, 0, 1, 1).data);
+@ngertiin/web-client lint:     19 │     }
+@ngertiin/web-client lint:   
+@ngertiin/web-client lint:   i Unsafe fix: Replace with optional chain operator ?. This operator includes runtime checks, so it is safer than the compile-only non-null assertion operator
+@ngertiin/web-client lint:   
+@ngertiin/web-client lint:      15  15 │         context!.clearRect(0, 0, 1, 1);
+@ngertiin/web-client lint:      16  16 │         context!.fillStyle = value;
+@ngertiin/web-client lint:      17     │ - ······context!.fillRect(0,·0,·1,·1);
+@ngertiin/web-client lint:          17 │ + ······context?.fillRect(0,·0,·1,·1);
+@ngertiin/web-client lint:      18  18 │         return Array.from(context!.getImageData(0, 0, 1, 1).data);
+@ngertiin/web-client lint:      19  19 │       }
+@ngertiin/web-client lint:   
+@ngertiin/web-client lint: 
+@ngertiin/web-client lint: tests/button-surface.spec.ts:18:25 lint/style/noNonNullAssertion  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━━
+@ngertiin/web-client lint: 
+@ngertiin/web-client lint:   ! Forbidden non-null assertion.
+@ngertiin/web-client lint:   
+@ngertiin/web-client lint:     16 │       context!.fillStyle = value;
+@ngertiin/web-client lint:     17 │       context!.fillRect(0, 0, 1, 1);
+@ngertiin/web-client lint:   > 18 │       return Array.from(context!.getImageData(0, 0, 1, 1).data);
+@ngertiin/web-client lint:        │                         ^^^^^^^^
+@ngertiin/web-client lint:     19 │     }
+@ngertiin/web-client lint:     20 │     function over(front: number[], back: number[]) {
+@ngertiin/web-client lint:   
+@ngertiin/web-client lint:   i Unsafe fix: Replace with optional chain operator ?. This operator includes runtime checks, so it is safer than the compile-only non-null assertion operator
+@ngertiin/web-client lint:   
+@ngertiin/web-client lint:      16  16 │         context!.fillStyle = value;
+@ngertiin/web-client lint:      17  17 │         context!.fillRect(0, 0, 1, 1);
+@ngertiin/web-client lint:      18     │ - ······return·Array.from(context!.getImageData(0,·0,·1,·1).data);
+@ngertiin/web-client lint:          18 │ + ······return·Array.from(context?.getImageData(0,·0,·1,·1).data);
+@ngertiin/web-client lint:      19  19 │       }
+@ngertiin/web-client lint:      20  20 │       function over(front: number[], back: number[]) {
+@ngertiin/web-client lint:   
+@ngertiin/web-client lint: 
+@ngertiin/web-client lint: public/images/sign-in/provenance.json format ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+@ngertiin/web-client lint: 
+@ngertiin/web-client lint:   × Formatter would have printed the following content:
+@ngertiin/web-client lint:   
+@ngertiin/web-client lint:      3  3 │     "office": {
+@ngertiin/web-client lint:      4  4 │       "file": "retro-office.webp",
+@ngertiin/web-client lint:      5    │ - ····"dimensions":·[
+@ngertiin/web-client lint:      6    │ - ······1024,
+@ngertiin/web-client lint:      7    │ - ······1536
+@ngertiin/web-client lint:      8    │ - ····],
+@ngertiin/web-client lint:         5 │ + ····"dimensions":·[1024,·1536],
+@ngertiin/web-client lint:      9  6 │       "source": "OpenAI built-in image_gen, generated fictional office photograph",
+@ngertiin/web-client lint:     10  7 │       "source_artifact": "exec-369e7c87-ed95-4bd9-b6d3-a92a2bc0b8cf.png",
+@ngertiin/web-client lint:     ····· │ 
+@ngertiin/web-client lint:     14 11 │     },
+@ngertiin/web-client lint:     15 12 │     "avatars": {
+@ngertiin/web-client lint:     16    │ - ····"files":·[
+@ngertiin/web-client lint:     17    │ - ······"welcome-triangle.webp",
+@ngertiin/web-client lint:     18    │ - ······"welcome-circle.webp",
+@ngertiin/web-client lint:     19    │ - ······"welcome-squircle.webp"
+@ngertiin/web-client lint:     20    │ - ····],
+@ngertiin/web-client lint:        13 │ + ····"files":·["welcome-triangle.webp",·"welcome-circle.webp",·"welcome-squircle.webp"],
+@ngertiin/web-client lint:     21 14 │       "source_module": "src/features/avatar/engine/render.ts#renderAvatarSvg",
+@ngertiin/web-client lint:     22 15 │       "recipe_module": "@ngertiin/avatar/config#createAvatar",
+@ngertiin/web-client lint:     ····· │ 
+@ngertiin/web-client lint:     53 46 │       "implementation": "Independent rounded-cell/bloom/vignette/exposure-wave raster authoring; no original editor shader code was supplied or adopted",
+@ngertiin/web-client lint:     54 47 │       "authoring_script": "scripts/design/bake-account-artwork.mjs",
+@ngertiin/web-client lint:     55    │ - ····"files":·[
+@ngertiin/web-client lint:     56    │ - ······"vignette-bloom-office.mp4",
+@ngertiin/web-client lint:     57    │ - ······"vignette-bloom-office.webp"
+@ngertiin/web-client lint:     58    │ - ····],
+@ngertiin/web-client lint:        48 │ + ····"files":·["vignette-bloom-office.mp4",·"vignette-bloom-office.webp"],
+@ngertiin/web-client lint:     59 49 │       "video": {
+@ngertiin/web-client lint:     60    │ - ······"dimensions":·[
+@ngertiin/web-client lint:     61    │ - ········768,
+@ngertiin/web-client lint:     62    │ - ········1152
+@ngertiin/web-client lint:     63    │ - ······],
+@ngertiin/web-client lint:        50 │ + ······"dimensions":·[768,·1152],
+@ngertiin/web-client lint:     64 51 │         "duration_seconds": 2.5,
+@ngertiin/web-client lint:     65 52 │         "frame_rate": 24,
+@ngertiin/web-client lint:   
+@ngertiin/web-client lint: 
+@ngertiin/web-client lint: Checked 401 files in 689ms. No fixes applied.
+@ngertiin/web-client lint: Found 1 error.
+@ngertiin/web-client lint: Found 11 warnings.
+@ngertiin/web-client lint: check ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+@ngertiin/web-client lint: 
+@ngertiin/web-client lint:   × Some errors were emitted while running checks.
+@ngertiin/web-client lint:   
+@ngertiin/web-client lint: 
+@ngertiin/web-client lint: Exited with code 1
+error: script "lint:web-client" exited with code 1

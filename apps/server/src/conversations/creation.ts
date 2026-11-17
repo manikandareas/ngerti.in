@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { randomAgentName } from "../agents/names";
 import { DomainError, id } from "../contracts";
+import { billingSource, harness } from "../contracts/base";
 import { Groups } from "../groups/service";
 import type { Lifecycle } from "../lifecycle";
 
@@ -13,10 +14,10 @@ const opener = z
   );
 export const createAgentConversation = z.strictObject({
   connection_id: id.nullable(),
-  harness: z.enum(["codex", "muse"]).optional(),
+  harness: harness.optional(),
   model_id: z.string().min(1).max(200).nullable(),
   reasoning: z.string().max(100).nullable().default(null),
-  billing_source: z.enum(["subscription", "api_key"]),
+  billing_source: billingSource,
   opener,
 });
 export const createGroupConversation = z.strictObject({

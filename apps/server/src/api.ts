@@ -19,6 +19,7 @@ import { registerAuthenticationRoutes } from "./auth/http";
 import type { Background } from "./background";
 import { API_READINESS_GATE, CONTRACT_VERSION, contractDocument, DomainError } from "./contracts";
 import { detectHarness } from "./harness/availability";
+import { harnessId } from "./harness/contracts";
 import type { Lifecycle } from "./lifecycle";
 import { MachineViewGateway } from "./machines/view-gateway";
 import { organizationsContract } from "./organizations/contracts";
@@ -61,7 +62,7 @@ export async function createApi(
         api_readiness_gate: API_READINESS_GATE,
         group_routing: lifecycle.groupRouter ? "jev" : "member",
         harnesses: await Promise.all(
-          (["codex", "muse"] as const).map(async (id) => {
+          harnessId.options.map(async (id) => {
             const value = await (services.detect ?? detectHarness)(id);
             return {
               harness: id,

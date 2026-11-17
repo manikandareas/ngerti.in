@@ -1,7 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { CodexAdapter } from "../../../apps/server/src/harness/codex/adapter";
+import { AcpAdapter } from "../../../apps/server/src/harness/acp/adapter";
 import { Redactor } from "../../../apps/server/src/harness/context";
 import { MuseAdapter } from "../../../apps/server/src/harness/muse/adapter";
 
@@ -16,7 +16,7 @@ const results: {
   diagnostic?: string;
 }[] = [];
 for (const adapter of [
-  new CodexAdapter(() => "http://127.0.0.1:8000/v1/harness/tools"),
+  new AcpAdapter("codex", () => "http://127.0.0.1:8000/v1/harness/tools"),
   new MuseAdapter(() => "http://127.0.0.1:8000/v1/harness/tools"),
 ]) {
   const directory = mkdtempSync(`/srv/ngertiin/${adapter.harness}-protocol-`);

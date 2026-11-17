@@ -1,0 +1,309 @@
+import { expect, test } from "bun:test";
+import { mkdirSync } from "node:fs";
+import { join, resolve } from "node:path";
+import { createApi } from "../../../apps/server/src/api";
+import { Background } from "../../../apps/server/src/background";
+import { AcpAdapter } from "../../../apps/server/src/harness/acp/adapter";
+import { HarnessBroker } from "../../../apps/server/src/harness/broker";
+import { Connections } from "../../../apps/server/src/harness/connections";
+import { CredentialContexts } from "../../../apps/server/src/harness/context";
+import { HarnessError } from "../../../apps/server/src/harness/contracts";
+import {
+  configureNativeStorage,
+  nativeStorageReady,
+} from "../../../apps/server/src/harness/native-storage";
+import { HarnessRuntime } from "../../../apps/server/src/harness/runtime";
+import { ProductTools } from "../../../apps/server/src/harness/tools";
+import { DomainRuntime } from "../../../apps/server/src/machines/domain-runtime";
+import { ExecutionDomains } from "../../../apps/server/src/machines/domains";
+import { Machines } from "../../../apps/server/src/machines/service";
+import { ScopedData } from "../../../apps/server/src/organizations/data";
+import { organizationFixture } from "../../../apps/server/tests/organizations/helpers";
+import { retainedCodex } from "./native-credentials";
+
+async function deadline<T>(operation: Promise<T>) {
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  try {
+    return await Promise.race([
+      operation,
+      new Promise<never>((_, reject) => {
+        timer = setTimeout(
+          () => reject(new Error("Native account observation timed out.")),
+          120_000,
+        );
+      }),
+    ]);
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+test.skipIf(process.env.NGERTIIN_ACP_NATIVE_ACCOUNTS !== "1")(
+  "native ACP Team-agent users retain separate HTTP records, Cua files and revocable selected connections",
+  async () => {
+    const output = resolve(import.meta.dir, "../../../.dev/acp-native-accounts");
+    mkdirSync(output, { recursive: true, mode: 0o700 });
+    const report: Record<string, unknown> = {
+      timestamp: new Date().toISOString(),
+      completed: false,
+      lanes: [],
+      scope:
+        "two synthetic app accounts, one organization and persistent Team agent, distinct real Cua domains, normal authenticated HTTP and managed Codex ACP inference; both disposable connections explicitly use the same retained selected provider subscription, so distinct vendor-account auth/expiry is not certified",
+    };
+    const save = () =>
+      Bun.write(join(output, "report.json"), `${JSON.stringify(report, null, 2)}\n`);
+    await save();
+    const tokens = await retainedCodex();
+    const f = await organizationFixture();
+    const { lifecycle, store } = f.domain;
+    await configureNativeStorage(f.domain.dir, true);
+    expect(nativeStorageReady(f.domain.dir)).toBe(true);
+    report.native_authority_storage =
+      "verified local FileVault volume; no operator-attestation override";
+    const domainsRuntime = new DomainRuntime(f.domain.dir, f.domain.owner, {
+      version: 1,
+      max_domains: 2,
+      memory_mib: 1024,
+      cpus: 1,
+      pids: 512,
+    });
+    const legacy = await Machines.open(lifecycle, null);
+    const domains = new ExecutionDomains(lifecycle, domainsRuntime);
+    const tools = await ProductTools.open(lifecycle);
+    const credentials = new CredentialContexts(f.domain.dir);
+    let tokenRequests = 0;
+    credentials.codexTokens = async (_id, refresh) => {
+      tokenRequests++;
+      if (refresh) throw new HarnessError("AUTH_REJECTED");
+      return tokens;
+    };
+    const runtime = new HarnessRuntime();
+    const available = await runtime.detect("codex");
+    const native = await runtime.nativeCodex();
+    expect(available.state).toBe("supported");
+    expect(native.state).toBe("supported");
+    report.versions = {
+      adapter: available.version,
+      native: native.version,
+      sdk: "2.7.0",
+      protocol: 1,
+    };
+    let api: Awaited<ReturnType<typeof createApi>> | undefined;
+    const server = Bun.serve({
+      hostname: "127.0.0.1",
+      port: 0,
+      fetch: (request) => (api ? api.handle(request) : new Response(null, { status: 503 })),
+    });
+    const broker = new HarnessBroker(
+      lifecycle,
+      credentials,
+      tools,
+      {
+        codex: new AcpAdapter("codex", () => `http://127.0.0.1:${server.port}/v1/harness/tools`, {
+          native_codex: native.executable!,
+        }),
+      },
+      runtime.detect,
+    );
+    const background = new Background(lifecycle, broker.executors());
+    const domainIds = new Set<string>();
+    const bindings = new Set<string>();
+    const sources: string[] = [];
+    const contexts: { cookie: string; connectionId: string; threadId: string }[] = [];
+    const request = (cookie: string, path: string, body?: unknown) => {
+      if (!api) throw new Error("Native account API unavailable.");
+      return api.handle(
+        new Request(`${f.origin}${path}`, {
+          method: body === undefined ? "GET" : "POST",
+          headers: {
+            Cookie: cookie,
+            Origin: f.origin,
+            "X-Ngertiin-Organization": f.initial.organization.id,
+            "Content-Type": "application/json",
+            "Idempotency-Key": crypto.randomUUID(),
+          },
+          body: body === undefined ? undefined : JSON.stringify(body),
+        }),
+      );
+    };
+    try {
+      await f.success(
+        f.write(f.owner.cookie, "/v1/data/legacy-binding", {
+          organization_id: f.initial.organization.id,
+          legacy_owner_id: f.domain.owner,
+        }),
+      );
+      const member = await f.account("acp-native-member@example.test");
+      await f.join(member);
+      api = await createApi(lifecycle, background, {
+        authentication: f.auth,
+        tools,
+        connections: broker.connections,
+        broker,
+      });
+      const audience = (
+        await f.success(f.write(f.owner.cookie, `${f.path}/audiences`, { mode: "all_members" }))
+      ).audience;
+      const team = await f.success(
+        request(f.owner.cookie, "/v1/data/team-agents", {
+          name: "ACP native Team agent",
+          harness: "codex",
+          audience_id: audience.id,
+        }),
+      );
+      for (const [index, cookie] of [member.cookie, f.owner.cookie].entries()) {
+        const probeRequest = new Request(`${f.origin}/v1/entities/agent`, {
+          headers: { Cookie: cookie, "X-Ngertiin-Organization": f.initial.organization.id },
+        });
+        await f.auth.authenticate(probeRequest);
+        const context = await new ScopedData(lifecycle, f.auth).context(probeRequest);
+        const scoped = <T>(action: () => T) => store.withDataContext(context, action);
+        const connection = await scoped(() =>
+          new Connections(lifecycle).create({
+            harness: "codex",
+            authentication: { method: "native_login", billing_source: "subscription" },
+          }),
+        );
+        const thread = await f.success(request(cookie, `/v1/agents/${team.id}/dm`, {}));
+        contexts.push({ cookie, connectionId: connection.id, threadId: thread.id });
+        await f.success(
+          request(cookie, "/v1/ai/selections", {
+            scope: "conversation",
+            thread_id: thread.id,
+            agent_id: team.id,
+            harness: "codex",
+            selection: { connection_id: connection.id, model_id: "gpt-6.1-sol", reasoning: null },
+          }),
+        );
+        const machine = await scoped(() => domains.resolve());
+        const machineId = (await machine.snapshot()).id;
+        domainIds.add(machineId);
+        await scoped(() => machine.ready());
+        await f.success(request(cookie, `/v1/threads/${thread.id}/sessions`, { agent_id: team.id }));
+        const source = `PRIVATE-ACCOUNT-${index}-${crypto.randomUUID()}\n`;
+        sources.push(source);
+        await machine.files().write("source.txt", Buffer.from(source), true);
+        const admitted = await f.success(
+          request(cookie, "/v1/runs", {
+            thread_id: thread.id,
+            agent_id: team.id,
+            text: "Call ngertiin.read_run_context. Read source.txt with ngertiin.read_file. Create report.txt with the exact source bytes using ngertiin.create_file, then publish it as text/plain using ngertiin.publish_artifact, with fresh UUID command IDs. Reply with the thread_id, source text and successful artifact id. Do not use host tools or create a Goal or Routine.",
+          }),
+        );
+        await background.tick();
+        await deadline(background.idle());
+        const current = await f.success(request(cookie, `/v1/entities/run/${admitted.run.id}`));
+        report.last_run = {
+          actor: index,
+          status: current.status,
+          diagnostic: current.diagnostic,
+          product_tools: current.product_tools,
+          tool_errors: current.tool_errors?.map((error: { code: string }) => error.code),
+        };
+        await save();
+        expect(current.status, JSON.stringify(current.diagnostic)).toBe("succeeded");
+        expect(current.native_run_id).toBeNull();
+        expect(current.provider_selection.connection_id).toBe(connection.id);
+        expect(current.provider_selection.billing_source).toBe("subscription");
+        for (const name of [
+          "ngertiin.read_run_context",
+          "ngertiin.read_file",
+          "ngertiin.create_file",
+          "ngertiin.publish_artifact",
+        ])
+          expect(current.product_tools).toContain(name);
+        const snapshot = await f.success(request(cookie, `/v1/threads/${thread.id}/snapshot`));
+        const answer = snapshot.messages
+          .filter((message: { author: string }) => message.author === "agent")
+          .map((message: { text: string }) => message.text)
+          .join("\n");
+        expect(answer).toContain(source.trim());
+        expect(answer).toContain(thread.id);
+        for (const other of sources.slice(0, -1)) expect(answer).not.toContain(other.trim());
+        const artifact = snapshot.artifacts.find(
+          (item: { run_id: string }) => item.run_id === current.id,
+        );
+        expect(artifact).toBeDefined();
+        expect(answer).toContain(artifact.id);
+        const download = await request(
+          cookie,
+          `/v1/artifacts/${artifact.id}/content?workspace_id=${artifact.workspace_id}`,
+        );
+        expect(download.status).toBe(200);
+        expect(await download.text()).toBe(source);
+        expect(
+          (
+            await request(
+              index ? member.cookie : f.owner.cookie,
+              `/v1/threads/${thread.id}/snapshot`,
+            )
+          ).status,
+        ).toBe(404);
+        expect(
+          (
+            await request(
+              index ? member.cookie : f.owner.cookie,
+              `/v1/artifacts/${artifact.id}/content?workspace_id=${artifact.workspace_id}`,
+            )
+          ).status,
+        ).toBe(404);
+        const binding = await scoped(() => store.get("binding", current.binding_id));
+        bindings.add(binding.native_session_id);
+        (report.lanes as unknown[]).push({
+          actor: index,
+          distinct_private_domain: machineId,
+          connection_id: connection.id,
+          binding_id: binding.id,
+          native_session_id: binding.native_session_id,
+          completed_inference: true,
+          file_tool_receipts: true,
+          download_exact_bytes: true,
+          other_actor_http_read: 404,
+          selected_subscription_retained: true,
+        });
+        await save();
+      }
+      expect(domainIds.size).toBe(2);
+      expect(bindings.size).toBe(2);
+      const target = contexts[0];
+      await f.success(request(target.cookie, `/v1/connections/${target.connectionId}/revoke`, {}));
+      const before = tokenRequests;
+      const rejected = await request(target.cookie, "/v1/runs", {
+        thread_id: target.threadId,
+        agent_id: team.id,
+        text: "Say hello.",
+      });
+      expect(rejected.status).toBeGreaterThanOrEqual(400);
+      expect(tokenRequests).toBe(before);
+      report.revocation = {
+        rejected_status: rejected.status,
+        credential_requests_after_revoke: 0,
+        alternate_provider_or_billing: false,
+      };
+      report.completed = true;
+    } finally {
+      await background.stop(100);
+      await broker.close();
+      tools.revokeAll();
+      await server.stop(true);
+      await domains.close();
+      await legacy.close();
+      const cleanup: unknown[] = [];
+      for (const id of domainIds) {
+        await domainsRuntime.retire(id);
+        for (const args of [
+          ["network", "rm", `ngertiin-domain-${id}-network`],
+          ["volume", "rm", `ngertiin-domain-${id}-home`],
+        ]) {
+          const child = Bun.spawn(["docker", ...args], { stdout: "ignore", stderr: "ignore" });
+          cleanup.push({ resource: args[0], domain_id: id, removed: (await child.exited) === 0 });
+        }
+      }
+      report.disposable_domain_cleanup = cleanup;
+      await configureNativeStorage(f.domain.dir, false);
+      await f.close();
+      await save();
+    }
+  },
+  600_000,
+);

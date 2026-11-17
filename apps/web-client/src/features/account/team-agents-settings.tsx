@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { useSettingsWorkspace } from "@/hooks/settings-workspace";
 import { useApiResource } from "@/hooks/use-api-resource";
 import { durableCommand } from "@/lib/api-client";
+import { type HarnessId, harnesses, harnessIds } from "@/lib/harnesses";
 import type { Agent } from "@/types/workspace";
 import { AccountField, useAccountAction } from "./account-forms";
 import { AudiencePicker, ResourceState } from "./organization-controls";
@@ -16,7 +17,7 @@ export function TeamAgentsSettings() {
   const [editing, setEditing] = useState<Agent | null>(null);
   const [creating, setCreating] = useState(false);
   const [name, setName] = useState("");
-  const [harness, setHarness] = useState<"codex" | "muse">("codex");
+  const [harness, setHarness] = useState<HarnessId>("codex");
   const action = useAccountAction();
   const path = `/v1/organizations/${account?.organization?.id}`;
   const groups = useApiResource<{ workgroups: Workgroup[] }>(`${path}/workgroups`);
@@ -48,14 +49,17 @@ export function TeamAgentsSettings() {
                 maxLength={200}
               />
             </AccountField>
-            <AccountField label="Provider">
+            <AccountField label="AI harness">
               <select
                 className="settings-select"
                 value={harness}
                 onChange={(event) => setHarness(event.target.value as typeof harness)}
               >
-                <option value="codex">ChatGPT</option>
-                <option value="muse">Muse Code</option>
+                {harnessIds.map((id) => (
+                  <option key={id} value={id}>
+                    {harnesses[id].name}
+                  </option>
+                ))}
               </select>
             </AccountField>
           </div>
@@ -99,7 +103,7 @@ export function TeamAgentsSettings() {
           <div className="organization-settings-row" key={agent.id}>
             <div className="organization-row-copy">
               <span className="text-sm">{agent.name}</span>
-              <p>{agent.harness === "codex" ? "ChatGPT" : "Muse Code"}</p>
+              <p>{harnesses[agent.harness].name}</p>
             </div>
             <Button
               variant="ghost"

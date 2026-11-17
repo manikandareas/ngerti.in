@@ -5,6 +5,7 @@ import { base, id, text } from "../contracts/base";
 import { nativeInteractionJournal } from "../harness/interaction-contracts";
 import { providerSelection } from "../harness/selection-contracts";
 import { activeTool } from "./activity";
+import { nativeProgress } from "./native-progress";
 
 export const runStatus = z.enum([
   "queued",
@@ -93,6 +94,7 @@ export const run = z
     binding_id: id.nullable(),
     native_run_id: z.string().min(1).max(1000).nullable().default(null),
     native_interactions: nativeInteractionJournal,
+    native_progress: nativeProgress.nullable().default(null),
     provider_selection: providerSelection.nullable().default(null),
     agent_snapshot: agentSnapshot.nullable().default(null),
     workspace_id: id.nullable().default(null),
@@ -171,7 +173,9 @@ export const control = z.strictObject({
   run_id: id,
   message_id: id,
   queued_run_id: id.nullable(),
-  native_run_id: z.string().min(1).max(1000),
+  native_run_id: z.string().min(1).max(1000).nullable().default(null),
+  dispatch_token: id.nullable().default(null),
+  authority_epoch: id.nullable().default(null),
   state: z.enum(["requested", "accepted", "rejected", "unknown"]),
   error_code: z
     .string()

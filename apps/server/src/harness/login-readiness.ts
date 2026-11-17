@@ -28,7 +28,13 @@ export class HarnessLoginReadiness {
     const available = await this.runtime.detect(harness);
     if (available.state !== "supported" || !available.executable)
       return { harness, ready: false, reason: "Install or update this harness before connecting." };
-    if (harness === "codex")
+    if (harness === "codex") {
+      if ((await this.runtime.nativeCodex()).state !== "supported")
+        return {
+          harness,
+          ready: false,
+          reason: "Install the compatible Codex runtime before connecting.",
+        };
       return nativeStorageReady(this.stateDirectory)
         ? { harness, ready: true, reason: null }
         : {
@@ -37,6 +43,13 @@ export class HarnessLoginReadiness {
             reason:
               "The server owner needs to configure encrypted account storage before connecting Codex.",
           };
+    }
+    if (harness !== "muse")
+      return {
+        harness,
+        ready: false,
+        reason: "Connect this harness with an explicitly selected provider API key.",
+      };
     const key = `${harness}:${this.runtime.fingerprint(harness)}`;
     const cached = this.#cache.get(key);
     if (cached && cached.expires > Date.now()) return cached.result;

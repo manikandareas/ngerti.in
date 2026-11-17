@@ -2,6 +2,7 @@ import { DomainError, type Entity } from "../contracts";
 import type { Lifecycle } from "../lifecycle";
 import { canonical } from "../store";
 import { connectionInput, HarnessError, unknownCapabilities } from "./contracts";
+import { connectionProvider, credentialEnvironment } from "./providers";
 import { type ProviderSelection, selectionInput } from "./selection-contracts";
 
 /** Secret-free connection projections share the application store, transactions and events. */
@@ -12,6 +13,18 @@ export class Connections {
   }
   async create(input: unknown): Promise<Entity<"connection">> {
     const data = connectionInput.parse(input);
+    data.provider_id = connectionProvider(data.harness, data.provider_id);
+    if (data.authentication.method === "api_key")
+      credentialEnvironment(data.harness, data.provider_id);
+    if (data.authentication.method === "native_login" && !["codex", "muse"].includes(data.harness))
+      throw new HarnessError("CAPABILITY_UNSUPPORTED");
+    if (
+      (data.authentication.method === "none") !==
+      (data.harness === "opencode" && data.provider_id === "opencode")
+    )
+      throw new HarnessError("CAPABILITY_UNSUPPORTED");
+    if (data.authentication.method === "harness_config" && data.harness !== "pi")
+      throw new HarnessError("CAPABILITY_UNSUPPORTED");
     const scope = this.lifecycle.store.dataContext;
     if (scope) {
       if (data.ownership === "organization") {
@@ -59,12 +72,29 @@ export class Connections {
       >
     >,
   ): Promise<Entity<"connection">> {
-    const grantChanged = Object.entries(changes).some(
-      ([key, value]) =>
-        key !== "inference" &&
-        key !== "discovery" &&
-        canonical(connection[key as keyof typeof connection]) !== canonical(value),
-    );
+    const grantChanged = Object.entries(changes).some(([key, value]) => {
+      if (["inference", "discovery", "account_plan"].includes(key)) return false;
+      // Discovering an additive native capability/catalog must not revoke a frozen first turn.
+      // Losing previously observed support still retires its authority generation.
+      if (key === "capabilities")
+        return Object.entries(connection.capabilities).some(
+          ([name, state]) =>
+            state === "supported" &&
+            changes.capabilities?.[name as keyof typeof connection.capabilities] !== "supported",
+        );
+      if (key === "models")
+        return connection.models.some((model) => {
+          const next = changes.models?.find((entry) => entry.id === model.id);
+          return (
+            !next ||
+            model.reasoning.some((effort) => !next.reasoning.includes(effort)) ||
+            (model.input_modalities ?? ["text"]).some(
+              (modality) => !(next.input_modalities ?? ["text"]).includes(modality),
+            )
+          );
+        });
+      return canonical(connection[key as keyof typeof connection]) !== canonical(value);
+    });
     if (
       Object.entries(changes).every(
         ([key, value]) =>
@@ -193,6 +223,7 @@ export class Connections {
       ...selected,
       harness: connection.harness,
       connection_generation: connection.grant_revision,
+      provider_id: connectionProvider(connection.harness, connection.provider_id),
       account_id: connection.account_id,
       billing_source: connection.authentication.billing_source,
     };
@@ -217,11 +248,16 @@ export class Connections {
           selected.connection_id !== connection.id ||
           selected.connection_generation !== connection.grant_revision ||
           selected.account_id !== connection.account_id ||
+          connectionProvider(selected.harness, selected.provider_id) !==
+            connectionProvider(connection.harness, connection.provider_id) ||
           selected.harness !== connection.harness ||
           selected.billing_source !== connection.authentication.billing_source
         )
           throw new DomainError("STALE_DISPATCH");
-        if (connection.login !== "authenticated" || !selected.account_id)
+        if (
+          connection.login !== "authenticated" ||
+          (!selected.account_id && connection.authentication.method !== "none")
+        )
           throw new HarnessError("LOGIN_REQUIRED");
         if (connection.effective_billing_source !== selected.billing_source)
           throw new HarnessError("BILLING_MISMATCH");

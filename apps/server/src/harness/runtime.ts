@@ -2,6 +2,7 @@ import { statSync } from "node:fs";
 import { homedir } from "node:os";
 import { join } from "node:path";
 import { type Availability, detectHarness, type HarnessId, manifests } from "./availability";
+import { detectNativeCodex, locateNativeCodex } from "./codex/native";
 import { HarnessError } from "./contracts";
 
 export type HarnessDetector = typeof detectHarness & {
@@ -16,8 +17,11 @@ export class HarnessRuntime {
   readonly #pending = new Map<HarnessId, Promise<Availability>>();
   readonly detect: HarnessDetector;
 
-  constructor(overrides: Partial<Record<HarnessId, string>> = {}) {
-    for (const harness of ["codex", "muse"] as const) {
+  constructor(
+    overrides: Partial<Record<HarnessId, string>> = {},
+    private readonly nativeCodexOverride?: string,
+  ) {
+    for (const harness of Object.keys(manifests) as HarnessId[]) {
       const command = overrides[harness] ?? manifests[harness].executable;
       this.#commands.set(harness, command);
       this.#paths.set(harness, this.locate(harness));
@@ -42,8 +46,9 @@ export class HarnessRuntime {
   private locate(harness: HarnessId) {
     const command = this.#commands.get(harness) ?? manifests[harness].executable;
     return (
-      Bun.which(command) ??
-      (command === manifests[harness].executable ? Bun.which(this.installationPath(harness)) : null)
+      (command === manifests[harness].executable
+        ? Bun.which(this.installationPath(harness))
+        : null) ?? Bun.which(command)
     );
   }
 
@@ -56,7 +61,15 @@ export class HarnessRuntime {
     if (!path) return "missing";
     try {
       const info = statSync(path);
-      return `${path}:${info.dev}:${info.ino}:${info.size}:${info.mtimeMs}`;
+      let stamp = `${path}:${info.dev}:${info.ino}:${info.size}:${info.mtimeMs}`;
+      if (harness === "codex") {
+        const native = locateNativeCodex(this.nativeCodexOverride, path);
+        if (native) {
+          const details = statSync(native);
+          stamp += `:${native}:${details.dev}:${details.ino}:${details.size}:${details.mtimeMs}`;
+        } else stamp += ":native-missing";
+      }
+      return stamp;
     } catch {
       return `${path}:missing`;
     }
@@ -72,6 +85,10 @@ export class HarnessRuntime {
     this.#paths.set(harness, this.locate(harness));
     this.#cache.delete(harness);
     return this.observe(harness);
+  }
+
+  nativeCodex() {
+    return detectNativeCodex(this.nativeCodexOverride, this.#paths.get("codex") ?? undefined);
   }
 
   private async observe(harness: HarnessId): Promise<Availability> {
@@ -93,7 +110,11 @@ export class HarnessRuntime {
             executable: null,
           } as Availability)
     )
-      .then((value) => {
+      .then(async (value) => {
+        if (harness === "codex" && value.state === "supported") {
+          const native = await this.nativeCodex();
+          if (native.state !== "supported") value = { ...value, state: native.state };
+        }
         this.#cache.set(harness, { at: Date.now(), stamp, value });
         return value;
       })

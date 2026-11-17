@@ -1,3 +1,4 @@
+import { randomBytes } from "node:crypto";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -5,6 +6,7 @@ import { parseEnv } from "node:util";
 import { z } from "zod";
 import { authenticationConfig } from "./auth/config";
 import { id } from "./contracts";
+import type { HarnessId } from "./harness/availability";
 
 const installationSchema = z.object({
   owner_id: id,
@@ -24,6 +26,8 @@ export function developmentConfig() {
   } catch (error) {
     if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
   }
+  const executableOverride = (name: string) =>
+    (process.env[name] ?? rootEnvironment[name])?.trim() || undefined;
   const typesafeApiKey = process.env.TYPESAFE_API_KEY ?? rootEnvironment.TYPESAFE_API_KEY;
   const groupRouter = z
     .enum(["jev", "member"])
@@ -36,6 +40,17 @@ export function developmentConfig() {
   );
   mkdirSync(stateDir, { recursive: true, mode: 0o700 });
   const authentication = authenticationConfig({ ...rootEnvironment, ...process.env }, stateDir);
+  let providerMasterKeyFile =
+    process.env.NGERTIIN_PROVIDER_MASTER_KEY_FILE ??
+    rootEnvironment.NGERTIIN_PROVIDER_MASTER_KEY_FILE;
+  if (!providerMasterKeyFile && environment === "development") {
+    providerMasterKeyFile = resolve(stateDir, "provider-master-key");
+    try {
+      writeFileSync(providerMasterKeyFile, randomBytes(32), { mode: 0o600, flag: "wx" });
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code !== "EEXIST") throw error;
+    }
+  }
   if (environment === "production") {
     if (authentication.allowInsecureLoopback)
       throw new Error("Server deployment requires certificate-validated account authentication.");
@@ -76,10 +91,15 @@ export function developmentConfig() {
     port,
     groupRouter,
     typesafeApiKey,
+    ...(providerMasterKeyFile ? { providerMasterKeyFile } : {}),
     authentication,
+    nativeCodexExecutable: executableOverride("NGERTIIN_CODEX_EXECUTABLE"),
     harnessExecutables: {
-      codex: process.env.NGERTIIN_CODEX_EXECUTABLE ?? rootEnvironment.NGERTIIN_CODEX_EXECUTABLE,
-      muse: process.env.NGERTIIN_MUSE_EXECUTABLE ?? rootEnvironment.NGERTIIN_MUSE_EXECUTABLE,
-    },
+      codex: executableOverride("NGERTIIN_CODEX_ACP_EXECUTABLE"),
+      muse: executableOverride("NGERTIIN_MUSE_EXECUTABLE"),
+      claude: executableOverride("NGERTIIN_CLAUDE_ACP_EXECUTABLE"),
+      opencode: executableOverride("NGERTIIN_OPENCODE_EXECUTABLE"),
+      pi: executableOverride("NGERTIIN_PI_ACP_EXECUTABLE"),
+    } as Partial<Record<HarnessId, string>>,
   };
 }

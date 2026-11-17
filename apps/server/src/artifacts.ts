@@ -86,7 +86,7 @@ export class Artifacts {
       run_id?: string;
       source_artifact_id?: string;
       native_session_id?: string;
-      native_run_id?: string;
+      native_run_id?: string | null;
       created_by_agent_id?: string | null;
       goal_generations?: Record<string, number>;
     },
@@ -258,7 +258,7 @@ export class Artifacts {
     const workspace = await this.workspaces.authorizeRun(run);
     if (
       workspace.id !== data.workspace_id ||
-      !run.native_run_id ||
+      !run.binding_id ||
       run.status !== "running" ||
       !run.dispatch_token
     )
@@ -313,7 +313,7 @@ export class Artifacts {
           origin: "native_output",
           run_id: run.id,
           native_session_id: binding.native_session_id,
-          native_run_id: run.native_run_id as string,
+          native_run_id: run.native_run_id,
           created_by_agent_id: run.agent_id,
           goal_generations: run.task_id
             ? (await this.lifecycle.store.get("peer_task", run.task_id)).goal_generations

@@ -9,6 +9,7 @@ import {
   HarnessError,
   harnessId,
 } from "../harness/contracts";
+import { piProviderConfiguration } from "../harness/native-configuration";
 import { selectionInput } from "../harness/selection-contracts";
 import type { ApiServices, Command } from "./services";
 
@@ -18,7 +19,7 @@ export function registerHarnessRoutes(api: Elysia, services: ApiServices, comman
     await services.broker?.retireConnection(connection.id);
     services.credentialStorage?.retire(
       connection.id,
-      connection.authentication.method === "api_key"
+      "credential_ref" in connection.authentication
         ? connection.authentication.credential_ref
         : undefined,
     );
@@ -26,9 +27,7 @@ export function registerHarnessRoutes(api: Elysia, services: ApiServices, comman
   return api
     .get("/v1/harness/contracts", () => brokerContract())
     .get("/v1/harnesses", async () =>
-      Promise.all(
-        (["codex", "muse"] as const).map(async (id) => (services.detect ?? detectHarness)(id)),
-      ),
+      Promise.all(harnessId.options.map(async (id) => (services.detect ?? detectHarness)(id))),
     )
     .get("/v1/harnesses/maintenance", async ({ request }) => {
       let canUpdate = false;
@@ -43,7 +42,7 @@ export function registerHarnessRoutes(api: Elysia, services: ApiServices, comman
         updating: services.updater?.updating ?? [],
         operations: services.updater?.jobs.operations ?? [],
         native_login: await Promise.all(
-          (["codex", "muse"] as const).map(
+          harnessId.options.map(
             (harness) =>
               services.loginReadiness?.check(harness) ?? {
                 harness,
@@ -88,7 +87,7 @@ export function registerHarnessRoutes(api: Elysia, services: ApiServices, comman
         await command(request, body, async () => {
           if (
             services.connections.lifecycle.store.dataContext &&
-            body.authentication.method === "api_key"
+            "credential_ref" in body.authentication
           )
             throw new DomainError("SCOPE_DENIED", 403);
           return services.connections.create(body);
@@ -115,6 +114,7 @@ export function registerHarnessRoutes(api: Elysia, services: ApiServices, comman
             );
             return await services.connections.create({
               harness: body.harness,
+              provider_id: body.provider_id,
               ownership: body.ownership,
               audience_id: body.audience_id,
               authentication: {
@@ -130,6 +130,42 @@ export function registerHarnessRoutes(api: Elysia, services: ApiServices, comman
         }
       },
       { body: apiKeyConnectionInput },
+    )
+    .post(
+      "/v1/connections/native-configuration",
+      async ({ request, body }) => {
+        const storage = services.credentialStorage;
+        if (!storage) throw new HarnessError("ADAPTER_UNAVAILABLE");
+        let reference: string | undefined;
+        try {
+          return await command(request, body, async () => {
+            reference = storage.write(JSON.stringify(body.configuration), true);
+            return services.connections.create({
+              harness: body.harness,
+              provider_id: body.provider_id,
+              ownership: body.ownership,
+              audience_id: body.audience_id,
+              authentication: {
+                method: "harness_config",
+                billing_source: "api_key",
+                credential_ref: reference,
+              },
+            });
+          });
+        } catch (error) {
+          if (reference) storage.remove(reference);
+          throw error;
+        }
+      },
+      {
+        body: z.strictObject({
+          harness: z.literal("pi"),
+          provider_id: z.string().regex(/^[a-z0-9][a-z0-9._-]{0,99}$/),
+          ownership: connectionInput.shape.ownership,
+          audience_id: connectionInput.shape.audience_id,
+          configuration: piProviderConfiguration,
+        }),
+      },
     )
     .post(
       "/v1/connections/:id/rotate-key",
@@ -153,6 +189,7 @@ export function registerHarnessRoutes(api: Elysia, services: ApiServices, comman
             );
             const replacement = await services.connections.create({
               harness: old.harness,
+              provider_id: old.provider_id,
               ownership: old.ownership,
               audience_id: old.audience_id,
               authentication: {

@@ -3,35 +3,36 @@ import { lstatSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { z } from "zod";
 import { DomainError } from "../../contracts";
-import { detectHarness, requireAvailable, versionState } from "../availability";
+import { requireAvailable, versionState } from "../availability";
 import type { Connections } from "../connections";
 import type { CredentialContexts } from "../context";
 import { HarnessError } from "../contracts";
 import { nativeStorageReady } from "../native-storage";
-import { CodexClient } from "./client";
+import { CodexAuthority } from "./authority";
+import { detectNativeCodex } from "./native";
 
 type AccountTokens = { accessToken: string; chatgptAccountId: string; chatgptPlanType?: string };
 
 /** One managed credential authority per connection; actor sessions receive only short-lived access tokens. */
 export class CodexAccounts {
-  readonly #authorities = new Map<string, Promise<CodexClient>>();
+  readonly #authorities = new Map<string, Promise<CodexAuthority>>();
   readonly #tokenRefresh = new Map<string, { refresh: boolean; promise: Promise<AccountTokens> }>();
   readonly #starting = new Set<string>();
-  readonly #clients = new Set<CodexClient>();
+  readonly #clients = new Set<CodexAuthority>();
   #closed = false;
   readonly #logins = new Map<
     string,
-    { client: CodexClient; login_id: string; timer: ReturnType<typeof setTimeout> }
+    { client: CodexAuthority; login_id: string; timer: ReturnType<typeof setTimeout> }
   >();
   constructor(
     readonly connections: Connections,
     readonly credentials: CredentialContexts,
-    private readonly detect = async () => detectHarness("codex"),
+    private readonly detect = async () => detectNativeCodex(),
     private readonly args: string[] = [],
   ) {
     credentials.codexTokens = (id, refresh) => this.tokens(id, refresh);
   }
-  private async client(connectionId: string): Promise<CodexClient> {
+  private async client(connectionId: string): Promise<CodexAuthority> {
     const current = await this.connections.get(connectionId);
     if (this.#closed || current.state !== "active") throw new DomainError("SCOPE_DENIED", 403);
     let pending = this.#authorities.get(connectionId);
@@ -67,16 +68,7 @@ export class CodexAccounts {
       throw new HarnessError("VERSION_TOO_OLD");
     if (this.#closed) throw new HarnessError("ADAPTER_UNAVAILABLE");
     const launch = this.credentials.create(connection);
-    const client = new CodexClient(
-      available.executable as string,
-      launch,
-      join(launch.state_directory, "account-workspace"),
-      () => {
-        throw new HarnessError("NATIVE_REJECTED");
-      },
-      "",
-      this.args,
-    );
+    const client = new CodexAuthority(available.executable as string, launch, this.args);
     const receive = client.rpc.onMessage;
     client.rpc.onMessage = (message) => {
       receive(message);
@@ -102,7 +94,7 @@ export class CodexAccounts {
       throw error;
     }
   }
-  private async release(client: CodexClient) {
+  private async release(client: CodexAuthority) {
     if (this.#closed) {
       this.#clients.delete(client);
       await client.close();
@@ -120,7 +112,8 @@ export class CodexAccounts {
           observed.login === "authenticated" ? observed.billing_source : "unknown",
         account_id: observed.account_id,
         account_plan: observed.account_plan ?? null,
-        capabilities: observed.capabilities,
+        // Account inspection cannot certify or erase the execution peer's negotiated capabilities.
+        capabilities: current.capabilities,
       });
       if (observed.login !== "authenticated") return current;
       try {
@@ -146,7 +139,7 @@ export class CodexAccounts {
     if (this.#logins.has(connectionId) || this.#starting.has(connectionId))
       throw new DomainError("CONFLICT");
     this.#starting.add(connectionId);
-    let client: CodexClient | undefined;
+    let client: CodexAuthority | undefined;
     try {
       client = await this.client(connectionId);
       const remote =
@@ -270,6 +263,6 @@ export class CodexAccounts {
     this.#closed = true;
     for (const login of this.#logins.values()) clearTimeout(login.timer);
     this.#logins.clear();
-    await Promise.allSettled([...this.#clients].map(async (client) => this.release(client)));
+    await Promise.all([...this.#clients].map(async (client) => this.release(client)));
   }
 }

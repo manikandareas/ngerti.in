@@ -1,12 +1,13 @@
 import { createApi as createAccountApi } from "../../src/api";
 import { Background } from "../../src/background";
 import { DomainError, type Entity } from "../../src/contracts";
-import { manifests } from "../../src/harness/availability";
+import { type HarnessId, manifests } from "../../src/harness/availability";
 import { HarnessBroker } from "../../src/harness/broker";
 import type { HarnessAdapter, HarnessClient } from "../../src/harness/client";
 import { Connections } from "../../src/harness/connections";
 import { CredentialContexts, type LaunchContext } from "../../src/harness/context";
 import { unknownCapabilities } from "../../src/harness/contracts";
+import { CredentialStorage } from "../../src/harness/credential-storage";
 import { ProductTools } from "../../src/harness/tools";
 import type { AppHost } from "../../src/integrations/host";
 import { CuaMachine, MachineFiles } from "../../src/machines/cua";
@@ -77,6 +78,7 @@ export async function readinessFixture(
   httpPort = 0,
   nativeCua = false,
   transport?: AuthFixtureTransport,
+  executionAdapters?: Partial<Record<HarnessId, HarnessAdapter>>,
 ) {
   const f = await organizationFixture(undefined, httpPort, transport);
   const { lifecycle, store } = f.domain;
@@ -187,6 +189,7 @@ export async function readinessFixture(
     ]),
   );
   const previousStorage = process.env.NGERTIIN_PROVIDER_NATIVE_STORAGE;
+  Object.assign(adapters, executionAdapters);
   process.env.NGERTIIN_PROVIDER_NATIVE_STORAGE = "encrypted-volume";
   const credentials = new CredentialContexts(
     f.domain.dir,
@@ -213,11 +216,14 @@ export async function readinessFixture(
     timeouts,
   );
   const background = new Background(lifecycle, broker.executors());
+  const storageKey = join(f.domain.dir, "readiness-master-key");
+  writeFileSync(storageKey, randomBytes(32), { mode: 0o600 });
   const api = await createAccountApi(lifecycle, background, {
     authentication: f.auth,
     connections: broker.connections,
     tools,
     broker,
+    credentialStorage: new CredentialStorage(f.domain.dir, storageKey),
     accounts: {
       inspect: (id) => broker.connections.get(id),
       login: async () => ({
@@ -347,3 +353,7 @@ export async function readinessFixture(
     },
   };
 }
+
+import { randomBytes } from "node:crypto";
+import { writeFileSync } from "node:fs";
+import { join } from "node:path";

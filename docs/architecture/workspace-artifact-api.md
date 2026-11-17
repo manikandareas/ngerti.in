@@ -1,5 +1,7 @@
 # Workspace and artifact API v1.22.0
 
+ACP amendment, November 16: artifact publication uses the application run, active dispatch token, native binding, current workspace and grant checks. A provider-native turn ID is optional; artifact provenance keeps `native_run_id: null` when ACP supplies no such ID. Never synthesize it from an RPC ID. Immutable bytes, run/path/hash deduplication, cancellation and current resource authorization still apply. This corrects a legacy native-ID guard without changing the already-nullable 2.3.0 schema. Current execution follows the [ACP integration](acp-harnesses.md); the older adapter table below retains its historical scope.
+
 NMA-079 amendment: the [2.0.0 server-organizations consumer contract](server-organizations-api.md) and [verification report](../verification/nma-079/README.md) own current account-mode authentication, scope, normal native dispatch and readiness. Earlier versioned examples and pending-gate statements below retain their captured scope. Web/Tauri UI and deployment remain later milestones.
 
 Planned November 12 amendment: [the server-organizations plan](server-organizations-plan-2026-11-12.md) and NMA-072–083 define PostgreSQL, authenticated organization/user scope, private Team-agent interactions and explicit connections. This guide retains its current/recorded implementation boundary until the new NMA-079 API gate verifies the changed contract; its owner-only examples do not establish multi-user authorization.

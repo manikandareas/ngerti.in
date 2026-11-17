@@ -4,6 +4,7 @@ import { useApiResource } from "@/hooks/use-api-resource";
 import { useFeedbackToast } from "@/hooks/use-feedback-toast";
 import { ApiError, request } from "@/lib/api-client";
 import { clientScope } from "@/lib/client-scope";
+import { isHarness } from "@/lib/harnesses";
 import type { Availability } from "@/types/workspace";
 import { useAccountAction } from "./account-forms";
 import type { Maintenance, MaintenanceJob } from "./harness-maintenance";
@@ -20,7 +21,7 @@ export function useOnboardingHarnesses() {
       const saved = JSON.parse(localStorage.getItem(storageKey) ?? "null") as Pending | null;
       return saved &&
         /^[0-9a-f-]{36}$/i.test(saved.id) &&
-        ["codex", "muse"].includes(saved.harness) &&
+        isHarness(saved.harness) &&
         ["install", "update"].includes(saved.operation) &&
         (saved.expected_version === null || typeof saved.expected_version === "string")
         ? saved

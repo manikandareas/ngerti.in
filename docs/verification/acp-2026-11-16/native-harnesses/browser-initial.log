@@ -1,0 +1,56 @@
+bun test v1.3.10 (30e609e0)
+
+../../scripts/verification/acp/browser.test.ts:
+9277 | 
+9278 | // packages/utils/stackTrace.ts
+9279 | function captureRawStack() {
+9280 |   const stackTraceLimit = Error.stackTraceLimit;
+9281 |   Error.stackTraceLimit = 50;
+9282 |   const error = new Error();
+                           ^
+error: expect(locator).toHaveText(expected) failed
+
+Locator: getByLabel('Model provider', { exact: true }).locator('option')
+Timeout: 5000ms
+- Expected  - 5
++ Received  + 1
+
+- Array [
+-   "Choose a configured provider",
+-   "native-provider-a",
+-   "native-provider-b",
+- ]
++ Array []
+
+Call log:
+  - Expect "toHaveText" getByLabel('Model provider', { exact: true }).locator('option') with timeout 5000ms
+  - waiting for getByLabel('Model provider', { exact: true }).locator('option')
+    14 × locator resolved to 0 elements
+
+ matcherResult: {
+  actual: [],
+  expected: [ "Choose a configured provider", "native-provider-a", "native-provider-b" ],
+  message: "expect(locator).toHaveText(expected) failed\n\nLocator: getByLabel('Model provider', { exact: true }).locator('option')\nTimeout: 5000ms\n- Expected  - 5\n+ Received  + 1\n\n- Array [\n-   \"Choose a configured provider\",\n-   \"native-provider-a\",\n-   \"native-provider-b\",\n- ]\n+ Array []\n\nCall log:\n  - Expect \"toHaveText\" getByLabel('Model provider', { exact: true }).locator('option') with timeout 5000ms\n  - waiting for getByLabel('Model provider', { exact: true }).locator('option')\n    14 × locator resolved to 0 elements\n",
+  name: "toHaveText",
+  pass: false,
+  log: [ "  - Expect \"toHaveText\" getByLabel('Model provider', { exact: true }).locator('option') with timeout 5000ms",
+    "  - waiting for getByLabel('Model provider', { exact: true }).locator('option')",
+    "    14 × locator resolved to 0 elements"
+  ],
+  timeout: 5000,
+  ariaSnapshot: undefined,
+},
+
+      at captureRawStack (/Users/vitoandareasmanik/Development/project/ngertiin/node_modules/.bun/playwright-core@1.64.1/node_modules/playwright-core/lib/coreBundle.js:9282:21)
+      at callMatcherAsStep (/Users/vitoandareasmanik/Development/project/ngertiin/node_modules/.bun/playwright@1.64.1/node_modules/playwright/lib/matchers/expect.js:13316:57)
+      at /Users/vitoandareasmanik/Development/project/ngertiin/scripts/verification/acp/browser.test.ts:260:55
+      at processTicksAndRejections (native:7:39)
+(fail) desktop: authenticated ACP form, attributed progress and explicit provider selection [28099.80ms]
+killed 1 dangling process
+(fail) mobile: authenticated ACP form, attributed progress and explicit provider selection [120001.56ms]
+  ^ this test timed out after 120000ms.
+
+ 0 pass
+ 2 fail
+ 5 expect() calls
+Ran 2 tests across 1 file. [148.92s]

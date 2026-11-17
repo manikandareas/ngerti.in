@@ -1,9 +1,9 @@
 import { afterEach, expect, test } from "bun:test";
-import { chmodSync, mkdirSync, writeFileSync } from "node:fs";
+import { chmodSync, existsSync, mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { z } from "zod";
 import { Background } from "../src/background";
-import type { Entity } from "../src/contracts";
+import { DomainError, type Entity } from "../src/contracts";
 import { Groups } from "../src/groups/service";
 import {
   detectHarness,
@@ -307,9 +307,10 @@ test("minimum policies reject below-floor and prerelease versions for both harne
     state: "supported",
     version: "1.4.12-R2.3",
   });
-  expect(versionState("Muse Code 1.4.14 (1.4.14-R7309.1)", manifests.muse.minimum_version)).toEqual(
-    { state: "supported", version: "1.4.14-R7309.1" },
-  );
+  expect(versionState("Muse Code 1.4.14 (1.4.14-R7309.1)", "1.4.14")).toEqual({
+    state: "supported",
+    version: "1.4.14-R7309.1",
+  });
   expect(versionState("Muse Code 1.4.14 (1.4.13-R1.1)", manifests.muse.minimum_version).state).toBe(
     "unknown",
   );
@@ -319,7 +320,7 @@ test("minimum policies reject below-floor and prerelease versions for both harne
 test("real executable probes distinguish supported, old, missing, unknown and failed without returning diagnostics", async () => {
   await setup();
   for (const [version, state] of [
-    ["0.165.0", "supported"],
+    [manifests.codex.minimum_version, "supported"],
     ["0.164.9", "too_old"],
     ["secret-example", "unknown"],
   ] as const) {
@@ -333,6 +334,27 @@ test("real executable probes distinguish supported, old, missing, unknown and fa
   writeFileSync(failed, "#!/bin/sh\necho secret-example >&2\nexit 1\n", { mode: 0o700 });
   expect((await detectHarness("muse", failed)).state).toBe("probe_failed");
   expect((await detectHarness("muse", join(f.dir, "missing"))).state).toBe("missing");
+});
+
+test("ACP availability reads pinned adapter metadata without starting a Node agent for a version check", async () => {
+  await setup();
+  for (const [harness, name, version] of [
+    ["codex", "@agentclientprotocol/codex-acp", "2.6.0"],
+    ["claude", "@agentclientprotocol/claude-agent-acp", "0.107.0"],
+    ["pi", "pi-acp", "0.0.34"],
+  ] as const) {
+    const directory = join(f.dir, harness);
+    mkdirSync(directory);
+    const executable = join(directory, "agent");
+    writeFileSync(executable, '#!/bin/sh\necho unexpected > "$0.started"\n', { mode: 0o700 });
+    const manifest = join(directory, "package.json");
+    writeFileSync(manifest, JSON.stringify({ name, version }));
+    expect((await detectHarness(harness, executable)).state).toBe("supported");
+    expect(existsSync(`${executable}.started`)).toBe(false);
+    writeFileSync(manifest, JSON.stringify({ name, version: "99.0.0" }));
+    expect((await detectHarness(harness, executable)).state).toBe("unknown");
+  }
+  expect(versionState("@agentclientprotocol/codex-acp 2.6.0", "2.6.0").state).toBe("supported");
 });
 
 test("connection API persists secret references and independent evidence states across restart", async () => {
@@ -599,6 +621,93 @@ test("two harnesses, accounts, models and agents execute concurrently through sc
     ["account-a", "authenticated", "succeeded", "succeeded"],
     ["account-b", "authenticated", "succeeded", "succeeded"],
   ]);
+});
+
+test("nullable ACP turn identity supports real scoped effects and retires its process before the next run", async () => {
+  const connections = await setup();
+  const lane = await assign(
+    await connections.create({
+      harness: "codex",
+      authentication: { method: "native_login", billing_source: "subscription" },
+    }),
+  );
+  let opens = 0;
+  let closes = 0;
+  const native = await makeBroker({
+    codex: adapter("codex", async () => {
+      opens++;
+      let closed = false;
+      return client({
+        closeAfterRun: true,
+        async close() {
+          if (!closed) closes++;
+          closed = true;
+        },
+        async prompt(request) {
+          await request.onEvent({ type: "accepted", ...request.identity, native_run_id: null });
+          const result = await tools.call(
+            request.tools.token,
+            request.tools.scope,
+            "ngertiin.read_run_context",
+            {},
+          );
+          expect(result).toMatchObject({ run_id: request.run_id });
+          await request.onEvent({ type: "text", text: "ACP answer" });
+          return { status: "succeeded", ...request.identity, native_run_id: null };
+        },
+      });
+    }),
+  });
+  const background = new Background(f.lifecycle, native.executors());
+  const bindings: string[] = [];
+  for (let turn = 0; turn < 2; turn++) {
+    await native.openSession(lane.thread.id, lane.agent.id);
+    const admitted = await f.lifecycle.admit({
+      thread_id: lane.thread.id,
+      agent_id: lane.agent.id,
+      text: "Please inspect this project.",
+    });
+    await background.tick();
+    await background.idle();
+    const run = await f.store.get("run", admitted.run.id);
+    expect(run.status).toBe("succeeded");
+    expect(run.native_run_id).toBeNull();
+    expect((await f.store.answer(run.id))?.text).toBe("ACP answer");
+    bindings.push(run.binding_id as string);
+    expect(closes).toBe(turn + 1);
+  }
+  expect(opens).toBe(2);
+  expect(bindings[0]).toBe(bindings[1]);
+});
+
+test("a nullable terminal response alone cannot fabricate observed native processing", async () => {
+  const connections = await setup();
+  const lane = await assign(
+    await connections.create({
+      harness: "codex",
+      authentication: { method: "native_login", billing_source: "subscription" },
+    }),
+  );
+  const native = await makeBroker({
+    codex: adapter("codex", async () =>
+      client({
+        async prompt(request) {
+          return { status: "succeeded", ...request.identity, native_run_id: null };
+        },
+      }),
+    ),
+  });
+  await native.openSession(lane.thread.id, lane.agent.id);
+  const admitted = await f.lifecycle.admit({
+    thread_id: lane.thread.id,
+    agent_id: lane.agent.id,
+    text: "Please inspect this project.",
+  });
+  const background = new Background(f.lifecycle, native.executors());
+  await background.tick();
+  await background.idle();
+  expect((await f.store.get("run", admitted.run.id)).status).toBe("unknown");
+  expect(await f.store.answer(admitted.run.id)).toBeNull();
 });
 
 test("login, catalog failure and completed inference remain separate observations", async () => {
@@ -875,6 +984,90 @@ test("scope, private resources, current grants and terminal runs are rechecked o
   ).rejects.toThrow("UNAUTHORIZED");
 });
 
+test("parallel product tools preserve every completed call and failure without serializing handlers", async () => {
+  const connections = await setup();
+  const lane = await assign(
+    await connections.create({
+      harness: "codex",
+      authentication: { method: "native_login", billing_source: "subscription" },
+    }),
+  );
+  const native = await makeBroker({ codex: adapter("codex") });
+  await native.openSession(lane.thread.id, lane.agent.id);
+  await f.lifecycle.admit({
+    thread_id: lane.thread.id,
+    agent_id: lane.agent.id,
+    text: "Inspect concurrently.",
+  });
+  const run = await f.lifecycle.claimNext(lane.thread.id, lane.agent.id);
+  if (!run) throw new Error("Missing parallel tool run.");
+  const lease = await tools.issue(run);
+  const names = [
+    "ngertiin.parallel_a",
+    "ngertiin.parallel_b",
+    "ngertiin.parallel_c",
+    "ngertiin.parallel_d",
+  ];
+  let entered = 0;
+  let arrive = () => {};
+  let release = () => {};
+  const ready = new Promise<void>((resolve) => {
+    arrive = resolve;
+  });
+  const gate = new Promise<void>((resolve) => {
+    release = resolve;
+  });
+  for (const [index, name] of names.entries())
+    tools.register(name, {
+      schema: z.strictObject({}),
+      resources: () => [],
+      execute: async () => {
+        if (++entered === names.length) arrive();
+        await gate;
+        if (index >= 2) throw new DomainError(index === 2 ? "NOT_FOUND" : "SCOPE_DENIED");
+        return { completed: name };
+      },
+    });
+  const finished = Promise.allSettled(
+    names.map((name) => tools.call(lease.token, lease.scope, name, {})),
+  );
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  try {
+    await Promise.race([
+      ready,
+      new Promise<never>((_, reject) => {
+        timer = setTimeout(() => reject(new Error("Tool handlers did not overlap.")), 5_000);
+      }),
+    ]);
+    expect(entered).toBe(4);
+    expect((await f.store.get("run", run.id)).active_tools).toHaveLength(4);
+    release();
+    const results = await finished;
+    expect(results.map((result) => result.status)).toEqual([
+      "fulfilled",
+      "fulfilled",
+      "rejected",
+      "rejected",
+    ]);
+    const recorded = await f.store.get("run", run.id);
+    expect(recorded.product_tools.toSorted()).toEqual(names.slice(0, 2));
+    expect(
+      recorded.tool_errors
+        .map((error) => ({ name: error.name, code: error.code }))
+        .sort((a, b) => a.name.localeCompare(b.name)),
+    ).toEqual([
+      { name: names[2], code: "NOT_FOUND" },
+      { name: names[3], code: "SCOPE_DENIED" },
+    ]);
+    expect(recorded.active_tools).toEqual([]);
+  } finally {
+    clearTimeout(timer);
+    release();
+    await finished;
+    lease.revoke();
+  }
+});
+
 test("MCP HTTP round trip uses scoped leases and refuses the installation token", async () => {
   const connections = await setup();
   const lane = await assign(
@@ -1123,7 +1316,7 @@ test("native text redaction covers secrets split across events", async () => {
   expect(published.at(-1)).toEqual({ type: "text", text: "[REDACTED]" });
 });
 
-test("API exposes host detection states for both manifests and authenticated revocation", async () => {
+test("API exposes host detection states for every registered manifest", async () => {
   const connections = await setup();
   const leaseTools = await ProductTools.open(f.lifecycle);
   for (const state of ["supported", "too_old", "missing", "unknown", "probe_failed"] as const) {
@@ -1144,10 +1337,9 @@ test("API exposes host detection states for both manifests and authenticated rev
       }),
     );
     expect(response.status).toBe(200);
-    expect((await response.json()).map((item: { state: string }) => item.state)).toEqual([
-      state,
-      state,
-    ]);
+    expect((await response.json()).map((item: { state: string }) => item.state)).toEqual(
+      Object.keys(manifests).map(() => state),
+    );
   }
 });
 

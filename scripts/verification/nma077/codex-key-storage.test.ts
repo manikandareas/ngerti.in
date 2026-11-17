@@ -4,7 +4,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { connection, unknownCapabilities } from "../../../apps/server/src/harness/contracts";
 import { CredentialContexts } from "../../../apps/server/src/harness/context";
-import { CodexClient } from "../../../apps/server/src/harness/codex/client";
+import { CodexAuthority } from "../../../apps/server/src/harness/codex/authority";
 
 test.skipIf(process.env.NGERTIIN_NMA077_CODEX_STORAGE_PROBE !== "1")("native API-key account inspection never persists a duplicate plaintext auth file", async () => {
   const root = mkdtempSync(join(tmpdir(), "ngertiin-native-key-"));
@@ -17,7 +17,7 @@ test.skipIf(process.env.NGERTIIN_NMA077_CODEX_STORAGE_PROBE !== "1")("native API
   });
   // Deliberately invalid fixture key: account/read is local, and no catalog or inference request is made.
   const context = new CredentialContexts(root, () => "sk-nma077-fixture-not-a-provider-credential").create(selected);
-  const client = new CodexClient(Bun.which("codex") as string, context, join(context.state_directory, "control"), () => "http://127.0.0.1:1");
+  const client = new CodexAuthority(Bun.which("codex") as string, context);
   try {
     expect(context.ephemeralAuth).toBe(true);
     await client.initialize();

@@ -5,6 +5,7 @@ import { routineName } from "@/features/conversation/lib/routine-name";
 import { routineSchedule } from "@/features/conversation/lib/routine-schedule";
 import type { Goal } from "@/types/work";
 import type { Snapshot } from "@/types/workspace";
+import { NativeProgressDetails } from "./native-progress-details";
 import { PanelHelp } from "./panel-help";
 
 const goalStates: Goal["state"][] = ["active", "paused", "completed", "stopped"];
@@ -14,15 +15,24 @@ const rowClassName =
 export function DetailOverview({
   snapshot,
   open,
+  compose,
 }: {
   snapshot: Snapshot;
   open: (section: "goals" | "routine", id: string) => void;
+  compose: (text: string) => void;
 }) {
   const routines = [...snapshot.routines].sort(
     (a, b) => Number(b.state === "active") - Number(a.state === "active"),
   );
+  const progressRun = snapshot.runs.findLast((run) => run.native_progress);
+  const progressAgent = snapshot.agents.find((agent) => agent.id === progressRun?.agent_id);
   return (
     <div className="space-y-7 pt-5" data-detail-overview="">
+      <NativeProgressDetails
+        progress={progressRun?.native_progress}
+        agentName={progressAgent?.name ?? "Agent"}
+        compose={snapshot.thread.type === "dm" ? compose : undefined}
+      />
       <section aria-label="Goals">
         <div className="mb-3 flex items-center justify-between gap-2">
           <h3 className="text-[16px] font-semibold">Goals</h3>

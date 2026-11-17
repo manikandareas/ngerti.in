@@ -1,0 +1,24 @@
+{
+  "timestamp": "2026-11-16T17:28:24.156Z",
+  "scope": "real macOS Tauri client and account HTTP/PostgreSQL; native ACP SDK subprocess fixture; no provider inference or distribution claim",
+  "origin": "http://127.0.0.1:56515",
+  "control": "http://127.0.0.1:56534",
+  "bundle": "/Users/vitoandareasmanik/Development/project/ngertiin/.dev/acp-native-ui/api24/Ngertiin ACP Verification.app",
+  "manager_id": "97d2c6a2-8aca-486b-a986-44955e735013",
+  "agent": "Shared codex",
+  "thread_id": "0ff13413-97da-4441-b5a2-7affffe373bd",
+  "native_sha256": "52c7132de8f9da12910b720c0f56db970e804518e975ffb7f051f45abbc5cd78",
+  "web_index_sha256": "062f08457b8bd6499b3e03e7fa4bf41f55bfc808083290598315a4220ffbd8b1",
+  "contract_version": "2.4.0",
+  "native_configuration_fixture": "/Users/vitoandareasmanik/Development/project/ngertiin/.dev/acp-native-ui/api24/pi-models-fixture.json",
+  "completed": true,
+  "checks": [
+    "typed_form_native_values",
+    "nullable_native_turn_identity",
+    "shared_picker_private_selection",
+    "native_reasoning_default",
+    "completed_run_selection_retained",
+    "native_generic_pi_configuration_import",
+    "native_public_free_connection_without_key"
+  ]
+}

@@ -5,11 +5,11 @@ import type { Entity } from "../src/contracts";
 import { Conversations } from "../src/conversations";
 import { type HarnessId, manifests } from "../src/harness/availability";
 import { HarnessBroker } from "../src/harness/broker";
-import { CodexAdapter } from "../src/harness/codex/adapter";
 import { Connections } from "../src/harness/connections";
 import { CredentialContexts } from "../src/harness/context";
 import { MuseAdapter } from "../src/harness/muse/adapter";
 import { ProductTools } from "../src/harness/tools";
+import { codexFixture } from "./acp-fixture";
 import { fixture } from "./helpers";
 import { fixtureApi as createApi } from "./http-fixture";
 
@@ -30,13 +30,15 @@ async function compose(native = false) {
   if (native)
     broker = new HarnessBroker(
       f.lifecycle,
-      new CredentialContexts(f.dir),
+      Object.assign(new CredentialContexts(f.dir), {
+        codexTokens: async () => ({
+          accessToken: "fixture-access",
+          chatgptAccountId: "fixture-account-a",
+        }),
+      }),
       tools,
       {
-        codex: new CodexAdapter(
-          () => `${base()}/v1/harness/tools`,
-          [join(import.meta.dir, "fixtures/codex-app-server.ts")],
-        ),
+        codex: codexFixture(() => `${base()}/v1/harness/tools`),
         muse: new MuseAdapter(
           () => `${base()}/v1/harness/tools`,
           [join(import.meta.dir, "fixtures/muse-serve.ts")],
@@ -288,10 +290,10 @@ for (const harness of ["codex", "muse"] as const) {
       text: "wait",
     });
     await background.tick();
-    for (
-      let i = 0;
-      (await f.store.get("run", admitted.run.id)).status !== "running" && i < 100;
-      i++
+    const acceptedDeadline = Date.now() + 10_000;
+    while (
+      (await f.store.get("run", admitted.run.id)).status !== "running" &&
+      Date.now() < acceptedDeadline
     )
       await Bun.sleep(5);
     const active = await f.store.get("run", admitted.run.id);

@@ -1,14 +1,6 @@
 import type { Connection } from "@/types/workspace";
 
-export function connectionReady(connection?: Connection) {
-  return (
-    !!connection &&
-    connection.state === "active" &&
-    connection.login === "authenticated" &&
-    connection.effective_billing_source === connection.authentication.billing_source &&
-    connection.models.length > 0
-  );
-}
+export { connectionReady } from "@/lib/harness-models";
 
 export function availableAIConnections(
   connections: Connection[],

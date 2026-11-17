@@ -4,13 +4,13 @@ import { submissionStatus } from "./api/attachments";
 import { authenticationSession, deviceSessions, nativeAuthentication } from "./auth/contracts";
 import { browserContent } from "./browser/contracts";
 import { API_READINESS_GATE, agent, domainEvent, id, runStatus, schemas } from "./contracts";
+import { billingSource } from "./contracts/base";
 import { conversationPreviews } from "./conversations/previews";
 import { routingDecisionTrace } from "./groups/decision-trace";
-import { capabilities } from "./harness/contracts";
-import { nativeInteractionJournal } from "./harness/interaction-contracts";
+import { capabilities, harnessId } from "./harness/contracts";
+import { interactionSnapshot, nativeInteractionJournal } from "./harness/interaction-contracts";
 import { loginReadiness } from "./harness/login-readiness";
 import { maintenanceJob } from "./harness/maintenance-jobs";
-import { approval, userInput } from "./harness/muse/protocol";
 import { inheritedSkill, nativeSkillMetadata } from "./learning/contracts";
 import {
   accessView,
@@ -34,7 +34,7 @@ const openingConnection = schemas.connection
     capabilities: true,
     effective_billing_source: true,
   })
-  .extend({ billing_source: z.enum(["subscription", "api_key"]) });
+  .extend({ billing_source: billingSource });
 
 /** Operation responses assembled from the same entity contracts used by persistence. */
 export const operationSchemas = {
@@ -51,7 +51,7 @@ export const operationSchemas = {
   conversation_previews: conversationPreviews,
   harness_availability: z.array(
     z.strictObject({
-      harness: z.enum(["codex", "muse"]),
+      harness: harnessId,
       state: z.enum(["supported", "too_old", "missing", "unknown", "probe_failed"]),
       version: z.string().nullable(),
       executable: z.string().nullable(),
@@ -80,7 +80,7 @@ export const operationSchemas = {
     group_routing: z.enum(["jev", "member"]),
     harnesses: z.array(
       z.strictObject({
-        harness: z.enum(["codex", "muse"]),
+        harness: harnessId,
         state: z.enum(["supported", "too_old", "missing", "unknown", "probe_failed"]),
         version: z.string().nullable(),
         executable: z.string().nullable(),
@@ -163,7 +163,7 @@ export const operationSchemas = {
     }),
   ]),
   login_cancel: z.strictObject({ status: z.literal("cancelled") }),
-  interactions: z.strictObject({ approvals: z.array(approval), user_inputs: z.array(userInput) }),
+  interactions: interactionSnapshot,
   interaction_history: z.strictObject({
     run_id: id,
     run_status: runStatus,
@@ -248,7 +248,7 @@ routes(
   ["/v1/harnesses/maintenance"],
   z.strictObject({
     can_update: z.boolean(),
-    updating: z.array(z.enum(["codex", "muse"])),
+    updating: z.array(harnessId),
     operations: z.array(maintenanceJob),
     native_login: z.array(loginReadiness),
   }),
@@ -306,6 +306,7 @@ routes(
   [
     "/v1/connections",
     "/v1/connections/api-key",
+    "/v1/connections/native-configuration",
     "/v1/connections/:id/revoke",
     "/v1/connections/:id/inspect",
   ],

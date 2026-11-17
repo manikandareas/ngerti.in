@@ -1,0 +1,23 @@
+bun test v1.3.10 (30e609e0)
+
+tests/workspaces.test.ts:
+260 |       workspace.id !== data.workspace_id ||
+261 |       !run.native_run_id ||
+262 |       run.status !== "running" ||
+263 |       !run.dispatch_token
+264 |     )
+265 |       throw new DomainError("SCOPE_DENIED", 403);
+                  ^
+error: SCOPE_DENIED
+ status: 403,
+   code: "SCOPE_DENIED"
+
+      at publish (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/src/artifacts.ts:265:13)
+      at async <anonymous> (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/tests/workspaces.test.ts:195:33)
+(fail) an accepted nullable-ID run publishes immutable artifacts through its application binding and lease [380.15ms]
+
+ 0 pass
+ 15 filtered out
+ 1 fail
+ 1 expect() calls
+Ran 1 test across 1 file. [1067.00ms]

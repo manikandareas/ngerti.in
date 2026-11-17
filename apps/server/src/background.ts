@@ -4,6 +4,7 @@ import { GroupSchedules } from "./goals/group-schedules";
 import { Goals } from "./goals/service";
 import { RoutingWorker } from "./groups/routing-worker";
 import { Groups } from "./groups/service";
+import type { HarnessId } from "./harness/availability";
 import { diagnostic } from "./harness/contracts";
 import { Interactions } from "./interactions/service";
 import type { Lifecycle } from "./lifecycle";
@@ -47,7 +48,7 @@ export class Background {
   readonly #routing: RoutingWorker;
   constructor(
     readonly lifecycle: Lifecycle,
-    private readonly executors: Partial<Record<"codex" | "muse", HarnessExecutor>> = {},
+    private readonly executors: Partial<Record<HarnessId, HarnessExecutor>> = {},
     private readonly report: (code: string) => void = () => {},
     private readonly concurrency = 4,
   ) {

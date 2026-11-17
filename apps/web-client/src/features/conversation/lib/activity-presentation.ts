@@ -2,7 +2,9 @@ import type { AvatarState } from "@/features/avatar/engine/catalog";
 import type { Run } from "@/types/workspace";
 
 type ActivitySource = Pick<Run, "status" | "preparation"> &
-  Partial<Pick<Run, "id" | "activity" | "active_tools">> & { waiting_for_user?: boolean };
+  Partial<Pick<Run, "id" | "activity" | "active_tools" | "native_progress">> & {
+    waiting_for_user?: boolean;
+  };
 export interface ActivityPresentation {
   label: string;
   isLoading: boolean;
@@ -49,6 +51,7 @@ const guidance: Record<string, string> = {
   VERSION_UNKNOWN: "Check your connected app in settings.",
   BILLING_MISMATCH: "Check the billing option selected for this connection.",
   NATIVE_REJECTED: "Check your model and connection settings.",
+  PROVIDER_LIMIT: "Usage limit reached. Wait for quota to reset or choose another connection.",
   CAPABILITY_UNSUPPORTED: "This connection doesn’t support that action.",
   CAPABILITY_UNKNOWN: "Check whether your connection supports this action.",
 };
@@ -81,6 +84,11 @@ export function activityPresentation(
   if (source.status === "cancel_requested" || source.activity === "stopping")
     return view("Stopping…", "working", true);
   if (waitingForUser) return view("Waiting for your reply…", "listening");
+  if (
+    source.status === "running" &&
+    source.native_progress?.compactions.some((entry) => entry.state === "in_progress")
+  )
+    return view("Making room to continue…", "working", true);
   if (source.status === "queued") {
     if (source.preparation?.state === "blocked")
       return view("I couldn’t get started.", "error", false, "danger");

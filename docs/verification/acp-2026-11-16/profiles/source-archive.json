@@ -1,0 +1,7 @@
+{
+  "archive": "source.patch.gz",
+  "archive_sha256": "d52eff730b2e2670b2e05e45d26a667f5973cfeabb0887d71b2b6f37deac392b",
+  "uncompressed_sha256": "028a284937677531f43415b92aa22c1c31a7ce4ee9bbcf5dc2c1603fca9ad875",
+  "source_commit": "8e92fda1c581c8dc363de16a8d3b4870e09ad1f9",
+  "applies_to_baseline_index": true
+}

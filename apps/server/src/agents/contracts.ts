@@ -1,6 +1,6 @@
 import { avatarColors, avatarFaces, avatarShapes } from "@ngertiin/avatar/catalog";
 import { z } from "zod";
-import { base, harness, id } from "../contracts/base";
+import { base, billingSource, harness, id } from "../contracts/base";
 
 export const avatarConfig = z.strictObject({
   version: z.literal(1),
@@ -40,7 +40,7 @@ const agentFields = {
     .max(100),
   harness,
   connection_id: id.nullable(),
-  billing_source: z.enum(["subscription", "api_key"]).nullable(),
+  billing_source: billingSource.nullable(),
   instructions: z.string().max(100_000),
   workspace_id: id.nullable(),
   model_id: z.string().min(1).max(200).nullable(),

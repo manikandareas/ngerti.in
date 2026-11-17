@@ -1,5 +1,7 @@
 # Current architecture
 
+November 16 owner amendment: the [ACP migration](acp-harnesses.md) replaces Codex execution and promotes Claude, OpenCode and Pi through one SDK client. Muse SDK/MSP remains. The migration checklist and fresh profile evidence supersede earlier transport/deferred-scope statements below; cutover acceptance is still open.
+
 November 15 owner amendment: account authentication is the only supported path; the mode selector, installation-token client, local desktop supervisor and bundled backend are removed. `bun dev` starts server, web, Tauri and a private local email inbox. Development generates its own persistent secret and uses no Resend credentials. Tauri always uses native account sessions; the launcher owns development processes. New organizations can provision while unbound historical records remain quarantined. See [current verification](../verification/accounts-only-2026-11-15/README.md).
 
 [Product scope](../../PRODUCT.md) defines the intended behavior; [the local backlog](../backlog/README.md) defines milestone status and dependencies. This overview reconciles the harness-first foundation with the shared-machine amendment and the implemented Tauri development host. Detailed API guides retain their original contract-version boundaries; the [consumer contract](api-consumer-contract.md) and installed `/v1/contracts` export define executable schemas.

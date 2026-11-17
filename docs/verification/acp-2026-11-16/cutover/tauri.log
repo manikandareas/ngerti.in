@@ -1,0 +1,10 @@
+bun test v1.3.10 (30e609e0)
+
+../../scripts/verification/acp/native-ui.test.ts:
+{"event":"acp_native_ui.ready","origin":"http://127.0.0.1:57595","control":"http://127.0.0.1:57602","bundle":"/Users/vitoandareasmanik/Development/project/ngertiin/.dev/acp-native-ui/Ngertiin ACP Verification.app"}
+(pass) native Tauri verification fixture retains typed ACP answers and a private model choice [797863.47ms]
+
+ 1 pass
+ 0 fail
+ 6 expect() calls
+Ran 1 test across 1 file. [798.60s]

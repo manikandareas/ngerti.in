@@ -1,3 +1,4 @@
+import { type HarnessId, isHarness } from "@/lib/harnesses";
 export const settingsSectionIds = [
   "general",
   "account",
@@ -21,13 +22,11 @@ export function isSettingsSection(value: unknown): value is SettingsSectionId {
 
 export function validateSettingsSearch(search: Record<string, unknown>): {
   settings?: SettingsSectionId;
-  provider?: "codex" | "muse";
+  provider?: HarnessId;
 } {
   return {
     settings: isSettingsSection(search.settings) ? search.settings : undefined,
     provider:
-      search.settings === "providers" && (search.provider === "codex" || search.provider === "muse")
-        ? search.provider
-        : undefined,
+      search.settings === "providers" && isHarness(search.provider) ? search.provider : undefined,
   };
 }

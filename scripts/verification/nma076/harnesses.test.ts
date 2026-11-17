@@ -8,7 +8,7 @@ import { Background } from "../../../apps/server/src/background";
 import { developmentConfig } from "../../../apps/server/src/config";
 import type { Entity } from "../../../apps/server/src/contracts";
 import { HarnessBroker } from "../../../apps/server/src/harness/broker";
-import { CodexAdapter } from "../../../apps/server/src/harness/codex/adapter";
+import { AcpAdapter } from "../../../apps/server/src/harness/acp/adapter";
 import { CredentialContexts } from "../../../apps/server/src/harness/context";
 import { MuseAdapter } from "../../../apps/server/src/harness/muse/adapter";
 import { HarnessRuntime } from "../../../apps/server/src/harness/runtime";
@@ -104,7 +104,7 @@ test("both native harnesses perform useful isolated work without writing to the 
     f.lifecycle,
     new CredentialContexts(f.dir, () => museKey as string),
     tools,
-    { codex: new CodexAdapter(endpoint), muse: new MuseAdapter(endpoint) },
+    { codex: new AcpAdapter("codex", endpoint), muse: new MuseAdapter(endpoint) },
     harnesses.detect,
   );
   const ids: string[] = [(await domain.snapshot()).id];

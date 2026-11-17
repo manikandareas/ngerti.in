@@ -1,7 +1,7 @@
-import { realpathSync } from "node:fs";
 import { homedir } from "node:os";
-import { basename, dirname, join } from "node:path";
+import { basename, dirname } from "node:path";
 import { DomainError } from "../contracts";
+import { acpProfiles } from "./acp/profiles";
 import { type Availability, type HarnessId, requireAvailable } from "./availability";
 import { HarnessError } from "./contracts";
 import { MaintenanceJobs } from "./maintenance-jobs";
@@ -63,7 +63,8 @@ export class HarnessUpdater {
     if (before.version !== expectedVersion) throw new DomainError("CONFLICT");
     if (process.platform === "win32") throw new HarnessError("CAPABILITY_UNSUPPORTED");
     const installing = before.state === "missing";
-    const executable = installing ? this.runtime.installationPath(harness) : before.executable;
+    const executable =
+      harness !== "muse" || installing ? this.runtime.installationPath(harness) : before.executable;
     if (!executable) throw new HarnessError("EXECUTABLE_MISSING");
 
     const environment: Record<string, string | undefined> = {
@@ -86,7 +87,23 @@ export class HarnessUpdater {
     };
     let command: string[];
     let input: Uint8Array | undefined;
-    if (harness === "muse") {
+    if (harness !== "muse") {
+      const npm = Bun.which("npm");
+      if (!npm || !Bun.which("node")) throw new HarnessError("CAPABILITY_UNSUPPORTED");
+      const profile = acpProfiles[harness];
+      command = [
+        npm,
+        "install",
+        "--global",
+        "--prefix",
+        dirname(dirname(executable)),
+        "--registry",
+        "https://registry.npmjs.org",
+        `${profile.package}@${profile.version}`,
+        ...(harness === "codex" ? ["@openai/codex@0.169.0"] : []),
+        ...(harness === "pi" ? ["@earendil-works/pi-coding-agent@1.5.2"] : []),
+      ];
+    } else {
       const bash = Bun.which("bash");
       if (!bash || !Bun.which("curl") || basename(executable) !== "muse")
         throw new HarnessError("CAPABILITY_UNSUPPORTED");
@@ -122,36 +139,6 @@ export class HarnessUpdater {
       environment.MUSE_INSTALL_DIR = dirname(executable);
       environment.MUSE_UPGRADE_MODE = "1";
       environment.MUSE_NO_MODIFY_PATH = "1";
-    } else if (installing) {
-      const npm = Bun.which("npm");
-      if (!npm || !Bun.which("node")) throw new HarnessError("CAPABILITY_UNSUPPORTED");
-      command = [
-        npm,
-        "install",
-        "--global",
-        "--prefix",
-        dirname(dirname(executable)),
-        "--registry",
-        "https://registry.npmjs.org",
-        "@openai/codex@latest",
-      ];
-    } else {
-      const resolved = realpathSync(executable);
-      const npmRoot = resolved.match(/^(.*)\/lib\/node_modules\/@openai\/codex\//)?.[1];
-      if (npmRoot) {
-        const npm = Bun.which(join(npmRoot, "bin", "npm")) ?? Bun.which("npm");
-        if (!npm) throw new HarnessError("CAPABILITY_UNSUPPORTED");
-        command = [npm, "install", "--global", "--prefix", npmRoot, "@openai/codex@latest"];
-        environment.PATH = `${join(npmRoot, "bin")}:${environment.PATH ?? ""}`;
-      } else if (/\/(?:Caskroom|Cellar)\/codex\//.test(resolved)) {
-        const brew = Bun.which("brew");
-        if (!brew) throw new HarnessError("CAPABILITY_UNSUPPORTED");
-        command = resolved.includes("/Caskroom/")
-          ? [brew, "upgrade", "--cask", "codex"]
-          : [brew, "upgrade", "codex"];
-      } else {
-        command = [executable, "update"];
-      }
     }
     signal.throwIfAborted();
     if (this.#closed) throw new HarnessError("ADAPTER_UNAVAILABLE");

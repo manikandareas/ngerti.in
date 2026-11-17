@@ -1,0 +1,252 @@
+import { expect, test } from "bun:test";
+import { mkdirSync, readdirSync, readFileSync } from "node:fs";
+import { dirname, join, resolve } from "node:path";
+import { Background } from "../../../apps/server/src/background";
+import { AcpAdapter } from "../../../apps/server/src/harness/acp/adapter";
+import { profileLaunch } from "../../../apps/server/src/harness/acp/profiles";
+import { HarnessBroker } from "../../../apps/server/src/harness/broker";
+import { Connections } from "../../../apps/server/src/harness/connections";
+import { CredentialContexts } from "../../../apps/server/src/harness/context";
+import { HarnessRuntime } from "../../../apps/server/src/harness/runtime";
+import { ProductTools } from "../../../apps/server/src/harness/tools";
+import { fixture } from "../../../apps/server/tests/helpers";
+import { fixtureApi } from "../../../apps/server/tests/http-fixture";
+import { selectedPiSumopod } from "./native-credentials";
+import { observeOpenCode } from "./opencode-events";
+
+test.skipIf(process.env.NGERTIIN_ACP_SELECTED_PROVIDERS !== "1")(
+  "native ACP uses OpenCode GLM Flash Free and the existing Pi Sumopod DeepSeek configuration",
+  async () => {
+    const root = resolve(import.meta.dir, "../../..");
+    const directory = join(root, ".dev/acp-selected-providers");
+    mkdirSync(directory, { recursive: true, mode: 0o700 });
+    for (const name of ["opencode", "pi-upstream", "pi-openma"] as const) {
+      if (
+        process.env.NGERTIIN_ACP_SELECTED_PROFILE &&
+        process.env.NGERTIIN_ACP_SELECTED_PROFILE !== name
+      )
+        continue;
+      const harness = name === "opencode" ? "opencode" : "pi";
+      const invalidCredential = harness === "pi" && process.env.NGERTIIN_ACP_SELECTED_INVALID_CREDENTIAL === "1";
+      const configured = harness === "pi" ? selectedPiSumopod() : undefined;
+      const configuration = configured && invalidCredential
+        ? { ...configured, apiKey: `invalid-ngertiin-${crypto.randomUUID()}` }
+        : configured;
+      const expectLimit = name === "opencode" && process.env.NGERTIIN_ACP_EXPECT_PROVIDER_LIMIT === "1";
+      const expectedFailure = expectLimit ? "PROVIDER_LIMIT" : invalidCredential ? "NATIVE_REJECTED" : null;
+      const report: Record<string, unknown> = {
+        timestamp: new Date().toISOString(),
+        completed: false,
+        harness,
+        candidate: name,
+        provider: configuration ? "sumopod" : "opencode",
+        billing: configuration ? "api_key" : "free",
+        authentication_source: configuration
+          ? "owner-selected existing Pi configuration"
+          : "public provider; no credential",
+        scope:
+          "real native inference and HTTP ProductTools, disposable owner-mode PostgreSQL, no global configuration mutation or provider/billing fallback",
+        turns: [],
+        expected_provider_limit: expectLimit,
+        synthetic_invalid_credential: invalidCredential,
+      };
+      const save = () =>
+        Bun.write(join(directory, `${name}${invalidCredential ? "-invalid-credential" : ""}.json`), `${JSON.stringify(report, null, 2)}\n`);
+      await save();
+      const runtime = new HarnessRuntime();
+      const available = await runtime.detect(harness);
+      expect(available.state).toBe("supported");
+      const openma = name === "pi-openma";
+      const executable = openma
+        ? join(import.meta.dir, "runtime/node_modules/.bin/openma-pi-acp")
+        : available.executable!;
+      const nativePi = harness === "pi" ? join(dirname(available.executable!), "pi") : undefined;
+      const f = await fixture();
+      let app: Awaited<ReturnType<typeof fixtureApi>> | undefined;
+      const reference = crypto.randomUUID();
+      let credentialReads = 0;
+      const credentials = new CredentialContexts(f.dir, (id) => {
+        credentialReads++;
+        if (!configuration || id !== reference) throw new Error("Unselected native credential.");
+        return JSON.stringify(configuration);
+      });
+      const connections = new Connections(f.lifecycle);
+      const connection = await connections.create({
+        harness,
+        provider_id: report.provider,
+        authentication: configuration
+          ? { method: "harness_config", billing_source: "api_key", credential_ref: reference }
+          : { method: "none", billing_source: "free" },
+      });
+      const diagnostics: string[] = [];
+      report.diagnostics = diagnostics;
+      const adapter = new AcpAdapter(
+        harness,
+        () => `http://127.0.0.1:${app?.server?.port}/v1/harness/tools`,
+        { native_pi: nativePi, pi_candidate: openma ? "openma" : "upstream",
+          diagnostic: line => { if (diagnostics.length < 100) diagnostics.push(line.slice(0, 2000)); },
+          launch: async (id, context, options) => {
+            const launch = await profileLaunch(id, context, options);
+            if (id === "opencode") {
+              launch.args.unshift("--print-logs");
+              if (process.env.NGERTIIN_ACP_OPENCODE_EVENTS === "1") observeOpenCode(launch);
+            }
+            return launch;
+          },
+        },
+      );
+      const tools = await ProductTools.open(f.lifecycle);
+      const broker = new HarnessBroker(
+        f.lifecycle,
+        credentials,
+        tools,
+        { [harness]: adapter },
+        async () => ({ ...available, executable, version: openma ? "0.1.8" : available.version }),
+      );
+      const background = new Background(f.lifecycle, broker.executors());
+      const deadline = async <T>(operation: Promise<T>) => {
+        let timer: ReturnType<typeof setTimeout> | undefined;
+        try {
+          return await Promise.race([
+            operation,
+            new Promise<never>((_, reject) => {
+              timer = setTimeout(
+                () => reject(new Error("Selected provider native observation timed out.")),
+                process.env.NGERTIIN_ACP_OPENCODE_EVENTS === "1" ? 30_000 : 120_000,
+              );
+            }),
+          ]);
+        } finally {
+          clearTimeout(timer);
+        }
+      };
+      try {
+        app = (
+          await fixtureApi(f.lifecycle, background, "selected-provider-fixture-".repeat(4), {
+            tools,
+            broker,
+            connections,
+          })
+        ).listen({ hostname: "127.0.0.1", port: 0 });
+        const client = await adapter.connect({
+          ...credentials.create(connection),
+          scoped: true,
+          executable,
+          connection_id: connection.id,
+          agent_id: crypto.randomUUID(),
+          thread_id: crypto.randomUUID(),
+          purpose: "routing",
+          instructions: "Private selected-provider catalog probe.",
+        });
+        let model: string;
+        try {
+          const inspected = await client.inspect();
+          expect(inspected.billing_source).toBe(report.billing as string);
+          if (!configuration) expect(inspected.account_id).toBeNull();
+          const models = await client.discoverModels();
+          const selected = configuration
+            ? models.find((model) => model.id === "sumopod/deepseek-v4-flash")
+            : models.find((model) => /^opencode\/glm.*flash.*free$/i.test(model.id));
+          expect(selected).toBeDefined();
+          model = selected!.id;
+          report.model = model;
+          report.catalog_count = models.length;
+          report.model_reasoning = selected!.reasoning;
+          await save();
+        } finally {
+          await client.close();
+        }
+        const agent = await f.lifecycle.createAgent({
+          name: `Native ${name}`,
+          harness,
+          connection_id: connection.id,
+          model_id: model,
+        });
+        const thread = await f.lifecycle.create("thread", {
+          type: "dm",
+          member_agent_ids: [agent.id],
+        });
+        const marker = `SELECTED-${crypto.randomUUID()}`;
+        let sessionId: string | undefined;
+        for (let turn = 0; turn < 2; turn++) {
+          const admitted = await f.lifecycle.admit({
+            thread_id: thread.id,
+            agent_id: agent.id,
+            text:
+              turn === 0
+                ? `Call ngertiin.read_run_context with empty arguments. Reply with its thread_id and ${marker}. Do not create a Goal or Routine. Do not use host tools.`
+                : "Call ngertiin.read_run_context again. Reply with its thread_id and the exact marker from the previous turn. Do not create a Goal or Routine. Do not use host tools.",
+          });
+          await background.tick();
+          try { await deadline(background.idle()); }
+          catch (error) {
+            const stalled = await f.store.get("run", admitted.run.id);
+            let interactions: unknown;
+            try { interactions = await broker.interactions(stalled.id); } catch { interactions = "unavailable"; }
+            report.failure = { status: stalled.status, diagnostic: stalled.diagnostic, native_tools: stalled.native_tools, product_tools: stalled.product_tools, interactions, partial_answer: (await f.store.answer(stalled.id))?.text };
+            await save();
+            throw error;
+          }
+          const run = await f.store.get("run", admitted.run.id);
+          const answer = (await f.store.answer(run.id))?.text ?? "";
+          (report.turns as unknown[]).push({
+            status: run.status,
+            diagnostic: run.diagnostic,
+            product_tools: run.product_tools,
+            tool_errors: run.tool_errors.map((error) => error.code),
+            native_run_id: run.native_run_id,
+            timings: run.timings,
+            answer,
+          });
+          await save();
+          if (expectedFailure) {
+            expect(run.status).toBe("failed");
+            expect(run.diagnostic).toMatchObject({ code: expectedFailure, category: "provider", outcome: "failed" });
+            expect(run.native_run_id).toBeNull();
+            expect(run.timings.dispatched_at).toBeDefined();
+            expect(Date.parse(run.timings.settled_at!) - Date.parse(run.timings.dispatched_at!)).toBeLessThan(15_000);
+            expect((await connections.get(connection.id)).login).toBe("authenticated");
+            report.provider_failure_delivery_verified = true;
+            report.completed_inference = false;
+            break;
+          }
+          expect(run.status, JSON.stringify(run.diagnostic)).toBe("succeeded");
+          expect(run.product_tools).toContain("ngertiin.read_run_context");
+          expect(run.native_run_id).toBeNull();
+          expect(answer).toContain(marker);
+          expect(answer).toContain(thread.id);
+          const binding = await f.store.get("binding", run.binding_id!);
+          if (sessionId) expect(binding.native_session_id).toBe(sessionId);
+          sessionId = binding.native_session_id;
+        }
+        if (!configuration) expect(credentialReads).toBe(0);
+        report.credential_reads = credentialReads;
+        report.completed = true;
+      } finally {
+        await background.stop(100);
+        await broker.close();
+        await app?.stop(true);
+        if (configuration) {
+          let persisted = false;
+          const scan = (path: string) => {
+            for (const entry of readdirSync(path, { withFileTypes: true })) {
+              const file = join(path, entry.name);
+              if (entry.isDirectory()) scan(file);
+              else if (
+                entry.isFile() &&
+                readFileSync(file).includes(Buffer.from(configuration.apiKey))
+              )
+                persisted = true;
+            }
+          };
+          scan(f.dir);
+          report.native_key_bytes_persisted = persisted;
+          expect(persisted).toBe(false);
+        }
+        await save();
+        await f.close();
+      }
+    }
+  },
+  900_000,
+);

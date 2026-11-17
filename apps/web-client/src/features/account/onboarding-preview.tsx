@@ -1,6 +1,7 @@
 import { ArrowDown01Icon, ArrowUp02Icon, ComputerIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { WorkspaceRail } from "@/app/workspace-rail";
+import { HarnessIcon } from "@/components/harness-icon";
 import { Bubble, BubbleContent } from "@/components/ui/bubble";
 import { Button } from "@/components/ui/button";
 import { Message, MessageContent } from "@/components/ui/message";
@@ -8,14 +9,14 @@ import { AttachInput } from "@/features/conversation/components/attach-input";
 import { ComposerInput } from "@/features/conversation/components/composer-input";
 import { AgentAvatar } from "@/features/conversation/components/identity";
 import { ConversationNavigation } from "@/features/conversation/components/navigation";
+import { type OnboardingHarness, onboardingModelSamples } from "./onboarding-harnesses";
+import { OnboardingModelMenu } from "./onboarding-model-menu";
 import {
   previewAgents,
   previewConversations,
   previewMessages,
   previewThreads,
 } from "./onboarding-preview-data";
-import { type OnboardingHarness, onboardingModelSamples } from "./onboarding-harnesses";
-import { OnboardingModelMenu } from "./onboarding-model-menu";
 import { OrganizationLogo } from "./organization-logo";
 
 const noop = () => {};
@@ -99,20 +100,13 @@ export function OnboardingPreview({
                         className="header-action model-selector gap-2"
                         aria-expanded={step === 2}
                       >
-                        <img
-                          src={`/images/harnesses/${currentHarness}.png`}
-                          alt=""
-                          width="16"
-                          height="16"
-                        />
+                        <HarnessIcon id={currentHarness} />
                         <span className="min-w-0 truncate">
                           {onboardingModelSamples[currentHarness][0].name}
                         </span>
                         <HugeiconsIcon icon={ArrowDown01Icon} size={12} />
                       </Button>
-                      {step === 2 && (
-                        <OnboardingModelMenu harness={currentHarness} harnesses={harnesses} />
-                      )}
+                      {step === 2 && <OnboardingModelMenu harness={currentHarness} />}
                     </div>
                     <Button
                       variant="ghost"

@@ -1,5 +1,7 @@
 # Ngertiin product scope
 
+November 16 owner amendment: adopt the [ACP harness migration](docs/architecture/acp-harnesses.md), promoting Codex, Claude, OpenCode and Pi through one shared ACP client and scoped tool bridge. Retire replaced execution paths after explicit cutover; retain Muse SDK/MSP. Implementation is In Progress; prior native acceptance does not certify ACP parity.
+
 November 15 owner amendment: account authentication is the only supported path; the mode selector, installation-token client, local desktop supervisor and bundled backend are removed. `bun dev` starts server, web, Tauri and a private local email inbox. Development generates its own persistent secret and uses no Resend credentials. Tauri always uses native account sessions; the launcher owns development processes. New organizations can provision while unbound historical records remain quarantined. See [current verification](docs/verification/accounts-only-2026-11-15/README.md).
 
 This repository is the authority for Ngertiin product decisions, implementation scope, acceptance and delivery status. Start with [the documentation index](docs/README.md), [feature decisions](docs/product/feature-decisions.md), and [the local backlog](docs/backlog/README.md). Explicit user decisions take precedence and must be recorded locally when they change scope.

@@ -1,0 +1,22 @@
+[
+  {
+    "phase": "profiles",
+    "passed": true,
+    "receipt_sha256": "dcb2407b51e2b5bab3155c1d0e67d905ac591b229449df57250f33bd91f9635c"
+  },
+  {
+    "phase": "cutover",
+    "passed": true,
+    "receipt_sha256": "bd80edb7b3c0481b53adaf86e07e5d2c74d8b456ca01e4452333fc7e87799de2"
+  },
+  {
+    "phase": "native-context",
+    "passed": true,
+    "receipt_sha256": "a1a4fb98deb44b2cd7f7b9f0035a3f6e3bd990307c0e0dc092ad83a2e99b2d33"
+  },
+  {
+    "phase": "native-harnesses",
+    "passed": true,
+    "receipt_sha256": "819da420fdb55e7e0f10119f126090cdebde91f4e550aa53a6633c0bdd52fa0f"
+  }
+]

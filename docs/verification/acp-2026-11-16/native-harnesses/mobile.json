@@ -1,0 +1,22 @@
+{
+  "timestamp": "2026-11-16T16:33:55.781Z",
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "real_http_and_postgresql": true,
+  "native_transport": "official ACP SDK subprocess fixture",
+  "provider_inference": "not_attempted",
+  "checks": [
+    "typed_form_validates_bounds_and_submits_native_values_for_nullable_id_run",
+    "shared_onboarding_picker_uses_five_current_harnesses_and_keeps_run_selection_frozen",
+    "agent_attributed_progress_is_collapsed_until_opened",
+    "advertised_context_action_prefills_composer_and_uses_normal_admission",
+    "five_harnesses_require_explicit_provider_and_clear_keys_on_selection_change",
+    "pi_discovers_unregistered_providers_from_native_configuration_and_clears_it_on_harness_change",
+    "opencode_public_free_connection_requires_no_credential"
+  ],
+  "page_errors": [],
+  "connection_failures": [],
+  "completed": true
+}

@@ -98,14 +98,16 @@ export function ThinkingTrack({
       aria-label="Thinking effort"
       className="relative flex min-w-0 flex-1 items-center rounded-full bg-muted/60 p-1 ring-1 ring-border/60 ring-inset"
     >
-      <span
-        aria-hidden="true"
-        style={{
-          width: `calc((100% - 0.5rem) / ${levels.length})`,
-          transform: `translateX(${activeIndex * 100}%)`,
-        }}
-        className="pointer-events-none absolute inset-y-1 left-1 rounded-full bg-popover ring-1 ring-border/70 ring-inset transition-transform duration-300 ease-out motion-reduce:transition-none"
-      />
+      {value !== undefined && (
+        <span
+          aria-hidden="true"
+          style={{
+            width: `calc((100% - 0.5rem) / ${levels.length})`,
+            transform: `translateX(${activeIndex * 100}%)`,
+          }}
+          className="pointer-events-none absolute inset-y-1 left-1 rounded-full bg-popover ring-1 ring-border/70 ring-inset transition-transform duration-300 ease-out motion-reduce:transition-none"
+        />
+      )}
       {levels.map((effort, index) => (
         <label
           key={effort}
@@ -115,7 +117,7 @@ export function ThinkingTrack({
             type="radio"
             name={name}
             value={effort}
-            checked={index === activeIndex}
+            checked={effort === value}
             ref={(node) => {
               refs.current[index] = node;
             }}
@@ -124,7 +126,7 @@ export function ThinkingTrack({
             className="peer sr-only"
           />
           <span className="block rounded-full px-1 py-2 text-[11px] leading-none font-medium whitespace-nowrap text-muted-foreground transition-colors peer-checked:text-foreground peer-focus-visible:ring-2 peer-focus-visible:ring-ring motion-reduce:transition-none touch:py-3.5">
-            {THINKING_LABEL[effort]}
+            {THINKING_LABEL[effort] ?? effort}
           </span>
         </label>
       ))}

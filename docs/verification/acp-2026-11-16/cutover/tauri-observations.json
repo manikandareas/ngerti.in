@@ -1,0 +1,22 @@
+{
+  "observed_by": "CUA native accessibility and screenshot inspection",
+  "native_report": "tauri.json",
+  "provider_inference": "not_attempted",
+  "fixture_account": "owner@example.test",
+  "checks": {
+    "browser_pkce_login": "pass",
+    "browser_password_save_declined": "pass",
+    "native_form_zero_rejected": "pass",
+    "native_form_numeric_three_and_name_ari_accepted": "pass",
+    "canonical_native_answer": { "action": "accept", "content": { "name": "Ari", "count": 3 } },
+    "picker_harnesses": ["Codex", "Muse Code", "Claude Code", "OpenCode", "Pi"],
+    "private_selected_model": "model-a",
+    "default_reasoning": null,
+    "completed_run_model_retained": "fixture-model",
+    "native_app_quit": "observed",
+    "synthetic_origin_bound_keychain_entry_removed": true
+  },
+  "screenshots": "Observed in the CUA conversation; no filesystem screenshot captured",
+  "teardown": "Only the synthetic profile/origin credential was removed. The auth tab was closed, the original browser tab retained, and the Safari Start Page restored after an accidental background-app shortcut. Native sign-out was attempted after backend teardown and correctly failed on the stopped fixture origin; the exact synthetic Keychain entry was then removed directly.",
+  "source_boundary": "Native picker/form capture precedes the later native-command action buttons; those buttons have separate browser/fixture evidence. The native test's explicit completion guard was added while this process was already running; the successful branch executed six assertions."
+}

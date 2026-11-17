@@ -17,6 +17,7 @@ import {
   validateSettingsSearch,
 } from "@/features/settings/lib/settings-search";
 import { type ComponentName, components } from "@/lib/component-catalog";
+import { type HarnessId, isHarness } from "@/lib/harnesses";
 
 const AccountBoundary = lazy(() => import("@/features/account/session"));
 function ApplicationRoot() {
@@ -86,7 +87,7 @@ const settingsRoute = createRoute({
   path: "/settings",
   validateSearch: (
     search: Record<string, unknown>,
-  ): { section?: SettingsSectionId | "apps"; provider?: "codex" | "muse" } => ({
+  ): { section?: SettingsSectionId | "apps"; provider?: HarnessId } => ({
     section:
       search.section === "apps"
         ? "apps"
@@ -94,9 +95,7 @@ const settingsRoute = createRoute({
           ? search.section
           : undefined,
     provider:
-      search.section === "providers" && (search.provider === "codex" || search.provider === "muse")
-        ? search.provider
-        : undefined,
+      search.section === "providers" && isHarness(search.provider) ? search.provider : undefined,
   }),
   beforeLoad: ({ search }) => {
     throw redirect({

@@ -10,7 +10,7 @@ const { loadOperations } = await import(`${release}/apps/server/src/operations/f
 const { offlineDatabase } = await import(`${release}/apps/server/src/operations/database.ts`);
 const { CredentialStorage } = await import(`${release}/apps/server/src/harness/credential-storage.ts`);
 const { CredentialContexts } = await import(`${release}/apps/server/src/harness/context.ts`);
-const { CodexClient } = await import(`${release}/apps/server/src/harness/codex/client.ts`);
+const { CodexAuthority } = await import(`${release}/apps/server/src/harness/codex/authority.ts`);
 const { config, env } = loadOperations("/etc/ngertiin/operations.json");
 Object.assign(process.env, env);
 const action = process.argv[2];
@@ -54,7 +54,7 @@ try {
     console.log(JSON.stringify({ synthetic_connection_revoked_after_snapshot: true, real_providers_unchanged: true }));
   } else {
     const context = new CredentialContexts(config.state_dir).create(connection);
-    const client = new CodexClient("/opt/ngertiin/bin/codex", context, join(config.state_dir, "operator-refresh"), () => "http://127.0.0.1:8000/v1/harness/tools");
+    const client = new CodexAuthority("/opt/ngertiin/bin/codex", context);
     try {
       await client.initialize();
       await client.rpc.request("account/read", { refreshToken: true });

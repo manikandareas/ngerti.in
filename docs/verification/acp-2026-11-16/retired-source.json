@@ -1,0 +1,28 @@
+{
+  "revision": "8e92fda1c581c8dc363de16a8d3b4870e09ad1f9",
+  "reason": "Replaced Codex execution protocol, its historical verification entrypoints and obsolete app-only model-menu keyboard plumbing; active UI uses the onboarding picker. Raw retained evidence is unchanged.",
+  "replacement": "scripts/verification/acp/native.test.ts",
+  "evidence_boundary": "Current ACP owner-mode evidence does not inherit historical multi-account, native skill or Cua domain acceptance. Those journeys require a new ACP capture.",
+  "paths": [
+    "apps/server/src/harness/codex/adapter.ts",
+    "apps/server/src/harness/codex/client.ts",
+    "apps/server/src/harness/codex/rpc.ts",
+    "apps/server/src/harness/codex/output.ts",
+    "apps/server/tests/fixtures/codex-app-server.ts",
+    "scripts/verification/conversation/native.ts",
+    "scripts/verification/conversation-latency/native.ts",
+    "scripts/verification/jev-routing-v2/native.ts",
+    "scripts/verification/jev-routing-v3/native.ts",
+    "scripts/verification/jev-routing-v3/fallback-quality.ts",
+    "scripts/verification/machine/harnesses.ts",
+    "scripts/verification/goal-capture/native.ts",
+    "scripts/verification/attachments/native.ts",
+    "scripts/verification/group-attachments/native.ts",
+    "scripts/verification/group-responsibilities/native.ts",
+    "scripts/verification/nma053/receipt.ts",
+    "scripts/verification/nma077/two-accounts.test.ts",
+    "scripts/verification/nma077/remote-codex.test.ts",
+    "scripts/verification/nma078/native-skills.test.ts",
+    "apps/web-client/src/features/conversation/components/model-picker-keys.ts"
+  ]
+}

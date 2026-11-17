@@ -1,0 +1,291 @@
+bun test v1.3.10 (30e609e0)
+
+tests/agents.test.ts:
+(pass) concurrent HTTP setup and distinct retry keys produce one default agent, primary DM and authored welcome without runs [1305.28ms]
+(pass) setup transaction rolls back all state, events and receipt, then retries safely after restart [233.61ms]
+(pass) configuration HTTP requires revisions and rejects identity/access injection and mismatched connections [555.79ms]
+(pass) codex native protocol fixture creates and updates an agent through scoped HTTP tools with durable deduplication [5947.65ms]
+(pass) codex configuration updates keep active snapshots and replace subsequent sessions with thread-only history [6534.20ms]
+(pass) muse native protocol fixture creates and updates an agent through scoped HTTP tools with durable deduplication [5805.82ms]
+(pass) muse configuration updates keep active snapshots and replace subsequent sessions with thread-only history [5917.55ms]
+(pass) tool scope denies ordinary agents owner configuration and prevents stale revisions and command reuse [1522.35ms]
+(pass) history pagination and snapshot cursor survive restart with explicit authors and no duplicate replay [971.43ms]
+(pass) concurrent configuration writes admit one expected revision and reject duplicate handles and invalid creation scope [524.92ms]
+(pass) switching harness during active work preserves the old run and selects a new binding for the next work [2772.58ms]
+
+tests/muse.test.ts:
+(pass) official Muse SDK fixture completes an actual scoped HTTP product-tool call [1610.85ms]
+(pass) Muse maps the official tool field and clears terminal updates without a completed notification [1363.94ms]
+(pass) native history resumes the exact DM after restart without importing group history [4583.83ms]
+(pass) effective stored key cannot masquerade as a subscription after browser login [648.57ms]
+(pass) missing credentials remain login-required and device login does not claim inference [664.41ms]
+(pass) key-selected connection cannot start browser login [462.87ms]
+(pass) interrupt acknowledgement remains intent until native cancelled terminal arrives [1217.58ms]
+(pass) unverified Muse steering preserves queued correction and does not dispatch it natively [1366.05ms]
+(pass) Muse streams a stable partial message and repairs final native text without duplicate messages [1295.20ms]
+(pass) Muse reconciles durable native commit and product-tool receipt after process loss without resubmission [2309.02ms]
+(pass) interrupt acknowledgement alone cannot fabricate cancellation [1332.38ms]
+(pass) revoked connection cannot answer a pending native question [1269.60ms]
+(pass) native question exposes scoped pending interaction and validates its answer [3437.63ms]
+(pass) native approval exposes scoped pending interaction and validates its answer [3480.75ms]
+(pass) replayed Muse approval notifications are reconciled before display or dispatch [1919.39ms]
+(pass) a late pending-state response cannot repopulate interactions after native completion [2411.15ms]
+(pass) revocation during a native pending-state read fences the subsequent approval decision [1346.52ms]
+(pass) native failed remains failed [1235.84ms]
+(pass) native disconnect remains unknown [1275.98ms]
+(pass) native gap remains unknown [1129.15ms]
+(pass) native unknown-terminal remains unknown [1247.08ms]
+(pass) native reject remains failed [1150.65ms]
+(pass) typed Muse authentication rejection and temporary provider failure retain distinct diagnostics [1954.50ms]
+(pass) authoritative empty Muse history clears ephemeral text without minting a second answer [1296.99ms]
+
+tests/acp-adapter.test.ts:
+(pass) claude ACP adapter completes a scoped product-tool run and reloads with binding metadata [4040.81ms]
+(pass) opencode ACP adapter completes a scoped product-tool run and reloads with binding metadata [3868.23ms]
+(pass) transport migration retains only authorized settled conversation history and fences unsettled work [642.95ms]
+(pass) additive native discovery preserves admission authority while capability or catalog loss retires it [225.10ms]
+(pass) multi-provider connections require a provider and never route new keys through Muse [272.63ms]
+(pass) Pi trusted configuration permits only empty native auth and refuses symlink/settings inheritance [174.99ms]
+
+tests/controls.test.ts:
+(pass) queued HTTP edits use revisions, preserve FIFO and survive exact retries and restart [836.31ms]
+(pass) deleting a waiting message creates a replayable tombstone without stopping the active run [663.93ms]
+(pass) deletion-only history pages keep a usable pagination anchor [497.97ms]
+(pass) chat text always preserves ordinary FIFO admission without choosing cancellation intent [651.18ms]
+(pass) direct HTTP cancellation bypasses a stalled agent and an occupied ordinary queue [645.21ms]
+(pass) the cancellation tool stops only its current run, returns its receipt and fences later tools [967.78ms]
+(pass) cancellation tool rejects caller target injection, forged scope and revoked grants [682.40ms]
+(pass) agent goal control selects an explicit responsibility and persists its stopped continuation [924.35ms]
+(pass) queued steering is reserved atomically, revision-protected and never dispatched twice [696.96ms]
+(pass) steering journals the application attempt when the peer has no native turn ID [874.13ms]
+(pass) certain steer rejection restores FIFO; lost acknowledgement survives restart held unknown [778.78ms]
+(pass) streaming snapshots upsert one message and stale epochs cannot append after restart [670.22ms]
+(pass) SSE streams committed envelopes, reconnects from Last-Event-ID and publishes no rollback [532.65ms]
+(pass) stream redaction withholds known secret prefixes and distinguishes actionable failure categories [61.42ms]
+
+tests/acp.test.ts:
+(pass) ACP session applies advertised config, merges private tool updates and preserves nullable turn identity [122.60ms]
+(pass) a first MCP call can establish processing before any native update without a turn ID [96.72ms]
+(pass) reload suppresses historical output and receives a fresh MCP token and process generation [180.09ms]
+(pass) cancel sends intent and waits for a native cancelled prompt response [95.27ms]
+(pass) negotiated steering joins the active nullable-ID attempt and refuses an idle fallback [86.34ms]
+(pass) burst streaming coalesces snapshots and flushes the trailing text before the turn ends [127.25ms]
+(pass) permission choices are bounded, run-scoped and cannot be answered twice [86.67ms]
+(pass) ACP form questions retain types, reject invalid answers and respond exactly once to the active run [97.28ms]
+(pass) ACP form decline and stop resolve the request without inventing user input [217.41ms]
+(pass) elicitation rejects unsupported schemas and validates enum labels independently of native keys [1.27ms]
+(pass) explicit errors/refusal are failure; process death remains unknown [463.27ms]
+(pass) terminal failures and lost acknowledgements flush retained partial text without claiming success [361.52ms]
+(pass) projection redacts split secrets and never publishes thoughts or raw tool content [0.39ms]
+(pass) negotiated native phases keep commentary out of live and canonical answers [0.08ms]
+(pass) native progress merges compactions in place, redacts split summaries and keeps file previews scoped [1.92ms]
+(pass) closing the owned ACP process terminates a surviving background descendant [337.23ms]
+(pass) setup refuses to downgrade application instructions when system prompts are unsupported [181.13ms]
+(pass) unsupported images and unavailable model settings fail before a prompt is sent [299.10ms]
+
+tests/routing-recovery.test.ts:
+(pass) the shared runtime discovers an installed executable and coalesces cached probes [4525.90ms]
+(pass) a blocked fallback is visible on its parent group without exposing routing instructions [7916.97ms]
+25 |   await f?.close();
+26 | });
+27 | async function until(predicate: () => boolean | Promise<boolean>) {
+28 |   const deadline = Date.now() + 2000;
+29 |   while (!(await predicate()) && Date.now() < deadline) await Bun.sleep(5);
+30 |   expect(await predicate()).toBe(true);
+                                 ^
+error: expect(received).toBe(expected)
+
+Expected: true
+Received: false
+
+      at until (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/tests/routing-recovery.test.ts:30:29)
+      at async <anonymous> (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/tests/routing-recovery.test.ts:162:9)
+(fail) replacing the pinned executable resumes the original undispatched fallback once [14107.21ms]
+(pass) unknown native fallback remains fenced and never exposes preparation retry [3725.76ms]
+
+tests/session-tools.test.ts:
+{"event":"harness.product_tool.error","code":"NATIVE_REJECTED"}
+(pass) discovery before dispatch cannot acquire a run's tool authority [435.00ms]
+{"event":"harness.product_tool.error","code":"NATIVE_REJECTED"}
+(pass) concurrent calls initialize once per immutable run lease and retain each tool authorization [102.59ms]
+{"event":"harness.product_tool.error","code":"NATIVE_REJECTED"}
+(pass) an old endpoint never receives the next run's privileges even when a late call arrives [21.89ms]
+{"event":"harness.product_tool.error","code":"TOOL_UNAVAILABLE"}
+(pass) revoking a bridge aborts an in-flight call and fences its delayed result [27.46ms]
+
+tests/muse-interaction-view.test.ts:
+(pass) pending native approval preserves the action and human-readable choice [16.88ms]
+
+tests/harness-catalog.test.ts:
+(pass) both native adapters reject private or project MCP configuration before starting a process [106.06ms]
+
+tests/harness.test.ts:
+(pass) DM prewarm performs no inference and reuses skills, transport and presentation-only revisions [8874.96ms]
+(pass) DM prewarm replaces the least recently used idle transport and preserves native identities [12087.04ms]
+(pass) speculative DM preparation never evicts transports while active or unknown work exists [5753.26ms]
+(pass) minimum policies reject below-floor and prerelease versions for both harnesses [15.06ms]
+(pass) real executable probes distinguish supported, old, missing, unknown and failed without returning diagnostics [3002.92ms]
+(pass) connection API persists secret references and independent evidence states across restart [949.72ms]
+(pass) API rejects billing mismatches, secret values and caller-supplied owner identity [556.97ms]
+(pass) isolated native-login environment strips inherited billing keys; selected keys are connection-specific [221.67ms]
+(pass) credential files fail closed on missing or public permissions [252.64ms]
+(pass) diagnostic redaction buffers split UTF-8/secret records and discards oversized fragments [11.14ms]
+(pass) owned native processes run concurrently with separate environment and redact fragmented stderr [195.35ms]
+(pass) two harnesses, accounts, models and agents execute concurrently through scoped product tools [2072.38ms]
+(pass) nullable ACP turn identity supports real scoped effects and retires its process before the next run [3525.55ms]
+(pass) a nullable terminal response alone cannot fabricate observed native processing [1433.18ms]
+(pass) login, catalog failure and completed inference remain separate observations [527.51ms]
+(pass) native account cannot silently switch selected authentication or billing [442.88ms]
+(pass) unknown resume never starts a replacement session [625.28ms]
+(pass) concurrent opens share one lane and separate sessions for two agents on one connection [954.37ms]
+(pass) grant revocation while native initialization waits prevents session binding [463.64ms]
+(pass) connection revoke retires an initializing native process before deleting auth state and leaves other connections alive [1471.52ms]
+(pass) scope, private resources, current grants and terminal runs are rechecked on each tool call [951.49ms]
+(pass) MCP HTTP round trip uses scoped leases and refuses the installation token [2579.94ms]
+(pass) grant change between settings and prompt blocks final dispatch [1132.55ms]
+(pass) native acceptance followed by failure becomes unknown and blocks retry [1436.28ms]
+(pass) native rejection is failed; malformed terminal identity remains unknown [2855.92ms]
+(pass) native stop receipt confirms cancellation [969.91ms]
+(pass) native text redaction covers secrets split across events [947.75ms]
+(pass) API exposes host detection states for every registered manifest [724.95ms]
+(pass) tool capability revocation during an asynchronous handler blocks its final effect [915.78ms]
+(pass) broker shutdown fences late completion and text after an unconfirmed native stop [941.00ms]
+(pass) MCP transport validates origin/protocol, initialization and notification responses [1102.77ms]
+(pass) native account change after session initialization cannot dispatch under the old connection [544.04ms]
+(pass) a connection change starts a separate native session and retains the previous mapping [388.66ms]
+(pass) version and executable failures cannot reach the adapter connect boundary [381.23ms]
+(pass) protocol request and close deadlines bound an unresponsive client without fabricating login [264.52ms]
+(pass) two simultaneous key connections on the same harness retain their selected accounts and models [1459.73ms]
+(pass) concurrent steering receipts send once and a lost acknowledgement never resends [639.78ms]
+(pass) native receipt reads recheck revocation before committing recovered output [455.68ms]
+(pass) owner receipt inspection releases revoked group work without restoring its workspace or publishing its output [670.65ms]
+(pass) an unconfirmed native stop reaches a bounded unknown outcome and fences late events [974.01ms]
+
+tests/bootstrap.test.ts:
+{"event":"foundation.started","url":"http://127.0.0.1:53013","identity_file":"/var/folders/j1/p1582yhj20z58phnf_zrzy7w0000gn/T/ngertiin-bootstrap-Tgw2cj/installation.json","registered_executors":5,"api_readiness_gate":"ready"}
+{"event":"foundation.started","url":"http://127.0.0.1:53022","identity_file":"/var/folders/j1/p1582yhj20z58phnf_zrzy7w0000gn/T/ngertiin-bootstrap-Tgw2cj/installation.json","registered_executors":5,"api_readiness_gate":"ready"}
+(pass) account bootstrap rejects installation credentials and preserves verified sessions across restart [1820.35ms]
+
+tests/interaction-journal.test.ts:
+(pass) normalized observations persist once, redact key shapes and remain conversation scoped [1461.29ms]
+(pass) user_input acknowledgement survives completion/restart without asserting action completion [1471.10ms]
+(pass) approval acknowledgement survives completion/restart without asserting action completion [1468.40ms]
+(pass) lost HTTP acknowledgement and concurrent retries dispatch once; changed answers conflict [1224.17ms]
+(pass) ambiguous errors fence retries and do not store opaque native failures [932.78ms]
+(pass) timeout stays unknown until the same attempt receives a late acknowledgement without retransmission [937.63ms]
+(pass) restart turns persisted in-flight responses unknown even with no live broker [1509.80ms]
+(pass) definitive non-dispatch may retry; run cancellation remains a separate observation [1792.04ms]
+(pass) revocation during a pending read fences observation persistence and response dispatch [502.21ms]
+(pass) approval stages are distinct; disappearance without a response never means completion [1626.68ms]
+(pass) response fingerprints use original input while persisted answer displays redact secrets [881.92ms]
+(pass) oversized observations fail explicitly without truncating retained history or dispatching [798.81ms]
+(pass) a changed request payload cannot overwrite the question associated with a settled answer [1003.80ms]
+(pass) first observed transcript anchor uses UTF-16 offset and immutable prefix hash through append, replacement and restart [1557.29ms]
+(pass) a request observed before agent output stays anchored to input with no invented text position [1640.68ms]
+(pass) a later message in another conversation is never selected as this run's question anchor [794.71ms]
+(pass) old journal records default anchor metadata to null and are never retroactively positioned [869.05ms]
+
+tests/acp-api.test.ts:
+(pass) authenticated ACP contract and explicit multi-provider key routes preserve private account scope [1570.97ms]
+
+tests/lifecycle.test.ts:
+(pass) admission, user text, identity, receipt and events survive restart [198.14ms]
+(pass) changed idempotent command is rejected without writes [153.49ms]
+(pass) a native start acknowledgement clears a resolved preflight error and keeps its historical receipt [251.34ms]
+(pass) outer rollback removes projections, event publication and command receipt together [202.24ms]
+(pass) a second authority and an owner mismatch are rejected [219.86ms]
+(pass) legacy databases are refused without modifying their data [147.25ms]
+(pass) scope and strict schemas reject cross-thread admission and caller-owned identities [159.07ms]
+(pass) FIFO admits only one active run per thread and agent [255.57ms]
+(pass) native sessions stay separate across DM and group; shared session identity is rejected [224.39ms]
+(pass) unused binding replacement rejects stale revisions and any binding claimed for dispatch [244.04ms]
+(pass) grant changes between admission and dispatch are fenced [186.42ms]
+(pass) final dispatch rechecks grants after claim [484.80ms]
+(pass) stop intent does not claim native stop and survives recovery [339.38ms]
+(pass) queued cancellation is terminal while unknown work cannot be replayed [308.96ms]
+(pass) stopping a goal cancels its queue and routines while stopping a run leaves its goal active [298.49ms]
+(pass) artifacts require the correct thread/run scope and an opaque storage key [280.04ms]
+(pass) event cursor pagination is stable and contracts expose all domain entities [253.00ms]
+
+tests/contracts.test.ts:
+(pass) every registered domain route retains the shared authentication guard [864.20ms]
+(pass) published replay schema accepts browser and application receipts across restart [286.45ms]
+(pass) published command schemas retain optional defaulted admission fields [141.75ms]
+(pass) consumer contract describes actual routes without executing native operations [756.87ms]
+(pass) published response schemas validate admission, control, history, snapshots and safe errors [706.86ms]
+
+tests/cancellation-adapters.test.ts:
+(pass) codex protocol fixture returns a self-cancel receipt and waits for native confirmation [2479.00ms]
+(pass) muse protocol fixture returns a self-cancel receipt and waits for native confirmation [2112.32ms]
+
+tests/codex.test.ts:
+(pass) external Codex access tokens stay ephemeral and native refresh cannot change the selected account [242.03ms]
+(pass) one native credential authority coordinates simultaneous refresh consumers and survives its restart [245.65ms]
+(pass) credential authority rejects conversation and tool dispatch before writing to the native process [146.79ms]
+(pass) an unused prewarmed Codex thread is replaced after its process closes before first dispatch [2748.90ms]
+(pass) a missing Codex rollout used by a prior dispatch is never silently replaced or replayed [3096.91ms]
+(pass) Codex JSONL fixture performs an HTTP product-tool round trip and persists owned output [2279.18ms]
+(pass) Codex publishes search activity at start and preserves overlapping file work [1719.21ms]
+(pass) native session and separate DM/group histories survive backend and child restart [5085.39ms]
+(pass) selected API-key authentication is observed separately without a subscription fallback [1948.41ms]
+(pass) native interruption ack stays intent until interrupted terminal confirmation [1585.04ms]
+(pass) steer is bound to the active native turn and keeps the same run [1538.55ms]
+(pass) a native tool request cannot use another thread scope [1847.75ms]
+(pass) process loss preserves partial output and blocks automatic replay [1774.28ms]
+(pass) mismatched native terminal identity remains unknown [1417.16ms]
+(pass) explicit native turn rejection fails without publishing native error secrets [1383.30ms]
+(pass) Codex streams a stable partial message before the native turn completes [1773.90ms]
+(pass) Codex reconciles native commit before publication after restart without repeating a tool effect [2561.34ms]
+(pass) default reasoning omits the native config override and completes a turn [1876.61ms]
+(pass) native commentary and final answer item phases stay separate in live output and receipt recovery [1800.31ms]
+
+tests/product-interactions.test.ts:
+(pass) DM questions survive restart and owner submission admits exactly one bound continuation [418.55ms]
+(pass) topic changes do not consume a question; a later natural answer uses its existing turn [390.27ms]
+(pass) approval gates exact arguments and one effect command; agents cannot approve their own request [354.98ms]
+(pass) group native turns and DM use the same durable request service [398.28ms]
+(pass) an existing Goal waits for a DM question and transfers to its one continuation [360.32ms]
+(pass) pausing a Goal after a DM question fences its old response and continuation [325.66ms]
+(pass) an approval without its protected operation cannot create a misleading unguarded card [242.12ms]
+
+tests/organizations/providers.test.ts:
+(pass) personal provider connections remain private; organization connections require management and an explicit audience [1064.33ms]
+(pass) private conversation and user choices inherit only when unset and freeze connection/model on admission [1436.10ms]
+(pass) provider snapshots cannot be rewritten or forged across actors even through SQL-backed entity writes [1004.04ms]
+(pass) pre-provider scoped queued records can normalize a missing null snapshot without accepting a different selection [912.30ms]
+(pass) same organization account has distinct native homes for each actor, conversation and connection generation [774.00ms]
+(pass) scheduled responsibilities retain their selected connection after private preferences change [1219.23ms]
+(pass) scoped API key submission and rotation retain encrypted bytes and secret-free receipts without selecting a replacement implicitly [993.08ms]
+
+tests/organizations/readiness.test.ts:
+(pass) every installed account surface declares authentication/scope and rejects missing credentials before input validation [888.24ms]
+(pass) normal HTTP admission and both broker executors keep two users of one Team agent private [9464.31ms]
+(pass) revoking membership during native work retains the matching cancelled outcome without late publication [3239.13ms]
+(pass) revoking membership during native work retains the matching unknown outcome without late publication [3488.17ms]
+(pass) authority replacement fences accepted scoped work and preserves the queued lane without resubmitting [2171.26ms]
+(pass) generic entity inventory and organization switches never grant another actor's private data [3153.95ms]
+(pass) concurrent scoped queries reuse their authorization fence without exhausting the auth pool [1737.41ms]
+(pass) opening a fourth private transport cannot evict another actor's active native writer [6545.35ms]
+(pass) native credential callbacks retain current resource grants after the opening browser session logs out [1998.75ms]
+(pass) commit subscribers cannot borrow the writing user's request scope [997.55ms]
+(pass) a native stop timeout still fences an unknown outcome after membership revocation [3927.81ms]
+
+tests/goals/adapters.test.ts:
+(pass) codex structured goal capture and quiet Routine round trip survive native-client restart [7691.18ms]
+(pass) muse structured goal capture and quiet Routine round trip survive native-client restart [7459.56ms]
+
+tests/learning/adapters.test.ts:
+(pass) codex protocol fixture uses the trusted learning bridge and resumes pinned assets after restart [25508.52ms]
+(pass) muse protocol fixture uses the trusted learning bridge and resumes pinned assets after restart [13053.46ms]
+
+tests/groups/adapters.test.ts:
+(pass) codex routing and cross-harness peer/HITL use real protocol fixtures and durable tool receipts [8251.70ms]
+(pass) muse routing and cross-harness peer/HITL use real protocol fixtures and durable tool receipts [8916.64ms]
+
+1 tests failed:
+(fail) replacing the pinned executable resumes the original undispatched fallback once [14107.21ms]
+
+ 215 pass
+ 1 fail
+ 2101 expect() calls
+Ran 216 tests across 23 files. [379.42s]

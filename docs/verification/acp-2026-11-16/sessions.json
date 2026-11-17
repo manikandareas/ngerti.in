@@ -1,0 +1,39 @@
+{
+  "timestamp": "2026-11-16T09:53:27.879Z",
+  "sdk": "2.7.0",
+  "protocol": 1,
+  "results": [
+    {
+      "profile": "claude",
+      "inference": "not_attempted",
+      "useful_tool": "not_attempted",
+      "agent": {
+        "name": "@agentclientprotocol/claude-agent-acp",
+        "title": "Claude Agent",
+        "version": "0.107.0"
+      },
+      "new_session": "pass",
+      "model_count": 5,
+      "model_selection": "pass",
+      "fresh_process": true,
+      "fresh_tools": true,
+      "error_code": -32002,
+      "remaining": "unverified"
+    },
+    {
+      "profile": "opencode",
+      "inference": "not_attempted",
+      "useful_tool": "not_attempted",
+      "agent": {
+        "name": "OpenCode",
+        "version": "1.19.5"
+      },
+      "new_session": "pass",
+      "model_count": 9,
+      "model_selection": "pass",
+      "fresh_process": true,
+      "fresh_tools": true,
+      "explicit_reload": "pass"
+    }
+  ]
+}

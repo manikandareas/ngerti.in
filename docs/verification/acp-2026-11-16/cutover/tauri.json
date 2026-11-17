@@ -1,0 +1,19 @@
+{
+  "timestamp": "2026-11-16T13:56:41.015Z",
+  "scope": "real macOS Tauri client and account HTTP/PostgreSQL; native ACP SDK subprocess fixture; no provider inference or distribution claim",
+  "origin": "http://127.0.0.1:57595",
+  "control": "http://127.0.0.1:57602",
+  "bundle": "/Users/vitoandareasmanik/Development/project/ngertiin/.dev/acp-native-ui/Ngertiin ACP Verification.app",
+  "manager_id": "f3fd7e99-ae88-4e37-8a1e-23a2ccdf6119",
+  "agent": "Shared codex",
+  "thread_id": "0edb0676-4105-4a3f-9853-0b9e6fbdd27c",
+  "native_sha256": "52c7132de8f9da12910b720c0f56db970e804518e975ffb7f051f45abbc5cd78",
+  "completed": true,
+  "checks": [
+    "typed_form_native_values",
+    "nullable_native_turn_identity",
+    "shared_picker_private_selection",
+    "native_reasoning_default",
+    "completed_run_selection_retained"
+  ]
+}

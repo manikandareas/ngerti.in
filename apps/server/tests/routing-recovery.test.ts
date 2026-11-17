@@ -54,7 +54,7 @@ async function setup() {
   return { lifecycle, group, groups: new Groups(lifecycle) };
 }
 function executable(path: string, version: string) {
-  writeFileSync(`${path}.next`, `#!/bin/sh\necho 'codex-cli ${version}'\n`);
+  writeFileSync(`${path}.next`, `#!/bin/sh\necho 'codex-acp ${version}'\n`);
   chmodSync(`${path}.next`, 0o700);
   renameSync(`${path}.next`, path);
 }
@@ -62,18 +62,26 @@ function executable(path: string, version: string) {
 test("the shared runtime discovers an installed executable and coalesces cached probes", async () => {
   f = await fixture();
   const path = join(f.dir, "codex");
-  const runtime = new HarnessRuntime({ codex: path });
+  const native = join(f.dir, "native-codex");
+  executable(native, "0.169.0");
+  const runtime = new HarnessRuntime({ codex: path }, native);
   expect((await runtime.detect("codex")).state).toBe("missing");
   const missing = runtime.fingerprint("codex");
-  writeFileSync(path, '#!/bin/sh\nprintf "probe\\n" >> "$0.probes"\necho "codex-cli 0.166.0"\n', {
+  writeFileSync(path, '#!/bin/sh\nprintf "probe\\n" >> "$0.probes"\necho "codex-acp 2.6.0"\n', {
     mode: 0o700,
   });
   expect(runtime.fingerprint("codex")).not.toBe(missing);
   const [first, second] = await Promise.all([runtime.detect("codex"), runtime.detect("codex")]);
   expect(first).toBe(second);
-  expect(first).toMatchObject({ executable: path, state: "supported", version: "0.166.0" });
+  expect(first).toMatchObject({ executable: path, state: "supported", version: "2.6.0" });
   expect(await runtime.detect("codex")).toBe(first);
   expect(readFileSync(`${path}.probes`, "utf8")).toBe("probe\n");
+  const supported = runtime.fingerprint("codex");
+  executable(native, "0.166.0");
+  expect(runtime.fingerprint("codex")).not.toBe(supported);
+  expect((await runtime.detect("codex")).state).toBe("too_old");
+  executable(native, "0.169.0");
+  expect((await runtime.detect("codex")).state).toBe("supported");
 });
 
 test("a blocked fallback is visible on its parent group without exposing routing instructions", async () => {
@@ -130,7 +138,9 @@ test("replacing the pinned executable resumes the original undispatched fallback
   const { lifecycle, group, groups } = await setup();
   const path = join(f.dir, "codex");
   executable(path, "0.136.0");
-  const runtime = new HarnessRuntime({ codex: path });
+  const native = join(f.dir, "native-codex");
+  executable(native, "0.169.0");
+  const runtime = new HarnessRuntime({ codex: path }, native);
   let executions = 0;
   background = new Background(lifecycle, {
     codex: {
@@ -158,7 +168,7 @@ test("replacing the pinned executable resumes the original undispatched fallback
   });
   const originalRunId = present((await f.store.get("group_route", route.id)).router_run_id);
   const fingerprint = runtime.fingerprint("codex");
-  executable(path, "0.166.0");
+  executable(path, "2.6.0");
   expect(runtime.fingerprint("codex")).not.toBe(fingerprint);
   await background.tick();
   await until(async () => (await f.store.get("group_route", route.id)).state === "selected");

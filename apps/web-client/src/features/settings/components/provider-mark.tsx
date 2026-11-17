@@ -1,6 +1,9 @@
+import { HarnessIcon } from "@/components/harness-icon";
+import type { HarnessId } from "@/lib/harnesses";
 // Brand paths observed in OpenMausBot 0.1.137 ProviderIcons.tsx, revision 7124ebc4.
 // The Meta path originates from Simple Icons (CC0 1.0).
-export function ProviderBrandMark({ provider }: { provider: "codex" | "muse" }) {
+export function ProviderBrandMark({ provider }: { provider: HarnessId }) {
+  if (provider !== "codex" && provider !== "muse") return <HarnessIcon id={provider} />;
   return (
     <svg
       width="16"

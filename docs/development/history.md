@@ -30,3 +30,13 @@ Tracked raw files formerly under `apps/desktop-rs/verification` now live byte-fo
 The owner makes account authentication mandatory and removes the installation-bearer API/proxy, auth-mode selector, Tauri local supervisor and bundled Bun/backend. The source immediately before these changes is available at Git revision `51dea542d545e6faf290b6d5e3771717d47b002e`, including `apps/desktop/src-tauri/src/supervisor.rs` and the original [Tauri development evidence](../verification/tauri-development/README.md). Retained version-1 profiles and application/server data are preserved; the current client uses a separate version-2 profile. Historical data import/binding is a controlled recovery operation, not an authentication fallback. See [current verification](../verification/accounts-only-2026-11-15/README.md).
 
 The [account-only retirement manifest](../verification/accounts-only-2026-11-15/retired-verification.json) also identifies pre-account verification bootstraps, Playwright configurations and browser journeys requiring installation-token injection. Their complete source remains in the same pinned Git revision. The active browser baseline is the authenticated organization suite, with isolated avatar/component checks retained. Historical screenshots, results and failure logs remain unchanged; retiring a probe does not promote NMA-063 full-product acceptance.
+
+## Retired Codex execution — 2026-11-16
+
+The owner replaces the app-owned Codex conversation execution protocol with the shared ACP SDK client. `harness/codex/{adapter,client,rpc,output}.ts` and the old execution fixture are removed; `harness/codex/{authority,authority-rpc}.ts` retain only account login, refresh, logout and model catalog access. The credential authority cannot open a thread or dispatch a model/tool turn. Muse SDK/MSP remains active.
+
+The complete pre-cutover source is retained at Git revision `8e92fda1c581c8dc363de16a8d3b4870e09ad1f9`. The [retirement manifest](../verification/acp-2026-11-16/retired-source.json) identifies removed execution files and historical direct-client/SQLite/bootstrap probe entrypoints. Raw results remain unchanged. The [ACP verification](../verification/acp-2026-11-16/profiles/README.md) has its own source/configuration and acceptance boundaries. Historical multi-account, native skill, machine and deployment captures do not certify the ACP replacement.
+
+```sh
+git show 8e92fda1c581c8dc363de16a8d3b4870e09ad1f9:apps/server/src/harness/codex/client.ts
+```

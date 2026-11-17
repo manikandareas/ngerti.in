@@ -1,0 +1,4 @@
+$ bun scripts/check-docs.ts
+Broken local links:
+docs/verification/sign-in-redesign-2026-11-15/README.md -> ../../../apps/web-client/src/features/account/account-artwork.tsx
+error: script "docs:check" exited with code 1

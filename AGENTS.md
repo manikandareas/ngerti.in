@@ -5,6 +5,7 @@ Ngertiin is a persistent agent workspace with authenticated accounts, organizati
 ## Read for the task
 
 - Product/runtime design or implementation: read [PRODUCT.md](PRODUCT.md), the relevant [feature decisions](docs/product/feature-decisions.md), [architecture](docs/architecture/overview.md), and the applicable local API guide.
+- Harness/provider or model-picker changes: read the current [ACP migration and consumer requirements](docs/architecture/acp-harnesses.md).
 - PostgreSQL, authentication, organization/Workgroup access, personal/Team agents, or remote clients: read [the server-organizations plan](docs/architecture/server-organizations-plan-2026-11-12.md) and NMA-072–083. Implement in server/web-client/Tauri. GPUI implementations were removed by the November 15 owner instruction; use [historical recovery](docs/development/history.md) for their source and retained evidence.
 - A named milestone: read its file in [the local backlog](docs/backlog/README.md), including acceptance and `Depends on`. NMA-051 is deferred; historical milestones are not an active queue.
 - Readiness or completion claims: use [acceptance gates](docs/development/acceptance.md) and the relevant retained evidence. [The local workflow](docs/development/workflow.md) owns status and documentation maintenance.
@@ -15,7 +16,7 @@ Keep detailed policy in these documents; update the affected local specification
 ## Runtime and product invariants
 
 - Ngertiin owns one application lifecycle: identity, admission, queue, persistence, events, scheduling, cancellation intent and recovery decisions. Harnesses own their inner model/tool loops; adapters own protocol/process/capability/native-session binding.
-- Required harnesses are Codex/ChatGPT App Server and Muse Code SDK/MSP. ACP is an optional transport. Additional runtimes and Hermes remain deferred; the active application has no legacy fallback.
+- Codex/ChatGPT, Claude, OpenCode and Pi use ACP. Muse Code retains SDK/MSP. The ACP migration records each profile's native verification scope. Additional runtimes and Hermes remain deferred; the active application has no legacy fallback.
 - Authentication and effective billing are separate. Use only the selected connection and never silently switch subscription to API-key billing. Muse API-key billing is the accepted current gate scope; Muse subscription remains unverified.
 - Product tools derive server-validated owner/agent/thread/run/binding scope and recheck current grants/membership/capabilities before dispatch. Reconcile unknown external effects before replay. Stop intent differs from confirmed native stop.
 - Agent identity is persistent across DM/group use; native session, transcript, private memory and saved-artifact metadata retain their scope. Only the selected group member answers. Keep prompts, commands, raw observations and technical handoff instructions private.

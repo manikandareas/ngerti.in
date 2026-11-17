@@ -1,0 +1,81 @@
+{
+  "timestamp": "2026-11-16T17:06:16.945Z",
+  "completed": true,
+  "lanes": [
+    {
+      "actor": 0,
+      "distinct_private_domain": "59952e13-4b56-4273-be8d-6f6e70fe2407",
+      "connection_id": "c7d8b5e1-8431-4444-82c6-a035ea5358ca",
+      "binding_id": "d157f9dc-5f55-420a-88c4-8de955527ca8",
+      "native_session_id": "01a1e553-0432-760c-82c5-a8182b45d2f4",
+      "completed_inference": true,
+      "file_tool_receipts": true,
+      "download_exact_bytes": true,
+      "other_actor_http_read": 404,
+      "selected_connection_and_billing_retained": true
+    },
+    {
+      "actor": 1,
+      "distinct_private_domain": "fc7a4866-1c27-4571-b2d9-a7ea48201640",
+      "connection_id": "6176bcbb-cdb2-4979-946e-1821896d72cf",
+      "binding_id": "827c897b-d013-4bd4-8472-88dd7c07ae0e",
+      "native_session_id": "01a1e553-712b-7247-a37a-9dc193df2ef4",
+      "completed_inference": true,
+      "file_tool_receipts": true,
+      "download_exact_bytes": true,
+      "other_actor_http_read": 404,
+      "selected_connection_and_billing_retained": true
+    }
+  ],
+  "harness": "pi",
+  "provider": "sumopod",
+  "billing": "api_key",
+  "scope": "two synthetic app accounts, one organization and persistent Team agent, distinct real Cua domains, normal authenticated HTTP and managed ACP inference; both disposable connections explicitly use the same owner-selected provider credential, so distinct vendor-account identities are not certified",
+  "native_authority_storage": "verified local FileVault volume; no operator-attestation override",
+  "versions": {
+    "adapter": "0.0.34",
+    "native": "1.5.2",
+    "sdk": "2.7.0",
+    "protocol": 1
+  },
+  "last_run": {
+    "actor": 1,
+    "status": "succeeded",
+    "diagnostic": null,
+    "product_tools": [
+      "ngertiin.read_run_context",
+      "ngertiin.read_file",
+      "ngertiin.create_file",
+      "ngertiin.publish_artifact"
+    ],
+    "tool_errors": []
+  },
+  "revocation": {
+    "rejected_status": 403,
+    "credential_requests_after_revoke": 0,
+    "alternate_provider_or_billing": false
+  },
+  "disposable_domain_cleanup": [
+    {
+      "resource": "container_and_network",
+      "domain_id": "59952e13-4b56-4273-be8d-6f6e70fe2407",
+      "removed": true
+    },
+    {
+      "resource": "volume",
+      "domain_id": "59952e13-4b56-4273-be8d-6f6e70fe2407",
+      "removed": true
+    },
+    {
+      "resource": "container_and_network",
+      "domain_id": "fc7a4866-1c27-4571-b2d9-a7ea48201640",
+      "removed": true
+    },
+    {
+      "resource": "volume",
+      "domain_id": "fc7a4866-1c27-4571-b2d9-a7ea48201640",
+      "removed": true
+    }
+  ],
+  "native_key_bytes_persisted": false
+}

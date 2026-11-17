@@ -43,6 +43,7 @@ function findModel(providers: readonly ModelPickerProvider[], id?: string) {
 export function ModelPicker({
   providers,
   activeProvider: providerId,
+  onProviderChange,
   showEmptyProviders = false,
   value,
   defaultValue,
@@ -58,6 +59,11 @@ export function ModelPicker({
   placeholder = "Select a model",
   className,
   inline = false,
+  hideTrigger = false,
+  disabled = false,
+  ariaLabel,
+  footer,
+  emptyProvider,
 }: ModelPickerProps) {
   const id = useId();
   const listId = `${id}-models`;
@@ -103,18 +109,25 @@ export function ModelPicker({
 
   const [internalThinking, setInternalThinking] = useState({
     modelId: selectedId,
-    effort: defaultThinking,
+    effort: defaultThinking as ThinkingEffort | null | undefined,
   });
   const levels = selected?.model.thinking;
   const requestedThinking =
-    thinking ?? (internalThinking.modelId === selectedId ? internalThinking.effort : undefined);
-  const selectedThinking = levels?.length
-    ? requestedThinking && levels.includes(requestedThinking)
-      ? requestedThinking
-      : selected?.model.defaultThinking && levels.includes(selected.model.defaultThinking)
-        ? selected.model.defaultThinking
-        : levels[0]
-    : undefined;
+    thinking !== undefined
+      ? thinking
+      : internalThinking.modelId === selectedId
+        ? internalThinking.effort
+        : undefined;
+  const selectedThinking =
+    requestedThinking === null
+      ? undefined
+      : levels?.length
+        ? requestedThinking && levels.includes(requestedThinking)
+          ? requestedThinking
+          : selected?.model.defaultThinking && levels.includes(selected.model.defaultThinking)
+            ? selected.model.defaultThinking
+            : levels[0]
+        : undefined;
   const activeModelIndex = Math.max(
     0,
     rows.findIndex((row) => row.model.id === selectedId),
@@ -164,16 +177,23 @@ export function ModelPicker({
   function selectModel(modelId: string, providerId: string) {
     const model = findModel(providers, modelId)?.model;
     if (!model) return;
-    const effort = model.defaultThinking ?? model.thinking?.[0];
+    if (disabled) return;
+    const effort =
+      thinking !== undefined
+        ? thinking && model.thinking?.includes(thinking)
+          ? thinking
+          : null
+        : (model.defaultThinking ?? model.thinking?.[0]);
     setInternalValue(modelId);
     setInternalThinking({ modelId, effort });
     setActiveProviderId(providerId);
+    onProviderChange?.(providerId);
     onValueChange?.(modelId, providerId, effort);
     if (closeOnSelect) changeOpen(false);
   }
 
-  function selectThinking(effort: ThinkingEffort) {
-    if (!selected || !levels?.includes(effort)) return;
+  function selectThinking(effort: ThinkingEffort | null) {
+    if (disabled || !selected || (effort !== null && !levels?.includes(effort))) return;
     setInternalThinking({ modelId: selected.model.id, effort });
     onValueChange?.(selected.model.id, selected.provider.id, effort);
   }
@@ -246,7 +266,8 @@ export function ModelPicker({
     <button
       ref={triggerRef}
       type="button"
-      aria-label={triggerLabel}
+      aria-label={ariaLabel ?? triggerLabel}
+      disabled={disabled}
       aria-expanded={isOpen}
       aria-controls={panelId}
       onClick={inline ? () => changeOpen(!isOpen) : undefined}
@@ -263,7 +284,9 @@ export function ModelPicker({
       {levels?.length && selectedThinking && selectedThinking !== "none" ? (
         <span className="ml-1 inline-flex shrink-0 items-center">
           <EffortMeter levels={levels} value={selectedThinking} />
-          <span className="sr-only">{THINKING_LABEL[selectedThinking]} thinking</span>
+          <span className="sr-only">
+            {THINKING_LABEL[selectedThinking] ?? selectedThinking} thinking
+          </span>
         </span>
       ) : null}
       <ChevronDown
@@ -285,7 +308,7 @@ export function ModelPicker({
           <div className="relative w-12 shrink-0 bg-muted @min-[380px]/modelpicker:w-14">
             <div
               role="tablist"
-              aria-label="Providers"
+              aria-label="Harnesses"
               aria-orientation="vertical"
               ref={railRef}
               className="absolute inset-0 flex flex-col gap-1.5 overflow-y-auto overscroll-contain p-1.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
@@ -307,6 +330,7 @@ export function ModelPicker({
                       onClick={() => {
                         setQuery("");
                         setActiveProviderId(provider.id);
+                        onProviderChange?.(provider.id);
                       }}
                       onKeyDown={(event) => onRailKeyDown(event, index)}
                       className={cn(
@@ -379,7 +403,9 @@ export function ModelPicker({
               >
                 {!rows.length && (
                   <p className="px-2.5 py-6 text-center text-xs text-muted-foreground">
-                    {searching ? `No models match "${query.trim()}"` : "No models available"}
+                    {searching
+                      ? `No models match "${query.trim()}"`
+                      : (emptyProvider?.(activeProvider.id) ?? "No models available")}
                   </p>
                 )}
                 {rows.map(({ provider, model }, index) => (
@@ -429,7 +455,23 @@ export function ModelPicker({
                 <span className="text-[11px] text-muted-foreground">Thinking</span>
               </span>
               {levels?.length ? (
-                <ThinkingTrack levels={levels} value={selectedThinking} onChange={selectThinking} />
+                <>
+                  {thinking !== undefined && (
+                    <button
+                      type="button"
+                      onClick={() => selectThinking(null)}
+                      aria-pressed={thinking === null}
+                      className="rounded-full px-2 py-1 text-xs text-muted-foreground hover:bg-muted aria-pressed:text-foreground"
+                    >
+                      Default
+                    </button>
+                  )}
+                  <ThinkingTrack
+                    levels={levels}
+                    value={selectedThinking}
+                    onChange={selectThinking}
+                  />
+                </>
               ) : (
                 <span className="px-1 text-[11px] text-muted-foreground">
                   {selected ? "Not available for this model" : "Select a model to set the effort"}
@@ -439,6 +481,7 @@ export function ModelPicker({
           </div>
         </div>
       )}
+      {footer}
     </div>
   );
 
@@ -446,13 +489,15 @@ export function ModelPicker({
     <TooltipProvider delayDuration={250}>
       {inline ? (
         <div className="flex w-full min-w-0 flex-col items-center gap-4">
-          {trigger}
+          {!hideTrigger && trigger}
           {isOpen && (
             <div
               id={panelId}
               className="w-full overflow-hidden rounded-xl bg-popover text-popover-foreground ring-1 ring-border/80"
             >
-              {panel}
+              <fieldset disabled={disabled} className="contents">
+                {panel}
+              </fieldset>
             </div>
           )}
         </div>
@@ -471,7 +516,9 @@ export function ModelPicker({
               requestAnimationFrame(() => searchRef.current?.focus());
             }}
           >
-            {panel}
+            <fieldset disabled={disabled} className="contents">
+              {panel}
+            </fieldset>
           </PopoverContent>
         </Popover>
       )}

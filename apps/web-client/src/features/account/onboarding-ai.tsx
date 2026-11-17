@@ -3,7 +3,10 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { Navigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
+import { HarnessIcon } from "@/components/harness-icon";
 import { Button } from "@/components/ui/button";
+import { ApiKeyEntry } from "@/features/settings/components/api-key-entry";
+import { harnesses } from "@/lib/harnesses";
 import { connectionReady } from "./ai-integration";
 import { type OnboardingHarness, onboardingHarnesses } from "./onboarding-harnesses";
 import { OnboardingLayout } from "./onboarding-layout";
@@ -19,6 +22,7 @@ export function OnboardingAI() {
   const [chosenHarness, setSelected] = useState<OnboardingHarness | null>(null);
   const selected = chosenHarness ?? providers.available.find(connectionReady)?.harness ?? "codex";
   const [finishing, setFinishing] = useState(false);
+  const [keyHarness, setKeyHarness] = useState<OnboardingHarness | null>(null);
   const connection = providers.connectionFor(selected);
   const runtime = runtimes.availability.find((item) => item.harness === selected);
   const ready = connectionReady(connection) && runtime?.state === "supported";
@@ -82,7 +86,7 @@ export function OnboardingAI() {
                     if (harness.available) setSelected(harness.id);
                   }}
                 >
-                  <img src={`/images/harnesses/${harness.id}.png`} alt="" width="32" height="32" />
+                  <HarnessIcon id={harness.id} size={32} />
                   <span className="onboarding-harness-copy">
                     <strong>{harness.name}</strong>
                     <span>{version}</span>
@@ -137,21 +141,62 @@ export function OnboardingAI() {
                   <Button
                     size="sm"
                     variant="outline"
-                    disabled={blocked || locked || !loginReadiness?.ready}
-                    title={loginReadiness?.reason ?? undefined}
+                    disabled={
+                      blocked ||
+                      locked ||
+                      (harnesses[harness.id].nativeLogin && !loginReadiness?.ready)
+                    }
+                    title={
+                      harnesses[harness.id].nativeLogin
+                        ? (loginReadiness?.reason ?? undefined)
+                        : undefined
+                    }
                     onClick={() => {
                       setSelected(harness.id);
-                      void providers.connect(harness.id);
+                      if (harnesses[harness.id].nativeLogin) void providers.connect(harness.id);
+                      else setKeyHarness(harness.id);
                     }}
                   >
-                    {providers.busy && selected === harness.id ? "Connecting…" : "Connect"}
+                    {providers.busy && selected === harness.id
+                      ? "Connecting…"
+                      : harnesses[harness.id].nativeLogin
+                        ? "Connect"
+                        : ["opencode", "pi"].includes(harness.id)
+                          ? "Connect"
+                          : "Add API key"}
                   </Button>
                 )}
               </div>
-              {harness.available && supported && loginReadiness?.reason && (
-                <p className="px-2.5 pb-2 pl-16 text-xs leading-relaxed text-muted-foreground">
-                  {loginReadiness.reason}
-                </p>
+              {harness.available &&
+                supported &&
+                harnesses[harness.id].nativeLogin &&
+                loginReadiness?.reason && (
+                  <p className="px-2.5 pb-2 pl-16 text-xs leading-relaxed text-muted-foreground">
+                    {loginReadiness.reason}
+                  </p>
+                )}
+              {supported && harnesses[harness.id].nativeLogin && !connected && !waiting && (
+                <div className="px-2.5 pb-2 pl-16">
+                  <Button
+                    variant="link"
+                    size="sm"
+                    disabled={locked}
+                    onClick={() => {
+                      setSelected(harness.id);
+                      setKeyHarness(harness.id);
+                    }}
+                  >
+                    Use an API key
+                  </Button>
+                </div>
+              )}
+              {keyHarness === harness.id && (
+                <ApiKeyEntry
+                  key={harness.id}
+                  provider={harness.id}
+                  close={() => setKeyHarness(null)}
+                  saved={providers.savedKey}
+                />
               )}
               {waiting && providers.login && (
                 <div className="onboarding-harness-login">

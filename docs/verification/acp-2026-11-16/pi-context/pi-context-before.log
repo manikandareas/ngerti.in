@@ -1,0 +1,22 @@
+bun test v1.3.10 (30e609e0)
+
+../../scripts/verification/acp/native-context.test.ts:
+334 |       for (const word of [personaB, groupWorkspace, groupSource.trim()])
+335 |         expect(third.answer).toContain(word);
+336 |       for (const word of [privateWord, dmSource.trim(), workspaceA, workspaceB])
+337 |         expect(third.answer).not.toContain(word);
+338 |       for (const name of ["ngertiin.read_file", "ngertiin.list_memories"])
+339 |         expect(third.current.product_tools).toContain(name);
+                                                  ^
+error: expect(received).toContain(expected)
+
+Expected to contain: "ngertiin.list_memories"
+Received: [ "ngertiin.read_file", "ngertiin.list_skills" ]
+
+      at <anonymous> (/Users/vitoandareasmanik/Development/project/ngertiin/scripts/verification/acp/native-context.test.ts:339:45)
+(fail) native ACP applies changed instructions, scopes private memory/files and publishes a nullable-ID artifact [40627.54ms]
+
+ 0 pass
+ 1 fail
+ 61 expect() calls
+Ran 1 test across 1 file. [41.24s]

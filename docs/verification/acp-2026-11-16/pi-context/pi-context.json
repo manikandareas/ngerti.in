@@ -1,0 +1,307 @@
+{
+  "timestamp": "2026-11-16T17:23:04.404Z",
+  "harness": "pi",
+  "scope": "real owner-selected harness credential and managed ACP/native CLI; real owner-mode HTTP/PostgreSQL and app-owned local file tools; no multi-account, Cua domain, provider expiry or distribution claim",
+  "completed": true,
+  "turns": [
+    {
+      "status": "succeeded",
+      "diagnostic": null,
+      "native_run_id": null,
+      "observed_native_receipt": false,
+      "product_tools": [
+        "ngertiin.read_skill",
+        "ngertiin.read_file",
+        "ngertiin.read_harness_skill",
+        "ngertiin.create_file",
+        "ngertiin.publish_artifact"
+      ],
+      "observed_completed_product_tools": [
+        "ngertiin.read_skill",
+        "ngertiin.read_file",
+        "ngertiin.read_harness_skill",
+        "ngertiin.create_file",
+        "ngertiin.publish_artifact"
+      ],
+      "skill_reads": [
+        {
+          "run_id": "448fe986-2b65-4122-9cd8-f7be2dc0bea7",
+          "name": "ngertiin.read_skill",
+          "skill_id": "880c746d-4f3b-4a0a-97a3-4e088185769c",
+          "version": 1
+        },
+        {
+          "run_id": "448fe986-2b65-4122-9cd8-f7be2dc0bea7",
+          "name": "ngertiin.read_harness_skill",
+          "key": "harness:native-context:f7a613025261feee",
+          "writable": false
+        }
+      ],
+      "native_tools": [
+        {
+          "item_id": "call_01_qzv0kt7jwwajv37v0iu9bwu5",
+          "name": "other",
+          "command": null,
+          "state": "completed",
+          "exit_code": null
+        },
+        {
+          "item_id": "call_00_nrsokaoilsav5h4tatihugdj",
+          "name": "other",
+          "command": null,
+          "state": "completed",
+          "exit_code": null
+        },
+        {
+          "item_id": "call_02_btlqhwmkaq3qagd8cijxz9zh",
+          "name": "other",
+          "command": null,
+          "state": "completed",
+          "exit_code": null
+        },
+        {
+          "item_id": "call_00_390filxuhwqytbnt4onii9qp",
+          "name": "other",
+          "command": null,
+          "state": "completed",
+          "exit_code": null
+        },
+        {
+          "item_id": "call_00_m2nmcsabjyoo2iffbawsd4q3",
+          "name": "other",
+          "command": null,
+          "state": "completed",
+          "exit_code": null
+        }
+      ],
+      "sources": [],
+      "tool_errors": [],
+      "binding_id": "9d727c66-1902-40a8-88b4-e03af2b610bb",
+      "native_session_id": "01a1e562-485b-7133-b391-7ce279b11946",
+      "instruction_revision": "9f9fd5eac8c4b16545b69c03025271c2d090082ac5614ffc4db43940b79fdc6a",
+      "timings": {
+        "ready_at": "2026-11-16T17:23:07.566Z",
+        "settled_at": "2026-11-16T17:23:24.438Z",
+        "accepted_at": "2026-11-16T17:23:07.971Z",
+        "preparing_at": "2026-11-16T17:23:05.184Z",
+        "dispatched_at": "2026-11-16T17:23:07.597Z",
+        "first_output_at": "2026-11-16T17:23:22.507Z"
+      },
+      "answer": "I'll read the sources and packages first.Verification words:\n\n- **Persona word:** PERSONA-A-c85d6378-dc34-4f5c-825e-96b7ba3134e5\n- **Workspace word:** WORKSPACE-A-2ca6c591-f12a-461a-8c71-d9547fae25db\n- **Verification memory word:** PRIVATE-MEMORY-28ce738f-d834-4d96-bd02-d5d7580c4fec\n\nPackages:\n\n- **Application skill** (private-context-skill, v1): verification word `APPLICATION-SKILL-21c7c61c-ede1-42a7-8abc-f987ea733e68`, asset word `APPLICATION-ASSET-a74260da-b6a8-487e-a480-b67d7cbea0ea` (from `marker.txt`)\n- **Harness package** (native-context): verification word `DM-HARNESS-SKILL-ade3ad91-646c-4756-bfa6-2162a7a9d133`, asset word `DM-HARNESS-ASSET-0a272373-5a76-421d-8e97-b611efbf6a84` (from `assets/marker.txt`)\n\n`source.txt` contained `DM-SOURCE-68033505-be45-44fc-a70b-278f1a9f90e7` (47 bytes). I wrote those exact bytes to report.txt and published it as text/plain — checksum matches the source.\n\nArtifact ID: `c4f0a5d8-6b3e-4f2a-9d7c-8e1b2a6f4c93` ([report.txt](ngertiin://artifact/c4f0a5d8-6b3e-4f2a-9d7c-8e1b2a6f4c93))"
+    },
+    {
+      "status": "succeeded",
+      "diagnostic": null,
+      "native_run_id": null,
+      "observed_native_receipt": false,
+      "product_tools": [
+        "ngertiin.read_skill"
+      ],
+      "observed_completed_product_tools": [
+        "ngertiin.read_skill"
+      ],
+      "skill_reads": [
+        {
+          "run_id": "50721a3e-cf67-441f-b83e-3f51c2f4ec25",
+          "name": "ngertiin.read_skill",
+          "skill_id": "880c746d-4f3b-4a0a-97a3-4e088185769c",
+          "version": 1
+        }
+      ],
+      "native_tools": [
+        {
+          "item_id": "call_00_9idvpo8qkafjeq4xo7wr2c2f",
+          "name": "other",
+          "command": null,
+          "state": "completed",
+          "exit_code": null
+        }
+      ],
+      "sources": [],
+      "tool_errors": [],
+      "binding_id": "7849d73e-80eb-4bbb-97fc-4696a8e97e22",
+      "native_session_id": "01a1e562-9348-77aa-a701-83898cef625b",
+      "instruction_revision": "8247eb84ca9d3434312d12bf8e9eb268cc078c114fcf1da54257cf83a92f5cd4",
+      "timings": {
+        "ready_at": "2026-11-16T17:23:26.442Z",
+        "settled_at": "2026-11-16T17:23:34.803Z",
+        "accepted_at": "2026-11-16T17:23:26.801Z",
+        "preparing_at": "2026-11-16T17:23:24.586Z",
+        "dispatched_at": "2026-11-16T17:23:26.466Z",
+        "first_output_at": "2026-11-16T17:23:34.117Z"
+      },
+      "answer": "**Persona word:** PERSONA-B-60885069-f9ce-4fa0-b5bf-ccfa48d1a678\n\n**Workspace word:** WORKSPACE-B-d91f1d00-839a-4b60-bb11-0963ed949e0c\n\n**File published previously:** [report.txt](ngertiin://file/c4f0a5d8-6b3e-4f2a-9d7c-8e1b2a6f4c93)\n\n**Assigned application skill** — private-context-skill, pinned at version 1:\n- Package verification word: `APPLICATION-SKILL-21c7c61c-ede1-42a7-8abc-f987ea733e68`\n- Asset word (`marker.txt`): `APPLICATION-ASSET-a74260da-b6a8-487e-a480-b67d7cbea0ea`"
+    },
+    {
+      "status": "succeeded",
+      "diagnostic": null,
+      "native_run_id": null,
+      "observed_native_receipt": false,
+      "product_tools": [
+        "ngertiin.list_memories",
+        "ngertiin.read_file",
+        "ngertiin.list_skills",
+        "ngertiin.read_harness_skill"
+      ],
+      "observed_completed_product_tools": [
+        "ngertiin.list_memories",
+        "ngertiin.read_file",
+        "ngertiin.list_skills",
+        "ngertiin.read_harness_skill"
+      ],
+      "skill_reads": [
+        {
+          "run_id": "64716124-daf6-4bda-9b8a-b699305cf82d",
+          "name": "ngertiin.read_harness_skill",
+          "key": "harness:native-context:33a9e7b55b4f5538",
+          "writable": false
+        }
+      ],
+      "native_tools": [
+        {
+          "item_id": "call_01_slwyhzdtzxrmwmvoxkwkyli3",
+          "name": "other",
+          "command": null,
+          "state": "completed",
+          "exit_code": null
+        },
+        {
+          "item_id": "call_00_lkwvsefika3yuxxs547e2rpr",
+          "name": "other",
+          "command": null,
+          "state": "completed",
+          "exit_code": null
+        },
+        {
+          "item_id": "call_02_r3peis0cas4vx858gzk53fa3",
+          "name": "other",
+          "command": null,
+          "state": "completed",
+          "exit_code": null
+        },
+        {
+          "item_id": "call_00_n99wikavn38wh9wxkefqt4kb",
+          "name": "other",
+          "command": null,
+          "state": "completed",
+          "exit_code": null
+        }
+      ],
+      "sources": [],
+      "tool_errors": [],
+      "binding_id": "1ac6aeb5-a65f-47b0-83fa-3807effa07b3",
+      "native_session_id": "01a1e562-bb91-725e-adb0-913e84e99fae",
+      "instruction_revision": "c0ce2025961933c48bb471bc27e29411b2ff258c9c1088a485e55483d04a506a",
+      "timings": {
+        "ready_at": "2026-11-16T17:23:36.871Z",
+        "settled_at": "2026-11-16T17:23:52.542Z",
+        "accepted_at": "2026-11-16T17:23:37.199Z",
+        "preparing_at": "2026-11-16T17:23:34.899Z",
+        "dispatched_at": "2026-11-16T17:23:36.901Z",
+        "first_output_at": "2026-11-16T17:23:51.230Z"
+      },
+      "answer": "I'll gather each item now.Here's the verification state:\n\n**Persona word:** PERSONA-B-60885069-f9ce-4fa0-b5bf-ccfa48d1a678\n\n**Workspace word:** GROUP-WORKSPACE-cfa8db93-d27d-4aad-9ec5-13cfb487a1f2\n\n**source.txt (exact text):**\n```\nGROUP-SOURCE-2185a972-683c-4eef-b9c5-0b46ea4599a4\n```\n\n**Memory scope:** No memories are stored in this conversation's scope — there is no verification memory word visible (zero records, no deleted records either).\n\n**Skills:**\n- Harness package visible in this group: `native-context` (scoped verification package, read-only). Its verification word is **GROUP-HARNESS-SKILL-689c6382-59db-4938-9c7c-965ff3565fcf**.\n- **No assigned application verification package is visible** — the application skill inventory is empty, so there are no application-side packages to report. Owners stay distinct: the harness package is unmodified and only read as data.\n\nNo Goal, Routine or host tool was used."
+    }
+  ],
+  "versions": {
+    "adapter": "0.0.34",
+    "native": "1.5.2",
+    "sdk": "2.7.0",
+    "protocol": 1
+  },
+  "source_files": [
+    {
+      "path": "apps/server/src/artifacts.ts",
+      "sha256": "8d014c5f054027b276bc8d74ca51efe4c2ce3b5e88adfebe97b662f7f31f35a8"
+    },
+    {
+      "path": "apps/server/tests/workspaces.test.ts",
+      "sha256": "e441b7d817b1665784e00310b0e870e8aa87ce44a1fe7ccdded53e92a411038c"
+    },
+    {
+      "path": "scripts/verification/acp/native-context.test.ts",
+      "sha256": "67dca3c79013fa1b3d530e41ea435d288f7da58a7f8dc46e485f0853a475bd44"
+    }
+  ],
+  "executables": [
+    {
+      "path": "/Users/vitoandareasmanik/.local/share/ngertiin/harnesses/pi/bin/pi-acp",
+      "sha256": "324aeb8bba1228937e16b1326fb3e014e2a625b2dea549dbcd49b006cd5df6a2"
+    },
+    {
+      "path": "/Users/vitoandareasmanik/.local/share/ngertiin/harnesses/pi/bin/pi",
+      "sha256": "e79626f2dd6f94aa45d30f3fa63cd84319a6eefcd150b353cfaf274366926774"
+    }
+  ],
+  "artifact": {
+    "persisted": true,
+    "source_read_receipt": true,
+    "download_exact_bytes": true,
+    "foreign_workspace_status": 403,
+    "native_run_id": null
+  },
+  "changed_instructions": {
+    "current_persona_and_workspace": true,
+    "distinct_native_session": true,
+    "retained_thread_history": true
+  },
+  "private_context": {
+    "same_persistent_agent": true,
+    "distinct_dm_group_sessions": true,
+    "private_memory_absent_from_group": true,
+    "group_file_read_exact": true,
+    "dm_file_absent_from_group": true
+  },
+  "skill_reads": [
+    {
+      "run_id": "448fe986-2b65-4122-9cd8-f7be2dc0bea7",
+      "name": "ngertiin.read_skill",
+      "skill_id": "880c746d-4f3b-4a0a-97a3-4e088185769c",
+      "version": 1
+    },
+    {
+      "run_id": "448fe986-2b65-4122-9cd8-f7be2dc0bea7",
+      "name": "ngertiin.read_harness_skill",
+      "key": "harness:native-context:f7a613025261feee",
+      "writable": false
+    },
+    {
+      "run_id": "50721a3e-cf67-441f-b83e-3f51c2f4ec25",
+      "name": "ngertiin.read_skill",
+      "skill_id": "880c746d-4f3b-4a0a-97a3-4e088185769c",
+      "version": 1
+    },
+    {
+      "run_id": "64716124-daf6-4bda-9b8a-b699305cf82d",
+      "name": "ngertiin.read_harness_skill",
+      "key": "harness:native-context:33a9e7b55b4f5538",
+      "writable": false
+    }
+  ],
+  "skills": {
+    "assigned_package_and_assets_read": true,
+    "inherited_package_read_only": true,
+    "pinned_version_retained_after_revision": true,
+    "private_packages_absent_from_group": true,
+    "foreign_package_reads_rejected": true,
+    "native_pi_global_skill_catalog": "not_inherited_or_certified"
+  },
+  "product_tools": [
+    "ngertiin.read_skill",
+    "ngertiin.read_file",
+    "ngertiin.read_harness_skill",
+    "ngertiin.create_file",
+    "ngertiin.publish_artifact",
+    "ngertiin.read_skill",
+    "ngertiin.list_memories",
+    "ngertiin.read_file",
+    "ngertiin.list_skills",
+    "ngertiin.read_harness_skill"
+  ],
+  "research": {
+    "state": "not_applicable",
+    "reason": "Pi profile does not advertise native web search; no native search parity claim"
+  },
+  "provider_credential_bytes_persisted": false,
+  "credential_scan_skipped_files": 0
+}

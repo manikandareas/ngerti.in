@@ -30,6 +30,18 @@ export const userInputDisplay = userInput.extend({
       userInput.shape.questions.element.extend({
         header: z.string().max(500),
         question: z.string().max(8000),
+        input: z
+          .strictObject({
+            type: z.enum(["string", "number", "integer", "boolean", "array"]),
+            required: z.boolean(),
+            choices_only: z.boolean(),
+            min_length: z.int().nonnegative().optional(),
+            max_length: z.int().nonnegative().max(8000).optional(),
+            minimum: z.number().optional(),
+            maximum: z.number().optional(),
+            format: z.enum(["email", "uri", "date", "date-time"]).optional(),
+          })
+          .optional(),
         options: z
           .array(
             z.object({ label: z.string().max(1000), description: z.string().max(4000).optional() }),
@@ -38,6 +50,7 @@ export const userInputDisplay = userInput.extend({
       }),
     )
     .max(100),
+  elicitation: z.boolean().optional(),
 });
 export const interactionSnapshot = z.strictObject({
   approvals: z.array(approvalDisplay).max(100),

@@ -1,8 +1,9 @@
 import { z } from "zod";
-import { base, harness, id } from "../contracts/base";
+import { base, billingSource, harness, id } from "../contracts/base";
 import { activeTool } from "../runs/activity";
+import { nativeProgress } from "../runs/native-progress";
 
-export const harnessId = z.enum(["codex", "muse"]);
+export const harnessId = harness;
 export const capabilityState = z.enum(["supported", "unsupported", "unknown"]);
 export const capabilities = z.strictObject({
   resume: capabilityState,
@@ -40,6 +41,12 @@ export const unknownCapabilities: Capabilities = {
   web_read: "unknown",
 };
 export const authentication = z.discriminatedUnion("method", [
+  z.strictObject({ method: z.literal("none"), billing_source: z.literal("free") }),
+  z.strictObject({
+    method: z.literal("harness_config"),
+    billing_source: z.literal("api_key"),
+    credential_ref: z.uuid(),
+  }),
   z.strictObject({ method: z.literal("native_login"), billing_source: z.literal("subscription") }),
   z.strictObject({
     method: z.literal("api_key"),
@@ -53,12 +60,20 @@ export const connectionOwnership = {
 };
 export const connectionInput = z.strictObject({
   harness: harnessId,
+  provider_id: z
+    .string()
+    .min(1)
+    .max(100)
+    .regex(/^[a-z0-9][a-z0-9._-]*$/)
+    .nullable()
+    .default(null),
   authentication,
   ...connectionOwnership,
 });
 export const apiKeyConnectionInput = z.strictObject({
   ...connectionOwnership,
   harness: harnessId,
+  provider_id: connectionInput.shape.provider_id,
   api_key: z
     .string()
     .min(1)
@@ -77,7 +92,7 @@ export const connectionFields = {
   state: z.enum(["active", "revoked"]),
   grant_revision: z.int().positive(),
   account_id: z.string().min(1).max(200).nullable(),
-  effective_billing_source: z.enum(["unknown", "subscription", "api_key"]).default("unknown"),
+  effective_billing_source: z.enum(["unknown", ...billingSource.options]).default("unknown"),
   login: z.enum(["unknown", "authenticated", "required", "rejected"]),
   discovery: z.enum(["not_attempted", "succeeded", "failed"]),
   models: z.array(model).max(1000),
@@ -95,6 +110,7 @@ export const terminal = z.strictObject({
   native_run_id: z.string().min(1).max(1000).nullable(),
 });
 export const nativeEvent = z.discriminatedUnion("type", [
+  z.strictObject({ type: z.literal("progress"), progress: nativeProgress }),
   z.strictObject({
     type: z.literal("tool_activity"),
     ...activeTool.shape,
@@ -117,7 +133,7 @@ export const nativeEvent = z.discriminatedUnion("type", [
   z.strictObject({
     type: z.literal("accepted"),
     native_session_id: z.string().min(1).max(1000),
-    native_run_id: z.string().min(1).max(1000),
+    native_run_id: z.string().min(1).max(1000).nullable(),
   }),
   z.strictObject({ type: z.literal("text"), text: z.string().max(100_000) }),
   z.strictObject({ type: z.literal("text_snapshot"), text: z.string().max(100_000) }),
@@ -125,7 +141,13 @@ export const nativeEvent = z.discriminatedUnion("type", [
   z.strictObject({ type: z.literal("activity"), activity: z.enum(["generating", "tool_running"]) }),
   z.strictObject({
     type: z.literal("failure"),
-    code: z.enum(["LOGIN_REQUIRED", "AUTH_REJECTED", "SERVICE_UNAVAILABLE", "NATIVE_REJECTED"]),
+    code: z.enum([
+      "LOGIN_REQUIRED",
+      "AUTH_REJECTED",
+      "SERVICE_UNAVAILABLE",
+      "NATIVE_REJECTED",
+      "PROVIDER_LIMIT",
+    ]),
   }),
 ]);
 export type NativeEvent = z.infer<typeof nativeEvent>;
@@ -152,11 +174,12 @@ export const interactionAnswer = z.discriminatedUnion("type", [
   z.strictObject({
     type: z.literal("user_input"),
     request_id: z.string().min(1).max(1000),
+    action: z.enum(["accept", "decline", "cancel"]).optional(),
     answers: z
       .array(
         z.strictObject({
           questionId: z.string().min(1).max(1000),
-          freeText: z.string().max(500).optional(),
+          freeText: z.string().max(8000).optional(),
           selectedLabel: z.string().optional(),
           selectedLabels: z.array(z.string()).optional(),
         }),
@@ -180,6 +203,7 @@ export const brokerErrorCodes = [
   "NATIVE_STORAGE_REQUIRED",
   "MODEL_UNAVAILABLE",
   "NATIVE_REJECTED",
+  "PROVIDER_LIMIT",
   "SERVICE_UNAVAILABLE",
   "NATIVE_UNKNOWN",
   "PROTOCOL_ERROR",
@@ -211,7 +235,7 @@ export function diagnostic(error: unknown) {
           ? ("authentication" as const)
           : ["SERVICE_UNAVAILABLE", "PROBE_FAILED"].includes(safe.code)
             ? ("temporary" as const)
-            : safe.code === "NATIVE_REJECTED"
+            : ["NATIVE_REJECTED", "PROVIDER_LIMIT"].includes(safe.code)
               ? ("provider" as const)
               : ("configuration" as const),
     outcome: safe.outcome,
@@ -250,6 +274,17 @@ export const binding = z.strictObject({
   agent_id: id,
   connection_id: id,
   harness,
+  transport: z.literal("acp").optional(),
+  replaces_binding_id: id.optional(),
+  replacement_reason: z.literal("transport_changed").optional(),
+  adapter_version: z.string().min(1).max(100).optional(),
+  native_runtime_version: z.string().min(1).max(100).optional(),
+  protocol_version: z.int().positive().optional(),
+  process_generation: z.uuid().optional(),
+  instruction_revision: z
+    .string()
+    .regex(/^[a-f0-9]{64}$/)
+    .optional(),
   connection_generation: z.int().positive().nullable().optional(),
   account_id: z.string().nullable().optional(),
   native_session_id: z.string().min(1).max(1000),

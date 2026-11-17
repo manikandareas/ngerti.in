@@ -21,6 +21,7 @@ test("account bootstrap rejects installation credentials and preserves verified 
     port: 0,
     groupRouter: "member" as const,
     typesafeApiKey: undefined,
+    nativeCodexExecutable: undefined,
     harnessExecutables: { codex: undefined, muse: undefined },
   };
   // Every bootstrap test owns independent application and account schemas.

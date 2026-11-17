@@ -8,6 +8,7 @@ import type {
   NativeQuestion as Question,
 } from "@/types/native-interactions";
 import { useComposerRequest, useComposerScope } from "../lib/composer-requests";
+import { nativeQuestionAnswered } from "../lib/native-answer";
 import { CustomQuestionOption } from "./custom-question-option";
 import { InteractionCard } from "./interaction-card";
 import { MessageTime } from "./message-time";
@@ -40,14 +41,7 @@ export function NativeQuestion({
   const currentIndex = Math.min(active, input.questions.length - 1);
   const question = input.questions[currentIndex];
   function answered(q: Question, drafts = values) {
-    const value = drafts[q.id];
-    if (customChoices[q.id] && !value?.text.trim()) return false;
-    const count = value?.selected.length ?? 0;
-    return (
-      !!value?.text.trim() ||
-      (count >= (q.selection.min ?? 1) &&
-        (q.selection.max === undefined || count <= q.selection.max))
-    );
+    return nativeQuestionAnswered(q, drafts[q.id], !!customChoices[q.id]);
   }
   async function submit(drafts = values) {
     if (busy || !canRespond || !input.questions.every((q) => answered(q, drafts))) return false;
@@ -57,7 +51,14 @@ export function NativeQuestion({
         request_id: input.userInputId,
         answers: input.questions.map((q) => {
           const value = drafts[q.id] ?? { selected: [], text: "" };
-          if (value.text.trim()) return { questionId: q.id, freeText: value.text };
+          if (
+            value.text.trim() ||
+            (q.input?.type === "string" &&
+              !q.input.choices_only &&
+              !!drafts[q.id] &&
+              (q.input.required || !!value.text))
+          )
+            return { questionId: q.id, freeText: value.text };
           if (q.selection.mode === "multiple")
             return { questionId: q.id, selectedLabels: value.selected };
           if (value.selected[0]) return { questionId: q.id, selectedLabel: value.selected[0] };
@@ -66,7 +67,7 @@ export function NativeQuestion({
       })) !== false
     );
   }
-  const direct = !!question && question.options.length === 0;
+  const direct = !!question && question.options.length === 0 && !question.input;
   const bound = useComposerRequest(
     direct
       ? {
@@ -104,7 +105,7 @@ export function NativeQuestion({
       </Bubble>
     );
   const current = values[question.id] ?? { selected: [], text: "" };
-  const optional = question.selection.min === 0;
+  const optional = question.input ? !question.input.required : question.selection.min === 0;
   const last = currentIndex === input.questions.length - 1;
   function pick(label: string) {
     setCustomChoices((previous) => ({ ...previous, [question.id]: false }));
@@ -118,6 +119,13 @@ export function NativeQuestion({
   }
   function advance() {
     if (last) void submit();
+    else setActive((index) => index + 1);
+  }
+  function skip() {
+    const next = { ...values, [question.id]: { selected: [], text: "" } };
+    setValues(next);
+    setCustomChoices((previous) => ({ ...previous, [question.id]: false }));
+    if (last) void submit(next);
     else setActive((index) => index + 1);
   }
   return (
@@ -152,13 +160,25 @@ export function NativeQuestion({
               </span>
             </div>
             <div className="interaction-actions">
-              {optional && (
+              {input.elicitation && (
                 <button
                   type="button"
                   className="interaction-action"
                   disabled={busy}
-                  onClick={advance}
+                  onClick={() =>
+                    void answer({
+                      type: "user_input",
+                      request_id: input.userInputId,
+                      action: "decline",
+                      answers: [],
+                    })
+                  }
                 >
+                  Tolak
+                </button>
+              )}
+              {optional && (
+                <button type="button" className="interaction-action" disabled={busy} onClick={skip}>
                   Lewati
                 </button>
               )}
@@ -210,30 +230,63 @@ export function NativeQuestion({
           </fieldset>
         )}
         {question.options.length > 0 ? (
-          <CustomQuestionOption
-            mode={question.selection.mode}
-            name={`native-${input.userInputId}-${question.id}`}
-            checked={customChoices[question.id] || !!current.text.trim()}
-            text={current.text}
+          !question.input?.choices_only && (
+            <CustomQuestionOption
+              mode={question.selection.mode}
+              name={`native-${input.userInputId}-${question.id}`}
+              checked={customChoices[question.id] || !!current.text.trim()}
+              text={current.text}
+              disabled={busy}
+              maxLength={question.input?.max_length ?? 500}
+              inputLabel={`Jawaban: ${question.header || question.question}`}
+              onCheckedChange={(checked) => {
+                setCustomChoices((previous) => ({ ...previous, [question.id]: checked }));
+                setValues((previous) => ({
+                  ...previous,
+                  [question.id]: { selected: [], text: checked ? current.text : "" },
+                }));
+              }}
+              onTextChange={(text) =>
+                setValues((previous) => ({ ...previous, [question.id]: { selected: [], text } }))
+              }
+            />
+          )
+        ) : question.input &&
+          (question.input.type !== "string" ||
+            question.input.format === "email" ||
+            question.input.format === "uri" ||
+            question.input.format === "date") ? (
+          <input
+            className="interaction-other"
+            aria-label={`Jawaban: ${question.header || question.question}`}
+            type={
+              question.input.type === "number" || question.input.type === "integer"
+                ? "number"
+                : question.input.format === "email"
+                  ? "email"
+                  : question.input.format === "uri"
+                    ? "url"
+                    : question.input.format === "date"
+                      ? "date"
+                      : "text"
+            }
+            min={question.input.minimum}
+            max={question.input.maximum}
+            step={question.input.type === "integer" ? 1 : "any"}
+            value={current.text}
             disabled={busy}
-            maxLength={500}
-            inputLabel={`Jawaban: ${question.header || question.question}`}
-            onCheckedChange={(checked) => {
-              setCustomChoices((previous) => ({ ...previous, [question.id]: checked }));
+            onChange={(event) =>
               setValues((previous) => ({
                 ...previous,
-                [question.id]: { selected: [], text: checked ? current.text : "" },
-              }));
-            }}
-            onTextChange={(text) =>
-              setValues((previous) => ({ ...previous, [question.id]: { selected: [], text } }))
+                [question.id]: { selected: [], text: event.target.value },
+              }))
             }
           />
         ) : (
           <textarea
             className="interaction-other"
             aria-label={`Jawaban: ${question.header || question.question}`}
-            maxLength={500}
+            maxLength={question.input?.max_length ?? 500}
             rows={1}
             placeholder={direct ? "Tulis jawabanmu…" : "Pilihan lain…"}
             value={current.text}
@@ -245,6 +298,18 @@ export function NativeQuestion({
               }))
             }
           />
+        )}
+        {question.input && (
+          <p className="mt-2 text-xs text-muted-foreground">
+            {optional ? "Opsional." : "Wajib diisi."}{" "}
+            {question.input.minimum !== undefined && `Minimum ${question.input.minimum}. `}
+            {question.input.maximum !== undefined && `Maksimum ${question.input.maximum}. `}
+            {question.input.min_length !== undefined &&
+              question.input.min_length > 0 &&
+              `Minimal ${question.input.min_length} karakter. `}
+            {question.input.format === "date-time" &&
+              "Gunakan waktu ISO dengan zona waktu, misalnya 2026-11-16T10:00:00Z."}
+          </p>
         )}
       </InteractionCard>
     </form>

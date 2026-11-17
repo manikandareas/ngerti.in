@@ -5,9 +5,10 @@ import { developmentConfig } from "./config";
 import { API_READINESS_GATE, CONTRACT_VERSION } from "./contracts";
 import { JevRouter } from "./groups/router";
 import { HarnessAccounts } from "./harness/accounts";
+import { AcpAccounts } from "./harness/acp/accounts";
+import { AcpAdapter } from "./harness/acp/adapter";
 import { HarnessBroker } from "./harness/broker";
 import { CodexAccounts } from "./harness/codex/accounts";
-import { CodexAdapter } from "./harness/codex/adapter";
 import { CredentialContexts } from "./harness/context";
 import { CredentialStorage } from "./harness/credential-storage";
 import { HarnessLoginReadiness } from "./harness/login-readiness";
@@ -59,28 +60,48 @@ export async function startApplication(config: ApplicationConfig = developmentCo
         }),
       );
     });
-    const credentials = new CredentialContexts(config.stateDir);
+    const credentials = new CredentialContexts(
+      config.stateDir,
+      undefined,
+      config.providerMasterKeyFile,
+    );
     await configureNativeStorage(
       config.stateDir,
       process.env.APP_ENV !== "production" && config.authentication.allowInsecureLoopback,
     );
-    const runtime = new HarnessRuntime(config.harnessExecutables);
+    const runtime = new HarnessRuntime(config.harnessExecutables, config.nativeCodexExecutable);
     const updater = new HarnessUpdater(runtime, config.stateDir);
     await updater.recover();
     cleanup.push(() => updater.close());
+    const acpAdapters = {
+      claude: new AcpAdapter(
+        "claude",
+        () => `http://127.0.0.1:${app.server?.port}/v1/harness/tools`,
+      ),
+      opencode: new AcpAdapter(
+        "opencode",
+        () => `http://127.0.0.1:${app.server?.port}/v1/harness/tools`,
+      ),
+      pi: new AcpAdapter("pi", () => `http://127.0.0.1:${app.server?.port}/v1/harness/tools`),
+    };
     const broker = new HarnessBroker(
       lifecycle,
       credentials,
       tools,
       {
-        codex: new CodexAdapter(() => `http://127.0.0.1:${app.server?.port}/v1/harness/tools`),
+        codex: new AcpAdapter(
+          "codex",
+          () => `http://127.0.0.1:${app.server?.port}/v1/harness/tools`,
+          { native_codex: config.nativeCodexExecutable },
+        ),
         muse: new MuseAdapter(() => `http://127.0.0.1:${app.server?.port}/v1/harness/tools`),
+        ...acpAdapters,
       },
       runtime.detect,
     );
     cleanup.push(() => broker.close());
     const codexAccounts = new CodexAccounts(broker.connections, credentials, async () =>
-      runtime.detect("codex"),
+      runtime.nativeCodex(),
     );
     const museAccounts = new MuseAccounts(broker.connections, credentials, async () =>
       runtime.detect("muse"),
@@ -88,8 +109,14 @@ export async function startApplication(config: ApplicationConfig = developmentCo
     const accounts = new HarnessAccounts(broker.connections, {
       codex: codexAccounts,
       muse: museAccounts,
+      ...Object.fromEntries(
+        Object.entries(acpAdapters).map(([harness, adapter]) => [
+          harness,
+          new AcpAccounts(broker.connections, credentials, adapter, runtime.detect),
+        ]),
+      ),
     });
-    cleanup.push(() => Promise.allSettled([codexAccounts.close(), museAccounts.close()]));
+    cleanup.push(() => accounts.close());
     const background = new Background(lifecycle, broker.executors(), (code) =>
       console.error(JSON.stringify({ event: "background.error", code })),
     );
@@ -100,7 +127,7 @@ export async function startApplication(config: ApplicationConfig = developmentCo
       tools,
       broker,
       accounts,
-      credentialStorage: new CredentialStorage(config.stateDir),
+      credentialStorage: new CredentialStorage(config.stateDir, config.providerMasterKeyFile),
       detect: runtime.detect,
       updater,
       loginReadiness: new HarnessLoginReadiness(runtime, config.stateDir),
@@ -152,7 +179,7 @@ export async function startApplication(config: ApplicationConfig = developmentCo
         await broker.close();
         await machines.close();
         await domains.close();
-        await Promise.allSettled([codexAccounts.close(), museAccounts.close()]);
+        await accounts.close();
         await httpStopped;
         await authentication.close();
         await store.close();

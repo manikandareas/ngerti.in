@@ -1,0 +1,10 @@
+bun test v1.3.10 (30e609e0)
+
+tests/organizations/readiness.test.ts:
+(pass) every installed account surface declares authentication/scope and rejects missing credentials before input validation [1106.32ms]
+
+ 1 pass
+ 10 filtered out
+ 0 fail
+ 457 expect() calls
+Ran 1 test across 1 file. [1.82s]

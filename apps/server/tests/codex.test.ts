@@ -7,13 +7,12 @@ import type { Entity } from "../src/contracts";
 import { manifests } from "../src/harness/availability";
 import { HarnessBroker } from "../src/harness/broker";
 import { CodexAccounts } from "../src/harness/codex/accounts";
-import { CodexAdapter } from "../src/harness/codex/adapter";
-import { CodexClient } from "../src/harness/codex/client";
-import { classifyCodexRpcError } from "../src/harness/codex/rpc";
+import { CodexAuthority } from "../src/harness/codex/authority";
 import { Connections } from "../src/harness/connections";
 import { CredentialContexts } from "../src/harness/context";
 import { NativeSessionMissing } from "../src/harness/contracts";
 import { ProductTools } from "../src/harness/tools";
+import { codexFixture } from "./acp-fixture";
 import { fixture } from "./helpers";
 import { fixtureApi as createApi } from "./http-fixture";
 
@@ -29,26 +28,29 @@ test("external Codex access tokens stay ephemeral and native refresh cannot chan
   );
   const context = new CredentialContexts(f.dir).create(connection);
   const requested: boolean[] = [];
-  const client = new CodexClient(
-    process.execPath,
-    {
-      ...context,
-      codexAuth: async (refresh = false) => {
-        requested.push(refresh);
-        return {
-          accessToken: refresh ? "fixture-refreshed-token" : "fixture-request-refresh",
-          chatgptAccountId: "fixture-account-a",
-          chatgptPlanType: "free",
-        };
-      },
+  const client = await codexFixture(() => "http://127.0.0.1:1").connect({
+    ...context,
+    executable: process.execPath,
+    connection_id: connection.id,
+    connection: {
+      harness: "codex",
+      provider_id: "openai",
+      authentication: "native_login",
+      account_id: null,
+      billing_source: "subscription",
     },
-    join(context.state_directory, "control"),
-    () => "http://127.0.0.1:1",
-    "",
-    [join(import.meta.dir, "fixtures/codex-app-server.ts")],
-  );
+    agent_id: f.agent.id,
+    thread_id: f.thread.id,
+    codexAuth: async (refresh = false) => {
+      requested.push(refresh);
+      return {
+        accessToken: refresh ? "fixture-refreshed-token" : "fixture-request-refresh",
+        chatgptAccountId: "fixture-account-a",
+        chatgptPlanType: "free",
+      };
+    },
+  });
   try {
-    await client.initialize();
     for (let i = 0; i < 100 && requested.length < 2; i++) await Bun.sleep(5);
     expect(requested).toEqual([false, true]);
     expect((await client.inspect()).account_id).toBe(
@@ -81,7 +83,7 @@ test("one native credential authority coordinates simultaneous refresh consumers
     state: "supported" as const,
     manifest: manifests.codex,
   });
-  const args = [join(import.meta.dir, "fixtures/codex-app-server.ts")];
+  const args = [join(import.meta.dir, "fixtures/codex-authority.ts")];
   let accounts = new CodexAccounts(connections, credentials, detect, args);
   try {
     await accounts.inspect(connection.id);
@@ -107,6 +109,33 @@ test("one native credential authority coordinates simultaneous refresh consumers
     await accounts.close();
   }
 });
+test("credential authority rejects conversation and tool dispatch before writing to the native process", async () => {
+  f = await fixture();
+  const connections = new Connections(f.lifecycle);
+  const connection = await connections.get((f.agent as Entity<"agent">).connection_id);
+  const context = new CredentialContexts(f.dir).create(connection);
+  const authority = new CodexAuthority(process.execPath, context, [
+    join(import.meta.dir, "fixtures/codex-authority.ts"),
+  ]);
+  try {
+    await authority.initialize();
+    for (const method of [
+      "thread/start",
+      "thread/resume",
+      "turn/start",
+      "turn/steer",
+      "tools/call",
+    ])
+      await expect(authority.rpc.request(method)).rejects.toMatchObject({
+        code: "CAPABILITY_UNSUPPORTED",
+      });
+    expect((await authority.inspect()).login).toBe("authenticated");
+    expect((await authority.discoverModels())[0]?.id).toBe("model-a");
+    expect("prompt" in authority).toBe(false);
+  } finally {
+    await authority.close();
+  }
+});
 afterEach(async () => {
   await background?.stop(100);
   await broker?.close();
@@ -117,13 +146,15 @@ async function compose() {
   const tools = await ProductTools.open(f.lifecycle);
   broker = new HarnessBroker(
     f.lifecycle,
-    new CredentialContexts(f.dir, () => "selected-key"),
+    Object.assign(new CredentialContexts(f.dir, () => "selected-key"), {
+      codexTokens: async () => ({
+        accessToken: "fixture-access",
+        chatgptAccountId: "fixture-account-a",
+      }),
+    }),
     tools,
     {
-      codex: new CodexAdapter(
-        () => `http://127.0.0.1:${app.server?.port}/v1/harness/tools`,
-        [join(import.meta.dir, "fixtures/codex-app-server.ts")],
-      ),
+      codex: codexFixture(() => `http://127.0.0.1:${app.server?.port}/v1/harness/tools`),
     },
     async () => ({
       harness: "codex",
@@ -204,20 +235,6 @@ async function waitRunning(id: string) {
   }
   throw new Error("Run did not reach native acceptance.");
 }
-test("only an exact missing-rollout response for the requested resume permits pristine recovery", () => {
-  const error = { code: -32600, message: "no rollout found for thread id requested-thread" };
-  expect(classifyCodexRpcError(error, "requested-thread")).toBeInstanceOf(NativeSessionMissing);
-  for (const [value, thread] of [
-    [error, undefined],
-    [error, "different-thread"],
-    [{ ...error, code: -32603 }, "requested-thread"],
-    [{ ...error, message: "Provider rejected sk-private-native-error" }, "requested-thread"],
-  ] as const) {
-    const result = classifyCodexRpcError(value, thread);
-    expect(result).not.toBeInstanceOf(NativeSessionMissing);
-    expect(result.message).toBe("NATIVE_REJECTED");
-  }
-});
 test("an unused prewarmed Codex thread is replaced after its process closes before first dispatch", async () => {
   const lane = await setup();
   const prepared = await broker.openSession(lane.thread.id, lane.agent.id);
@@ -253,9 +270,9 @@ test("a missing Codex rollout used by a prior dispatch is never silently replace
   renameSync(file, `${file}.saved`);
   await f.restart();
   await compose();
-  await expect(broker.openSession(lane.thread.id, lane.agent.id)).rejects.toMatchObject({
-    code: "NATIVE_REJECTED",
-  });
+  await expect(broker.openSession(lane.thread.id, lane.agent.id)).rejects.toBeInstanceOf(
+    NativeSessionMissing,
+  );
   expect((await f.store.get("run", run.id)).status).toBe("succeeded");
   expect(await f.store.get("binding", binding.id)).toEqual(binding);
   expect(await f.store.list("message")).toEqual(messages);
@@ -267,7 +284,8 @@ test("Codex JSONL fixture performs an HTTP product-tool round trip and persists 
   await background.idle();
   expect(await f.store.get("run", run.id)).toMatchObject({
     status: "succeeded",
-    native_run_id: expect.any(String),
+    native_run_id: null,
+    native_dispatch_id: expect.any(String),
   });
   const answer = (await f.store.list("message")).find((m) => m.author === "agent");
   expect(answer).toMatchObject({ thread_id: lane.thread.id, run_id: run.id, state: "complete" });
@@ -316,7 +334,9 @@ test("native session and separate DM/group histories survive backend and child r
   await compose();
   const run = await admit(lane, "DM-after-restart");
   await background.idle();
-  expect(await f.store.list("binding")).toEqual(bindings);
+  expect((await f.store.list("binding")).map((b) => b.native_session_id).sort()).toEqual(
+    bindings.map((b) => b.native_session_id).sort(),
+  );
   const answer = (await f.store.list("message")).find(
     (m) => m.author === "agent" && m.run_id === run.id,
   );
@@ -356,15 +376,6 @@ test("steer is bound to the active native turn and keeps the same run", async ()
   expect((await f.store.get("run", run.id)).status).toBe("succeeded");
   expect(await f.store.list("run")).toHaveLength(1);
   expect((await f.store.list("message")).at(-1)?.text).toBe("Use the updated direction");
-});
-test("native permission escalation is declined and reported unsupported", async () => {
-  const lane = await setup();
-  await admit(lane, "permission");
-  await background.idle();
-  expect(
-    (await f.store.get("connection", lane.connection.id)).capabilities.permission_requests,
-  ).toBe("unsupported");
-  expect((await f.store.list("message")).at(-1)?.text).toBe('{"decision":"decline"}');
 });
 test("a native tool request cannot use another thread scope", async () => {
   const lane = await setup();

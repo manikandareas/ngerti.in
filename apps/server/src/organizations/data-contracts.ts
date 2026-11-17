@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { SCOPED_API_READINESS_GATE } from "../contracts";
-import { base, id } from "../contracts/base";
+import { base, harness, id } from "../contracts/base";
 
 export const preferenceChanges = z.strictObject({
   instructions: z.string().max(100_000).default(""),
@@ -21,7 +21,7 @@ export const publishedKnowledge = z.strictObject({
 });
 export const teamAgentWrite = z.strictObject({
   name: z.string().trim().min(1).max(200),
-  harness: z.enum(["codex", "muse"]),
+  harness,
   instructions: z.string().max(100_000).default(""),
   soul: z.string().max(100_000).default(""),
   audience_id: id,

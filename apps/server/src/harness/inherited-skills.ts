@@ -11,15 +11,18 @@ import {
 import type { Lifecycle } from "../lifecycle";
 import { canonical } from "../store";
 import { canonicalDirectory, WorkspaceFiles } from "../workspaces/files";
+import type { HarnessId } from "./availability";
 import type { LaunchContext } from "./context";
 
 /** Read-only discovery in the isolated connection home and the current workspace, never host HOME. */
-export function inheritedSkills(context: LaunchContext, harness: "codex" | "muse" = "codex") {
+export function inheritedSkills(context: LaunchContext, harness: HarnessId = "codex") {
   const roots = [
     ["home-agents", join(realpathSync(context.env.HOME), ".agents/skills")],
     ...(harness === "codex"
       ? [["codex", join(realpathSync(context.env.CODEX_HOME), "skills")]]
-      : [["muse", join(realpathSync(context.env.HOME), ".muse/skills")]]),
+      : harness === "muse"
+        ? [["muse", join(realpathSync(context.env.HOME), ".muse/skills")]]
+        : []),
     ...(context.workspace ? [["workspace", join(context.workspace.root, ".agents/skills")]] : []),
   ];
   const skills = [];

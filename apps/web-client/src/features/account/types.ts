@@ -63,7 +63,7 @@ export interface AISelection {
   id: string;
   actor_id: string | null;
   scope: "conversation" | "user" | "organization";
-  harness: "codex" | "muse";
+  harness: import("@/lib/harnesses").HarnessId;
   thread_id: string | null;
   agent_id: string | null;
   selection: { connection_id: string; model_id: string; reasoning: string | null } | null;

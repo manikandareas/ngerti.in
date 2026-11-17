@@ -11,4 +11,5 @@ export const base = {
   created_at: z.iso.datetime(),
   updated_at: z.iso.datetime(),
 };
-export const harness = z.enum(["codex", "muse"]);
+export const harness = z.enum(["codex", "muse", "claude", "opencode", "pi"]);
+export const billingSource = z.enum(["subscription", "api_key", "free"]);

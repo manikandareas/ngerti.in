@@ -26,6 +26,7 @@ const accountErrors: Record<string, string> = {
   SERVICE_UNAVAILABLE: "The operation could not finish. Check the server connection and try again.",
   PROTOCOL_ERROR: "The harness could not connect. Check its version and try again.",
   NATIVE_REJECTED: "The harness did not accept the connection. Try signing in again.",
+  PROVIDER_LIMIT: "Usage limit reached. Wait for quota to reset or choose another connection.",
   BILLING_MISMATCH:
     "This account uses a different billing method. Manage its connection in Settings.",
 };

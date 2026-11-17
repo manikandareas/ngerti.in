@@ -4,12 +4,12 @@ import { HarnessError, type harnessId, unknownCapabilities } from "./contracts";
 export type HarnessId = z.infer<typeof harnessId>;
 export const manifests = {
   codex: {
-    executable: "codex",
-    minimum_version: "0.169.0",
+    executable: "codex-acp",
+    minimum_version: "2.6.0",
     tested_native_version: "0.169.0",
-    protocol: "app_server",
-    sdk_version: null,
-    evidence: "native_subscription_http",
+    protocol: "acp_v1",
+    sdk_version: "2.7.0",
+    evidence: "native_subscription_acp_tool_reload_receipt",
     authentication_methods: ["native_login", "api_key"],
     capabilities: { ...unknownCapabilities },
   },
@@ -21,6 +21,36 @@ export const manifests = {
     sdk_version: "1.4.20",
     evidence: "native_api_key_http_subscription_unverified",
     authentication_methods: ["native_login", "api_key"],
+    capabilities: { ...unknownCapabilities },
+  },
+  claude: {
+    executable: "claude-agent-acp",
+    minimum_version: "0.107.0",
+    tested_native_version: "0.3.323",
+    protocol: "acp_v1",
+    sdk_version: "2.7.0",
+    evidence: "handshake_catalog_only",
+    authentication_methods: ["api_key"],
+    capabilities: { ...unknownCapabilities },
+  },
+  opencode: {
+    executable: "opencode",
+    minimum_version: "1.19.5",
+    tested_native_version: "1.19.5",
+    protocol: "acp_v1",
+    sdk_version: "2.7.0",
+    evidence: "handshake_catalog_reload_only",
+    authentication_methods: ["api_key"],
+    capabilities: { ...unknownCapabilities },
+  },
+  pi: {
+    executable: "pi-acp",
+    minimum_version: "0.0.34",
+    tested_native_version: "1.5.2",
+    protocol: "acp_v1",
+    sdk_version: "2.7.0",
+    evidence: "handshake_only_candidate_comparison_pending",
+    authentication_methods: ["api_key"],
     capabilities: { ...unknownCapabilities },
   },
 } as const;
@@ -44,7 +74,7 @@ export function versionState(
   const match = (nativeMuse ? nativeMuse[2] : output)
     .trim()
     .match(
-      /^(?:codex-cli\s+|muse(?:-code)?\s+)?v?(\d+)\.(\d+)\.(\d+)(-R\d+(?:\.\d+)?)?(?:\+[-\w.]+)?$/i,
+      /^(?:(?:codex-cli|(?:@agentclientprotocol\/)?codex-acp|claude-agent-acp|opencode|pi-acp|openma-pi-acp|muse(?:-code)?)\s+)?v?(\d+)\.(\d+)\.(\d+)(-R\d+(?:\.\d+)?)?(?:\+[-\w.]+)?$/i,
     );
   if (!match) return { state: "unknown", version: null };
   const version = `${match[1]}.${match[2]}.${match[3]}${match[4] ?? ""}`;
@@ -65,8 +95,60 @@ export async function detectHarness(
   timeoutMs = 3000,
 ): Promise<Availability> {
   const manifest = manifests[harness];
-  const executable = Bun.which(override ?? manifest.executable);
-  if (!executable) return { harness, manifest, state: "missing", version: null, executable: null };
+  const command = override ?? manifest.executable;
+  const executable = Bun.which(command);
+  // Inspect Node adapter packages without loading their agent loops for a version check.
+  // Pi ACP has no version flag; cold Node bundles can also exceed the probe deadline.
+  const packages: Partial<Record<HarnessId, string>> = {
+    codex: "@agentclientprotocol/codex-acp",
+    claude: "@agentclientprotocol/claude-agent-acp",
+    pi: "pi-acp",
+  };
+  const packageName = packages[harness];
+  const packageVersion =
+    packageName && executable ? installedPackageVersion(executable, packageName) : undefined;
+  const result =
+    packageVersion !== undefined
+      ? { executable, ...versionState(packageVersion, manifest.minimum_version) }
+      : await detectExecutable(command, manifest.minimum_version, timeoutMs);
+  if (
+    harness !== "muse" &&
+    result.state === "supported" &&
+    result.version !== manifest.minimum_version
+  )
+    result.state = "unknown";
+  return { harness, manifest, ...result };
+}
+
+function installedPackageVersion(executable: string, packageName: string): string | undefined {
+  try {
+    let directory = dirname(realpathSync(executable));
+    for (let depth = 0; depth < 8; depth++) {
+      const path = join(directory, "package.json");
+      if (existsSync(path)) {
+        if (statSync(path).size > 65_536) return "";
+        const manifest = JSON.parse(readFileSync(path, "utf8"));
+        if (manifest.name === packageName)
+          return typeof manifest.version === "string" ? manifest.version : "";
+      }
+      const parent = dirname(directory);
+      if (parent === directory) break;
+      directory = parent;
+    }
+  } catch {
+    return "";
+  }
+  return undefined;
+}
+export type ExecutableProbe = Pick<Availability, "state" | "version" | "executable">;
+
+export async function detectExecutable(
+  command: string,
+  minimum: string,
+  timeoutMs = 3000,
+): Promise<ExecutableProbe> {
+  const executable = Bun.which(command);
+  if (!executable) return { state: "missing", version: null, executable: null };
   let child: ReturnType<typeof Bun.spawn> | undefined;
   let timeout: ReturnType<typeof setTimeout> | undefined;
   try {
@@ -93,9 +175,9 @@ export async function detectHarness(
         timeout = setTimeout(() => reject(new Error("Version probe timed out.")), timeoutMs);
       }),
     ]);
-    return { harness, manifest, executable, ...versionState(output, manifest.minimum_version) };
+    return { executable, ...versionState(output, minimum) };
   } catch {
-    return { harness, manifest, executable, state: "probe_failed", version: null };
+    return { executable, state: "probe_failed", version: null };
   } finally {
     clearTimeout(timeout);
     if (child) {
@@ -104,7 +186,7 @@ export async function detectHarness(
     }
   }
 }
-export function requireAvailable(availability: Availability) {
+export function requireAvailable<T extends ExecutableProbe>(availability: T): T {
   const codes = {
     missing: "EXECUTABLE_MISSING",
     too_old: "VERSION_TOO_OLD",
@@ -115,3 +197,6 @@ export function requireAvailable(availability: Availability) {
   if (!availability.executable) throw new HarnessError("EXECUTABLE_MISSING");
   return availability;
 }
+
+import { existsSync, readFileSync, realpathSync, statSync } from "node:fs";
+import { dirname, join } from "node:path";

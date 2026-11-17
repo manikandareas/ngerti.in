@@ -1,0 +1,154 @@
+{
+  "timestamp": "2026-11-16T14:35:36.462Z",
+  "baseline": "8e92fda1c581c8dc363de16a8d3b4870e09ad1f9",
+  "scope": "ACP runtime, retained Codex account authority, product/API consumers, tests and current verification entrypoints; unrelated persistence and other owner changes excluded",
+  "source_files": 151,
+  "retired_files": 20,
+  "patch_bytes": 6149375,
+  "patch_gzip_bytes": 471549,
+  "patch_gzip_sha256": "c311524c9f2ab1c655ceb53a09d917393f35f962deea6d13e18ddc3c6067cb6d",
+  "baseline_apply_check": "pass using a separate temporary Git index; working index untouched",
+  "reconstructed_source_hashes": "pass for every captured present/retired path",
+  "evidence": [
+    {
+      "path": "backend.log",
+      "bytes": 23854,
+      "sha256": "1d0d1a9adaa7217d8ea93226413005a83d81d5524882cd9c7697b53053dd795d"
+    },
+    {
+      "path": "typecheck.log",
+      "bytes": 222,
+      "sha256": "c16281326e38b1541990f005f65cd97978e864e32b4c6ee505234983c4902255"
+    },
+    {
+      "path": "build.log",
+      "bytes": 209255,
+      "sha256": "a6012c101d436654cb8cc8055b093c37a6f8fedd69ca6c71f6c3d6a2dc2a5507"
+    },
+    {
+      "path": "changed-source-check.log",
+      "bytes": 89,
+      "sha256": "b0c747edbdbd7a2962d9f34bd277e0dd68566c60f755222c92428d0c4a3962eb"
+    },
+    {
+      "path": "docs-check.log",
+      "bytes": 166,
+      "sha256": "a08500b7b8a53f44f8085077e25ab8f525f3cc35476070ba44eba76138c455db"
+    },
+    {
+      "path": "native-codex.log",
+      "bytes": 288,
+      "sha256": "505ee0fd21e9c8bcc66342cdec733b8c36e4fdb1e08251d4e29f7035c5a30122"
+    },
+    {
+      "path": "native-codex.json",
+      "bytes": 3955,
+      "sha256": "a280a56aa5b1695771297ea2486de947ba2d69e1d4dc8f4ee124021c023b92b5"
+    },
+    {
+      "path": "native-controls.log",
+      "bytes": 342,
+      "sha256": "d8c628b94575ac2a6fc38c8266099c79811d8a083c8e221f181256d2dc4d5a36"
+    },
+    {
+      "path": "native-controls.json",
+      "bytes": 1287,
+      "sha256": "e2c3af328d121551973aaed8c5430a5866990fba96fa6773ac2a1753a1f0783b"
+    },
+    {
+      "path": "managed-install.json",
+      "bytes": 840,
+      "sha256": "fb4549f760c8508f8c7c57ae41a4d0de8dac6548587492db081815cc850f3128"
+    },
+    {
+      "path": "managed-profiles.json",
+      "bytes": 3550,
+      "sha256": "601ab55ffb871d49317382d2cce9c0f138a94cbb89da4337373098157244b03b"
+    },
+    {
+      "path": "tauri.log",
+      "bytes": 473,
+      "sha256": "6a2a38aa4284d1687e725b3fae4c591c626a71d6c272c1fa894b31cbd2eb0774"
+    },
+    {
+      "path": "tauri.json",
+      "bytes": 831,
+      "sha256": "644b79b286aa16bf8b761ef5468e86b247e1f6ff088a86b85cbcddf73ee08547"
+    },
+    {
+      "path": "browser-desktop.log",
+      "bytes": 268,
+      "sha256": "8d78f45eef0962aa0d07f1e895c0bac745d47eebc9d75a65a3305392f4690d45"
+    },
+    {
+      "path": "browser-mobile.log",
+      "bytes": 267,
+      "sha256": "230c4efe6b4e622e1690e70eb1343e4acd789cf51838f6d1a1b5aab3f6065ae1"
+    },
+    {
+      "path": "browser-desktop.json",
+      "bytes": 723,
+      "sha256": "26ac38b83eaf0d0106615f7b7c1f4182df1c087a95f67b4b3233173d4063ca12"
+    },
+    {
+      "path": "browser-desktop-form.png",
+      "bytes": 59911,
+      "sha256": "7d0635a2b46b0f56899476a642b6b8a01b94b345357147bc8a0fd2b25a98e3bc"
+    },
+    {
+      "path": "browser-desktop-picker.png",
+      "bytes": 70506,
+      "sha256": "675603c67d335e52486249df974760387814437f7ff6f7a60332aec8bc158dfe"
+    },
+    {
+      "path": "browser-desktop-progress.png",
+      "bytes": 91884,
+      "sha256": "f5df097f41d1be2a8b9b89e1c7949fa0925ef8d9b5fab491c4fcce23138aa411"
+    },
+    {
+      "path": "browser-desktop-provider.png",
+      "bytes": 72107,
+      "sha256": "18513311f6c74a9c9860f6162d9128c3ef16279d5a2c881c8ef30d24b35bb692"
+    },
+    {
+      "path": "browser-desktop-last.png",
+      "bytes": 59213,
+      "sha256": "5cc0de6cb08cbaba4b95a2e58cf315d5916dfa6cd155014ac6d470cd3430cd9d"
+    },
+    {
+      "path": "browser-mobile.json",
+      "bytes": 721,
+      "sha256": "0dea1ae4d80d6cab66f67015c44b2f110f871d0319f36fcfe07cb9bb41a56d17"
+    },
+    {
+      "path": "browser-mobile-form.png",
+      "bytes": 28032,
+      "sha256": "456d44257f051203d55fbb19db94731baf2b5284f560538be4903707125132e8"
+    },
+    {
+      "path": "browser-mobile-picker.png",
+      "bytes": 31247,
+      "sha256": "281fb28da8ce86c9d1b8af5e4416479814a8acdd839767fa0d24183104f1358a"
+    },
+    {
+      "path": "browser-mobile-progress.png",
+      "bytes": 39523,
+      "sha256": "8f529a360bff0cbfcec5601832fc54a263f05e60d07c3547e3b510a37ff5c254"
+    },
+    {
+      "path": "browser-mobile-provider.png",
+      "bytes": 35743,
+      "sha256": "9cc6b0dc8348e0e5a976ae467d19174f96bbcf2667fc5128bec64d784cb366ab"
+    },
+    {
+      "path": "browser-mobile-last.png",
+      "bytes": 34529,
+      "sha256": "a8dd26fd8ecca82548969c93c61997ab0f3f2b08336bbb6171b0a5768e3d58b7"
+    },
+    {
+      "path": "tauri-observations.json",
+      "bytes": 1556,
+      "sha256": "d078a1b2a57da0bcebf05754c288c4abffbaa613f988fbce4debc820e31577cd"
+    }
+  ]
+}

@@ -3,7 +3,7 @@ import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { assertScopedCatalog } from "../src/harness/catalog-policy";
-import { CodexRpc } from "../src/harness/codex/rpc";
+import { CodexAuthorityRpc } from "../src/harness/codex/authority-rpc";
 import { type LaunchContext, Redactor } from "../src/harness/context";
 import { MuseTransport } from "../src/harness/muse/transport";
 
@@ -27,7 +27,9 @@ test("both native adapters reject private or project MCP configuration before st
       file,
       JSON.stringify({ mcpServers: { foreign: { command: "must-never-start" } } }),
     );
-    expect(() => new CodexRpc("must-never-start", context)).toThrow("CAPABILITY_UNSUPPORTED");
+    expect(() => new CodexAuthorityRpc("must-never-start", context)).toThrow(
+      "CAPABILITY_UNSUPPORTED",
+    );
     expect(() => new MuseTransport("must-never-start", context)).toThrow("CAPABILITY_UNSUPPORTED");
     rmSync(file);
     writeFileSync(

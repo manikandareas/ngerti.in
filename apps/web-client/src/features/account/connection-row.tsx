@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useSettingsWorkspace } from "@/hooks/settings-workspace";
 import { durableCommand, request } from "@/lib/api-client";
+import { harnesses, modelProviderName } from "@/lib/harnesses";
 import type { Connection } from "@/types/workspace";
 import { AccountField, useAccountAction } from "./account-forms";
 import { useAccount } from "./session";
@@ -30,11 +31,13 @@ export function ConnectionRow({
     connection.actor_id === account?.session?.user.id ||
     !!account?.access?.capabilities.manage_organization;
   const billing =
-    connection.effective_billing_source === "subscription"
-      ? "Subscription"
-      : connection.effective_billing_source === "api_key"
-        ? "API billing"
-        : "Billing unverified";
+    connection.effective_billing_source === "free"
+      ? "Free"
+      : connection.effective_billing_source === "subscription"
+        ? "Subscription"
+        : connection.effective_billing_source === "api_key"
+          ? "API billing"
+          : "Billing unverified";
   const loginUrl = (() => {
     try {
       const url = new URL(login?.auth_url ?? "");
@@ -48,11 +51,12 @@ export function ConnectionRow({
       <div className="organization-settings-row">
         <div className="organization-row-copy">
           <span className="text-sm">
-            {connection.account_id ?? (connection.harness === "codex" ? "ChatGPT" : "Muse Code")}
+            {harnesses[connection.harness].name} ·{" "}
+            {modelProviderName(connection.provider_id ?? harnesses[connection.harness].providerId)}
           </span>
           <p>
             {connection.ownership === "organization" ? "Organization" : "Personal"} · {billing}
-            {connection.login !== "authenticated" ? " · Sign in needed" : ""}
+            {connection.login !== "authenticated" ? " · Verification needed" : ""}
           </p>
         </div>
         {manageable && (

@@ -1,0 +1,52 @@
+{
+  "node": "v25.8.0",
+  "platform": "darwin",
+  "arch": "arm64",
+  "packages": [
+    {
+      "name": "@agentclientprotocol/codex-acp",
+      "version": "2.6.0",
+      "sha256": "1fd1db90737fc1ed7324f12c59537c0410d320c9afac96c786ed6b5c9f1c2e21"
+    },
+    {
+      "name": "@openai/codex",
+      "version": "0.166.0",
+      "sha256": "e554d18c0a7c06bb9d81d5c154e869f6d4e55ad7906e2dd2de0258750861d0f6"
+    },
+    {
+      "name": "@agentclientprotocol/claude-agent-acp",
+      "version": "0.107.0",
+      "sha256": "1e06737225481276cde7c3ecce3519e7953763d650789a8640dc8636740b8861"
+    },
+    {
+      "name": "@anthropic-ai/claude-agent-sdk",
+      "version": "0.3.323",
+      "sha256": "fd57289a4f4dd71e062bd9596b4d62ef1671eb982be642b7d367db78b7b62dbd"
+    },
+    {
+      "name": "opencode-ai",
+      "version": "1.19.5",
+      "sha256": "b611692992fefe03641adf42bd26d1d3affc2ed7848122d6347879aa7890afc7"
+    },
+    {
+      "name": "pi-acp",
+      "version": "0.0.34",
+      "sha256": "6f08fdcb70593421e648c82a028fd05a57eee053a628de01c47a35e8451e526f"
+    },
+    {
+      "name": "@openma/pi-acp",
+      "version": "0.1.8",
+      "sha256": "7b7bd311e494ae6813fb8fb036f4bd75cd37c43e011f7670e753d6ffa723fc9d"
+    },
+    {
+      "name": "@earendil-works/pi-coding-agent",
+      "version": "1.5.2",
+      "sha256": "18b422b7d80f2caa2551d253c0a8409e1caa54b954bfb7d18252e507bb8a0318"
+    },
+    {
+      "name": "@earendil-works/pi-ai",
+      "version": "1.5.2",
+      "sha256": "db02f15488aa28c3cce6bbdeabab7d3a43eaea8b293a9688570bc0b43b15f1b0"
+    }
+  ]
+}

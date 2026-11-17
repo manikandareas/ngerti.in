@@ -1,20 +1,22 @@
 import { z } from "zod";
-import { base, id } from "../contracts/base";
+import { base, billingSource, harness, id } from "../contracts/base";
 
 export const providerSelection = z.strictObject({
   connection_id: id,
   connection_generation: z.int().positive(),
   account_id: z.string().nullable(),
-  harness: z.enum(["codex", "muse"]),
+  harness,
+  // Preserve the exact frozen snapshot shape of runs admitted before provider metadata existed.
+  provider_id: z.string().min(1).max(100).nullable().optional(),
   model_id: z.string().min(1).max(200),
   reasoning: z.string().max(100).nullable(),
-  billing_source: z.enum(["subscription", "api_key"]),
+  billing_source: billingSource,
 });
 export type ProviderSelection = z.infer<typeof providerSelection>;
 export const selectionInput = z
   .strictObject({
     scope: z.enum(["conversation", "user", "organization"]),
-    harness: z.enum(["codex", "muse"]),
+    harness,
     thread_id: id.nullable().default(null),
     agent_id: id.nullable().default(null),
     selection: z

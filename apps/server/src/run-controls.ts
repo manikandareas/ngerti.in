@@ -96,7 +96,6 @@ export class RunControls {
       const store = this.lifecycle.store;
       const run = await store.get("run", runId);
       if (
-        !run.native_run_id ||
         run.status !== "running" ||
         !run.dispatch_token ||
         (data.expected_native_run_id && data.expected_native_run_id !== run.native_run_id)
@@ -149,6 +148,8 @@ export class RunControls {
         agent_id: run.agent_id,
         run_id: run.id,
         native_run_id: run.native_run_id,
+        dispatch_token: run.dispatch_token,
+        authority_epoch: run.authority_epoch,
         message_id: message.id,
         queued_run_id: data.queued_run_id ?? null,
         state: "requested",

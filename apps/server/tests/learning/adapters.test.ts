@@ -3,11 +3,11 @@ import { join } from "node:path";
 import { Background } from "../../src/background";
 import { manifests } from "../../src/harness/availability";
 import { HarnessBroker } from "../../src/harness/broker";
-import { CodexAdapter } from "../../src/harness/codex/adapter";
 import { Connections } from "../../src/harness/connections";
 import { CredentialContexts } from "../../src/harness/context";
 import { MuseAdapter } from "../../src/harness/muse/adapter";
 import { ProductTools } from "../../src/harness/tools";
+import { codexFixture } from "../acp-fixture";
 import { fixture } from "../helpers";
 import { fixtureApi as createApi } from "../http-fixture";
 
@@ -35,13 +35,15 @@ for (const harness of ["codex", "muse"] as const) {
       const tools = await ProductTools.open(f.lifecycle);
       broker = new HarnessBroker(
         f.lifecycle,
-        new CredentialContexts(f.dir),
+        Object.assign(new CredentialContexts(f.dir), {
+          codexTokens: async () => ({
+            accessToken: "fixture-access",
+            chatgptAccountId: "fixture-account-a",
+          }),
+        }),
         tools,
         {
-          codex: new CodexAdapter(
-            () => `${base()}/v1/harness/tools`,
-            [join(import.meta.dir, "../fixtures/codex-app-server.ts")],
-          ),
+          codex: codexFixture(() => `${base()}/v1/harness/tools`),
           muse: new MuseAdapter(
             () => `${base()}/v1/harness/tools`,
             [join(import.meta.dir, "../fixtures/muse-serve.ts")],

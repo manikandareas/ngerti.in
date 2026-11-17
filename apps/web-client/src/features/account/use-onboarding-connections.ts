@@ -383,5 +383,12 @@ export function useOnboardingConnections() {
     checkConnection,
     cancelLogin,
     finish,
+    savedKey: async (connection: Connection) => {
+      accept(connection);
+      await action.run(async () => {
+        await inspect(connection.id);
+        await refresh();
+      });
+    },
   };
 }

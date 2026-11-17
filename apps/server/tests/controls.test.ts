@@ -340,6 +340,21 @@ test("queued steering is reserved atomically, revision-protected and never dispa
   expect((await controls.settleSteer(control.id, "unknown")).state).toBe("accepted");
 });
 
+test("steering journals the application attempt when the peer has no native turn ID", async () => {
+  const controls = await setup();
+  const receipt = await f.admit();
+  const run = await f.lifecycle.claimNext(f.thread.id, f.agent.id);
+  if (!run?.dispatch_token) throw new Error("Missing dispatch.");
+  await f.lifecycle.started(run.id, run.dispatch_token);
+  const queued = await f.admit("A correction");
+  const control = await controls.requestSteer(receipt.run.id, { queued_run_id: queued.run.id });
+  expect(control.native_run_id).toBeNull();
+  expect(control.dispatch_token).toBe(run.dispatch_token);
+  expect(control.authority_epoch).toBe(run.authority_epoch);
+  await controls.settleSteer(control.id, "rejected", "NATIVE_REJECTED");
+  expect((await f.store.get("run", queued.run.id)).delivery).toBe("pending");
+});
+
 test("certain steer rejection restores FIFO; lost acknowledgement survives restart held unknown", async () => {
   const controls = await setup();
   const current = await start();

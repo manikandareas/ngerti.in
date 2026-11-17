@@ -31,7 +31,7 @@ export function routeAccess(path: string) {
     path === "/v1/data/legacy-binding" ||
     path === "/health/ready" ||
     path === "/v1/harnesses/:harness/update" ||
-    /^\/v1\/harnesses\/(codex|muse)\/update$/.test(path)
+    /^\/v1\/harnesses\/[^/]+\/update$/.test(path)
   )
     return {
       authentication_class: "bootstrap_owner_session",

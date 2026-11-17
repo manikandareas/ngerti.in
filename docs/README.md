@@ -17,6 +17,8 @@ The handoff reconciled eleven decision documents and nineteen milestone records,
 
 ## Architecture and API
 
+- [ACP harness migration](architecture/acp-harnesses.md): current owner-promoted checklist, [initial evidence](verification/acp-2026-11-16/README.md), [profile/API follow-up](verification/acp-2026-11-16/profiles/README.md), [source cutover/shared-picker capture](verification/acp-2026-11-16/cutover/README.md), [native context/output/account domains](verification/acp-2026-11-16/native-context/README.md), [native harness credentials/failures](verification/acp-2026-11-16/native-harnesses/README.md), and [Pi context/native API 2.4](verification/acp-2026-11-16/pi-context/README.md); remaining native profile acceptance stays open.
+
 - [PostgreSQL persistence and offline import](architecture/postgresql-persistence.md): async transaction/authority model, schema, backups and controlled SQLite import.
 
 - [Current architecture and trust boundaries](architecture/overview.md).
@@ -24,7 +26,7 @@ The handoff reconciled eleven decision documents and nineteen milestone records,
 - [Harness broker](architecture/harness-broker-contract.md), [Codex adapter](architecture/codex-adapter.md), and [Muse adapter](architecture/muse-adapter.md).
 - [Agents/conversations API](architecture/agent-conversation-api.md), [queue/control/recovery](architecture/conversation-control-api.md), and [group collaboration](architecture/group-collaboration-api.md).
 - [Goals/Routine API](architecture/goals-routines-api.md), [memory/skills](architecture/memory-skills-api.md), [workspace/artifacts](architecture/workspace-artifact-api.md), and [app connections/research/visual input](architecture/apps-research-visual-api.md).
-- [Current checked-in contract 1.33.0](contracts/1.33.0.json). Earlier bundles and versioned guides retain their original scope; authenticated `/v1/contracts` identifies the installed server's export.
+- [Current checked-in contract 2.4.0](contracts/2.4.0.json). Earlier bundles and versioned guides retain their original scope; authenticated `/v1/contracts` identifies the installed server's export.
 
 - [Scoped application accounts and published Team skills](architecture/scoped-apps-skills.md): separate Composio identity, current grants, durable effect holds and immutable shared skill revisions.
 - [User authentication and device sessions](architecture/user-authentication.md): account-mode setup, guarded Owner bootstrap, browser HTTP/session APIs and the native OAuth/PKCE contract.

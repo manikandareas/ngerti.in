@@ -1,0 +1,22 @@
+bun test v1.3.10 (30e609e0)
+
+../../scripts/verification/acp/native.test.ts:
+276 |             result.inference === "pass" &&
+277 |             result.provider_credential_bytes_persisted === false &&
+278 |             result.useful_tool === "pass" &&
+279 |             result.reload === "pass",
+280 |         ),
+281 |     ).toBe(true);
+            ^
+error: expect(received).toBe(expected)
+
+Expected: true
+Received: false
+
+      at <anonymous> (/Users/vitoandareasmanik/Development/project/ngertiin/scripts/verification/acp/native.test.ts:281:7)
+(fail) record native ACP selected-billing inference, scoped tool, reload and receipt recovery separately from account isolation [15873.75ms]
+
+ 0 pass
+ 1 fail
+ 5 expect() calls
+Ran 1 test across 1 file. [16.82s]

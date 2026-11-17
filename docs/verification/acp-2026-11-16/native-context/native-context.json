@@ -1,0 +1,211 @@
+{
+  "timestamp": "2026-11-16T14:59:06.135Z",
+  "scope": "real selected Codex subscription and managed ACP/native CLI; real owner-mode HTTP/PostgreSQL and app-owned local file tools; no multi-account, Cua domain, provider expiry or distribution claim",
+  "completed": true,
+  "turns": [
+    {
+      "status": "succeeded",
+      "diagnostic": null,
+      "native_run_id": null,
+      "observed_native_receipt": true,
+      "product_tools": [
+        "ngertiin.read_file",
+        "ngertiin.create_file",
+        "ngertiin.publish_artifact"
+      ],
+      "native_tools": [
+        {
+          "item_id": "exec-26a75313-9dcd-4e2a-9400-9cd01092d8bb",
+          "name": "execute",
+          "command": null,
+          "state": "completed",
+          "exit_code": null
+        },
+        {
+          "item_id": "exec-0a6615a4-094d-47c5-8954-dd413a1fe38e",
+          "name": "execute",
+          "command": null,
+          "state": "completed",
+          "exit_code": null
+        },
+        {
+          "item_id": "exec-a23d0f2f-504d-4fa6-8094-f4c98447234d",
+          "name": "execute",
+          "command": null,
+          "state": "completed",
+          "exit_code": null
+        }
+      ],
+      "sources": [],
+      "tool_errors": [],
+      "binding_id": "701641ae-8d26-4db2-829e-f5787ecc9c7d",
+      "native_session_id": "01a1e4de-7eee-7a71-bf88-8a8a7dd68856",
+      "instruction_revision": "24762874b6de7014f9fe19d128fb869344bb8cf19e806efef43a40d8bd2d9174",
+      "timings": {
+        "ready_at": "2026-11-16T14:59:09.609Z",
+        "settled_at": "2026-11-16T14:59:31.842Z",
+        "accepted_at": "2026-11-16T14:59:10.158Z",
+        "preparing_at": "2026-11-16T14:59:07.322Z",
+        "dispatched_at": "2026-11-16T14:59:09.644Z",
+        "first_output_at": "2026-11-16T14:59:31.807Z"
+      },
+      "answer": "Persona: `PERSONA-A-53c60f8a-c233-421a-a98c-b33e1ba91cf4`\n\nWorkspace: `WORKSPACE-A-5b9082bc-2353-4f70-8fbc-2da1ed9f1137`\n\nVerification memory: `PRIVATE-MEMORY-7751925f-82a3-4a07-b054-540af59c8728`\n\nPublished report.txt as text/plain with exactly the source bytes, including the trailing newline.\n\nArtifact ID: `34c616d0-289d-467d-a884-e9f1538803b7`"
+    },
+    {
+      "status": "succeeded",
+      "diagnostic": null,
+      "native_run_id": null,
+      "observed_native_receipt": true,
+      "product_tools": [],
+      "native_tools": [],
+      "sources": [],
+      "tool_errors": [],
+      "binding_id": "da186563-bffe-425b-b0d4-8bc3c9a6135b",
+      "native_session_id": "01a1e4de-dc8a-7743-a288-e7018a43f167",
+      "instruction_revision": "b4aa53542f793e283821310f9e416a58bde766fb8eee336f6a8d717ac7429efc",
+      "timings": {
+        "ready_at": "2026-11-16T14:59:33.364Z",
+        "settled_at": "2026-11-16T14:59:40.480Z",
+        "accepted_at": "2026-11-16T14:59:33.799Z",
+        "preparing_at": "2026-11-16T14:59:32.012Z",
+        "dispatched_at": "2026-11-16T14:59:33.388Z",
+        "first_output_at": "2026-11-16T14:59:40.457Z"
+      },
+      "answer": "PERSONA-B-8fc6ab75-99b9-4b02-8374-0b9bd0c24285\nWORKSPACE-B-71d91b02-d5ae-4b4d-8434-db0e89e91d6b\nreport.txt"
+    },
+    {
+      "status": "succeeded",
+      "diagnostic": null,
+      "native_run_id": null,
+      "observed_native_receipt": true,
+      "product_tools": [
+        "ngertiin.read_file",
+        "ngertiin.list_memories"
+      ],
+      "native_tools": [
+        {
+          "item_id": "exec-2b1885fb-2271-46ae-9d06-826cdc1b1e6b",
+          "name": "execute",
+          "command": null,
+          "state": "completed",
+          "exit_code": null
+        },
+        {
+          "item_id": "exec-14898eaa-8bd0-4a85-b442-c512a3f2a415",
+          "name": "execute",
+          "command": null,
+          "state": "completed",
+          "exit_code": null
+        }
+      ],
+      "sources": [],
+      "tool_errors": [],
+      "binding_id": "8bfa72ae-a10b-4146-bfb2-32bbe474e15d",
+      "native_session_id": "01a1e4de-fcf3-7c42-bef4-d5c944eab3d3",
+      "instruction_revision": "a8cbc1ba5c774bc1e3469f3f2b7766d57519f1c48a6fb50845823e69ac4005a5",
+      "timings": {
+        "ready_at": "2026-11-16T14:59:41.588Z",
+        "settled_at": "2026-11-16T14:59:56.524Z",
+        "accepted_at": "2026-11-16T14:59:41.971Z",
+        "preparing_at": "2026-11-16T14:59:40.544Z",
+        "dispatched_at": "2026-11-16T14:59:41.611Z",
+        "first_output_at": "2026-11-16T14:59:56.491Z"
+      },
+      "answer": "Persona word: `PERSONA-B-8fc6ab75-99b9-4b02-8374-0b9bd0c24285`\n\nWorkspace word: `GROUP-WORKSPACE-901b1186-4a98-43c3-95d1-9a10e7bb813a`\n\nExact text of `source.txt` (including a trailing newline):\n\n```text\nGROUP-SOURCE-1dc35ffa-27b9-4e96-b3b2-a3898e502806\n```\n\nNo verification memory word is visible; the current memory scope is empty."
+    },
+    {
+      "status": "succeeded",
+      "diagnostic": null,
+      "native_run_id": null,
+      "observed_native_receipt": true,
+      "product_tools": [],
+      "native_tools": [
+        {
+          "item_id": "exec-f8d26518-9eba-4e60-b929-22d0bc3eab4f",
+          "name": "search",
+          "command": null,
+          "state": "completed",
+          "exit_code": null
+        }
+      ],
+      "sources": [],
+      "tool_errors": [],
+      "binding_id": "da186563-bffe-425b-b0d4-8bc3c9a6135b",
+      "native_session_id": "01a1e4de-dc8a-7743-a288-e7018a43f167",
+      "instruction_revision": "66d70f50ae7b430a140145d83e688031db1800f9508562ec3545ada6eaaf3feb",
+      "timings": {
+        "ready_at": "2026-11-16T14:59:57.696Z",
+        "settled_at": "2026-11-16T15:00:13.682Z",
+        "accepted_at": "2026-11-16T14:59:58.104Z",
+        "preparing_at": "2026-11-16T14:59:56.643Z",
+        "dispatched_at": "2026-11-16T14:59:57.719Z",
+        "first_output_at": "2026-11-16T15:00:13.657Z"
+      },
+      "answer": "After initialization, the client creates a session by sending `session/new` with its working directory in `cwd` and MCP server configurations in `mcpServers`. The agent returns `result.sessionId`, which uniquely identifies the conversation. [Official session setup documentation](https://agentclientprotocol.com/protocol/v1/session-setup#creating-a-session)."
+    }
+  ],
+  "versions": {
+    "adapter": "2.6.0",
+    "native": "0.169.0",
+    "sdk": "2.7.0",
+    "protocol": 1
+  },
+  "source_files": [
+    {
+      "path": "apps/server/src/artifacts.ts",
+      "sha256": "8d014c5f054027b276bc8d74ca51efe4c2ce3b5e88adfebe97b662f7f31f35a8"
+    },
+    {
+      "path": "apps/server/tests/workspaces.test.ts",
+      "sha256": "e441b7d817b1665784e00310b0e870e8aa87ce44a1fe7ccdded53e92a411038c"
+    },
+    {
+      "path": "scripts/verification/acp/native-context.test.ts",
+      "sha256": "f5b54c4dfed33487ad4669e42391e3b748cd649ee0e1a5e0b7a83e3e48e47296"
+    }
+  ],
+  "executables": [
+    {
+      "path": "/Users/vitoandareasmanik/.local/share/ngertiin/harnesses/codex/bin/codex-acp",
+      "sha256": "733b7521c2a437a34ed016d45a6f46bebff2bac123a172467574ee827db98b99"
+    },
+    {
+      "path": "/Users/vitoandareasmanik/.local/share/ngertiin/harnesses/codex/bin/codex",
+      "sha256": "e14fc83739c13c1074b12bd1acce4010c893c7f6fbfc1593b4a31d74cabb57af"
+    }
+  ],
+  "artifact": {
+    "persisted": true,
+    "source_read_receipt": true,
+    "download_exact_bytes": true,
+    "foreign_workspace_status": 403,
+    "native_run_id": null
+  },
+  "changed_instructions": {
+    "current_persona_and_workspace": true,
+    "distinct_native_session": true,
+    "retained_thread_history": true
+  },
+  "private_context": {
+    "same_persistent_agent": true,
+    "distinct_dm_group_sessions": true,
+    "private_memory_absent_from_group": true,
+    "group_file_read_exact": true,
+    "dm_file_absent_from_group": true
+  },
+  "product_tools": [
+    "ngertiin.read_file",
+    "ngertiin.create_file",
+    "ngertiin.publish_artifact",
+    "ngertiin.read_file",
+    "ngertiin.list_memories"
+  ],
+  "research": {
+    "completed_native_search": true,
+    "direct_official_markdown_link": true,
+    "source_url": "https://agentclientprotocol.com/protocol/v1/session-setup",
+    "source_panel_entries": 0
+  },
+  "provider_credential_bytes_persisted": false,
+  "credential_scan_skipped_files": 0
+}

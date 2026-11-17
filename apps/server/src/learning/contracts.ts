@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { base } from "../contracts/base";
+import { base, harness } from "../contracts/base";
 
 export const learningContext = z.strictObject({ agent_id: z.uuid(), thread_id: z.uuid() });
 export type LearningContext = z.infer<typeof learningContext>;
@@ -135,7 +135,7 @@ export const harnessInventoryFields = {
   thread_id: z.uuid(),
   connection_id: z.uuid(),
   binding_id: z.uuid(),
-  harness: z.enum(["codex", "muse"]),
+  harness,
   state: z.enum(["supported", "unknown"]),
   skills: z.array(inheritedSkill).max(100),
   rejected_packages: z.int().min(0),

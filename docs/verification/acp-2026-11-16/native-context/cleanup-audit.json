@@ -1,0 +1,36 @@
+{
+  "checks": [
+    {
+      "domain_id": "6c2af91d-46eb-48b8-a267-9bd041f060d3",
+      "resource": "container",
+      "absent": true
+    },
+    {
+      "domain_id": "6c2af91d-46eb-48b8-a267-9bd041f060d3",
+      "resource": "network",
+      "absent": true
+    },
+    {
+      "domain_id": "6c2af91d-46eb-48b8-a267-9bd041f060d3",
+      "resource": "volume",
+      "absent": true
+    },
+    {
+      "domain_id": "c8f78ba8-5549-442e-8273-46911e56f2db",
+      "resource": "container",
+      "absent": true
+    },
+    {
+      "domain_id": "c8f78ba8-5549-442e-8273-46911e56f2db",
+      "resource": "network",
+      "absent": true
+    },
+    {
+      "domain_id": "c8f78ba8-5549-442e-8273-46911e56f2db",
+      "resource": "volume",
+      "absent": true
+    }
+  ],
+  "passed": true,
+  "note": "DomainRuntime.retire already removes each network; the fixture redundant network rm recorded false because it was absent, not because it survived."
+}

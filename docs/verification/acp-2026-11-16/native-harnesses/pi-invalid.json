@@ -1,0 +1,57 @@
+{
+  "timestamp": "2026-11-16T16:58:28.586Z",
+  "completed": true,
+  "harness": "pi",
+  "candidate": "pi-upstream",
+  "provider": "sumopod",
+  "billing": "api_key",
+  "authentication_source": "owner-selected existing Pi configuration",
+  "scope": "real native inference and HTTP ProductTools, disposable owner-mode PostgreSQL, no global configuration mutation or provider/billing fallback",
+  "turns": [
+    {
+      "status": "failed",
+      "diagnostic": {
+        "code": "NATIVE_REJECTED",
+        "category": "provider",
+        "outcome": "failed"
+      },
+      "product_tools": [],
+      "tool_errors": [],
+      "native_run_id": null,
+      "timings": {
+        "ready_at": "2026-11-16T16:58:33.094Z",
+        "settled_at": "2026-11-16T16:58:37.478Z",
+        "accepted_at": "2026-11-16T16:58:33.473Z",
+        "preparing_at": "2026-11-16T16:58:31.185Z",
+        "dispatched_at": "2026-11-16T16:58:33.125Z"
+      },
+      "answer": ""
+    }
+  ],
+  "expected_provider_limit": false,
+  "synthetic_invalid_credential": true,
+  "diagnostics": [
+    "Error handling request {",
+    "  jsonrpc: '2.0',",
+    "  id: 2,",
+    "  method: 'session/prompt',",
+    "  params: {",
+    "    sessionId: '01a1e54b-c992-76fc-8ef6-c5d890f58d86',",
+    "    prompt: [ [Object], [Object] ]",
+    "  }",
+    "} { code: -32603, message: 'Internal error', data: undefined }"
+  ],
+  "model": "sumopod/deepseek-v4-flash",
+  "catalog_count": 2,
+  "model_reasoning": [
+    "off",
+    "minimal",
+    "low",
+    "medium",
+    "high"
+  ],
+  "provider_failure_delivery_verified": true,
+  "completed_inference": false,
+  "credential_reads": 2,
+  "native_key_bytes_persisted": false
+}

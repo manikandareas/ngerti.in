@@ -39,6 +39,7 @@ import type {
   ProviderAccountActions,
   ProviderLogin,
 } from "@/features/settings/hooks/use-provider-accounts";
+import { harnesses, modelProviderName } from "@/lib/harnesses";
 import type { Agent, Connection } from "@/types/workspace";
 
 export function ProviderAccount({
@@ -66,9 +67,14 @@ export function ProviderAccount({
   const definition = providers.find((item) => item.id === provider) ?? providers[0];
   const users = agents.filter((agent) => agent.connection_id === connection.id);
   const native = connection.authentication.method === "native_login";
-  const label = native
-    ? `Akun ${definition.name}`
-    : `${provider === "codex" ? "OpenAI" : "Meta"} API key`;
+  const label =
+    connection.authentication.method === "none"
+      ? `${definition.name} Free`
+      : connection.authentication.method === "harness_config"
+        ? `${definition.name} · ${modelProviderName(connection.provider_id)} setup`
+        : native
+          ? `Akun ${definition.name}`
+          : `${modelProviderName(connection.provider_id ?? harnesses[provider].providerId)} API key`;
   return (
     <div className="provider-account">
       <Item className="settings-row provider-account-row min-h-20 gap-4 rounded-none border-0 p-4 flex-wrap">

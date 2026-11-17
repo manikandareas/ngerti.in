@@ -1,6 +1,6 @@
 # API consumer contract
 
-Current source export: **2.0.0**. [Server organizations consumer contract](server-organizations-api.md) is the authoritative account-mode guide. [NMA-079 verification](../verification/nma-079/README.md) records the complete surface/access inventory, PostgreSQL and revocation proof, native Cua isolation, and normal scoped Codex/Muse execution. Authentication, organizations and scoped-data readiness are `ready` for this backend API scope. Web/Tauri UI, deployed HTTPS/restore, installation and capacity remain separate gates.
+Current source export: **2.4.0**. [Server organizations consumer contract](server-organizations-api.md) is the authoritative account-mode guide; its ACP delta records the affected backend cohort, typed interactions/progress and consumer minimum version. [NMA-079 verification](../verification/nma-079/README.md) retains the original 2.0.0 surface/access, PostgreSQL/revocation, native Cua and scoped Codex/Muse acceptance. Historical gates do not certify the [ACP replacement](acp-harnesses.md). Native/provider, browser/Tauri, deployment, installation and capacity remain separate evidence.
 
 The breaking major version replaces owner-only consumer assumptions with verified user/device authentication, explicit organization context, private Team-agent interactions, selected connections and signed replay context. Existing 1.x clients must implement the new contract before consumption; historical exports remain unchanged.
 

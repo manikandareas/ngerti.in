@@ -20,7 +20,6 @@ import {
   useState,
 } from "react";
 import { WorkspaceRail } from "@/app/workspace-rail";
-import { useFeedbackToast } from "@/hooks/use-feedback-toast";
 import {
   Conversation,
   ConversationContent,
@@ -109,6 +108,7 @@ import { useMessageSubmission } from "@/features/conversation/lib/use-message-su
 import { useMarketplace } from "@/features/marketplace/hooks/use-marketplace";
 import { useSettings } from "@/features/settings/hooks/use-settings";
 import type { SettingsSectionId } from "@/features/settings/lib/settings-search";
+import { useFeedbackToast } from "@/hooks/use-feedback-toast";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useWorkspace } from "@/hooks/use-workspace";
@@ -557,6 +557,7 @@ export default function Workspace() {
   function compose(text: string) {
     setDraft(text);
     setDetails(false);
+    requestAnimationFrame(() => composerInput.current?.focus());
   }
   const openResource = useCallback(
     (kind: "agent" | "files" | "goals" | "routine", id: string) => {
@@ -744,12 +745,12 @@ export default function Workspace() {
       const nativeConnection = connections.find(
         (connection) =>
           connection.id ===
-          snapshot?.agents.find((agent) => agent.id === active?.agent_id)?.connection_id,
+          (active?.provider_selection?.connection_id ??
+            snapshot?.agents.find((agent) => agent.id === active?.agent_id)?.connection_id),
       );
       const target =
         active?.status === "running" &&
         active.cancellation === "none" &&
-        active.native_run_id &&
         !activeRuns.some(hasPendingNative) &&
         nativeConnection?.state === "active" &&
         nativeConnection.login === "authenticated" &&
@@ -775,7 +776,7 @@ export default function Workspace() {
   }, [threadId, queued.length, steerTargetId, editing]);
   function steerQueued(item: QueuedMessage) {
     const target = item.target;
-    if (!target?.native_run_id || busy || pending !== null || editing) return;
+    if (!target || busy || pending !== null || editing) return;
     steerAgainUntil.current = 0;
     void act(async () => {
       // A fresh authorized observation closes the gap before the background poll reaches the journal.
@@ -790,7 +791,7 @@ export default function Workspace() {
       }
       await queueCommand(`queued-steer:${item.run.id}`, `/v1/runs/${target.id}/steer`, {
         queued_run_id: item.run.id,
-        expected_native_run_id: target.native_run_id,
+        ...(target.native_run_id ? { expected_native_run_id: target.native_run_id } : {}),
       });
     });
   }
@@ -805,18 +806,8 @@ export default function Workspace() {
     runs: snapshot?.runs,
   });
   function canObserveNative(run: Run) {
-    const connection = connections.find(
-      (connection) =>
-        connection.id ===
-        snapshot?.agents.find((agent) => agent.id === run.agent_id)?.connection_id,
-    );
-    return (
-      run.status === "running" &&
-      run.cancellation === "none" &&
-      connection?.state === "active" &&
-      connection.login === "authenticated" &&
-      connection.capabilities.permission_requests === "supported"
-    );
+    // The run's server-validated binding owns native interactions, including private Team selections.
+    return run.status === "running" && run.cancellation === "none";
   }
   function nativeFragment(fragment: NativeTranscriptFragment) {
     const author = snapshot?.agents.find((agent) => agent.id === fragment.run.agent_id);

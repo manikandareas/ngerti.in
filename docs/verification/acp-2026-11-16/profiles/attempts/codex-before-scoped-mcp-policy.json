@@ -1,0 +1,50 @@
+{
+  "timestamp": "2026-11-16T11:26:45.135Z",
+  "scope": "disposable owner-mode PostgreSQL and real HTTP ProductTools; explicit provider/billing; no production mutations, account-mode privacy or UI claims",
+  "results": [
+    {
+      "harness": "codex",
+      "adapter": "2.6.0",
+      "runtime": "0.169.0",
+      "provider": "openai",
+      "billing": "subscription",
+      "inference": "not_attempted",
+      "useful_tool": "not_attempted",
+      "reload": "not_attempted",
+      "failure": "Native inference observation deadline reached.",
+      "final_observation": {
+        "status": "running",
+        "diagnostic": null,
+        "preparation": {
+          "state": "ready",
+          "attempts": 1,
+          "next_attempt_at": null,
+          "configuration_revision": "1:1:1",
+          "runtime_revision": ""
+        },
+        "timings": {
+          "ready_at": "2026-11-16T11:26:49.234Z",
+          "accepted_at": "2026-11-16T11:26:49.792Z",
+          "preparing_at": "2026-11-16T11:26:46.072Z",
+          "dispatched_at": "2026-11-16T11:26:49.272Z"
+        },
+        "native_turn_id": false,
+        "dispatch_receipt": true,
+        "product_tools": []
+      },
+      "diagnostics": [],
+      "update_counts": {
+        "available_commands_update": 1,
+        "session_info_update": 4,
+        "tool_call": 1,
+        "usage_update": 1
+      }
+    },
+    {
+      "harness": "claude",
+      "inference": "unverified",
+      "useful_tool": "unverified",
+      "skip": "Owner chose to retain unverified status; project Anthropic credential unavailable."
+    }
+  ]
+}

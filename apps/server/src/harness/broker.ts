@@ -391,6 +391,7 @@ export class HarnessBroker {
               generation: initial.connection.grant_revision,
             }
           : undefined,
+        { externalCodexTokens: adapter.transport === "acp" },
       ),
       purpose: (await this.lifecycle.store.get("thread", threadId)).purpose,
       signal: controller.signal,
@@ -439,6 +440,7 @@ export class HarnessBroker {
           workspaces,
           workspace.id,
           launch.machine?.root ?? launch.workspace?.root,
+          adapter.transport,
         ),
         model_id: selected.model_id,
       });
@@ -534,6 +536,7 @@ export class HarnessBroker {
           binding.agent_id === agentId &&
           binding.connection_id === current.id &&
           binding.harness === current.harness &&
+          binding.transport === adapter.transport &&
           (!this.lifecycle.store.dataContext ||
             (binding.organization_id === this.lifecycle.store.dataContext.organizationId &&
               binding.actor_id === this.lifecycle.store.dataContext.userId &&
@@ -559,7 +562,6 @@ export class HarnessBroker {
         // unknown acknowledgements and every prior dispatch keep their original identity.
         if (
           !(error instanceof NativeSessionMissing) ||
-          current.harness !== "codex" ||
           !previous ||
           (await this.lifecycle.store.list("run", { binding_id: previous.id })).some(
             (run) => run.binding_id === previous.id,
@@ -591,6 +593,7 @@ export class HarnessBroker {
         identity.native_session_id,
         workspace,
         replaceUnused,
+        client.bindingMetadata?.(),
       );
       if (inherited) await persistInheritedSkills(this.lifecycle, launch, binding.id, inherited);
       const session: Session = {
@@ -665,7 +668,8 @@ export class HarnessBroker {
         await this.steer(
           control.run_id,
           (await this.lifecycle.store.get("message", control.message_id)).text,
-          control.native_run_id,
+          control.native_run_id ?? undefined,
+          control,
         );
         if (this.#closed)
           return { ...control, state: "unknown" as const, error_code: "NATIVE_UNKNOWN" };
@@ -686,16 +690,26 @@ export class HarnessBroker {
     this.#controls.set(controlId, operation);
     return operation;
   }
-  async steer(runId: string, text: string, expectedNativeRunId?: string) {
+  async steer(
+    runId: string,
+    text: string,
+    expectedNativeRunId?: string,
+    attempt?: Pick<Entity<"control">, "dispatch_token" | "authority_epoch">,
+  ) {
     const run = await this.lifecycle.store.get("run", runId);
     if (
       !run.dispatch_token ||
       run.status !== "running" ||
+      (attempt?.dispatch_token != null && attempt.dispatch_token !== run.dispatch_token) ||
+      (attempt?.authority_epoch != null && attempt.authority_epoch !== run.authority_epoch) ||
       (expectedNativeRunId && expectedNativeRunId !== run.native_run_id)
     )
       throw new DomainError("CONFLICT");
     await this.lifecycle.authorizeDispatch(runId, run.dispatch_token);
-    const session = await this.session(run.thread_id, run.agent_id);
+    // Steering can only affect the already-running writer, never open a replacement process.
+    const session = this.#sessions.get(`${run.thread_id}:${run.agent_id}`);
+    if (!session || session.binding.id !== run.binding_id)
+      throw new HarnessError("NATIVE_REJECTED");
     this.requireCapability(await this.check(session, run.thread_id, run.agent_id), "steer");
     if (!session.client.steer) throw new HarnessError("CAPABILITY_UNSUPPORTED");
     await this.lifecycle.authorizeDispatch(runId, run.dispatch_token);
@@ -801,6 +815,7 @@ export class HarnessBroker {
               generation: binding.connection_generation ?? connection.grant_revision,
             }
           : undefined,
+        { externalCodexTokens: adapter.transport === "acp" },
       ),
       signal: controller.signal,
       purpose: "routing",
@@ -977,6 +992,7 @@ export class HarnessBroker {
     let stopTimer: ReturnType<typeof setTimeout> | undefined;
     let dispatched = false;
     let accepted: string | null = null;
+    let processingObserved = false;
     let finished = false;
     let recoveredNative = false;
     let removeWatch = () => {};
@@ -1133,18 +1149,24 @@ export class HarnessBroker {
                 if (event.type === "accepted") {
                   if (
                     event.native_session_id !== session.binding.native_session_id ||
-                    (accepted !== null && accepted !== event.native_run_id)
+                    (processingObserved && accepted !== event.native_run_id)
                   )
                     throw new HarnessError("PROTOCOL_ERROR", "unknown");
-                  if (session.launch.redactor.text(event.native_run_id) !== event.native_run_id)
+                  if (
+                    event.native_run_id !== null &&
+                    session.launch.redactor.text(event.native_run_id) !== event.native_run_id
+                  )
                     throw new HarnessError("PROTOCOL_ERROR", "unknown");
                   accepted = event.native_run_id;
-                  await context.started(event.native_run_id);
-                  await attachments.record(
-                    run.id,
-                    attachmentContext.observations,
-                    authorizeAttachments,
-                  );
+                  if (!processingObserved) {
+                    processingObserved = true;
+                    await context.started(event.native_run_id ?? undefined);
+                    await attachments.record(
+                      run.id,
+                      attachmentContext.observations,
+                      authorizeAttachments,
+                    );
+                  }
                 }
                 if (event.type === "text") {
                   text += event.text;
@@ -1212,6 +1234,10 @@ export class HarnessBroker {
                   await this.lifecycle.observe(run.id, run.dispatch_token as string, {
                     native_tools: tools.slice(-200),
                   });
+                } else if (event.type === "progress") {
+                  await this.lifecycle.observe(run.id, run.dispatch_token as string, {
+                    native_progress: event.progress,
+                  });
                 } else if (event.type === "failure") {
                   await this.lifecycle.observe(run.id, run.dispatch_token as string, {
                     diagnostic: { ...diagnostic(new HarnessError(event.code)), outcome: "failed" },
@@ -1226,7 +1252,7 @@ export class HarnessBroker {
                 } else await this.publish(run.id, event);
                 if (
                   (event.type === "text" || event.type === "text_snapshot") &&
-                  accepted &&
+                  processingObserved &&
                   Date.now() - lastPublishedAt >= 100
                 ) {
                   const safe = session.launch.redactor.stream(text);
@@ -1253,15 +1279,14 @@ export class HarnessBroker {
       if (
         result.native_session_id !== session.binding.native_session_id ||
         result.native_run_id !== accepted ||
-        (result.status === "succeeded" && !accepted) ||
-        (result.status === "cancelled" && !context.signal.aborted)
+        (result.status === "succeeded" && !processingObserved)
       )
         throw new HarnessError("PROTOCOL_ERROR", "unknown");
       outcome = result.status;
     } catch (error) {
       await nativeEvents;
       outcome = dispatched
-        ? !accepted && error instanceof HarnessError && error.outcome === "not_dispatched"
+        ? !processingObserved && error instanceof HarnessError && error.outcome === "not_dispatched"
           ? "failed"
           : "unknown"
         : "failed";
@@ -1281,11 +1306,27 @@ export class HarnessBroker {
           () => true,
           () => false,
         ));
+      if (!authorized) {
+        // Revocation removes data access, never the responsibility to drain the owned process.
+        const session = this.#sessions.get(lane);
+        if (session) {
+          this.#sessions.delete(lane);
+          clearTimeout(this.#idleTimers.get(lane));
+          this.#idleTimers.delete(lane);
+          session.controller.abort();
+          try {
+            await this.closeWriter(run.id, session.client);
+          } catch {
+            outcome = "unknown";
+          }
+        }
+      }
       if (authorized) {
         const groupWorkspace = run.workspace_id
           ? (await this.lifecycle.store.get("workspace", run.workspace_id)).scope === "group"
           : false;
-        if (groupWorkspace || recoveredNative) {
+        const rotateProcess = this.#sessions.get(lane)?.client.closeAfterRun === true;
+        if (groupWorkspace || recoveredNative || rotateProcess) {
           const session = this.#sessions.get(`${run.thread_id}:${run.agent_id}`);
           if (session) {
             // End the writer process before the application's durable workspace lease can settle.
@@ -1298,7 +1339,7 @@ export class HarnessBroker {
         }
         if (!this.#closed && (text || (await this.lifecycle.store.answer(run.id)))) {
           const session = this.#sessions.get(`${run.thread_id}:${run.agent_id}`);
-          if (session && accepted) {
+          if (session && processingObserved) {
             const safe = session.launch.redactor.text(text);
             const published = await this.appendIfAuthorized(
               run.id,
@@ -1326,6 +1367,7 @@ export class HarnessBroker {
           !this.#closed &&
           (groupWorkspace ||
             recoveredNative ||
+            rotateProcess ||
             (await this.lifecycle.store.get("thread", run.thread_id)).purpose === "routing")
         ) {
           const key = `${run.thread_id}:${run.agent_id}`;

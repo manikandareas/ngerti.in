@@ -1,28 +1,11 @@
 import { useMemo } from "react";
-import {
-  defaultModelProviders,
-  ModelPicker,
-  type ModelPickerProvider,
-  type ThinkingEffort,
-} from "@/components/ui/model-picker";
+import { HarnessIcon } from "@/components/harness-icon";
+import { ModelPicker } from "@/components/ui/model-picker";
+import { connectionReady, harnessModelCatalog, harnessModelKey } from "@/lib/harness-models";
+import type { HarnessId } from "@/lib/harnesses";
 import type { Connection } from "@/types/workspace";
-import { connectionReady } from "./ai-integration";
-import {
-  type OnboardingHarness,
-  onboardingHarnesses,
-  onboardingHarnessName,
-} from "./onboarding-harnesses";
+import { type OnboardingHarness, onboardingHarnessName } from "./onboarding-harnesses";
 import "./onboarding-model-picker.css";
-
-const thinkingEfforts: readonly string[] = [
-  "none",
-  "minimal",
-  "low",
-  "medium",
-  "high",
-  "xhigh",
-  "max",
-];
 
 export function OnboardingModelPicker({
   harness,
@@ -31,48 +14,18 @@ export function OnboardingModelPicker({
   harness: OnboardingHarness;
   connection?: Connection;
 }) {
-  const providers = useMemo(() => {
-    const items: ModelPickerProvider[] = onboardingHarnesses.map((item) => ({
-      id: item.id,
-      name: item.name,
-      icon: (
-        <img
-          src={`/images/harnesses/${item.id}.png`}
-          alt=""
-          data-available={item.available}
-          className="size-full rounded-sm object-contain data-[available=false]:opacity-50"
-        />
-      ),
-      models:
-        defaultModelProviders.find((provider) => provider.id === item.providerId)?.models ?? [],
-    }));
-    if (!connectionReady(connection) || connection?.harness !== harness) return items;
-    return items.map((provider) =>
-      provider.id === harness
-        ? {
-            ...provider,
-            models: connection.models.map((model) => {
-              const sample = provider.models.find((item) => item.id === model.id);
-              const thinking = model.reasoning.filter((effort): effort is ThinkingEffort =>
-                thinkingEfforts.includes(effort),
-              );
-              return {
-                id: model.id,
-                name: sample?.name ?? model.id,
-                description: sample?.description,
-                capabilities: [
-                  ...(thinking.length ? (["reasoning"] as const) : []),
-                  ...(model.input_modalities?.includes("image") ? (["image"] as const) : []),
-                ],
-                thinking,
-                defaultThinking: thinking.includes("medium") ? "medium" : thinking[0],
-              };
-            }),
-          }
-        : provider,
-    );
-  }, [connection, harness]);
-  const activeProvider = providers.find((provider) => provider.id === harness);
+  const providers = useMemo(
+    () =>
+      harnessModelCatalog(connection ? [connection] : []).providers.map((provider) => ({
+        ...provider,
+        icon: <HarnessIcon id={provider.id as HarnessId} className="rounded-sm" />,
+      })),
+    [connection],
+  );
+  const first =
+    connectionReady(connection) && connection?.harness === harness
+      ? connection.models[0]
+      : undefined;
   return (
     <aside
       className="onboarding-preview onboarding-model-preview"
@@ -83,8 +36,9 @@ export function OnboardingModelPicker({
           providers={providers}
           activeProvider={harness}
           showEmptyProviders
-          value={activeProvider?.models[0]?.id}
+          value={first && connection ? harnessModelKey(connection.id, first.id) : undefined}
           placeholder={onboardingHarnessName(harness)}
+          emptyProvider={() => "Models appear after you connect and verify this harness."}
           open
           inline
         />

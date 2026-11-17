@@ -17,6 +17,7 @@ import { GroupSchedules } from "./goals/group-schedules";
 import { dueWindow, firstDue } from "./goals/schedule";
 import { ResponsibilityScope } from "./goals/scope";
 import type { GroupRouter } from "./groups/router";
+import type { HarnessBindingMetadata } from "./harness/client";
 import { Connections } from "./harness/connections";
 import { asyncMap, asyncSome } from "./persistence/async-collections";
 import { InteractionJournal } from "./runs/interaction-journal";
@@ -547,6 +548,7 @@ export class Lifecycle {
       binding_id: null,
       native_run_id: null,
       native_interactions: [],
+      native_progress: null,
       agent_snapshot: null,
       delivery: "pending",
       activity: "idle",
@@ -569,6 +571,7 @@ export class Lifecycle {
     nativeSessionId: string,
     workspace?: Entity<"workspace">,
     replaceUnused?: Pick<Entity<"binding">, "id" | "revision">,
+    metadata?: HarnessBindingMetadata,
   ) {
     workspace ??= await new Workspaces(this).ensure(threadId, agentId);
     return await this.store.transaction(async () => {
@@ -580,18 +583,38 @@ export class Lifecycle {
         await this.store.list("binding", { thread_id: threadId, agent_id: agentId })
       ).find((item) => item.active && item.thread_id === threadId && item.agent_id === agentId);
       if (existing) {
+        const unsettled = () =>
+          this.store
+            .list("run", { binding_id: existing.id })
+            .then((runs) =>
+              runs.some(
+                (run) =>
+                  run.binding_id === existing.id &&
+                  ["dispatching", "running", "cancel_requested", "unknown"].includes(run.status),
+              ),
+            );
         if (
           existing.connection_id === agent.connection_id &&
           existing.connection_generation === connection.grant_revision &&
           existing.account_id === connection.account_id &&
           existing.harness === agent.harness &&
+          existing.transport === metadata?.transport &&
           existing.agent_revision === agent.revision &&
           existing.workspace_id === (workspace?.id ?? null) &&
           existing.workspace_revision === (workspace?.revision ?? null)
         ) {
-          if (existing.native_session_id === nativeSessionId) return existing;
+          if (existing.native_session_id === nativeSessionId) {
+            if (
+              !metadata ||
+              Object.entries(metadata).every(
+                ([key, value]) => existing[key as keyof typeof existing] === value,
+              )
+            )
+              return existing;
+            if (await unsettled()) throw new DomainError("CONFLICT");
+            return await this.update(existing, metadata);
+          }
           if (
-            existing.harness !== "codex" ||
             replaceUnused?.id !== existing.id ||
             replaceUnused.revision !== existing.revision ||
             (await this.store.list("run", { binding_id: existing.id })).some(
@@ -600,6 +623,7 @@ export class Lifecycle {
           )
             throw new DomainError("CONFLICT");
         }
+        if (await unsettled()) throw new DomainError("CONFLICT");
         await this.update(existing, { active: false });
       }
       return await this.store.put({
@@ -612,6 +636,10 @@ export class Lifecycle {
         connection_generation: connection.grant_revision,
         account_id: connection.account_id,
         native_session_id: nativeSessionId,
+        ...metadata,
+        ...(existing && existing.transport !== metadata?.transport
+          ? { replaces_binding_id: existing.id, replacement_reason: "transport_changed" as const }
+          : {}),
         generation: (existing?.generation ?? 0) + 1,
         active: true,
         agent_revision: agent.revision,
@@ -884,7 +912,10 @@ export class Lifecycle {
   async appendAnswer(runId: string, text: string, state: "complete" | "partial" = "complete") {
     return await this.store.transaction(async () => {
       let run = await this.store.get("run", runId);
-      if (!active.has(run.status) || !run.native_run_id || run.authority_epoch !== this.epoch)
+      if (
+        !["running", "cancel_requested"].includes(run.status) ||
+        run.authority_epoch !== this.epoch
+      )
         throw new DomainError("STALE_DISPATCH");
       if (run.cancellation !== "none") throw new DomainError("STALE_DISPATCH");
       await this.authorizeDispatch(run.id, run.dispatch_token as string);
@@ -960,6 +991,7 @@ export class Lifecycle {
       | "native_dispatch_id"
       | "diagnostic"
       | "native_tools"
+      | "native_progress"
       | "product_tools"
       | "tool_errors"
       | "sources"

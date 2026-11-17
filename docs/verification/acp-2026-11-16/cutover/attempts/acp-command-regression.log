@@ -1,0 +1,27 @@
+bun test v1.3.10 (30e609e0)
+
+tests/acp.test.ts:
+(pass) ACP session applies advertised config, merges private tool updates and preserves nullable turn identity [99.99ms]
+(pass) a first MCP call can establish processing before any native update without a turn ID [95.48ms]
+(pass) native commands require advertised support and cannot change account or lifecycle authority [714.25ms]
+(pass) reload suppresses historical output and receives a fresh MCP token and process generation [149.91ms]
+(pass) cancel sends intent and waits for a native cancelled prompt response [77.42ms]
+(pass) negotiated steering joins the active nullable-ID attempt and refuses an idle fallback [76.65ms]
+(pass) burst streaming coalesces snapshots and flushes the trailing text before the turn ends [121.80ms]
+(pass) permission choices are bounded, run-scoped and cannot be answered twice [80.37ms]
+(pass) ACP form questions retain types, reject invalid answers and respond exactly once to the active run [76.69ms]
+(pass) ACP form decline and stop resolve the request without inventing user input [150.06ms]
+(pass) elicitation rejects unsupported schemas and validates enum labels independently of native keys [1.14ms]
+(pass) explicit errors/refusal are failure; process death remains unknown [207.51ms]
+(pass) terminal failures and lost acknowledgements flush retained partial text without claiming success [135.58ms]
+(pass) projection redacts split secrets and never publishes thoughts or raw tool content [0.14ms]
+(pass) negotiated native phases keep commentary out of live and canonical answers [0.06ms]
+(pass) native progress merges compactions in place, redacts split summaries and keeps file previews scoped [0.66ms]
+(pass) closing the owned ACP process terminates a surviving background descendant [75.38ms]
+(pass) setup refuses to downgrade application instructions when system prompts are unsupported [64.00ms]
+(pass) unsupported images and unavailable model settings fail before a prompt is sent [66.28ms]
+
+ 19 pass
+ 0 fail
+ 97 expect() calls
+Ran 19 tests across 1 file. [2.46s]

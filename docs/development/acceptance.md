@@ -1,5 +1,9 @@
 # Acceptance and readiness gates
 
+The November 16 owner-promoted [ACP migration](../architecture/acp-harnesses.md) is In Progress. Its [cutover capture](../verification/acp-2026-11-16/cutover/README.md) records implemented Codex execution retirement, retained Muse, shared onboarding/app model picker and real-API desktop/mobile/Tauri journeys using SDK subprocess fixtures. Live Codex subscription/control proof is separate. The full multi-profile inference/account-isolation cohort remains open; native Claude stays unverified by explicit owner choice. Setup/fixture results do not close this gate or relabel earlier provider acceptance.
+
+The later [Pi context/native API 2.4 capture](../verification/acp-2026-11-16/pi-context/README.md) adds real Pi context/skill isolation and Tauri native configuration import. It records the complete backend run's 600 passes and one stale contract-version assertion, followed by a passing focused rerun after that assertion is corrected. This combined result does not claim a single all-green full-suite run, distinct vendor identities or actual credential expiry/renewal.
+
 A document, source module or green fixture is not completed product acceptance. [The local backlog](../backlog/README.md) is the status authority; [product decisions](../product/feature-decisions.md) define required versus optional/deferred scope. Preserve captured evidence, failed iterations and explicit unknowns.
 
 ## Server organizations gates — planned 2026-11-12

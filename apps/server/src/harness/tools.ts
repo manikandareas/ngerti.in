@@ -295,21 +295,23 @@ export class ProductTools {
     } catch (error) {
       this.lifecycle.releaseToolControl(before.id);
       if (error instanceof DomainError) {
-        const current = await this.lifecycle.store.get("run", scope.run_id);
-        if (current.dispatch_token && ["running", "dispatching"].includes(current.status)) {
-          await this.lifecycle.observe(current.id, current.dispatch_token, {
-            tool_errors: [
-              ...current.tool_errors,
-              { name, code: error.code, created_at: new Date().toISOString() },
-            ].slice(-50),
-          });
-          if (name === "ngertiin.report_goal")
-            await new Goals(this.lifecycle).recordReportFailure(
-              current.id,
-              parsed as { goal_id: string; expected_revision: number },
-              error.code,
-            );
-        }
+        await this.lifecycle.store.transaction(async () => {
+          const current = await this.lifecycle.store.get("run", scope.run_id);
+          if (current.dispatch_token && ["running", "dispatching"].includes(current.status)) {
+            await this.lifecycle.observe(current.id, current.dispatch_token, {
+              tool_errors: [
+                ...current.tool_errors,
+                { name, code: error.code, created_at: new Date().toISOString() },
+              ].slice(-50),
+            });
+            if (name === "ngertiin.report_goal")
+              await new Goals(this.lifecycle).recordReportFailure(
+                current.id,
+                parsed as { goal_id: string; expected_revision: number },
+                error.code,
+              );
+          }
+        });
       }
       throw error;
     } finally {
@@ -354,9 +356,11 @@ export class ProductTools {
       if (!this.#leases.has(token)) throw new DomainError("UNAUTHORIZED", 401);
       await this.authorize(scope, true);
     } else await authorize();
-    const current = await this.lifecycle.store.get("run", scope.run_id);
-    await this.lifecycle.observe(current.id, current.dispatch_token as string, {
-      product_tools: [...current.product_tools, name].slice(-200),
+    await this.lifecycle.store.transaction(async () => {
+      const current = await this.lifecycle.store.get("run", scope.run_id);
+      await this.lifecycle.observe(current.id, current.dispatch_token as string, {
+        product_tools: [...current.product_tools, name].slice(-200),
+      });
     });
     await this.completed(scope, name);
     return result;

@@ -1,0 +1,9 @@
+bun test v1.3.10 (30e609e0)
+
+../../scripts/verification/acp/native.test.ts:
+(pass) record native ACP selected-billing inference, scoped tool, reload and receipt recovery separately from account isolation [26647.53ms]
+
+ 1 pass
+ 0 fail
+ 19 expect() calls
+Ran 1 test across 1 file. [27.39s]

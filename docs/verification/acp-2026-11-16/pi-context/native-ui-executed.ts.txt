@@ -1,0 +1,218 @@
+import { expect, test } from "bun:test";
+import { createHash } from "node:crypto";
+import { copyFileSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { join, resolve } from "node:path";
+import { Connections } from "../../../apps/server/src/harness/connections";
+import { codexFixture } from "../../../apps/server/tests/acp-fixture";
+import { readinessFixture } from "../../../apps/server/tests/organizations/readiness-helpers";
+
+test.skipIf(process.env.NGERTIIN_ACP_NATIVE_UI !== "1")(
+  "native Tauri verification fixture retains typed ACP answers and a private model choice",
+  async () => {
+    const root = resolve(import.meta.dir, "../../..");
+    const capture = process.env.NGERTIIN_ACP_NATIVE_UI_CAPTURE;
+    if (capture && !/^[a-z0-9-]+$/.test(capture)) throw new Error("Invalid native UI capture name.");
+    const configurationFlow = process.env.NGERTIIN_ACP_NATIVE_UI_CONFIG === "1";
+    const directory = join(root, ".dev/acp-native-ui", capture ?? "");
+    const profile = join(directory, "client");
+    const bundle = join(directory, "Ngertiin ACP Verification.app");
+    const contents = join(bundle, "Contents");
+    mkdirSync(profile, { recursive: true, mode: 0o700 });
+    mkdirSync(join(contents, "MacOS"), { recursive: true });
+    mkdirSync(join(contents, "Resources"), { recursive: true });
+    let endpoint = "";
+    const f = await readinessFixture(
+      undefined,
+      undefined,
+      undefined,
+      0,
+      false,
+      { nativeRedirectUri: "http://127.0.0.1:43119/callback" },
+      {
+        codex: codexFixture(() => endpoint),
+      },
+    );
+    endpoint = `${f.origin}/v1/harness/tools`;
+    const lane = await f.lane(f.owner.cookie, "codex");
+    await f.domain.store.withDataContext(lane.scope, async () => {
+      const connections = new Connections(f.domain.lifecycle);
+      await connections.update(await connections.get(lane.connection.id), {
+        account_id: createHash("sha256").update("fixture-account").digest("hex"),
+      });
+    });
+    await f.success(f.request(f.owner.cookie, "/v1/data/provision", {}));
+    const dist = join(root, "apps/web-client/dist");
+    f.serve(async (request) => {
+      const url = new URL(request.url);
+      if (/^\/(v1|health|api\/auth)(\/|$)/.test(url.pathname)) return f.api.handle(request);
+      const path = resolve(dist, `.${url.pathname}`);
+      const file = path.startsWith(`${dist}/`) ? Bun.file(path) : null;
+      return new Response(
+        file && (await file.exists()) ? file : Bun.file(join(dist, "index.html")),
+        { headers: { "Cache-Control": "no-store" } },
+      );
+    });
+    await f.background.start(100);
+    const native = join(root, "apps/desktop/src-tauri/target/debug/ngertiin-desktop");
+    const executable = join(contents, "MacOS/ngertiin-desktop");
+    copyFileSync(native, executable);
+    copyFileSync(join(root, "apps/desktop/dist/app.icns"), join(contents, "Resources/app.icns"));
+    writeFileSync(
+      join(contents, "MacOS/acp-verification-launcher"),
+      `#!/bin/sh\nexport NGERTIIN_DESKTOP_HOME='${profile}'\nexec '${executable}'\n`,
+      { mode: 0o700 },
+    );
+    writeFileSync(
+      join(contents, "Info.plist"),
+      `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"><plist version="1.0"><dict>
+<key>CFBundleExecutable</key><string>acp-verification-launcher</string>
+<key>CFBundleIdentifier</key><string>in.ngertiin.desktop.acp-verification</string>
+<key>CFBundleName</key><string>Ngertiin ACP Verification</string>
+<key>CFBundleDisplayName</key><string>Ngertiin ACP Verification</string>
+<key>CFBundlePackageType</key><string>APPL</string>
+<key>CFBundleVersion</key><string>0.2.0</string>
+<key>CFBundleIconFile</key><string>app.icns</string>
+<key>NSHighResolutionCapable</key><true/>
+</dict></plist>`,
+    );
+    const managerId = crypto.randomUUID();
+    const nativeConfigurationFile = join(directory, "pi-models-fixture.json");
+    if (configurationFlow) writeFileSync(nativeConfigurationFile, JSON.stringify({
+      providers: Object.fromEntries(["native-ui-provider-a", "native-ui-provider-b"].map(id => [id, {
+        baseUrl: `https://${id}.example.test/v1`, api: "openai-completions",
+        apiKey: `fixture-private-${id}`, models: [{ id: "native-model" }],
+      }])),
+    }), { mode: 0o600 });
+    writeFileSync(
+      join(profile, "profile.json"),
+      JSON.stringify({
+        version: 2,
+        managerId,
+        serverOrigin: f.origin,
+        projectRoot: root,
+        uiPort: 48173,
+      }),
+      { mode: 0o600 },
+    );
+    const signed = Bun.spawn(["/usr/bin/codesign", "--force", "--deep", "--sign", "-", bundle], {
+      stdout: "ignore",
+      stderr: "pipe",
+    });
+    if (await signed.exited)
+      throw new Error("Could not sign the isolated verification application.");
+    let complete: () => void = () => {};
+    const completed = new Promise<void>((resolve) => {
+      complete = resolve;
+    });
+    let passed = false;
+    const snapshot = () =>
+      f.success(f.request(f.owner.cookie, `/v1/threads/${lane.thread.id}/snapshot`));
+    const control = Bun.serve({
+      hostname: "127.0.0.1",
+      port: 0,
+      async fetch(request) {
+        const path = new URL(request.url).pathname;
+        if (path === "/state")
+          return Response.json({
+            snapshot: await snapshot(),
+            selections: await f.success(f.request(f.owner.cookie, "/v1/entities/ai_selection")),
+          });
+        if (path === "/complete" && request.method === "POST") {
+          passed = true;
+          setTimeout(complete, 50);
+          return Response.json({ recorded: true });
+        }
+        if (path === "/stop" && request.method === "POST") {
+          setTimeout(complete, 50);
+          return Response.json({ stopped: true });
+        }
+        return new Response(null, { status: 404 });
+      },
+    });
+    const report: Record<string, unknown> = {
+      timestamp: new Date().toISOString(),
+      scope:
+        "real macOS Tauri client and account HTTP/PostgreSQL; native ACP SDK subprocess fixture; no provider inference or distribution claim",
+      origin: f.origin,
+      control: `http://127.0.0.1:${control.port}`,
+      bundle,
+      manager_id: managerId,
+      agent: lane.agent.name,
+      thread_id: lane.thread.id,
+      native_sha256: createHash("sha256").update(readFileSync(native)).digest("hex"),
+      web_index_sha256: createHash("sha256").update(readFileSync(join(dist, "index.html"))).digest("hex"),
+      contract_version: (await f.success(f.request(f.owner.cookie, "/v1/contracts"))).version,
+      ...(configurationFlow ? { native_configuration_fixture: nativeConfigurationFile } : {}),
+      completed: false,
+    };
+    const reportFile = join(directory, "report.json");
+    await Bun.write(reportFile, `${JSON.stringify(report, null, 2)}\n`);
+    console.log(
+      JSON.stringify({
+        event: "acp_native_ui.ready",
+        origin: f.origin,
+        control: report.control,
+        bundle,
+      }),
+    );
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    try {
+      await Promise.race([
+        completed,
+        new Promise<never>((_, reject) => {
+          timer = setTimeout(
+            () => reject(new Error("Native UI verification deadline reached.")),
+            840_000,
+          );
+        }),
+      ]);
+      expect(passed).toBe(true);
+      if (passed) {
+        const state = await snapshot();
+        const run = state.runs.at(-1);
+        const selection = (
+          await f.success(f.request(f.owner.cookie, "/v1/entities/ai_selection"))
+        ).find(
+          (entry: { scope: string; thread_id: string }) =>
+            entry.scope === "conversation" && entry.thread_id === lane.thread.id,
+        );
+        expect(run.status).toBe("succeeded");
+        expect(run.native_run_id).toBeNull();
+        expect(run.provider_selection.model_id).toBe("fixture-model");
+        expect(
+          state.messages.some(
+            (entry: { author: string; text: string }) =>
+              entry.author === "agent" &&
+              entry.text.includes('"count":3') &&
+              entry.text.includes('"name":"Ari"'),
+          ),
+        ).toBe(true);
+        expect(selection.selection.model_id).toBe("model-a");
+        expect(selection.selection.reasoning).toBeNull();
+        report.completed = true;
+        report.checks = [
+          "typed_form_native_values",
+          "nullable_native_turn_identity",
+          "shared_picker_private_selection",
+          "native_reasoning_default",
+          "completed_run_selection_retained",
+        ];
+        if (configurationFlow) {
+          const connections = await f.success(f.request(f.owner.cookie, "/v1/entities/connection"));
+          expect(connections.some((connection: { harness: string; provider_id: string; authentication: { method: string } }) => connection.harness === "pi" && connection.provider_id === "native-ui-provider-b" && connection.authentication.method === "harness_config")).toBe(true);
+          expect(connections.some((connection: { harness: string; provider_id: string; authentication: { method: string; billing_source: string } }) => connection.harness === "opencode" && connection.provider_id === "opencode" && connection.authentication.method === "none" && connection.authentication.billing_source === "free")).toBe(true);
+          (report.checks as string[]).push("native_generic_pi_configuration_import", "native_public_free_connection_without_key");
+        }
+      }
+    } finally {
+      clearTimeout(timer);
+      await Bun.write(reportFile, `${JSON.stringify(report, null, 2)}\n`);
+      await control.stop(true);
+      await f.background.stop(100);
+      await f.broker.close();
+      await f.close();
+    }
+  },
+  900_000,
+);

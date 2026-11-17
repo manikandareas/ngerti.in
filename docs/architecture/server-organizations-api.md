@@ -14,6 +14,24 @@ NMA-081 adds the issuing-session authenticated WebSocket route `/v1/machine/view
 
 The [2.2.0 export](../contracts/2.2.0.json), [Tauri transport contract](tauri-remote-client.md) and [NMA-081 evidence](../verification/nma-081/README.md) retain this delta independently from earlier API/browser/provider gates. NMA-082 implements a [pinned HTTPS/WSS deployment profile](server-deployment.md) with [bounded disposable Linux proof](../verification/nma-082/README.md); selected-host and actual-client acceptance remain open.
 
+## ACP consumer delta — 2.3.0
+
+The [2.3.0 export](../contracts/2.3.0.json) adds Claude/OpenCode/Pi alongside Codex/Muse, an explicit `provider_id` for multi-provider connections/admitted selections, transport/runtime/process/instruction binding metadata, nullable native turn identity on durable steering controls, typed form elicitation and bounded native run progress. The authenticated backend delta cohort passes **17/17** tests: installed schemas, private encrypted key creation/rotation with preserved provider choice, anonymous/cross-user denial, response/replay contracts and organization revocation. These tests do not perform native inference. The [ACP migration](acp-harnesses.md) retains native/provider and UI acceptance separately.
+
+Web/Tauri's shared UI requires API 2.3 or newer before writes. OpenCode/Pi require an explicit model provider; their key entry never chooses a subscription or another provider implicitly. Only advertised steering is enabled, including when `native_run_id` is null. A definite idle rejection returns queued input to FIFO; an ambiguous acknowledgement remains held. Typed form fields preserve native constraints and explicit decline/cancel semantics through the existing interaction journal. Run plans/context/compaction and bounded file-change previews are observed progress, not Goals, artifact publication or new grants. General command execution remains unavailable until its separate lifecycle path is verified.
+
+The backend contract cohort precedes this consumer implementation. Build/typecheck do not establish rendered browser/Tauri acceptance. Native Claude remains unverified by the owner's explicit verification choice; exhausted project API quota does not certify OpenCode/Pi inference. Historical NMA-079/083 acceptance is not relabeled for this delta.
+
+## Harness credential delta — 2.4.0
+
+The [2.4.0 export](../contracts/2.4.0.json) adds `authentication.method: none` with `billing_source: free` for the public OpenCode provider and `authentication.method: harness_config` for existing Pi provider configuration. OpenCode Free uses ordinary `POST /v1/connections` without a credential. Pi uses `POST /v1/connections/native-configuration` with a provider ID and the selected provider's data. Provider IDs, API types and HTTP(S) endpoints come from that configuration, without an application registry for custom native providers. The server encrypts the configuration and returns a secret-free reference. Commands, environment references, non-HTTP(S) endpoints and extension fields are rejected. Retirement deletes the private credential reference; reimport creates a new explicit binding instead of silently switching existing selections.
+
+The ACP native failure contract includes `PROVIDER_LIMIT` for a reported usage limit. It is a failed provider outcome, not logout, cancellation confirmation or permission to change billing. Clients show a quota-reset/connection choice message instead of automatic credential or billing substitution. OpenCode's pinned status hook supplies quota reasons omitted from its ACP projection; other profiles still use their verified native error paths.
+
+The authenticated API cohort verifies unknown native provider IDs, encrypted storage, no key in responses, cross-user denial and retained explicit app-key routes. These are fixture/API results, not provider inference. DeepSeek/Sumopod is an owner-selected native Pi test input, not a product integration or default. Native Claude remains unverified by owner choice; each profile's inference and useful-tool evidence remains separately scoped.
+
+The shared web/Tauri UI requires API 2.4 or newer before writes. Settings and onboarding discover Pi provider choices from the supplied existing native configuration; neither keeps a custom-provider registry. ACP negotiates authentication with the harness, while the application binds the selected credential configuration to its private execution environment. Provider identity, billing, grants and frozen active-run choices remain explicit; no global account, settings or extension inheritance is added.
+
 ## Authentication and resource selection
 
 | Class | Authority and scope |

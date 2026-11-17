@@ -63,6 +63,7 @@ const durablePaths = new Set([
   "/v1/groups/:id/configuration",
   "/v1/connections",
   "/v1/connections/api-key",
+  "/v1/connections/native-configuration",
   "/v1/connections/:id/revoke",
   "/v1/connections/:id/rotate-key",
   "/v1/runs/:id/steer",

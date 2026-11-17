@@ -1,0 +1,790 @@
+$ bun run --filter @ngertiin/server test
+@ngertiin/server test: bun test v1.3.10 (30e609e0)
+@ngertiin/server test: 
+@ngertiin/server test: tests/run-recovery.test.ts:
+@ngertiin/server test: (pass) unknown work is reconciled automatically with backoff and no prompt replay [1193.55ms]
+@ngertiin/server test: (pass) a lost native completion is recovered through the executing owner and fences late output [960.30ms]
+@ngertiin/server test: (pass) silence with no terminal receipt preserves running work and its tools [1018.55ms]
+@ngertiin/server test: (pass) current native observations postpone stale checks during a long valid run [1068.65ms]
+@ngertiin/server test: (pass) foreign receipts and unexpected cancellation cannot release an unknown lane [915.07ms]
+@ngertiin/server test: (pass) an unrequested native interruption remains unresolved [1070.44ms]
+@ngertiin/server test: (pass) closing recovery cancels timers and prevents further receipt reads [892.80ms]
+@ngertiin/server test: (pass) automatic group recovery keeps the writer fenced until its owned transport is quiescent [1045.62ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/operation-responses.test.ts:
+@ngertiin/server test: (pass) consumer validates real creation, learning, workspace, group and control responses [1924.97ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/agents.test.ts:
+@ngertiin/server test: (pass) concurrent HTTP setup and distinct retry keys produce one default agent, primary DM and authored welcome without runs [786.33ms]
+@ngertiin/server test: (pass) setup transaction rolls back all state, events and receipt, then retries safely after restart [345.46ms]
+@ngertiin/server test: (pass) configuration HTTP requires revisions and rejects identity/access injection and mismatched connections [607.55ms]
+@ngertiin/server test: (pass) codex native protocol fixture creates and updates an agent through scoped HTTP tools with durable deduplication [6214.72ms]
+@ngertiin/server test: (pass) codex configuration updates keep active snapshots and replace subsequent sessions with thread-only history [6654.89ms]
+@ngertiin/server test: (pass) muse native protocol fixture creates and updates an agent through scoped HTTP tools with durable deduplication [5529.64ms]
+@ngertiin/server test: (pass) muse configuration updates keep active snapshots and replace subsequent sessions with thread-only history [5964.87ms]
+@ngertiin/server test: (pass) tool scope denies ordinary agents owner configuration and prevents stale revisions and command reuse [1500.86ms]
+@ngertiin/server test: (pass) history pagination and snapshot cursor survive restart with explicit authors and no duplicate replay [950.78ms]
+@ngertiin/server test: (pass) concurrent configuration writes admit one expected revision and reject duplicate handles and invalid creation scope [524.89ms]
+@ngertiin/server test: (pass) switching harness during active work preserves the old run and selects a new binding for the next work [2604.85ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/background.test.ts:
+@ngertiin/server test: (pass) scheduler atomically persists one occurrence/run and survives repeated ticks and restart [302.67ms]
+@ngertiin/server test: (pass) interval recovery collapses missed occurrences and holds overlapping work [249.44ms]
+@ngertiin/server test: (pass) paused responsibilities do not fire routines after restart [237.42ms]
+@ngertiin/server test: (pass) dispatcher waits for a registered adapter and has no implicit executor [159.69ms]
+@ngertiin/server test: (pass) dispatcher uses one lane at a time and records native acknowledgement before completion [347.93ms]
+@ngertiin/server test: (pass) adapter exceptions become unknown and are never automatically retried [283.32ms]
+@ngertiin/server test: (pass) native stop confirmation differs from shutdown timeout and late completion is fenced [328.99ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/routing-semantics.test.ts:
+@ngertiin/server test: (pass) focused decisions exclude historical bodies, retain the complete request and use identity-stable keys [2.59ms]
+@ngertiin/server test: (pass) semantic context selection expands factual shared history once within the same decision [0.35ms]
+@ngertiin/server test: (pass) a high-confidence downstream selection is not admitted when semantic role review disagrees [354.29ms]
+@ngertiin/server test: (pass) a coherent relational judgment can resolve the initiator without a phrase recognizer [299.09ms]
+@ngertiin/server test: (pass) observations remain in scoped owner diagnostics and survive restart without rerouting [671.21ms]
+@ngertiin/server test: (pass) queued classification never imports later messages or private DM history [262.18ms]
+@ngertiin/server test: (pass) identity ambiguity is factual evidence while the model retains the semantic choice [4.23ms]
+@ngertiin/server test: (pass) member fallback can ask for clarification without assigning an arbitrary member [308.90ms]
+@ngertiin/server test: (pass) public handoff tools require an agent-authored announcement without prescribing its wording [3.86ms]
+@ngertiin/server test: (pass) unrelated optional judgments do not veto an otherwise supported decision [5.39ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/provider-key.test.ts:
+@ngertiin/server test: (pass) provider key onboarding stores only a private host key and replays across restart [757.33ms]
+@ngertiin/server test: (pass) key onboarding preserves explicit Codex API billing and published request/response schemas [554.80ms]
+@ngertiin/server test: (pass) unauthorized, malformed and missing-key requests never write credentials or domain state [452.75ms]
+@ngertiin/server test: (pass) credential onboarding rejects symlinked credential directories [391.84ms]
+@ngertiin/server test: (pass) credential onboarding rejects publicly readable credential storage [396.96ms]
+@ngertiin/server test: (pass) a rejected connection transaction removes its new host key [427.49ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/attachments.test.ts:
+@ngertiin/server test: (pass) private uploads appear in neither workspace nor artifacts until one message commits [229.99ms]
+@ngertiin/server test: (pass) a missing second upload rolls back all artifact and message publication [137.14ms]
+@ngertiin/server test: (pass) HTTP lost acknowledgement, exact replay and restart publish one message and artifact [833.75ms]
+@ngertiin/server test: (pass) restart finishes a committed pending projection and expiry only removes uncommitted bytes [253.43ms]
+@ngertiin/server test: (pass) PDF extraction supplies real page text, search locations and bounded read receipts [1013.89ms]
+@ngertiin/server test: (pass) follow-up context finds prior sent files but excludes drafts, future messages and foreign lanes [423.16ms]
+@ngertiin/server test: (pass) unsupported, empty and invalid documents have explicit failures without a fabricated read [449.92ms]
+@ngertiin/server test: (pass) cached document reads recheck revoked access and immutable source corruption [475.23ms]
+@ngertiin/server test: (pass) an interrupted derived text cache is recomputed without changing source bytes [228.45ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/submission-replay.test.ts:
+@ngertiin/server test: (pass) dm existing-file submissions replay directly after lost acknowledgement and restart [971.41ms]
+@ngertiin/server test: (pass) group existing-file submissions replay directly after lost acknowledgement and restart [955.08ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/muse.test.ts:
+@ngertiin/server test: (pass) official Muse SDK fixture completes an actual scoped HTTP product-tool call [1685.30ms]
+@ngertiin/server test: (pass) Muse maps the official tool field and clears terminal updates without a completed notification [1293.08ms]
+@ngertiin/server test: (pass) native history resumes the exact DM after restart without importing group history [4664.64ms]
+@ngertiin/server test: (pass) effective stored key cannot masquerade as a subscription after browser login [608.56ms]
+@ngertiin/server test: (pass) missing credentials remain login-required and device login does not claim inference [797.92ms]
+@ngertiin/server test: (pass) key-selected connection cannot start browser login [764.75ms]
+@ngertiin/server test: (pass) interrupt acknowledgement remains intent until native cancelled terminal arrives [1255.05ms]
+@ngertiin/server test: (pass) unverified Muse steering preserves queued correction and does not dispatch it natively [1729.21ms]
+@ngertiin/server test: (pass) Muse streams a stable partial message and repairs final native text without duplicate messages [1462.58ms]
+@ngertiin/server test: (pass) Muse reconciles durable native commit and product-tool receipt after process loss without resubmission [2166.75ms]
+@ngertiin/server test: (pass) interrupt acknowledgement alone cannot fabricate cancellation [1549.30ms]
+@ngertiin/server test: (pass) revoked connection cannot answer a pending native question [1412.87ms]
+@ngertiin/server test: (pass) native question exposes scoped pending interaction and validates its answer [2516.85ms]
+@ngertiin/server test: (pass) native approval exposes scoped pending interaction and validates its answer [2423.56ms]
+@ngertiin/server test: (pass) replayed Muse approval notifications are reconciled before display or dispatch [1884.33ms]
+@ngertiin/server test: (pass) a late pending-state response cannot repopulate interactions after native completion [2440.61ms]
+@ngertiin/server test: (pass) revocation during a native pending-state read fences the subsequent approval decision [1502.99ms]
+@ngertiin/server test: (pass) native failed remains failed [1278.91ms]
+@ngertiin/server test: (pass) native disconnect remains unknown [1286.63ms]
+@ngertiin/server test: (pass) native gap remains unknown [1195.36ms]
+@ngertiin/server test: (pass) native unknown-terminal remains unknown [1275.94ms]
+@ngertiin/server test: (pass) native reject remains failed [1306.10ms]
+@ngertiin/server test: (pass) typed Muse authentication rejection and temporary provider failure retain distinct diagnostics [1812.03ms]
+@ngertiin/server test: (pass) authoritative empty Muse history clears ephemeral text without minting a second answer [1218.29ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/acp-adapter.test.ts:
+@ngertiin/server test: (pass) claude ACP adapter completes a scoped product-tool run and reloads with binding metadata [6391.53ms]
+@ngertiin/server test: (pass) opencode ACP adapter completes a scoped product-tool run and reloads with binding metadata [4196.78ms]
+@ngertiin/server test: (pass) transport migration retains only authorized settled conversation history and fences unsettled work [588.09ms]
+@ngertiin/server test: (pass) additive native discovery preserves admission authority while capability or catalog loss retires it [175.87ms]
+@ngertiin/server test: (pass) multi-provider connections require a provider and never route new keys through Muse [152.52ms]
+@ngertiin/server test: (pass) Pi trusted configuration permits only empty native auth and refuses symlink/settings inheritance [140.99ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/controls.test.ts:
+@ngertiin/server test: (pass) queued HTTP edits use revisions, preserve FIFO and survive exact retries and restart [859.83ms]
+@ngertiin/server test: (pass) deleting a waiting message creates a replayable tombstone without stopping the active run [593.98ms]
+@ngertiin/server test: (pass) deletion-only history pages keep a usable pagination anchor [567.21ms]
+@ngertiin/server test: (pass) chat text always preserves ordinary FIFO admission without choosing cancellation intent [694.59ms]
+@ngertiin/server test: (pass) direct HTTP cancellation bypasses a stalled agent and an occupied ordinary queue [624.65ms]
+@ngertiin/server test: (pass) the cancellation tool stops only its current run, returns its receipt and fences later tools [1000.79ms]
+@ngertiin/server test: (pass) cancellation tool rejects caller target injection, forged scope and revoked grants [836.75ms]
+@ngertiin/server test: (pass) agent goal control selects an explicit responsibility and persists its stopped continuation [957.81ms]
+@ngertiin/server test: (pass) queued steering is reserved atomically, revision-protected and never dispatched twice [647.56ms]
+@ngertiin/server test: (pass) steering journals the application attempt when the peer has no native turn ID [586.62ms]
+@ngertiin/server test: (pass) certain steer rejection restores FIFO; lost acknowledgement survives restart held unknown [701.47ms]
+@ngertiin/server test: (pass) streaming snapshots upsert one message and stale epochs cannot append after restart [677.00ms]
+@ngertiin/server test: (pass) SSE streams committed envelopes, reconnects from Last-Event-ID and publishes no rollback [513.62ms]
+@ngertiin/server test: (pass) stream redaction withholds known secret prefixes and distinguishes actionable failure categories [3.75ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/response-retry.test.ts:
+@ngertiin/server test: (pass) retry retains original input and responder without another user message and hides only its failed attempt [290.68ms]
+@ngertiin/server test: (pass) successful and unknown runs cannot be retried [473.44ms]
+@ngertiin/server test: (pass) an unknown external receipt blocks retry even when the model reports failure [221.10ms]
+@ngertiin/server test: (pass) group input can be edited before dispatch but retry never unlocks an already processed input [304.10ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/acp.test.ts:
+@ngertiin/server test: (pass) ACP session applies advertised config, merges private tool updates and preserves nullable turn identity [118.87ms]
+@ngertiin/server test: (pass) a first MCP call can establish processing before any native update without a turn ID [89.53ms]
+@ngertiin/server test: (pass) a process-bound native quota failure settles promptly and drains the owned process without fabricating a turn ID [75.20ms]
+@ngertiin/server test: (pass) ordinary stderr and an unconfigured native marker cannot establish a provider failure [74.97ms]
+@ngertiin/server test: (pass) native commands require advertised support and cannot change account or lifecycle authority [788.58ms]
+@ngertiin/server test: (pass) reload suppresses historical output and receives a fresh MCP token and process generation [153.91ms]
+@ngertiin/server test: (pass) cancel sends intent and waits for a native cancelled prompt response [83.41ms]
+@ngertiin/server test: (pass) negotiated steering joins the active nullable-ID attempt and refuses an idle fallback [88.97ms]
+@ngertiin/server test: (pass) burst streaming coalesces snapshots and flushes the trailing text before the turn ends [123.67ms]
+@ngertiin/server test: (pass) permission choices are bounded, run-scoped and cannot be answered twice [83.86ms]
+@ngertiin/server test: (pass) ACP form questions retain types, reject invalid answers and respond exactly once to the active run [82.29ms]
+@ngertiin/server test: (pass) ACP form decline and stop resolve the request without inventing user input [195.87ms]
+@ngertiin/server test: (pass) elicitation rejects unsupported schemas and validates enum labels independently of native keys [1.12ms]
+@ngertiin/server test: (pass) explicit errors/refusal are failure; process death remains unknown [268.22ms]
+@ngertiin/server test: (pass) terminal failures and lost acknowledgements flush retained partial text without claiming success [145.02ms]
+@ngertiin/server test: (pass) projection redacts split secrets and never publishes thoughts or raw tool content [0.36ms]
+@ngertiin/server test: (pass) negotiated native phases keep commentary out of live and canonical answers [0.17ms]
+@ngertiin/server test: (pass) native progress merges compactions in place, redacts split summaries and keeps file previews scoped [0.89ms]
+@ngertiin/server test: (pass) closing the owned ACP process terminates a surviving background descendant [84.03ms]
+@ngertiin/server test: (pass) setup refuses to downgrade application instructions when system prompts are unsupported [68.62ms]
+@ngertiin/server test: (pass) unsupported images and unavailable model settings fail before a prompt is sent [72.79ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/routing-recovery.test.ts:
+@ngertiin/server test: (pass) the shared runtime discovers an installed executable and coalesces cached probes [1748.55ms]
+@ngertiin/server test: (pass) a blocked fallback is visible on its parent group without exposing routing instructions [490.46ms]
+@ngertiin/server test: (pass) replacing the pinned executable resumes the original undispatched fallback once [1855.81ms]
+@ngertiin/server test: (pass) unknown native fallback remains fenced and never exposes preparation retry [418.07ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/session-tools.test.ts:
+@ngertiin/server test: {"event":"harness.product_tool.error","code":"NATIVE_REJECTED"}
+@ngertiin/server test: (pass) discovery before dispatch cannot acquire a run's tool authority [13.52ms]
+@ngertiin/server test: {"event":"harness.product_tool.error","code":"NATIVE_REJECTED"}
+@ngertiin/server test: (pass) concurrent calls initialize once per immutable run lease and retain each tool authorization [13.82ms]
+@ngertiin/server test: {"event":"harness.product_tool.error","code":"NATIVE_REJECTED"}
+@ngertiin/server test: (pass) an old endpoint never receives the next run's privileges even when a late call arrives [14.74ms]
+@ngertiin/server test: {"event":"harness.product_tool.error","code":"TOOL_UNAVAILABLE"}
+@ngertiin/server test: (pass) revoking a bridge aborts an in-flight call and fences its delayed result [11.18ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/activity.test.ts:
+@ngertiin/server test: (pass) overlapping activity survives another call finishing and settles without stale loading [292.18ms]
+@ngertiin/server test: (pass) safe activity crosses authenticated HTTP snapshots and persists without transcript details [738.49ms]
+@ngertiin/server test: (pass) product activity is live before an asynchronous tool result and clears after failure [377.63ms]
+@ngertiin/server test: (pass) specific labels depend on known tool identities rather than user text [4.44ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/workspaces.test.ts:
+@ngertiin/server test: (pass) authenticated HTTP upload, scoped listing, binary download and exact retry retain bytes after restart [661.46ms]
+@ngertiin/server test: (pass) same agent has separate DM/group resources; explicit sharing creates a scoped immutable copy [286.08ms]
+@ngertiin/server test: (pass) path traversal, credential paths, symlink ancestors, symlink files and hardlinks cannot be read or published [843.19ms]
+@ngertiin/server test: (pass) publication deduplicates by native run/path/hash, keeps provenance and never follows prose [913.12ms]
+@ngertiin/server test: (pass) an accepted nullable-ID run publishes immutable artifacts through its application binding and lease [775.99ms]
+@ngertiin/server test: (pass) stop and restart retain one committed artifact without deleting or republishing files [539.92ms]
+@ngertiin/server test: (pass) workspace revocation fences active tools, final publication, stale download and next dispatch [323.25ms]
+@ngertiin/server test: (pass) project binding rejects credential/state ancestors and overlapping foreign project roots [150.92ms]
+@ngertiin/server test: (pass) replacing a workspace root or corrupting immutable artifact bytes fails closed [178.04ms]
+@ngertiin/server test: (pass) upload rejects changed idempotency payload, overwrite, malformed base64 and credential filenames [216.73ms]
+@ngertiin/server test: (pass) external project binding is persistent, rejects overlapping DM/group roots and preserves files on rebind [229.50ms]
+@ngertiin/server test: (pass) final resource recheck refuses a publication revoked after reading the source [292.73ms]
+@ngertiin/server test: (pass) rebound or modified queued attachments are fenced before native dispatch [248.92ms]
+@ngertiin/server test: (pass) descriptor traversal refuses concurrent symlink swaps without exposing another directory [934.56ms]
+@ngertiin/server test: (pass) input integrity is verified against immutable bytes before dispatch [362.45ms]
+@ngertiin/server test: (pass) native temporary storage stays outside agent-writable paths and rejects substituted roots [166.90ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/conversation-parts.test.ts:
+@ngertiin/server test: (pass) Tobi public receipts preserve the same default avatar as its persistent identity [180.91ms]
+@ngertiin/server test: (pass) DM publication keeps queued intake behind the answer, survives replay, and paginates without duplicates [444.07ms]
+@ngertiin/server test: (pass) handoff publishes the useful announcement first, hides instructions, and retains historical actor identity [430.57ms]
+@ngertiin/server test: (pass) persisted historical handoff without a summary remains readable through snapshot and timeline HTTP [897.52ms]
+@ngertiin/server test: (pass) replayed historical handoff without a summary remains readable through snapshot and timeline HTTP [787.44ms]
+@ngertiin/server test: (pass) goal progress stays quiet and completed milestones follow actual settlement in both DM and group [596.34ms]
+@ngertiin/server test: (pass) timeline HTTP boundary requires auth, validates cursors, and excludes another conversation [636.66ms]
+@ngertiin/server test: (pass) Routine names stay readable and pause/resume append separate milestones without rewriting instructions [291.27ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/conversation-latency.test.ts:
+@ngertiin/server test: (pass) commit notifications coalesce nested writes and ignore rolled-back commands [203.88ms]
+@ngertiin/server test: (pass) SSE wakes on a committed event without waiting for its periodic heartbeat [161.59ms]
+@ngertiin/server test: (pass) committed admission and settlement drain FIFO without waiting for a 60-second scheduler tick [381.45ms]
+@ngertiin/server test: (pass) configuration preparation failures stay explicit and retry the exact queued input [295.74ms]
+@ngertiin/server test: (pass) repairing configuration resumes the same blocked input without a polling delay [446.61ms]
+@ngertiin/server test: (pass) a rejected claim does not spin or let later queued inputs bypass the blocked head [609.85ms]
+@ngertiin/server test: (pass) Jev makes one typed SDK request and keeps its API key out of the routing state [4.86ms]
+@ngertiin/server test: (pass) Jev rate limits do not trigger the SDK's default retry cascade [3.59ms]
+@ngertiin/server test: (pass) a persisted unfinished pure decision recomputes once and rejects the old attempt [323.18ms]
+@ngertiin/server test: (pass) Jev selects one valid member without creating a native routing session or importing DM history [297.35ms]
+@ngertiin/server test: (pass) explicit mentions bypass Jev and stale membership fences a late decision [327.25ms]
+@ngertiin/server test: (pass) ambiguous Jev results create exactly one explicit member-model fallback [352.32ms]
+@ngertiin/server test: (pass) switching back to the member router drains a persisted pure Jev decision without replaying work [290.90ms]
+@ngertiin/server test: (pass) Jev service failures reject the original route and can retry without duplicate messages [346.50ms]
+@ngertiin/server test: (pass) ordinary complete handoffs settle the task without a third model run [457.82ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/muse-interaction-view.test.ts:
+@ngertiin/server test: (pass) pending native approval preserves the action and human-readable choice [1.94ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/conversation-previews.test.ts:
+@ngertiin/server test: (pass) conversation previews return bounded visible excerpts for DMs and groups without side effects [178.25ms]
+@ngertiin/server test: (pass) authenticated preview reads reflect edits, deletions and restart through the published API [1076.52ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/routing-policy.test.ts:
+@ngertiin/server test: (pass) unique shortened references retain names while colliding nicknames are not invented [1.97ms]
+@ngertiin/server test: (pass) routing state bounds shared evidence, retains every candidate and excludes opaque IDs [3.60ms]
+@ngertiin/server test: (pass) acceptance distinguishes confidence, candidate separation and resolvability [0.16ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/harness-catalog.test.ts:
+@ngertiin/server test: (pass) both native adapters reject private or project MCP configuration before starting a process [3.06ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/harness.test.ts:
+@ngertiin/server test: (pass) DM prewarm performs no inference and reuses skills, transport and presentation-only revisions [1377.90ms]
+@ngertiin/server test: (pass) DM prewarm replaces the least recently used idle transport and preserves native identities [1227.81ms]
+@ngertiin/server test: (pass) speculative DM preparation never evicts transports while active or unknown work exists [756.32ms]
+@ngertiin/server test: (pass) minimum policies reject below-floor and prerelease versions for both harnesses [3.53ms]
+@ngertiin/server test: (pass) real executable probes distinguish supported, old, missing, unknown and failed without returning diagnostics [2202.87ms]
+@ngertiin/server test: (pass) ACP availability reads pinned adapter metadata without starting a Node agent for a version check [132.92ms]
+@ngertiin/server test: (pass) connection API persists secret references and independent evidence states across restart [618.44ms]
+@ngertiin/server test: (pass) API rejects billing mismatches, secret values and caller-supplied owner identity [477.14ms]
+@ngertiin/server test: (pass) isolated native-login environment strips inherited billing keys; selected keys are connection-specific [130.66ms]
+@ngertiin/server test: (pass) credential files fail closed on missing or public permissions [125.14ms]
+@ngertiin/server test: (pass) diagnostic redaction buffers split UTF-8/secret records and discards oversized fragments [6.21ms]
+@ngertiin/server test: (pass) owned native processes run concurrently with separate environment and redact fragmented stderr [125.71ms]
+@ngertiin/server test: (pass) two harnesses, accounts, models and agents execute concurrently through scoped product tools [1240.87ms]
+@ngertiin/server test: (pass) nullable ACP turn identity supports real scoped effects and retires its process before the next run [1942.15ms]
+@ngertiin/server test: (pass) a nullable terminal response alone cannot fabricate observed native processing [824.24ms]
+@ngertiin/server test: (pass) login, catalog failure and completed inference remain separate observations [523.03ms]
+@ngertiin/server test: (pass) native account cannot silently switch selected authentication or billing [282.15ms]
+@ngertiin/server test: (pass) unknown resume never starts a replacement session [328.44ms]
+@ngertiin/server test: (pass) concurrent opens share one lane and separate sessions for two agents on one connection [504.77ms]
+@ngertiin/server test: (pass) grant revocation while native initialization waits prevents session binding [301.26ms]
+@ngertiin/server test: (pass) connection revoke retires an initializing native process before deleting auth state and leaves other connections alive [862.93ms]
+@ngertiin/server test: (pass) scope, private resources, current grants and terminal runs are rechecked on each tool call [575.45ms]
+@ngertiin/server test: (pass) parallel product tools preserve every completed call and failure without serializing handlers [764.88ms]
+@ngertiin/server test: (pass) MCP HTTP round trip uses scoped leases and refuses the installation token [1135.28ms]
+@ngertiin/server test: (pass) grant change between settings and prompt blocks final dispatch [569.79ms]
+@ngertiin/server test: (pass) native acceptance followed by failure becomes unknown and blocks retry [824.58ms]
+@ngertiin/server test: (pass) native rejection is failed; malformed terminal identity remains unknown [1484.50ms]
+@ngertiin/server test: (pass) native stop receipt confirms cancellation [793.83ms]
+@ngertiin/server test: (pass) native text redaction covers secrets split across events [807.11ms]
+@ngertiin/server test: (pass) API exposes host detection states for every registered manifest [525.91ms]
+@ngertiin/server test: (pass) tool capability revocation during an asynchronous handler blocks its final effect [561.17ms]
+@ngertiin/server test: (pass) broker shutdown fences late completion and text after an unconfirmed native stop [832.19ms]
+@ngertiin/server test: (pass) MCP transport validates origin/protocol, initialization and notification responses [972.13ms]
+@ngertiin/server test: (pass) native account change after session initialization cannot dispatch under the old connection [540.08ms]
+@ngertiin/server test: (pass) a connection change starts a separate native session and retains the previous mapping [370.17ms]
+@ngertiin/server test: (pass) version and executable failures cannot reach the adapter connect boundary [370.49ms]
+@ngertiin/server test: (pass) protocol request and close deadlines bound an unresponsive client without fabricating login [255.34ms]
+@ngertiin/server test: (pass) two simultaneous key connections on the same harness retain their selected accounts and models [1226.75ms]
+@ngertiin/server test: (pass) concurrent steering receipts send once and a lost acknowledgement never resends [511.45ms]
+@ngertiin/server test: (pass) native receipt reads recheck revocation before committing recovered output [412.99ms]
+@ngertiin/server test: (pass) owner receipt inspection releases revoked group work without restoring its workspace or publishing its output [608.23ms]
+@ngertiin/server test: (pass) an unconfirmed native stop reaches a bounded unknown outcome and fences late events [885.97ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/bootstrap.test.ts:
+@ngertiin/server test: {"event":"foundation.started","url":"http://127.0.0.1:56327","identity_file":"/var/folders/j1/p1582yhj20z58phnf_zrzy7w0000gn/T/ngertiin-bootstrap-AGQ4oR/installation.json","registered_executors":5,"api_readiness_gate":"ready"}
+@ngertiin/server test: {"event":"foundation.started","url":"http://127.0.0.1:56336","identity_file":"/var/folders/j1/p1582yhj20z58phnf_zrzy7w0000gn/T/ngertiin-bootstrap-AGQ4oR/installation.json","registered_executors":5,"api_readiness_gate":"ready"}
+@ngertiin/server test: (pass) account bootstrap rejects installation credentials and preserves verified sessions across restart [1501.11ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/multimodal.test.ts:
+@ngertiin/server test: (pass) visual inputs use immutable scoped bytes and record normalization hashes [252.98ms]
+@ngertiin/server test: (pass) text-only or unknown models cannot silently receive image inputs [243.62ms]
+@ngertiin/server test: (pass) unsupported video and unsupported harness image input fail before native dispatch [236.21ms]
+@ngertiin/server test: (pass) malformed bytes and falsely declared image formats are rejected [250.52ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/creation.test.ts:
+@ngertiin/server test: (pass) creation collision handling and restart replay preserve one human opener and admission [271.07ms]
+@ngertiin/server test: (pass) billing mismatch rolls back creation without fallback [129.04ms]
+@ngertiin/server test: (pass) group creation admits one router and scoped configuration never edits member profiles [197.24ms]
+@ngertiin/server test: (pass) missing connection persists the identity and opener until explicitly configured [211.22ms]
+@ngertiin/server test: (pass) failed opening retries reuse input; unknown outcomes never admit replacements [223.40ms]
+@ngertiin/server test: (pass) HTTP concurrent retries share creation and distinct actions avoid name collisions [1094.16ms]
+@ngertiin/server test: (pass) group tool lease cannot rewrite global profiles and can update only its group [695.73ms]
+@ngertiin/server test: (pass) Jev group creation routes the final annotated opener and retains stale-content fencing [343.15ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/provider-storage.test.ts:
+@ngertiin/server test: (pass) encrypted provider credentials authenticate their identity and reject tampering or an absent master key [3.71ms]
+@ngertiin/server test: (pass) revocation removes native files and the credential; retained tombstones fence restored native homes [1.84ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/avatar.test.ts:
+@ngertiin/server test: (pass) avatar recipes validate, persist across restart and share identity across DM/group projections [554.83ms]
+@ngertiin/server test: (pass) activity summaries retain active work ahead of queued inputs and exclude private/routing data [312.16ms]
+@ngertiin/server test: (pass) group input requests hold activity after successful native completion without leaking the question [326.28ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/interaction-journal.test.ts:
+@ngertiin/server test: (pass) normalized observations persist once, redact key shapes and remain conversation scoped [1165.63ms]
+@ngertiin/server test: (pass) user_input acknowledgement survives completion/restart without asserting action completion [1395.91ms]
+@ngertiin/server test: (pass) approval acknowledgement survives completion/restart without asserting action completion [1354.32ms]
+@ngertiin/server test: (pass) lost HTTP acknowledgement and concurrent retries dispatch once; changed answers conflict [1108.95ms]
+@ngertiin/server test: (pass) ambiguous errors fence retries and do not store opaque native failures [836.97ms]
+@ngertiin/server test: (pass) timeout stays unknown until the same attempt receives a late acknowledgement without retransmission [914.12ms]
+@ngertiin/server test: (pass) restart turns persisted in-flight responses unknown even with no live broker [1100.90ms]
+@ngertiin/server test: (pass) definitive non-dispatch may retry; run cancellation remains a separate observation [1225.62ms]
+@ngertiin/server test: (pass) revocation during a pending read fences observation persistence and response dispatch [435.79ms]
+@ngertiin/server test: (pass) approval stages are distinct; disappearance without a response never means completion [1517.81ms]
+@ngertiin/server test: (pass) response fingerprints use original input while persisted answer displays redact secrets [961.55ms]
+@ngertiin/server test: (pass) oversized observations fail explicitly without truncating retained history or dispatching [1063.84ms]
+@ngertiin/server test: (pass) a changed request payload cannot overwrite the question associated with a settled answer [1236.60ms]
+@ngertiin/server test: (pass) first observed transcript anchor uses UTF-16 offset and immutable prefix hash through append, replacement and restart [1725.92ms]
+@ngertiin/server test: (pass) a request observed before agent output stays anchored to input with no invented text position [1654.74ms]
+@ngertiin/server test: (pass) a later message in another conversation is never selected as this run's question anchor [802.88ms]
+@ngertiin/server test: (pass) old journal records default anchor metadata to null and are never retroactively positioned [900.41ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/acp-api.test.ts:
+@ngertiin/server test: (pass) authenticated ACP contract and explicit multi-provider key routes preserve private account scope [1510.50ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/lifecycle.test.ts:
+@ngertiin/server test: (pass) admission, user text, identity, receipt and events survive restart [224.00ms]
+@ngertiin/server test: (pass) changed idempotent command is rejected without writes [223.41ms]
+@ngertiin/server test: (pass) a native start acknowledgement clears a resolved preflight error and keeps its historical receipt [287.65ms]
+@ngertiin/server test: (pass) outer rollback removes projections, event publication and command receipt together [188.03ms]
+@ngertiin/server test: (pass) a second authority and an owner mismatch are rejected [243.51ms]
+@ngertiin/server test: (pass) legacy databases are refused without modifying their data [147.63ms]
+@ngertiin/server test: (pass) scope and strict schemas reject cross-thread admission and caller-owned identities [158.45ms]
+@ngertiin/server test: (pass) FIFO admits only one active run per thread and agent [264.17ms]
+@ngertiin/server test: (pass) native sessions stay separate across DM and group; shared session identity is rejected [228.19ms]
+@ngertiin/server test: (pass) unused binding replacement rejects stale revisions and any binding claimed for dispatch [263.62ms]
+@ngertiin/server test: (pass) grant changes between admission and dispatch are fenced [189.46ms]
+@ngertiin/server test: (pass) final dispatch rechecks grants after claim [241.03ms]
+@ngertiin/server test: (pass) stop intent does not claim native stop and survives recovery [305.59ms]
+@ngertiin/server test: (pass) queued cancellation is terminal while unknown work cannot be replayed [302.57ms]
+@ngertiin/server test: (pass) stopping a goal cancels its queue and routines while stopping a run leaves its goal active [308.01ms]
+@ngertiin/server test: (pass) artifacts require the correct thread/run scope and an opaque storage key [207.52ms]
+@ngertiin/server test: (pass) event cursor pagination is stable and contracts expose all domain entities [195.28ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/muse-launch.test.ts:
+@ngertiin/server test: (pass) Muse conversation launch restricts tools without removing user interaction [76.07ms]
+@ngertiin/server test: (pass) Muse routing launch restricts tools without removing user interaction [38.84ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/contracts.test.ts:
+@ngertiin/server test: (pass) every registered domain route retains the shared authentication guard [721.60ms]
+@ngertiin/server test: (pass) published replay schema accepts browser and application receipts across restart [266.34ms]
+@ngertiin/server test: (pass) published command schemas retain optional defaulted admission fields [154.91ms]
+@ngertiin/server test: (pass) consumer contract describes actual routes without executing native operations [647.53ms]
+@ngertiin/server test: (pass) published response schemas validate admission, control, history, snapshots and safe errors [683.35ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/api.test.ts:
+@ngertiin/server test: (pass) HTTP authentication is required for state and contracts [1329.48ms]
+@ngertiin/server test: (pass) HTTP admission retry returns the same persisted receipt and changed input conflicts [519.54ms]
+@ngertiin/server test: (pass) HTTP rejects identity injection, missing command keys and cross-scope references [432.42ms]
+@ngertiin/server test: (pass) HTTP errors do not echo malformed input or exception details [480.27ms]
+@ngertiin/server test: (pass) HTTP exposes schemas and cursor replay, and validates cursor bounds [689.20ms]
+@ngertiin/server test: (pass) HTTP cancel records local cancellation without changing goal responsibility [632.33ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/cancellation-adapters.test.ts:
+@ngertiin/server test: (pass) codex protocol fixture returns a self-cancel receipt and waits for native confirmation [2393.73ms]
+@ngertiin/server test: (pass) muse protocol fixture returns a self-cancel receipt and waits for native confirmation [2521.14ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/integrations.test.ts:
+@ngertiin/server test: (pass) application effects use the existing owner, exact account and durable sanitized receipts [2154.43ms]
+@ngertiin/server test: (pass) discovery filters foreign toolkits and agent execution cannot call unassigned or meta tools [942.94ms]
+@ngertiin/server test: (pass) DM assignment grants do not leak to a group or another owner resource [440.28ms]
+@ngertiin/server test: (pass) revoke or reassignment during final SDK preflight prevents the external request [1924.54ms]
+@ngertiin/server test: (pass) remote expiry is checked before every execution and reconnect fences old sessions [1490.66ms]
+@ngertiin/server test: (pass) concurrent calls cannot duplicate a provider effect [1182.55ms]
+@ngertiin/server test: (pass) lost acknowledgements survive restart, preserve unknown, and prohibit blind replay [662.74ms]
+@ngertiin/server test: (pass) credential-like host output and signed URLs never reach tool results [3.90ms]
+@ngertiin/server test: (pass) invalid bridge fields return actionable validation without exposing the rejected input [854.98ms]
+@ngertiin/server test: (pass) application management HTTP routes require owner authentication and idempotent assignment [977.95ms]
+@ngertiin/server test: (pass) SDK execution relies on one pinned account and rejects remote account drift before dispatch [7.15ms]
+@ngertiin/server test: (pass) SDK uncertainty retains a safe request ID without exposing exception bodies [4.19ms]
+@ngertiin/server test: (pass) SDK search and execution reject a mismatched session identity before schemas or dispatch [5.26ms]
+@ngertiin/server test: (pass) late app settlement cannot bypass a lost authority lock and recovery retains the unknown hold [744.22ms]
+@ngertiin/server test: (pass) product approval gates the actual scoped app dispatch and changed arguments never reuse a decision [1445.62ms]
+@ngertiin/server test: (pass) catalog enriches provider pages in bulk without hiding apps when metadata fails [4.34ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/codex.test.ts:
+@ngertiin/server test: (pass) external Codex access tokens stay ephemeral and native refresh cannot change the selected account [236.09ms]
+@ngertiin/server test: (pass) one native credential authority coordinates simultaneous refresh consumers and survives its restart [266.03ms]
+@ngertiin/server test: (pass) credential authority rejects conversation and tool dispatch before writing to the native process [165.46ms]
+@ngertiin/server test: (pass) an unused prewarmed Codex thread is replaced after its process closes before first dispatch [2735.37ms]
+@ngertiin/server test: (pass) a missing Codex rollout used by a prior dispatch is never silently replaced or replayed [2606.57ms]
+@ngertiin/server test: (pass) Codex JSONL fixture performs an HTTP product-tool round trip and persists owned output [2140.82ms]
+@ngertiin/server test: (pass) Codex publishes search activity at start and preserves overlapping file work [1537.38ms]
+@ngertiin/server test: (pass) native session and separate DM/group histories survive backend and child restart [5733.39ms]
+@ngertiin/server test: (pass) selected API-key authentication is observed separately without a subscription fallback [2258.38ms]
+@ngertiin/server test: (pass) native interruption ack stays intent until interrupted terminal confirmation [3430.08ms]
+@ngertiin/server test: (pass) steer is bound to the active native turn and keeps the same run [4044.48ms]
+@ngertiin/server test: (pass) a native tool request cannot use another thread scope [2634.49ms]
+@ngertiin/server test: (pass) process loss preserves partial output and blocks automatic replay [1933.47ms]
+@ngertiin/server test: (pass) mismatched native terminal identity remains unknown [1607.70ms]
+@ngertiin/server test: (pass) explicit native turn rejection fails without publishing native error secrets [2187.48ms]
+@ngertiin/server test: (pass) Codex streams a stable partial message before the native turn completes [1960.34ms]
+@ngertiin/server test: (pass) Codex reconciles native commit before publication after restart without repeating a tool effect [2835.23ms]
+@ngertiin/server test: (pass) default reasoning omits the native config override and completes a turn [2059.85ms]
+@ngertiin/server test: (pass) native commentary and final answer item phases stay separate in live output and receipt recovery [2954.59ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/product-interactions.test.ts:
+@ngertiin/server test: (pass) DM questions survive restart and owner submission admits exactly one bound continuation [886.23ms]
+@ngertiin/server test: (pass) topic changes do not consume a question; a later natural answer uses its existing turn [610.50ms]
+@ngertiin/server test: (pass) approval gates exact arguments and one effect command; agents cannot approve their own request [395.21ms]
+@ngertiin/server test: (pass) group native turns and DM use the same durable request service [483.84ms]
+@ngertiin/server test: (pass) an existing Goal waits for a DM question and transfers to its one continuation [436.62ms]
+@ngertiin/server test: (pass) pausing a Goal after a DM question fences its old response and continuation [369.15ms]
+@ngertiin/server test: (pass) an approval without its protected operation cannot create a misleading unguarded card [236.57ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/organizations/attachments.test.ts:
+@ngertiin/server test: (pass) a scoped attachment-bearing admission reaches the harness with its private document context [6089.71ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/organizations/muse-catalog.test.ts:
+@ngertiin/server test: (pass) Muse's selected-process model catalog cannot invalidate the frozen account selection during preparation [4383.51ms]
+@ngertiin/server test: (pass) retaining Muse account choices never broadens the native session's reasoning support [1889.75ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/organizations/workspace-access.test.ts:
+@ngertiin/server test: (pass) workspace choices distinguish management visibility from current invocation grants [1122.53ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/organizations/http.test.ts:
+@ngertiin/server test: (pass) one account has independent roles in two organizations and membership grants no legacy private-data access [788.66ms]
+@ngertiin/server test: (pass) creation entitlement is separate from role and concurrent creations cannot exceed its limit [831.58ms]
+@ngertiin/server test: (pass) Owner/Admin/Member matrix protects elevation, peer administrators and the last Owner [909.53ms]
+@ngertiin/server test: (pass) concurrent Owner demotions serialize and always retain one Owner [672.59ms]
+@ngertiin/server test: (pass) multiple Workgroups form a union; All members is explicit and removed or deleted groups revoke effective access [873.36ms]
+@ngertiin/server test: (pass) cross-organization Workgroup and membership references fail in both API and database [561.97ms]
+@ngertiin/server test: (pass) invitation acceptance is email-bound and rejects expired or canceled invitations [818.96ms]
+@ngertiin/server test: (pass) invitation acceptance rechecks inviter role/generation and deleted Workgroups [1170.19ms]
+@ngertiin/server test: (pass) concurrent acceptance and retries commit exactly one membership and provisioning intent without model calls [727.34ms]
+@ngertiin/server test: (pass) offboarding retains attribution, suspends private work and fences old contexts/receipts across rejoin [952.74ms]
+@ngertiin/server test: (pass) organization export contains administration only and organization deletion remains unavailable [746.67ms]
+@ngertiin/server test: (pass) raw Better Auth organization routes cannot bypass transactional product policy or select active context [488.77ms]
+@ngertiin/server test: (pass) organization commands require stable IDs and reject changed payloads without leaking inputs [518.21ms]
+@ngertiin/server test: (pass) membership and provisioning survive interruption/reopen with no provider configuration [1179.58ms]
+@ngertiin/server test: (pass) failed invitation delivery retains durable state and explicit retry uses the same delivery identity [1826.16ms]
+@ngertiin/server test: (pass) an interrupted acceptance rolls back membership, Workgroups, audit, receipt and provisioning together [1204.70ms]
+@ngertiin/server test: (pass) the installed account contract enumerates organization request, response and command semantics [1008.62ms]
+@ngertiin/server test: (pass) version-1 authentication upgrades additively and preserves users, sessions and owner binding [1101.69ms]
+@ngertiin/server test: (pass) a public native PKCE client uses the same organization roles and explicit scope [1549.09ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/organizations/data.test.ts:
+@ngertiin/server test: (pass) random default names come from the single-syllable library subset and exhaust unused names first [3.35ms]
+@ngertiin/server test: (pass) membership provisioning creates one private randomly named default agent, DM and authored welcome without inference [1141.21ms]
+@ngertiin/server test: (pass) two users share Team configuration while their DM, memory, uploads and receipts stay private even from an administrator [1243.22ms]
+@ngertiin/server test: (pass) personal preference overlays and explicit published knowledge cannot rewrite or automatically publish private context [924.85ms]
+@ngertiin/server test: (pass) RLS uses a non-owner role and transaction-local settings across pooled users and organization boundaries [1208.21ms]
+@ngertiin/server test: (pass) context-bound replay rejects cross-user cursors and permission changes close old event access [1221.29ms]
+@ngertiin/server test: (pass) private file publication, immutable downloads, parsed data and command replay stay in the initiating organization [1549.66ms]
+@ngertiin/server test: (pass) Workgroup invocation is distinct from administration and Team ownership survives creator offboarding [2677.24ms]
+@ngertiin/server test: (pass) removed/rejoined membership cannot replay prior receipts or resume its private work implicitly [2813.79ms]
+@ngertiin/server test: (pass) database references reject cross-user scope and concurrent organization tabs retain independent commands [1515.32ms]
+@ngertiin/server test: (pass) SSE retains its captured private context outside the request and closes on membership revocation [1491.61ms]
+@ngertiin/server test: (pass) guarded legacy binding backfills retained private entities/events and blocks old owner-wide routes [1406.52ms]
+@ngertiin/server test: (pass) scoped application SQL also works through a real non-owner, non-superuser database login [1107.11ms]
+@ngertiin/server test: (pass) private Goals/Routine schedule under their retained execution principal without borrowing a UI session or shared native resources [2526.31ms]
+@ngertiin/server test: (pass) private groups and routing cannot enroll another user's agent or another organization's Team agent [1340.65ms]
+@ngertiin/server test: (pass) Team-agent native-binding metadata is actor-private and cannot reference another user's connection [1563.55ms]
+@ngertiin/server test: (pass) immutable command receipts recheck current Team-agent invocation grants before replay [1350.42ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/organizations/providers.test.ts:
+@ngertiin/server test: (pass) personal provider connections remain private; organization connections require management and an explicit audience [3667.66ms]
+@ngertiin/server test: (pass) private conversation and user choices inherit only when unset and freeze connection/model on admission [1881.38ms]
+@ngertiin/server test: (pass) provider snapshots cannot be rewritten or forged across actors even through SQL-backed entity writes [1477.53ms]
+@ngertiin/server test: (pass) pre-provider scoped queued records can normalize a missing null snapshot without accepting a different selection [1491.25ms]
+@ngertiin/server test: (pass) same organization account has distinct native homes for each actor, conversation and connection generation [1179.71ms]
+@ngertiin/server test: (pass) scheduled responsibilities retain their selected connection after private preferences change [1654.40ms]
+@ngertiin/server test: (pass) scoped API key submission and rotation retain encrypted bytes and secret-free receipts without selecting a replacement implicitly [1238.40ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/organizations/readiness.test.ts:
+@ngertiin/server test: 23 |   f = fixture;
+@ngertiin/server test: 24 |   const response = await fixture.request(fixture.alice.cookie, "/v1/contracts");
+@ngertiin/server test: 25 |   expect(response.status).toBe(200);
+@ngertiin/server test: 26 |   const contract = await response.json();
+@ngertiin/server test: 27 |   expect(contract.version).toBe(CONTRACT_VERSION);
+@ngertiin/server test: 28 |   expect(CONTRACT_VERSION).toBe("2.3.0");
+@ngertiin/server test:                                 ^
+@ngertiin/server test: error: expect(received).toBe(expected)
+@ngertiin/server test: 
+@ngertiin/server test: Expected: "2.3.0"
+@ngertiin/server test: Received: "2.4.0"
+@ngertiin/server test: 
+@ngertiin/server test:       at <anonymous> (/Users/vitoandareasmanik/Development/project/ngertiin/apps/server/tests/organizations/readiness.test.ts:28:28)
+@ngertiin/server test: (fail) every installed account surface declares authentication/scope and rejects missing credentials before input validation [1987.54ms]
+@ngertiin/server test: (pass) normal HTTP admission and both broker executors keep two users of one Team agent private [19682.91ms]
+@ngertiin/server test: (pass) revoking membership during native work retains the matching cancelled outcome without late publication [5933.00ms]
+@ngertiin/server test: (pass) revoking membership during native work retains the matching unknown outcome without late publication [6234.58ms]
+@ngertiin/server test: (pass) authority replacement fences accepted scoped work and preserves the queued lane without resubmitting [5188.69ms]
+@ngertiin/server test: (pass) generic entity inventory and organization switches never grant another actor's private data [4886.42ms]
+@ngertiin/server test: (pass) concurrent scoped queries reuse their authorization fence without exhausting the auth pool [2061.35ms]
+@ngertiin/server test: (pass) opening a fourth private transport cannot evict another actor's active native writer [10547.63ms]
+@ngertiin/server test: (pass) native credential callbacks retain current resource grants after the opening browser session logs out [2559.99ms]
+@ngertiin/server test: (pass) commit subscribers cannot borrow the writing user's request scope [1291.80ms]
+@ngertiin/server test: (pass) a native stop timeout still fences an unknown outcome after membership revocation [4320.86ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/organizations/surfaces.test.ts:
+@ngertiin/server test: (pass) account consumers exercise administrative metadata, conversation creation and private learning surfaces [3668.78ms]
+@ngertiin/server test: (pass) account consumers exercise private group routing, Team publication and assignment [2098.71ms]
+@ngertiin/server test: (pass) account consumers exercise run-owned publication and durable responsibility commands [3891.25ms]
+@ngertiin/server test: (pass) account consumers exercise private human replies and device-bound Computer renewal [3201.15ms]
+@ngertiin/server test: (pass) account consumers exercise selected-provider metadata, preparation and private run controls [3725.41ms]
+@ngertiin/server test: (pass) account consumers exercise private working-file, derived-artifact and responsibility surfaces [3278.68ms]
+@ngertiin/server test: (pass) account consumers exercise app discovery, reconnect and private revocation without ambient app identity [1904.38ms]
+@ngertiin/server test: (pass) only the issued live run lease enters the private MCP endpoint [3480.42ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/organizations/preparation.test.ts:
+@ngertiin/server test: (pass) a blocked scoped preparation retries through HTTP and replays one JSON command receipt [5112.22ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/organizations/integrations.test.ts:
+@ngertiin/server test: (pass) organization accounts require management; personal identity and account routing stay private [1633.44ms]
+@ngertiin/server test: (pass) shared app execution enforces resource arguments and persists actor-attributed receipts [2159.36ms]
+@ngertiin/server test: (pass) OAuth completion cannot publish after the initiating member is removed [1135.80ms]
+@ngertiin/server test: (pass) revocation after async native preflight blocks dispatch; stale sessions cannot expose disabled schemas [1629.11ms]
+@ngertiin/server test: (pass) membership revocation suppresses the result while retaining a known completed external effect [1950.21ms]
+@ngertiin/server test: (pass) unknown effects hold a shared account across different members and command identities [2458.23ms]
+@ngertiin/server test: (pass) pending OAuth stays bound to its initiator even after an unsuccessful refresh [1476.96ms]
+@ngertiin/server test: (pass) Workgroup removal invalidates retained app sessions and new requests cannot see the account [1699.40ms]
+@ngertiin/server test: (pass) refresh refuses another connected account and never falls back to an active account of the same toolkit [1539.68ms]
+@ngertiin/server test: (pass) selected provider bindings isolate inherited packages and do not change app account routing [2524.29ms]
+@ngertiin/server test: (pass) Team skill publication is management-only, immutable and pinned; private overlays cannot replace it [2472.42ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/goals/domain.test.ts:
+@ngertiin/server test: (pass) multiple responsibilities retain their own source/objective/progress and correction identity after restart [557.80ms]
+@ngertiin/server test: (pass) capture rejects foreign, deleted and automatic trigger source identities [455.95ms]
+@ngertiin/server test: (pass) continuation admission is durable and repeated ticks/restart do not create another run [493.78ms]
+@ngertiin/server test: (pass) unknown native outcome never becomes a retry, completion or second scheduled effect [573.81ms]
+@ngertiin/server test: (pass) wait has no busy-loop, even with an associated heartbeat and after restart [610.07ms]
+@ngertiin/server test: (pass) blocked has no busy-loop, even with an associated heartbeat and after restart [646.51ms]
+@ngertiin/server test: (pass) completion requires verified nonempty produced bytes and successful native settlement [954.44ms]
+@ngertiin/server test: (pass) failed or stopped runs cannot finalize pending completion or publish deferred late results [567.27ms]
+@ngertiin/server test: (pass) calendar schedules honor IANA wall time and skip DST gaps and repeated fall-back instants [18.06ms]
+@ngertiin/server test: (pass) heartbeat coalesces missed occurrences and changed schedules invalidate old queued generation [547.06ms]
+@ngertiin/server test: (pass) quiet scheduled output has no streamed or final bubble, while relevant output publishes once [730.61ms]
+@ngertiin/server test: (pass) quiet cannot hide a result artifact, human request or explicit blocker [730.10ms]
+@ngertiin/server test: (pass) stop run preserves future Routine responsibility without replaying the cancelled run [500.72ms]
+@ngertiin/server test: (pass) pause/resume preserves an independently paused Routine; stop fences queued work across restart [640.73ms]
+@ngertiin/server test: (pass) goal handoff/HITL retains one task owner; stop invalidates descendant tasks and replies [860.67ms]
+@ngertiin/server test: (pass) scoped structured capture retries commit once and self-stop returns its receipt then revokes tools [3162.39ms]
+@ngertiin/server test: (pass) HTTP contracts expose goal/Routine commands, snapshot/replay and authenticated idempotent updates [1231.27ms]
+@ngertiin/server test: (pass) an active linked Routine owns its wakeups and cannot race a second continuation [601.22ms]
+@ngertiin/server test: (pass) completion from an unsuccessful native run remains blocked with evidence retained [727.56ms]
+@ngertiin/server test: (pass) explicit resume continues a stopped known run while unknown source receipts remain fenced [584.21ms]
+@ngertiin/server test: (pass) membership removal preserves group responsibilities and invalidates the removed assignment [748.54ms]
+@ngertiin/server test: (pass) completion rechecks evidence bytes after reporting and blocks a tampered artifact [802.30ms]
+@ngertiin/server test: (pass) a meaningful artifact after a quiet decision restores final publication [1324.06ms]
+@ngertiin/server test: (pass) a source run cannot undo its yield, publish future result bytes or complete the deferred goal [2452.02ms]
+@ngertiin/server test: (pass) a later conversational schedule edit binds its source run before allowing another occurrence [1281.61ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/goals/adapters.test.ts:
+@ngertiin/server test: (pass) codex structured goal capture and quiet Routine round trip survive native-client restart [6971.89ms]
+@ngertiin/server test: (pass) muse structured goal capture and quiet Routine round trip survive native-client restart [5094.88ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/goals/tool-discovery.test.ts:
+@ngertiin/server test: (pass) responsibility guidance reaches MCP, exact-schema discovery and the Muse native catalog [1081.07ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/auth/security.test.ts:
+@ngertiin/server test: (pass) account mode fails closed on missing secrets, insecure origins or unsafe callbacks [3.52ms]
+@ngertiin/server test: (pass) native callback rejects wrong state, issuer, redirect, duplicate fields and replay [859.33ms]
+@ngertiin/server test: (pass) token endpoint rejects wrong verifier, redirect, audience, code replay and client registration [940.57ms]
+@ngertiin/server test: (pass) expired access/device sessions fail API, SSE and renewal without affecting another device [873.59ms]
+@ngertiin/server test: (pass) revocation closes an existing HTTP SSE stream and preserves another device [762.70ms]
+@ngertiin/server test: (pass) viewer tickets are bound to a live device and cannot be renewed from another device [911.79ms]
+@ngertiin/server test: (pass) password recovery revokes native offline credentials and leaves no auth secrets in domain records [1589.41ms]
+@ngertiin/server test: (pass) account-mode export identifies auth classes and the verified multi-user API gate [1018.88ms]
+@ngertiin/server test: (pass) HTTPS configuration serializes Secure cookies and ignores spoofed proxy addresses [915.66ms]
+@ngertiin/server test: (pass) rate limits survive changing untrusted forwarding headers [786.85ms]
+@ngertiin/server test: (pass) a native device outlives browser logout and access-token revocation closes its stream [1576.30ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/auth/schema.test.ts:
+@ngertiin/server test: (pass) retained authentication schema exactly matches the pinned plugins [199.07ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/auth/namespace.test.ts:
+@ngertiin/server test: (pass) provider queries and schema inspection use the explicit auth namespace across pooled search paths [809.26ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/auth/http.test.ts:
+@ngertiin/server test: (pass) verified login uses HttpOnly cookies, redacts tokens and denies installation credentials [861.92ms]
+@ngertiin/server test: (pass) Owner bootstrap requires verified intended identity, expires and consumes once under a race [710.29ms]
+@ngertiin/server test: (pass) one device can renew, revoke and logout without ending another device or durable work [750.99ms]
+@ngertiin/server test: (pass) cross-origin and missing-origin cookie mutations fail without disclosing input [646.14ms]
+@ngertiin/server test: (pass) recovery uses controlled email delivery and retires old sessions [849.69ms]
+@ngertiin/server test: (pass) native loopback PKCE exchange, rotation and per-device revocation complete over real HTTP [717.87ms]
+@ngertiin/server test: (pass) persisted sessions and Owner mapping survive reopening the auth service [759.29ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/auth/compatibility.test.ts:
+@ngertiin/server test: (pass) pinned Better Auth, PostgreSQL, Elysia and public-client PKCE complete real HTTP [254.37ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/auth/development.test.ts:
+@ngertiin/server test: (pass) development always enables accounts, retains its secret and delivers private local email without Resend [13.77ms]
+@ngertiin/server test: (pass) production never generates secrets or accepts a local email inbox [0.96ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/auth/email-navigation.test.ts:
+@ngertiin/server test: (pass) email verification accepts an external document navigation while cross-site fetches and mutations remain denied [618.22ms]
+@ngertiin/server test: (pass) an external recovery-link navigation redirects only to the configured local reset screen [708.20ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/learning/domain.test.ts:
+@ngertiin/server test: (pass) scoped recall separates DM, each group, another agent and explicitly shared facts [399.65ms]
+@ngertiin/server test: (pass) identity/revision corrections, permanent tombstones and immutable command receipts survive restart [283.96ms]
+@ngertiin/server test: (pass) memory transaction failure rolls back identity, event and receipt before retry [182.90ms]
+@ngertiin/server test: (pass) bounded recall has stable pagination and refuses a foreign cursor [417.56ms]
+@ngertiin/server test: (pass) private skill assets and assignments do not travel to another thread; explicit shared packages do [367.97ms]
+@ngertiin/server test: (pass) skill revisions are immutable, assignment updates are explicit and pinned versions survive restart [331.94ms]
+@ngertiin/server test: (pass) duplicate names, asset path injection and ambiguous asset casing fail without partial revisions [234.42ms]
+@ngertiin/server test: (pass) a new shared assignment cannot introduce a same-name conflict in another conversation [424.73ms]
+@ngertiin/server test: (pass) group members share group facts but retain separate private memory and skill write ownership [271.88ms]
+@ngertiin/server test: (pass) harness inventory is read-only, qualified name collisions are visible and app writes preserve native bytes [489.76ms]
+@ngertiin/server test: (pass) native discovery refuses symlink ancestors and hardlinked content instead of exposing foreign assets [205.91ms]
+@ngertiin/server test: (pass) learning tools bind command receipts to the lease context and deny effects after grant revocation [1123.77ms]
+@ngertiin/server test: (pass) HTTP learning commands authenticate, deduplicate concurrent retries and expose reviewable revisions [887.68ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/learning/adapters.test.ts:
+@ngertiin/server test: (pass) codex protocol fixture uses the trusted learning bridge and resumes pinned assets after restart [20775.19ms]
+@ngertiin/server test: (pass) muse protocol fixture uses the trusted learning bridge and resumes pinned assets after restart [20521.70ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/groups/attachments.test.ts:
+@ngertiin/server test: (pass) group members share one workspace and have separate DM, routing and temporary resources [406.49ms]
+@ngertiin/server test: (pass) a shared native writer closes its owned background descendants before releasing the workspace [898.23ms]
+@ngertiin/server test: (pass) group submission is atomic and exact HTTP retries reconcile one message, route and artifact after restart [2211.04ms]
+@ngertiin/server test: (pass) handoff and follow-up use the same source, serialize writers and retain access after restart [2419.45ms]
+@ngertiin/server test: (pass) unknown group work retains the workspace lease across restart until native reconciliation [487.14ms]
+@ngertiin/server test: (pass) foreign attachment admission and removed-member access fail without publishing a message [480.14ms]
+@ngertiin/server test: (pass) image routing exposes only capable members and rejects unsupported targets before publication [665.20ms]
+@ngertiin/server test: (pass) retrying rejected routing keeps the original source message and cannot duplicate the selected task [1920.08ms]
+@ngertiin/server test: (pass) existing group lanes are preserved beneath stable directories and retain artifact identity [655.70ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/groups/domain.test.ts:
+@ngertiin/server test: (pass) mention selects exactly one valid member and invalid addresses create no work [280.76ms]
+@ngertiin/server test: (pass) model routing uses the scoped packet, validates output and never writes selection bubbles [521.83ms]
+@ngertiin/server test: (pass) invalid model route fails closed: not JSON [432.11ms]
+@ngertiin/server test: (pass) invalid model route fails closed: [] [402.08ms]
+@ngertiin/server test: (pass) invalid model route fails closed: {"agent_id":"bad"} [423.26ms]
+@ngertiin/server test: (pass) invalid model route fails closed: {"agent_id":"400e033f-c137-461c-8a89-4e2908f376fb"} [394.14ms]
+@ngertiin/server test: (pass) invalid model route fails closed: {"agent_id":"cb9e75a5-53af-4db9-bb1c-140ef9fc70d9","extra":true} [690.38ms]
+@ngertiin/server test: (pass) membership edits fence stale routing and revoke queued work even after readding the member [519.49ms]
+@ngertiin/server test: (pass) cross-harness child review, lineage and atomic parent continuation survive repeated restart reconciliation [1047.19ms]
+@ngertiin/server test: (pass) human reply stays bound to its request across restart and duplicate/stale replies cannot resume another task [666.13ms]
+@ngertiin/server test: (pass) unknown source or child remains held and only native reconciliation can release the exact continuation [659.70ms]
+@ngertiin/server test: (pass) revocation between claim and tool/dispatch denies new peer effects [455.12ms]
+@ngertiin/server test: (pass) self/ancestor handoff cycles and a second unrelated HITL request are rejected [1019.15ms]
+@ngertiin/server test: (pass) HTTP exact retries, schemas, authored scope and request conflicts remain explicit [2576.60ms]
+@ngertiin/server test: (pass) a pending human request remains answerable while native outcome is unknown, without blind replay [816.40ms]
+@ngertiin/server test: (pass) routing leases cannot call product tools and revoked router work never dispatches after readd [588.94ms]
+@ngertiin/server test: (pass) task result retrieval remains group scoped and bounded, including long peer results [716.07ms]
+@ngertiin/server test: (pass) a failed collaboration transaction leaves no task, authored request, event or parent hold [364.48ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/groups/adapters.test.ts:
+@ngertiin/server test: (pass) codex routing and cross-harness peer/HITL use real protocol fixtures and durable tool receipts [12166.63ms]
+@ngertiin/server test: (pass) muse routing and cross-harness peer/HITL use real protocol fixtures and durable tool receipts [12379.97ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/groups/responsibilities.test.ts:
+@ngertiin/server test: (pass) shared goals accept exact parent/child evidence after restart and finalize once without a duplicate answer [1751.00ms]
+@ngertiin/server test: (pass) a definitive report failure is durable through the actual tool transaction and does not start another finalizer [876.15ms]
+@ngertiin/server test: (pass) artifact evidence cannot cross an objective generation even when the producer identity is retained [838.30ms]
+@ngertiin/server test: (pass) friendly history and event projections preserve technical requests only in owner diagnostics [1758.60ms]
+@ngertiin/server test: (pass) automatic Routine selection persists one occurrence before routing and one group execution across restart [1016.19ms]
+@ngertiin/server test: (pass) fixed Routine keeps its group identity when a target leaves and never overlaps unknown work [940.83ms]
+@ngertiin/server test: (pass) removing an unknown coordinator holds reassignment until a native receipt resolves the old execution [609.83ms]
+@ngertiin/server test: (pass) legacy agent-owned group goals normalize once while original identity and execution provenance survive [508.34ms]
+@ngertiin/server test: (pass) pausing a Routine retains an unknown native occurrence without event polling or false stop confirmation [942.38ms]
+@ngertiin/server test: (pass) coordinator reassignment returns the committed self-stop receipt and continues only after native stop [965.45ms]
+@ngertiin/server test: (pass) owner recovery restores legacy child evidence when the latest goal continuation had no task [2700.41ms]
+@ngertiin/server test: (pass) an automatic occurrence cannot apply a selected result after membership changes [798.62ms]
+@ngertiin/server test: (pass) a coordinator selection that became stale blocks without retrying or admitting work [804.01ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/operations/authority.test.ts:
+@ngertiin/server test: (pass) offline recovery and application lifecycle authority are mutually exclusive [232.48ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/operations/encryption.test.ts:
+@ngertiin/server test: (pass) backup authenticates large opaque bytes and fails before exposing tampered plaintext [68.64ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/operations/files.test.ts:
+@ngertiin/server test: (pass) operator metadata publishes privately and exclusive writes preserve existing recovery state [4.42ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/operations/config.test.ts:
+@ngertiin/server test: (pass) production bootstrap fails closed and preserves an account origin with explicit state [499.31ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/browser/domain.test.ts:
+@ngertiin/server test: (pass) browser grants are explicit per conversation and action permission is separate from viewing [733.58ms]
+@ngertiin/server test: (pass) actions commit a receipt before dispatch and exact retry never repeats the native effect [2550.93ms]
+@ngertiin/server test: (pass) revocation during connect fences final native action dispatch [402.64ms]
+@ngertiin/server test: (pass) stop rejects late actions without dispatching browser effects [620.33ms]
+@ngertiin/server test: (pass) unknown acknowledgements survive application restart without blind replay [1209.58ms]
+@ngertiin/server test: (pass) foreign targets, stale generations, unlisted tools and local profile URLs are rejected [1580.21ms]
+@ngertiin/server test: (pass) concurrent native calls serialize by profile, and unknown effects remain held after close [1445.13ms]
+@ngertiin/server test: (pass) cancellation during a dispatched effect holds unknown and suppresses returned page content [1238.35ms]
+@ngertiin/server test: (pass) indexed input requires a fresh observation and exact native target [2539.06ms]
+@ngertiin/server test: (pass) HTTP browser resources require owner authentication and explicit scoped grants [1046.53ms]
+@ngertiin/server test: (pass) single-use view tickets reject foreign origins and existing viewers close on grant change [584.63ms]
+@ngertiin/server test: (pass) callback credentials and raw browser errors are excluded from tool output [8.91ms]
+@ngertiin/server test: (pass) explicit site authentication signals distinguish valid, expired and unknown sessions [895.30ms]
+@ngertiin/server test: (pass) removing the last grant revokes observation, screenshots, tools and subsequent reopen [585.66ms]
+@ngertiin/server test: (pass) lost host-control acknowledgement persists an intent and prevents implicit restart or reset replay [490.59ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/machines/domain.test.ts:
+@ngertiin/server test: (pass) DM and group contexts bind one machine while retaining distinct logical workspaces [653.88ms]
+@ngertiin/server test: (pass) multi-step input has one owner; human takeover waits for in-flight input and fences agents [5155.42ms]
+@ngertiin/server test: (pass) unknown input survives restart, cannot replay, and can be reconciled by a fresh observation [2090.88ms]
+@ngertiin/server test: (pass) server-owned session identity and current grants cannot be supplied or bypassed by tool arguments [1389.52ms]
+@ngertiin/server test: (pass) simultaneous native command retries share admission and retain one dispatched effect [189.36ms]
+@ngertiin/server test: (pass) async file commands commit independently while I/O waits and coalesce exact concurrent retries [169.78ms]
+@ngertiin/server test: (pass) interrupted file projection retains its reservation across restart and rechecks scope before commit [206.27ms]
+@ngertiin/server test: (pass) human handback waits for media quiescence and disconnected control expires [2375.96ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/machines/authorization.test.ts:
+@ngertiin/server test: (pass) real user sessions resolve private machines and a copied viewer ticket cannot cross users or devices [1557.50ms]
+@ngertiin/server test: (pass) revoking the actual issuing login closes existing media and rejects further viewer RPCs [2784.33ms]
+@ngertiin/server test: (pass) account HTTP shutdown completes after its authenticated public media socket is closed [1567.71ms]
+@ngertiin/server test: (pass) removing an organization member closes their already-open media and invalidates clipboard/file access [2011.59ms]
+@ngertiin/server test: (pass) TLS-terminated viewer uses its configured account origin and ignores forged forwarding headers [1650.77ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/machines/domain-startup.test.ts:
+@ngertiin/server test: (pass) healthy control HTTP without the required desktop provider never admits a ready domain [3.25ms]
+@ngertiin/server test: (pass) a domain with native desktop capability completes scoped startup [1.46ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/machines/cleanup.test.ts:
+@ngertiin/server test: (pass) successful task closes only its explicit temporary window, retaining the browser profile and user window [1771.18ms]
+@ngertiin/server test: (pass) whole handoff chain owns the window until the peer delivers its result [2287.27ms]
+@ngertiin/server test: (pass) result previews and explicit retention remain available [2375.27ms]
+@ngertiin/server test: (pass) a failed task does not dispose of its debugging context [1177.44ms]
+@ngertiin/server test: (pass) human takeover preserves potentially edited task windows and never races cleanup [1297.60ms]
+@ngertiin/server test: (pass) save prompts block graceful cleanup without force-close or retries [1317.58ms]
+@ngertiin/server test: (pass) lost close acknowledgement survives restart without repeating the effect [1361.49ms]
+@ngertiin/server test: (pass) owner API exports managed window state and its versioned schema [1895.01ms]
+@ngertiin/server test: (pass) a task-owned terminal stays open until its attributed process exits [1571.61ms]
+@ngertiin/server test: (pass) deferred successful cleanup resumes after restart without reopening a window [1464.73ms]
+@ngertiin/server test: (pass) human takeover waits for an in-flight cleanup before granting interactive input [1344.61ms]
+@ngertiin/server test: (pass) another request cannot retain this task's windows or prevent its independent cleanup [1663.49ms]
+@ngertiin/server test: (pass) window commands reject missing mutation identities and unsupported URL schemes [614.72ms]
+@ngertiin/server test: (pass) existing native sessions receive current cleanup policy in every turn context [460.16ms]
+@ngertiin/server test: (pass) observations made during cleanup cannot authorize a subsequent agent click [3772.59ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/machines/execution-domains.test.ts:
+@ngertiin/server test: (pass) lazy resolution coalesces concurrent requests and persists one organization/user domain without native I/O [301.17ms]
+@ngertiin/server test: (pass) different humans and organizations receive different files while one human's agents cooperate [632.14ms]
+@ngertiin/server test: (pass) PostgreSQL rejects a cross-domain machine reference even through the restricted application role [354.25ms]
+@ngertiin/server test: (pass) private uploads materialize into the resolved domain and immutable downloads survive working-copy edits [383.25ms]
+@ngertiin/server test: (pass) scoped resolution never returns the singleton when the operator has not enabled domain provisioning [236.59ms]
+@ngertiin/server test: (pass) viewer tickets reject another organization/user and read-only clipboard or filesystem RPCs [234.74ms]
+@ngertiin/server test: (pass) human control is session-bound and stale revisions cannot acquire or reactivate a viewer [512.15ms]
+@ngertiin/server test: (pass) membership or grant changes revoke existing viewers and do not resurrect a racing ticket issuance [279.99ms]
+@ngertiin/server test: (pass) backend restart preserves domain identity and private control credentials without provision or replacement [306.25ms]
+@ngertiin/server test: (pass) operator policy is explicit, bounded and private [191.22ms]
+@ngertiin/server test: (pass) run-tool leases restore their private domain outside the initiating request and reject foreign scope or revoked grants [1153.79ms]
+@ngertiin/server test: (pass) rolled-back domain metadata is not cached as a retained binding [342.29ms]
+@ngertiin/server test: (pass) loss of a retained private configuration requires reconciliation instead of generating replacement credentials [274.98ms]
+@ngertiin/server test: (pass) immutable private artifact downloads do not require reattaching a former working machine [445.59ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/machines/view-sessions.test.ts:
+@ngertiin/server test: (pass) viewer renewals keep the gateway identity and independent consumers cannot revoke each other [237.43ms]
+@ngertiin/server test: (pass) a renewal racing explicit revocation never resurrects the view [220.64ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/machines/viewer-transport.test.ts:
+@ngertiin/server test: (pass) viewer RPCs include the issuing cookie only inside their same-origin opaque gateway [0.98ms]
+@ngertiin/server test: (pass) viewer transport preserves a Request body and leaves device credentials to the browser [0.31ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/persistence/sqlite-backup.test.ts:
+@ngertiin/server test: (pass) WAL backup retains uncheckpointed commits and restores as a standalone read-only SQLite file [25.44ms]
+@ngertiin/server test: 
+@ngertiin/server test: tests/persistence/postgres.test.ts:
+@ngertiin/server test: (pass) an empty optional application database URL retains the configured database and restricted statement role [163.06ms]
+@ngertiin/server test: (pass) nested failure restores its savepoint while an outer command commits one receipt [225.62ms]
+@ngertiin/server test: (pass) concurrent duplicate commands and lost acknowledgements retain one admission [248.86ms]
+@ngertiin/server test: (pass) commit-ordered clocks prevent a blocked lower cursor from disappearing behind replay [235.34ms]
+@ngertiin/server test: (pass) authority session loss fences an in-flight publication and a pooled reconnect never owns its lock [217.05ms]
+@ngertiin/server test: (pass) receipt replay reauthorizes, and interrupted external reservations retain unknown identity [202.26ms]
+@ngertiin/server test: (pass) bounded indexed reads retain keyset order across pages [265.31ms]
+@ngertiin/server test: (pass) offline import reconciles IDs, events, receipts and native bindings and rehearses verified rollback [700.94ms]
+@ngertiin/server test: (pass) filtered replay advances through hidden events and retains a consistent high watermark [254.07ms]
+@ngertiin/server test: (pass) a killed authority releases its session and restart preserves unknown native work without dispatching it twice [987.78ms]
+@ngertiin/server test: (pass) loss of the authority session aborts active native work and leaves recovery unknown [2029.92ms]
+@ngertiin/server test: (pass) a changed applied migration refuses startup without changing domain history or retaining its authority lock [232.37ms]
+@ngertiin/server test: 
+@ngertiin/server test: 1 tests failed:
+@ngertiin/server test: (fail) every installed account surface declares authentication/scope and rejects missing credentials before input validation [1987.54ms]
+@ngertiin/server test: 
+@ngertiin/server test:  600 pass
+@ngertiin/server test:  1 fail
+@ngertiin/server test:  4176 expect() calls
+@ngertiin/server test: Ran 601 tests across 79 files. [696.66s]
+@ngertiin/server test: Exited with code 1
+error: script "test:server" exited with code 1

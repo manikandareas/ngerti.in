@@ -1,14 +1,25 @@
-/** Bounded display projections from the published Ngertiin API 1.18.0. */
+/** Bounded display projections from the published Ngertiin API 2.3.0. */
 export interface NativeQuestion {
   id: string;
   header: string;
   question: string;
   options: { label: string; description?: string }[];
   selection: { mode: "single" | "multiple"; min?: number; max?: number };
+  input?: {
+    type: "string" | "number" | "integer" | "boolean" | "array";
+    required: boolean;
+    choices_only: boolean;
+    min_length?: number;
+    max_length?: number;
+    minimum?: number;
+    maximum?: number;
+    format?: "email" | "uri" | "date" | "date-time";
+  };
 }
 export interface NativeUserInput {
   userInputId: string;
   questions: NativeQuestion[];
+  elicitation?: boolean;
 }
 export interface NativeApproval {
   approvalId: string;
@@ -33,6 +44,7 @@ export type NativeInteractionAnswer =
   | {
       type: "user_input";
       request_id: string;
+      action?: "accept" | "decline" | "cancel";
       answers: {
         questionId: string;
         freeText?: string;

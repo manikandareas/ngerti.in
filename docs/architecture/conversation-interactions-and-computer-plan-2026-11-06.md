@@ -379,7 +379,7 @@ Store new evidence under a dated directory following `docs/verification/`. Inclu
 - [Group request contracts](../../apps/server/src/groups/contracts.ts)
 - [Group request and continuation lifecycle](../../apps/server/src/groups/service.ts)
 - [Product tool catalog](../../apps/server/src/harness/product-tool-contracts.ts)
-- [Codex adapter](../../apps/server/src/harness/codex/client.ts)
+- [Shared ACP adapter](../../apps/server/src/harness/acp/adapter.ts)
 - [Muse native interaction mapping](../../apps/server/src/harness/muse/interactions.ts)
 - [Current message edit eligibility](../../apps/server/src/run-controls.ts)
 - [Machine viewer gateway](../../apps/server/src/machines/view.ts)

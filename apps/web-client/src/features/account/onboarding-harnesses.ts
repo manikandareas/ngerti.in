@@ -1,49 +1,24 @@
-export type OnboardingHarness = "codex" | "muse";
+import { type HarnessId, harnesses, harnessIds, modelProviderName } from "@/lib/harnesses";
+export type OnboardingHarness = HarnessId;
 
 // App icons are retained locally from icons.computer; asset provenance is beside them.
-export const onboardingHarnesses = [
-  {
-    id: "codex",
-    name: "Codex",
-    description: "ChatGPT account",
-    providerId: "openai",
-    available: true,
-  },
-  {
-    id: "muse",
-    name: "Muse Code",
-    description: "Meta account",
-    providerId: "meta",
-    available: true,
-  },
-  {
-    id: "claude",
-    name: "Claude Code",
-    description: "Anthropic",
-    providerId: "anthropic",
-    available: false,
-  },
-  {
-    id: "gemini",
-    name: "Gemini CLI",
-    description: "Google",
-    providerId: "google",
-    available: false,
-  },
-  { id: "cursor", name: "Cursor Agent", description: "Cursor", providerId: null, available: false },
-] as const;
+export const onboardingHarnesses = harnessIds.map((id) => ({
+  id,
+  name: harnesses[id].name,
+  description: harnesses[id].providerId
+    ? modelProviderName(harnesses[id].providerId)
+    : "Choose a model provider",
+  providerId: harnesses[id].providerId,
+  available: true,
+}));
 
 export const onboardingModelSamples: Record<OnboardingHarness, { name: string; detail: string }[]> =
   {
-    codex: [
-      { name: "GPT-5.2 Codex", detail: "Coding and agentic work" },
-      { name: "GPT-5.2", detail: "Everyday tasks and reasoning" },
-      { name: "GPT-5.1 Codex Mini", detail: "Fast, focused tasks" },
-    ],
-    muse: [
-      { name: "Muse Spark", detail: "Everyday tasks and coding" },
-      { name: "Muse Spark Thinking", detail: "Deeper reasoning" },
-    ],
+    codex: [{ name: "Choose a model", detail: "From your OpenAI account" }],
+    muse: [{ name: "Choose a model", detail: "From your Muse account" }],
+    claude: [{ name: "Choose a model", detail: "From your Anthropic account" }],
+    opencode: [{ name: "Choose a model", detail: "From your selected provider" }],
+    pi: [{ name: "Choose a model", detail: "From your selected provider" }],
   };
 
 export function onboardingHarnessName(id: OnboardingHarness) {

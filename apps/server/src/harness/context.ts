@@ -4,7 +4,9 @@ import { join } from "node:path";
 import type { Entity } from "../contracts";
 import { HarnessError } from "./contracts";
 import { CredentialStorage } from "./credential-storage";
+import { type PiProviderConfiguration, piProviderConfiguration } from "./native-configuration";
 import { nativeStorageReady } from "./native-storage";
+import { connectionProvider, credentialEnvironment } from "./providers";
 
 export class Redactor {
   readonly #values = new Set<string>();
@@ -70,11 +72,20 @@ export class Diagnostics {
   }
 }
 export type LaunchContext = {
+  connection?: {
+    harness: Entity<"connection">["harness"];
+    provider_id: string;
+    authentication: Entity<"connection">["authentication"]["method"];
+    account_id: string | null;
+    billing_source: Entity<"connection">["authentication"]["billing_source"];
+  };
+  ownedProcessTree?: boolean;
   scoped?: boolean;
   ephemeralAuth?: boolean;
   codexAuth?: (
     refresh?: boolean,
   ) => Promise<{ accessToken: string; chatgptAccountId: string; chatgptPlanType?: string }>;
+  nativeConfiguration?: PiProviderConfiguration;
   purpose?: "conversation" | "routing";
   env: Record<string, string>;
   state_directory: string;
@@ -91,6 +102,7 @@ export class CredentialContexts {
   constructor(
     readonly root: string,
     private readonly readSecret?: (reference: string) => string,
+    private readonly keyFile = process.env.NGERTIIN_PROVIDER_MASTER_KEY_FILE,
   ) {
     mkdirSync(root, { recursive: true, mode: 0o700 });
     this.root = realpathSync(root);
@@ -104,6 +116,7 @@ export class CredentialContexts {
       thread_id: string;
       generation: number;
     },
+    options: { externalCodexTokens?: boolean } = {},
   ): LaunchContext {
     new CredentialStorage(this.root).assertActive(connection.id);
     const authority = join(this.root, "connections", connection.id);
@@ -115,6 +128,14 @@ export class CredentialContexts {
         )
       : authority;
     const home = join(directory, "home");
+    const provider = connectionProvider(connection.harness, connection.provider_id);
+    const selection: NonNullable<LaunchContext["connection"]> = {
+      harness: connection.harness,
+      provider_id: provider,
+      authentication: connection.authentication.method,
+      billing_source: connection.authentication.billing_source,
+      account_id: connection.account_id,
+    };
     const codexHome = join(directory, "codex");
     for (const path of [
       directory,
@@ -138,17 +159,40 @@ export class CredentialContexts {
       CODEX_HOME: codexHome,
       XDG_CONFIG_HOME: join(home, ".config"),
       XDG_DATA_HOME: join(home, ".local", "share"),
+      XDG_CACHE_HOME: join(home, ".cache"),
+      XDG_STATE_HOME: join(home, ".local", "state"),
+      CLAUDE_CONFIG_DIR: join(home, ".claude"),
+      PI_CODING_AGENT_DIR: join(home, ".pi", "agent"),
       MUSE_NO_AUTO_UPDATE: "1",
       MUSE_CONTRIBUTOR_MODE: "0",
     });
     const redactor = new Redactor();
-    if (connection.authentication.method === "api_key") {
+    let nativeConfiguration: PiProviderConfiguration | undefined;
+    if (connection.authentication.method === "harness_config") {
+      try {
+        const reference = connection.authentication.credential_ref;
+        const value = this.readSecret
+          ? this.readSecret(reference)
+          : new CredentialStorage(this.root, this.keyFile).read(
+              reference,
+              !!binding || !!connection.organization_id,
+            );
+        if (value.length > 40_000) throw new Error("Native configuration is oversized.");
+        nativeConfiguration = piProviderConfiguration.parse(JSON.parse(value));
+        redactor.add(nativeConfiguration.apiKey);
+      } catch {
+        throw new HarnessError("CREDENTIAL_MISSING");
+      }
+    } else if (connection.authentication.method === "api_key") {
       let secret: string;
       try {
         const reference = connection.authentication.credential_ref;
         if (this.readSecret) secret = this.readSecret(reference);
         else {
-          secret = new CredentialStorage(this.root).read(reference, !!binding);
+          secret = new CredentialStorage(this.root, this.keyFile).read(
+            reference,
+            !!binding || !!connection.organization_id,
+          );
         }
         if (!secret || secret.length > 16384 || /[\r\n\0]/.test(secret))
           throw new Error("Invalid credential.");
@@ -156,8 +200,17 @@ export class CredentialContexts {
         throw new HarnessError("CREDENTIAL_MISSING");
       }
       redactor.add(secret);
-      env[connection.harness === "codex" ? "OPENAI_API_KEY" : "META_API_KEY"] = secret;
+      env[credentialEnvironment(connection.harness, provider)] = secret;
     }
+    if (nativeConfiguration)
+      return {
+        connection: selection,
+        scoped: !!binding,
+        env,
+        state_directory: directory,
+        redactor,
+        nativeConfiguration,
+      };
     if (
       binding &&
       connection.harness === "muse" &&
@@ -165,14 +218,15 @@ export class CredentialContexts {
     )
       throw new HarnessError("CAPABILITY_UNKNOWN");
     if (
-      binding &&
       connection.harness === "codex" &&
-      connection.authentication.method === "native_login"
+      connection.authentication.method === "native_login" &&
+      (binding || options.externalCodexTokens)
     ) {
       const provider = this.codexTokens;
-      if (!provider || !nativeStorageReady(this.root))
+      if (!provider || (binding && !nativeStorageReady(this.root)))
         throw new HarnessError("CAPABILITY_UNSUPPORTED");
       return {
+        connection: selection,
         scoped: !!binding,
         env,
         ephemeralAuth: true,
@@ -186,6 +240,7 @@ export class CredentialContexts {
       };
     }
     return {
+      connection: selection,
       scoped: !!binding,
       env,
       state_directory: directory,

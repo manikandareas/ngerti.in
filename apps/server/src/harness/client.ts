@@ -6,6 +6,14 @@ import type { NativeEvent, Settings } from "./contracts";
 import type { ProductTools } from "./tools";
 
 export type SessionIdentity = { native_session_id: string };
+export type HarnessBindingMetadata = {
+  transport: "acp";
+  adapter_version: string;
+  native_runtime_version: string;
+  protocol_version: number;
+  process_generation: string;
+  instruction_revision: string;
+};
 export type Inspection = {
   account_plan?: string | null;
   login: Entity<"connection">["login"];
@@ -23,6 +31,9 @@ export type RecoveryObservation = {
 };
 /** One client/process per connection + agent + thread. No global account/model mutation. */
 export interface HarnessClient {
+  bindingMetadata?(): HarnessBindingMetadata;
+  /** ACP peers without immutable turn correlation get one process/tool endpoint per run. */
+  readonly closeAfterRun?: boolean;
   inspect(): Promise<Inspection>;
   skills?(): Promise<NativeSkillMetadata[]>;
   discoverModels(): Promise<Entity<"connection">["models"]>;
@@ -48,6 +59,7 @@ export interface HarnessClient {
   close(): Promise<void>;
 }
 export interface HarnessAdapter {
+  readonly transport?: "acp";
   readonly harness: HarnessId;
   connect(
     context: LaunchContext & {

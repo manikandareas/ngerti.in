@@ -25,7 +25,7 @@ test("every installed account surface declares authentication/scope and rejects 
   expect(response.status).toBe(200);
   const contract = await response.json();
   expect(contract.version).toBe(CONTRACT_VERSION);
-  expect(CONTRACT_VERSION).toBe("2.2.0");
+  expect(CONTRACT_VERSION).toBe("2.4.0");
   expect(contract.access_model.surfaces).toHaveLength(contract.http.length);
   expect(Object.keys(contract.access_model.entities)).toHaveLength(
     Object.keys(contract.entities).length,

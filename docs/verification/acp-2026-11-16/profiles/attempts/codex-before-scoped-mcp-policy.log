@@ -1,0 +1,22 @@
+bun test v1.3.10 (30e609e0)
+
+../../scripts/verification/acp/native.test.ts:
+242 |           (result) =>
+243 |             result.inference === "pass" &&
+244 |             result.useful_tool === "pass" &&
+245 |             result.reload === "pass",
+246 |         ),
+247 |     ).toBe(true);
+            ^
+error: expect(received).toBe(expected)
+
+Expected: true
+Received: false
+
+      at <anonymous> (/Users/vitoandareasmanik/Development/project/ngertiin/scripts/verification/acp/native.test.ts:247:7)
+(fail) record native ACP API-key inference, scoped tool and explicit reload separately from account isolation [121484.18ms]
+
+ 0 pass
+ 1 fail
+ 2 expect() calls
+Ran 1 test across 1 file. [124.18s]

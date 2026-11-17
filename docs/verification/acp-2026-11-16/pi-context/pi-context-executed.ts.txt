@@ -1,0 +1,418 @@
+import { expect, test } from "bun:test";
+import { createHash } from "node:crypto";
+import { mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { dirname, join, resolve } from "node:path";
+import { Background } from "../../../apps/server/src/background";
+import { AcpAdapter } from "../../../apps/server/src/harness/acp/adapter";
+import { HarnessBroker } from "../../../apps/server/src/harness/broker";
+import { Connections } from "../../../apps/server/src/harness/connections";
+import { CredentialContexts } from "../../../apps/server/src/harness/context";
+import { HarnessError } from "../../../apps/server/src/harness/contracts";
+import { HarnessRuntime } from "../../../apps/server/src/harness/runtime";
+import { ProductTools } from "../../../apps/server/src/harness/tools";
+import { ApplicationSkills } from "../../../apps/server/src/learning/application-skills";
+import { Memories } from "../../../apps/server/src/learning/memories";
+import { Workspaces } from "../../../apps/server/src/workspaces/service";
+import { fixture } from "../../../apps/server/tests/helpers";
+import { fixtureApi } from "../../../apps/server/tests/http-fixture";
+import { retainedCodex, selectedPiSumopod } from "./native-credentials";
+
+async function deadline<T>(operation: Promise<T>) {
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  try {
+    return await Promise.race([
+      operation,
+      new Promise<never>((_, reject) => {
+        timer = setTimeout(
+          () => reject(new Error("Native context observation timed out.")),
+          120_000,
+        );
+      }),
+    ]);
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+test.skipIf(process.env.NGERTIIN_ACP_NATIVE_CONTEXT !== "1")(
+  "native ACP applies changed instructions, scopes private memory/files and publishes a nullable-ID artifact",
+  async () => {
+    const root = resolve(import.meta.dir, "../../..");
+    const harness = process.env.NGERTIIN_ACP_NATIVE_CONTEXT_PROFILE === "pi" ? "pi" : "codex";
+    const configuration = harness === "pi" ? selectedPiSumopod() : undefined;
+    const credentialRef = crypto.randomUUID();
+    const directory = join(root, `.dev/acp-native-context${configuration ? "-pi" : ""}`);
+    mkdirSync(directory, { recursive: true, mode: 0o700 });
+    const report: Record<string, unknown> = {
+      timestamp: new Date().toISOString(),
+      harness,
+      scope:
+        "real owner-selected harness credential and managed ACP/native CLI; real owner-mode HTTP/PostgreSQL and app-owned local file tools; no multi-account, Cua domain, provider expiry or distribution claim",
+      completed: false,
+      turns: [],
+    };
+    const save = () =>
+      Bun.write(join(directory, "report.json"), `${JSON.stringify(report, null, 2)}\n`);
+    await save();
+    const tokens = configuration ? undefined : await retainedCodex();
+    const runtime = new HarnessRuntime();
+    const available = await runtime.detect(harness);
+    const native = configuration
+      ? { state: "supported", version: "1.5.2", executable: join(dirname(available.executable!), "pi") }
+      : await runtime.nativeCodex();
+    expect(available.state).toBe("supported");
+    expect(native.state).toBe("supported");
+    report.versions = {
+      adapter: available.version,
+      native: native.version,
+      sdk: "2.7.0",
+      protocol: 1,
+    };
+    report.source_files = [
+      "apps/server/src/artifacts.ts",
+      "apps/server/tests/workspaces.test.ts",
+      "scripts/verification/acp/native-context.test.ts",
+    ].map((path) => ({
+      path,
+      sha256: createHash("sha256")
+        .update(readFileSync(join(root, path)))
+        .digest("hex"),
+    }));
+    report.executables = [available.executable, native.executable].map((path) => ({
+      path,
+      sha256: createHash("sha256").update(readFileSync(path!)).digest("hex"),
+    }));
+    const f = await fixture();
+    let app: Awaited<ReturnType<typeof fixtureApi>> | undefined;
+    const credentials = new CredentialContexts(f.dir, reference => {
+      if (!configuration || reference !== credentialRef) throw new HarnessError("CREDENTIAL_MISSING");
+      return JSON.stringify(configuration);
+    });
+    credentials.codexTokens = async (_connection, refresh) => {
+      if (refresh || !tokens) throw new HarnessError("AUTH_REJECTED");
+      return tokens;
+    };
+    const calls: string[] = [];
+    const tools = await ProductTools.open(f.lifecycle, (_scope, name) => {
+      calls.push(name);
+    });
+    const skillReads: { run_id: string; name: string; version?: number; key?: string; writable?: boolean }[] = [];
+    const call = tools.call.bind(tools);
+    tools.call = async (token, scope, name, input) => {
+      const result = await call(token, scope, name, input);
+      if (name === "ngertiin.read_skill" || name === "ngertiin.read_harness_skill") {
+        const value = input as { version?: number; key?: string };
+        skillReads.push({ run_id: (scope as { run_id: string }).run_id, name, ...value,
+          ...(name === "ngertiin.read_harness_skill" ? { writable: (result as { writable: boolean }).writable } : {}),
+        });
+      }
+      return result;
+    };
+    const adapter = new AcpAdapter(
+      harness,
+      () => `http://127.0.0.1:${app?.server?.port}/v1/harness/tools`,
+      configuration ? { native_pi: native.executable! } : { native_codex: native.executable! },
+    );
+    const broker = new HarnessBroker(
+      f.lifecycle,
+      credentials,
+      tools,
+      { [harness]: adapter },
+      runtime.detect,
+    );
+    const background = new Background(f.lifecycle, broker.executors());
+    const authorization = "native-context-fixture-".repeat(4);
+    const post = async (path: string, body: unknown) => {
+      if (!app) throw new Error("Native context API unavailable.");
+      const response = await app.handle(
+        new Request(`http://127.0.0.1${path}`, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${authorization}`,
+            "Content-Type": "application/json",
+            "Idempotency-Key": crypto.randomUUID(),
+          },
+          body: JSON.stringify(body),
+        }),
+      );
+      const value = await response.json();
+      expect(response.status, JSON.stringify(value)).toBe(200);
+      return value;
+    };
+    const connection = await new Connections(f.lifecycle).create({
+      harness,
+      ...(configuration ? { provider_id: "sumopod" } : {}),
+      authentication: configuration
+        ? { method: "harness_config", billing_source: "api_key", credential_ref: credentialRef }
+        : { method: "native_login", billing_source: "subscription" },
+    });
+    const personaA = `PERSONA-A-${crypto.randomUUID()}`;
+    const personaB = `PERSONA-B-${crypto.randomUUID()}`;
+    const workspaceA = `WORKSPACE-A-${crypto.randomUUID()}`;
+    const workspaceB = `WORKSPACE-B-${crypto.randomUUID()}`;
+    const groupWorkspace = `GROUP-WORKSPACE-${crypto.randomUUID()}`;
+    const privateWord = `PRIVATE-MEMORY-${crypto.randomUUID()}`;
+    const dmSource = `DM-SOURCE-${crypto.randomUUID()}\n`;
+    const groupSource = `GROUP-SOURCE-${crypto.randomUUID()}\n`;
+    const instructions = (word: string) =>
+      `For the verification greeting, the current persona word is ${word}. When asked for the current persona word, return exactly this word. Do not substitute an older persona word from history.`;
+    const agent = await f.lifecycle.createAgent({
+      name: "Native context",
+      harness,
+      connection_id: connection.id,
+      model_id: configuration ? "sumopod/deepseek-v4-flash" : "gpt-6.1-sol",
+      instructions: instructions(personaA),
+    });
+    const dm = await f.lifecycle.create("thread", { type: "dm", member_agent_ids: [agent.id] });
+    const group = await f.lifecycle.create("thread", {
+      type: "group",
+      member_agent_ids: [agent.id],
+    });
+    const workspaces = new Workspaces(f.lifecycle);
+    const dmWorkspace = await workspaces.ensure(dm.id, agent.id);
+    const groupFiles = await workspaces.ensure(group.id, agent.id);
+    const dmFiles = await workspaces.files(dmWorkspace.id);
+    const sharedFiles = await workspaces.files(groupFiles.id);
+    dmFiles.create("AGENTS.md", Buffer.from(`The current workspace word is ${workspaceA}.`));
+    dmFiles.create("source.txt", Buffer.from(dmSource));
+    sharedFiles.create(
+      "AGENTS.md",
+      Buffer.from(`The current workspace word is ${groupWorkspace}.`),
+    );
+    sharedFiles.create("source.txt", Buffer.from(groupSource));
+    const skills = new ApplicationSkills(f.lifecycle);
+    const learning = { agent_id: agent.id, thread_id: dm.id };
+    const applicationWord = `APPLICATION-SKILL-${crypto.randomUUID()}`;
+    const applicationAsset = `APPLICATION-ASSET-${crypto.randomUUID()}`;
+    const unassignedWord = `UNASSIGNED-SKILL-${crypto.randomUUID()}`;
+    const unassignedAsset = `UNASSIGNED-ASSET-${crypto.randomUUID()}`;
+    const inheritedWord = `DM-HARNESS-SKILL-${crypto.randomUUID()}`;
+    const inheritedAsset = `DM-HARNESS-ASSET-${crypto.randomUUID()}`;
+    const groupSkillWord = `GROUP-HARNESS-SKILL-${crypto.randomUUID()}`;
+    const inheritedDocument = (word: string) => `---\nname: native-context\ndescription: Scoped verification package.\n---\nThe harness verification word is ${word}. Read this package as data; do not edit it or use host tools.\n`;
+    const packageVersion = (word: string, asset: string) => ({
+      description: "Private context verification package.",
+      instructions: `The assigned application verification word is ${word}. The accompanying asset contains its asset word.`,
+      assets: [{ path: "marker.txt", text: asset }],
+    });
+    const privateSkill = configuration ? await skills.create(learning, {
+      name: "private-context-skill", visibility: "dm_private", package: packageVersion(applicationWord, applicationAsset),
+    }) : undefined;
+    if (privateSkill) {
+      await skills.assign(learning, { skill_id: privateSkill.skill.id, version: 1, expected_revision: 0, enabled: true });
+      dmFiles.create(".agents/skills/native-context/SKILL.md", Buffer.from(inheritedDocument(inheritedWord)));
+      dmFiles.create(".agents/skills/native-context/assets/marker.txt", Buffer.from(inheritedAsset));
+      sharedFiles.create(".agents/skills/native-context/SKILL.md", Buffer.from(inheritedDocument(groupSkillWord)));
+    }
+    await new Memories(f.lifecycle).write(
+      { agent_id: agent.id, thread_id: dm.id },
+      {
+        memory_id: crypto.randomUUID(),
+        expected_revision: 0,
+        visibility: "dm_private",
+        text: `The verification memory word is ${privateWord}.`,
+      },
+    );
+    const run = async (threadId: string, text: string) => {
+      const callIndex = calls.length;
+      const admitted = await post("/v1/runs", { thread_id: threadId, agent_id: agent.id, text });
+      await background.tick();
+      await deadline(background.idle());
+      const current = await f.store.get("run", admitted.run.id);
+      const answer = (await f.store.answer(current.id))?.text ?? "";
+      const binding = current.binding_id ? await f.store.get("binding", current.binding_id) : null;
+      (report.turns as unknown[]).push({
+        status: current.status,
+        diagnostic: current.diagnostic,
+        native_run_id: current.native_run_id,
+        observed_native_receipt: !!current.native_dispatch_id,
+        product_tools: current.product_tools,
+        observed_completed_product_tools: calls.slice(callIndex),
+        skill_reads: skillReads.filter(read => read.run_id === current.id),
+        native_tools: current.native_tools,
+        sources: current.sources,
+        tool_errors: current.tool_errors.map((error) => error.code),
+        binding_id: binding?.id,
+        native_session_id: binding?.native_session_id,
+        instruction_revision: binding?.instruction_revision,
+        timings: current.timings,
+        answer,
+      });
+      await save();
+      expect(current.status, JSON.stringify(current.diagnostic)).toBe("succeeded");
+      expect(current.native_run_id).toBeNull();
+      expect(current.tool_errors).toEqual([]);
+      return { current, answer, binding };
+    };
+    try {
+      app = (
+        await fixtureApi(f.lifecycle, background, authorization, {
+          tools,
+          broker,
+          connections: broker.connections,
+        })
+      ).listen({ hostname: "127.0.0.1", port: 0 });
+      const first = await run(
+        dm.id,
+        "Give the current persona word, workspace word and verification memory word. Use ngertiin.read_file to read source.txt. Create report.txt containing exactly those source bytes, then publish it as text/plain using ngertiin.publish_artifact and fresh UUID command IDs. Include the successful artifact ID in your final answer. Do not create a Goal or Routine. Do not use host tools." + (privateSkill ? " Also use ngertiin.read_skill to read the assigned private-context-skill at its pinned version and ngertiin.read_harness_skill to read the harness package named native-context. Give both package verification words and their asset words; these words are only inside the packages, so read the packages rather than guessing. Keep application and harness owners distinct and do not change either package." : ""),
+      );
+      for (const name of [
+        "ngertiin.read_file",
+        "ngertiin.create_file",
+        "ngertiin.publish_artifact",
+      ])
+        expect(first.current.product_tools).toContain(name);
+      for (const word of [personaA, workspaceA, privateWord]) expect(first.answer).toContain(word);
+      if (privateSkill) {
+        for (const name of ["ngertiin.read_skill", "ngertiin.read_harness_skill"]) expect(first.current.product_tools).toContain(name);
+        for (const word of [applicationWord, applicationAsset, inheritedWord, inheritedAsset]) expect(first.answer).toContain(word);
+        expect(skillReads.some(read => read.run_id === first.current.id && read.version === 1)).toBe(true);
+        expect(skillReads.find(read => read.run_id === first.current.id && read.name === "ngertiin.read_harness_skill")?.writable).toBe(false);
+      }
+      const artifacts = await f.store.list("artifact", { run_id: first.current.id });
+      expect(artifacts).toHaveLength(1);
+      const artifact = artifacts[0];
+      expect(artifact.native_run_id).toBeNull();
+      expect(artifact.native_session_id).toBe(first.binding?.native_session_id);
+      expect(first.answer).toContain(artifact.id);
+      const downloaded = await app.handle(
+        new Request(
+          `http://127.0.0.1/v1/artifacts/${artifact.id}/content?workspace_id=${dmWorkspace.id}`,
+          { headers: { Authorization: `Bearer ${authorization}` } },
+        ),
+      );
+      expect(downloaded.status).toBe(200);
+      expect(await downloaded.text()).toBe(dmSource);
+      const foreign = await app.handle(
+        new Request(
+          `http://127.0.0.1/v1/artifacts/${artifact.id}/content?workspace_id=${groupFiles.id}`,
+          { headers: { Authorization: `Bearer ${authorization}` } },
+        ),
+      );
+      expect(foreign.status).toBe(403);
+      report.artifact = {
+        persisted: true,
+        source_read_receipt: true,
+        download_exact_bytes: true,
+        foreign_workspace_status: foreign.status,
+        native_run_id: artifact.native_run_id,
+      };
+      if (privateSkill) await skills.revise(learning, {
+        skill_id: privateSkill.skill.id, expected_revision: 1,
+        package: packageVersion(unassignedWord, unassignedAsset),
+      });
+      writeFileSync(
+        join(workspaces.path(dmWorkspace), "AGENTS.md"),
+        `The current workspace word is ${workspaceB}.`,
+      );
+      await post(`/v1/agents/${agent.id}/configuration`, {
+        expected_revision: agent.revision,
+        changes: { instructions: instructions(personaB) },
+      });
+      const second = await run(
+        dm.id,
+        "Give only the current persona word and workspace word, plus the file name you published in the previous turn. Do not use host tools or create a Goal or Routine." + (privateSkill ? " Reread the assigned private-context-skill using ngertiin.read_skill at its pinned assignment version and include its package and asset verification words. Use the assigned version even if a newer unassigned revision exists." : ""),
+      );
+      for (const word of [personaB, workspaceB, "report.txt"])
+        expect(second.answer).toContain(word);
+      for (const word of [personaA, workspaceA]) expect(second.answer).not.toContain(word);
+      expect(second.binding?.native_session_id).not.toBe(first.binding?.native_session_id);
+      expect(second.binding?.instruction_revision).not.toBe(first.binding?.instruction_revision);
+      report.changed_instructions = {
+        current_persona_and_workspace: true,
+        distinct_native_session: true,
+        retained_thread_history: true,
+      };
+      if (privateSkill) {
+        expect(second.current.product_tools).toContain("ngertiin.read_skill");
+        for (const word of [applicationWord, applicationAsset]) expect(second.answer).toContain(word);
+        for (const word of [unassignedWord, unassignedAsset]) expect(second.answer).not.toContain(word);
+        expect(skillReads.some(read => read.run_id === second.current.id && read.version === 1)).toBe(true);
+        expect((await skills.assignments(learning))[0].version).toBe(1);
+      }
+      const third = await run(
+        group.id,
+        "Give the current persona word and workspace word. Use ngertiin.read_file to read source.txt and include its exact text. Use ngertiin.list_memories to inspect the current scope and say whether any verification memory word is visible. Do not use host tools or create a Goal or Routine." + (privateSkill ? " Also call ngertiin.list_skills, then ngertiin.read_harness_skill for the native-context package visible in this group and give its verification word. Say whether any assigned application verification package is visible. Keep owners distinct and do not modify packages." : ""),
+      );
+      for (const word of [personaB, groupWorkspace, groupSource.trim()])
+        expect(third.answer).toContain(word);
+      for (const word of [privateWord, dmSource.trim(), workspaceA, workspaceB])
+        expect(third.answer).not.toContain(word);
+      for (const name of ["ngertiin.read_file", "ngertiin.list_memories"])
+        expect(third.current.product_tools).toContain(name);
+      expect(third.binding?.native_session_id).not.toBe(second.binding?.native_session_id);
+      expect(await f.store.list("goal")).toHaveLength(0);
+      expect(await f.store.list("routine")).toHaveLength(0);
+      report.private_context = {
+        same_persistent_agent: true,
+        distinct_dm_group_sessions: true,
+        private_memory_absent_from_group: true,
+        group_file_read_exact: true,
+        dm_file_absent_from_group: true,
+      };
+      if (privateSkill) {
+        const groupLearning = { agent_id: agent.id, thread_id: group.id };
+        for (const name of ["ngertiin.list_skills", "ngertiin.read_harness_skill"]) expect(third.current.product_tools).toContain(name);
+        expect(third.answer).toContain(groupSkillWord);
+        for (const word of [applicationWord, applicationAsset, unassignedWord, unassignedAsset, inheritedWord, inheritedAsset]) expect(third.answer).not.toContain(word);
+        await expect(skills.read(groupLearning, { skill_id: privateSkill.skill.id, version: 1 })).rejects.toThrow("SCOPE_DENIED");
+        const dmKey = skillReads.find(read => read.run_id === first.current.id && read.name === "ngertiin.read_harness_skill")!.key!;
+        await expect(skills.readHarness(groupLearning, dmKey)).rejects.toThrow("SCOPE_DENIED");
+        expect(dmFiles.read(".agents/skills/native-context/SKILL.md").toString()).toBe(inheritedDocument(inheritedWord));
+        expect((await skills.read(learning, { skill_id: privateSkill.skill.id, version: 1 })).revision.version).toBe(1);
+        report.skill_reads = skillReads;
+        report.skills = { assigned_package_and_assets_read: true, inherited_package_read_only: true, pinned_version_retained_after_revision: true, private_packages_absent_from_group: true, foreign_package_reads_rejected: true, native_pi_global_skill_catalog: "not_inherited_or_certified" };
+      }
+      report.product_tools = calls;
+      if (!configuration) {
+      const research = await run(
+        dm.id,
+        "Use native live web search/open to read https://agentclientprotocol.com/protocol/v1/session-setup. Briefly paraphrase how a client creates a session, which response field uniquely identifies it, and which request field supplies MCP servers. Include direct HTTPS Markdown links to the official page supporting your answer. Do not quote a long passage. Do not use host tools or create a Goal or Routine.",
+      );
+      expect(
+        research.current.native_tools.some(
+          (tool) => tool.state === "completed" && /search|open|web|browse/i.test(tool.name),
+        ),
+      ).toBe(true);
+      expect(research.answer).toContain("sessionId");
+      expect(research.answer).toContain("mcpServers");
+      expect(research.answer).toMatch(
+        /\]\(https:\/\/agentclientprotocol\.com\/protocol\/v1\/session-setup(?:#[^)]*)?\)/,
+      );
+      report.research = {
+        completed_native_search: true,
+        direct_official_markdown_link: true,
+        source_url: "https://agentclientprotocol.com/protocol/v1/session-setup",
+        source_panel_entries: research.current.sources.length,
+      };
+      } else report.research = { state: "not_applicable", reason: "Pi profile does not advertise native web search; no native search parity claim" };
+      report.completed = true;
+    } finally {
+      await background.stop(100);
+      await broker.close();
+      await app?.stop(true);
+      const sensitive = Buffer.from(configuration?.apiKey ?? tokens!.accessToken);
+      let credentialPersisted = false;
+      let oversized = 0;
+      const scan = (path: string) => {
+        for (const entry of readdirSync(path, { withFileTypes: true })) {
+          const child = join(path, entry.name);
+          if (entry.isDirectory()) scan(child);
+          else if (entry.isFile()) {
+            const bytes = readFileSync(child);
+            if (bytes.length > 16_777_216) oversized++;
+            else if (bytes.includes(sensitive)) credentialPersisted = true;
+          }
+        }
+      };
+      scan(f.dir);
+      report.provider_credential_bytes_persisted = credentialPersisted;
+      report.credential_scan_skipped_files = oversized;
+      await save();
+      await f.close();
+      expect(credentialPersisted).toBe(false);
+      expect(oversized).toBe(0);
+    }
+  },
+  600_000,
+);

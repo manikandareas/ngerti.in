@@ -101,7 +101,7 @@ export default function WorkspaceEntry({ children }: { children: ReactNode }) {
         return;
       }
       const contract = await request<{ version: string }>("/v1/contracts");
-      if (!contract.version.startsWith("2.") || Number(contract.version.split(".")[1]) < 1)
+      if (!contract.version.startsWith("2.") || Number(contract.version.split(".")[1]) < 4)
         throw new Error("This server needs a compatible Ngertiin update.");
       const list = await request<OrganizationList>("/v1/organizations");
       if (!current()) return;

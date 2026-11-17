@@ -4,23 +4,18 @@ import { type ReactNode, useId } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Item, ItemActions, ItemContent, ItemDescription, ItemTitle } from "@/components/ui/item";
 import { ProviderBrandMark } from "@/features/settings/components/provider-mark";
+import { type HarnessId, harnesses, harnessIds } from "@/lib/harnesses";
 import type { Connection } from "@/types/workspace";
 
-export const providers = [
-  {
-    id: "codex",
-    name: "ChatGPT",
-    runtime: "Codex",
-    description: "Gunakan akun ChatGPT atau OpenAI API key.",
-  },
-  {
-    id: "muse",
-    name: "Muse Code",
-    runtime: "Muse Code",
-    description: "Gunakan akun Muse atau Meta API key.",
-  },
-] as const;
-export type ProviderId = (typeof providers)[number]["id"];
+export const providers = harnessIds.map((id) => ({
+  id,
+  name: harnesses[id].accountName,
+  runtime: harnesses[id].name,
+  description: harnesses[id].nativeLogin
+    ? "Gunakan akun atau API key yang dipilih."
+    : "Gunakan API key dari provider yang dipilih.",
+}));
+export type ProviderId = HarnessId;
 export function ProviderMark({ id }: { id: ProviderId }) {
   return (
     <span
@@ -145,9 +140,11 @@ export function ConnectionBadge({ connection }: { connection: Connection }) {
   );
 }
 export function billingLabel(value: string) {
-  return value === "api_key"
-    ? "API key"
-    : value === "subscription"
-      ? "Subscription"
-      : "Belum diketahui";
+  return value === "free"
+    ? "Free"
+    : value === "api_key"
+      ? "API key"
+      : value === "subscription"
+        ? "Subscription"
+        : "Belum diketahui";
 }

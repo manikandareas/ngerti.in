@@ -32,12 +32,15 @@ async function setup() {
   const workspace = await files.workspaces.ensure(f.thread.id, f.agent.id);
   return { files, workspace, root: files.workspaces.path(workspace) };
 }
-async function running(workspace: Entity<"workspace">) {
+async function running(
+  workspace: Entity<"workspace">,
+  nativeTurn: string | null = "native-turn-proof",
+) {
   await f.lifecycle.bind(f.thread.id, f.agent.id, "native-file-proof", workspace);
   const input = await f.admit();
   const run = await f.lifecycle.claimNext(f.thread.id, f.agent.id);
   if (!run?.dispatch_token) throw new Error("Run was not claimed.");
-  await f.lifecycle.started(run.id, run.dispatch_token, "native-turn-proof");
+  await f.lifecycle.started(run.id, run.dispatch_token, nativeTurn ?? undefined);
   return {
     input,
     run: await f.store.get("run", run.id),
@@ -185,6 +188,26 @@ test("publication deduplicates by native run/path/hash, keeps provenance and nev
   expect((await f.store.events(0, 1000)).filter((e) => e.entity_kind === "artifact")).toHaveLength(
     1,
   );
+});
+test("an accepted nullable-ID run publishes immutable artifacts through its application binding and lease", async () => {
+  const { files, workspace, root } = await setup();
+  writeFileSync(join(root, "acp-report.txt"), "Scoped ACP output");
+  const { run, authorize } = await running(workspace, null);
+  const input = { workspace_id: workspace.id, run_id: run.id, path: "acp-report.txt" };
+  expect(run.native_run_id).toBeNull();
+  const published = await files.publish(crypto.randomUUID(), input, authorize);
+  expect(published).toMatchObject({
+    run_id: run.id,
+    native_run_id: null,
+    native_session_id: "native-file-proof",
+  });
+  expect((await files.download(published.id, workspace.id)).bytes.toString()).toBe(
+    "Scoped ACP output",
+  );
+  expect(await files.publish(crypto.randomUUID(), input, authorize)).toEqual(published);
+  await f.lifecycle.cancel(run.id);
+  await expect(files.publish(crypto.randomUUID(), input, authorize)).rejects.toThrow();
+  expect(await f.store.list("artifact")).toHaveLength(1);
 });
 test("stop and restart retain one committed artifact without deleting or republishing files", async () => {
   const { files, workspace, root } = await setup();

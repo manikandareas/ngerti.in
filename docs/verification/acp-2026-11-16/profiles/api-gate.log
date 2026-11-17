@@ -1,0 +1,29 @@
+bun test v1.3.10 (30e609e0)
+
+tests/acp-api.test.ts:
+(pass) authenticated ACP contract and explicit multi-provider key routes preserve private account scope [1343.13ms]
+
+tests/contracts.test.ts:
+(pass) every registered domain route retains the shared authentication guard [594.81ms]
+(pass) published replay schema accepts browser and application receipts across restart [274.07ms]
+(pass) published command schemas retain optional defaulted admission fields [141.22ms]
+(pass) consumer contract describes actual routes without executing native operations [545.16ms]
+(pass) published response schemas validate admission, control, history, snapshots and safe errors [575.90ms]
+
+tests/organizations/readiness.test.ts:
+(pass) every installed account surface declares authentication/scope and rejects missing credentials before input validation [774.67ms]
+(pass) normal HTTP admission and both broker executors keep two users of one Team agent private [7945.71ms]
+(pass) revoking membership during native work retains the matching cancelled outcome without late publication [2834.45ms]
+(pass) revoking membership during native work retains the matching unknown outcome without late publication [2781.55ms]
+(pass) authority replacement fences accepted scoped work and preserves the queued lane without resubmitting [2106.25ms]
+(pass) generic entity inventory and organization switches never grant another actor's private data [2973.38ms]
+(pass) concurrent scoped queries reuse their authorization fence without exhausting the auth pool [1027.45ms]
+(pass) opening a fourth private transport cannot evict another actor's active native writer [5359.00ms]
+(pass) native credential callbacks retain current resource grants after the opening browser session logs out [1751.87ms]
+(pass) commit subscribers cannot borrow the writing user's request scope [838.85ms]
+(pass) a native stop timeout still fences an unknown outcome after membership revocation [3602.96ms]
+
+ 17 pass
+ 0 fail
+ 879 expect() calls
+Ran 17 tests across 3 files. [36.11s]

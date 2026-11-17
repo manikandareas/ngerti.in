@@ -1,5 +1,7 @@
 import type { AvatarConfig } from "@ngertiin/avatar/config";
+import type { HarnessId } from "@/lib/harnesses";
 import type { NativeInteraction } from "./native-interactions";
+import type { NativeProgress } from "./native-progress";
 import type {
   Artifact,
   AttachmentDocument,
@@ -9,7 +11,7 @@ import type {
   Routine,
   Workspace,
 } from "./work";
-// Consumer projections of the published Ngertiin API 2.1.0.
+// Consumer projections of the published Ngertiin API 2.4.0.
 export interface Base {
   organization_id?: string | null;
   actor_id?: string | null;
@@ -24,11 +26,11 @@ export interface Agent extends Base {
   avatar_config?: AvatarConfig | null;
   soul: string;
   instructions: string;
-  harness: "codex" | "muse";
+  harness: HarnessId;
   connection_id: string | null;
   model_id: string | null;
   reasoning: string | null;
-  billing_source: "subscription" | "api_key" | null;
+  billing_source: "subscription" | "api_key" | "free" | null;
   system_role: "tobi" | null;
 }
 export interface Thread extends Base {
@@ -54,7 +56,7 @@ export interface Run extends Base {
     connection_id: string;
     account_id: string | null;
     model_id: string;
-    billing_source: "subscription" | "api_key";
+    billing_source: "subscription" | "api_key" | "free";
   } | null;
   retry_allowed?: boolean;
   retry_of_run_id?: string | null;
@@ -93,6 +95,7 @@ export interface Run extends Base {
   product_tools: string[];
   native_tools: { item_id: string; name: string; state: string }[];
   native_interactions: NativeInteraction[];
+  native_progress?: NativeProgress | null;
   sources: { url: string; title: string; operation: string }[];
   publication: string;
   goal_id: string | null;
@@ -129,11 +132,12 @@ export interface ConversationPreviews {
 export interface Connection extends Base {
   ownership?: "personal" | "organization";
   audience_id?: string | null;
-  harness: "codex" | "muse";
+  harness: HarnessId;
+  provider_id?: string | null;
   state: string;
   account_id: string | null;
   login: string;
-  authentication: { method: string; billing_source: "subscription" | "api_key" };
+  authentication: { method: string; billing_source: "subscription" | "api_key" | "free" };
   effective_billing_source: string;
   inference: string;
   discovery: string;

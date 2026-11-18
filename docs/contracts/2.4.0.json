@@ -9369,6 +9369,234 @@
         "format": "uuid",
         "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
       },
+      "conversation_part": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 240
+          },
+          "sequence": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991
+          },
+          "source_cursor": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "thread_id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "message",
+              "goal_created",
+              "goal_completed",
+              "goal_blocked",
+              "goal_paused",
+              "goal_resumed",
+              "goal_stopped",
+              "routine_created",
+              "routine_paused",
+              "routine_resumed",
+              "routine_stopped",
+              "handoff_requested",
+              "handoff_failed"
+            ]
+          },
+          "message_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "resource_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "source_message_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "actors": {
+            "maxItems": 2,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "format": "uuid",
+                  "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "handle": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "avatar_config": {
+                  "anyOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "version": {
+                          "type": "number",
+                          "const": 1
+                        },
+                        "seed": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 128
+                        },
+                        "shape": {
+                          "type": "string",
+                          "enum": [
+                            "circle",
+                            "oval",
+                            "squircle",
+                            "capsule",
+                            "triangle",
+                            "diamond",
+                            "pentagon",
+                            "hexagon"
+                          ]
+                        },
+                        "color": {
+                          "type": "string",
+                          "enum": [
+                            "mint",
+                            "lilac",
+                            "peach",
+                            "sky",
+                            "butter",
+                            "rose",
+                            "tangerine",
+                            "iris",
+                            "matcha",
+                            "pearl",
+                            "seafoam",
+                            "aqua",
+                            "pistachio",
+                            "lemon",
+                            "melon",
+                            "blush",
+                            "wisteria",
+                            "lavender",
+                            "oat",
+                            "mist"
+                          ]
+                        },
+                        "face": {
+                          "type": "string",
+                          "enum": [
+                            "happy",
+                            "curious",
+                            "calm",
+                            "excited",
+                            "shy",
+                            "surprised",
+                            "sleepy",
+                            "focused"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "version",
+                        "seed",
+                        "shape",
+                        "color",
+                        "face"
+                      ],
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "id",
+                "name",
+                "handle",
+                "avatar_config"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 1000
+          },
+          "summary": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "sequence",
+          "source_cursor",
+          "thread_id",
+          "created_at",
+          "kind",
+          "message_id",
+          "resource_id",
+          "source_message_id",
+          "actors",
+          "name",
+          "summary"
+        ],
+        "additionalProperties": false
+      },
       "schema_version": {
         "type": "number",
         "const": 1
@@ -41114,6 +41342,234 @@
                 "type": "string",
                 "format": "uuid",
                 "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+              },
+              "conversation_part": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 240
+                  },
+                  "sequence": {
+                    "type": "integer",
+                    "exclusiveMinimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "source_cursor": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "thread_id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                  },
+                  "created_at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+                  },
+                  "kind": {
+                    "type": "string",
+                    "enum": [
+                      "message",
+                      "goal_created",
+                      "goal_completed",
+                      "goal_blocked",
+                      "goal_paused",
+                      "goal_resumed",
+                      "goal_stopped",
+                      "routine_created",
+                      "routine_paused",
+                      "routine_resumed",
+                      "routine_stopped",
+                      "handoff_requested",
+                      "handoff_failed"
+                    ]
+                  },
+                  "message_id": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "format": "uuid",
+                        "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "resource_id": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "format": "uuid",
+                        "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "source_message_id": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "format": "uuid",
+                        "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "actors": {
+                    "maxItems": 2,
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "format": "uuid",
+                          "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "handle": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "avatar_config": {
+                          "anyOf": [
+                            {
+                              "type": "object",
+                              "properties": {
+                                "version": {
+                                  "type": "number",
+                                  "const": 1
+                                },
+                                "seed": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 128
+                                },
+                                "shape": {
+                                  "type": "string",
+                                  "enum": [
+                                    "circle",
+                                    "oval",
+                                    "squircle",
+                                    "capsule",
+                                    "triangle",
+                                    "diamond",
+                                    "pentagon",
+                                    "hexagon"
+                                  ]
+                                },
+                                "color": {
+                                  "type": "string",
+                                  "enum": [
+                                    "mint",
+                                    "lilac",
+                                    "peach",
+                                    "sky",
+                                    "butter",
+                                    "rose",
+                                    "tangerine",
+                                    "iris",
+                                    "matcha",
+                                    "pearl",
+                                    "seafoam",
+                                    "aqua",
+                                    "pistachio",
+                                    "lemon",
+                                    "melon",
+                                    "blush",
+                                    "wisteria",
+                                    "lavender",
+                                    "oat",
+                                    "mist"
+                                  ]
+                                },
+                                "face": {
+                                  "type": "string",
+                                  "enum": [
+                                    "happy",
+                                    "curious",
+                                    "calm",
+                                    "excited",
+                                    "shy",
+                                    "surprised",
+                                    "sleepy",
+                                    "focused"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "version",
+                                "seed",
+                                "shape",
+                                "color",
+                                "face"
+                              ],
+                              "additionalProperties": false
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "name",
+                        "handle",
+                        "avatar_config"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "name": {
+                    "type": "string",
+                    "maxLength": 1000
+                  },
+                  "summary": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "maxLength": 1000
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "id",
+                  "sequence",
+                  "source_cursor",
+                  "thread_id",
+                  "created_at",
+                  "kind",
+                  "message_id",
+                  "resource_id",
+                  "source_message_id",
+                  "actors",
+                  "name",
+                  "summary"
+                ],
+                "additionalProperties": false
               },
               "schema_version": {
                 "type": "number",
@@ -127963,8 +128419,8 @@
     "version": "nma-073.1",
     "mode": "accounts",
     "readiness_gate": "ready",
-    "issuer": "http://127.0.0.1:62402/api/auth",
-    "audience": "http://127.0.0.1:62402",
+    "issuer": "http://127.0.0.1:56209/api/auth",
+    "audience": "http://127.0.0.1:56209",
     "user": {
       "web": "secure_http_only_cookie",
       "native": "opaque_oauth_access_token",

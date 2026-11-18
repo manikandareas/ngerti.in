@@ -1,7 +1,7 @@
 import { createApi as createAccountApi } from "../../src/api";
 import { Background } from "../../src/background";
 import { DomainError, type Entity } from "../../src/contracts";
-import { type HarnessId, manifests } from "../../src/harness/availability";
+import { type Availability, type HarnessId, manifests } from "../../src/harness/availability";
 import { HarnessBroker } from "../../src/harness/broker";
 import type { HarnessAdapter, HarnessClient } from "../../src/harness/client";
 import { Connections } from "../../src/harness/connections";
@@ -200,18 +200,19 @@ export async function readinessFixture(
     await connections.authorize(await connections.get(id));
     return { accessToken: "fixture-access-token", chatgptAccountId: "fixture-account" };
   };
+  const detect = async (harness: HarnessId): Promise<Availability> => ({
+    harness,
+    state: "supported",
+    version: manifests[harness].minimum_version,
+    executable: process.execPath,
+    manifest: manifests[harness],
+  });
   const broker = new HarnessBroker(
     lifecycle,
     credentials,
     tools,
     adapters,
-    async (harness) => ({
-      harness,
-      state: "supported",
-      version: manifests[harness].minimum_version,
-      executable: process.execPath,
-      manifest: manifests[harness],
-    }),
+    detect,
     undefined,
     timeouts,
   );
@@ -223,6 +224,7 @@ export async function readinessFixture(
     connections: broker.connections,
     tools,
     broker,
+    detect,
     credentialStorage: new CredentialStorage(f.domain.dir, storageKey),
     accounts: {
       inspect: (id) => broker.connections.get(id),

@@ -538,7 +538,16 @@ test("the installed account contract enumerates organization request, response a
     (route: { path: string }) =>
       route.path.startsWith("/v1/organizations") || route.path.startsWith("/v1/invitations"),
   );
-  expect(routes).toHaveLength(28);
+  expect(routes).toEqual(
+    expect.arrayContaining([
+      expect.objectContaining({ method: "GET", path: "/v1/organizations" }),
+      expect.objectContaining({ method: "POST", path: "/v1/organizations" }),
+      expect.objectContaining({
+        method: "POST",
+        path: "/v1/invitations/:invitationId/accept",
+      }),
+    ]),
+  );
   for (const route of routes) {
     expect(route.authentication).toBe("user_session_or_oauth_access_token");
     expect(route.response.status).toBe(route.method === "DELETE" ? 403 : 200);

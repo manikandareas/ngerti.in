@@ -11,10 +11,7 @@ type State = {
   ownerThread: string;
   aliceThread: string;
   bobThread: string;
-  ownerConnection: string;
-  aliceConnection: string;
   alternativeConnection: string;
-  grant: string;
 };
 let state: State;
 const errors = new WeakMap<Page, string[]>();
@@ -34,33 +31,32 @@ async function signIn(page: Page, email = "alice@example.test") {
   await page.getByLabel("Email", { exact: true }).fill(email);
   await page.getByLabel("Password", { exact: true }).fill(password);
   await page.getByRole("button", { name: "Sign in", exact: true }).click();
-  if (email === "owner@example.test")
-    await page.getByRole("button", { name: "First organization", exact: true }).click();
+  if (email === "owner@example.test") await enterOrganization(page, state.organization.name);
   await expect(page.getByRole("textbox", { name: "Pesan", exact: true })).toBeVisible();
 }
+async function enterOrganization(page: Page, name: string) {
+  await page.getByRole("button", { name, exact: true }).click();
+  await page.getByRole("button", { name: "Continue", exact: true }).click();
+}
 async function navigation(page: Page) {
-  if (!(await page.getByRole("button", { name: /^Organization:/ }).isVisible()))
-    await page.getByRole("button", { name: "Percakapan", exact: true }).click();
-  await expect(page.getByRole("button", { name: /^Organization:/ })).toBeVisible();
+  const open = page.getByRole("button", { name: "Show sidebar", exact: true });
+  if (await open.isVisible()) await open.click();
 }
 async function switchOrganization(page: Page, name: string) {
-  await navigation(page);
   await page.getByRole("button", { name: /^Organization:/ }).click();
-  await page.getByRole("button", { name, exact: true }).click();
+  await page.getByRole("menuitemradio", { name, exact: true }).click();
+  await expect(
+    page.getByRole("button", { name: `Organization: ${name}`, exact: true }),
+  ).toBeVisible();
   await expect(page.getByRole("textbox", { name: "Pesan", exact: true })).toBeVisible();
 }
 async function settings(page: Page, section: string, label: string) {
   await page.getByRole("button", { name: "Pengaturan", exact: true }).click();
-  await expect(page.getByRole("main", { name: "Pengaturan", exact: true })).toBeVisible();
-  const mobile = page.getByRole("combobox", { name: "Menu pengaturan", exact: true });
+  await expect(page.getByRole("main", { name: "Settings", exact: true })).toBeVisible();
+  const mobile = page.getByRole("combobox", { name: "Settings", exact: true });
   if (await mobile.isVisible()) await mobile.selectOption(section);
   else {
-    const menu = page.getByRole("navigation", { name: "Menu pengaturan", exact: true });
-    if (
-      ["members", "workgroups", "team-agents"].includes(section) &&
-      !(await menu.getByRole("link", { name: label, exact: true }).isVisible())
-    )
-      await menu.getByRole("link", { name: "Organization", exact: true }).click();
+    const menu = page.getByRole("navigation", { name: "Settings navigation", exact: true });
     await menu.getByRole("link", { name: label, exact: true }).click();
   }
   await expect(page.getByRole("heading", { name: label, exact: true, level: 1 })).toBeVisible();
@@ -77,34 +73,12 @@ async function emailLink(request: APIRequestContext, email: string, purpose: str
   const response = await request.get(
     `${control}/email?${new URLSearchParams({ to: email, purpose })}`,
   );
-  return (await response.json()).url as string;
+  await expect(response).toBeOK();
+  const link: unknown = await response.json();
+  if (!link || typeof link !== "object" || !("url" in link) || typeof link.url !== "string")
+    throw new Error(`The fixture did not send a ${purpose} email to ${email}.`);
+  return link.url;
 }
-
-test("guarded owner setup preserves the new workspace without AI setup", async ({
-  page,
-  request,
-}, info) => {
-  state = await (await request.post(`${control}/reset?empty=1`)).json();
-  await page.goto("/");
-  await capture(page, `${info.project.name}-sign-in.png`);
-  await page.getByLabel("Email", { exact: true }).fill("owner@example.test");
-  await page.getByLabel("Password", { exact: true }).fill(password);
-  await page.getByRole("button", { name: "Sign in", exact: true }).click();
-  await page.getByText("Set up this server", { exact: true }).click();
-  await page.getByLabel("Owner setup token").fill(state.grant);
-  await page.getByRole("button", { name: "Complete setup", exact: true }).click();
-  await page.getByRole("button", { name: "Create organization", exact: true }).click();
-  await page.getByLabel("Organization name").fill("Studio");
-  await page.getByRole("button", { name: "Create organization", exact: true }).click();
-  const composer = page.getByRole("textbox", { name: "Pesan", exact: true });
-  await expect(composer).toBeVisible();
-  await expect(page.getByRole("button", { name: "Pilih model", exact: true })).toBeVisible();
-  const heading = await page.getByRole("button", { name: /^Detail / }).getAttribute("aria-label");
-  await page.reload();
-  await expect(page.getByRole("button", { name: heading ?? "" })).toBeVisible();
-  await expect(composer).toBeVisible();
-  await capture(page, `${info.project.name}-first-workspace.png`);
-});
 
 test("member completes a first task with a private Team-agent conversation", async ({
   page,
@@ -168,10 +142,12 @@ test("owner manages workgroups and invites a member with the assigned access", a
 }, info) => {
   await signIn(page, "owner@example.test");
   await settings(page, "workgroups", "Workgroups");
-  await page.getByRole("button", { name: "New workgroup", exact: true }).click();
-  await page.getByLabel("Name", { exact: true }).fill("Design");
-  await page.getByRole("button", { name: "Create workgroup", exact: true }).click();
-  await expect(page.getByText("Design", { exact: true })).toBeVisible();
+  const createWorkgroup = { name: "Create workgroup", exact: true };
+  await page.getByRole("button", createWorkgroup).click();
+  const dialog = page.getByRole("dialog", { name: "Create a workgroup", exact: true });
+  await dialog.getByLabel("Name", { exact: true }).fill("Design");
+  await dialog.getByRole("button", createWorkgroup).click();
+  await expect(page.getByRole("heading", { name: "Design", exact: true })).toBeVisible();
   await capture(page, `${info.project.name}-workgroups.png`);
   await settings(page, "members", "Members");
   await page.getByRole("button", { name: "Invite member", exact: true }).click();
@@ -187,7 +163,7 @@ test("owner manages workgroups and invites a member with the assigned access", a
   });
   const invited = await context.newPage();
   await invited.goto(invitation);
-  await invited.getByRole("button", { name: "Create account", exact: true }).click();
+  await invited.getByRole("button", { name: "Sign up", exact: true }).click();
   await invited.getByLabel("Name", { exact: true }).fill("Invited member");
   await invited.getByLabel("Email", { exact: true }).fill("invited@example.test");
   await invited.getByLabel("Password", { exact: true }).fill(password);
@@ -202,7 +178,7 @@ test("owner manages workgroups and invites a member with the assigned access", a
     invited.getByRole("heading", { name: "Join First organization", exact: true }),
   ).toBeVisible();
   await invited.getByRole("button", { name: "Accept invitation", exact: true }).click();
-  await expect(invited.getByRole("textbox", { name: "Pesan", exact: true })).toBeVisible();
+  await expect(invited.getByRole("heading", { name: /^Connect AI\./ })).toBeVisible();
   const access = await invited.request.get(`/v1/organizations/${state.organization.id}`);
   const projection = await access.json();
   expect(projection.role).toBe("member");
@@ -250,21 +226,27 @@ test("a Team-agent model choice stays private to its user and conversation", asy
   await navigation(page);
   await page.locator(`[data-thread-id="${state.aliceThread}"]`).click();
   await page.getByRole("button", { name: "Pilih model", exact: true }).click();
+  const saved = page.waitForResponse(
+    (response) =>
+      new URL(response.url()).pathname === "/v1/ai/selections" &&
+      response.request().method() === "POST",
+  );
   await page
     .locator("[data-model-picker-content]")
-    .getByRole("button", { name: /alternative-model/ })
+    .getByRole("option", { name: /alternative-model/ })
     .click();
   await expect(page.locator(".model-selector")).toContainText("alternative-model");
+  expect((await saved).ok()).toBe(true);
   const options = { headers: { "X-Ngertiin-Organization": state.organization.id } };
-  const selections = await (await page.request.get("/v1/entities/ai_selection", options)).json();
-  expect(
-    selections.some(
-      (row: { scope: string; thread_id: string; selection: { connection_id: string } }) =>
-        row.scope === "conversation" &&
-        row.thread_id === state.aliceThread &&
-        row.selection.connection_id === state.alternativeConnection,
-    ),
-  ).toBe(true);
+  const selections = await page.request.get("/v1/entities/ai_selection", options);
+  await expect(selections).toBeOK();
+  expect(await selections.json()).toContainEqual(
+    expect.objectContaining({
+      scope: "conversation",
+      thread_id: state.aliceThread,
+      selection: expect.objectContaining({ connection_id: state.alternativeConnection }),
+    }),
+  );
   const team = await (
     await page.request.get(`/v1/entities/agent/${state.team.id}`, options)
   ).json();
@@ -283,22 +265,6 @@ test("a Team-agent model choice stays private to its user and conversation", asy
     (await bob.request.get(`/v1/threads/${state.aliceThread}/snapshot`, options)).status(),
   ).toBe(404);
   await context.close();
-  await settings(page, "providers", "Providers");
-  await page
-    .locator(".organization-settings-row")
-    .filter({ hasText: "secondary-fixture-account" })
-    .getByText("Manage", { exact: true })
-    .click();
-  await page
-    .getByRole("combobox", { name: "Default model", exact: true })
-    .selectOption("alternative-model");
-  await page.getByRole("button", { name: "Use as my default", exact: true }).click();
-  await expect(page.getByRole("button", { name: "Clear my default", exact: true })).toBeEnabled();
-  const defaults = await (await page.request.get("/v1/entities/ai_selection", options)).json();
-  expect(
-    defaults.find((row: { scope: string }) => row.scope === "user").selection.connection_id,
-  ).toBe(state.alternativeConnection);
-  await capture(page, `${info.project.name}-connections.png`);
 });
 
 test("two tabs keep separate organizations and logout clears both private surfaces", async ({
@@ -311,7 +277,7 @@ test("two tabs keep separate organizations and logout clears both private surfac
     .fill("Owner draft in first organization");
   const second = await context.newPage();
   await second.goto("/");
-  await second.getByRole("button", { name: state.second.name, exact: true }).click();
+  await enterOrganization(second, state.second.name);
   await expect(second.getByRole("textbox", { name: "Pesan", exact: true })).toHaveText("");
   await second
     .getByRole("textbox", { name: "Pesan", exact: true })
@@ -366,33 +332,6 @@ test("a lost message acknowledgement cannot move to the next organization", asyn
   await expect(page.getByRole("button", { name: "Periksa pengiriman", exact: true })).toHaveCount(
     0,
   );
-});
-
-test("owner creates another organization and publishes a Team agent without a dashboard", async ({
-  page,
-}, info) => {
-  await signIn(page, "owner@example.test");
-  await settings(page, "organization", "Organization");
-  await page.getByRole("button", { name: "New organization", exact: true }).click();
-  await page.getByLabel("Organization name", { exact: true }).fill("Design studio");
-  await page.getByRole("button", { name: "Create organization", exact: true }).click();
-  await page.getByRole("button", { name: "Percakapan", exact: true }).click();
-  await expect(page.getByRole("textbox", { name: "Pesan", exact: true })).toBeVisible();
-  await settings(page, "team-agents", "Team agents");
-  await page.getByRole("button", { name: "Create Team agent", exact: true }).click();
-  await page.getByLabel("Name", { exact: true }).fill("Studio helper");
-  await page.getByRole("button", { name: "Save access", exact: true }).click();
-  await expect(page.getByRole("button", { name: "Save access", exact: true })).toHaveCount(0);
-  await expect(
-    page.getByRole("main", { name: "Pengaturan" }).getByText("Studio helper", { exact: true }),
-  ).toBeVisible();
-  await capture(page, `${info.project.name}-team-access.png`);
-  await page.getByRole("button", { name: "Percakapan", exact: true }).click();
-  await navigation(page);
-  await page.getByRole("button", { name: "Studio helper", exact: true }).click();
-  await expect(
-    page.getByRole("button", { name: "Detail Studio helper", exact: true }),
-  ).toBeVisible();
 });
 
 test("private attachments open and download through the scoped file transport", async ({

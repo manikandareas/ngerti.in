@@ -5,13 +5,20 @@ import { durableCommand, request } from "@/lib/api-client";
 import { reserveAuthorizationBrowser } from "@/lib/authorization-browser";
 import { assertScope, clientScope } from "@/lib/client-scope";
 import { refreshLocalModels } from "@/lib/local-models";
+import {
+  invalidateProviderConnections,
+  readProviderConnections,
+  readWorkspaceAccess,
+  recordProviderConnection,
+  useProviderConnections,
+  useWorkspaceAccess,
+} from "@/lib/workspace-queries";
 import type { Availability, Connection, Snapshot } from "@/types/workspace";
 import { useAccountAction } from "./account-forms";
 import { availableAIConnections, connectionReady } from "./ai-integration";
 import type { Maintenance } from "./harness-maintenance";
 import type { OnboardingHarness } from "./onboarding-harnesses";
 import { useAccount } from "./session";
-import type { WorkspaceAccess } from "./types";
 
 type PendingLogin = {
   harness: OnboardingHarness;
@@ -37,11 +44,12 @@ export function useAIConnections({
   const callbacks = useRef({ prepareAudience, onChanged });
   callbacks.current = { prepareAudience, onChanged };
   const scope = useRef(clientScope()).current;
+  if (!scope) throw new Error("AI connections require an authenticated workspace.");
   const action = useAccountAction();
-  const [connections, setConnections] = useState<Connection[]>([]);
-  const [allowedOrganizationConnections, setAllowedOrganizationConnections] = useState<string[]>(
-    [],
-  );
+  const catalog = useProviderConnections(scope).data;
+  const connections = catalog ?? [];
+  const allowedOrganizationConnections =
+    useWorkspaceAccess(scope).data?.allowed_organization_connection_ids ?? [];
   const [loading, setLoading] = useState(true);
   const [local, setLocal] = useState(false);
   const [error, setError] = useState("");
@@ -64,26 +72,19 @@ export function useAIConnections({
     };
   }, []);
 
-  const accept = useCallback((connection: Connection) => {
-    setConnections((items) => [connection, ...items.filter((item) => item.id !== connection.id)]);
-  }, []);
+  const accept = useCallback(
+    (connection: Connection) => recordProviderConnection({ scope, connection }),
+    [scope],
+  );
 
   const refresh = useCallback(
     async (signal?: AbortSignal) => {
       assertScope(scope);
-      const [items, grants] = await Promise.all([
-        request<Connection[]>(
-          "/v1/entities/connection",
-          undefined,
-          undefined,
-          signal,
-          15000,
-          scope,
-        ),
-        request<WorkspaceAccess>("/v1/data/access", undefined, undefined, signal, 15000, scope),
+      const [items] = await Promise.all([
+        readProviderConnections(scope),
+        readWorkspaceAccess({ scope }),
       ]);
-      setConnections(items);
-      setAllowedOrganizationConnections(grants.allowed_organization_connection_ids);
+      signal?.throwIfAborted();
       setError("");
       return items;
     },
@@ -93,7 +94,8 @@ export function useAIConnections({
   const refreshLocal = useCallback(
     async (signal?: AbortSignal) => {
       if (ownership !== "personal") return false;
-      const available = await refreshLocalModels({ signal, scope });
+      const available = await refreshLocalModels({ scope, reuse: true });
+      signal?.throwIfAborted();
       setLocal(available);
       return available;
     },
@@ -132,13 +134,17 @@ export function useAIConnections({
   }, [load]);
   useEffect(() => {
     const abort = new AbortController();
-    const reconnect = () => void load(abort.signal);
+    const reconnect = () => {
+      if (clientScope() !== scope) return;
+      if (onboarding) invalidateProviderConnections(scope);
+      void load(abort.signal);
+    };
     window.addEventListener("online", reconnect);
     return () => {
       abort.abort();
       window.removeEventListener("online", reconnect);
     };
-  }, [load]);
+  }, [load, onboarding, scope]);
   useFeedbackToast(error, { retry: () => void load() });
 
   const inspect = useCallback(
@@ -441,11 +447,12 @@ export function useAIConnections({
     available,
     refresh: async () => {
       await action.run(async () => {
+        invalidateProviderConnections(scope);
         await load();
         await callbacks.current.onChanged?.();
       });
     },
-    loading,
+    loading: loading && catalog === undefined,
     local,
     error,
     busy: action.busy,

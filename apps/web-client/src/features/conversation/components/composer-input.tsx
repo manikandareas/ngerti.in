@@ -317,14 +317,16 @@ function ComposerBridge(props: Props) {
 }
 
 export function ComposerInput(props: Props) {
+  "use memo";
+  const { report } = props;
   const initialConfig = useMemo(
     () => ({
       namespace: "ngertiin-composer",
       nodes: [AttachmentNode, ReferenceNode],
       theme: { paragraph: "composer-paragraph" },
-      onError: (error: Error) => props.report(error.message),
+      onError: (error: Error) => report(error.message),
     }),
-    [props.report],
+    [report],
   );
   return (
     <ComposerAttachmentContext.Provider

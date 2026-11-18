@@ -7,7 +7,6 @@ import {
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
-  Fragment,
   lazy,
   Suspense,
   useCallback,
@@ -27,9 +26,7 @@ import {
   ConversationScrollButton,
 } from "@/components/ai-elements/conversation";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Bubble, BubbleContent } from "@/components/ui/bubble";
 import { Button } from "@/components/ui/button";
-import { Message, MessageContent, MessageHeader } from "@/components/ui/message";
 import {
   Sheet,
   SheetContent,
@@ -38,36 +35,21 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { Spinner } from "@/components/ui/spinner";
-import { AgentActivityBubble } from "@/features/conversation/components/agent-activity-bubble";
-import { Answer } from "@/features/conversation/components/answer";
-import {
-  AgentMessageAvatar,
-  AssistantMessage,
-} from "@/features/conversation/components/assistant-message";
 import { AttachInput } from "@/features/conversation/components/attach-input";
 import {
   ComposerInput,
   type ComposerInputHandle,
 } from "@/features/conversation/components/composer-input";
 import { ComposerStopPicker } from "@/features/conversation/components/composer-stop-picker";
-import { ComputerActivity } from "@/features/conversation/components/computer-activity";
 import { ContextPanel, type PanelLocation } from "@/features/conversation/components/context-panel";
-import {
-  ConversationContentViewer,
-  ViewerComposerContext,
-} from "@/features/conversation/components/conversation-content-viewer";
-import { ConversationDate } from "@/features/conversation/components/conversation-date";
 import {
   ConversationActionsSkeleton,
   ConversationIdentitySkeleton,
   ConversationLoading,
 } from "@/features/conversation/components/conversation-loading";
+import { ConversationTranscript } from "@/features/conversation/components/conversation-transcript";
 import { CreateGroup } from "@/features/conversation/components/create-group";
-import { HumanReply } from "@/features/conversation/components/human-reply";
 import { AgentAvatar, agentStyle } from "@/features/conversation/components/identity";
-import { MessageActions } from "@/features/conversation/components/message-actions";
-import { MessageAttachments } from "@/features/conversation/components/message-attachments";
-import { MessageTime } from "@/features/conversation/components/message-time";
 import { ModelPicker } from "@/features/conversation/components/model-picker";
 import { NativeInteractions } from "@/features/conversation/components/native-interactions";
 import { ConversationNavigation } from "@/features/conversation/components/navigation";
@@ -75,34 +57,25 @@ import {
   type QueuedMessage,
   QueuedMessages,
 } from "@/features/conversation/components/queued-messages";
-import { TimelineActivity } from "@/features/conversation/components/timeline-activity";
-import { UserMessageText } from "@/features/conversation/components/user-message-text";
-import { WorkActivity } from "@/features/conversation/components/work-activity";
+import {
+  captureTranscriptAnchor,
+  type TranscriptNavigation,
+} from "@/features/conversation/components/transcript-viewport";
 import { WorkspaceProviders } from "@/features/conversation/components/workspace-providers";
-import { activityPresentation } from "@/features/conversation/lib/activity-presentation";
-import { attachmentParts } from "@/features/conversation/lib/attachment-references";
 import { useComposerRequests } from "@/features/conversation/lib/composer-requests";
 import {
   savedFileTarget,
   useContentViewerController,
 } from "@/features/conversation/lib/content-viewer";
-import {
-  conversationActivity,
-  waitingForUser,
-} from "@/features/conversation/lib/conversation-activity";
+import { conversationActivity } from "@/features/conversation/lib/conversation-activity";
 import { mergeConversationHistory } from "@/features/conversation/lib/conversation-history";
 import { conversationEntries } from "@/features/conversation/lib/conversation-parts";
-import { conversationRows } from "@/features/conversation/lib/conversation-rows";
 import { referenceTarget } from "@/features/conversation/lib/inline-references";
 import {
   prepareSubmission,
   RejectedSubmission,
 } from "@/features/conversation/lib/message-submission";
 import { waitForModelSelection } from "@/features/conversation/lib/model-selection";
-import {
-  type NativeTranscriptFragment,
-  useNativeTranscript,
-} from "@/features/conversation/lib/native-transcript";
 import { runStatusLabel } from "@/features/conversation/lib/run-status";
 import { useComposerAttachments } from "@/features/conversation/lib/use-composer-attachments";
 import { useConversationDraft } from "@/features/conversation/lib/use-conversation-draft";
@@ -141,9 +114,27 @@ const controlText: Record<string, string> = {
   unknown: "Hasil pengiriman arahan belum diketahui",
   complete: "Pengiriman arahan selesai",
 };
+function canObserveNative(run: Run) {
+  return run.status === "running" && run.cancellation === "none";
+}
+
+function hasPendingNative(run: Run) {
+  return (run.native_interactions ?? []).some(
+    (record) => record.observed_state === "pending" && record.submission?.state !== "submitted",
+  );
+}
+
 const DOUBLE_ENTER_STEER_WINDOW_MS = 1500;
 const SettingsPage = lazy(() => import("@/features/settings/components/settings-page"));
 const MarketplacePage = lazy(() => import("@/features/marketplace/components/marketplace-page"));
+const ConversationContentViewer = lazy(async () => ({
+  default: (await import("@/features/conversation/components/conversation-content-viewer"))
+    .ConversationContentViewer,
+}));
+const ViewerComposerContext = lazy(async () => ({
+  default: (await import("@/features/conversation/components/conversation-content-viewer"))
+    .ViewerComposerContext,
+}));
 
 export default function Workspace() {
   const {
@@ -208,10 +199,11 @@ export default function Workspace() {
   const [createMenu, setCreateMenu] = useState(false);
   const [createGroupOpen, setCreateGroupOpen] = useState(false);
   const [location, locate] = useState<PanelLocation>({ tab: "detail", id: null });
-  const viewer = useContentViewerController(threadId, (id) => {
+  const showViewerInfo = useCallback((id: string) => {
     locate({ tab: "library", id });
     setDetails(true);
-  });
+  }, []);
+  const viewer = useContentViewerController(threadId, showViewerInfo);
   const viewing = viewer.entries.length > 0;
   const currentThread = useRef(threadId);
   currentThread.current = threadId;
@@ -223,6 +215,9 @@ export default function Workspace() {
   const [before, setBefore] = useState<number | null>(null);
   const [olderParts, setOlderParts] = useState<ConversationPart[]>([]);
   const [historyLoaded, setHistoryLoaded] = useState(false);
+  const [transcriptNavigation, setTranscriptNavigation] = useState<TranscriptNavigation | null>(
+    null,
+  );
   useEffect(() => {
     if (!snapshot || snapshot.thread.id !== threadId) return;
     setOlder((current) => mergeConversationHistory(threadId, current, snapshot.timeline.messages));
@@ -280,10 +275,13 @@ export default function Workspace() {
   const editPending = editing ? pendingText(`queued-edit:${editing.id}`) : null;
   const agent = snapshot?.agents[0];
   const connection = connections.find((c) => c.id === agent?.connection_id);
-  const activeRuns =
-    snapshot?.runs.filter((run) =>
-      ["running", "dispatching", "cancel_requested"].includes(run.status),
-    ) ?? [];
+  const activeRuns = useMemo(
+    () =>
+      snapshot?.runs.filter((run) =>
+        ["running", "dispatching", "cancel_requested"].includes(run.status),
+      ) ?? [],
+    [snapshot?.runs],
+  );
   const activeRun = activeRuns[0];
   const stopInSlot = !editing && activeRuns.length > 0 && !pending && draft.length === 0;
   function stopLabel(run: Run) {
@@ -331,10 +329,17 @@ export default function Workspace() {
     if (!input || !editing?.id) return;
     input.focus(true);
   }, [editing?.id]);
-  function openSettings(page: SettingsSectionId = "providers") {
-    setNavigation(false);
-    void showSettings(page);
-  }
+  const openSettings = useCallback(
+    (page: SettingsSectionId = "providers") => {
+      setNavigation(false);
+      void showSettings(page);
+    },
+    [showSettings],
+  );
+  const openComputer = useCallback(() => {
+    locate({ tab: "computer", id: null });
+    setDetails(true);
+  }, []);
   function choose(id: string) {
     pendingComposerFocus.current = true;
     focusComposerAfterNavigation.current = navigation && narrowNavigation;
@@ -345,6 +350,7 @@ export default function Workspace() {
     setOlderParts([]);
     setBefore(null);
     setHistoryLoaded(false);
+    setTranscriptNavigation(null);
     setNavigation(false);
     setDetails(false);
     if (id === threadId && !focusComposerAfterNavigation.current) focusComposer();
@@ -352,21 +358,24 @@ export default function Workspace() {
     setEditText("");
     locate({ tab: "detail", id: null });
   }
-  async function act(action: () => Promise<void>, refreshAfter = true) {
-    if (lock.current) return;
-    lock.current = true;
-    setBusy(true);
-    setError("");
-    try {
-      await action();
-      if (refreshAfter) await refresh();
-    } catch (error) {
-      setError(error instanceof Error ? error.message : "Permintaan gagal");
-    } finally {
-      lock.current = false;
-      setBusy(false);
-    }
-  }
+  const act = useCallback(
+    async (action: () => Promise<void>, refreshAfter = true) => {
+      if (lock.current) return;
+      lock.current = true;
+      setBusy(true);
+      setError("");
+      try {
+        await action();
+        if (refreshAfter) await refresh();
+      } catch (error) {
+        setError(error instanceof Error ? error.message : "Permintaan gagal");
+      } finally {
+        lock.current = false;
+        setBusy(false);
+      }
+    },
+    [refresh, setError],
+  );
   function createAgent() {
     setCreateMenu(false);
     void act(async () => {
@@ -509,21 +518,23 @@ export default function Workspace() {
     }, false);
   }
 
-  async function queueCommand<T>(slot: string, path: string, body: unknown): Promise<T> {
-    try {
-      return await durableCommand<T>(slot, path, body);
-    } catch (failure) {
-      // A definitive stale-state rejection can be corrected; an indeterminate reply keeps its exact operation.
-      if (
-        failure instanceof ApiError &&
-        ["CONFLICT", "STALE_DISPATCH", "IDEMPOTENCY_CONFLICT"].includes(failure.code)
-      ) {
-        localStorage.removeItem(scopedStorageKey(`ngertiin:pending:${slot}`));
-        await refresh().catch(() => {});
+  const queueCommand = useCallback(
+    async <T,>(slot: string, path: string, body: unknown): Promise<T> => {
+      try {
+        return await durableCommand<T>(slot, path, body);
+      } catch (failure) {
+        if (
+          failure instanceof ApiError &&
+          ["CONFLICT", "STALE_DISPATCH", "IDEMPOTENCY_CONFLICT"].includes(failure.code)
+        ) {
+          localStorage.removeItem(scopedStorageKey(`ngertiin:pending:${slot}`));
+          await refresh().catch(() => {});
+        }
+        throw failure;
       }
-      throw failure;
-    }
-  }
+    },
+    [refresh],
+  );
   function focusComposer() {
     const input = composerInput.current;
     if (input) {
@@ -639,11 +650,7 @@ export default function Workspace() {
       setBefore(cursor ?? null);
       setHistoryLoaded(true);
     }
-    requestAnimationFrame(() =>
-      document
-        .getElementById(`message-${id}`)
-        ?.scrollIntoView({ block: "center", behavior: "instant" }),
-    );
+    if (found) setTranscriptNavigation({ kind: "jump", threadId, messageId: id });
   }
   const panel = snapshot ? (
     <ContextPanel
@@ -690,11 +697,7 @@ export default function Workspace() {
     () => (pendingInput ? [...publishedMessages, pendingInput] : publishedMessages),
     [publishedMessages, pendingInput],
   );
-  function hasPendingNative(run: Run) {
-    return (run.native_interactions ?? []).some(
-      (record) => record.observed_state === "pending" && record.submission?.state !== "submitted",
-    );
-  }
+  const optimisticCursor = pendingInput ? (snapshot?.cursor ?? 0) : 0;
   const parts = useMemo(() => {
     const published = mergeConversationHistory(
       threadId,
@@ -705,7 +708,7 @@ export default function Workspace() {
     const part: ConversationPart = {
       id: `optimistic:${pendingInput.id}`,
       sequence: (published.at(-1)?.sequence ?? 0) + 1,
-      source_cursor: snapshot?.cursor ?? 0,
+      source_cursor: optimisticCursor,
       thread_id: pendingInput.thread_id,
       created_at: pendingInput.created_at,
       kind: "message",
@@ -717,8 +720,12 @@ export default function Workspace() {
       summary: null,
     };
     return [...published, part];
-  }, [threadId, olderParts, snapshot?.timeline.parts, snapshot?.cursor, pendingInput]);
+  }, [threadId, olderParts, snapshot?.timeline.parts, optimisticCursor, pendingInput]);
   const entries = useMemo(() => conversationEntries(parts, messages), [parts, messages]);
+  const hasVisibleMessage = useMemo(
+    () => entries.some((entry) => entry.type === "message"),
+    [entries],
+  );
   const latestUserEntry = entries.findLast(
     (entry) => entry.type === "message" && entry.message.author === "user",
   );
@@ -729,7 +736,6 @@ export default function Workspace() {
       : null,
     !isSecondaryScreen && !(mobile && navigation),
   );
-  const measureConversation = useRef<() => void>(() => {});
   useLayoutEffect(() => {
     const surface = conversationSurface;
     if (!surface) return;
@@ -738,6 +744,7 @@ export default function Workspace() {
     const dock = snapshot?.thread.id ? surface.querySelector<HTMLElement>(".composer-dock") : null;
     let previousDockHeight: number | null = null;
     const measure = () => {
+      if (!surface.getClientRects().length) return;
       const top = surface.getBoundingClientRect().top;
       const headerBottom = (notice ?? header)?.getBoundingClientRect().bottom ?? top;
       const dockHeight = dock?.getBoundingClientRect().height ?? 0;
@@ -753,140 +760,65 @@ export default function Workspace() {
       }
       previousDockHeight = dockHeight;
     };
-    measureConversation.current = measure;
-    const observer = new ResizeObserver(measure);
-    for (const element of [header, notice, dock]) {
+    let frame = 0;
+    const observer = new ResizeObserver(() => {
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        measure();
+      });
+    });
+    for (const element of [surface, header, notice, dock]) {
       if (element) observer.observe(element);
     }
     measure();
     return () => {
+      cancelAnimationFrame(frame);
       observer.disconnect();
-      measureConversation.current = () => {};
     };
   }, [conversationSurface, snapshot?.thread.id, error, conversationScroll]);
-  useLayoutEffect(() => measureConversation.current());
   const activityByEntry = useMemo(
     () => conversationActivity(snapshot, entries),
     [snapshot, entries],
   );
-  function runActivity(run: Run, at: string, embedded = false) {
-    if (!snapshot) return null;
-    const actor = snapshot.agents.find((agent) => agent.id === run.agent_id);
-    if (!actor) return null;
-    const target = snapshot.agents.find(
-      (agent) => agent.id === run.active_tools?.at(-1)?.target_agent_id,
-    );
-    if (run.computer_activity && !["failed", "unknown"].includes(run.status))
-      return (
-        <AssistantMessage
-          key={run.id}
-          agent={actor}
-          group={snapshot.thread.type === "group"}
-          open={() => openResource("agent", actor.id)}
-        >
-          <ComputerActivity
-            run={run}
-            at={at}
-            agent={actor}
-            open={() => {
-              locate({ tab: "computer", id: null });
-              setDetails(true);
-            }}
-          />
-        </AssistantMessage>
-      );
-    if (embedded && !run.diagnostic && ["queued", "dispatching", "running"].includes(run.status)) {
-      const view = activityPresentation(run, {
-        online: workspace.online,
-        waitingForUser: waitingForUser(run, snapshot),
-        targetName: target?.name,
+  const queued = useMemo(() => {
+    const published = new Set(parts.flatMap((part) => (part.message_id ? [part.message_id] : [])));
+    return messages
+      .flatMap((message) => {
+        const run = snapshot?.runs.findLast(
+          (run) => run.input_message_id === message.id && run.status === "queued",
+        );
+        return run &&
+          message.author === "user" &&
+          message.state !== "deleted" &&
+          !published.has(message.id)
+          ? [{ message, run }]
+          : [];
+      })
+      .filter(
+        (item, index, items) =>
+          items.findIndex((other) => other.message.id === item.message.id) === index,
+      )
+      .map(({ message, run }) => {
+        const active = activeRuns.find((active) => active.agent_id === run.agent_id);
+        const nativeConnection = connections.find(
+          (connection) =>
+            connection.id ===
+            (active?.provider_selection?.connection_id ??
+              snapshot?.agents.find((agent) => agent.id === active?.agent_id)?.connection_id),
+        );
+        const target =
+          active?.status === "running" &&
+          active.cancellation === "none" &&
+          !activeRuns.some(hasPendingNative) &&
+          nativeConnection?.state === "active" &&
+          nativeConnection.login === "authenticated" &&
+          nativeConnection?.capabilities.steer === "supported"
+            ? active
+            : undefined;
+        return { message, run, target };
       });
-      return (
-        <Answer
-          text=""
-          sentAt={at}
-          busy={busy}
-          agentId={actor.id}
-          activity={{ name: actor.name, label: view.label, loading: view.isLoading }}
-          sender={snapshot.thread.type === "group" ? { style: agentStyle(actor) } : undefined}
-        />
-      );
-    }
-    return (
-      <AgentActivityBubble
-        embedded={embedded}
-        key={run.id}
-        agent={actor}
-        run={run}
-        at={at}
-        online={workspace.online}
-        waitingForUser={waitingForUser(run, snapshot)}
-        targetName={target?.name}
-        showName={snapshot.thread.type === "group"}
-        busy={busy}
-        openAgent={() => openResource("agent", actor.id)}
-        openSettings={() => openSettings()}
-        retryResponse={
-          run.retry_allowed
-            ? () =>
-                void act(async () => {
-                  await queueCommand(`response-retry:${run.id}`, `/v1/runs/${run.id}/retry`, {
-                    expected_revision: run.revision,
-                  });
-                })
-            : undefined
-        }
-        retryPreparation={() =>
-          void act(async () => {
-            await queueCommand(`preparation:${run.id}`, `/v1/runs/${run.id}/retry-preparation`, {
-              expected_revision: run.revision,
-            });
-          })
-        }
-        reconcile={() =>
-          void act(async () => {
-            await request(`/v1/runs/${run.id}/reconcile`, {});
-          })
-        }
-      />
-    );
-  }
-  const published = new Set(parts.flatMap((part) => (part.message_id ? [part.message_id] : [])));
-  const queued = messages
-    .flatMap((message) => {
-      const run = snapshot?.runs.findLast(
-        (run) => run.input_message_id === message.id && run.status === "queued",
-      );
-      return run &&
-        message.author === "user" &&
-        message.state !== "deleted" &&
-        !published.has(message.id)
-        ? [{ message, run }]
-        : [];
-    })
-    .filter(
-      (item, index, items) =>
-        items.findIndex((other) => other.message.id === item.message.id) === index,
-    )
-    .map(({ message, run }) => {
-      const active = activeRuns.find((active) => active.agent_id === run.agent_id);
-      const nativeConnection = connections.find(
-        (connection) =>
-          connection.id ===
-          (active?.provider_selection?.connection_id ??
-            snapshot?.agents.find((agent) => agent.id === active?.agent_id)?.connection_id),
-      );
-      const target =
-        active?.status === "running" &&
-        active.cancellation === "none" &&
-        !activeRuns.some(hasPendingNative) &&
-        nativeConnection?.state === "active" &&
-        nativeConnection.login === "authenticated" &&
-        nativeConnection?.capabilities.steer === "supported"
-          ? active
-          : undefined;
-      return { message, run, target };
-    });
+  }, [activeRuns, connections, messages, parts, snapshot?.agents, snapshot?.runs]);
   const editItem = editing ? queued.find((item) => item.message.id === editing.id) : null;
   const editStale = !!editing && (!editItem || editItem.message.revision !== editing.revision);
   const queueHead = queued[0];
@@ -922,116 +854,6 @@ export default function Workspace() {
         ...(target.native_run_id ? { expected_native_run_id: target.native_run_id } : {}),
       });
     });
-  }
-  const visibleMessages = entries.flatMap((entry) =>
-    entry.type === "message" ? [entry.message] : [],
-  );
-  const nativeTranscript = useNativeTranscript(visibleMessages, snapshot?.runs ?? []);
-  const rows = conversationRows(entries, {
-    native: nativeTranscript,
-    activity: activityByEntry,
-    requests: snapshot?.human_requests,
-    runs: snapshot?.runs,
-  });
-  function canObserveNative(run: Run) {
-    // The run's server-validated binding owns native interactions, including private Team selections.
-    return run.status === "running" && run.cancellation === "none";
-  }
-  function nativeFragment(fragment: NativeTranscriptFragment) {
-    const author = snapshot?.agents.find((agent) => agent.id === fragment.run.agent_id);
-    return (
-      <div key={fragment.key} data-native-fragment={fragment.key} className="w-full py-1">
-        <NativeInteractions
-          threadId={snapshot?.thread.id}
-          runId={fragment.run.id}
-          run={fragment.run}
-          author={author?.name ?? "Agent"}
-          agent={author}
-          observePending={false}
-          openAgent={author ? () => openResource("agent", author.id) : undefined}
-          canRespond={canObserveNative(fragment.run)}
-          recordIds={fragment.recordIds}
-          refresh={refresh}
-        />
-      </div>
-    );
-  }
-  function publishedAuthor(message: MessageEntity) {
-    const current = agents.find((agent) => agent.id === message.author_agent_id);
-    const historical = parts.find(
-      (part) => part.kind === "message" && part.message_id === message.id,
-    )?.actors[0];
-    return historical ? { ...historical, system_role: current?.system_role } : current;
-  }
-  function answer(message: MessageEntity, text: string, at: string, last: boolean) {
-    if (!text.trim()) return null;
-    const related = snapshot?.runs.find((run) => run.id === message.run_id);
-    if (
-      related?.retried_by_run_id ||
-      snapshot?.human_requests.some(
-        (request) =>
-          request.message_id === message.id && (request.options || request.purpose === "approval"),
-      )
-    )
-      return null;
-    const retry =
-      related?.status === "failed" && related.retry_allowed
-        ? () =>
-            void act(async () => {
-              await queueCommand(`response-retry:${related.id}`, `/v1/runs/${related.id}/retry`, {
-                expected_revision: related.revision,
-              });
-            })
-        : undefined;
-    const streaming =
-      message.author === "agent" &&
-      message.state === "partial" &&
-      message.purpose !== "announcement" &&
-      snapshot?.runs.some((run) => run.id === message.run_id && run.status === "running") === true;
-    const author = publishedAuthor(message);
-    const sender =
-      snapshot?.thread.type === "group" && message.author === "agent"
-        ? {
-            style: agentStyle(author),
-          }
-        : undefined;
-    return (
-      <Answer
-        retry={retry}
-        busy={busy}
-        sources={snapshot?.runs.find((run) => run.id === message.run_id)?.sources}
-        agentId={author?.id}
-        sentAt={at}
-        sender={sender}
-        streaming={streaming && last}
-        showSources={last}
-        text={text}
-        openResource={openResource}
-        snapshot={snapshot ?? undefined}
-      />
-    );
-  }
-
-  function joins(upper: MessageEntity | undefined, lower: MessageEntity | undefined) {
-    if (
-      !upper ||
-      !lower ||
-      upper.author !== lower.author ||
-      upper.author_agent_id !== lower.author_agent_id
-    )
-      return false;
-    const plain = (message: MessageEntity) =>
-      !message.artifact_ids.length &&
-      !nativeTranscript.anchors.has(message.id) &&
-      !snapshot?.human_requests.some((request) => request.message_id === message.id) &&
-      !snapshot?.runs.some(
-        (run) =>
-          run.input_message_id === message.id &&
-          (run.status !== "succeeded" ||
-            run.native_tools.length > 0 ||
-            run.product_tools.length > 0),
-      );
-    return plain(upper) && plain(lower);
   }
   function toggleDetails() {
     if (!details) locate({ tab: "detail", id: null });
@@ -1093,27 +915,44 @@ export default function Workspace() {
       )}
     </div>
   );
+  const listeningThreadId = !isSecondaryScreen && composerFocused && draft.trim() ? threadId : null;
+  const activity = useMemo(
+    () => ({
+      items: workspace.activity.items,
+      threadId,
+      listeningThreadId,
+      online: workspace.online,
+    }),
+    [workspace.activity.items, threadId, listeningThreadId, workspace.online],
+  );
+  const settings = useMemo(
+    () => ({
+      snapshot,
+      agents,
+      connections,
+      appConnectionCursor: workspace.appConnectionCursor,
+      selections: workspace.selections,
+      allowedOrganizationConnectionIds: workspace.access?.allowed_organization_connection_ids,
+      refresh,
+    }),
+    [
+      snapshot,
+      agents,
+      connections,
+      workspace.appConnectionCursor,
+      workspace.selections,
+      workspace.access,
+      refresh,
+    ],
+  );
   return (
     <WorkspaceProviders
       viewer={viewer}
       input={composerRequests.registry}
       snapshot={snapshot}
       parts={parts}
-      activity={{
-        items: workspace.activity.items,
-        threadId,
-        listeningThreadId: !isSecondaryScreen && composerFocused && draft.trim() ? threadId : null,
-        online: workspace.online,
-      }}
-      settings={{
-        snapshot,
-        agents,
-        connections,
-        appConnectionCursor: workspace.appConnectionCursor,
-        selections: workspace.selections,
-        allowedOrganizationConnectionIds: workspace.access?.allowed_organization_connection_ids,
-        refresh,
-      }}
+      activity={activity}
+      settings={settings}
     >
       <div className="application-frame" data-workspace="" data-native={isDesktop}>
         <WorkspaceHeader
@@ -1203,7 +1042,21 @@ export default function Workspace() {
                   }
                 }}
               >
-                <ConversationContentViewer viewer={viewer} />
+                {viewing && (
+                  <Suspense
+                    fallback={
+                      <div
+                        className="absolute inset-0 grid place-items-center"
+                        role="status"
+                        aria-label="Loading file viewer"
+                      >
+                        <Spinner />
+                      </div>
+                    }
+                  >
+                    <ConversationContentViewer viewer={viewer} />
+                  </Suspense>
+                )}
                 {!snapshot ? (
                   <ConversationLoading error={error} />
                 ) : (
@@ -1227,6 +1080,11 @@ export default function Workspace() {
                                   `/v1/threads/${threadId}/timeline?before=${historyLoaded ? before : snapshot.timeline.next_before}`,
                                 );
                                 if (currentThread.current !== threadId) return;
+                                const anchor = captureTranscriptAnchor(
+                                  conversationScroll.current?.scrollRef.current,
+                                );
+                                if (threadId && anchor)
+                                  setTranscriptNavigation({ kind: "prepend", threadId, ...anchor });
                                 setOlder((current) => [...result.messages, ...current]);
                                 setOlderParts((current) => [...result.parts, ...current]);
                                 setBefore(result.next_before);
@@ -1237,7 +1095,7 @@ export default function Workspace() {
                             Pesan sebelumnya
                           </Button>
                         )}
-                        {visibleMessages.length === 0 && (
+                        {!hasVisibleMessage && (
                           <div className="conversation-empty gap-3 [margin:auto] [padding:64px_24px] flex items-center flex-col text-center">
                             <AgentAvatar
                               agent={agent}
@@ -1249,253 +1107,23 @@ export default function Workspace() {
                             <p>{agent?.soul || "Apa yang ingin kamu kerjakan bersama?"}</p>
                           </div>
                         )}
-                        {rows.map((row, index) => {
-                          const date = row.startsDay ? <ConversationDate at={row.at} /> : null;
-                          if (row.type === "activity")
-                            return (
-                              <Fragment key={row.key}>
-                                {date}
-                                <TimelineActivity parts={row.parts} open={openResource} />
-                              </Fragment>
-                            );
-                          if (row.type === "run")
-                            return (
-                              <div
-                                key={row.key}
-                                data-response-slot={row.key}
-                                className="flex flex-col gap-4"
-                              >
-                                {date}
-                                {row.run.computer_activity ? (
-                                  runActivity(row.run, row.at)
-                                ) : (
-                                  <Message
-                                    className="conversation-message"
-                                    data-agent-activity={row.run.id}
-                                    data-loading={
-                                      ["queued", "dispatching", "running"].includes(
-                                        row.run.status,
-                                      ) && row.run.preparation?.state !== "blocked"
-                                    }
-                                  >
-                                    {snapshot.thread.type === "group" && (
-                                      <AgentMessageAvatar
-                                        agent={snapshot.agents.find(
-                                          (agent) => agent.id === row.run.agent_id,
-                                        )}
-                                        loading
-                                        open={() => openResource("agent", row.run.agent_id)}
-                                      />
-                                    )}
-                                    <MessageContent>
-                                      {snapshot.thread.type !== "group" && (
-                                        <MessageHeader className="sr-only">
-                                          {snapshot.agents.find(
-                                            (agent) => agent.id === row.run.agent_id,
-                                          )?.name ?? "Agent"}
-                                        </MessageHeader>
-                                      )}
-                                      {runActivity(row.run, row.at, true)}
-                                    </MessageContent>
-                                  </Message>
-                                )}
-                              </div>
-                            );
-                          if (row.type === "native")
-                            return (
-                              <Fragment key={row.key}>
-                                {date}
-                                <div data-native-history-fallback={row.fallback || undefined}>
-                                  {row.fallback && (
-                                    <p className="text-[12px] text-muted-foreground">
-                                      Riwayat input ·{" "}
-                                      {snapshot.agents.find(
-                                        (agent) => agent.id === row.fragment.run.agent_id,
-                                      )?.name ?? "Agent"}
-                                    </p>
-                                  )}
-                                  {nativeFragment(row.fragment)}
-                                </div>
-                              </Fragment>
-                            );
-                          const { entry } = row;
-                          const { message } = entry;
-                          const previous = rows[index - 1];
-                          const next = rows[index + 1];
-                          const run = snapshot.runs.findLast(
-                            (run) => run.input_message_id === message.id,
-                          );
-                          const author = publishedAuthor(message);
-                          const inlineAttachmentIds = new Set(
-                            message.author === "user"
-                              ? attachmentParts(message.text).flatMap((part) =>
-                                  "id" in part &&
-                                  snapshot.artifacts.some((file) => file.id === part.id)
-                                    ? [part.id]
-                                    : [],
-                                )
-                              : [],
-                          );
-                          return (
-                            <div
-                              key={row.key.replace(
-                                message.id,
-                                messageKeys.current.get(message.id) ?? message.id,
-                              )}
-                              data-response-slot={
-                                row.key.startsWith("response:") ? row.key : undefined
-                              }
-                              className={
-                                row.key.startsWith("response:") ? "flex flex-col gap-4" : "contents"
-                              }
-                            >
-                              {date}
-                              <Message
-                                data-timeline-part={row.first ? entry.part.id : undefined}
-                                data-part-sequence={entry.part.sequence}
-                                id={row.first ? `message-${message.id}` : undefined}
-                                align={message.author === "user" ? "end" : "start"}
-                                className="conversation-message"
-                                data-join-above={
-                                  (!row.startsDay &&
-                                    joins(
-                                      previous?.type === "message"
-                                        ? previous.entry.message
-                                        : undefined,
-                                      message,
-                                    )) ||
-                                  undefined
-                                }
-                                data-join-below={
-                                  (next &&
-                                    !next.startsDay &&
-                                    joins(
-                                      message,
-                                      next.type === "message" ? next.entry.message : undefined,
-                                    )) ||
-                                  undefined
-                                }
-                              >
-                                {snapshot.thread.type === "group" && message.author === "agent" && (
-                                  <AgentMessageAvatar
-                                    agent={author}
-                                    loading={message.state === "partial"}
-                                    open={
-                                      author ? () => openResource("agent", author.id) : undefined
-                                    }
-                                  />
-                                )}
-                                <MessageContent>
-                                  {!(
-                                    snapshot.thread.type === "group" && message.author === "agent"
-                                  ) && (
-                                    <MessageHeader
-                                      className={
-                                        snapshot.thread.type === "group" &&
-                                        message.author !== "user"
-                                          ? "message-author px-3 text-[12px] text-muted-foreground font-normal"
-                                          : "sr-only"
-                                      }
-                                    >
-                                      {message.author === "user" ? (
-                                        "Kamu"
-                                      ) : snapshot.thread.type === "group" && author ? (
-                                        <button
-                                          type="button"
-                                          className="text-link hover:underline"
-                                          onClick={() => openResource("agent", author.id)}
-                                        >
-                                          {author.name}
-                                        </button>
-                                      ) : (
-                                        (author?.name ?? "Agent")
-                                      )}
-                                    </MessageHeader>
-                                  )}
-                                  {message.author === "user" ? (
-                                    <MessageActions text={message.text} user>
-                                      <Bubble variant="secondary" className="chat-user-bubble">
-                                        <BubbleContent className="chat-bubble-content text-[15px] leading-[22px] whitespace-pre-wrap">
-                                          <div data-message-text>
-                                            <UserMessageText
-                                              message={message}
-                                              artifacts={snapshot.artifacts}
-                                              documents={snapshot.attachment_documents}
-                                              preparing={
-                                                run
-                                                  ? ["queued", "dispatching"].includes(run.status)
-                                                  : false
-                                              }
-                                            />
-                                          </div>
-                                          <MessageTime at={row.at} />
-                                        </BubbleContent>
-                                      </Bubble>
-                                    </MessageActions>
-                                  ) : (
-                                    answer(message, row.text, row.at, row.last)
-                                  )}
-                                  {row.last && (
-                                    <MessageAttachments
-                                      ids={message.artifact_ids.filter(
-                                        (id) => !inlineAttachmentIds.has(id),
-                                      )}
-                                      files={snapshot.artifacts}
-                                      at={row.at}
-                                      standalone={
-                                        !row.text.trim() &&
-                                        message.author !== "user" &&
-                                        !snapshot.human_requests.some(
-                                          (request) => request.message_id === message.id,
-                                        )
-                                      }
-                                      open={(id) => openResource("files", id)}
-                                    />
-                                  )}
-                                  {row.last &&
-                                    snapshot.human_requests
-                                      .filter((r) => r.message_id === message.id)
-                                      .map((r) => (
-                                        <HumanReply
-                                          key={r.id}
-                                          request={r}
-                                          question={message.text}
-                                          author={author?.name ?? "Agent"}
-                                          refresh={refresh}
-                                        />
-                                      ))}
-                                </MessageContent>
-                              </Message>
-                              {row.last && (
-                                <WorkActivity
-                                  message={message}
-                                  at={row.at}
-                                  run={run}
-                                  snapshot={snapshot}
-                                  retryPreparation={(runId, revision) =>
-                                    void act(async () => {
-                                      await queueCommand(
-                                        `router-preparation:${runId}`,
-                                        `/v1/runs/${runId}/retry-preparation`,
-                                        { expected_revision: revision },
-                                      );
-                                    })
-                                  }
-                                  retryRoute={(route) =>
-                                    void act(async () => {
-                                      await queueCommand(
-                                        `route:${route.id}`,
-                                        `/v1/groups/${snapshot.thread.id}/routes/${route.id}/retry`,
-                                        { expected_revision: route.revision },
-                                      );
-                                    })
-                                  }
-                                  busy={busy}
-                                />
-                              )}
-                            </div>
-                          );
-                        })}
+                        <ConversationTranscript
+                          snapshot={snapshot}
+                          entries={entries}
+                          parts={parts}
+                          agents={agents}
+                          activity={activityByEntry}
+                          busy={busy}
+                          online={workspace.online}
+                          messageKeys={messageKeys.current}
+                          navigation={transcriptNavigation}
+                          openResource={openResource}
+                          openSettings={openSettings}
+                          openComputer={openComputer}
+                          refresh={refresh}
+                          act={act}
+                          queueCommand={queueCommand}
+                        />
                         {snapshot.controls.map((control) => (
                           <p key={control.id} className="text-caption text-muted-foreground">
                             {controlText[control.state] ?? "Memeriksa arahan"}
@@ -1550,11 +1178,13 @@ export default function Workspace() {
                       }}
                       className="composer-dock [padding:12px_20px_16px] w-full shrink-0"
                     >
-                      {!reply && !editing && (
-                        <ViewerComposerContext
-                          viewer={viewer}
-                          disabled={busy || pending !== null}
-                        />
+                      {!reply && !editing && viewer.context && (
+                        <Suspense fallback={null}>
+                          <ViewerComposerContext
+                            viewer={viewer}
+                            disabled={busy || pending !== null}
+                          />
+                        </Suspense>
                       )}
                       {connection?.login !== "authenticated" && (
                         <Button

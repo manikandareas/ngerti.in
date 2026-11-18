@@ -61,9 +61,9 @@ The application authentication endpoints are:
 | Method and path | Result |
 | --- | --- |
 | `GET /v1/auth/native` | Public issuer/audience/client/endpoint/callback metadata, without secrets |
-| `GET /v1/auth/session` | Current safe user projection, session ID, authentication kind and expiry |
+| `GET /v1/auth/session` | Current safe user projection, session ID, authentication kind, expiry and API contract version |
 | `GET /v1/auth/sessions` | Up to 100 active devices, creation/update/expiry, user agent and current-device flag; no credentials |
-| `POST /v1/auth/renew` | Browser renewal using the HttpOnly cookie; refresh remains subject to Better Auth's update interval |
+| `POST /v1/auth/renew` | Browser renewal using the HttpOnly cookie. Returns the same session projection and follows Better Auth's update interval. |
 | `POST /v1/auth/sessions/:sessionId/revoke` | Empty body; revokes only a session belonging to the authenticated account |
 | `POST /v1/auth/logout` | Empty body; revokes this device and clears its browser cookie |
 | `POST /v1/auth/bootstrap` | Explicit one-use operator grant binding |

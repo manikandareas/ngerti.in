@@ -1,6 +1,7 @@
 import { fileURLToPath, URL } from "node:url";
+import babel from "@rolldown/plugin-babel";
 import tailwindcss from "@tailwindcss/vite";
-import react from "@vitejs/plugin-react";
+import react, { reactCompilerPreset } from "@vitejs/plugin-react";
 import { defineConfig, type Plugin, type ProxyOptions } from "vite";
 import { fileIcons } from "./build/file-icons.js";
 import { pdfAssets } from "./build/pdf-assets.js";
@@ -41,8 +42,17 @@ const guard: import("vite").Connect.NextHandleFunction = (request, response, nex
   next();
 };
 
-export default defineConfig({
-  plugins: [localApiGuard, pdfAssets(), fileIcons(), react(), tailwindcss()],
+export default defineConfig(({ mode }) => ({
+  devtools: mode === "analysis" ? { apply: "build" } : false,
+  plugins: [
+    localApiGuard,
+    pdfAssets(),
+    fileIcons(),
+    react(),
+    mode !== "without-react-compiler" &&
+      babel({ presets: [reactCompilerPreset({ compilationMode: "annotation" })] }),
+    tailwindcss(),
+  ],
   server: { proxy: { "/v1": apiProxy, "/health": apiProxy, "/api/auth": apiProxy } },
   preview: { proxy: { "/v1": apiProxy, "/health": apiProxy, "/api/auth": apiProxy } },
   resolve: {
@@ -50,4 +60,4 @@ export default defineConfig({
       "@": fileURLToPath(new URL("./src", import.meta.url)),
     },
   },
-});
+}));

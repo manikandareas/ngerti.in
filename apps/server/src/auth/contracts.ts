@@ -11,6 +11,7 @@ export const authenticationSession = z.strictObject({
   session_id: z.uuid(),
   authentication: z.enum(["web", "native"]),
   expires_at: z.iso.datetime(),
+  contract_version: z.string(),
 });
 export const deviceSessions = z.strictObject({
   sessions: z.array(

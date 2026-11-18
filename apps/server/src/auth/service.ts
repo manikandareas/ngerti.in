@@ -1,6 +1,6 @@
 import { randomBytes } from "node:crypto";
 import { Pool } from "pg";
-import { DomainError } from "../contracts";
+import { CONTRACT_VERSION, DomainError } from "../contracts";
 import type { AuthenticationConfig } from "./config";
 import { initializeAuthentication } from "./database";
 import { authenticationEmailDelivery, type EmailDelivery } from "./email";
@@ -235,6 +235,7 @@ export class Authentication {
       session_id: principal.sessionId,
       authentication: principal.kind,
       expires_at: new Date(principal.expires).toISOString(),
+      contract_version: CONTRACT_VERSION,
     };
   }
   async sessions(request: Request) {

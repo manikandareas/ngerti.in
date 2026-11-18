@@ -126,7 +126,7 @@ export function useContentViewerController(scope: string | null, showInfo?: (id:
     },
     [scope],
   );
-  const back = () => {
+  const back = useCallback(() => {
     const origin = entries.at(-1)?.origin;
     setState({ scope, entries: entries.slice(0, -1), context: entries.at(-2) ?? null });
     requestAnimationFrame(() => {
@@ -141,12 +141,12 @@ export function useContentViewerController(scope: string | null, showInfo?: (id:
           ?.focus({ preventScroll: true });
       }
     });
-  };
+  }, [entries, scope]);
   const bind = useCallback((id: string, host: HTMLElement | null) => {
     setHosts((previous) => (previous[id] === host ? previous : { ...previous, [id]: host }));
   }, []);
-  const clear = () => setState({ scope, entries: [], context: null });
-  const attachment = async () => {
+  const clear = useCallback(() => setState({ scope, entries: [], context: null }), [scope]);
+  const attachment = useCallback(async () => {
     if (!context) return undefined;
     const abort = new AbortController();
     reads.current.add(abort);
@@ -155,20 +155,39 @@ export function useContentViewerController(scope: string | null, showInfo?: (id:
     } finally {
       reads.current.delete(abort);
     }
-  };
-  return {
-    entries,
-    context,
-    hosts,
-    open,
-    back,
-    bind,
-    clear,
-    attachment,
-    showInfo,
-    fileBrowser,
-    removeContext: () => setState((previous) => ({ ...previous, context: null })),
-  };
+  }, [context]);
+  const removeContext = useCallback(
+    () => setState((previous) => ({ ...previous, context: null })),
+    [],
+  );
+  return useMemo(
+    () => ({
+      entries,
+      context,
+      hosts,
+      open,
+      back,
+      bind,
+      clear,
+      attachment,
+      showInfo,
+      fileBrowser,
+      removeContext,
+    }),
+    [
+      entries,
+      context,
+      hosts,
+      open,
+      back,
+      bind,
+      clear,
+      attachment,
+      showInfo,
+      fileBrowser,
+      removeContext,
+    ],
+  );
 }
 
 export type ContentViewer = ReturnType<typeof useContentViewerController>;

@@ -1,32 +1,43 @@
+import { QueryClientProvider } from "@tanstack/react-query";
 import { Navigate, useLocation } from "@tanstack/react-router";
 import {
   createContext,
   Fragment,
+  lazy,
   type ReactNode,
   useCallback,
   useContext,
   useEffect,
   useRef,
   useState,
+  useSyncExternalStore,
 } from "react";
+import { flushConversationDraft } from "@/features/conversation/lib/use-conversation-draft";
 import { useFeedbackToast } from "@/hooks/use-feedback-toast";
 import { PreferencesProvider } from "@/hooks/use-preferences";
 import { ApiError, command, request } from "@/lib/api-client";
-import { clearPrivateStorage, clientScope, setClientScope } from "@/lib/client-scope";
+import {
+  clearPrivateStorage,
+  clientScope,
+  onScopeChange,
+  setClientScope,
+} from "@/lib/client-scope";
 import { refreshLocalModels } from "@/lib/local-models";
-import type { Connection } from "@/types/workspace";
+import { isPageVisible, subscribePageVisibility } from "@/lib/page-visibility";
+import {
+  readProviderConnections,
+  readWorkspaceAccess,
+  workspaceQueries,
+} from "@/lib/workspace-queries";
 import { createOrganization as createOrganizationRecord } from "./account-forms";
-import { AccountScreen } from "./account-screen";
 import { availableAIConnections, connectionReady } from "./ai-integration";
-import Onboarding from "./onboarding";
-import type {
-  Organization,
-  OrganizationAccess,
-  OrganizationList,
-  UserSession,
-  WorkspaceAccess,
-} from "./types";
+import type { Organization, OrganizationAccess, OrganizationList, UserSession } from "./types";
 import "./account.css";
+
+const AccountScreen = lazy(async () => ({
+  default: (await import("./account-screen")).AccountScreen,
+}));
+const Onboarding = lazy(() => import("./onboarding"));
 
 interface AccountState {
   status: "loading" | "ready";
@@ -36,6 +47,7 @@ interface AccountState {
   organization: Organization | null;
   access: OrganizationAccess | null;
   hasAIIntegration: boolean | null;
+  scopeEpoch: number | null;
   error: string;
 }
 const emptyList: OrganizationList = { organizations: [], creation_limit: 0, created_count: 0 };
@@ -47,6 +59,7 @@ const initial: AccountState = {
   organization: null,
   access: null,
   hasAIIntegration: null,
+  scopeEpoch: null,
   error: "",
 };
 type Account = AccountState & {
@@ -67,8 +80,35 @@ const selectedKey = (server: string, user: string) =>
   `ngertiin:organization:${encodeURIComponent(server)}:${user}`;
 const organizationStorage = () => (window.ngertiinDesktop?.remote ? localStorage : sessionStorage);
 
+async function readSession() {
+  const session = await request<UserSession>("/v1/auth/session");
+  return session.authentication === "web" &&
+    Date.parse(session.expires_at) - Date.now() < 48 * 60 * 60 * 1000
+    ? request<UserSession>("/v1/auth/renew", {})
+    : session;
+}
+
+async function readLegacyContractVersion() {
+  const result = await request<unknown>("/v1/contracts");
+  if (
+    !result ||
+    typeof result !== "object" ||
+    !("version" in result) ||
+    typeof result.version !== "string"
+  )
+    throw new Error("The server returned an invalid contract version.");
+  return result.version;
+}
+
+function accessRejected(error: unknown) {
+  return (
+    error instanceof ApiError && ["UNAUTHORIZED", "SCOPE_DENIED", "NOT_FOUND"].includes(error.code)
+  );
+}
+
 export default function WorkspaceEntry({ children }: { children: ReactNode }) {
   const pathname = useLocation({ select: (location) => location.pathname });
+  const activeScope = useSyncExternalStore(onScopeChange, clientScope);
   const [state, setState] = useState(initial);
   const stateRef = useRef(state);
   stateRef.current = state;
@@ -76,23 +116,19 @@ export default function WorkspaceEntry({ children }: { children: ReactNode }) {
   const mounted = useRef(true);
   const latestRefresh = useRef<Promise<void> | null>(null);
   const creatingOrganization = useRef(false);
+  const legacyContract = useRef<{ server: string; version: string } | null>(null);
   const load = useCallback(async (choice?: string) => {
     const generation = ++sequence.current;
     const current = () => mounted.current && generation === sequence.current;
     let server = stateRef.current.server;
     try {
-      if (!server) {
-        const metadata = await request<{ audience: string }>("/v1/auth/native");
-        server = metadata.audience;
-      }
       let session: UserSession;
       try {
-        session = await request<UserSession>("/v1/auth/session");
-        if (
-          session.authentication === "web" &&
-          Date.parse(session.expires_at) - Date.now() < 48 * 60 * 60 * 1000
-        )
-          session = await request<UserSession>("/v1/auth/renew", {});
+        [server, session] = await Promise.all([
+          server ||
+            request<{ audience: string }>("/v1/auth/native").then((value) => value.audience),
+          readSession(),
+        ]);
       } catch (error) {
         if (!(error instanceof ApiError) || error.code !== "UNAUTHORIZED") throw error;
         if (current()) {
@@ -101,8 +137,16 @@ export default function WorkspaceEntry({ children }: { children: ReactNode }) {
         }
         return;
       }
-      const contract = await request<{ version: string }>("/v1/contracts");
-      if (!contract.version.startsWith("2.") || Number(contract.version.split(".")[1]) < 4)
+      let version = session.contract_version;
+      if (version === undefined) {
+        const cached = legacyContract.current;
+        version = cached?.server === server ? cached.version : await readLegacyContractVersion();
+        if (!current()) return;
+        legacyContract.current = { server, version };
+      } else {
+        legacyContract.current = null;
+      }
+      if (!/^2\.\d+\./.test(version) || Number(version.split(".")[1]) < 4)
         throw new Error("This server needs a compatible Ngertiin update.");
       const list = await request<OrganizationList>("/v1/organizations");
       if (!current()) return;
@@ -121,6 +165,7 @@ export default function WorkspaceEntry({ children }: { children: ReactNode }) {
         ? await request<OrganizationAccess>(`/v1/organizations/${organization.id}`)
         : null;
       if (!current()) return;
+      const previousScope = clientScope();
       const scope = setClientScope(
         organization && access
           ? {
@@ -139,22 +184,8 @@ export default function WorkspaceEntry({ children }: { children: ReactNode }) {
       if (scope) {
         try {
           const [connections, grants] = await Promise.all([
-            request<Connection[]>(
-              "/v1/entities/connection",
-              undefined,
-              undefined,
-              undefined,
-              15000,
-              scope,
-            ),
-            request<WorkspaceAccess>(
-              "/v1/data/access",
-              undefined,
-              undefined,
-              undefined,
-              15000,
-              scope,
-            ),
+            readProviderConnections(scope),
+            readWorkspaceAccess({ scope, revalidate: true }),
           ]);
           hasAIIntegration = availableAIConnections(
             connections,
@@ -163,6 +194,8 @@ export default function WorkspaceEntry({ children }: { children: ReactNode }) {
           ).some(connectionReady);
         } catch (failure) {
           if (failure instanceof DOMException && failure.name === "AbortError") return;
+          if (accessRejected(failure)) throw failure;
+          if (scope === previousScope) hasAIIntegration = previous.hasAIIntegration;
           integrationError =
             failure instanceof Error
               ? failure.message
@@ -178,14 +211,12 @@ export default function WorkspaceEntry({ children }: { children: ReactNode }) {
         organization,
         access,
         hasAIIntegration,
+        scopeEpoch: scope?.epoch ?? null,
         error: integrationError,
       });
     } catch (error) {
       if (!current() || (error instanceof DOMException && error.name === "AbortError")) return;
-      if (
-        error instanceof ApiError &&
-        ["UNAUTHORIZED", "SCOPE_DENIED", "NOT_FOUND"].includes(error.code)
-      ) {
+      if (accessRejected(error)) {
         setClientScope(null);
         setState({
           ...initial,
@@ -228,7 +259,11 @@ export default function WorkspaceEntry({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!state.session && !state.error && !window.ngertiinDesktop?.remote) return;
     const check = () => {
-      if (document.visibilityState === "visible") void refresh();
+      if (isPageVisible() && !latestRefresh.current) void refresh();
+    };
+    const online = () => {
+      legacyContract.current = null;
+      check();
     };
     const changed = (event: Event) => {
       if (event instanceof StorageEvent && event.key !== "ngertiin:session-change") return;
@@ -243,16 +278,18 @@ export default function WorkspaceEntry({ children }: { children: ReactNode }) {
       void refresh();
     };
     const timer = setInterval(check, 15_000);
+    const unsubscribeVisibility = subscribePageVisibility(check);
     window.addEventListener("focus", check);
+    window.addEventListener("online", online);
     window.addEventListener("storage", changed);
     window.addEventListener("ngertiin:access-changed", changed);
-    document.addEventListener("visibilitychange", check);
     return () => {
       clearInterval(timer);
+      unsubscribeVisibility();
       window.removeEventListener("focus", check);
+      window.removeEventListener("online", online);
       window.removeEventListener("storage", changed);
       window.removeEventListener("ngertiin:access-changed", changed);
-      document.removeEventListener("visibilitychange", check);
     };
   }, [state.session, state.error, refresh]);
   const organizationId = state.organization?.id;
@@ -287,9 +324,11 @@ export default function WorkspaceEntry({ children }: { children: ReactNode }) {
       }
     },
     select: async (id) => {
+      flushConversationDraft();
       setClientScope(null);
       setState((value) => ({
         ...value,
+        status: pathname === "/onboarding" ? "ready" : "loading",
         organization: null,
         access: null,
         hasAIIntegration: null,
@@ -298,6 +337,7 @@ export default function WorkspaceEntry({ children }: { children: ReactNode }) {
       await refresh(id);
     },
     leaveWorkspace: () => {
+      flushConversationDraft();
       sequence.current++;
       setClientScope(null);
       setState((value) => ({ ...value, organization: null, access: null, hasAIIntegration: null }));
@@ -317,26 +357,30 @@ export default function WorkspaceEntry({ children }: { children: ReactNode }) {
   const onboarding = pathname === "/onboarding";
   const active = !!state.session && !!state.organization && !!state.access;
   return (
-    <AccountContext.Provider value={account}>
-      {state.status === "loading" ? (
-        <div className="account-loading" role="status" aria-label="Loading workspace" />
-      ) : !state.session || special ? (
-        <AccountScreen />
-      ) : onboarding ? (
-        <Onboarding key={`${state.server}:${state.session.user.id}`} />
-      ) : active && state.hasAIIntegration === null ? (
-        <div className="account-loading" role="status" aria-label="Checking AI connections" />
-      ) : active && !state.hasAIIntegration ? (
-        <Navigate to="/onboarding" search={{ step: 2 }} replace />
-      ) : active ? (
-        <PreferencesProvider key={clientScope()?.key ?? "account"}>
-          <Fragment key={`${clientScope()?.key ?? "account"}:${clientScope()?.epoch ?? 0}`}>
-            {children}
-          </Fragment>
-        </PreferencesProvider>
-      ) : (
-        <Navigate to="/onboarding" replace />
-      )}
-    </AccountContext.Provider>
+    <QueryClientProvider client={workspaceQueries}>
+      <AccountContext.Provider value={account}>
+        {state.status === "loading" ? (
+          <div className="account-loading" role="status" aria-label="Loading workspace" />
+        ) : !state.session || special ? (
+          <AccountScreen />
+        ) : active && activeScope?.epoch !== state.scopeEpoch ? (
+          <div className="account-loading" role="status" aria-label="Checking workspace access" />
+        ) : onboarding ? (
+          <Onboarding key={`${state.server}:${state.session.user.id}`} />
+        ) : active && state.hasAIIntegration === null ? (
+          <div className="account-loading" role="status" aria-label="Checking AI connections" />
+        ) : active && !state.hasAIIntegration ? (
+          <Navigate to="/onboarding" search={{ step: 2 }} replace />
+        ) : active ? (
+          <PreferencesProvider key={activeScope?.key ?? "account"}>
+            <Fragment key={`${activeScope?.key ?? "account"}:${activeScope?.epoch ?? 0}`}>
+              {children}
+            </Fragment>
+          </PreferencesProvider>
+        ) : (
+          <Navigate to="/onboarding" replace />
+        )}
+      </AccountContext.Provider>
+    </QueryClientProvider>
   );
 }

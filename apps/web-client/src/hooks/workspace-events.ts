@@ -1,6 +1,6 @@
 import type { WorkspaceEvent } from "@/lib/api-client";
 
-export type Projection = "activity" | "previews" | "conversation" | "opening";
+export type Projection = "activity" | "previews" | "conversation" | "opening" | "connections";
 
 /** Refresh public projections rather than rendering raw internal event bodies. */
 export function eventProjections(
@@ -41,6 +41,7 @@ export function eventProjections(
     result.add("activity");
     result.add("opening");
   }
+  if (event.entity_kind === "connection") result.add("connections");
   if (
     openingMessageId &&
     (event.data.input_message_id === openingMessageId || event.data.message_id === openingMessageId)

@@ -3,6 +3,7 @@ export interface UserSession {
   session_id: string;
   authentication: "web" | "native";
   expires_at: string;
+  contract_version?: string;
 }
 export interface Organization {
   id: string;

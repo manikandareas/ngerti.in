@@ -1,9 +1,16 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { selectedAgent } from "@/features/account/selection";
-import type { AISelection, WorkspaceAccess } from "@/features/account/types";
+import type { AISelection } from "@/features/account/types";
 import { durableCommand, followEvents, request } from "@/lib/api-client";
 import { clientScope, scopedStorageKey } from "@/lib/client-scope";
 import { isPageVisible, subscribePageVisibility } from "@/lib/page-visibility";
+import {
+  invalidateProviderConnections,
+  readProviderConnections,
+  readWorkspaceAccess,
+  useProviderConnections,
+  useWorkspaceAccess,
+} from "@/lib/workspace-queries";
 import type {
   Agent,
   AgentActivities,
@@ -19,18 +26,20 @@ import { usePreferences } from "./use-preferences";
 import { eventProjections, mergeEntity, type Projection } from "./workspace-events";
 import { WorkspaceSync } from "./workspace-sync";
 
+const noConnections: Connection[] = [];
+
 export function useWorkspace(composer: HTMLElement | null) {
   const { preferences } = usePreferences();
   const scope = useRef(clientScope()).current;
   if (!scope) throw new Error("An authenticated organization workspace is required.");
   const threadKey = scopedStorageKey("ngertiin:thread", scope);
-  const [access, setAccess] = useState<WorkspaceAccess | null>(null);
+  const access = useWorkspaceAccess(scope).data ?? null;
   const [selections, setSelections] = useState<AISelection[]>([]);
   const [agents, setAgents] = useState<Agent[]>([]);
   const [activity, setActivity] = useState<AgentActivities>({ cursor: 0, items: [] });
   const [previews, setPreviews] = useState<ConversationPreviews>({ cursor: 0, items: [] });
   const [threads, setThreads] = useState<Thread[]>([]);
-  const [connections, setConnections] = useState<Connection[]>([]);
+  const connections = useProviderConnections(scope).data ?? noConnections;
   const [appConnectionCursor, setAppConnectionCursor] = useState(0);
   const [threadId, selectThread] = useState<string | null>(() =>
     preferences.startup === "last" ? localStorage.getItem(threadKey) : null,
@@ -50,98 +59,96 @@ export function useWorkspace(composer: HTMLElement | null) {
   const firstSelection = useRef<string | null | undefined>(undefined);
   const synchronizer = useRef<WorkspaceSync | null>(null);
 
-  const refresh = useCallback(async (signal?: AbortSignal, projections?: Set<Projection>) => {
-    const generation = epoch.current;
-    const selected = selectedThread.current;
-    const full = projections === undefined;
-    const cursors: number[] = [];
-    const load = async <T>(path: string, apply: (value: T) => void) => {
-      const value = await request<T>(path, undefined, undefined, signal);
-      if (signal?.aborted) return;
-      apply(value);
-      if (
-        value &&
-        typeof value === "object" &&
-        "cursor" in value &&
-        typeof value.cursor === "number"
-      )
-        cursors.push(value.cursor);
-    };
-    const current = () => generation === epoch.current && selected === selectedThread.current;
-    // Apply independent projections as they arrive. A failed read still fails the batch,
-    // so event replay never acknowledges it as fully reconciled.
-    const navigationRead = Promise.all([
-      full ? load<WorkspaceAccess>("/v1/data/access", setAccess) : undefined,
-      full
-        ? load<Agent[]>("/v1/entities/agent", (value) =>
-            setAgents((previous) =>
-              value.reduce(
-                mergeEntity,
-                previous.filter((agent) => value.some((current) => current.id === agent.id)),
+  const refresh = useCallback(
+    async (signal?: AbortSignal, projections?: Set<Projection>) => {
+      const generation = epoch.current;
+      const selected = selectedThread.current;
+      const full = projections === undefined;
+      const cursors: number[] = [];
+      const load = async <T>(path: string, apply: (value: T) => void) => {
+        const value = await request<T>(path, undefined, undefined, signal);
+        if (signal?.aborted) return;
+        apply(value);
+        if (
+          value &&
+          typeof value === "object" &&
+          "cursor" in value &&
+          typeof value.cursor === "number"
+        )
+          cursors.push(value.cursor);
+      };
+      const current = () => generation === epoch.current && selected === selectedThread.current;
+      const navigationRead = Promise.all([
+        full ? readWorkspaceAccess({ scope }) : undefined,
+        full
+          ? load<Agent[]>("/v1/entities/agent", (value) =>
+              setAgents((previous) =>
+                value.reduce(
+                  mergeEntity,
+                  previous.filter((agent) => value.some((current) => current.id === agent.id)),
+                ),
               ),
-            ),
-          )
-        : undefined,
-      full
-        ? load<Thread[]>("/v1/entities/thread", (value) =>
-            setThreads((previous) =>
-              value
-                .filter((thread) => thread.purpose === "conversation")
-                .reduce(mergeEntity, previous),
-            ),
-          )
-        : undefined,
-      full || projections.has("activity")
-        ? load<AgentActivities>("/v1/agents/activity", (value) =>
-            setActivity((previous) => (value.cursor >= previous.cursor ? value : previous)),
-          )
-        : undefined,
-      full || projections.has("previews")
-        ? load<ConversationPreviews>("/v1/conversations/previews", (value) =>
-            setPreviews((previous) => (value.cursor >= previous.cursor ? value : previous)),
-          )
-        : undefined,
-    ]).then(() => {
-      if (full && !signal?.aborted) setNavigationReady(true);
-    });
-    const results = await Promise.allSettled([
-      navigationRead,
-      full || projections.has("opening")
-        ? load<AISelection[]>("/v1/entities/ai_selection", setSelections)
-        : undefined,
-      full
-        ? load<Connection[]>("/v1/entities/connection", (value) =>
-            setConnections((previous) => value.reduce(mergeEntity, previous)),
-          )
-        : undefined,
-      selected && (full || projections.has("conversation"))
-        ? load<Snapshot>(`/v1/threads/${selected}/snapshot`, (value) => {
-            if (!current() || value.cursor < latestCursor.current) return;
-            latestCursor.current = value.cursor;
-            value = reconcileConversationSnapshot(value, snapshots.current.get(value.thread.id));
-            snapshots.current.delete(value.thread.id);
-            snapshots.current.set(value.thread.id, value);
-            const oldest = snapshots.current.keys().next().value;
-            if (snapshots.current.size > 5 && oldest !== undefined)
-              snapshots.current.delete(oldest);
-            setSnapshot(value);
-          })
-        : undefined,
-      selected && (full || projections.has("opening"))
-        ? load<Opening>(`/v1/threads/${selected}/opening`, (value) => {
-            if (!current()) return;
-            openingMessage.current = value.message?.id ?? null;
-            setOpening(value);
-          })
-        : undefined,
-    ]);
-    const failed = results.find((result) => result.status === "rejected");
-    if (failed?.status === "rejected") throw failed.reason;
-    return cursors.length ? Math.min(...cursors) : undefined;
-  }, []);
+            )
+          : undefined,
+        full
+          ? load<Thread[]>("/v1/entities/thread", (value) =>
+              setThreads((previous) =>
+                value
+                  .filter((thread) => thread.purpose === "conversation")
+                  .reduce(mergeEntity, previous),
+              ),
+            )
+          : undefined,
+        full || projections.has("activity")
+          ? load<AgentActivities>("/v1/agents/activity", (value) =>
+              setActivity((previous) => (value.cursor >= previous.cursor ? value : previous)),
+            )
+          : undefined,
+        full || projections.has("previews")
+          ? load<ConversationPreviews>("/v1/conversations/previews", (value) =>
+              setPreviews((previous) => (value.cursor >= previous.cursor ? value : previous)),
+            )
+          : undefined,
+      ]).then(() => {
+        if (full && !signal?.aborted) setNavigationReady(true);
+      });
+      const results = await Promise.allSettled([
+        navigationRead,
+        full || projections.has("opening")
+          ? load<AISelection[]>("/v1/entities/ai_selection", setSelections)
+          : undefined,
+        full || projections.has("connections") ? readProviderConnections(scope) : undefined,
+        selected && (full || projections.has("conversation"))
+          ? load<Snapshot>(`/v1/threads/${selected}/snapshot`, (value) => {
+              if (!current() || value.cursor < latestCursor.current) return;
+              latestCursor.current = value.cursor;
+              value = reconcileConversationSnapshot(value, snapshots.current.get(value.thread.id));
+              snapshots.current.delete(value.thread.id);
+              snapshots.current.set(value.thread.id, value);
+              const oldest = snapshots.current.keys().next().value;
+              if (snapshots.current.size > 5 && oldest !== undefined)
+                snapshots.current.delete(oldest);
+              setSnapshot(value);
+            })
+          : undefined,
+        selected && (full || projections.has("opening"))
+          ? load<Opening>(`/v1/threads/${selected}/opening`, (value) => {
+              if (!current()) return;
+              openingMessage.current = value.message?.id ?? null;
+              setOpening(value);
+            })
+          : undefined,
+      ]);
+      const failed = results.find((result) => result.status === "rejected");
+      if (failed?.status === "rejected") throw failed.reason;
+      return cursors.length ? Math.min(...cursors) : undefined;
+    },
+    [scope],
+  );
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: explicit retry restarts bootstrap after a connection failure.
   useEffect(() => {
+    if (ready) return;
+    if (attempt > 0) setError("");
     const abort = new AbortController();
     durableCommand<{ thread_id: string }>("provision", "/v1/data/provision", {})
       .then((value) => {
@@ -158,12 +165,17 @@ export function useWorkspace(composer: HTMLElement | null) {
         if (!abort.signal.aborted) setError(String(failure.message));
       });
     return () => abort.abort();
-  }, [attempt]);
+  }, [attempt, ready, threadKey]);
 
   useEffect(() => {
     if (!ready) return;
+    let syncSignal: AbortSignal | undefined;
     const sync = new WorkspaceSync({
-      refresh,
+      refresh: (signal, projections) => {
+        if (syncSignal && syncSignal !== signal) invalidateProviderConnections(scope);
+        syncSignal = signal;
+        return refresh(signal, projections);
+      },
       follow: followEvents,
       available: () => navigator.onLine,
       visible: isPageVisible,
@@ -178,8 +190,7 @@ export function useWorkspace(composer: HTMLElement | null) {
           snapshots.current.clear();
         } else if (event.entity_kind === "thread" && event.data.purpose === "conversation")
           setThreads((previous) => mergeEntity(previous, event.data as unknown as Thread));
-        else if (event.entity_kind === "connection")
-          setConnections((previous) => mergeEntity(previous, event.data as unknown as Connection));
+        else if (event.entity_kind === "connection") invalidateProviderConnections(scope);
         if (event.data.thread_id && event.data.thread_id !== selectedThread.current)
           snapshots.current.delete(event.data.thread_id);
         const projections = eventProjections(event, selectedThread.current, openingMessage.current);
@@ -230,7 +241,7 @@ export function useWorkspace(composer: HTMLElement | null) {
       window.removeEventListener("focus", resume);
       unsubscribeVisibility();
     };
-  }, [refresh, ready]);
+  }, [refresh, ready, scope]);
 
   useEffect(() => {
     if (!ready) return;

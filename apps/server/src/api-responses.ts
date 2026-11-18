@@ -19,7 +19,9 @@ import {
   invitationView,
   membershipView,
   organizationView,
+  ownWorkgroupView,
   provisioningView,
+  teamAgentAccessView,
   workgroupView,
 } from "./organizations/contracts";
 import { workspaceAccess } from "./organizations/workspace-access";
@@ -481,6 +483,12 @@ routes(
   ["/v1/organizations/:organizationId/workgroups"],
   z.strictObject({ workgroups: z.array(workgroupView) }),
 );
+routes(
+  "GET",
+  ["/v1/organizations/:organizationId/my-workgroups"],
+  z.strictObject({ workgroups: z.array(ownWorkgroupView) }),
+);
+routes("GET", ["/v1/organizations/:organizationId/agent-access"], teamAgentAccessView);
 routes(
   "POST",
   [

@@ -2,14 +2,14 @@ import { createHmac, timingSafeEqual } from "node:crypto";
 import { Elysia } from "elysia";
 import { z } from "zod";
 import { routeAccess } from "../api-access";
-import { isAuthenticationRoute } from "../auth/http";
+import { authenticationResponse, isAuthenticationRoute } from "../auth/http";
 import type { Authentication, Principal } from "../auth/service";
 import { DomainError, id } from "../contracts";
 import { Conversations } from "../conversations";
 import type { Lifecycle } from "../lifecycle";
 import type { DataContext } from "../persistence/access-context";
 import { databaseDomainError } from "../persistence/errors";
-import type { AccessContext } from "./contracts";
+import { type AccessContext, teamAgentAccessView } from "./contracts";
 import { preferenceChanges, teamAgentWrite } from "./data-contracts";
 import { accessContext, audit, deny } from "./database";
 import { accountHttpAdapter } from "./http-adapter";
@@ -287,6 +287,25 @@ export class ScopedData {
             },
           ),
         { params: z.object({ organizationId: id, id }), body: z.strictObject({ audience_id: id }) },
+      )
+      .get(
+        "/v1/organizations/:organizationId/agent-access",
+        async ({ request, params }) =>
+          authenticationResponse(
+            await this.organizations.database.read(
+              request,
+              params.organizationId,
+              "manage",
+              async (tx) => {
+                const grants = await tx.query(
+                  `SELECT agent_id,audience_id FROM "${store.schema}".team_agent_grants WHERE organization_id=$1 ORDER BY agent_id`,
+                  [params.organizationId],
+                );
+                return teamAgentAccessView.parse({ grants: grants.rows });
+              },
+            ),
+          ),
+        { params: z.object({ organizationId: id }) },
       )
       .post(
         "/v1/data/team-agents/:id/configuration",

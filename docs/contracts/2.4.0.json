@@ -58919,6 +58919,72 @@
     },
     {
       "method": "GET",
+      "path": "/v1/organizations/:organizationId/my-workgroups",
+      "authentication": "user_session_or_oauth_access_token",
+      "access": {
+        "authentication_class": "user",
+        "scope": "path_organization_or_email_bound_invitation",
+        "visibility": "current_membership_and_role"
+      },
+      "idempotency": "not_applicable",
+      "semantics": "read",
+      "request": {
+        "body": null,
+        "query": null,
+        "params": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "organizationId": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+            }
+          },
+          "required": [
+            "organizationId"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "response_transport": "json",
+      "response": {
+        "status": 200,
+        "schema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "workgroups": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                  },
+                  "name": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "id",
+                  "name"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": [
+            "workgroups"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    {
+      "method": "GET",
       "path": "/v1/organizations/:organizationId/workgroups",
       "authentication": "user_session_or_oauth_access_token",
       "access": {
@@ -61383,6 +61449,73 @@
           },
           "required": [
             "updated"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/v1/organizations/:organizationId/agent-access",
+      "authentication": "user_session_or_oauth_access_token",
+      "access": {
+        "authentication_class": "user",
+        "scope": "path_organization_or_email_bound_invitation",
+        "visibility": "current_membership_and_role"
+      },
+      "idempotency": "not_applicable",
+      "semantics": "read",
+      "request": {
+        "body": null,
+        "query": null,
+        "params": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "organizationId": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+            }
+          },
+          "required": [
+            "organizationId"
+          ]
+        }
+      },
+      "response_transport": "json",
+      "response": {
+        "status": 200,
+        "schema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "grants": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "agent_id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                  },
+                  "audience_id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                  }
+                },
+                "required": [
+                  "agent_id",
+                  "audience_id"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": [
+            "grants"
           ],
           "additionalProperties": false
         }
@@ -128076,6 +128209,13 @@
       },
       {
         "method": "GET",
+        "path": "/v1/organizations/:organizationId/my-workgroups",
+        "authentication_class": "user",
+        "scope": "path_organization_or_email_bound_invitation",
+        "visibility": "current_membership_and_role"
+      },
+      {
+        "method": "GET",
         "path": "/v1/organizations/:organizationId/workgroups",
         "authentication_class": "user",
         "scope": "path_organization_or_email_bound_invitation",
@@ -128217,6 +128357,13 @@
       {
         "method": "POST",
         "path": "/v1/organizations/:organizationId/agent-access/:id",
+        "authentication_class": "user",
+        "scope": "path_organization_or_email_bound_invitation",
+        "visibility": "current_membership_and_role"
+      },
+      {
+        "method": "GET",
+        "path": "/v1/organizations/:organizationId/agent-access",
         "authentication_class": "user",
         "scope": "path_organization_or_email_bound_invitation",
         "visibility": "current_membership_and_role"

@@ -84,7 +84,9 @@ Every successful state-changing POST except invitation `send` requires a UUID `I
 | `POST .../members/:membershipId/remove` | Authorized removal or self-leave |
 | `GET .../provisioning` | Own membership provisioning intent |
 | `POST .../private-work/resume` | Explicitly clear own private-work suspension |
-| `GET/POST .../workgroups` | List/create Workgroups |
+| `GET/POST .../workgroups` | Management-only list/create Workgroups |
+| `GET .../my-workgroups` | Any current member reads only their own Workgroup IDs and names; no roster |
+| `GET .../agent-access` | Owner/Admin reads saved shared-agent `agent_id` / `audience_id` grants in this organization |
 | `POST .../workgroups/:workgroupId` | Rename Workgroup |
 | `POST .../workgroups/:workgroupId/delete` | Delete Workgroup and revoke its effective access |
 | `POST .../workgroups/:workgroupId/members` | Set `membership_id` and `present` |

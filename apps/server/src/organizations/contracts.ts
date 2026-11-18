@@ -71,6 +71,10 @@ export const workgroupView = z.strictObject({
   name: z.string(),
   user_ids: z.array(z.uuid()),
 });
+export const ownWorkgroupView = workgroupView.pick({ id: true, name: true });
+export const teamAgentAccessView = z.strictObject({
+  grants: z.array(z.strictObject({ agent_id: z.uuid(), audience_id: z.uuid() })),
+});
 export const audienceView = z.strictObject({
   id: z.uuid(),
   mode: z.enum(["all_members", "workgroups"]),

@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { type AudienceWrite, audienceView, workgroupView } from "./contracts";
+import { type AudienceWrite, audienceView, ownWorkgroupView, workgroupView } from "./contracts";
 import { audit, deny, type Transaction } from "./database";
 import { membership } from "./members";
 
@@ -19,6 +19,14 @@ export async function listWorkgroups(tx: Transaction, organizationId: string) {
     )
   ).rows;
   return rows.map((row) => workgroupView.parse(row));
+}
+export async function ownWorkgroups(tx: Transaction, organizationId: string, userId: string) {
+  const result = await tx.query(
+    `SELECT t.id,t.name FROM team t JOIN "teamMember" tm ON tm."teamId"=t.id
+    WHERE t."organizationId"=$1 AND tm.organization_id=$1 AND tm."userId"=$2 ORDER BY t.name,t.id`,
+    [organizationId, userId],
+  );
+  return result.rows.map((row) => ownWorkgroupView.parse(row));
 }
 export async function writeWorkgroup(
   tx: Transaction,

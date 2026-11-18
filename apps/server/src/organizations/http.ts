@@ -18,6 +18,7 @@ import {
   deleteWorkgroup,
   listAudiences,
   listWorkgroups,
+  ownWorkgroups,
   setWorkgroupMember,
   writeAudience,
   writeWorkgroup,
@@ -107,6 +108,16 @@ export function registerOrganizationRoutes(api: Elysia, orgs: Organizations) {
       async ({ request, params }) =>
         authenticationResponse(await orgs.resumePrivateWork(request, params.organizationId)),
       { params: organizationId, body: empty },
+    )
+    .get(
+      "/v1/organizations/:organizationId/my-workgroups",
+      async ({ request, params }) =>
+        authenticationResponse(
+          await db.read(request, params.organizationId, "member", async (tx, context) => ({
+            workgroups: await ownWorkgroups(tx, params.organizationId, context.user_id),
+          })),
+        ),
+      { params: organizationId },
     )
     .get(
       "/v1/organizations/:organizationId/workgroups",

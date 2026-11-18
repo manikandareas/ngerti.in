@@ -7,6 +7,7 @@ import { JevRouter } from "./groups/router";
 import { HarnessAccounts } from "./harness/accounts";
 import { AcpAccounts } from "./harness/acp/accounts";
 import { AcpAdapter } from "./harness/acp/adapter";
+import { ApiKeyChecks } from "./harness/api-key-checks";
 import { HarnessBroker } from "./harness/broker";
 import { CodexAccounts } from "./harness/codex/accounts";
 import { CredentialContexts } from "./harness/context";
@@ -136,6 +137,7 @@ export async function startApplication(config: ApplicationConfig = developmentCo
       tools,
       broker,
       accounts,
+      apiKeyChecks: new ApiKeyChecks(adapters, runtime.detect),
       localAccounts: localProfiles
         ? new LocalAccounts(localProfiles, broker.connections, accounts, runtime.detect)
         : undefined,

@@ -186,7 +186,9 @@ export async function detectExecutable(
     }
   }
 }
-export function requireAvailable<T extends ExecutableProbe>(availability: T): T {
+export function requireAvailable<T extends ExecutableProbe>(
+  availability: T,
+): T & { executable: string } {
   const codes = {
     missing: "EXECUTABLE_MISSING",
     too_old: "VERSION_TOO_OLD",
@@ -195,7 +197,7 @@ export function requireAvailable<T extends ExecutableProbe>(availability: T): T 
   } as const;
   if (availability.state !== "supported") throw new HarnessError(codes[availability.state]);
   if (!availability.executable) throw new HarnessError("EXECUTABLE_MISSING");
-  return availability;
+  return { ...availability, executable: availability.executable };
 }
 
 import { existsSync, readFileSync, realpathSync, statSync } from "node:fs";

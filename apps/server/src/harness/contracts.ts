@@ -86,6 +86,15 @@ export const apiKeyConnectionInput = z.strictObject({
     .regex(/^[^\r\n\0]+$/)
     .refine((value) => value.trim().length > 0),
 });
+export const apiKeyCheckInput = apiKeyConnectionInput.pick({
+  harness: true,
+  provider_id: true,
+  api_key: true,
+});
+export const apiKeyCheckResult = z.strictObject({
+  checked: z.literal(true),
+  model_count: z.int().positive(),
+});
 export const model = z.strictObject({
   id: z.string().min(1).max(200),
   reasoning: z.array(z.string().max(100)).max(50),

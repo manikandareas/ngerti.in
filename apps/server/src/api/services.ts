@@ -1,5 +1,6 @@
 import type { Authentication } from "../auth/service";
 import type { AccountService } from "../harness/accounts";
+import type { ApiKeyChecks } from "../harness/api-key-checks";
 import type { detectHarness } from "../harness/availability";
 import type { HarnessBroker } from "../harness/broker";
 import type { Connections } from "../harness/connections";
@@ -21,5 +22,6 @@ export type ApiServices = {
   broker?: HarnessBroker;
   accounts?: AccountService;
   credentialStorage?: CredentialStorage;
+  apiKeyChecks?: ApiKeyChecks;
   localAccounts?: LocalAccounts;
 };

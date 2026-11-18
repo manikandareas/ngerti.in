@@ -1,8 +1,10 @@
 import type { Elysia } from "elysia";
 import { z } from "zod";
+import { authenticationResponse } from "../auth/http";
 import { DomainError, id } from "../contracts";
 import { detectHarness } from "../harness/availability";
 import {
+  apiKeyCheckInput,
   apiKeyConnectionInput,
   brokerContract,
   connectionInput,
@@ -99,6 +101,26 @@ export function registerHarnessRoutes(api: Elysia, services: ApiServices, comman
       "/v1/ai/selections",
       ({ request, body }) => command(request, body, () => services.connections.saveSelection(body)),
       { body: selectionInput },
+    )
+    .post(
+      "/v1/connections/api-key/check",
+      async ({ request, body }) => {
+        if (!services.apiKeyChecks) throw new HarnessError("ADAPTER_UNAVAILABLE");
+        const lease = services.authentication.lease(request);
+        try {
+          await lease.assert();
+          const result = await services.apiKeyChecks.checkCandidate(
+            body,
+            AbortSignal.any([lease.signal, request.signal]),
+          );
+          await lease.assert();
+          await services.connections.lifecycle.store.validateDataContext();
+          return authenticationResponse(result);
+        } finally {
+          lease.release();
+        }
+      },
+      { body: apiKeyCheckInput },
     )
     .post(
       "/v1/connections/api-key",

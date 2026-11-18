@@ -106,6 +106,7 @@ const durablePaths = new Set([
   "/v1/apps/connections/:id/assign",
 ]);
 const operationPaths = new Set([
+  "/v1/connections/api-key/check",
   "/v1/connections/local/refresh",
   "/v1/harnesses/:harness/update",
   "/v1/data/legacy-binding",

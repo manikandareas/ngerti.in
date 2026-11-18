@@ -7,7 +7,7 @@ import { API_READINESS_GATE, agent, domainEvent, id, runStatus, schemas } from "
 import { billingSource } from "./contracts/base";
 import { conversationPreviews } from "./conversations/previews";
 import { routingDecisionTrace } from "./groups/decision-trace";
-import { capabilities, harnessId } from "./harness/contracts";
+import { apiKeyCheckResult, capabilities, harnessId } from "./harness/contracts";
 import { interactionSnapshot, nativeInteractionJournal } from "./harness/interaction-contracts";
 import { loginReadiness } from "./harness/login-readiness";
 import { maintenanceJob } from "./harness/maintenance-jobs";
@@ -314,6 +314,7 @@ routes(
 );
 routes("POST", ["/v1/connections/:id/login"], operationSchemas.login);
 routes("POST", ["/v1/connections/local/refresh"], z.strictObject({ available: z.boolean() }));
+routes("POST", ["/v1/connections/api-key/check"], apiKeyCheckResult);
 routes("POST", ["/v1/connections/:id/login/cancel"], operationSchemas.login_cancel);
 routes("POST", ["/v1/ai/selections"], schemas.ai_selection);
 routes(

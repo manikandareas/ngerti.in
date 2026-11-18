@@ -9,8 +9,7 @@ export async function exportConversation(snapshot: Snapshot, signal: AbortSignal
   const cursors = new Set<number>();
   while (timeline.has_more && timeline.next_before !== null) {
     const cursor = timeline.next_before;
-    if (cursors.has(cursor))
-      throw new Error("Riwayat belum dapat dimuat secara lengkap. Coba lagi.");
+    if (cursors.has(cursor)) throw new Error("Could not load the complete history. Try again.");
     cursors.add(cursor);
     timeline = await request<ConversationTimeline>(
       `/v1/threads/${snapshot.thread.id}/timeline?before=${cursor}&limit=100`,

@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { OrganizationSwitcher } from "@/features/account/organization-switcher";
+import { ConversationActionsMenu } from "@/features/conversation/components/conversation-actions-menu";
 import { WorkspaceHeaderSlot } from "./desktop-shell";
 
 type HeaderView =
@@ -62,6 +63,7 @@ export function WorkspaceHeader({
           {view.kind === "conversation" && (
             <div className="workspace-toolbar-actions">
               {view.model}
+              <ConversationActionsMenu />
               <span aria-hidden="true" className="workspace-toolbar-separator" />
               <Tooltip>
                 <TooltipTrigger asChild>

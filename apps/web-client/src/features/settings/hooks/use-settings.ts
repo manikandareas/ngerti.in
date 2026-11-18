@@ -4,7 +4,7 @@ import type { ProviderId } from "@/features/settings/components/shared";
 import type { SettingsSectionId } from "@/features/settings/lib/settings-search";
 
 export function useSettings() {
-  const { settings, provider } = useSearch({ from: "/workspace" });
+  const { settings, provider, workgroup, settingsTab, setting } = useSearch({ from: "/workspace" });
   const navigate = useNavigate({ from: "/" });
   const open = useCallback(
     (section: SettingsSectionId = "general", provider?: ProviderId, replace = false) =>
@@ -13,6 +13,9 @@ export function useSettings() {
           ...previous,
           settings: section,
           provider,
+          workgroup: undefined,
+          settingsTab: undefined,
+          setting: undefined,
           marketplace: undefined,
           item: undefined,
           category: undefined,
@@ -25,10 +28,26 @@ export function useSettings() {
   const close = useCallback(
     () =>
       navigate({
-        search: (previous) => ({ ...previous, settings: undefined, provider: undefined }),
+        search: (previous) => ({
+          ...previous,
+          settings: undefined,
+          provider: undefined,
+          workgroup: undefined,
+          settingsTab: undefined,
+          setting: undefined,
+        }),
         resetScroll: false,
       }),
     [navigate],
   );
-  return { isOpen: settings !== undefined, section: settings, provider, open, close };
+  return {
+    isOpen: settings !== undefined,
+    section: settings,
+    provider,
+    workgroup,
+    settingsTab,
+    setting,
+    open,
+    close,
+  };
 }

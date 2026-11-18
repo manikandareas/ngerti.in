@@ -1,4 +1,10 @@
-import { Add01Icon, UnfoldMoreIcon } from "@hugeicons/core-free-icons";
+import {
+  Add01Icon,
+  Settings01Icon,
+  Tick02Icon,
+  UnfoldMoreIcon,
+  UserAdd01Icon,
+} from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
@@ -91,24 +97,75 @@ export function OrganizationSwitcher({ compact = false }: { compact?: boolean })
               })}
             />
             <span className="organization-menu-name">{organization.name}</span>
+            {organization.id === account.organization?.id && (
+              <HugeiconsIcon icon={Tick02Icon} size={16} aria-hidden="true" />
+            )}
           </Button>
         ))}
         <div className="organization-menu-separator" />
         <Button
           role="menuitem"
           variant="ghost"
-          className="organization-menu-item organization-menu-create"
-          disabled={!canCreate || action.busy}
+          className="organization-menu-item"
           onClick={() => {
             setOpen(false);
-            void navigate({ to: "/onboarding", search: { create: true } });
+            void navigate({
+              to: "/",
+              search: (previous) => ({
+                ...previous,
+                settings: "organization",
+                marketplace: undefined,
+                item: undefined,
+                workgroup: undefined,
+                settingsTab: undefined,
+              }),
+            });
           }}
         >
-          <span className="organization-menu-add">
-            <HugeiconsIcon icon={Add01Icon} size={16} aria-hidden="true" />
-          </span>
-          <span className="organization-menu-name">Add organization</span>
+          <HugeiconsIcon icon={Settings01Icon} size={17} />
+          <span>Organization settings</span>
         </Button>
+        {account.access?.capabilities.invite_members && (
+          <Button
+            role="menuitem"
+            variant="ghost"
+            className="organization-menu-item"
+            onClick={() => {
+              setOpen(false);
+              void navigate({
+                to: "/",
+                search: (previous) => ({
+                  ...previous,
+                  settings: "members",
+                  marketplace: undefined,
+                  item: undefined,
+                  workgroup: undefined,
+                  settingsTab: undefined,
+                }),
+              });
+            }}
+          >
+            <HugeiconsIcon icon={UserAdd01Icon} size={17} />
+            <span>Invite & manage members</span>
+          </Button>
+        )}
+        {canCreate && (
+          <Button
+            role="menuitem"
+            variant="ghost"
+            className="organization-menu-item organization-menu-create"
+            disabled={!canCreate || action.busy}
+            onClick={() => {
+              setOpen(false);
+              void navigate({ to: "/onboarding", search: { create: true } });
+            }}
+          >
+            <span className="organization-menu-add">
+              <HugeiconsIcon icon={Add01Icon} size={16} aria-hidden="true" />
+            </span>
+            <span className="organization-menu-name">Add organization</span>
+          </Button>
+        )}
       </PopoverContent>
     </Popover>
   );

@@ -59,14 +59,14 @@ function Choice<T extends string>({
 export function GeneralSettings() {
   const { preferences, update } = usePreferences();
   return (
-    <SettingsSection title="Saat aplikasi dibuka">
-      <SettingsRow title="Percakapan awal">
+    <SettingsSection title="General">
+      <SettingsRow title="Default conversation">
         <Choice
-          label="Percakapan awal"
+          label="Default conversation"
           value={preferences.startup}
           options={[
-            { value: "last", label: "Percakapan terakhir" },
-            { value: "tobi", label: "Agent awal" },
+            { value: "last", label: "Last conversation" },
+            { value: "tobi", label: "Default agent" },
           ]}
           onChange={(value) => update("startup", value)}
         />
@@ -79,31 +79,31 @@ export function AppearanceSettings() {
   const { preferences, update } = usePreferences();
   return (
     <>
-      <SettingsSection title="Tampilan aplikasi">
-        <SettingsRow title="Tema">
+      <SettingsSection title="Appearance">
+        <SettingsRow title="Theme">
           <ThemeSelect />
         </SettingsRow>
       </SettingsSection>
-      <SettingsSection title="Area baca">
-        <SettingsRow title="Ukuran teks percakapan">
+      <SettingsSection title="Reading">
+        <SettingsRow title="Conversation text size">
           <Choice
-            label="Ukuran teks percakapan"
+            label="Conversation text size"
             value={preferences.textSize}
             options={[
-              { value: "small", label: "Kecil" },
-              { value: "default", label: "Standar" },
-              { value: "large", label: "Besar" },
+              { value: "small", label: "Small" },
+              { value: "default", label: "Default" },
+              { value: "large", label: "Large" },
             ]}
             onChange={(value) => update("textSize", value)}
           />
         </SettingsRow>
-        <SettingsRow title="Lebar percakapan">
+        <SettingsRow title="Conversation width">
           <Choice
-            label="Lebar percakapan"
+            label="Conversation width"
             value={preferences.readingWidth}
             options={[
-              { value: "comfortable", label: "Nyaman dibaca" },
-              { value: "wide", label: "Lebar" },
+              { value: "comfortable", label: "Comfortable" },
+              { value: "wide", label: "Wide" },
             ]}
             onChange={(value) => update("readingWidth", value)}
           />
@@ -111,11 +111,11 @@ export function AppearanceSettings() {
       </SettingsSection>
       <section
         className="settings-reading-preview"
-        aria-label="Pratinjau ukuran teks"
+        aria-label="Text size preview"
         data-size={preferences.textSize}
       >
-        Mulai dari sebuah percakapan. Berikan tugas, tanyakan sesuatu, atau lanjutkan pekerjaan
-        bersama agent.
+        Start with a conversation. Share a task, ask a question, or pick up where you left off with
+        your agent.
       </section>
     </>
   );
@@ -124,13 +124,10 @@ export function AppearanceSettings() {
 export function ConversationSettings() {
   const { preferences, update } = usePreferences();
   return (
-    <SettingsSection title="Menulis dan membaca">
-      <SettingsRow
-        title="Kirim pesan dengan"
-        description="Shift + Enter selalu membuat baris baru."
-      >
+    <SettingsSection title="Conversation">
+      <SettingsRow title="Send messages with" description="Shift + Enter always adds a new line.">
         <Choice
-          label="Kirim pesan dengan"
+          label="Send messages with"
           value={preferences.sendShortcut}
           options={[
             { value: "enter", label: "Enter" },
@@ -141,13 +138,13 @@ export function ConversationSettings() {
       </SettingsRow>
       <PreferenceToggle
         setting="smoothStreaming"
-        title="Perhalus teks yang masuk"
-        description="Tampilkan jawaban yang sedang ditulis dengan transisi singkat."
+        title="Smooth streaming"
+        description="Display incoming text with a short, smooth transition."
       />
       <PreferenceToggle
         setting="showTimestamps"
-        title="Tampilkan waktu pesan"
-        description="Tampilkan jam pada pesan dan aktivitas percakapan."
+        title="Show timestamps"
+        description="Show the time on messages and conversation activity."
       />
     </SettingsSection>
   );
@@ -155,21 +152,21 @@ export function ConversationSettings() {
 
 export function AccessibilitySettings() {
   return (
-    <SettingsSection title="Gerakan dan interaksi">
+    <SettingsSection title="Accessibility">
       <PreferenceToggle
         setting="animateAvatars"
-        title="Animasi avatar"
-        description="Izinkan gerakan avatar. Preferensi kurangi gerakan dari perangkat tetap dihormati."
+        title="Animate avatars"
+        description="Allow avatar motion while respecting your device’s reduced motion preference."
       />
       <PreferenceToggle
         setting="followPointer"
-        title="Avatar mengikuti kursor"
-        description="Arahkan tatapan avatar mengikuti gerakan kursor."
+        title="Avatars follow the pointer"
+        description="Let avatars look toward your pointer."
       />
       <PreferenceToggle
         setting="alwaysShowActions"
-        title="Selalu tampilkan aksi pesan"
-        description="Tampilkan tombol salin dan aksi lain tanpa perlu mengarahkan kursor ke pesan."
+        title="Always show message actions"
+        description="Show copy and other actions without hovering over a message."
       />
     </SettingsSection>
   );
@@ -179,16 +176,16 @@ export function KeyboardSettings() {
   const { preferences } = usePreferences();
   const send = preferences.sendShortcut === "enter" ? "Enter" : "⌘ / Ctrl + Enter";
   const items = [
-    ["Kirim pesan", send],
-    ["Baris baru", "Shift + Enter"],
-    ["Urungkan pengetikan", "⌘ / Ctrl + Z"],
-    ["Salin teks yang dipilih", "⌘ / Ctrl + C"],
-    ["Pilih anggota grup", "@"],
-    ["Cari skills", "/"],
-    ["Tutup menu atau batalkan editor", "Esc"],
+    ["Send message", send],
+    ["New line", "Shift + Enter"],
+    ["Undo typing", "⌘ / Ctrl + Z"],
+    ["Copy selected text", "⌘ / Ctrl + C"],
+    ["Mention a group member", "@"],
+    ["Find skills", "/"],
+    ["Close a menu or cancel editing", "Esc"],
   ];
   return (
-    <SettingsSection title="Saat menulis pesan">
+    <SettingsSection title="Writing messages">
       {items.map(([title, shortcut]) => (
         <SettingsRow key={title} title={title}>
           <Kbd>{shortcut}</Kbd>

@@ -137,7 +137,7 @@ export function useOnboardingHarnesses() {
   return {
     availability: versions.data ?? [],
     loading: (!versions.data || !maintenance.data) && !versions.error && !maintenance.error,
-    error: versions.error,
+    error: versions.error || maintenance.error,
     updating: activeUpdate,
     operation:
       pending?.operation ??

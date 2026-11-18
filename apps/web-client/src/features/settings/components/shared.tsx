@@ -31,15 +31,20 @@ export function SettingsSection({
   title,
   children,
   action,
+  description,
 }: {
   title: string;
   children: ReactNode;
   action?: ReactNode;
+  description?: ReactNode;
 }) {
   return (
     <section className="settings-section">
       <div className="settings-section-heading">
-        <h2>{title}</h2>
+        <div className="settings-section-copy">
+          <h2>{title}</h2>
+          {description && <p>{description}</p>}
+        </div>
         {action}
       </div>
       <div className="settings-group">{children}</div>

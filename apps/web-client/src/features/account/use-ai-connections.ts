@@ -22,8 +22,20 @@ type PendingLogin = {
 };
 type Provisioned = { agent_id: string; thread_id: string };
 
-export function useOnboardingConnections() {
+export function useAIConnections({
+  onboarding = false,
+  ownership = "personal",
+  prepareAudience,
+  onChanged,
+}: {
+  onboarding?: boolean;
+  ownership?: "personal" | "organization";
+  prepareAudience?: () => Promise<string>;
+  onChanged?: () => Promise<unknown>;
+} = {}) {
   const account = useAccount();
+  const callbacks = useRef({ prepareAudience, onChanged });
+  callbacks.current = { prepareAudience, onChanged };
   const scope = useRef(clientScope()).current;
   const action = useAccountAction();
   const [connections, setConnections] = useState<Connection[]>([]);
@@ -31,10 +43,14 @@ export function useOnboardingConnections() {
     [],
   );
   const [loading, setLoading] = useState(true);
+  const [local, setLocal] = useState(false);
   const [error, setError] = useState("");
   const [login, setLogin] = useState<PendingLogin | null>(null);
   const provisioned = useRef<Provisioned | null>(null);
-  const operation = useRef({ signature: "", key: crypto.randomUUID() });
+  const operation = useRef<{ signature: string; key: string; audienceId?: string }>({
+    signature: "",
+    key: crypto.randomUUID(),
+  });
   const inspected = useRef(new Map<string, Promise<Connection>>());
   const connecting = useRef(false);
   const browser = useRef<ReturnType<typeof reserveAuthorizationBrowser> | null>(null);
@@ -74,18 +90,29 @@ export function useOnboardingConnections() {
     [scope],
   );
 
+  const refreshLocal = useCallback(
+    async (signal?: AbortSignal) => {
+      if (ownership !== "personal") return false;
+      const available = await refreshLocalModels({ signal, scope });
+      setLocal(available);
+      return available;
+    },
+    [ownership, scope],
+  );
+
   const load = useCallback(
     async (signal?: AbortSignal) => {
       try {
         assertScope(scope);
-        provisioned.current = await durableCommand<Provisioned>(
-          "provision",
-          "/v1/data/provision",
-          {},
-        );
+        if (onboarding)
+          provisioned.current = await durableCommand<Provisioned>(
+            "provision",
+            "/v1/data/provision",
+            {},
+          );
         signal?.throwIfAborted();
-        await refreshLocalModels({ signal, scope }).catch(() => {});
-        await refresh(signal);
+        const [_, discovered] = await Promise.all([refresh(signal), refreshLocal(signal)]);
+        if (discovered) await refresh(signal);
       } catch (failure) {
         if (!signal?.aborted && !(failure instanceof DOMException && failure.name === "AbortError"))
           setError(
@@ -95,13 +122,22 @@ export function useOnboardingConnections() {
         if (!signal?.aborted) setLoading(false);
       }
     },
-    [refresh, scope],
+    [refresh, refreshLocal, scope, onboarding],
   );
 
   useEffect(() => {
     const abort = new AbortController();
     void load(abort.signal);
     return () => abort.abort();
+  }, [load]);
+  useEffect(() => {
+    const abort = new AbortController();
+    const reconnect = () => void load(abort.signal);
+    window.addEventListener("online", reconnect);
+    return () => {
+      abort.abort();
+      window.removeEventListener("online", reconnect);
+    };
   }, [load]);
   useFeedbackToast(error, { retry: () => void load() });
 
@@ -149,6 +185,7 @@ export function useOnboardingConnections() {
         if (connectionReady(updated)) {
           setLogin(null);
           toast.success("AI account connected.");
+          await callbacks.current.onChanged?.();
         } else if (updated.login === "rejected") {
           setLogin(null);
           toast.error("Sign in was not approved. Try again.");
@@ -188,21 +225,30 @@ export function useOnboardingConnections() {
     (connection) =>
       connection.state === "active" && connection.actor_id === account.session?.user.id,
   );
-  const available = availableAIConnections(
-    connections,
-    account.session?.user.id ?? "",
-    allowedOrganizationConnections,
-  );
+  const owned =
+    ownership === "personal"
+      ? personal
+      : connections.filter(
+          (connection) => connection.state === "active" && connection.ownership === "organization",
+        );
+  const available = onboarding
+    ? availableAIConnections(
+        connections,
+        account.session?.user.id ?? "",
+        allowedOrganizationConnections,
+      )
+    : owned;
   function connectionFor(harness: OnboardingHarness) {
     return (
       available.find(
         (connection) => connection.harness === harness && connectionReady(connection),
-      ) ?? personal.find((connection) => connection.harness === harness)
+      ) ?? owned.find((connection) => connection.harness === harness)
     );
   }
 
-  async function connect(harness: OnboardingHarness) {
-    if (connecting.current || action.busy || login) return;
+  async function connect(harness: OnboardingHarness, connectionId?: string) {
+    if (connecting.current || action.busy || login) return false;
+    let success = false;
     connecting.current = true;
     const reserved = reserveAuthorizationBrowser();
     browser.current = reserved;
@@ -235,19 +281,32 @@ export function useOnboardingConnections() {
         const nativeLogin = readiness.native_login.find((item) => item.harness === harness);
         if (!nativeLogin?.ready)
           throw new Error(nativeLogin?.reason ?? "Account sign-in is not ready on this server.");
-        let connection = personal.find(
-          (item) => item.harness === harness && item.authentication.method === "native_login",
+        let connection = owned.find(
+          (item) =>
+            item.harness === harness &&
+            item.authentication.method === "native_login" &&
+            (!connectionId || item.id === connectionId),
         );
+        if (connectionId && !connection)
+          throw new Error("This connection is no longer available. Refresh and try again.");
         if (!connection) {
           const signature = harness;
           if (operation.current.signature !== signature)
             operation.current = { signature, key: crypto.randomUUID() };
+          const audienceId =
+            ownership === "organization"
+              ? (operation.current.audienceId ?? (await callbacks.current.prepareAudience?.()))
+              : null;
+          if (ownership === "organization" && !audienceId)
+            throw new Error("Choose who can use this connection before connecting.");
+          if (audienceId) operation.current.audienceId = audienceId;
+          assertScope(scope);
           connection = await request<Connection>(
             "/v1/connections",
             {
               harness,
-              ownership: "personal",
-              audience_id: null,
+              ownership,
+              audience_id: audienceId,
               authentication: { method: "native_login", billing_source: "subscription" },
             },
             operation.current.key,
@@ -261,6 +320,8 @@ export function useOnboardingConnections() {
         const observed = await inspect(connection.id);
         if (connectionReady(observed)) {
           toast.success("AI account connected.");
+          await callbacks.current.onChanged?.();
+          success = true;
           return;
         }
         const result = await request<{
@@ -279,9 +340,11 @@ export function useOnboardingConnections() {
           code: result.user_code,
           expires: Date.now() + Math.min(result.expires_in_seconds ?? 600, 600) * 1000,
         });
+        success = true;
         if (!(await reserved.open(url.href)))
           toast.warning("Could not open the browser. Use Open browser to finish signing in.");
       });
+      return success;
     } finally {
       reserved.cancel();
       if (browser.current === reserved) browser.current = null;
@@ -374,8 +437,16 @@ export function useOnboardingConnections() {
 
   return {
     personal,
+    owned,
     available,
+    refresh: async () => {
+      await action.run(async () => {
+        await load();
+        await callbacks.current.onChanged?.();
+      });
+    },
     loading,
+    local,
     error,
     busy: action.busy,
     login,
@@ -390,6 +461,7 @@ export function useOnboardingConnections() {
       await action.run(async () => {
         await inspect(connection.id);
         await refresh();
+        await callbacks.current.onChanged?.();
       });
     },
   };

@@ -1,15 +1,11 @@
-import {
-  AlertCircleIcon,
-  Key01Icon,
-  Loading03Icon,
-  ViewIcon,
-  ViewOffIcon,
-} from "@hugeicons/core-free-icons";
+import { Loading03Icon, Tick02Icon, ViewIcon, ViewOffIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { type ProviderId, providers } from "@/features/settings/components/shared";
+import { Input } from "@/components/ui/input";
+import type { ProviderId } from "@/features/settings/components/shared";
 import { ApiError, request } from "@/lib/api-client";
+import { assertScope, clientScope } from "@/lib/client-scope";
 import {
   harnesses,
   modelProviderName,
@@ -26,48 +22,87 @@ function cleanKey(text: string) {
   return (quoted ? quoted[2] : trimmed).trim();
 }
 
+const connectionErrors: Record<string, string> = {
+  AUTH_REJECTED: "This key was not accepted. Check it and try again.",
+  CREDENTIAL_MISSING: "Enter a valid API key and try checking again.",
+  MODEL_UNAVAILABLE: "No models are available with this key. Check its model permissions.",
+  PROVIDER_LIMIT: "The provider is limiting requests. Wait a moment and try again.",
+  PROTOCOL_ERROR: "The provider could not complete this check. Try again.",
+  ADAPTER_UNAVAILABLE: "This runtime is unavailable. Check the server and try again.",
+  BILLING_MISMATCH:
+    "This credential uses another billing method. Choose the matching connection method.",
+};
+
 export function ApiKeyEntry({
   provider,
   close,
   saved,
+  ownership = "personal",
+  prepareAudience,
+  disabled = false,
+  onBusyChange,
 }: {
   provider: ProviderId;
   close: () => void;
   saved: (connection: Connection) => Promise<void>;
+  ownership?: "personal" | "organization";
+  prepareAudience?: () => Promise<string>;
+  disabled?: boolean;
+  onBusyChange?: (busy: boolean) => void;
 }) {
   const [key, setKey] = useState("");
   const [visible, setVisible] = useState(false);
-  const [busy, setBusy] = useState(false);
+  const [busy, setBusy] = useState<"check" | "save" | null>(null);
   const [error, setError] = useState("");
+  const [checked, setChecked] = useState(false);
   const [uncertain, setUncertain] = useState(false);
   const [modelProvider, setModelProvider] = useState(harnesses[provider].providerId ?? "");
-  const [nativeConfiguration, setNativeConfiguration] = useState<Record<string, unknown> | null>(
-    null,
-  );
+  const [configuration, setConfiguration] = useState<Record<string, unknown> | null>(null);
   const source = providerConnectionMethod(provider, modelProvider);
   const operation = useRef(crypto.randomUUID());
+  const audience = useRef<string | null>(null);
+  const scope = useRef(clientScope()).current;
   const lock = useRef(false);
-  const input = useRef<HTMLInputElement>(null);
   const company = modelProviderName(modelProvider || null);
-  const name = providers.find((item) => item.id === provider)?.name;
-  useEffect(() => {
-    input.current?.focus();
-  }, []);
-  async function save(raw = key) {
-    const value = cleanKey(raw);
+  const resetCheck = () => {
+    setChecked(false);
+    setError("");
+    operation.current = crypto.randomUUID();
+  };
+  async function submit() {
+    const value = cleanKey(key);
     if (
       lock.current ||
+      disabled ||
       !modelProvider ||
       (source === "api_key" && !value) ||
-      (source === "harness_config" && !nativeConfiguration)
+      (source === "harness_config" && !configuration)
     )
       return;
+    const checking = source === "api_key" && !checked;
     lock.current = true;
-    setBusy(true);
+    setBusy(checking ? "check" : "save");
+    onBusyChange?.(true);
     setError("");
     try {
-      // Write-only secrets remain in memory; every reconciliation reuses the operation.
-      const result = await request<Connection>(
+      if (checking) {
+        const result = await request<{ checked: true; model_count: number }>(
+          "/v1/connections/api-key/check",
+          { harness: provider, provider_id: modelProvider, api_key: value },
+          undefined,
+          undefined,
+          30_000,
+          scope,
+        );
+        setChecked(result.checked);
+        return;
+      }
+      if (ownership === "organization" && !audience.current) {
+        audience.current = (await prepareAudience?.()) ?? null;
+        if (!audience.current) throw new Error("Choose who can use this connection first.");
+      }
+      assertScope(scope);
+      const connection = await request<Connection>(
         source === "none"
           ? "/v1/connections"
           : source === "harness_config"
@@ -76,200 +111,183 @@ export function ApiKeyEntry({
         {
           harness: provider,
           provider_id: modelProvider,
+          ownership,
+          audience_id: audience.current,
           ...(source === "none"
             ? { authentication: { method: "none", billing_source: "free" } }
             : source === "harness_config"
-              ? { configuration: nativeConfiguration }
+              ? { configuration }
               : { api_key: value }),
         },
         operation.current,
+        undefined,
+        30_000,
+        scope,
       );
-      await saved(result);
+      await saved(connection);
       setKey("");
-      setNativeConfiguration(null);
+      setConfiguration(null);
       close();
     } catch (failure) {
       const definitive =
         failure instanceof ApiError &&
         ["INVALID_REQUEST", "UNAUTHORIZED", "SCOPE_DENIED", "CONFLICT"].includes(failure.code);
-      setUncertain(!definitive);
+      if (!checking) setUncertain(!definitive);
+      if (definitive) {
+        audience.current = null;
+        operation.current = crypto.randomUUID();
+      }
       setError(
-        definitive
-          ? failure.message
-          : "Penyimpanan belum dapat dipastikan. Periksa lagi dengan permintaan yang sama.",
+        failure instanceof ApiError
+          ? (connectionErrors[failure.code] ?? failure.message)
+          : failure instanceof Error
+            ? failure.message
+            : checking
+              ? "Could not check this key. Try again."
+              : "Saving could not be confirmed. Try again using the same request.",
       );
     } finally {
       lock.current = false;
-      setBusy(false);
+      setBusy(null);
+      onBusyChange?.(false);
     }
   }
   return (
-    <fieldset
-      aria-label={`${company} connection for ${name}`}
-      aria-busy={busy}
-      data-api-key-editor
-      className="settings-key-entry"
+    <form
+      className="ai-key-entry"
+      onSubmit={(event) => {
+        event.preventDefault();
+        void submit();
+      }}
+      aria-label={`${harnesses[provider].name} API connection`}
+      aria-busy={!!busy}
     >
-      <div className="settings-key-heading">
-        <HugeiconsIcon
-          icon={Key01Icon}
-          size={16}
-          aria-hidden="true"
-          className="settings-key-mark"
-        />
-        <div>
-          <p>
+      {harnesses[provider].providerId === null && source !== "harness_config" && (
+        <label className="ai-provider-field">
+          Model provider
+          <select
+            className="settings-select"
+            value={modelProvider}
+            required
+            disabled={!!busy || uncertain || disabled}
+            onChange={(event) => {
+              setModelProvider(event.target.value);
+              setKey("");
+              setConfiguration(null);
+              resetCheck();
+            }}
+          >
+            <option value="">Choose a provider</option>
+            {providersForHarness(provider).map((item) => (
+              <option key={item.id} value={item.id}>
+                {item.name}
+              </option>
+            ))}
+          </select>
+        </label>
+      )}
+      <div className="ai-auth-row ai-key-row">
+        <div className="ai-key-field">
+          <label htmlFor={`key-${provider}`}>
             {source === "none"
               ? "Free access"
               : source === "harness_config"
-                ? "Use your Pi setup"
-                : `${company} API key`}
-          </p>
-          <p>
-            {source === "none"
-              ? "Use the free models offered by OpenCode."
-              : source === "harness_config"
-                ? "Reuse a connection already configured in Pi."
-                : `Penggunaan ditagihkan ke akun API ${company} yang kamu pilih.`}
-          </p>
-        </div>
-      </div>
-      <form
-        className="settings-key-form"
-        onSubmit={(event) => {
-          event.preventDefault();
-          void save();
-        }}
-        onKeyDown={(event) => {
-          if (event.key === "Escape") {
-            event.preventDefault();
-            event.stopPropagation();
-            if (!busy) close();
-          }
-        }}
-      >
-        {harnesses[provider].providerId === null && source !== "harness_config" && (
-          <label className="flex flex-col gap-2 text-sm">
-            Model provider
-            <select
-              className="settings-select"
-              value={modelProvider}
-              required
-              disabled={busy || uncertain}
-              onChange={(event) => {
-                setModelProvider(event.target.value);
-                setKey("");
-                setNativeConfiguration(null);
-                operation.current = crypto.randomUUID();
-              }}
-            >
-              <option value="">Choose a provider</option>
-              {providersForHarness(provider).map((item) => (
-                <option key={item.id} value={item.id}>
-                  {item.name}
-                </option>
-              ))}
-            </select>
+                ? "Pi setup"
+                : "API key"}
           </label>
-        )}
-        <div className="settings-key-field-line">
-          {source === "harness_config" && (
-            <PiConfigurationInput
-              key={provider}
-              disabled={busy || uncertain}
-              onChange={(selection) => {
-                setNativeConfiguration(selection?.configuration ?? null);
-                setModelProvider(selection?.providerId ?? "");
-                operation.current = crypto.randomUUID();
-                setError("");
-              }}
-            />
-          )}
           {source === "api_key" && (
-            <div className="settings-key-input-wrap">
-              <input
-                ref={input}
+            <div className="ai-key-input">
+              <Input
+                id={`key-${provider}`}
                 type={visible ? "text" : "password"}
-                aria-label="API key"
                 autoComplete="off"
                 spellCheck={false}
                 maxLength={16384}
                 value={key}
-                disabled={busy || uncertain || !modelProvider}
+                disabled={!!busy || uncertain || disabled || !modelProvider}
+                placeholder={`Paste ${company} API key`}
                 onChange={(event) => {
                   setKey(event.target.value);
-                  operation.current = crypto.randomUUID();
-                  setError("");
+                  resetCheck();
                 }}
                 onPaste={(event) => {
                   const value = cleanKey(event.clipboardData.getData("text"));
-                  if (!value) return;
-                  event.preventDefault();
-                  setKey(value);
-                  operation.current = crypto.randomUUID();
-                  if (!/\s/.test(value)) void save(value);
+                  if (value) {
+                    event.preventDefault();
+                    setKey(value);
+                    resetCheck();
+                  }
                 }}
-                placeholder={`Tempel ${company} API key`}
               />
               <button
                 type="button"
-                className="settings-key-visibility"
-                onClick={() => setVisible(!visible)}
-                aria-label={visible ? "Sembunyikan" : "Lihat"}
+                aria-label={visible ? "Hide API key" : "Show API key"}
                 aria-pressed={visible}
+                disabled={!!busy}
+                onClick={() => setVisible(!visible)}
               >
-                {visible ? (
-                  <HugeiconsIcon icon={ViewOffIcon} size={14} aria-hidden="true" />
-                ) : (
-                  <HugeiconsIcon icon={ViewIcon} size={14} aria-hidden="true" />
-                )}
+                <HugeiconsIcon icon={visible ? ViewOffIcon : ViewIcon} size={14} />
               </button>
             </div>
           )}
-          <div className="settings-key-actions">
-            <Button
-              type="submit"
-              disabled={
-                busy ||
-                !modelProvider ||
-                (source === "api_key" && !key.trim()) ||
-                (source === "harness_config" && !nativeConfiguration)
-              }
-            >
-              {busy && (
-                <HugeiconsIcon
-                  icon={Loading03Icon}
-                  size={12}
-                  aria-hidden="true"
-                  className="animate-spin"
-                />
-              )}
-              {uncertain ? "Periksa penyimpanan" : source === "api_key" ? "Simpan key" : "Connect"}
-            </Button>
-            <Button type="button" variant="outline" disabled={busy} onClick={close}>
-              Batal
-            </Button>
-          </div>
-        </div>
-        <p className="settings-key-note">
-          {source === "none"
-            ? "No credential or paid billing route is added."
-            : source === "harness_config"
-              ? "The selected Pi connection is stored privately for this account. Your global Pi setup remains unchanged."
-              : "Key disimpan di host backend dan tidak ditampilkan kembali."}
-        </p>
-        {error && (
-          <p role="alert" className="settings-key-error">
-            <HugeiconsIcon
-              icon={AlertCircleIcon}
-              size={13}
-              aria-hidden="true"
-              className="settings-key-error-icon"
+          {source === "harness_config" && (
+            <PiConfigurationInput
+              disabled={!!busy || uncertain || disabled}
+              onChange={(selection) => {
+                setConfiguration(selection?.configuration ?? null);
+                setModelProvider(selection?.providerId ?? "");
+                resetCheck();
+              }}
             />
-            <span>{error}</span>
-          </p>
-        )}
-      </form>
-    </fieldset>
+          )}
+          {source === "none" && (
+            <p className="onboarding-key-note">Use the free models offered by OpenCode.</p>
+          )}
+        </div>
+        <Button
+          size="sm"
+          variant={checked ? "default" : "outline"}
+          type="submit"
+          disabled={
+            !!busy ||
+            disabled ||
+            !modelProvider ||
+            (source === "api_key" && !key.trim()) ||
+            (source === "harness_config" && !configuration)
+          }
+        >
+          {busy ? (
+            <HugeiconsIcon
+              icon={Loading03Icon}
+              size={14}
+              className="animate-spin motion-reduce:animate-none"
+            />
+          ) : checked ? (
+            <HugeiconsIcon icon={Tick02Icon} size={14} />
+          ) : null}
+          {busy === "check"
+            ? "Checking…"
+            : busy === "save"
+              ? "Saving…"
+              : uncertain
+                ? "Retry save"
+                : source !== "api_key"
+                  ? "Connect"
+                  : checked
+                    ? "Save"
+                    : "Check"}
+        </Button>
+      </div>
+      {checked && (
+        <p className="ai-key-success" role="status">
+          Connection checked. Save to add it to your account.
+        </p>
+      )}
+      {error && (
+        <p className="ai-key-error" role="alert">
+          {error}
+        </p>
+      )}
+    </form>
   );
 }

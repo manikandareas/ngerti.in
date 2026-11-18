@@ -47,6 +47,11 @@ export const authentication = z.discriminatedUnion("method", [
     billing_source: z.literal("api_key"),
     credential_ref: z.uuid(),
   }),
+  z.strictObject({
+    method: z.literal("local_config"),
+    billing_source: z.enum(["api_key", "free"]),
+    device_id: id,
+  }),
   z.strictObject({ method: z.literal("native_login"), billing_source: z.literal("subscription") }),
   z.strictObject({
     method: z.literal("api_key"),

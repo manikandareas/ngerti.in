@@ -86,8 +86,9 @@ export function registerHarnessRoutes(api: Elysia, services: ApiServices, comman
       async ({ request, body }) =>
         await command(request, body, async () => {
           if (
-            services.connections.lifecycle.store.dataContext &&
-            "credential_ref" in body.authentication
+            body.authentication.method === "local_config" ||
+            (services.connections.lifecycle.store.dataContext &&
+              "credential_ref" in body.authentication)
           )
             throw new DomainError("SCOPE_DENIED", 403);
           return services.connections.create(body);
@@ -222,6 +223,21 @@ export function registerHarnessRoutes(api: Elysia, services: ApiServices, comman
         return connection;
       },
       { params: z.object({ id }) },
+    )
+    .post(
+      "/v1/connections/local/refresh",
+      async ({ request }) => {
+        if (!services.localAccounts) return { available: false };
+        try {
+          await services.authentication.assertOwner(request);
+        } catch (error) {
+          if (error instanceof DomainError && error.code === "SCOPE_DENIED")
+            return { available: false };
+          throw error;
+        }
+        return services.localAccounts.refresh();
+      },
+      { body: z.strictObject({}) },
     )
     .post(
       "/v1/connections/:id/inspect",

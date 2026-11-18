@@ -4,6 +4,12 @@ import { join } from "node:path";
 import type { Entity } from "../contracts";
 import { HarnessError } from "./contracts";
 import { CredentialStorage } from "./credential-storage";
+import {
+  type LocalProfiles,
+  type LocalProvider,
+  localHarness,
+  localProviderKey,
+} from "./local-profile";
 import { type PiProviderConfiguration, piProviderConfiguration } from "./native-configuration";
 import { nativeStorageReady } from "./native-storage";
 import { connectionProvider, credentialEnvironment } from "./providers";
@@ -95,6 +101,7 @@ export type LaunchContext = {
     refresh?: boolean,
   ) => Promise<{ accessToken: string; chatgptAccountId: string; chatgptPlanType?: string }>;
   nativeConfiguration?: PiProviderConfiguration;
+  localProvider?: LocalProvider;
   purpose?: "conversation" | "routing";
   env: Record<string, string>;
   state_directory: string;
@@ -112,6 +119,7 @@ export class CredentialContexts {
     readonly root: string,
     private readonly readSecret?: (reference: string) => string,
     private readonly keyFile = process.env.NGERTIIN_PROVIDER_MASTER_KEY_FILE,
+    readonly localProfiles?: LocalProfiles,
   ) {
     mkdirSync(root, { recursive: true, mode: 0o700 });
     this.root = realpathSync(root);
@@ -177,7 +185,41 @@ export class CredentialContexts {
     });
     const redactor = new Redactor();
     let nativeConfiguration: PiProviderConfiguration | undefined;
-    if (connection.authentication.method === "harness_config") {
+    if (connection.authentication.method === "local_config") {
+      const harness = localHarness.safeParse(connection.harness);
+      if (
+        !this.localProfiles ||
+        this.localProfiles.deviceId !== connection.authentication.device_id ||
+        connection.ownership !== "personal" ||
+        !harness.success
+      )
+        throw new HarnessError("ADAPTER_UNAVAILABLE");
+      if (connection.authentication.billing_source === "free") {
+        if (
+          connection.harness !== "opencode" ||
+          provider !== "opencode" ||
+          !this.localProfiles.openCodeFreeEnabled()
+        )
+          throw new HarnessError("MODEL_UNAVAILABLE");
+        return { connection: selection, scoped: true, env, state_directory: directory, redactor };
+      }
+      const localProvider = this.localProfiles.read(harness.data).get(provider);
+      if (!localProvider) throw new HarnessError("CREDENTIAL_MISSING");
+      redactor.add(localProviderKey(localProvider));
+      if (localProvider.kind === "key") env[localProvider.environment] = localProvider.key;
+      return {
+        connection: selection,
+        scoped: true,
+        env,
+        state_directory: directory,
+        redactor,
+        localProvider,
+        nativeConfiguration:
+          localProvider.kind === "configured" && localProvider.harness === "pi"
+            ? localProvider.configuration
+            : undefined,
+      };
+    } else if (connection.authentication.method === "harness_config") {
       try {
         const reference = connection.authentication.credential_ref;
         const value = this.readSecret

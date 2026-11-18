@@ -4,6 +4,7 @@ import { useFeedbackToast } from "@/hooks/use-feedback-toast";
 import { durableCommand, request } from "@/lib/api-client";
 import { reserveAuthorizationBrowser } from "@/lib/authorization-browser";
 import { assertScope, clientScope } from "@/lib/client-scope";
+import { refreshLocalModels } from "@/lib/local-models";
 import type { Availability, Connection, Snapshot } from "@/types/workspace";
 import { useAccountAction } from "./account-forms";
 import { availableAIConnections, connectionReady } from "./ai-integration";
@@ -83,6 +84,7 @@ export function useOnboardingConnections() {
           {},
         );
         signal?.throwIfAborted();
+        await refreshLocalModels({ signal, scope }).catch(() => {});
         await refresh(signal);
       } catch (failure) {
         if (!signal?.aborted && !(failure instanceof DOMException && failure.name === "AbortError"))

@@ -1,4 +1,4 @@
-import { UnfoldMoreIcon } from "@hugeicons/core-free-icons";
+import { RefreshIcon, UnfoldMoreIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { type ReactNode, useContext, useMemo, useState } from "react";
 import { HarnessIcon } from "@/components/harness-icon";
@@ -7,9 +7,11 @@ import {
   ModelPicker as HarnessModelPicker,
   OpenAIIcon,
 } from "@/components/ui/model-picker";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { SettingsWorkspaceContext } from "@/hooks/settings-workspace";
 import { harnessModelCatalog, harnessModelKey } from "@/lib/harness-models";
 import { type HarnessId, harnesses, isHarness } from "@/lib/harnesses";
+import { refreshLocalModels } from "@/lib/local-models";
 import { cn } from "@/lib/utils";
 import type { Agent, Connection } from "@/types/workspace";
 import { useModelSelection } from "../hooks/use-model-selection";
@@ -40,6 +42,7 @@ export function ModelPicker({
 }: ModelPickerProps) {
   const workspace = useContext(SettingsWorkspaceContext);
   const [open, setOpen] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
   const [browsing, setBrowsing] = useState<HarnessId>(agent?.harness ?? "codex");
   const threadId = workspace?.snapshot?.thread.id;
   const {
@@ -123,9 +126,27 @@ export function ModelPicker({
     });
   }
 
+  const localHarness =
+    current?.authentication.method === "local_config" ||
+    agent?.harness === "pi" ||
+    agent?.harness === "opencode";
+  async function refreshCatalog() {
+    setRefreshing(true);
+    try {
+      if (await refreshLocalModels()) await refresh();
+      else report("Local setup is available on the device hosting this workspace.");
+    } catch (failure) {
+      report(failure instanceof Error ? failure.message : "Could not refresh the local catalog.");
+    } finally {
+      setRefreshing(false);
+    }
+  }
+
   function empty(harness: string) {
     if (agent && harness !== agent.harness)
       return `This agent uses ${harnesses[agent.harness].name}. Its harness is managed in agent settings.`;
+    if (localHarness && agent)
+      return `Configure models in ${harnesses[agent.harness].name} on this device, then refresh.`;
     return connected.length
       ? "Verify this connection to load its available models."
       : `Connect ${isHarness(harness) ? harnesses[harness].name : "a harness"} to choose a model.`;
@@ -177,6 +198,30 @@ export function ModelPicker({
           className,
         )}
         emptyProvider={empty}
+        railFooter={
+          localHarness && (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button
+                  type="button"
+                  aria-label="Refresh local models"
+                  aria-busy={refreshing}
+                  disabled={refreshing}
+                  onClick={() => void refreshCatalog()}
+                  className="flex h-9 w-full items-center justify-center rounded-xl text-muted-foreground hover:bg-popover/70 hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-50"
+                >
+                  <HugeiconsIcon
+                    icon={RefreshIcon}
+                    size={16}
+                    aria-hidden="true"
+                    className={refreshing ? "motion-safe:animate-spin" : undefined}
+                  />
+                </button>
+              </TooltipTrigger>
+              <TooltipContent side="left">Refresh local models</TooltipContent>
+            </Tooltip>
+          )
+        }
         footer={
           changedDuringRun || error || (current && !catalog.choices.has(selected ?? "")) ? (
             <div className="space-y-2 px-4 pb-3 text-xs text-muted-foreground">

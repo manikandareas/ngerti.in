@@ -4,6 +4,7 @@ import type { detectHarness } from "../harness/availability";
 import type { HarnessBroker } from "../harness/broker";
 import type { Connections } from "../harness/connections";
 import type { CredentialStorage } from "../harness/credential-storage";
+import type { LocalAccounts } from "../harness/local-accounts";
 import type { HarnessLoginReadiness } from "../harness/login-readiness";
 import type { ProductTools } from "../harness/tools";
 import type { HarnessUpdater } from "../harness/updater";
@@ -20,4 +21,5 @@ export type ApiServices = {
   broker?: HarnessBroker;
   accounts?: AccountService;
   credentialStorage?: CredentialStorage;
+  localAccounts?: LocalAccounts;
 };

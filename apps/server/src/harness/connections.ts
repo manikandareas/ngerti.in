@@ -19,11 +19,18 @@ export class Connections {
     if (data.authentication.method === "native_login" && !["codex", "muse"].includes(data.harness))
       throw new HarnessError("CAPABILITY_UNSUPPORTED");
     if (
-      (data.authentication.method === "none") !==
+      (data.authentication.billing_source === "free") !==
       (data.harness === "opencode" && data.provider_id === "opencode")
     )
       throw new HarnessError("CAPABILITY_UNSUPPORTED");
     if (data.authentication.method === "harness_config" && data.harness !== "pi")
+      throw new HarnessError("CAPABILITY_UNSUPPORTED");
+    if (
+      data.authentication.method === "local_config" &&
+      (!["codex", "pi", "opencode"].includes(data.harness) ||
+        data.ownership !== "personal" ||
+        data.audience_id)
+    )
       throw new HarnessError("CAPABILITY_UNSUPPORTED");
     const scope = this.lifecycle.store.dataContext;
     if (scope) {
@@ -82,7 +89,8 @@ export class Connections {
             state === "supported" &&
             changes.capabilities?.[name as keyof typeof connection.capabilities] !== "supported",
         );
-      if (key === "models")
+      if (key === "models") {
+        if (connection.authentication.method === "local_config") return false;
         return connection.models.some((model) => {
           const next = changes.models?.find((entry) => entry.id === model.id);
           return (
@@ -93,6 +101,7 @@ export class Connections {
             )
           );
         });
+      }
       return canonical(connection[key as keyof typeof connection]) !== canonical(value);
     });
     if (
@@ -256,7 +265,7 @@ export class Connections {
           throw new DomainError("STALE_DISPATCH");
         if (
           connection.login !== "authenticated" ||
-          (!selected.account_id && connection.authentication.method !== "none")
+          (!selected.account_id && connection.authentication.billing_source !== "free")
         )
           throw new HarnessError("LOGIN_REQUIRED");
         if (connection.effective_billing_source !== selected.billing_source)

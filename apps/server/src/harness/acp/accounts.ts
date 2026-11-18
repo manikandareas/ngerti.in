@@ -84,6 +84,8 @@ export class AcpAccounts implements AccountService {
         if (observed.login !== "authenticated") return connection;
         try {
           const models = await client.discoverModels();
+          const catalog = JSON.stringify(models);
+          if (launch.redactor.text(catalog) !== catalog) throw new HarnessError("PROTOCOL_ERROR");
           return await this.connections.update(await current(connection.grant_revision), {
             discovery: "succeeded",
             models,

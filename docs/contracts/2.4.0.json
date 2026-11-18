@@ -4255,6 +4255,33 @@
               "properties": {
                 "method": {
                   "type": "string",
+                  "const": "local_config"
+                },
+                "billing_source": {
+                  "type": "string",
+                  "enum": [
+                    "api_key",
+                    "free"
+                  ]
+                },
+                "device_id": {
+                  "type": "string",
+                  "format": "uuid",
+                  "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                }
+              },
+              "required": [
+                "method",
+                "billing_source",
+                "device_id"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "method": {
+                  "type": "string",
                   "const": "native_login"
                 },
                 "billing_source": {
@@ -13596,6 +13623,33 @@
                       "method",
                       "billing_source",
                       "credential_ref"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "method": {
+                        "type": "string",
+                        "const": "local_config"
+                      },
+                      "billing_source": {
+                        "type": "string",
+                        "enum": [
+                          "api_key",
+                          "free"
+                        ]
+                      },
+                      "device_id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                      }
+                    },
+                    "required": [
+                      "method",
+                      "billing_source",
+                      "device_id"
                     ],
                     "additionalProperties": false
                   },
@@ -45323,6 +45377,33 @@
                             "properties": {
                               "method": {
                                 "type": "string",
+                                "const": "local_config"
+                              },
+                              "billing_source": {
+                                "type": "string",
+                                "enum": [
+                                  "api_key",
+                                  "free"
+                                ]
+                              },
+                              "device_id": {
+                                "type": "string",
+                                "format": "uuid",
+                                "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                              }
+                            },
+                            "required": [
+                              "method",
+                              "billing_source",
+                              "device_id"
+                            ],
+                            "additionalProperties": false
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "method": {
+                                "type": "string",
                                 "const": "native_login"
                               },
                               "billing_source": {
@@ -53377,6 +53458,33 @@
                 "method",
                 "billing_source",
                 "credential_ref"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "method": {
+                  "type": "string",
+                  "const": "local_config"
+                },
+                "billing_source": {
+                  "type": "string",
+                  "enum": [
+                    "api_key",
+                    "free"
+                  ]
+                },
+                "device_id": {
+                  "type": "string",
+                  "format": "uuid",
+                  "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                }
+              },
+              "required": [
+                "method",
+                "billing_source",
+                "device_id"
               ],
               "additionalProperties": false
             },
@@ -76251,6 +76359,33 @@
                   "properties": {
                     "method": {
                       "type": "string",
+                      "const": "local_config"
+                    },
+                    "billing_source": {
+                      "type": "string",
+                      "enum": [
+                        "api_key",
+                        "free"
+                      ]
+                    },
+                    "device_id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                    }
+                  },
+                  "required": [
+                    "method",
+                    "billing_source",
+                    "device_id"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "method": {
+                      "type": "string",
                       "const": "native_login"
                     },
                     "billing_source": {
@@ -76451,6 +76586,33 @@
                     "method",
                     "billing_source",
                     "credential_ref"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "method": {
+                      "type": "string",
+                      "const": "local_config"
+                    },
+                    "billing_source": {
+                      "type": "string",
+                      "enum": [
+                        "api_key",
+                        "free"
+                      ]
+                    },
+                    "device_id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                    }
+                  },
+                  "required": [
+                    "method",
+                    "billing_source",
+                    "device_id"
                   ],
                   "additionalProperties": false
                 },
@@ -77261,6 +77423,33 @@
                   "properties": {
                     "method": {
                       "type": "string",
+                      "const": "local_config"
+                    },
+                    "billing_source": {
+                      "type": "string",
+                      "enum": [
+                        "api_key",
+                        "free"
+                      ]
+                    },
+                    "device_id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                    }
+                  },
+                  "required": [
+                    "method",
+                    "billing_source",
+                    "device_id"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "method": {
+                      "type": "string",
                       "const": "native_login"
                     },
                     "billing_source": {
@@ -77850,6 +78039,33 @@
                   "properties": {
                     "method": {
                       "type": "string",
+                      "const": "local_config"
+                    },
+                    "billing_source": {
+                      "type": "string",
+                      "enum": [
+                        "api_key",
+                        "free"
+                      ]
+                    },
+                    "device_id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                    }
+                  },
+                  "required": [
+                    "method",
+                    "billing_source",
+                    "device_id"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "method": {
+                      "type": "string",
                       "const": "native_login"
                     },
                     "billing_source": {
@@ -78360,6 +78576,33 @@
                       "properties": {
                         "method": {
                           "type": "string",
+                          "const": "local_config"
+                        },
+                        "billing_source": {
+                          "type": "string",
+                          "enum": [
+                            "api_key",
+                            "free"
+                          ]
+                        },
+                        "device_id": {
+                          "type": "string",
+                          "format": "uuid",
+                          "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                        }
+                      },
+                      "required": [
+                        "method",
+                        "billing_source",
+                        "device_id"
+                      ],
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "method": {
+                          "type": "string",
                           "const": "native_login"
                         },
                         "billing_source": {
@@ -78809,6 +79052,33 @@
                         "method",
                         "billing_source",
                         "credential_ref"
+                      ],
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "method": {
+                          "type": "string",
+                          "const": "local_config"
+                        },
+                        "billing_source": {
+                          "type": "string",
+                          "enum": [
+                            "api_key",
+                            "free"
+                          ]
+                        },
+                        "device_id": {
+                          "type": "string",
+                          "format": "uuid",
+                          "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                        }
+                      },
+                      "required": [
+                        "method",
+                        "billing_source",
+                        "device_id"
                       ],
                       "additionalProperties": false
                     },
@@ -79321,6 +79591,33 @@
                   "properties": {
                     "method": {
                       "type": "string",
+                      "const": "local_config"
+                    },
+                    "billing_source": {
+                      "type": "string",
+                      "enum": [
+                        "api_key",
+                        "free"
+                      ]
+                    },
+                    "device_id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                    }
+                  },
+                  "required": [
+                    "method",
+                    "billing_source",
+                    "device_id"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "method": {
+                      "type": "string",
                       "const": "native_login"
                     },
                     "billing_source": {
@@ -79648,6 +79945,45 @@
     },
     {
       "method": "POST",
+      "path": "/v1/connections/local/refresh",
+      "authentication": "user_session_or_oauth_access_token",
+      "access": {
+        "authentication_class": "user",
+        "scope": "explicit_organization_header_and_actor",
+        "visibility": "private_or_explicit_published_grant"
+      },
+      "idempotency": "not_applicable",
+      "semantics": "operation",
+      "request": {
+        "body": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {},
+          "additionalProperties": false
+        },
+        "query": null,
+        "params": null
+      },
+      "response_transport": "json",
+      "response": {
+        "status": 200,
+        "schema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "available": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "available"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    {
+      "method": "POST",
       "path": "/v1/connections/:id/inspect",
       "authentication": "user_session_or_oauth_access_token",
       "access": {
@@ -79805,6 +80141,33 @@
                     "method",
                     "billing_source",
                     "credential_ref"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "method": {
+                      "type": "string",
+                      "const": "local_config"
+                    },
+                    "billing_source": {
+                      "type": "string",
+                      "enum": [
+                        "api_key",
+                        "free"
+                      ]
+                    },
+                    "device_id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                    }
+                  },
+                  "required": [
+                    "method",
+                    "billing_source",
+                    "device_id"
                   ],
                   "additionalProperties": false
                 },
@@ -84883,6 +85246,33 @@
                           "method",
                           "billing_source",
                           "credential_ref"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "method": {
+                            "type": "string",
+                            "const": "local_config"
+                          },
+                          "billing_source": {
+                            "type": "string",
+                            "enum": [
+                              "api_key",
+                              "free"
+                            ]
+                          },
+                          "device_id": {
+                            "type": "string",
+                            "format": "uuid",
+                            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                          }
+                        },
+                        "required": [
+                          "method",
+                          "billing_source",
+                          "device_id"
                         ],
                         "additionalProperties": false
                       },
@@ -94071,6 +94461,33 @@
                         "method",
                         "billing_source",
                         "credential_ref"
+                      ],
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "method": {
+                          "type": "string",
+                          "const": "local_config"
+                        },
+                        "billing_source": {
+                          "type": "string",
+                          "enum": [
+                            "api_key",
+                            "free"
+                          ]
+                        },
+                        "device_id": {
+                          "type": "string",
+                          "format": "uuid",
+                          "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                        }
+                      },
+                      "required": [
+                        "method",
+                        "billing_source",
+                        "device_id"
                       ],
                       "additionalProperties": false
                     },
@@ -127985,6 +128402,13 @@
       {
         "method": "POST",
         "path": "/v1/connections/:id/revoke",
+        "authentication_class": "user",
+        "scope": "explicit_organization_header_and_actor",
+        "visibility": "private_or_explicit_published_grant"
+      },
+      {
+        "method": "POST",
+        "path": "/v1/connections/local/refresh",
         "authentication_class": "user",
         "scope": "explicit_organization_header_and_actor",
         "visibility": "private_or_explicit_published_grant"

@@ -313,6 +313,7 @@ routes(
   schemas.connection,
 );
 routes("POST", ["/v1/connections/:id/login"], operationSchemas.login);
+routes("POST", ["/v1/connections/local/refresh"], z.strictObject({ available: z.boolean() }));
 routes("POST", ["/v1/connections/:id/login/cancel"], operationSchemas.login_cancel);
 routes("POST", ["/v1/ai/selections"], schemas.ai_selection);
 routes(

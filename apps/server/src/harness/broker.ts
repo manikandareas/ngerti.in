@@ -193,8 +193,14 @@ export class HarnessBroker {
     agentId: string,
   ): Promise<{ state: "ready" | "preparing" | "skipped" }> {
     const thread = await this.lifecycle.store.get("thread", threadId);
-    const { agent } = await this.member(threadId, agentId);
-    if (thread.type !== "dm" || !agent.model_id || this.#closed) return { state: "skipped" };
+    const { agent, connection } = await this.member(threadId, agentId);
+    if (
+      thread.type !== "dm" ||
+      !agent.model_id ||
+      this.#closed ||
+      connection.authentication.method === "local_config"
+    )
+      return { state: "skipped" };
     const lane = `${threadId}:${agentId}`;
     const existing = this.#sessions.get(lane);
     if (existing) {
@@ -497,6 +503,7 @@ export class HarnessBroker {
       try {
         const cached = this.#modelCatalogs.get(current.id);
         const fresh =
+          current.authentication.method !== "local_config" &&
           cached &&
           Date.now() - cached.at < 60_000 &&
           cached.grant === current.grant_revision &&

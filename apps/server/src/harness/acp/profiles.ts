@@ -109,9 +109,10 @@ export async function profileLaunch(
       ? {
           nativeMcpPath: join(input.env.PI_CODING_AGENT_DIR, "mcp.json"),
           nativeSettingsPath: join(input.env.PI_CODING_AGENT_DIR, "settings.json"),
-          nativeModelsPath: input.nativeConfiguration
-            ? join(input.env.PI_CODING_AGENT_DIR, "models.json")
-            : undefined,
+          nativeModelsPath:
+            input.nativeConfiguration || input.connection?.authentication === "local_config"
+              ? join(input.env.PI_CODING_AGENT_DIR, "models.json")
+              : undefined,
           emptyNativeAuthPath: join(input.env.PI_CODING_AGENT_DIR, "auth.json"),
         }
       : undefined,
@@ -214,6 +215,10 @@ export async function profileLaunch(
       OPENCODE_DISABLE_AUTOUPDATE: "1",
       OPENCODE_CONFIG_CONTENT: JSON.stringify({
         enabled_providers: [provider],
+        ...(context.localProvider?.kind === "configured" &&
+        context.localProvider.harness === "opencode"
+          ? { provider: { [provider]: context.localProvider.configuration } }
+          : {}),
         instructions: [instructions],
         plugin: [pathToFileURL(extension.path).href],
         permission: { "*": "deny", "ngertiin_*": "allow" },
@@ -228,7 +233,7 @@ export async function profileLaunch(
     if (context.nativeConfiguration) {
       if (
         !context.connection?.provider_id ||
-        context.connection.authentication !== "harness_config"
+        !["harness_config", "local_config"].includes(context.connection.authentication)
       )
         throw new HarnessError("BILLING_MISMATCH");
       const configuration = context.nativeConfiguration;
@@ -247,6 +252,8 @@ export async function profileLaunch(
         }),
         { mode: 0o600 },
       );
+    } else if (context.connection?.authentication === "local_config") {
+      writeFileSync(join(context.env.PI_CODING_AGENT_DIR, "models.json"), "{}", { mode: 0o600 });
     }
     // Rebuild app-owned configuration before native startup; remembered defaults cannot
     // select another provider or add packages/hooks to a later run.

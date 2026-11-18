@@ -15,9 +15,14 @@ export class HarnessAccounts implements AccountService {
   constructor(
     private readonly connections: Connections,
     private readonly services: Partial<Record<HarnessId, AccountService>>,
+    private readonly localCodex?: AccountService,
   ) {}
   private async service(id: string) {
-    const service = this.services[(await this.connections.get(id)).harness];
+    const connection = await this.connections.get(id);
+    const service =
+      connection.harness === "codex" && connection.authentication.method === "local_config"
+        ? this.localCodex
+        : this.services[connection.harness];
     if (!service) throw new HarnessError("ADAPTER_UNAVAILABLE");
     return service;
   }
@@ -34,6 +39,8 @@ export class HarnessAccounts implements AccountService {
     return (await this.service(id)).cancel(id);
   }
   async close() {
-    await Promise.allSettled(Object.values(this.services).map((service) => service?.close?.()));
+    await Promise.allSettled(
+      [...Object.values(this.services), this.localCodex].map((service) => service?.close?.()),
+    );
   }
 }

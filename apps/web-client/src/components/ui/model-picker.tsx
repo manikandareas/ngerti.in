@@ -62,6 +62,7 @@ export function ModelPicker({
   disabled = false,
   ariaLabel,
   dropdownIcon,
+  railFooter,
   footer,
   emptyProvider,
 }: ModelPickerProps) {
@@ -306,48 +307,51 @@ export function ModelPicker({
       ) : (
         <div className="flex min-h-72 min-w-0 bg-muted">
           <div className="relative w-14 shrink-0 bg-muted @min-[380px]/modelpicker:w-16">
-            <div
-              role="tablist"
-              aria-label="Harnesses"
-              aria-orientation="vertical"
-              ref={railRef}
-              className="absolute inset-0 flex flex-col gap-2 overflow-y-auto overscroll-contain px-2 py-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-            >
-              {rails.map((provider, index) => (
-                <Tooltip key={provider.id}>
-                  <TooltipTrigger asChild>
-                    <button
-                      type="button"
-                      role="tab"
-                      id={`${id}-tab-${provider.id}`}
-                      aria-label={provider.name}
-                      aria-selected={provider.id === activeProvider.id}
-                      aria-controls={`${id}-provider-panel`}
-                      tabIndex={provider.id === activeProvider.id ? 0 : -1}
-                      ref={(node) => {
-                        providerRefs.current[index] = node;
-                      }}
-                      onClick={() => {
-                        setQuery("");
-                        setActiveProviderId(provider.id);
-                        onProviderChange?.(provider.id);
-                      }}
-                      onKeyDown={(event) => onRailKeyDown(event, index)}
-                      className={cn(
-                        "inline-flex size-10 shrink-0 touch-manipulation items-center justify-center rounded-2xl text-muted-foreground transition-colors duration-150 hover:bg-popover/70 hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none @min-[380px]/modelpicker:size-12",
-                        provider.id === activeProvider.id &&
-                          !searching &&
-                          "bg-popover text-foreground",
-                      )}
-                    >
-                      <ProviderGlyph provider={provider} className="size-5" />
-                    </button>
-                  </TooltipTrigger>
-                  <TooltipContent side="left" translate="no">
-                    {provider.name}
-                  </TooltipContent>
-                </Tooltip>
-              ))}
+            <div className="absolute inset-0 flex flex-col">
+              <div
+                role="tablist"
+                aria-label="Harnesses"
+                aria-orientation="vertical"
+                ref={railRef}
+                className="relative flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto overscroll-contain px-2 py-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+              >
+                {rails.map((provider, index) => (
+                  <Tooltip key={provider.id}>
+                    <TooltipTrigger asChild>
+                      <button
+                        type="button"
+                        role="tab"
+                        id={`${id}-tab-${provider.id}`}
+                        aria-label={provider.name}
+                        aria-selected={provider.id === activeProvider.id}
+                        aria-controls={`${id}-provider-panel`}
+                        tabIndex={provider.id === activeProvider.id ? 0 : -1}
+                        ref={(node) => {
+                          providerRefs.current[index] = node;
+                        }}
+                        onClick={() => {
+                          setQuery("");
+                          setActiveProviderId(provider.id);
+                          onProviderChange?.(provider.id);
+                        }}
+                        onKeyDown={(event) => onRailKeyDown(event, index)}
+                        className={cn(
+                          "inline-flex size-10 shrink-0 touch-manipulation items-center justify-center rounded-2xl text-muted-foreground transition-colors duration-150 hover:bg-popover/70 hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none @min-[380px]/modelpicker:size-12",
+                          provider.id === activeProvider.id &&
+                            !searching &&
+                            "bg-popover text-foreground",
+                        )}
+                      >
+                        <ProviderGlyph provider={provider} className="size-5" />
+                      </button>
+                    </TooltipTrigger>
+                    <TooltipContent side="left" translate="no">
+                      {provider.name}
+                    </TooltipContent>
+                  </Tooltip>
+                ))}
+              </div>
+              {railFooter && <div className="shrink-0 px-2 pt-1 pb-2">{railFooter}</div>}
             </div>
           </div>
           <div className="flex min-w-0 flex-1 flex-col">

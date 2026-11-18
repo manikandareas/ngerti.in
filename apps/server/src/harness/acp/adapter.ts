@@ -13,6 +13,7 @@ import type {
 } from "../client";
 import { codexModels } from "../codex/models";
 import { HarnessError, type Settings, unknownCapabilities } from "../contracts";
+import { localProviderKey } from "../local-profile";
 import { credentialEnvironment } from "../providers";
 import { SessionTools } from "../session-tools";
 import { AcpConnection } from "./connection";
@@ -49,7 +50,10 @@ export class AcpAdapter implements HarnessAdapter {
 /** Small compatibility seam for the application's lifecycle. No second ACP execution loop. */
 export class AcpClient implements HarnessClient {
   get closeAfterRun() {
-    return this.#peer?.session.closeAfterRun ?? true;
+    return (
+      this.context.connection?.authentication === "local_config" ||
+      (this.#peer?.session.closeAfterRun ?? true)
+    );
   }
   #peer: Peer | null = null;
   #opening: Promise<Peer> | null = null;
@@ -231,7 +235,8 @@ export class AcpClient implements HarnessClient {
     let plan: string | null = null;
     let identity: string | null = null;
     const key =
-      selected.authentication === "api_key"
+      selected.authentication === "api_key" ||
+      (this.harness === "codex" && selected.authentication === "local_config")
         ? this.context.env[credentialEnvironment(this.harness, selected.provider_id)]
         : undefined;
     if (this.harness === "codex") {
@@ -251,12 +256,12 @@ export class AcpClient implements HarnessClient {
         );
       if (
         response.account &&
-        (response.account.type === "apiKey") !== (selected.authentication === "api_key")
+        (response.account.type === "apiKey") !== (selected.billing_source === "api_key")
       )
         throw new HarnessError("BILLING_MISMATCH");
       login = response.account ? "authenticated" : "required";
       identity = response.account
-        ? selected.authentication === "api_key"
+        ? selected.billing_source === "api_key"
           ? (key ?? null)
           : this.#externalAccount
         : null;
@@ -277,12 +282,20 @@ export class AcpClient implements HarnessClient {
         login = "authenticated";
         identity = key;
       } else login = response.state === "unauthenticated" ? "required" : "unknown";
+    } else if (
+      selected.authentication === "local_config" &&
+      selected.billing_source === "api_key"
+    ) {
+      if (this.context.localProvider?.harness !== this.harness)
+        throw new HarnessError("BILLING_MISMATCH");
+      login = "authenticated";
+      identity = localProviderKey(this.context.localProvider);
     } else if (selected.authentication === "harness_config") {
       if (this.harness !== "pi" || !this.context.nativeConfiguration)
         throw new HarnessError("BILLING_MISMATCH");
       login = "authenticated";
       identity = this.context.nativeConfiguration.apiKey;
-    } else if (selected.authentication === "none") {
+    } else if (selected.billing_source === "free") {
       if (
         this.harness !== "opencode" ||
         selected.provider_id !== "opencode" ||
@@ -299,7 +312,7 @@ export class AcpClient implements HarnessClient {
       login = "authenticated";
       identity = key;
     } else login = "required";
-    if (login === "authenticated" && !identity && selected.authentication !== "none")
+    if (login === "authenticated" && !identity && selected.billing_source !== "free")
       throw new HarnessError("AUTH_REJECTED");
     const capabilities = session.initialization.agentCapabilities;
     return {
@@ -357,7 +370,7 @@ export class AcpClient implements HarnessClient {
           (model) =>
             !["opencode", "pi"].includes(this.harness) || model.id.startsWith(`${provider}/`),
         );
-      if (this.context.connection?.authentication === "none")
+      if (this.context.connection?.billing_source === "free")
         this.#catalog = this.#catalog.filter((model) => model.id.endsWith("-free"));
     }
     return this.#catalog;

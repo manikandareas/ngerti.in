@@ -2,7 +2,6 @@ import { useMemo } from "react";
 import { HarnessIcon } from "@/components/harness-icon";
 import { ModelPicker } from "@/components/ui/model-picker";
 import { connectionReady, harnessModelCatalog, harnessModelKey } from "@/lib/harness-models";
-import type { HarnessId } from "@/lib/harnesses";
 import type { Connection } from "@/types/workspace";
 import { type OnboardingHarness, onboardingHarnessName } from "./onboarding-harnesses";
 import "./onboarding-model-picker.css";
@@ -10,17 +9,19 @@ import "./onboarding-model-picker.css";
 export function OnboardingModelPicker({
   harness,
   connection,
+  connections,
 }: {
   harness: OnboardingHarness;
   connection?: Connection;
+  connections: readonly Connection[];
 }) {
   const providers = useMemo(
     () =>
-      harnessModelCatalog(connection ? [connection] : []).providers.map((provider) => ({
+      harnessModelCatalog(connections).providers.map((provider) => ({
         ...provider,
-        icon: <HarnessIcon id={provider.id as HarnessId} size={20} className="rounded-sm" />,
+        icon: <HarnessIcon id={provider.id} size={20} className="rounded-sm" />,
       })),
-    [connection],
+    [connections],
   );
   const first =
     connectionReady(connection) && connection?.harness === harness

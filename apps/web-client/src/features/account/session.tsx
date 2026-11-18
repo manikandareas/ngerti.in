@@ -13,6 +13,7 @@ import { useFeedbackToast } from "@/hooks/use-feedback-toast";
 import { PreferencesProvider } from "@/hooks/use-preferences";
 import { ApiError, command, request } from "@/lib/api-client";
 import { clearPrivateStorage, clientScope, setClientScope } from "@/lib/client-scope";
+import { refreshLocalModels } from "@/lib/local-models";
 import type { Connection } from "@/types/workspace";
 import { createOrganization as createOrganizationRecord } from "./account-forms";
 import { AccountScreen } from "./account-screen";
@@ -254,6 +255,23 @@ export default function WorkspaceEntry({ children }: { children: ReactNode }) {
       document.removeEventListener("visibilitychange", check);
     };
   }, [state.session, state.error, refresh]);
+  const organizationId = state.organization?.id;
+  const sessionId = state.session?.session_id;
+  useEffect(() => {
+    if (!organizationId || !sessionId) return;
+    const scope = clientScope();
+    if (!scope) return;
+    const controller = new AbortController();
+    const discover = () => {
+      void refreshLocalModels({ signal: controller.signal, scope }).catch(() => {});
+    };
+    discover();
+    window.addEventListener("online", discover);
+    return () => {
+      controller.abort();
+      window.removeEventListener("online", discover);
+    };
+  }, [organizationId, sessionId]);
   useFeedbackToast(state.error, { retry: () => void refresh() });
   const account: Account = {
     ...state,

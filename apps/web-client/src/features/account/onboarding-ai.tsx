@@ -40,7 +40,13 @@ export function OnboardingAI() {
   return (
     <OnboardingLayout
       step={2}
-      preview={<OnboardingModelPicker harness={selected} connection={connection} />}
+      preview={
+        <OnboardingModelPicker
+          harness={selected}
+          connection={connection}
+          connections={providers.available}
+        />
+      }
     >
       <h1>
         Connect AI.{" "}

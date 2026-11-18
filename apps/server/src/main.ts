@@ -11,6 +11,8 @@ import { HarnessBroker } from "./harness/broker";
 import { CodexAccounts } from "./harness/codex/accounts";
 import { CredentialContexts } from "./harness/context";
 import { CredentialStorage } from "./harness/credential-storage";
+import { LocalAccounts } from "./harness/local-accounts";
+import { LocalProfiles } from "./harness/local-profile";
 import { HarnessLoginReadiness } from "./harness/login-readiness";
 import { MuseAccounts } from "./harness/muse/accounts";
 import { MuseAdapter } from "./harness/muse/adapter";
@@ -60,10 +62,16 @@ export async function startApplication(config: ApplicationConfig = developmentCo
         }),
       );
     });
+    const localProfiles =
+      config.authentication.allowInsecureLoopback &&
+      config.authentication.email.delivery === "local"
+        ? new LocalProfiles(config.owner_id)
+        : undefined;
     const credentials = new CredentialContexts(
       config.stateDir,
       undefined,
       config.providerMasterKeyFile,
+      localProfiles,
     );
     await configureNativeStorage(
       config.stateDir,
@@ -84,21 +92,16 @@ export async function startApplication(config: ApplicationConfig = developmentCo
       ),
       pi: new AcpAdapter("pi", () => `http://127.0.0.1:${app.server?.port}/v1/harness/tools`),
     };
-    const broker = new HarnessBroker(
-      lifecycle,
-      credentials,
-      tools,
-      {
-        codex: new AcpAdapter(
-          "codex",
-          () => `http://127.0.0.1:${app.server?.port}/v1/harness/tools`,
-          { native_codex: config.nativeCodexExecutable },
-        ),
-        muse: new MuseAdapter(() => `http://127.0.0.1:${app.server?.port}/v1/harness/tools`),
-        ...acpAdapters,
-      },
-      runtime.detect,
-    );
+    const adapters = {
+      codex: new AcpAdapter(
+        "codex",
+        () => `http://127.0.0.1:${app.server?.port}/v1/harness/tools`,
+        { native_codex: config.nativeCodexExecutable },
+      ),
+      muse: new MuseAdapter(() => `http://127.0.0.1:${app.server?.port}/v1/harness/tools`),
+      ...acpAdapters,
+    };
+    const broker = new HarnessBroker(lifecycle, credentials, tools, adapters, runtime.detect);
     cleanup.push(() => broker.close());
     const codexAccounts = new CodexAccounts(broker.connections, credentials, async () =>
       runtime.nativeCodex(),
@@ -106,16 +109,22 @@ export async function startApplication(config: ApplicationConfig = developmentCo
     const museAccounts = new MuseAccounts(broker.connections, credentials, async () =>
       runtime.detect("muse"),
     );
-    const accounts = new HarnessAccounts(broker.connections, {
-      codex: codexAccounts,
-      muse: museAccounts,
-      ...Object.fromEntries(
-        Object.entries(acpAdapters).map(([harness, adapter]) => [
-          harness,
-          new AcpAccounts(broker.connections, credentials, adapter, runtime.detect),
-        ]),
-      ),
-    });
+    const accounts = new HarnessAccounts(
+      broker.connections,
+      {
+        codex: codexAccounts,
+        muse: museAccounts,
+        ...Object.fromEntries(
+          Object.entries(acpAdapters).map(([harness, adapter]) => [
+            harness,
+            new AcpAccounts(broker.connections, credentials, adapter, runtime.detect),
+          ]),
+        ),
+      },
+      localProfiles
+        ? new AcpAccounts(broker.connections, credentials, adapters.codex, runtime.detect)
+        : undefined,
+    );
     cleanup.push(() => accounts.close());
     const background = new Background(lifecycle, broker.executors(), (code) =>
       console.error(JSON.stringify({ event: "background.error", code })),
@@ -127,6 +136,9 @@ export async function startApplication(config: ApplicationConfig = developmentCo
       tools,
       broker,
       accounts,
+      localAccounts: localProfiles
+        ? new LocalAccounts(localProfiles, broker.connections, accounts, runtime.detect)
+        : undefined,
       credentialStorage: new CredentialStorage(config.stateDir, config.providerMasterKeyFile),
       detect: runtime.detect,
       updater,

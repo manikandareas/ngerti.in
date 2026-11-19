@@ -1,0 +1,2 @@
+{"config": {"label": "LANTERN-VERIFY-75", "schema_version": 1}, "passed": false, "issue": "The release label requires schema_version 2 in config.json."}
+{"config": {"label": "LANTERN-VERIFY-75", "schema_version": 2}, "passed": true, "issue": null}

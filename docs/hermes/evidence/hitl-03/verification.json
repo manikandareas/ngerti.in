@@ -1,0 +1,57 @@
+{
+  "date": "2026-11-19",
+  "surface": "Authenticated Ngertiin Web / Chromium",
+  "harness": "Claude ACP protocol subprocess fixture",
+  "provider": "fixture / API key selection",
+  "thread": "35a26616-21ef-4916-be88-f28aadf9f3eb",
+  "journal": {
+    "fresh": {
+      "cancellation": "none",
+      "records": [
+        {
+          "decision": "allow",
+          "request_id": "21c0d65d-8c85-48d7-926a-2aefb0a8286d",
+          "submission_state": "submitted"
+        }
+      ],
+      "run": "2ac2161a-3822-403d-802f-470ed2f1bfd1",
+      "status": "succeeded"
+    },
+    "old": {
+      "cancellation": "confirmed",
+      "records": [
+        {
+          "decision": null,
+          "request_id": "f1906021-e939-4b89-a216-541cc2db2224",
+          "submission_state": null
+        }
+      ],
+      "run": "267fc5f6-be43-4bf2-9952-e44b8ca5555f",
+      "status": "cancelled"
+    }
+  },
+  "stale_submissions": {
+    "newTarget": {
+      "code": "NATIVE_REJECTED",
+      "status": 409
+    },
+    "new_pending": [
+      {
+        "observed_state": "pending",
+        "request_id": "21c0d65d-8c85-48d7-926a-2aefb0a8286d",
+        "submission": null
+      }
+    ],
+    "old": {
+      "code": "CONFLICT",
+      "status": 409
+    }
+  },
+  "physical_effects": {
+    "expired_files": 0,
+    "approved_current_files": 1,
+    "current_bytes": 17,
+    "current_sha256": "5852b7a2ba519f1f3d1173670b6f699795fdf565d7af11f661873b449d422887"
+  },
+  "current_answer": "Wrote SPRUCE-ACTIVE-913.txt once."
+}

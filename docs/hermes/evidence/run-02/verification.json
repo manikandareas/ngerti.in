@@ -1,0 +1,81 @@
+{
+  "date": "2026-11-19",
+  "surface": "Ngertiin Web (Chromium)",
+  "harness": "Pi ACP",
+  "provider": {
+    "mode": "fixture",
+    "model": "lifecycle-fixture/conversation-lifecycle",
+    "billing": "api_key"
+  },
+  "thread": "2ced9458-764a-4d7e-818f-ac215e3ca3bb",
+  "states_at_reload": [
+    "running",
+    "queued"
+  ],
+  "queued_input_unchanged": "789cbbfc-7839-4106-83ed-7e9e0a6f2e61",
+  "first_run": {
+    "id": "1c31860e-1127-49d3-bb07-8042c6a43108",
+    "settled_at": "2026-11-19T01:58:16.759Z"
+  },
+  "second_run": {
+    "id": "2610c727-17a0-48eb-8f26-2d0e49ba5852",
+    "dispatched_at": "2026-11-19T01:58:29.275Z",
+    "settled_at": "2026-11-19T01:58:33.127Z"
+  },
+  "provider_events": [
+    {
+      "event": "provider_started",
+      "marker": "QUEUE-F136CD7E",
+      "step": "first",
+      "at": "2026-11-19T01:56:51.708Z"
+    },
+    {
+      "event": "provider_finished",
+      "marker": "QUEUE-F136CD7E",
+      "step": "first",
+      "at": "2026-11-19T01:58:12.516Z"
+    },
+    {
+      "event": "provider_started",
+      "marker": "QUEUE-F136CD7E",
+      "step": "second",
+      "at": "2026-11-19T01:58:30.933Z"
+    },
+    {
+      "event": "provider_finished",
+      "marker": "QUEUE-F136CD7E",
+      "step": "second",
+      "at": "2026-11-19T01:58:30.935Z"
+    }
+  ],
+  "messages": [
+    {
+      "artifact_ids": [],
+      "author": "user",
+      "id": "542450d7-12d2-45f2-b81e-942e433d3933",
+      "run_id": "1c31860e-1127-49d3-bb07-8042c6a43108",
+      "text": "Queue check first QUEUE-F136CD7E"
+    },
+    {
+      "artifact_ids": [],
+      "author": "agent",
+      "id": "8d6aae2b-3482-4fb2-9b15-34dbef57a0f3",
+      "run_id": "1c31860e-1127-49d3-bb07-8042c6a43108",
+      "text": "I started the first request. First request complete. Receipt QUEUE-F136CD7E-FIRST."
+    },
+    {
+      "artifact_ids": [],
+      "author": "user",
+      "id": "789cbbfc-7839-4106-83ed-7e9e0a6f2e61",
+      "run_id": "2610c727-17a0-48eb-8f26-2d0e49ba5852",
+      "text": "Queue check second QUEUE-F136CD7E"
+    },
+    {
+      "artifact_ids": [],
+      "author": "agent",
+      "id": "151a0b7f-6aad-4460-a65c-024e53e6808d",
+      "run_id": "2610c727-17a0-48eb-8f26-2d0e49ba5852",
+      "text": "Second request complete. Receipt QUEUE-F136CD7E-SECOND."
+    }
+  ]
+}

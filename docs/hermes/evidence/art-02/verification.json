@@ -1,0 +1,53 @@
+{
+  "date": "2026-11-19",
+  "surface": "Ngertiin Web (Chromium), two authenticated browser sessions",
+  "harness": "Pi ACP",
+  "provider": {
+    "mode": "live",
+    "model": "sumopod/deepseek-v4-flash",
+    "billing": "api_key"
+  },
+  "previous_link": {
+    "thread": "2fa13f64-6b07-4888-9da0-cb45a3023a08",
+    "artifact_id": "e2b8c4f1-59a7-4d63-b0c8-3a47f9d1c265",
+    "persisted_text": "Published: [juniper-release-20261119.txt](ngertiin://artifact/e2b8c4f1-59a7-4d63-b0c8-3a47f9d1c265)\n\nThree lines as specified, with a single trailing newline (79 bytes, UTF-8 plain text).",
+    "observable_after_fix": "The original link opened the corresponding file after reload."
+  },
+  "publication_receipt": {
+    "id": "b7c2e4d8-1a35-4f60-8c92-6d4e0f7a2b85",
+    "name": "willow-release-record-20261119.txt",
+    "reference": "[willow-release-record-20261119.txt](ngertiin://file/b7c2e4d8-1a35-4f60-8c92-6d4e0f7a2b85)",
+    "thread_id": "db9586ca-9cad-472d-9615-9dc1ba05126d",
+    "workspace_id": "b02068c1-bf7b-4397-8b27-b8cf9dc04665",
+    "run_id": "b275ed86-1f28-4e15-8440-e9ef66f73c15",
+    "agent_id": "a8a1aeaa-6387-4351-999c-2c37df2e29f3",
+    "actor_id": "29066a95-2b82-4c8b-b498-3217693003c7",
+    "organization_id": "f82a07c3-7161-417b-a258-09a2e1c7d0ef",
+    "sha256": "da18699eac6b06450480e24e396dd4a159c4a57ba23ddff243e3dcebcfadba45",
+    "size_bytes": 49,
+    "materialization": "ready",
+    "origin": "native_output"
+  },
+  "answer": "The file is ready and published:\n\n[willow-release-record-20261119.txt](ngertiin://file/b7c2e4d8-1a35-4f60-8c92-6d4e0f7a2b85)\n\nIt contains the single line, ending at its final character:\n\n```\nWillow release approved, record WILLOW-D88ACA5BBD\n```",
+  "owner_download": {
+    "path": "willow-release-record-20261119.txt",
+    "sha256": "da18699eac6b06450480e24e396dd4a159c4a57ba23ddff243e3dcebcfadba45",
+    "bytes": 49,
+    "matches_requested_text": true,
+    "response": {
+      "bytes": 49,
+      "disposition": "attachment; filename*=UTF-8''willow-release-record-20261119.txt",
+      "sha256": "da18699eac6b06450480e24e396dd4a159c4a57ba23ddff243e3dcebcfadba45",
+      "status": 200
+    }
+  },
+  "other_account_download": {
+    "same_organization": true,
+    "same_artifact_url": true,
+    "response": {
+      "code": "NOT_FOUND",
+      "contentDisposition": null,
+      "status": 404
+    }
+  }
+}

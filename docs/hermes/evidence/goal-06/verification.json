@@ -1,0 +1,457 @@
+{
+  "date": "2026-11-19",
+  "surface": "Ngertiin Web (Chromium)",
+  "harness": "Pi ACP",
+  "model_provider": "live",
+  "late_result_provider": "isolated HTTP fixture",
+  "pause_resume": {
+    "scheduled": {
+      "thread": "6109d789-467f-4291-94ac-79c25e14cbba",
+      "goal": {
+        "id": "7c4a1c62-3b0e-4b8f-9f1d-2a6a9f0c1e11",
+        "state": "active",
+        "work_state": "ready",
+        "generation": 1,
+        "revision": 4,
+        "updated_at": "2026-11-18T18:16:21.059Z",
+        "evidence_artifact_ids": [
+          "c1d7a9e4-1f63-4b2d-8a0e-93b6c4d5e720"
+        ],
+        "checkpoint_evidence": null
+      },
+      "routines": [
+        {
+          "id": "b7d2e5a3-9c48-4f16-8a27-6e0d3c95b142",
+          "state": "active",
+          "next_run_at": "2026-11-18T18:16:59Z",
+          "goal_id": "7c4a1c62-3b0e-4b8f-9f1d-2a6a9f0c1e11"
+        }
+      ],
+      "runs": [
+        {
+          "id": "1d541483-b180-43ba-9301-e9ddf4efd07a",
+          "status": "succeeded",
+          "goal_id": null,
+          "goal_generation": null,
+          "routine_id": null,
+          "product_tools": [
+            "ngertiin.get_workspace",
+            "ngertiin.read_run_context",
+            "ngertiin.capture_goal",
+            "ngertiin.create_file",
+            "ngertiin.publish_artifact",
+            "ngertiin.report_goal"
+          ],
+          "model": "sumopod/deepseek-v4-flash",
+          "billing": "api_key"
+        },
+        {
+          "id": "2b71a2f4-fa02-4d24-8547-0c63d64f5972",
+          "status": "succeeded",
+          "goal_id": null,
+          "goal_generation": null,
+          "routine_id": null,
+          "product_tools": [
+            "ngertiin.write_routine",
+            "ngertiin.list_goals",
+            "ngertiin.report_goal"
+          ],
+          "model": "sumopod/deepseek-v4-flash",
+          "billing": "api_key"
+        }
+      ],
+      "artifacts": [
+        {
+          "id": "c1d7a9e4-1f63-4b2d-8a0e-93b6c4d5e720",
+          "name": "juniper-pause-checkpoint.txt",
+          "sha256": "74dac60e40246fe5bfa1d1afe30a4fda8733d891a25dd0db46ff21df7e2796c5",
+          "goal_generations": {},
+          "run_id": "1d541483-b180-43ba-9301-e9ddf4efd07a"
+        }
+      ]
+    },
+    "checked_after_due": "2026-11-18T18:17:19Z",
+    "paused": {
+      "thread": "6109d789-467f-4291-94ac-79c25e14cbba",
+      "goal": {
+        "id": "7c4a1c62-3b0e-4b8f-9f1d-2a6a9f0c1e11",
+        "state": "paused",
+        "work_state": "ready",
+        "generation": 2,
+        "revision": 5,
+        "updated_at": "2026-11-18T18:16:48.730Z",
+        "evidence_artifact_ids": [
+          "c1d7a9e4-1f63-4b2d-8a0e-93b6c4d5e720"
+        ],
+        "checkpoint_evidence": {
+          "artifact_ids": [
+            "c1d7a9e4-1f63-4b2d-8a0e-93b6c4d5e720"
+          ],
+          "assignment_revision": 1
+        }
+      },
+      "routines": [
+        {
+          "id": "b7d2e5a3-9c48-4f16-8a27-6e0d3c95b142",
+          "state": "paused",
+          "next_run_at": "2026-11-18T18:16:59Z",
+          "goal_id": "7c4a1c62-3b0e-4b8f-9f1d-2a6a9f0c1e11"
+        }
+      ],
+      "runs": [
+        {
+          "id": "1d541483-b180-43ba-9301-e9ddf4efd07a",
+          "status": "succeeded",
+          "goal_id": null,
+          "goal_generation": null,
+          "routine_id": null,
+          "product_tools": [
+            "ngertiin.get_workspace",
+            "ngertiin.read_run_context",
+            "ngertiin.capture_goal",
+            "ngertiin.create_file",
+            "ngertiin.publish_artifact",
+            "ngertiin.report_goal"
+          ],
+          "model": "sumopod/deepseek-v4-flash",
+          "billing": "api_key"
+        },
+        {
+          "id": "2b71a2f4-fa02-4d24-8547-0c63d64f5972",
+          "status": "succeeded",
+          "goal_id": null,
+          "goal_generation": null,
+          "routine_id": null,
+          "product_tools": [
+            "ngertiin.write_routine",
+            "ngertiin.list_goals",
+            "ngertiin.report_goal"
+          ],
+          "model": "sumopod/deepseek-v4-flash",
+          "billing": "api_key"
+        }
+      ],
+      "artifacts": [
+        {
+          "id": "c1d7a9e4-1f63-4b2d-8a0e-93b6c4d5e720",
+          "name": "juniper-pause-checkpoint.txt",
+          "sha256": "74dac60e40246fe5bfa1d1afe30a4fda8733d891a25dd0db46ff21df7e2796c5",
+          "goal_generations": {},
+          "run_id": "1d541483-b180-43ba-9301-e9ddf4efd07a"
+        }
+      ]
+    },
+    "resumed": {
+      "thread": "6109d789-467f-4291-94ac-79c25e14cbba",
+      "goal": {
+        "id": "7c4a1c62-3b0e-4b8f-9f1d-2a6a9f0c1e11",
+        "state": "active",
+        "work_state": "ready",
+        "generation": 3,
+        "revision": 6,
+        "updated_at": "2026-11-18T18:17:20.120Z",
+        "evidence_artifact_ids": [
+          "c1d7a9e4-1f63-4b2d-8a0e-93b6c4d5e720"
+        ],
+        "checkpoint_evidence": {
+          "artifact_ids": [
+            "c1d7a9e4-1f63-4b2d-8a0e-93b6c4d5e720"
+          ],
+          "assignment_revision": 1
+        }
+      },
+      "routines": [
+        {
+          "id": "b7d2e5a3-9c48-4f16-8a27-6e0d3c95b142",
+          "state": "active",
+          "next_run_at": "2026-11-18T18:16:59Z",
+          "goal_id": "7c4a1c62-3b0e-4b8f-9f1d-2a6a9f0c1e11"
+        }
+      ],
+      "runs": [
+        {
+          "id": "1d541483-b180-43ba-9301-e9ddf4efd07a",
+          "status": "succeeded",
+          "goal_id": null,
+          "goal_generation": null,
+          "routine_id": null,
+          "product_tools": [
+            "ngertiin.get_workspace",
+            "ngertiin.read_run_context",
+            "ngertiin.capture_goal",
+            "ngertiin.create_file",
+            "ngertiin.publish_artifact",
+            "ngertiin.report_goal"
+          ],
+          "model": "sumopod/deepseek-v4-flash",
+          "billing": "api_key"
+        },
+        {
+          "id": "2b71a2f4-fa02-4d24-8547-0c63d64f5972",
+          "status": "succeeded",
+          "goal_id": null,
+          "goal_generation": null,
+          "routine_id": null,
+          "product_tools": [
+            "ngertiin.write_routine",
+            "ngertiin.list_goals",
+            "ngertiin.report_goal"
+          ],
+          "model": "sumopod/deepseek-v4-flash",
+          "billing": "api_key"
+        }
+      ],
+      "artifacts": [
+        {
+          "id": "c1d7a9e4-1f63-4b2d-8a0e-93b6c4d5e720",
+          "name": "juniper-pause-checkpoint.txt",
+          "sha256": "74dac60e40246fe5bfa1d1afe30a4fda8733d891a25dd0db46ff21df7e2796c5",
+          "goal_generations": {},
+          "run_id": "1d541483-b180-43ba-9301-e9ddf4efd07a"
+        }
+      ]
+    },
+    "settled": {
+      "thread": "6109d789-467f-4291-94ac-79c25e14cbba",
+      "goal": {
+        "id": "7c4a1c62-3b0e-4b8f-9f1d-2a6a9f0c1e11",
+        "state": "completed",
+        "work_state": "ready",
+        "generation": 4,
+        "revision": 9,
+        "updated_at": "2026-11-18T18:18:00.657Z",
+        "evidence_artifact_ids": [
+          "c1d7a9e4-1f63-4b2d-8a0e-93b6c4d5e720",
+          "2c95f4b8-7a13-4e60-8d5b-9f6c1a27e034"
+        ],
+        "checkpoint_evidence": {
+          "artifact_ids": [
+            "c1d7a9e4-1f63-4b2d-8a0e-93b6c4d5e720"
+          ],
+          "assignment_revision": 1
+        }
+      },
+      "routines": [
+        {
+          "id": "b7d2e5a3-9c48-4f16-8a27-6e0d3c95b142",
+          "state": "stopped",
+          "next_run_at": null,
+          "goal_id": "7c4a1c62-3b0e-4b8f-9f1d-2a6a9f0c1e11"
+        }
+      ],
+      "runs": [
+        {
+          "id": "1d541483-b180-43ba-9301-e9ddf4efd07a",
+          "status": "succeeded",
+          "goal_id": null,
+          "goal_generation": null,
+          "routine_id": null,
+          "product_tools": [
+            "ngertiin.get_workspace",
+            "ngertiin.read_run_context",
+            "ngertiin.capture_goal",
+            "ngertiin.create_file",
+            "ngertiin.publish_artifact",
+            "ngertiin.report_goal"
+          ],
+          "model": "sumopod/deepseek-v4-flash",
+          "billing": "api_key"
+        },
+        {
+          "id": "2b71a2f4-fa02-4d24-8547-0c63d64f5972",
+          "status": "succeeded",
+          "goal_id": null,
+          "goal_generation": null,
+          "routine_id": null,
+          "product_tools": [
+            "ngertiin.write_routine",
+            "ngertiin.list_goals",
+            "ngertiin.report_goal"
+          ],
+          "model": "sumopod/deepseek-v4-flash",
+          "billing": "api_key"
+        },
+        {
+          "id": "1496a53e-206c-438f-b42e-3addda38ca2a",
+          "status": "succeeded",
+          "goal_id": "7c4a1c62-3b0e-4b8f-9f1d-2a6a9f0c1e11",
+          "goal_generation": 3,
+          "routine_id": "b7d2e5a3-9c48-4f16-8a27-6e0d3c95b142",
+          "product_tools": [
+            "ngertiin.read_file",
+            "ngertiin.create_file",
+            "ngertiin.publish_artifact",
+            "ngertiin.report_goal"
+          ],
+          "model": "sumopod/deepseek-v4-flash",
+          "billing": "api_key"
+        }
+      ],
+      "artifacts": [
+        {
+          "id": "c1d7a9e4-1f63-4b2d-8a0e-93b6c4d5e720",
+          "name": "juniper-pause-checkpoint.txt",
+          "sha256": "74dac60e40246fe5bfa1d1afe30a4fda8733d891a25dd0db46ff21df7e2796c5",
+          "goal_generations": {},
+          "run_id": "1d541483-b180-43ba-9301-e9ddf4efd07a"
+        },
+        {
+          "id": "2c95f4b8-7a13-4e60-8d5b-9f6c1a27e034",
+          "name": "juniper-pause-result.txt",
+          "sha256": "651249e9779f868c6195664102ad3dfaff7a93abf960fdf735647d12d82c3335",
+          "goal_generations": {
+            "7c4a1c62-3b0e-4b8f-9f1d-2a6a9f0c1e11": 3
+          },
+          "run_id": "1496a53e-206c-438f-b42e-3addda38ca2a"
+        }
+      ]
+    },
+    "downloaded_sha256": [
+      "74dac60e40246fe5bfa1d1afe30a4fda8733d891a25dd0db46ff21df7e2796c5",
+      "651249e9779f868c6195664102ad3dfaff7a93abf960fdf735647d12d82c3335"
+    ]
+  },
+  "stop_run": {
+    "thread": "ac88eb98-c846-4604-b51e-5ea92d6c90c6",
+    "goal": {
+      "id": "e3a7f210-6b52-4d19-9c8e-1f47b05ad9c6",
+      "state": "active",
+      "work_state": "blocked",
+      "generation": 1,
+      "revision": 2,
+      "updated_at": "2026-11-18T18:07:16.206Z",
+      "evidence_artifact_ids": [],
+      "checkpoint_evidence": null
+    },
+    "routines": [],
+    "runs": [
+      {
+        "id": "13a701f3-2e19-437f-b59f-37316524bd41",
+        "status": "cancelled",
+        "goal_id": null,
+        "goal_generation": null,
+        "routine_id": null,
+        "product_tools": [
+          "ngertiin.get_workspace",
+          "ngertiin.search_history",
+          "ngertiin.list_files",
+          "ngertiin.capture_goal",
+          "ngertiin.create_file"
+        ],
+        "model": "sumopod/deepseek-v4-flash",
+        "billing": "api_key"
+      }
+    ],
+    "artifacts": []
+  },
+  "stop_goal": {
+    "before": {
+      "thread": "254d0146-b0ae-44a4-bd46-bd4e091d69d4",
+      "goal": {
+        "id": "3f7c1d28-9a54-4b1e-8c76-2d5e9f0a1b3c",
+        "state": "active",
+        "work_state": "ready",
+        "generation": 1,
+        "revision": 1,
+        "updated_at": "2026-11-18T18:20:21.082Z",
+        "evidence_artifact_ids": [],
+        "checkpoint_evidence": null
+      },
+      "routines": [],
+      "runs": [
+        {
+          "id": "5d8c815d-5221-4efb-abc4-c45bbcff7d91",
+          "status": "running",
+          "goal_id": null,
+          "goal_generation": null,
+          "routine_id": null,
+          "product_tools": [
+            "ngertiin.capture_goal",
+            "ngertiin.get_workspace",
+            "ngertiin.list_files",
+            "ngertiin.describe_tools",
+            "ngertiin.machine_status",
+            "ngertiin.machine_exec"
+          ],
+          "model": "sumopod/deepseek-v4-flash",
+          "billing": "api_key"
+        }
+      ],
+      "artifacts": []
+    },
+    "confirmed_stop": {
+      "thread": "254d0146-b0ae-44a4-bd46-bd4e091d69d4",
+      "goal": {
+        "id": "3f7c1d28-9a54-4b1e-8c76-2d5e9f0a1b3c",
+        "state": "stopped",
+        "work_state": "ready",
+        "generation": 2,
+        "revision": 2,
+        "updated_at": "2026-11-18T18:20:56.514Z",
+        "evidence_artifact_ids": [],
+        "checkpoint_evidence": null
+      },
+      "routines": [],
+      "runs": [
+        {
+          "id": "5d8c815d-5221-4efb-abc4-c45bbcff7d91",
+          "status": "cancel_requested",
+          "goal_id": null,
+          "goal_generation": null,
+          "routine_id": null,
+          "product_tools": [
+            "ngertiin.capture_goal",
+            "ngertiin.get_workspace",
+            "ngertiin.list_files",
+            "ngertiin.describe_tools",
+            "ngertiin.machine_status",
+            "ngertiin.machine_exec"
+          ],
+          "model": "sumopod/deepseek-v4-flash",
+          "billing": "api_key"
+        }
+      ],
+      "artifacts": []
+    },
+    "fixture_response": {
+      "started_at": "2026-11-18T18:20:54.793Z",
+      "released_at": "2026-11-18T18:20:57.283Z",
+      "response_created_at": "2026-11-18T18:20:57.283Z"
+    },
+    "after_response_and_reload": {
+      "thread": "254d0146-b0ae-44a4-bd46-bd4e091d69d4",
+      "goal": {
+        "id": "3f7c1d28-9a54-4b1e-8c76-2d5e9f0a1b3c",
+        "state": "stopped",
+        "work_state": "ready",
+        "generation": 2,
+        "revision": 2,
+        "updated_at": "2026-11-18T18:20:56.514Z",
+        "evidence_artifact_ids": [],
+        "checkpoint_evidence": null
+      },
+      "routines": [],
+      "runs": [
+        {
+          "id": "5d8c815d-5221-4efb-abc4-c45bbcff7d91",
+          "status": "cancelled",
+          "goal_id": null,
+          "goal_generation": null,
+          "routine_id": null,
+          "product_tools": [
+            "ngertiin.capture_goal",
+            "ngertiin.get_workspace",
+            "ngertiin.list_files",
+            "ngertiin.describe_tools",
+            "ngertiin.machine_status",
+            "ngertiin.machine_exec"
+          ],
+          "model": "sumopod/deepseek-v4-flash",
+          "billing": "api_key"
+        }
+      ],
+      "artifacts": []
+    },
+    "late_marker_in_messages": 0
+  }
+}

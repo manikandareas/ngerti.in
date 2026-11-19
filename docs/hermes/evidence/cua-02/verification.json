@@ -1,0 +1,124 @@
+{
+  "date": "2026-11-19",
+  "surface": "Ngertiin Web (Chromium) and live Computer viewer",
+  "harness": "Pi ACP",
+  "provider": {
+    "mode": "fixture",
+    "model": "vision-fixture/computer-vision",
+    "billing": "api_key",
+    "pixel_reader": "Tesseract on the actual provider input; no fixture state or page source consulted."
+  },
+  "catalog": {
+    "computer-vision": [
+      "text",
+      "image"
+    ],
+    "computer-text": [
+      "text"
+    ]
+  },
+  "thread": "513c3a11-be41-429d-9309-20885c772a64",
+  "run": "ef1cdfdb-2600-434a-b58c-63f545a98fcf",
+  "background_attempt": {
+    "run": "5db9e3d4-cb5a-4b1e-849c-8788381bdbb2",
+    "driver_receipt": {
+      "at": "2026-11-18T23:50:18.404Z",
+      "id": "408bf29d-f9a9-4c06-9a9f-37bc3b608391",
+      "run": "5db9e3d4-cb5a-4b1e-849c-8788381bdbb2",
+      "name": "click",
+      "error": "background_unavailable",
+      "nativeError": true,
+      "receiptState": "succeeded"
+    },
+    "effects": 0
+  },
+  "preliminary_live_attempt": {
+    "run": "aeb5926a-6e86-43bd-81a3-2aee24d233a0",
+    "model": "sumopod/deepseek-v4-flash",
+    "billing": "api_key",
+    "outcome": "cancelled",
+    "limitation": "The configured model defaulted to text-only. No visual capability or result claimed."
+  },
+  "structured_observation": {
+    "at": "2026-11-18T23:51:31.797Z",
+    "id": "5c8e5462-e339-4322-b2c2-896ce50ef98d",
+    "run": "ef1cdfdb-2600-434a-b58c-63f545a98fcf",
+    "name": "get_window_state",
+    "window": "Cedar Review Board - Chromium",
+    "windowId": 29360165,
+    "nativeError": false,
+    "receiptState": "succeeded",
+    "coordinateFrame": "window",
+    "structuredContainsReviewBoard": true,
+    "structuredContainsControlOrCodes": false
+  },
+  "screenshot_before": {
+    "tool_receipt": {
+      "at": "2026-11-18T23:51:37.213Z",
+      "id": "bf2b9192-97e6-4810-b8cb-8e704ed0b597",
+      "run": "ef1cdfdb-2600-434a-b58c-63f545a98fcf",
+      "name": "get_window_state",
+      "window": "Cedar Review Board - Chromium",
+      "windowId": 29360165,
+      "nativeError": false,
+      "receiptState": "succeeded",
+      "coordinateFrame": "window",
+      "screenshotWidth": 1050,
+      "screenshotHeight": 753
+    },
+    "event": "before_image",
+    "review": "CEDAR-2144",
+    "sha256": "4dc2b6a569a4c79e2b852d2edc7303fff1f2e811668952e079abfd37f0f90793",
+    "bytes": 62243,
+    "x": 306,
+    "y": 416,
+    "at": "2026-11-18T23:51:38.327Z"
+  },
+  "foreground_click": {
+    "at": "2026-11-18T23:51:44.627Z",
+    "id": "4c2005ff-c1c0-4c42-b193-7f499f7458ad",
+    "run": "ef1cdfdb-2600-434a-b58c-63f545a98fcf",
+    "name": "click",
+    "nativeError": false,
+    "receiptState": "succeeded"
+  },
+  "confirmation": {
+    "review": "CEDAR-2144",
+    "confirmation": "RECEIPT-1305",
+    "confirmOnLeft": true,
+    "confirmed": 1,
+    "skipped": 0
+  },
+  "target_events": [
+    {
+      "event": "confirm",
+      "at": "2026-11-18T23:51:47.939Z"
+    }
+  ],
+  "screenshot_after": {
+    "tool_receipt": {
+      "at": "2026-11-18T23:51:53.730Z",
+      "id": "f5390bdc-1100-443f-9675-1c2ef98c4c2a",
+      "run": "ef1cdfdb-2600-434a-b58c-63f545a98fcf",
+      "name": "get_window_state",
+      "window": "Cedar Review Board - Chromium",
+      "windowId": 29360165,
+      "nativeError": false,
+      "receiptState": "succeeded",
+      "coordinateFrame": "window",
+      "screenshotWidth": 1050,
+      "screenshotHeight": 753
+    },
+    "event": "after_image",
+    "receipt": "RECEIPT-1305",
+    "sha256": "f03b010237da2d738c38f0ed5a08d36513b68e40db636b6ddcdd584d8911980e",
+    "bytes": 58986,
+    "at": "2026-11-18T23:51:56.000Z"
+  },
+  "same_images_seen_in_native_pi_transcript_and_provider": true,
+  "viewer": {
+    "frames": 1,
+    "live": "true"
+  },
+  "answer": "Confirmed CEDAR-2144. I checked the board afterward and read receipt RECEIPT-1305."
+}

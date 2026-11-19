@@ -1,0 +1,181 @@
+{
+  "date": "2026-11-19",
+  "surface": "Ngertiin Web (Chromium)",
+  "harness": "Pi ACP",
+  "model_provider": "live",
+  "data": "synthetic workspace snapshots",
+  "thread": "b6916f9f-698c-4b6c-99dd-c04421b6ca07",
+  "configured": {
+    "id": "2f5c8d31-4a76-4b09-9e83-1d6b0c9af472",
+    "name": "Orchid workspace gate",
+    "schedule": {
+      "anchor_at": "2026-11-18T19:09:29Z",
+      "every_ms": 60000,
+      "type": "interval"
+    },
+    "timezone": "Asia/Makassar",
+    "state": "active",
+    "precheck": {
+      "exact_text": "STATE=READY\n",
+      "source_path": "orchid-precheck.txt",
+      "workspace_id": "b9ea3329-6c04-44fc-a9cc-e0fab44094c9"
+    },
+    "next_run_at": "2026-11-18T19:09:29Z"
+  },
+  "ui_precheck": "Pre-check\n\nWorkspace · orchid-precheck.txt\n\nRun when the published snapshot matches this text.\n\nSTATE=READY\n\n",
+  "skipped_before_update": {
+    "slots": [
+      {
+        "id": "38aac240-4c4c-4946-b417-04a93e987d7a",
+        "state": "skipped",
+        "trigger": "schedule",
+        "check": {
+          "artifact_id": "7b2e4c6a-1f83-4a9d-95c4-0e3b8d1f6a72",
+          "outcome": "mismatch",
+          "sha256": "896b08642ad60ea8b2883ba3dc5f407dd9e57c34cb77c8af260b4aa2a9c3325d"
+        },
+        "scheduled_for": "2026-11-18T19:09:29.000Z",
+        "run_id": null
+      }
+    ],
+    "routine_runs": 0
+  },
+  "fired": {
+    "slots": [
+      {
+        "id": "38aac240-4c4c-4946-b417-04a93e987d7a",
+        "state": "skipped",
+        "trigger": "schedule",
+        "check": {
+          "artifact_id": "7b2e4c6a-1f83-4a9d-95c4-0e3b8d1f6a72",
+          "outcome": "mismatch",
+          "sha256": "896b08642ad60ea8b2883ba3dc5f407dd9e57c34cb77c8af260b4aa2a9c3325d"
+        },
+        "scheduled_for": "2026-11-18T19:09:29.000Z",
+        "run_id": null
+      },
+      {
+        "id": "757bf937-5c5e-4c24-963a-dd226cc9a396",
+        "state": "skipped",
+        "trigger": "schedule",
+        "check": {
+          "artifact_id": "7b2e4c6a-1f83-4a9d-95c4-0e3b8d1f6a72",
+          "outcome": "mismatch",
+          "sha256": "896b08642ad60ea8b2883ba3dc5f407dd9e57c34cb77c8af260b4aa2a9c3325d"
+        },
+        "scheduled_for": "2026-11-18T19:10:29.000Z",
+        "run_id": null
+      },
+      {
+        "id": "bca42584-e35e-4708-8b3d-a39de0871f7f",
+        "state": "completed",
+        "trigger": "schedule",
+        "check": {
+          "artifact_id": "e2b8f604-5d71-4c36-9a19-83cb7f4d0a27",
+          "outcome": "match",
+          "sha256": "8317871488c63469da92a6cbc2756361556a23f3a4dc700d2919c5a41cbb1488"
+        },
+        "scheduled_for": "2026-11-18T19:11:29.000Z",
+        "run_id": "1999b9fb-b05f-4e59-904b-bd8788546d46"
+      }
+    ],
+    "run": {
+      "billing": "api_key",
+      "id": "1999b9fb-b05f-4e59-904b-bd8788546d46",
+      "input_message_id": "0d658669-619c-4eb2-a46a-b54d3f037170",
+      "manual_routine": false,
+      "model": "sumopod/deepseek-v4-flash",
+      "product_tools": [
+        "ngertiin.read_attachment"
+      ],
+      "routine_id": "2f5c8d31-4a76-4b09-9e83-1d6b0c9af472",
+      "status": "succeeded",
+      "tool_errors": [],
+      "workspace_id": "b9ea3329-6c04-44fc-a9cc-e0fab44094c9"
+    },
+    "files": [
+      {
+        "id": "7b2e4c6a-1f83-4a9d-95c4-0e3b8d1f6a72",
+        "name": "orchid-precheck.txt",
+        "run_id": "33827302-2a12-49b1-9706-f5201cd60b55",
+        "sha256": "896b08642ad60ea8b2883ba3dc5f407dd9e57c34cb77c8af260b4aa2a9c3325d",
+        "source_path": "orchid-precheck.txt",
+        "workspace_id": "b9ea3329-6c04-44fc-a9cc-e0fab44094c9"
+      },
+      {
+        "id": "e2b8f604-5d71-4c36-9a19-83cb7f4d0a27",
+        "name": "orchid-precheck.txt",
+        "run_id": "d75207e8-04e0-4b37-8101-060056123fa9",
+        "sha256": "8317871488c63469da92a6cbc2756361556a23f3a4dc700d2919c5a41cbb1488",
+        "source_path": "orchid-precheck.txt",
+        "workspace_id": "b9ea3329-6c04-44fc-a9cc-e0fab44094c9"
+      }
+    ],
+    "reply": "ORCHID-OBSERVED STATE=READY"
+  },
+  "verified_run_input": {
+    "thread_id": "b6916f9f-698c-4b6c-99dd-c04421b6ca07",
+    "message_id": "0d658669-619c-4eb2-a46a-b54d3f037170",
+    "routine_id": "2f5c8d31-4a76-4b09-9e83-1d6b0c9af472",
+    "artifact_ids": [
+      "e2b8f604-5d71-4c36-9a19-83cb7f4d0a27"
+    ]
+  },
+  "expected_file_sha256": [
+    "896b08642ad60ea8b2883ba3dc5f407dd9e57c34cb77c8af260b4aa2a9c3325d",
+    "8317871488c63469da92a6cbc2756361556a23f3a4dc700d2919c5a41cbb1488"
+  ],
+  "cleanup": {
+    "state": "paused",
+    "slots": [
+      {
+        "id": "38aac240-4c4c-4946-b417-04a93e987d7a",
+        "state": "skipped",
+        "trigger": "schedule",
+        "check": {
+          "artifact_id": "7b2e4c6a-1f83-4a9d-95c4-0e3b8d1f6a72",
+          "outcome": "mismatch",
+          "sha256": "896b08642ad60ea8b2883ba3dc5f407dd9e57c34cb77c8af260b4aa2a9c3325d"
+        },
+        "scheduled_for": "2026-11-18T19:09:29.000Z",
+        "run_id": null
+      },
+      {
+        "id": "757bf937-5c5e-4c24-963a-dd226cc9a396",
+        "state": "skipped",
+        "trigger": "schedule",
+        "check": {
+          "artifact_id": "7b2e4c6a-1f83-4a9d-95c4-0e3b8d1f6a72",
+          "outcome": "mismatch",
+          "sha256": "896b08642ad60ea8b2883ba3dc5f407dd9e57c34cb77c8af260b4aa2a9c3325d"
+        },
+        "scheduled_for": "2026-11-18T19:10:29.000Z",
+        "run_id": null
+      },
+      {
+        "id": "bca42584-e35e-4708-8b3d-a39de0871f7f",
+        "state": "completed",
+        "trigger": "schedule",
+        "check": {
+          "artifact_id": "e2b8f604-5d71-4c36-9a19-83cb7f4d0a27",
+          "outcome": "match",
+          "sha256": "8317871488c63469da92a6cbc2756361556a23f3a4dc700d2919c5a41cbb1488"
+        },
+        "scheduled_for": "2026-11-18T19:11:29.000Z",
+        "run_id": "1999b9fb-b05f-4e59-904b-bd8788546d46"
+      },
+      {
+        "id": "086780aa-7c6f-4a09-a323-34fd44449283",
+        "state": "cancelled",
+        "trigger": "schedule",
+        "check": {
+          "artifact_id": "e2b8f604-5d71-4c36-9a19-83cb7f4d0a27",
+          "outcome": "match",
+          "sha256": "8317871488c63469da92a6cbc2756361556a23f3a4dc700d2919c5a41cbb1488"
+        },
+        "scheduled_for": "2026-11-18T19:12:29.000Z",
+        "run_id": "5b9749b4-35ec-43eb-b11c-b4bd060b1aa0"
+      }
+    ]
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "date": "2026-11-19",
+  "surface": "Ngertiin Web (Chromium)",
+  "harness": "Pi ACP",
+  "provider": {
+    "mode": "live",
+    "model": "sumopod/deepseek-v4-flash",
+    "billing": "api_key"
+  },
+  "upstream": "local Firecrawl-compatible fixture",
+  "fallback": {
+    "thread": "c3057233-b669-44d7-b1fd-54e6256db4a9",
+    "run": "b470fb99-2b52-47f7-8a90-f78f4d9c3296",
+    "product_errors": [
+      {
+        "code": "WEB_UNAVAILABLE",
+        "created_at": "2026-11-18T22:41:11.431Z",
+        "name": "ngertiin.web_extract"
+      },
+      {
+        "code": "WEB_UNAVAILABLE",
+        "created_at": "2026-11-18T22:41:15.205Z",
+        "name": "ngertiin.web_extract"
+      }
+    ],
+    "extractions": [
+      {
+        "event": "web_extract",
+        "path": "/oriole/live-status",
+        "status": 503,
+        "at": "2026-11-18T22:41:11.421Z"
+      },
+      {
+        "event": "web_extract",
+        "path": "/oriole/live-status",
+        "status": 503,
+        "at": "2026-11-18T22:41:15.198Z"
+      },
+      {
+        "event": "web_extract",
+        "path": "/oriole/status-card",
+        "at": "2026-11-18T22:41:19.358Z"
+      }
+    ],
+    "browser_source_open": {
+      "event": "source_opened",
+      "path": "/oriole/status-card",
+      "at": "2026-11-18T22:41:52.158Z"
+    },
+    "status": "Open",
+    "code": "ORIOLE-STATUS-284"
+  },
+  "live_only": {
+    "thread": "7cf09e02-0cb6-4eca-88e6-d5fca8939a81",
+    "run": "5dc2e009-691a-44ba-a214-f1690b25802f",
+    "product_errors": [
+      {
+        "code": "WEB_UNAVAILABLE",
+        "created_at": "2026-11-18T22:42:18.332Z",
+        "name": "ngertiin.web_extract"
+      },
+      {
+        "code": "WEB_UNAVAILABLE",
+        "created_at": "2026-11-18T22:42:22.123Z",
+        "name": "ngertiin.web_extract"
+      }
+    ],
+    "extractions": [
+      {
+        "event": "web_extract",
+        "path": "/oriole/live-status",
+        "status": 503,
+        "at": "2026-11-18T22:42:18.326Z"
+      },
+      {
+        "event": "web_extract",
+        "path": "/oriole/live-status",
+        "status": 503,
+        "at": "2026-11-18T22:42:22.114Z"
+      }
+    ],
+    "status": "unverified",
+    "note": "The assistant speculated about connectivity. The controlled endpoint was reachable and deliberately returned HTTP 503."
+  }
+}

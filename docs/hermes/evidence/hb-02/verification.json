@@ -1,0 +1,125 @@
+{
+  "date": "2026-11-19",
+  "surface": "Ngertiin Web (Chromium)",
+  "harness": "Pi ACP",
+  "provider": "Sumopod DeepSeek V4 Flash live API key",
+  "late_data_source": "Synthetic local HTTP fixture",
+  "completion": {
+    "thread_id": "a05ce9a1-9d1a-4a5a-8d32-8ead9f452555",
+    "parent_initial_run": "af1216ef-3b34-443f-9f92-94a5e4f39f5b",
+    "child_run": "91a33c4f-c5b4-4f35-a19d-8c4529edb178",
+    "parent_continuation_run": "04ccc6e8-929e-40c8-af96-31fa1ed48985",
+    "child_result": {
+      "author": "agent",
+      "author_agent_id": "2362f652-38fd-4082-906a-a8f942252831",
+      "id": "e63fea81-f3b9-4301-bc15-f59f5a35db6c",
+      "purpose": "conversation",
+      "run_id": "91a33c4f-c5b4-4f35-a19d-8c4529edb178",
+      "state": "complete",
+      "text": "TIDE-SUM=63"
+    },
+    "parent_result": {
+      "author": "agent",
+      "author_agent_id": "bf61dd07-e39f-4e51-ad91-52271b43c3ed",
+      "id": "ecb8a747-fa74-4031-8efd-faf5d05019e2",
+      "purpose": "conversation",
+      "run_id": "04ccc6e8-929e-40c8-af96-31fa1ed48985",
+      "state": "complete",
+      "text": "TIDE-FINAL=55"
+    },
+    "parent_continuations": 1
+  },
+  "stopped_before_completion": {
+    "thread_id": "d792a599-6afd-47b2-ad0f-bef3022e0916",
+    "goal_id": "00000000-0000-0000-0000-000000000000",
+    "goal_state_after_reload": "stopped",
+    "stopped_at": "2026-11-18T20:28:27.208Z",
+    "goal_revision_after_stop_and_reload": 2,
+    "tasks": [
+      {
+        "current_run_id": "4e2157d0-388d-4405-b5ea-f7838abb5952",
+        "goal_generations": {
+          "00000000-0000-0000-0000-000000000000": 1
+        },
+        "goal_ids": [
+          "00000000-0000-0000-0000-000000000000"
+        ],
+        "id": "d8d25953-2b3e-4472-a7e7-f158eb3b6cf4",
+        "parent_task_id": null,
+        "result_artifact_ids": [],
+        "root_task_id": "d8d25953-2b3e-4472-a7e7-f158eb3b6cf4",
+        "source_run_id": null,
+        "state": "cancelled"
+      },
+      {
+        "current_run_id": "60575ebb-45bc-4d47-bfa4-5e2b45365853",
+        "goal_generations": {
+          "00000000-0000-0000-0000-000000000000": 1
+        },
+        "goal_ids": [
+          "00000000-0000-0000-0000-000000000000"
+        ],
+        "id": "001a6f40-f26a-450f-a2d6-3e2bc900d5ff",
+        "parent_task_id": "d8d25953-2b3e-4472-a7e7-f158eb3b6cf4",
+        "result_artifact_ids": [],
+        "root_task_id": "d8d25953-2b3e-4472-a7e7-f158eb3b6cf4",
+        "source_run_id": "4e2157d0-388d-4405-b5ea-f7838abb5952",
+        "state": "cancelled"
+      }
+    ],
+    "runs": [
+      {
+        "agent_id": "bf61dd07-e39f-4e51-ad91-52271b43c3ed",
+        "billing": "api_key",
+        "diagnostic": null,
+        "goal_assignment_revision": null,
+        "goal_generation": null,
+        "goal_id": null,
+        "id": "4e2157d0-388d-4405-b5ea-f7838abb5952",
+        "input_message_id": "d397b48a-3a64-4d0b-9d3b-075ac73cd5a6",
+        "model": "sumopod/deepseek-v4-flash",
+        "product_tools": [
+          "ngertiin.capture_goal",
+          "ngertiin.group_handoff"
+        ],
+        "routine_id": null,
+        "status": "succeeded",
+        "task_id": "d8d25953-2b3e-4472-a7e7-f158eb3b6cf4",
+        "tool_errors": []
+      },
+      {
+        "agent_id": "2362f652-38fd-4082-906a-a8f942252831",
+        "billing": "api_key",
+        "diagnostic": null,
+        "goal_assignment_revision": null,
+        "goal_generation": null,
+        "goal_id": null,
+        "id": "60575ebb-45bc-4d47-bfa4-5e2b45365853",
+        "input_message_id": "e75837dd-47a6-4480-b6e2-65c3f13035c0",
+        "model": "sumopod/deepseek-v4-flash",
+        "product_tools": [],
+        "routine_id": null,
+        "status": "cancelled",
+        "task_id": "001a6f40-f26a-450f-a2d6-3e2bc900d5ff",
+        "tool_errors": []
+      }
+    ],
+    "parent_continuations": 0,
+    "late_source_timing": {
+      "started_at": "2026-11-18T20:28:23.690Z",
+      "released_at": "2026-11-18T20:28:28.558Z",
+      "response_created_at": "2026-11-18T20:28:28.558Z"
+    },
+    "process_receipt": {
+      "id": "8f2c1e4a-9b7d-4c3a-8e21-5a6b7c8d9e0f",
+      "lost": false,
+      "state": "exited",
+      "run_id": "60575ebb-45bc-4d47-bfa4-5e2b45365853",
+      "updated_at": "2026-11-18T20:28:27.428Z",
+      "exit_signal": "term"
+    },
+    "same_api_process_healthy_after_reload": true,
+    "child_and_parent_result_count": 0
+  },
+  "initial_retest_note": "The initial stop probe committed the goal change, then the isolated API process exited on a revision conflict. The recorded retest ran after the asynchronous process and ACP event changes."
+}

@@ -1,0 +1,198 @@
+{
+  "date": "2026-11-19",
+  "surface": "Ngertiin Web (Chromium)",
+  "harness": "Pi ACP",
+  "model_provider": "live",
+  "thread": "9b873eb4-1155-44d0-b25c-5c6aa7d2ed1e",
+  "waiting": {
+    "last_reply": "Checkpointed, @user — the Tern Bay release receipt is now an active responsibility I own across runs.\n\n- It's waiting on you: no polling, no scheduled check, and no `tern-bay-release.txt` created or drafted yet.\n- Unrelated messages won't be read as the release.\n- When you give me the code, I'll run one separate follow-up run that writes `tern-bay-release.txt` containing exactly `RELEASE_CODE=<your code>` and publishes it as a downloadable receipt — and I'll close it only once that download exists.",
+    "goal": {
+      "id": "1c4f0e5a-9d3b-4a67-8b21-5f7c2d9e4a10",
+      "state": "active",
+      "work_state": "waiting",
+      "revision": 2,
+      "generation": 1,
+      "continuation_at": null,
+      "evidence_artifact_ids": []
+    },
+    "runs": [
+      {
+        "id": "c7d42a1e-63fb-4e5f-80a6-db12b3992998",
+        "status": "succeeded",
+        "goal_id": null,
+        "goal_generation": null,
+        "product_tools": [
+          "ngertiin.list_goals",
+          "ngertiin.capture_goal",
+          "ngertiin.report_goal"
+        ],
+        "model": "sumopod/deepseek-v4-flash",
+        "billing": "api_key"
+      }
+    ],
+    "files": [],
+    "routines": 0
+  },
+  "unrelated": {
+    "last_reply": "42 — and that's just arithmetic; the Tern Bay receipt stays untouched and still waiting for the release code.",
+    "goal": {
+      "id": "1c4f0e5a-9d3b-4a67-8b21-5f7c2d9e4a10",
+      "state": "active",
+      "work_state": "waiting",
+      "revision": 2,
+      "generation": 1,
+      "continuation_at": null,
+      "evidence_artifact_ids": []
+    },
+    "runs": [
+      {
+        "id": "c7d42a1e-63fb-4e5f-80a6-db12b3992998",
+        "status": "succeeded",
+        "goal_id": null,
+        "goal_generation": null,
+        "product_tools": [
+          "ngertiin.list_goals",
+          "ngertiin.capture_goal",
+          "ngertiin.report_goal"
+        ],
+        "model": "sumopod/deepseek-v4-flash",
+        "billing": "api_key"
+      },
+      {
+        "id": "9a8f289e-6703-4876-a410-b606a4b1fa2c",
+        "status": "succeeded",
+        "goal_id": null,
+        "goal_generation": null,
+        "product_tools": [],
+        "model": "sumopod/deepseek-v4-flash",
+        "billing": "api_key"
+      }
+    ],
+    "files": [],
+    "routines": 0
+  },
+  "released": {
+    "last_reply": "Tern Bay release receipt: Owner supplied the authorized Tern Bay release code (TB-PLUME-593) and confirmed this is the awaited release. Exactly one follow-up run is scheduled to write tern-bay-release.txt with exactly the line RELEASE_CODE=TB-PLUME-593 and publish it as a downloadable receipt; the Goal completes only after that publish succeeds. No file was created in this run.",
+    "goal": {
+      "id": "1c4f0e5a-9d3b-4a67-8b21-5f7c2d9e4a10",
+      "state": "active",
+      "work_state": "ready",
+      "revision": 4,
+      "generation": 2,
+      "continuation_at": "2026-11-18T17:57:30Z",
+      "evidence_artifact_ids": []
+    },
+    "runs": [
+      {
+        "id": "c7d42a1e-63fb-4e5f-80a6-db12b3992998",
+        "status": "succeeded",
+        "goal_id": null,
+        "goal_generation": null,
+        "product_tools": [
+          "ngertiin.list_goals",
+          "ngertiin.capture_goal",
+          "ngertiin.report_goal"
+        ],
+        "model": "sumopod/deepseek-v4-flash",
+        "billing": "api_key"
+      },
+      {
+        "id": "9a8f289e-6703-4876-a410-b606a4b1fa2c",
+        "status": "succeeded",
+        "goal_id": null,
+        "goal_generation": null,
+        "product_tools": [],
+        "model": "sumopod/deepseek-v4-flash",
+        "billing": "api_key"
+      },
+      {
+        "id": "74c6dacc-0ff4-4096-9ec6-720c92a7a773",
+        "status": "succeeded",
+        "goal_id": null,
+        "goal_generation": null,
+        "product_tools": [
+          "ngertiin.capture_goal",
+          "ngertiin.report_goal"
+        ],
+        "model": "sumopod/deepseek-v4-flash",
+        "billing": "api_key"
+      }
+    ],
+    "files": [],
+    "routines": 0
+  },
+  "settled": {
+    "last_reply": "Done, @user — the Tern Bay release receipt is published.\n\n- File: [tern-bay-release.txt](ngertiin://artifact/b2570d9e-4a19-4f38-9d75-6c3e8b71a5d2)\n- Content: exactly one line — `RELEASE_CODE=TB-PLUME-593`\n\nThe follow-up run wrote and published it, so I've marked the responsibility complete.",
+    "goal": {
+      "id": "1c4f0e5a-9d3b-4a67-8b21-5f7c2d9e4a10",
+      "state": "completed",
+      "work_state": "ready",
+      "revision": 7,
+      "generation": 3,
+      "continuation_at": null,
+      "evidence_artifact_ids": [
+        "b2570d9e-4a19-4f38-9d75-6c3e8b71a5d2"
+      ]
+    },
+    "runs": [
+      {
+        "id": "c7d42a1e-63fb-4e5f-80a6-db12b3992998",
+        "status": "succeeded",
+        "goal_id": null,
+        "goal_generation": null,
+        "product_tools": [
+          "ngertiin.list_goals",
+          "ngertiin.capture_goal",
+          "ngertiin.report_goal"
+        ],
+        "model": "sumopod/deepseek-v4-flash",
+        "billing": "api_key"
+      },
+      {
+        "id": "9a8f289e-6703-4876-a410-b606a4b1fa2c",
+        "status": "succeeded",
+        "goal_id": null,
+        "goal_generation": null,
+        "product_tools": [],
+        "model": "sumopod/deepseek-v4-flash",
+        "billing": "api_key"
+      },
+      {
+        "id": "74c6dacc-0ff4-4096-9ec6-720c92a7a773",
+        "status": "succeeded",
+        "goal_id": null,
+        "goal_generation": null,
+        "product_tools": [
+          "ngertiin.capture_goal",
+          "ngertiin.report_goal"
+        ],
+        "model": "sumopod/deepseek-v4-flash",
+        "billing": "api_key"
+      },
+      {
+        "id": "57126f46-0380-4995-b000-9456a244a6fc",
+        "status": "succeeded",
+        "goal_id": "1c4f0e5a-9d3b-4a67-8b21-5f7c2d9e4a10",
+        "goal_generation": 2,
+        "product_tools": [
+          "ngertiin.create_file",
+          "ngertiin.read_file",
+          "ngertiin.publish_artifact",
+          "ngertiin.report_goal"
+        ],
+        "model": "sumopod/deepseek-v4-flash",
+        "billing": "api_key"
+      }
+    ],
+    "files": [
+      {
+        "id": "b2570d9e-4a19-4f38-9d75-6c3e8b71a5d2",
+        "name": "tern-bay-release.txt",
+        "sha256": "a6ef21fc48eeea10f1bf741afb5c0441dce761577df18b5db60abec146aa39e1",
+        "run_id": "57126f46-0380-4995-b000-9456a244a6fc"
+      }
+    ],
+    "routines": 0
+  },
+  "downloaded_sha256": "a6ef21fc48eeea10f1bf741afb5c0441dce761577df18b5db60abec146aa39e1"
+}

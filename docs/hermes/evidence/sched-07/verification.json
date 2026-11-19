@@ -1,0 +1,205 @@
+{
+  "date": "2026-11-19",
+  "surface": "Ngertiin Web (Chromium)",
+  "harness": "Pi ACP",
+  "provider": "Loopback OpenAI-compatible fixture, API key mode",
+  "provider_fixture": "../../../../scripts/verification/hermes/schedule-recovery-provider.ts",
+  "thread_id": "c62ef9d8-ba63-42fd-9623-289cb00fca20",
+  "routine_id": "7411debb-dcc1-40cc-b57e-f313a5b68e2c",
+  "data_is_fixture": true,
+  "workspace_id": "8061447a-390f-4703-992c-c580eff8dbb0",
+  "published_source_versions": [
+    {
+      "value": 17,
+      "id": "cda91b3f-8648-4e40-b2cf-ee6ce609fe8d",
+      "sha256": "ecceb31ae5909ba97343dc33c79af090265d0456180831cfab9735c45beadbf2"
+    },
+    {
+      "value": 113,
+      "id": "40ccc7e6-01f8-46e0-8f77-deec3362e6e2",
+      "sha256": "6cc6a9e6b989d3db0124f4d0b0111c25f9bb3d413149a7e48d1668411f08aab4"
+    },
+    {
+      "value": 211,
+      "id": "701402c1-aa6d-47f3-8516-ce696b1eeedf",
+      "sha256": "b4b55624419fa73afa5574a5e0a656d9b9cf96a8123e88198caa7a7e731943cb"
+    }
+  ],
+  "first_occurrence": {
+    "actor_id": "29066a95-2b82-4c8b-b498-3217693003c7",
+    "check": {
+      "artifact_id": "40ccc7e6-01f8-46e0-8f77-deec3362e6e2",
+      "outcome": "match",
+      "precheck_revision": 1,
+      "sha256": "6cc6a9e6b989d3db0124f4d0b0111c25f9bb3d413149a7e48d1668411f08aab4"
+    },
+    "created_at": "2026-11-18T19:52:38.549Z",
+    "id": "8e7e99ae-551b-4e82-befa-eb12552ac0a9",
+    "kind": "occurrence",
+    "organization_id": "f82a07c3-7161-417b-a258-09a2e1c7d0ef",
+    "owner_id": "10747d0f-bf61-4838-818f-edcf83c5ca4c",
+    "revision": 3,
+    "route_id": null,
+    "routine_generation": 1,
+    "routine_id": "7411debb-dcc1-40cc-b57e-f313a5b68e2c",
+    "run_id": "ad18140c-b93b-48be-b2b2-a8030d0c72d8",
+    "scheduled_for": "2026-11-18T19:52:38.000Z",
+    "selected_agent_id": "bf61dd07-e39f-4e51-ad91-52271b43c3ed",
+    "state": "failed",
+    "trigger": "schedule",
+    "updated_at": "2026-11-18T19:52:42.400Z"
+  },
+  "failed_processing_receipt": {
+    "id": "ad18140c-b93b-48be-b2b2-a8030d0c72d8",
+    "status": "failed",
+    "selection": {
+      "model": "schedule-fixture/schedule-recovery",
+      "billing": "api_key",
+      "harness": "pi",
+      "provider": "schedule-fixture"
+    },
+    "diagnostic": {
+      "code": "NATIVE_REJECTED",
+      "outcome": "failed",
+      "category": "provider"
+    },
+    "settled_at": "2026-11-18T19:52:41.237Z",
+    "observations": [
+      {
+        "pages": [
+          1
+        ],
+        "operation": "context",
+        "truncated": true,
+        "created_at": "2026-11-18T19:52:40.147Z",
+        "artifact_id": "40ccc7e6-01f8-46e0-8f77-deec3362e6e2",
+        "source_sha256": "6cc6a9e6b989d3db0124f4d0b0111c25f9bb3d413149a7e48d1668411f08aab4"
+      }
+    ],
+    "workspace_id": "8061447a-390f-4703-992c-c580eff8dbb0",
+    "attached_artifact_ids": [
+      "40ccc7e6-01f8-46e0-8f77-deec3362e6e2"
+    ]
+  },
+  "current_artifact_replaced_confirmed_at": "2026-11-18T19:52:59.942524+00:00",
+  "recovered_occurrence": {
+    "actor_id": "29066a95-2b82-4c8b-b498-3217693003c7",
+    "check": {
+      "artifact_id": "40ccc7e6-01f8-46e0-8f77-deec3362e6e2",
+      "outcome": "match",
+      "precheck_revision": 1,
+      "recovery_of": "8e7e99ae-551b-4e82-befa-eb12552ac0a9",
+      "sha256": "6cc6a9e6b989d3db0124f4d0b0111c25f9bb3d413149a7e48d1668411f08aab4"
+    },
+    "created_at": "2026-11-18T19:53:38.648Z",
+    "id": "ecc38a7d-6e9c-4908-8a2f-720de5f68052",
+    "kind": "occurrence",
+    "organization_id": "f82a07c3-7161-417b-a258-09a2e1c7d0ef",
+    "owner_id": "10747d0f-bf61-4838-818f-edcf83c5ca4c",
+    "revision": 3,
+    "route_id": null,
+    "routine_generation": 1,
+    "routine_id": "7411debb-dcc1-40cc-b57e-f313a5b68e2c",
+    "run_id": "1da22792-8c8b-46ec-98fe-ecdc4796b69c",
+    "scheduled_for": "2026-11-18T19:53:38.000Z",
+    "selected_agent_id": "bf61dd07-e39f-4e51-ad91-52271b43c3ed",
+    "state": "completed",
+    "trigger": "schedule",
+    "updated_at": "2026-11-18T19:53:47.761Z"
+  },
+  "resumed_processing_receipt": {
+    "id": "1da22792-8c8b-46ec-98fe-ecdc4796b69c",
+    "status": "succeeded",
+    "selection": {
+      "model": "schedule-fixture/schedule-recovery",
+      "billing": "api_key",
+      "harness": "pi",
+      "provider": "schedule-fixture"
+    },
+    "diagnostic": null,
+    "settled_at": "2026-11-18T19:53:46.667Z",
+    "observations": [
+      {
+        "pages": [
+          1
+        ],
+        "operation": "context",
+        "truncated": true,
+        "created_at": "2026-11-18T19:53:40.312Z",
+        "artifact_id": "40ccc7e6-01f8-46e0-8f77-deec3362e6e2",
+        "source_sha256": "6cc6a9e6b989d3db0124f4d0b0111c25f9bb3d413149a7e48d1668411f08aab4"
+      },
+      {
+        "pages": [
+          1
+        ],
+        "operation": "read",
+        "truncated": false,
+        "created_at": "2026-11-18T19:53:45.335Z",
+        "artifact_id": "40ccc7e6-01f8-46e0-8f77-deec3362e6e2",
+        "source_sha256": "6cc6a9e6b989d3db0124f4d0b0111c25f9bb3d413149a7e48d1668411f08aab4"
+      }
+    ],
+    "workspace_id": "8061447a-390f-4703-992c-c580eff8dbb0",
+    "attached_artifact_ids": [
+      "40ccc7e6-01f8-46e0-8f77-deec3362e6e2"
+    ]
+  },
+  "fixture_events": [
+    {
+      "event": "scheduled_turn",
+      "recovered": false,
+      "at": "2026-11-18T19:52:40.716Z"
+    },
+    {
+      "event": "provider_rejected",
+      "recovered": false,
+      "at": "2026-11-18T19:52:40.719Z"
+    },
+    {
+      "event": "fixture_tool_missing",
+      "suffix": "create_file"
+    },
+    {
+      "event": "scheduled_turn",
+      "recovered": true,
+      "at": "2026-11-18T19:53:40.776Z"
+    },
+    {
+      "event": "scheduled_turn",
+      "recovered": false,
+      "at": "2026-11-18T19:53:43.632Z"
+    },
+    {
+      "event": "fixture_tool_missing",
+      "suffix": "read_run_context"
+    },
+    {
+      "event": "scheduled_turn",
+      "recovered": false,
+      "at": "2026-11-18T19:53:43.641Z"
+    },
+    {
+      "event": "fixture_tool_missing",
+      "suffix": "read_run_context"
+    },
+    {
+      "event": "read_observation",
+      "recovered": true,
+      "artifact_id": "40ccc7e6-01f8-46e0-8f77-deec3362e6e2"
+    },
+    {
+      "event": "report",
+      "recovered": true,
+      "value": 113
+    }
+  ],
+  "visible_reports": 1,
+  "report": {
+    "id": "2cb30e7c-e3cf-4135-b96a-66c7f5b1ba34",
+    "text": "Gull source report \u00b7 GULL_VALUE=113"
+  },
+  "routine_cleanup_state": "paused",
+  "additional_identical_source_publications_during_probe": 1,
+  "fixture_note": "The browser driver retried the edit of the current source while the test was running. The native run IDs and attachment read receipt identify the two scheduled attempts. Fixture diagnostics also include requests from the source edit."
+}

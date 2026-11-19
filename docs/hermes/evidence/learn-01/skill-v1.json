@@ -1,0 +1,10 @@
+{
+  "name": "paginated-table-to-csv-fallback",
+  "package": {
+    "assets": [],
+    "description": "Use when a dashboard's built-in CSV export fails or is unavailable and the data must be rebuilt from the on-screen paginated table, including summary totals in chat.",
+    "instructions": "1. Try the dashboard's own export control once. If it returns a server error, do not retry it repeatedly \u2014 switch to reading the rendered table instead.\n2. Before extracting rows, enumerate every page of the table (pager control or page count) and note how many pages exist, so no rows are skipped.\n3. Extract only the required columns from each page, keeping one record per entity, and note the row count per page.\n4. Write the CSV with a header line plus one data row per entity; validate that the file's line count equals rows + 1 and that the row count matches the sum of per-page counts.\n5. Derive any requested aggregates (total, highest-volume entity) from the same extracted rows, and cross-check the total against the per-row values.\n6. In the answer, disclose that the built-in export failed and how many pages were read, so the recipient knows the file and totals cover all pages."
+  },
+  "source_run_id": "ef559350-1b9d-4315-a869-9e4751c561e7",
+  "version": 1
+}

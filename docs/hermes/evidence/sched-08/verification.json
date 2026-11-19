@@ -1,0 +1,153 @@
+{
+  "date": "2026-11-19",
+  "surface": "Ngertiin Web (Chromium)",
+  "harness": "Pi ACP",
+  "provider": "Loopback OpenAI-compatible fixture, API key mode; no run for unchanged slots",
+  "thread_id": "c62ef9d8-ba63-42fd-9623-289cb00fca20",
+  "routine_id": "7411debb-dcc1-40cc-b57e-f313a5b68e2c",
+  "initial_unchanged_checks": [
+    {
+      "actor_id": "29066a95-2b82-4c8b-b498-3217693003c7",
+      "check": {
+        "artifact_id": "48717f34-f6b2-4771-bc46-748c09293afe",
+        "outcome": "unchanged",
+        "precheck_revision": 1,
+        "sha256": "6cc6a9e6b989d3db0124f4d0b0111c25f9bb3d413149a7e48d1668411f08aab4"
+      },
+      "created_at": "2026-11-18T19:55:59.188Z",
+      "id": "3cde8599-a678-43bd-b25f-8c6f0d17c4a6",
+      "kind": "occurrence",
+      "organization_id": "f82a07c3-7161-417b-a258-09a2e1c7d0ef",
+      "owner_id": "10747d0f-bf61-4838-818f-edcf83c5ca4c",
+      "revision": 1,
+      "route_id": null,
+      "routine_generation": 3,
+      "routine_id": "7411debb-dcc1-40cc-b57e-f313a5b68e2c",
+      "run_id": null,
+      "scheduled_for": "2026-11-18T19:55:38.000Z",
+      "selected_agent_id": null,
+      "state": "completed",
+      "trigger": "schedule",
+      "updated_at": "2026-11-18T19:55:59.188Z"
+    },
+    {
+      "actor_id": "29066a95-2b82-4c8b-b498-3217693003c7",
+      "check": {
+        "artifact_id": "48717f34-f6b2-4771-bc46-748c09293afe",
+        "outcome": "unchanged",
+        "precheck_revision": 1,
+        "sha256": "6cc6a9e6b989d3db0124f4d0b0111c25f9bb3d413149a7e48d1668411f08aab4"
+      },
+      "created_at": "2026-11-18T19:56:39.032Z",
+      "id": "2d919717-c0d8-4f9c-a5f3-e321f16f2717",
+      "kind": "occurrence",
+      "organization_id": "f82a07c3-7161-417b-a258-09a2e1c7d0ef",
+      "owner_id": "10747d0f-bf61-4838-818f-edcf83c5ca4c",
+      "revision": 1,
+      "route_id": null,
+      "routine_generation": 3,
+      "routine_id": "7411debb-dcc1-40cc-b57e-f313a5b68e2c",
+      "run_id": null,
+      "scheduled_for": "2026-11-18T19:56:38.000Z",
+      "selected_agent_id": null,
+      "state": "completed",
+      "trigger": "schedule",
+      "updated_at": "2026-11-18T19:56:39.032Z"
+    }
+  ],
+  "initial_unchanged_scheduled_model_runs": 0,
+  "changed_file": {
+    "id": "f3019cf2-7b6e-49ab-9a28-684be0e8066c",
+    "name": "gull-shift-source.txt",
+    "run_id": "a34e9b3b-51d5-4514-8740-01686915d99c",
+    "sha256": "7340667745cb18e39ed0eb76da4d5fd1a97160445d0876773bb8f296d77c0543",
+    "source_path": "gull-shift-source.txt",
+    "workspace_id": "8061447a-390f-4703-992c-c580eff8dbb0"
+  },
+  "changed_occurrence": {
+    "actor_id": "29066a95-2b82-4c8b-b498-3217693003c7",
+    "check": {
+      "artifact_id": "f3019cf2-7b6e-49ab-9a28-684be0e8066c",
+      "outcome": "match",
+      "precheck_revision": 1,
+      "sha256": "7340667745cb18e39ed0eb76da4d5fd1a97160445d0876773bb8f296d77c0543"
+    },
+    "created_at": "2026-11-18T19:57:39.254Z",
+    "id": "d340e390-5fa0-4f90-b20b-2fe24f590cf7",
+    "kind": "occurrence",
+    "organization_id": "f82a07c3-7161-417b-a258-09a2e1c7d0ef",
+    "owner_id": "10747d0f-bf61-4838-818f-edcf83c5ca4c",
+    "revision": 3,
+    "route_id": null,
+    "routine_generation": 3,
+    "routine_id": "7411debb-dcc1-40cc-b57e-f313a5b68e2c",
+    "run_id": "50d149eb-9129-4e00-a4b9-deb23d663078",
+    "scheduled_for": "2026-11-18T19:57:38.000Z",
+    "selected_agent_id": "bf61dd07-e39f-4e51-ad91-52271b43c3ed",
+    "state": "completed",
+    "trigger": "schedule",
+    "updated_at": "2026-11-18T19:57:48.248Z"
+  },
+  "changed_scheduled_model_runs": 1,
+  "attachment_read_receipt": {
+    "model": "schedule-fixture/schedule-recovery",
+    "run_id": "50d149eb-9129-4e00-a4b9-deb23d663078",
+    "status": "succeeded",
+    "billing": "api_key",
+    "observations": [
+      {
+        "pages": [
+          1
+        ],
+        "operation": "context",
+        "truncated": true,
+        "created_at": "2026-11-18T19:57:41.196Z",
+        "artifact_id": "f3019cf2-7b6e-49ab-9a28-684be0e8066c",
+        "source_sha256": "7340667745cb18e39ed0eb76da4d5fd1a97160445d0876773bb8f296d77c0543"
+      },
+      {
+        "pages": [
+          1
+        ],
+        "operation": "read",
+        "truncated": false,
+        "created_at": "2026-11-18T19:57:46.517Z",
+        "artifact_id": "f3019cf2-7b6e-49ab-9a28-684be0e8066c",
+        "source_sha256": "7340667745cb18e39ed0eb76da4d5fd1a97160445d0876773bb8f296d77c0543"
+      }
+    ],
+    "attested_input_artifact_ids": [
+      "f3019cf2-7b6e-49ab-9a28-684be0e8066c"
+    ]
+  },
+  "report": {
+    "id": "19526e52-a893-4578-b142-3efb80cdba2d",
+    "text": "Gull source report \u00b7 GULL_VALUE=229"
+  },
+  "next_unchanged_check": {
+    "actor_id": "29066a95-2b82-4c8b-b498-3217693003c7",
+    "check": {
+      "artifact_id": "f3019cf2-7b6e-49ab-9a28-684be0e8066c",
+      "outcome": "unchanged",
+      "precheck_revision": 1,
+      "sha256": "7340667745cb18e39ed0eb76da4d5fd1a97160445d0876773bb8f296d77c0543"
+    },
+    "created_at": "2026-11-18T19:58:39.264Z",
+    "id": "1523e32c-35a0-4bc8-819b-c584b1df72be",
+    "kind": "occurrence",
+    "organization_id": "f82a07c3-7161-417b-a258-09a2e1c7d0ef",
+    "owner_id": "10747d0f-bf61-4838-818f-edcf83c5ca4c",
+    "revision": 1,
+    "route_id": null,
+    "routine_generation": 3,
+    "routine_id": "7411debb-dcc1-40cc-b57e-f313a5b68e2c",
+    "run_id": null,
+    "scheduled_for": "2026-11-18T19:58:38.000Z",
+    "selected_agent_id": null,
+    "state": "completed",
+    "trigger": "schedule",
+    "updated_at": "2026-11-18T19:58:39.264Z"
+  },
+  "next_unchanged_scheduled_model_runs": 0,
+  "routine_cleanup_state": "paused"
+}

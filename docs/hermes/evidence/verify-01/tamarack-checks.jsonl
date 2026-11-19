@@ -1,0 +1,2 @@
+{"config": {"label": "TAMARACK-VERIFY-39", "schema_version": 1}, "passed": false, "issue": "The release label requires schema_version 2 in config.json."}
+{"config": {"label": "TAMARACK-VERIFY-39", "schema_version": 2}, "passed": false, "issue": "Missing operator confirmation: operator-confirmation.txt."}

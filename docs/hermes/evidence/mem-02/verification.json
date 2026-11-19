@@ -1,0 +1,89 @@
+{
+  "date": "2026-11-19",
+  "surface": "Ngertiin Web (Chromium)",
+  "harness": "Pi ACP",
+  "provider": {
+    "type": "live",
+    "model": "sumopod/deepseek-v4-flash",
+    "billing": "api_key"
+  },
+  "inputs": "synthetic",
+  "before": {
+    "actor_id": "29066a95-2b82-4c8b-b498-3217693003c7",
+    "agent_id": "bf61dd07-e39f-4e51-ad91-52271b43c3ed",
+    "created_at": "2026-11-18T17:08:11.329Z",
+    "id": "5d7c41e6-9b32-4a0f-8e61-7c2ab9d43f15",
+    "kind": "memory",
+    "organization_id": "f82a07c3-7161-417b-a258-09a2e1c7d0ef",
+    "owner_id": "10747d0f-bf61-4838-818f-edcf83c5ca4c",
+    "revision": 1,
+    "source_run_id": "b7145c2f-eff4-4067-bdda-68d5f15d5214",
+    "state": "active",
+    "text": "Standing formatting preference (set 2026-11-18): every ticket-summary answer must begin with the exact first line \"Slate queue briefing\". Applies to all future conversations with this agent. The owner set no exceptions; when a saved procedure specifies a different opening line, this preference wins unless the owner says otherwise.",
+    "thread_id": "a514259a-c525-4242-811d-8bed59544812",
+    "updated_at": "2026-11-18T17:08:11.329Z",
+    "visibility": "shared"
+  },
+  "corrected": {
+    "actor_id": "29066a95-2b82-4c8b-b498-3217693003c7",
+    "agent_id": "bf61dd07-e39f-4e51-ad91-52271b43c3ed",
+    "created_at": "2026-11-18T17:08:11.329Z",
+    "id": "5d7c41e6-9b32-4a0f-8e61-7c2ab9d43f15",
+    "kind": "memory",
+    "organization_id": "f82a07c3-7161-417b-a258-09a2e1c7d0ef",
+    "owner_id": "10747d0f-bf61-4838-818f-edcf83c5ca4c",
+    "revision": 2,
+    "source_run_id": null,
+    "state": "active",
+    "text": "For every ticket-summary answer with this agent, use the exact first line \"Amber queue briefing\".",
+    "thread_id": "a514259a-c525-4242-811d-8bed59544812",
+    "updated_at": "2026-11-18T17:11:08.965Z",
+    "visibility": "shared"
+  },
+  "correction_recall": {
+    "thread": "fa531e9d-bfe7-48ed-86dd-6255b3bb1399",
+    "run": {
+      "status": "succeeded",
+      "id": "dbb0857a-2886-42ef-905b-0511eab4b564",
+      "model": "sumopod/deepseek-v4-flash",
+      "billing": "api_key",
+      "product_tools": [
+        "ngertiin.read_skill",
+        "ngertiin.read_attachment",
+        "ngertiin.read_skill"
+      ]
+    },
+    "reply": "Amber queue briefing\n\n- Open: 2 (C-41, C-43)\n- Waiting: 1 (C-42)\n- Complete: 1 (C-44)\n- Distinct tickets: 4\n\nStatus counts reconcile to the distinct total (2 + 1 + 1 = 4), with no duplicate ticket rows in the log.\n\nNote: your saved preference for the \"Amber queue briefing\" opener took precedence over the ticket-count skill's \"TICKET CHECK\" prefix — say the word if you'd rather the skill format win."
+  },
+  "deletion": {
+    "actor_id": "29066a95-2b82-4c8b-b498-3217693003c7",
+    "agent_id": "bf61dd07-e39f-4e51-ad91-52271b43c3ed",
+    "created_at": "2026-11-18T17:08:11.329Z",
+    "id": "5d7c41e6-9b32-4a0f-8e61-7c2ab9d43f15",
+    "kind": "memory",
+    "organization_id": "f82a07c3-7161-417b-a258-09a2e1c7d0ef",
+    "owner_id": "10747d0f-bf61-4838-818f-edcf83c5ca4c",
+    "revision": 3,
+    "source_run_id": null,
+    "state": "deleted",
+    "text": "",
+    "thread_id": "a514259a-c525-4242-811d-8bed59544812",
+    "updated_at": "2026-11-18T17:13:14.632Z",
+    "visibility": "shared"
+  },
+  "fresh_after_forget": {
+    "thread": "08c255a1-c2c8-41c3-a68d-26cbcbdb026d",
+    "run": {
+      "status": "succeeded",
+      "id": "532cf173-141f-4559-9d6a-3067214f395a",
+      "model": "sumopod/deepseek-v4-flash",
+      "billing": "api_key",
+      "product_tools": [
+        "ngertiin.read_skill",
+        "ngertiin.read_attachment"
+      ]
+    },
+    "reply": "TICKET CHECK\n\n**cedar-tickets.txt — 4 distinct tickets (C-41 … C-44)**\n\n| Status | Tickets | Count |\n|---|---|---|\n| Open | C-41, C-43 | 2 |\n| Waiting | C-42 | 1 |\n| Complete | C-44 | 1 |\n| **Distinct total** | | **4** |\n\nStatus counts reconcile: 2 + 1 + 1 = 4, matching the 4 unique ticket IDs (no duplicate rows found).\n\n- **Open (2):** Confirm dock equipment delivery (C-41); Approve the fuel invoice (C-43)\n- **Waiting (1):** Validate the evening checklist (C-42)\n- **Complete (1):** Send the shift attendance report (C-44)"
+  },
+  "attachment_sha256": "156b4e5301aa809f49cb22b0ba1993fd86335b9f200fe6911d98bb71afa8f963"
+}

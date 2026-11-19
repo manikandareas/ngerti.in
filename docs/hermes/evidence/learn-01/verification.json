@@ -1,0 +1,46 @@
+{
+  "date": "2026-11-18",
+  "surface": "Ngertiin Web (Chromium)",
+  "harness": "Pi ACP",
+  "provider": "Sumopod live",
+  "model": "sumopod/deepseek-v4-flash",
+  "billing": "api_key",
+  "dashboard_is_fixture": true,
+  "source": {
+    "run_id": "ef559350-1b9d-4315-a869-9e4751c561e7",
+    "request": "Please make a downloadable CSV from our test dashboard at http://host.docker.internal:8413/cedar with one data row per site and columns site and units. In chat, tell me the total units and the highest-volume site.",
+    "status": "succeeded",
+    "export_status": 503,
+    "pages_read": [
+      1,
+      2
+    ],
+    "review_state": "applied",
+    "review_attempts": 1,
+    "same_run_skill_provenance": true,
+    "skill": "paginated-table-to-csv-fallback",
+    "version": 1
+  },
+  "reuse": {
+    "run_id": "23f4e960-ac3f-407f-aa84-4fc5d5ce3042",
+    "request": "Please make a downloadable CSV from our test dashboard at http://host.docker.internal:8413/maple with one data row per site and columns site and units. In chat, tell me the total units and the highest-volume site.",
+    "new_thread_initially_empty": true,
+    "same_agent": true,
+    "skill_read_before_publication": true,
+    "skill_version": 1,
+    "data_rows": 5,
+    "total": 584,
+    "highest_site": "Maple North",
+    "highest_units": 241,
+    "artifact_and_download_sha256": "e436358ba26fbf7f6c4c5399b1b41c44b86b7cfa920466c9e8e9f844e1e62a37",
+    "pages_read": [
+      1,
+      2,
+      3
+    ],
+    "export_attempts": 1,
+    "export_status": 503,
+    "recovery": "Read all three pages and published the verified CSV.",
+    "recovery_after_export_observed_all_three_pages": true
+  }
+}

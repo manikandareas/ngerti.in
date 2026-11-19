@@ -1,0 +1,180 @@
+{
+  "date": "2026-11-19",
+  "surface": "Ngertiin Web (Chromium)",
+  "harness": "Pi ACP",
+  "model_provider": "live",
+  "data": "synthetic two-file acceptance with a scripted inaccurate first answer",
+  "first": {
+    "thread": "590f7a80-2c4f-4ffe-a810-17861a6dd438",
+    "goal": {
+      "id": "7c2f6a51-3d4e-4a9b-9c1f-2b8ad4e5f601",
+      "state": "active",
+      "work_state": "ready",
+      "verification": {
+        "attempt_limit": 3,
+        "attempts_used": 1,
+        "checks": [
+          {
+            "artifact_name": "spruce-checked-a.txt",
+            "exact_text": "A=19",
+            "title": "File A contains A=19"
+          },
+          {
+            "artifact_name": "spruce-checked-b.txt",
+            "exact_text": "B=23",
+            "title": "File B contains B=23"
+          }
+        ],
+        "last_check": {
+          "results": [
+            {
+              "artifact_id": "9b2c7e04-1a8f-4d3e-9c55-6f0b7d21a903",
+              "artifact_name": "spruce-checked-a.txt",
+              "status": "passed",
+              "title": "File A contains A=19"
+            },
+            {
+              "artifact_id": null,
+              "artifact_name": "spruce-checked-b.txt",
+              "status": "missing",
+              "title": "File B contains B=23"
+            }
+          ],
+          "run_id": "8742e98e-ece7-43b8-8d60-cc964fba91c4"
+        }
+      },
+      "progress": "Verification attempt 1 of 3 failed. File B contains B=23: spruce-checked-b.txt is missing. The Goal is still active. The remaining requirements will be tried again.",
+      "evidence_artifact_ids": [
+        "9b2c7e04-1a8f-4d3e-9c55-6f0b7d21a903"
+      ]
+    },
+    "runs": [
+      {
+        "id": "8742e98e-ece7-43b8-8d60-cc964fba91c4",
+        "status": "succeeded",
+        "goal_id": null,
+        "goal_generation": null,
+        "product_tools": [
+          "ngertiin.list_goals",
+          "ngertiin.get_workspace",
+          "ngertiin.capture_goal",
+          "ngertiin.create_file",
+          "ngertiin.publish_artifact",
+          "ngertiin.report_goal"
+        ],
+        "model": "sumopod/deepseek-v4-flash",
+        "billing": "api_key"
+      }
+    ],
+    "answers": [
+      "All deliverables are complete."
+    ],
+    "files": [
+      {
+        "id": "9b2c7e04-1a8f-4d3e-9c55-6f0b7d21a903",
+        "name": "spruce-checked-a.txt",
+        "sha256": "d54a2fe4e19d810a3b18094bfff46b3ca522d8486ee5c7f213eae7febffa831e",
+        "run_id": "8742e98e-ece7-43b8-8d60-cc964fba91c4"
+      }
+    ]
+  },
+  "settled": {
+    "thread": "590f7a80-2c4f-4ffe-a810-17861a6dd438",
+    "goal": {
+      "id": "7c2f6a51-3d4e-4a9b-9c1f-2b8ad4e5f601",
+      "state": "completed",
+      "work_state": "ready",
+      "verification": {
+        "attempt_limit": 3,
+        "attempts_used": 2,
+        "checks": [
+          {
+            "artifact_name": "spruce-checked-a.txt",
+            "exact_text": "A=19",
+            "title": "File A contains A=19"
+          },
+          {
+            "artifact_name": "spruce-checked-b.txt",
+            "exact_text": "B=23",
+            "title": "File B contains B=23"
+          }
+        ],
+        "last_check": {
+          "results": [
+            {
+              "artifact_id": "9b2c7e04-1a8f-4d3e-9c55-6f0b7d21a903",
+              "artifact_name": "spruce-checked-a.txt",
+              "status": "passed",
+              "title": "File A contains A=19"
+            },
+            {
+              "artifact_id": "b8e3c502-47a9-4d16-8f2b-6a19c7d3e406",
+              "artifact_name": "spruce-checked-b.txt",
+              "status": "passed",
+              "title": "File B contains B=23"
+            }
+          ],
+          "run_id": "cdfc626b-6814-4b31-a444-d5fa63cb8cfa"
+        }
+      },
+      "progress": "Attempt 2: created and published spruce-checked-b.txt containing B=23, repairing the only missing requirement from attempt 1. Submitting both files together: spruce-checked-a.txt (A=19, already passed) and spruce-checked-b.txt (B=23).",
+      "evidence_artifact_ids": [
+        "9b2c7e04-1a8f-4d3e-9c55-6f0b7d21a903",
+        "b8e3c502-47a9-4d16-8f2b-6a19c7d3e406"
+      ]
+    },
+    "runs": [
+      {
+        "id": "8742e98e-ece7-43b8-8d60-cc964fba91c4",
+        "status": "succeeded",
+        "goal_id": null,
+        "goal_generation": null,
+        "product_tools": [
+          "ngertiin.list_goals",
+          "ngertiin.get_workspace",
+          "ngertiin.capture_goal",
+          "ngertiin.create_file",
+          "ngertiin.publish_artifact",
+          "ngertiin.report_goal"
+        ],
+        "model": "sumopod/deepseek-v4-flash",
+        "billing": "api_key"
+      },
+      {
+        "id": "cdfc626b-6814-4b31-a444-d5fa63cb8cfa",
+        "status": "succeeded",
+        "goal_id": "7c2f6a51-3d4e-4a9b-9c1f-2b8ad4e5f601",
+        "goal_generation": 1,
+        "product_tools": [
+          "ngertiin.create_file",
+          "ngertiin.publish_artifact",
+          "ngertiin.report_goal"
+        ],
+        "model": "sumopod/deepseek-v4-flash",
+        "billing": "api_key"
+      }
+    ],
+    "answers": [
+      "All deliverables are complete.",
+      "Repair submitted for attempt 2.\n\n- [spruce-checked-a.txt](ngertiin://file/9b2c7e04-1a8f-4d3e-9c55-6f0b7d21a903) — contains A=19 (already verified)\n- [spruce-checked-b.txt](ngertiin://file/b8e3c502-47a9-4d16-8f2b-6a19c7d3e406) — newly created, contains B=23\n\nBoth file IDs were submitted together for this attempt; the automatic evaluator makes the final call."
+    ],
+    "files": [
+      {
+        "id": "9b2c7e04-1a8f-4d3e-9c55-6f0b7d21a903",
+        "name": "spruce-checked-a.txt",
+        "sha256": "d54a2fe4e19d810a3b18094bfff46b3ca522d8486ee5c7f213eae7febffa831e",
+        "run_id": "8742e98e-ece7-43b8-8d60-cc964fba91c4"
+      },
+      {
+        "id": "b8e3c502-47a9-4d16-8f2b-6a19c7d3e406",
+        "name": "spruce-checked-b.txt",
+        "sha256": "e01d484b37557e7aa0e59cc96921ba5a036b843cb6eec318f092c63dd0f2735c",
+        "run_id": "cdfc626b-6814-4b31-a444-d5fa63cb8cfa"
+      }
+    ]
+  },
+  "downloaded_sha256": [
+    "d54a2fe4e19d810a3b18094bfff46b3ca522d8486ee5c7f213eae7febffa831e",
+    "e01d484b37557e7aa0e59cc96921ba5a036b843cb6eec318f092c63dd0f2735c"
+  ]
+}

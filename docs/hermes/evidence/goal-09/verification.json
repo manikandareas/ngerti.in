@@ -1,0 +1,249 @@
+{
+  "date": "2026-11-19",
+  "surface": "Ngertiin Web (Chromium)",
+  "harness": "Pi ACP",
+  "model_provider": "live",
+  "data": "synthetic identical snapshots",
+  "before_fix": {
+    "thread": "e52c2746-7dc9-4d53-870c-e5124526f328",
+    "goal": {
+      "id": "7c1f2a3e-5b64-4c88-9d21-3f0a8b6c2e41",
+      "state": "active",
+      "work_state": "blocked",
+      "progress": "Blocked: the same Larch source snapshot still returns the identical two rows after two consecutive audit passes, so the source is not progressing. No new rows can be confirmed; no further audit file was produced and the audit is not being marked complete. Waiting on the source to yield genuinely new rows before another pass is worthwhile.",
+      "continuation_at": null,
+      "continuation_instruction": "",
+      "evidence_artifact_ids": [
+        "c8a1f452-9d73-4b26-8e05-7a3c64d1b98e",
+        "e7b3d104-58c2-4a97-b6f0-91d8c2a45f36"
+      ]
+    },
+    "runs": [
+      {
+        "id": "f0bedc5a-d111-4805-badc-9c8d38deb51e",
+        "status": "succeeded",
+        "goal_id": null,
+        "goal_generation": null,
+        "product_tools": [
+          "ngertiin.list_goals",
+          "ngertiin.get_workspace",
+          "ngertiin.capture_goal",
+          "ngertiin.create_file",
+          "ngertiin.publish_artifact",
+          "ngertiin.report_goal"
+        ],
+        "model": "sumopod/deepseek-v4-flash",
+        "billing": "api_key"
+      },
+      {
+        "id": "875bdccf-6465-4b37-a208-a8db178091e2",
+        "status": "succeeded",
+        "goal_id": "7c1f2a3e-5b64-4c88-9d21-3f0a8b6c2e41",
+        "goal_generation": 1,
+        "product_tools": [
+          "ngertiin.create_file",
+          "ngertiin.publish_artifact",
+          "ngertiin.report_goal"
+        ],
+        "model": "sumopod/deepseek-v4-flash",
+        "billing": "api_key"
+      },
+      {
+        "id": "9db5148a-50c3-42f6-abae-5e74a3ae82d5",
+        "status": "succeeded",
+        "goal_id": "7c1f2a3e-5b64-4c88-9d21-3f0a8b6c2e41",
+        "goal_generation": 1,
+        "product_tools": [
+          "ngertiin.report_goal"
+        ],
+        "model": "sumopod/deepseek-v4-flash",
+        "billing": "api_key"
+      }
+    ],
+    "files": [
+      {
+        "id": "c8a1f452-9d73-4b26-8e05-7a3c64d1b98e",
+        "name": "larch-audit.txt",
+        "sha256": "3b7d3421a22948fa56d8418ed8e0ffc728957da27e5c4a0c218f5bab65d5d3d7",
+        "run_id": "f0bedc5a-d111-4805-badc-9c8d38deb51e"
+      },
+      {
+        "id": "e7b3d104-58c2-4a97-b6f0-91d8c2a45f36",
+        "name": "larch-audit.txt",
+        "sha256": "3b7d3421a22948fa56d8418ed8e0ffc728957da27e5c4a0c218f5bab65d5d3d7",
+        "run_id": "875bdccf-6465-4b37-a208-a8db178091e2"
+      }
+    ],
+    "routines": 0
+  },
+  "progress": {
+    "thread": "f1e51069-d9b5-48eb-aa6a-a223ec8f9b9a",
+    "goal": {
+      "id": "5e6f7a8b-2c3d-4e5f-9a0b-1c2d3e4f5a6b",
+      "state": "active",
+      "work_state": "ready",
+      "progress": "Rows checked: 5. Import audit remains.",
+      "continuation_at": "2026-11-18T18:34:00Z",
+      "continuation_instruction": "Compare the Hemlock source for new audit rows.",
+      "evidence_artifact_ids": [
+        "1a2b3c4d-1111-4a2b-8c3d-000000000003"
+      ]
+    },
+    "runs": [
+      {
+        "id": "1fb0bc5e-3328-435d-b1e9-ef78b44086ac",
+        "status": "succeeded",
+        "goal_id": null,
+        "goal_generation": null,
+        "product_tools": [
+          "ngertiin.get_workspace",
+          "ngertiin.capture_goal",
+          "ngertiin.create_file",
+          "ngertiin.publish_artifact",
+          "ngertiin.report_goal"
+        ],
+        "model": "sumopod/deepseek-v4-flash",
+        "billing": "api_key"
+      }
+    ],
+    "files": [
+      {
+        "id": "1a2b3c4d-1111-4a2b-8c3d-000000000003",
+        "name": "hemlock-snapshot.txt",
+        "sha256": "803ef0d5c4b75679846218606d4f429398f52e14c80e3034ec05ef3de2a66287",
+        "run_id": "1fb0bc5e-3328-435d-b1e9-ef78b44086ac"
+      }
+    ],
+    "routines": 0
+  },
+  "blocked": {
+    "thread": "f1e51069-d9b5-48eb-aa6a-a223ec8f9b9a",
+    "goal": {
+      "id": "5e6f7a8b-2c3d-4e5f-9a0b-1c2d3e4f5a6b",
+      "state": "active",
+      "work_state": "blocked",
+      "progress": "The last continuation repeated the same progress, evidence, and next step. The Goal is blocked until new evidence or direction is available.",
+      "continuation_at": null,
+      "continuation_instruction": "",
+      "evidence_artifact_ids": [
+        "1a2b3c4d-1111-4a2b-8c3d-000000000003"
+      ]
+    },
+    "runs": [
+      {
+        "id": "1fb0bc5e-3328-435d-b1e9-ef78b44086ac",
+        "status": "succeeded",
+        "goal_id": null,
+        "goal_generation": null,
+        "product_tools": [
+          "ngertiin.get_workspace",
+          "ngertiin.capture_goal",
+          "ngertiin.create_file",
+          "ngertiin.publish_artifact",
+          "ngertiin.report_goal"
+        ],
+        "model": "sumopod/deepseek-v4-flash",
+        "billing": "api_key"
+      },
+      {
+        "id": "099c6e14-1f46-4a42-b769-4ec4ce6f7f19",
+        "status": "succeeded",
+        "goal_id": "5e6f7a8b-2c3d-4e5f-9a0b-1c2d3e4f5a6b",
+        "goal_generation": 1,
+        "product_tools": [
+          "ngertiin.create_file",
+          "ngertiin.publish_artifact",
+          "ngertiin.report_goal"
+        ],
+        "model": "sumopod/deepseek-v4-flash",
+        "billing": "api_key"
+      }
+    ],
+    "files": [
+      {
+        "id": "1a2b3c4d-1111-4a2b-8c3d-000000000003",
+        "name": "hemlock-snapshot.txt",
+        "sha256": "803ef0d5c4b75679846218606d4f429398f52e14c80e3034ec05ef3de2a66287",
+        "run_id": "1fb0bc5e-3328-435d-b1e9-ef78b44086ac"
+      },
+      {
+        "id": "1a2b3c4d-2222-4a2b-8c3d-000000000002",
+        "name": "hemlock-snapshot.txt",
+        "sha256": "803ef0d5c4b75679846218606d4f429398f52e14c80e3034ec05ef3de2a66287",
+        "run_id": "099c6e14-1f46-4a42-b769-4ec4ce6f7f19"
+      }
+    ],
+    "routines": 0
+  },
+  "waiting_after_reload": {
+    "thread": "f1e51069-d9b5-48eb-aa6a-a223ec8f9b9a",
+    "goal": {
+      "id": "5e6f7a8b-2c3d-4e5f-9a0b-1c2d3e4f5a6b",
+      "state": "active",
+      "work_state": "waiting",
+      "progress": "Rows checked: 5. Import audit remains. Next step is waiting for the owner's explicit EAST or WEST import decision; no import has been run and no retry is scheduled.",
+      "continuation_at": null,
+      "continuation_instruction": "",
+      "evidence_artifact_ids": [
+        "1a2b3c4d-1111-4a2b-8c3d-000000000003"
+      ]
+    },
+    "runs": [
+      {
+        "id": "1fb0bc5e-3328-435d-b1e9-ef78b44086ac",
+        "status": "succeeded",
+        "goal_id": null,
+        "goal_generation": null,
+        "product_tools": [
+          "ngertiin.get_workspace",
+          "ngertiin.capture_goal",
+          "ngertiin.create_file",
+          "ngertiin.publish_artifact",
+          "ngertiin.report_goal"
+        ],
+        "model": "sumopod/deepseek-v4-flash",
+        "billing": "api_key"
+      },
+      {
+        "id": "099c6e14-1f46-4a42-b769-4ec4ce6f7f19",
+        "status": "succeeded",
+        "goal_id": "5e6f7a8b-2c3d-4e5f-9a0b-1c2d3e4f5a6b",
+        "goal_generation": 1,
+        "product_tools": [
+          "ngertiin.create_file",
+          "ngertiin.publish_artifact",
+          "ngertiin.report_goal"
+        ],
+        "model": "sumopod/deepseek-v4-flash",
+        "billing": "api_key"
+      },
+      {
+        "id": "588bf665-e798-4931-9f9b-a196dd95828b",
+        "status": "succeeded",
+        "goal_id": null,
+        "goal_generation": null,
+        "product_tools": [
+          "ngertiin.report_goal"
+        ],
+        "model": "sumopod/deepseek-v4-flash",
+        "billing": "api_key"
+      }
+    ],
+    "files": [
+      {
+        "id": "1a2b3c4d-1111-4a2b-8c3d-000000000003",
+        "name": "hemlock-snapshot.txt",
+        "sha256": "803ef0d5c4b75679846218606d4f429398f52e14c80e3034ec05ef3de2a66287",
+        "run_id": "1fb0bc5e-3328-435d-b1e9-ef78b44086ac"
+      },
+      {
+        "id": "1a2b3c4d-2222-4a2b-8c3d-000000000002",
+        "name": "hemlock-snapshot.txt",
+        "sha256": "803ef0d5c4b75679846218606d4f429398f52e14c80e3034ec05ef3de2a66287",
+        "run_id": "099c6e14-1f46-4a42-b769-4ec4ce6f7f19"
+      }
+    ],
+    "routines": 0
+  },
+  "expected_snapshot_sha256": "803ef0d5c4b75679846218606d4f429398f52e14c80e3034ec05ef3de2a66287"
+}

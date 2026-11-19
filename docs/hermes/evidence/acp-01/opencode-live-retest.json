@@ -1,0 +1,33 @@
+{
+  "date": "2026-11-19",
+  "surface": "Chrome Ngertiin Web with real authenticated HTTP, PostgreSQL, and a disposable Cua domain",
+  "harness": "OpenCode ACP 1.19.5, native OpenCode 1.19.5",
+  "provider": "OpenCode Free live, no API key",
+  "completed": false,
+  "workingFilePreflight": {
+    "state": "verified",
+    "ms": 2121
+  },
+  "run": {
+    "id": "b3d5a6c8-0da3-4114-8879-6be0d61a2364",
+    "status": "failed",
+    "diagnostic": {
+      "code": "PROVIDER_LIMIT",
+      "category": "provider",
+      "outcome": "failed"
+    },
+    "provider_selection": {
+      "connection_id": "bfbb2372-2066-4678-9cf9-96b0b04443b7",
+      "connection_generation": 2,
+      "account_id": null,
+      "harness": "opencode",
+      "provider_id": "opencode",
+      "model_id": "opencode/deepseek-v4.1-flash-free",
+      "reasoning": null,
+      "billing_source": "free"
+    },
+    "product_tools": []
+  },
+  "observedProviderLimit": "Usage limit reached. Wait for quota to reset or choose another connection.",
+  "disposableDomainVolumeRemoved": true
+}

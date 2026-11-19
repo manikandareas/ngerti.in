@@ -1,0 +1,100 @@
+{
+  "date": "2026-11-19",
+  "surface": "Authenticated Ngertiin Web / Chromium",
+  "harness": "Pi ACP",
+  "provider": "Sumopod live / API key",
+  "thread": "00359041-1e4c-4f54-bdfe-007096a4f350",
+  "receipts": {
+    "runs": [
+      {
+        "id": "1c8b054f-1d82-48f0-8eb9-434a8ec14eea",
+        "model": "sumopod/deepseek-v4-flash",
+        "status": "succeeded",
+        "billing": "api_key",
+        "binding": "0030aa1e-38c5-48b2-91d3-51bfa5afb506",
+        "workspace": "f6149c2f-3385-4473-9d98-7ae46bcd60f6",
+        "agent_revision": 1,
+        "workspace_revision": 2
+      },
+      {
+        "id": "188dee55-37ba-4584-979f-a6f465beb0f4",
+        "model": "sumopod/deepseek-v4-flash",
+        "status": "succeeded",
+        "billing": "api_key",
+        "binding": "0030aa1e-38c5-48b2-91d3-51bfa5afb506",
+        "workspace": "f6149c2f-3385-4473-9d98-7ae46bcd60f6",
+        "agent_revision": 1,
+        "workspace_revision": 2
+      },
+      {
+        "id": "aa402d24-6f48-4651-93da-fb78ce2537b6",
+        "model": "sumopod/deepseek-v4-flash",
+        "status": "succeeded",
+        "billing": "api_key",
+        "binding": "3627d0a8-5f41-4695-a00e-025cb90aaa38",
+        "workspace": "f6149c2f-3385-4473-9d98-7ae46bcd60f6",
+        "agent_revision": 2,
+        "workspace_revision": 3
+      },
+      {
+        "id": "42ebf70c-009c-475a-8915-5e3d3c5b6ba2",
+        "model": "sumopod/deepseek-v4-flash",
+        "status": "succeeded",
+        "billing": "api_key",
+        "binding": "da932c46-d340-4cd0-ad1a-fe1840636c3c",
+        "workspace": "f6149c2f-3385-4473-9d98-7ae46bcd60f6",
+        "agent_revision": 2,
+        "workspace_revision": 4
+      }
+    ],
+    "workspace": {
+      "id": "f6149c2f-3385-4473-9d98-7ae46bcd60f6",
+      "state": "active",
+      "revision": 4,
+      "project_directory": "hermes-session02-ash-6d12"
+    }
+  },
+  "agent_update": {
+    "id": "188dee55-37ba-4584-979f-a6f465beb0f4",
+    "product_tools": [
+      "ngertiin.list_agents",
+      "ngertiin.update_agent"
+    ],
+    "tool_errors": []
+  },
+  "rules": [
+    {
+      "directory": "hermes-session02-ash-6d12",
+      "dock": "ASH-DOCK-41",
+      "sha256": "4c19b48ef19e2a29d7486359f9867257ed070bde26bfe295055b412833105c1a"
+    },
+    {
+      "directory": "hermes-session02-cedar-6d12",
+      "dock": "CEDAR-DOCK-76",
+      "sha256": "f11fbdb35f786d29aeb4fdab62ddb26a558d301949d5a9b3a55cc498830935f2"
+    }
+  ],
+  "other_account": {
+    "code": "NOT_FOUND",
+    "status": 404,
+    "verifiedTestActor": true
+  },
+  "agent_answers": [
+    {
+      "run_id": "1c8b054f-1d82-48f0-8eb9-434a8ec14eea",
+      "text": "\n\nRouting label for this dispatch:\n\n**ASH-DOCK-41**\n\nThat's the only constraint in the project's routing rules (`hermes-session02-ash-6d12/AGENTS.md`) — it just requires that exact dock group be included. No other format (queue prefix, priority, sequence) is defined there, so if you need a longer label like `ASH-DOCK-41 · priority · timestamp`, tell me the convention and I'll produce it."
+    },
+    {
+      "run_id": "188dee55-37ba-4584-979f-a6f465beb0f4",
+      "text": "Saved to my agent profile — it's now revision 2 with that instruction in place.\n\nGoing forward, a dispatch routing-label request gets exactly one line:\n\nORBIT-7 Dispatch Desk | ASH-DOCK-41\n\nThe dock group comes from the selected workspace's routing rules at answer time, so if a different workspace is selected or its rule changes, the tail of the line follows it."
+    },
+    {
+      "run_id": "aa402d24-6f48-4651-93da-fb78ce2537b6",
+      "text": "ORBIT-7 Dispatch Desk | CEDAR-DOCK-76"
+    },
+    {
+      "run_id": "42ebf70c-009c-475a-8915-5e3d3c5b6ba2",
+      "text": "ORBIT-7 Dispatch Desk | ASH-DOCK-41"
+    }
+  ]
+}

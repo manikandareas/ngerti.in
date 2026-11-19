@@ -1,0 +1,32 @@
+{
+  "date": "2026-11-18",
+  "surface": "Ngertiin Web (Chromium)",
+  "harness": "Pi ACP",
+  "provider": "Sumopod live",
+  "model": "sumopod/deepseek-v4-flash",
+  "billing": "api_key",
+  "synthetic_attachments": true,
+  "existing_dashboard_skill_and_assignment_unchanged_when_ticket_skill_created": true,
+  "new_skill": "cross-source-handover-reconciliation",
+  "first_version": 1,
+  "distinct_skill_id": true,
+  "fresh_chat_loaded_only_the_ticket_skill": true,
+  "reports": {
+    "cedar": {
+      "tracked": 4,
+      "agreed": 2,
+      "conflicted": 1,
+      "missing": 1,
+      "orphan": 1,
+      "download_sha256": "a506aeba732cdab751536db23ab6f40193f29a428f46d2af43137a1b1f1d40c8"
+    },
+    "maple": {
+      "tracked": 4,
+      "agreed": 2,
+      "conflicted": 1,
+      "missing": 1,
+      "orphan": 1,
+      "download_sha256": "a0fb020dfd6c60520096568fb6c025600bf4f5b40e310d97a1e9e8f6f6a29e9d"
+    }
+  }
+}

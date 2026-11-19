@@ -1,0 +1,26 @@
+{
+  "date": "2026-11-19",
+  "surface": "Chrome Ngertiin Web with real authenticated HTTP, PostgreSQL, and a disposable Cua domain",
+  "harness": "OpenCode ACP 1.19.5, native OpenCode 1.19.5",
+  "provider": "Sumopod live, owner-approved API key from the Pi profile",
+  "completed": false,
+  "catalog": {
+    "model": "sumopod/deepseek-v4-flash",
+    "provider": "sumopod",
+    "authentication": "local_config"
+  },
+  "workingFilePreflight": {
+    "state": "verified",
+    "ms": 179
+  },
+  "run": {
+    "status": "queued",
+    "diagnostic": {
+      "code": "NATIVE_UNKNOWN",
+      "category": "unknown",
+      "outcome": "unknown"
+    },
+    "product_tools": []
+  },
+  "disposableDomainVolumeRemoved": true
+}

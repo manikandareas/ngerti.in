@@ -1,0 +1,33 @@
+{
+  "browser": {
+    "date": "2026-11-19",
+    "surface": "Chrome Ngertiin Web with real authenticated HTTP, PostgreSQL, and a disposable Cua domain",
+    "harness": "Codex ACP 2.6.0, native Codex 0.169.0",
+    "provider": "Previously selected live OpenAI Subscription, retained short-lived access token",
+    "completed": false,
+    "run": {
+      "status": "succeeded",
+      "diagnostic": null,
+      "product_tools": []
+    },
+    "disposableDomainVolumeRemoved": true
+  },
+  "timing": {
+    "event": "harness.turn_timing",
+    "run_id": "29fd74f3-7f83-43ce-8234-7da5ea8019e9",
+    "outcome": "succeeded",
+    "phases": {
+      "session_ready": 712,
+      "account_settings_ready": 5883,
+      "inputs_ready": 7681,
+      "skills_ready": 9872,
+      "prompt_sent": 12996,
+      "native_accepted": 18321,
+      "native_first_text": 212660,
+      "completed": 238372
+    }
+  },
+  "activity": "Creating a file…",
+  "fileAbsentAtObservation": true,
+  "publicationObserved": false
+}

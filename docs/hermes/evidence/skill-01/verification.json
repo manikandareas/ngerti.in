@@ -1,0 +1,77 @@
+{
+  "date": "2026-11-19",
+  "surface": "Ngertiin Web (Chromium)",
+  "harness": "Pi ACP",
+  "provider": {
+    "mode": "live",
+    "model": "sumopod/deepseek-v4-flash",
+    "billing": "api_key"
+  },
+  "new_personal_agent": {
+    "name": "Brett",
+    "id": "a8a1aeaa-6387-4351-999c-2c37df2e29f3",
+    "thread": "7cda4f39-79f9-444b-bb1d-926e608a3423"
+  },
+  "built_in_skill": {
+    "name": "document-to-action-items",
+    "id": "8088a5c6-95bc-4af3-8c8c-5dd3f7f6577e",
+    "distribution": "built_in",
+    "created_at": "2026-11-18T22:46:26.064Z",
+    "assignment": {
+      "enabled": true,
+      "id": "29e980d9-72d1-47b5-a95b-8c28ec9f3ea1",
+      "version": 1
+    },
+    "revision": {
+      "id": "058dea05-b979-42bd-9ab8-59cf9773fbaa",
+      "sha256": "2916c0daba5317c8fd8e89f2f6fca08e6f495b26adbeadf8bc369fd71b0c11de",
+      "version": 1,
+      "created_at": "2026-11-18T22:46:26.077Z",
+      "source_run_id": null
+    }
+  },
+  "run_id": "6c02ee58-9198-4ffd-ade2-ab82e9eecf63",
+  "skill_reads": [
+    {
+      "skill_id": "8088a5c6-95bc-4af3-8c8c-5dd3f7f6577e",
+      "version": 1
+    }
+  ],
+  "input": {
+    "id": "fb46e332-fbb6-4e3e-acf6-f0850f64cda3",
+    "name": "briar-release-decision.txt",
+    "run_id": null,
+    "sha256": "57298bb256fdfa11d85ecae782c61f3aeaa6cab78f294afeda42769fd1336250",
+    "source_path": "inputs/fb46e332-fbb6-4e3e-acf6-f0850f64cda3/briar-release-decision.txt",
+    "workspace_id": "b34074af-2c57-4272-a58c-d26ba602878a"
+  },
+  "output": {
+    "id": "8e4d2a71-6b3c-4f52-a8d9-2c7b1f4e9a30",
+    "name": "briar-action-register.csv",
+    "run_id": "6c02ee58-9198-4ffd-ade2-ab82e9eecf63",
+    "sha256": "b18505b4d3967b811bcd47db49d2a7fd5a2dde40ec5dcbf44394e804abf4638f",
+    "source_path": "briar-action-register.csv",
+    "workspace_id": "b34074af-2c57-4272-a58c-d26ba602878a"
+  },
+  "rows": [
+    {
+      "Action": "Reconcile the inbound queue",
+      "Owner": "Amara",
+      "Due": "21 November 2026",
+      "Source": "briar-release-decision.txt, Confirmed actions: \"Amara will reconcile the inbound queue by 21 November 2026.\""
+    },
+    {
+      "Action": "Verify the bench calibration",
+      "Owner": "Niko",
+      "Due": "22 November 2026",
+      "Source": "briar-release-decision.txt, Confirmed actions: \"Niko will verify the bench calibration by 22 November 2026.\""
+    },
+    {
+      "Action": "Post the sample manifest to the handover folder",
+      "Owner": "Unassigned",
+      "Due": "Not set",
+      "Source": "briar-release-decision.txt, Confirmed actions: \"The team committed to posting the sample manifest to the handover folder.\""
+    }
+  ],
+  "proposal_excluded": true
+}

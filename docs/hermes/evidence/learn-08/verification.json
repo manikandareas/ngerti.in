@@ -1,0 +1,28 @@
+{
+  "date": "2026-11-18",
+  "surface": "Ngertiin Web (Chromium)",
+  "harness": "Pi ACP",
+  "provider": "Sumopod live",
+  "model": "sumopod/deepseek-v4-flash",
+  "billing": "api_key",
+  "inputs_are_synthetic": true,
+  "cancelled_active_run": {
+    "status": "cancelled",
+    "artifact_count": 0,
+    "review_admitted": false
+  },
+  "unverified_status_claim": {
+    "chat_reply": "Report completed.",
+    "artifact_count": 0,
+    "review_admitted": false
+  },
+  "routine_delivery_after_fix": {
+    "file": "cadence-note.txt",
+    "contents": "Ready for review.",
+    "artifact_and_download_sha256": "0eadc4297a5902159306a9e43be6ba7c3884c552399ce2e24d47ef4cda69bb01",
+    "review_admitted": false,
+    "observed_action": "Read and republished the existing file with identical content."
+  },
+  "skill_history_unchanged_in_all_three_cases": true,
+  "additional_review_messages": 0
+}

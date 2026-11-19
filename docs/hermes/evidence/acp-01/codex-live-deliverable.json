@@ -1,0 +1,38 @@
+{
+  "date": "2026-11-19",
+  "surface": "Chrome Ngertiin Web with real authenticated HTTP, PostgreSQL, and a disposable Cua domain",
+  "harness": "Codex ACP 2.6.0, native Codex 0.169.0",
+  "provider": "Previously selected live OpenAI Subscription, retained short-lived access token",
+  "completed": true,
+  "workingFilePreflight": {
+    "state": "verified",
+    "ms": 1808
+  },
+  "run": {
+    "id": "6f59d327-7435-4a92-8a98-ecf0d3b9be84",
+    "status": "succeeded",
+    "provider_selection": {
+      "connection_id": "ef9d6c19-af66-4e32-afb0-eb3b7eebaea9",
+      "connection_generation": 2,
+      "account_id": "1a4a908aef634323d94a340a08c8330ca25340fc39fa938917a02cca44642a45",
+      "harness": "codex",
+      "provider_id": "openai",
+      "model_id": "gpt-6.1-sol",
+      "reasoning": null,
+      "billing_source": "subscription"
+    },
+    "product_tools": [
+      "ngertiin.read_file",
+      "ngertiin.publish_artifact"
+    ]
+  },
+  "activity": "Codex Birch Verification: Reading your file…",
+  "artifact": {
+    "id": "d49c3f0d-a35a-40d1-aeee-90fa95003fa9",
+    "name": "codex-acp-willow.txt",
+    "sha256": "e62b4af9c3c17586e66118f9c8876522d688fa8fac25bbbb3217ce78bfd0bef3",
+    "bytes": 21,
+    "contents": "CODEX-ACP-WILLOW-9163"
+  },
+  "disposableDomainVolumeRemoved": true
+}

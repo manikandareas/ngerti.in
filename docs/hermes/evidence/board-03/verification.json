@@ -1,0 +1,328 @@
+{
+  "date": "2026-11-19",
+  "surface": "Authenticated Ngertiin Web / Chromium",
+  "harness": "Pi ACP",
+  "provider": "OpenAI-compatible local fixture / API key selection",
+  "assigned": {
+    "assignee": "c86e73bd-9015-46c4-8732-f19b9107f431",
+    "id": "2bb67517-5e40-418a-b845-7c1300958aa8",
+    "reviewer": "13102529-3c18-4af3-a7b4-6414108d5edd",
+    "revision": 1,
+    "thread": "e7f21aca-1bf2-4459-901b-5199c8069056"
+  },
+  "initial_review": {
+    "artifacts": [],
+    "assignee_name": "Parallel Ledger",
+    "blocker": null,
+    "current_run_id": "c7e79661-e38c-46d2-b904-4ebcbc8d9c5b",
+    "id": "2bb67517-5e40-418a-b845-7c1300958aa8",
+    "result_artifact_ids": [],
+    "review_decision": null,
+    "review_feedback": null,
+    "reviewer_name": "Parallel Secondary",
+    "revision": 4,
+    "state": "review",
+    "submission": {
+      "artifact_ids": [
+        "07df6daf-841b-41ad-bf05-806fa71ee603"
+      ],
+      "summary": "Release count verified at 42 units."
+    },
+    "thread_id": "e7f21aca-1bf2-4459-901b-5199c8069056"
+  },
+  "changes_requested": {
+    "artifacts": [],
+    "assignee_name": "Parallel Ledger",
+    "blocker": null,
+    "current_run_id": "314e7914-adef-4ef7-ad00-c7f29a1f2c47",
+    "id": "2bb67517-5e40-418a-b845-7c1300958aa8",
+    "result_artifact_ids": [],
+    "review_decision": null,
+    "review_feedback": "The note lists 42 released units. Add the missing line Operator sign-off: Harbor QA.",
+    "reviewer_name": "Parallel Secondary",
+    "revision": 6,
+    "state": "running",
+    "submission": null,
+    "thread_id": "e7f21aca-1bf2-4459-901b-5199c8069056"
+  },
+  "decision_awaiting_native_settlement": {
+    "artifacts": [],
+    "assignee_name": "Parallel Ledger",
+    "blocker": null,
+    "current_run_id": "ab3659ef-eb90-4da6-8e97-2224257bc170",
+    "id": "2bb67517-5e40-418a-b845-7c1300958aa8",
+    "result_artifact_ids": [],
+    "review_decision": {
+      "decision": "approve",
+      "findings": "Verified 42 released units and the Harbor QA operator sign-off."
+    },
+    "review_feedback": "The note lists 42 released units. Add the missing line Operator sign-off: Harbor QA.",
+    "reviewer_name": "Parallel Secondary",
+    "revision": 9,
+    "state": "review",
+    "submission": {
+      "artifact_ids": [
+        "5c57b89e-b1c7-413d-addd-decdf7b777ee"
+      ],
+      "summary": "Verified 42 units and added the Harbor QA operator sign-off."
+    },
+    "thread_id": "e7f21aca-1bf2-4459-901b-5199c8069056"
+  },
+  "restored_result": {
+    "artifacts": [
+      {
+        "id": "5c57b89e-b1c7-413d-addd-decdf7b777ee",
+        "name": "release-note.txt",
+        "workspace_id": "1ab2939a-9a9d-472f-b817-994c14144a52"
+      }
+    ],
+    "assignee_name": "Parallel Ledger",
+    "blocker": null,
+    "current_run_id": "ab3659ef-eb90-4da6-8e97-2224257bc170",
+    "id": "2bb67517-5e40-418a-b845-7c1300958aa8",
+    "result_artifact_ids": [
+      "5c57b89e-b1c7-413d-addd-decdf7b777ee"
+    ],
+    "review_decision": {
+      "decision": "approve",
+      "findings": "Verified 42 released units and the Harbor QA operator sign-off."
+    },
+    "review_feedback": "The note lists 42 released units. Add the missing line Operator sign-off: Harbor QA.",
+    "reviewer_name": "Parallel Secondary",
+    "revision": 10,
+    "state": "done",
+    "submission": {
+      "artifact_ids": [
+        "5c57b89e-b1c7-413d-addd-decdf7b777ee"
+      ],
+      "summary": "Verified 42 units and added the Harbor QA operator sign-off."
+    },
+    "thread_id": "e7f21aca-1bf2-4459-901b-5199c8069056"
+  },
+  "receipts": {
+    "card": "2bb67517-5e40-418a-b845-7c1300958aa8",
+    "runs": [
+      {
+        "id": "a5bd7c2b-1479-4036-8d68-b5451fa19617",
+        "agent": "c86e73bd-9015-46c4-8732-f19b9107f431",
+        "model": "delegation-fixture/peer-checks",
+        "reads": [],
+        "tools": [
+          "ngertiin.create_file",
+          "ngertiin.publish_artifact",
+          "ngertiin.submit_board_card"
+        ],
+        "status": "succeeded",
+        "billing": "api_key",
+        "input_ids": [],
+        "workspace": "1ab2939a-9a9d-472f-b817-994c14144a52",
+        "has_correction": false
+      },
+      {
+        "id": "c7e79661-e38c-46d2-b904-4ebcbc8d9c5b",
+        "agent": "13102529-3c18-4af3-a7b4-6414108d5edd",
+        "model": "delegation-fixture/peer-checks",
+        "reads": [
+          {
+            "pages": [
+              1
+            ],
+            "operation": "context",
+            "truncated": true,
+            "created_at": "2026-11-19T05:51:18.526Z",
+            "artifact_id": "07df6daf-841b-41ad-bf05-806fa71ee603",
+            "source_sha256": "f5c7f790eebeca01b89210d490e7e51c5acd40817c985c708051129d4124e151"
+          },
+          {
+            "pages": [
+              1
+            ],
+            "operation": "read",
+            "truncated": false,
+            "created_at": "2026-11-19T05:51:21.253Z",
+            "artifact_id": "07df6daf-841b-41ad-bf05-806fa71ee603",
+            "source_sha256": "f5c7f790eebeca01b89210d490e7e51c5acd40817c985c708051129d4124e151"
+          }
+        ],
+        "tools": [
+          "ngertiin.read_attachment",
+          "ngertiin.review_board_card"
+        ],
+        "status": "succeeded",
+        "billing": "api_key",
+        "input_ids": [
+          "07df6daf-841b-41ad-bf05-806fa71ee603"
+        ],
+        "workspace": "1ab2939a-9a9d-472f-b817-994c14144a52",
+        "has_correction": false
+      },
+      {
+        "id": "314e7914-adef-4ef7-ad00-c7f29a1f2c47",
+        "agent": "c86e73bd-9015-46c4-8732-f19b9107f431",
+        "model": "delegation-fixture/peer-checks",
+        "reads": [],
+        "tools": [
+          "ngertiin.create_file",
+          "ngertiin.publish_artifact",
+          "ngertiin.submit_board_card"
+        ],
+        "status": "succeeded",
+        "billing": "api_key",
+        "input_ids": [],
+        "workspace": "1ab2939a-9a9d-472f-b817-994c14144a52",
+        "has_correction": true
+      },
+      {
+        "id": "ab3659ef-eb90-4da6-8e97-2224257bc170",
+        "agent": "13102529-3c18-4af3-a7b4-6414108d5edd",
+        "model": "delegation-fixture/peer-checks",
+        "reads": [
+          {
+            "pages": [
+              1
+            ],
+            "operation": "context",
+            "truncated": true,
+            "created_at": "2026-11-19T05:51:50.846Z",
+            "artifact_id": "5c57b89e-b1c7-413d-addd-decdf7b777ee",
+            "source_sha256": "37850a6283a13cff9d05841832e4cb0f350f486fe1077fc71b83a4d764e6bc04"
+          },
+          {
+            "pages": [
+              1
+            ],
+            "operation": "read",
+            "truncated": false,
+            "created_at": "2026-11-19T05:51:53.595Z",
+            "artifact_id": "5c57b89e-b1c7-413d-addd-decdf7b777ee",
+            "source_sha256": "37850a6283a13cff9d05841832e4cb0f350f486fe1077fc71b83a4d764e6bc04"
+          }
+        ],
+        "tools": [
+          "ngertiin.read_attachment",
+          "ngertiin.review_board_card"
+        ],
+        "status": "succeeded",
+        "billing": "api_key",
+        "input_ids": [
+          "5c57b89e-b1c7-413d-addd-decdf7b777ee"
+        ],
+        "workspace": "1ab2939a-9a9d-472f-b817-994c14144a52",
+        "has_correction": false
+      }
+    ],
+    "state": "done",
+    "states": [
+      {
+        "run": null,
+        "state": "ready",
+        "cursor": 19314,
+        "decision": null,
+        "result_ids": []
+      },
+      {
+        "run": "a5bd7c2b-1479-4036-8d68-b5451fa19617",
+        "state": "running",
+        "cursor": 19321,
+        "decision": null,
+        "result_ids": []
+      },
+      {
+        "run": "a5bd7c2b-1479-4036-8d68-b5451fa19617",
+        "state": "running",
+        "cursor": 19356,
+        "decision": null,
+        "result_ids": []
+      },
+      {
+        "run": "c7e79661-e38c-46d2-b904-4ebcbc8d9c5b",
+        "state": "review",
+        "cursor": 19372,
+        "decision": null,
+        "result_ids": []
+      },
+      {
+        "run": "c7e79661-e38c-46d2-b904-4ebcbc8d9c5b",
+        "state": "review",
+        "cursor": 19395,
+        "decision": "request_changes",
+        "result_ids": []
+      },
+      {
+        "run": "314e7914-adef-4ef7-ad00-c7f29a1f2c47",
+        "state": "running",
+        "cursor": 19412,
+        "decision": null,
+        "result_ids": []
+      },
+      {
+        "run": "314e7914-adef-4ef7-ad00-c7f29a1f2c47",
+        "state": "running",
+        "cursor": 19443,
+        "decision": null,
+        "result_ids": []
+      },
+      {
+        "run": "ab3659ef-eb90-4da6-8e97-2224257bc170",
+        "state": "review",
+        "cursor": 19459,
+        "decision": null,
+        "result_ids": []
+      },
+      {
+        "run": "ab3659ef-eb90-4da6-8e97-2224257bc170",
+        "state": "review",
+        "cursor": 19481,
+        "decision": "approve",
+        "result_ids": []
+      },
+      {
+        "run": "ab3659ef-eb90-4da6-8e97-2224257bc170",
+        "state": "done",
+        "cursor": 19495,
+        "decision": "approve",
+        "result_ids": [
+          "5c57b89e-b1c7-413d-addd-decdf7b777ee"
+        ]
+      }
+    ],
+    "versions": [
+      {
+        "id": "07df6daf-841b-41ad-bf05-806fa71ee603",
+        "path": "draft/release-note.txt",
+        "sha256": "f5c7f790eebeca01b89210d490e7e51c5acd40817c985c708051129d4124e151",
+        "producer": "a5bd7c2b-1479-4036-8d68-b5451fa19617",
+        "workspace": "1ab2939a-9a9d-472f-b817-994c14144a52"
+      },
+      {
+        "id": "5c57b89e-b1c7-413d-addd-decdf7b777ee",
+        "path": "revised/release-note.txt",
+        "sha256": "37850a6283a13cff9d05841832e4cb0f350f486fe1077fc71b83a4d764e6bc04",
+        "producer": "314e7914-adef-4ef7-ad00-c7f29a1f2c47",
+        "workspace": "1ab2939a-9a9d-472f-b817-994c14144a52"
+      }
+    ],
+    "same_scope": true,
+    "result_artifact_ids": [
+      "5c57b89e-b1c7-413d-addd-decdf7b777ee"
+    ],
+    "final_reviewer_settlement_cursor": 19493
+  },
+  "contents_verified": [
+    {
+      "id": "07df6daf-841b-41ad-bf05-806fa71ee603",
+      "status": 200,
+      "text": "Released units: 42\n"
+    },
+    {
+      "id": "5c57b89e-b1c7-413d-addd-decdf7b777ee",
+      "status": 200,
+      "text": "Released units: 42\nOperator sign-off: Harbor QA\n"
+    }
+  ],
+  "visible_conversation": [
+    "I requested the missing operator sign-off.",
+    "The revised release note is submitted.",
+    "I approved the revised release note."
+  ]
+}

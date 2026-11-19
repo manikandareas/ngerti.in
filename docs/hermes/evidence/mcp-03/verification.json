@@ -1,0 +1,163 @@
+{
+  "date": "2026-11-19",
+  "surface": "Chrome Web and authenticated Ngertiin API",
+  "harness": "Pi ACP 0.0.34 (Pi 1.5.2)",
+  "provider": "Pi API-key fixture and stateful MCP fixture",
+  "staleAndRevokedDiscoveries": [
+    {
+      "event": "waiting",
+      "stage": "stale",
+      "slug": "MCP_LOOKUP_KITE_ITEM",
+      "item": "KITE-624",
+      "at": "2026-11-19T07:36:49.396Z"
+    },
+    {
+      "event": "waiting",
+      "stage": "revoke",
+      "slug": "MCP_LOOKUP_RAVEN_ITEM",
+      "item": "RAVEN-309",
+      "at": "2026-11-19T07:50:12.436Z"
+    }
+  ],
+  "updatedCatalog": [
+    {
+      "action_policy": {
+        "mutability": "read_only",
+        "units": 0
+      },
+      "description": "Look up the current Raven inventory item in the Kite laboratory.",
+      "input_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "item_id": {
+            "const": "RAVEN-309",
+            "type": "string"
+          }
+        },
+        "required": [
+          "item_id"
+        ],
+        "type": "object"
+      },
+      "slug": "MCP_LOOKUP_RAVEN_ITEM",
+      "toolkit": "mcp_kite"
+    }
+  ],
+  "connectionAfterRevoke": {
+    "id": "c2222463-420e-443b-b7e6-39d45456a180",
+    "state": "revoked",
+    "generation": 7,
+    "updated_at": "2026-11-19T07:50:21.538Z"
+  },
+  "runs": [
+    {
+      "id": "1d63fca1-1c6d-4c2b-b33d-623ce1ad85b7",
+      "tools": [
+        "ngertiin.list_apps",
+        "ngertiin.search_app_tools"
+      ],
+      "errors": [
+        {
+          "code": "SCOPE_DENIED",
+          "name": "ngertiin.execute_app_tool",
+          "created_at": "2026-11-19T07:37:11.792Z"
+        }
+      ],
+      "status": "succeeded",
+      "timings": {
+        "ready_at": "2026-11-19T07:36:27.737Z",
+        "settled_at": "2026-11-19T07:37:21.942Z",
+        "accepted_at": "2026-11-19T07:36:30.939Z",
+        "preparing_at": "2026-11-19T07:35:52.139Z",
+        "dispatched_at": "2026-11-19T07:36:27.737Z",
+        "first_output_at": "2026-11-19T07:37:15.711Z"
+      }
+    },
+    {
+      "id": "e9493506-fc11-431b-872e-9d7ba0d4ed74",
+      "tools": [
+        "ngertiin.list_apps",
+        "ngertiin.search_app_tools"
+      ],
+      "errors": [],
+      "status": "succeeded",
+      "timings": {
+        "ready_at": "2026-11-19T07:38:23.873Z",
+        "settled_at": "2026-11-19T07:38:53.059Z",
+        "accepted_at": "2026-11-19T07:38:27.975Z",
+        "preparing_at": "2026-11-19T07:37:56.563Z",
+        "dispatched_at": "2026-11-19T07:38:23.873Z",
+        "first_output_at": "2026-11-19T07:38:52.244Z"
+      }
+    },
+    {
+      "id": "a3034b94-fb57-4e50-b5a9-01d035ffab2f",
+      "tools": [
+        "ngertiin.list_apps",
+        "ngertiin.search_app_tools",
+        "ngertiin.execute_app_tool"
+      ],
+      "errors": [],
+      "status": "succeeded",
+      "timings": {
+        "ready_at": "2026-11-19T07:47:38.911Z",
+        "settled_at": "2026-11-19T07:48:51.707Z",
+        "accepted_at": "2026-11-19T07:47:41.627Z",
+        "preparing_at": "2026-11-19T07:47:23.449Z",
+        "dispatched_at": "2026-11-19T07:47:38.911Z",
+        "first_output_at": "2026-11-19T07:48:49.511Z"
+      }
+    },
+    {
+      "id": "20f8c7a3-ad80-41a8-ba6f-6f468c3ce854",
+      "tools": [
+        "ngertiin.list_apps",
+        "ngertiin.search_app_tools"
+      ],
+      "errors": [
+        {
+          "code": "SCOPE_DENIED",
+          "name": "ngertiin.execute_app_tool",
+          "created_at": "2026-11-19T07:50:29.103Z"
+        }
+      ],
+      "status": "succeeded",
+      "timings": {
+        "ready_at": "2026-11-19T07:49:30.263Z",
+        "settled_at": "2026-11-19T07:50:33.851Z",
+        "accepted_at": "2026-11-19T07:49:33.058Z",
+        "preparing_at": "2026-11-19T07:49:04.963Z",
+        "dispatched_at": "2026-11-19T07:49:30.263Z",
+        "first_output_at": "2026-11-19T07:50:30.878Z"
+      }
+    }
+  ],
+  "receipts": [
+    {
+      "id": "bc21cd86-31b0-460d-af8e-cf61e61af012",
+      "run": "a3034b94-fb57-4e50-b5a9-01d035ffab2f",
+      "tool": "MCP_LOOKUP_RAVEN_ITEM",
+      "state": "succeeded",
+      "result": {
+        "content": [
+          {
+            "text": "carrier signal cobalt-19",
+            "type": "text"
+          }
+        ],
+        "structuredContent": {
+          "item": "RAVEN-309",
+          "value": "carrier signal cobalt-19",
+          "status": "checker-accepted"
+        }
+      }
+    }
+  ],
+  "targetCalls": [
+    {
+      "event": "lookup",
+      "item": "RAVEN-309",
+      "found": true
+    }
+  ]
+}

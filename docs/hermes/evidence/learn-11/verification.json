@@ -1,0 +1,61 @@
+{
+  "date": "2026-11-18",
+  "surface": "Ngertiin Web (Chromium)",
+  "harness": "Pi ACP",
+  "provider": {
+    "type": "live",
+    "model": "sumopod/deepseek-v4-flash",
+    "billing": "api_key"
+  },
+  "inputs": "synthetic",
+  "trigger": "User requested a focused work review in the original Cedar DM",
+  "request": "Review how you reconciled the two Cedar files earlier in this conversation. Focus on whether key normalization could merge distinct ticket IDs. Read the current reconciliation skill and use actual Cedar ticket IDs from the earlier task as evidence. Update the same skill if the evidence supports a correction, activate the revision, and tell me what change you actually saved.",
+  "reply": "**Review of the earlier reconciliation**\n\nWhat I actually did was match on the ticket ID as written — no prefix stripping, no separator stripping. So the Cedar output was not corrupted:\n\n- Tracker IDs: C-41, C-42, C-43, C-44\n- Assignment IDs: C-41 (listed twice), C-43 (twice), C-44, C-99\n- Five distinct raw IDs in, five distinct joined keys out — counts equal, nothing collapsed.\n\n**Where the skill was wrong anyway.** Its key-normalization step told me to \"trim, case-fold, strip prefixes,\" which is lossy:\n\n- Stripping the prefix turns C-41 into `41`, so an assignment written `C41` or `41` would be silently absorbed as a match instead of flagged.\n- Generic prefix stripping also maps C-99 and D-99 to the same key — two different tickets, one merged record.\n- Leading-zero handling merges C-4 with C-04.\n\nIn Cedar this was latent rather than realized: the IDs are uniformly `C-` plus two digits, so the same five buckets survive either rule. The dangerous case is C-99, the orphan. A permissive key would let a near-miss tracker ID swallow Dana's assignment and quietly drop the one anomaly you actually need to see.\n\n**Change I saved** (reconciliation skill, now version 2 and active):\n\n1. Join key is the identifier exactly as written, whitespace trim only. Prefix, internal separators and leading zeros are preserved — C-41 never becomes C41 or 41.\n2. New collision guard: compare distinct raw identifiers against distinct cleaned keys, and refuse to merge if two raw IDs land on one key.\n3. Near-miss variants (case, separator, leading zero) go into a \"probable matches to confirm\" note instead of an agreed-owner row.\n4. Unmatched assignments stand alone even when a similar ID exists in the tracker.\n5. Final validation now requires stating that no two distinct identifiers were merged.\n\nThe Cedar handover itself stands as delivered — its conclusions were reached by exact matching, which is the rule the skill now enforces.",
+  "source_task_run": "c1ca5aea-1bf7-45fc-b247-fbdff633aac2",
+  "source_result": {
+    "name": "cedar-handover.md",
+    "origin": "native_output",
+    "sha256": "a506aeba732cdab751536db23ab6f40193f29a428f46d2af43137a1b1f1d40c8",
+    "size_bytes": 2065
+  },
+  "review_run": {
+    "id": "057ee480-c181-40fd-9128-3548a155230f",
+    "status": "succeeded",
+    "skill_reads": [
+      {
+        "skill_id": "14ba820d-e270-43e3-b394-07c3ff914b15",
+        "version": 1
+      }
+    ],
+    "product_tools": [
+      "ngertiin.read_skill",
+      "ngertiin.list_skills",
+      "ngertiin.revise_skill",
+      "ngertiin.assign_skill"
+    ]
+  },
+  "prior_package": {
+    "package": {
+      "assets": [],
+      "description": "Use when a downloadable Markdown handover must be built from two related records (e.g., a ticket tracker and an owner-assignment list) with per-record status, owner agreement, conflict and gap reporting, plus category counts in chat.",
+      "instructions": "1. Read every supplied source in full; if a read fails or returns an error, retry that source and confirm it loaded before reconciling — do not build the handover from partial data.\n2. Normalize the join key in both sources (trim, case-fold, strip prefixes) so records match reliably across files.\n3. Build the union of keys: every key from the tracker is a tracked record; every key from the assignments file that has no tracker match is an unmatched assignment.\n4. For each tracked record, group owners from the assignments file after de-duplicating identical names: one distinct owner = agreed owner; two or more distinct owners = conflict, list all names; zero owners = missing owner.\n5. Write the Markdown handover with one row/section per tracked record (status plus owner when agreed, and current status always), then explicit sections for conflicts (naming each competing owner), records with no owner, and assignments with no matching record. Mention any duplicate assignment that matches by identical name so it is not mistaken for a conflict.\n6. Save the Markdown as a downloadable file and give the user the link plus the ownership category counts in chat, including tracked total and unmatched-assignment count.\n7. Validate before finishing: the sum of agreed + conflict + missing equals the tracked total; every tracked record appears exactly once; every source assignment is either matched or listed as unmatched; spot-check a conflict row against both source files.\n8. Call out the highest-risk items briefly (unresolved contested ownership, unowned work) without inventing details beyond the sources."
+    },
+    "version": 1
+  },
+  "saved_revision": {
+    "package": {
+      "assets": [],
+      "description": "Use when a downloadable Markdown handover must be built from two related records (e.g., a ticket tracker and an owner-assignment list) with per-record status, owner agreement, conflict and gap reporting, plus category counts in chat.",
+      "instructions": "1. Read every supplied source in full; if a read fails or returns an error, retry that source and confirm it loaded before reconciling — do not build the handover from partial data.\n2. Join on the record identifier exactly as written, trimming only surrounding whitespace. Preserve the whole identifier: prefix, internal separators and leading zeros (C-41 stays C-41; never reduce it to C41, C-41-1 or 41). Do not case-fold, strip prefixes or strip separators when matching, because identifiers that differ only in those characters are distinct records in most trackers (C-4 vs C-04, C-41 vs C41, C-41 vs D-41).\n3. Guard against silent merges: compare the number of distinct raw identifiers per source with the number of distinct keys after any cleaning. If two raw identifiers would collapse to one key, do not merge them — report the pair as a possible duplicate identifier needing confirmation and keep both records separate.\n4. Near-miss variants (case, missing or extra separator, added or dropped leading zero) belong in a short \"probable matches to confirm\" note, never in an agreed-owner row and never as a reason to suppress an unmatched assignment.\n5. Build the union of keys: every key from the tracker is a tracked record; every key from the assignments file that has no exact tracker match is an unmatched assignment. An unmatched assignment stands alone even when a similar identifier exists in the tracker.\n6. For each tracked record, group owners from the assignments file after de-duplicating identical names: one distinct owner = agreed owner; two or more distinct owners = conflict, list all names; zero owners = missing owner.\n7. Write the Markdown handover with one row/section per tracked record (status plus owner when agreed, and current status always), then explicit sections for conflicts (naming each competing owner), records with no owner, and assignments with no matching record. Mention any duplicate assignment that matches by identical name so it is not mistaken for a conflict.\n8. Save the Markdown as a downloadable file and give the user the link plus the ownership category counts in chat, including tracked total and unmatched-assignment count.\n9. Validate before finishing: the sum of agreed + conflict + missing equals the tracked total; every tracked record appears exactly once; every source assignment is either matched or listed as unmatched; spot-check a conflict row against both source files; and state that no two distinct identifiers were merged by key cleaning.\n10. Call out the highest-risk items briefly (unresolved contested ownership, unowned work) without inventing details beyond the sources."
+    },
+    "sha256": "e7bfbc70288aa9f63f90f014e19c25760682020130f237ae4293460e83c89ab0",
+    "skill_id": "14ba820d-e270-43e3-b394-07c3ff914b15",
+    "source_run_id": "057ee480-c181-40fd-9128-3548a155230f",
+    "version": 2
+  },
+  "active_assignment": {
+    "enabled": true,
+    "revision": 2,
+    "version": 2
+  }
+}

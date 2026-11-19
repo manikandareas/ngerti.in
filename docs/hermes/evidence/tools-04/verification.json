@@ -1,0 +1,85 @@
+{
+  "date": "2026-11-19",
+  "surface": "Ngertiin Web (Chromium)",
+  "harness": "Pi ACP",
+  "model_provider": {
+    "mode": "live",
+    "model": "sumopod/deepseek-v4-flash",
+    "billing": "api_key"
+  },
+  "original_thread": "a0bffd3e-ee1e-4d10-b499-df14a1c4d301",
+  "original_workspace": "f9439c0c-eddf-4918-b6ee-fb8ce5c07ca0",
+  "positive_run": "24cac9f4-e91a-4fe8-84e8-90f167bd1215",
+  "search": {
+    "matches": [
+      {
+        "path": "tools04-mint-627/pump-record-627.txt",
+        "line": 2,
+        "text": "MINT-VALVE=staged"
+      }
+    ],
+    "files_scanned": 2,
+    "truncated": false
+  },
+  "write_receipt": {
+    "id": "3c1e0f22-9a41-4d7b-8f3e-3b6d9c0a1e51",
+    "name": "ngertiin.write_file",
+    "state": "succeeded",
+    "result": {
+      "path": "tools04-mint-627/pump-record-627.txt",
+      "sha256": "fb1aeb3cc65134cf25a05cec4117c1e91ba3cf32a509d2460262a8a7f45b2660"
+    },
+    "run_id": "24cac9f4-e91a-4fe8-84e8-90f167bd1215",
+    "resource": "file:tools04-mint-627/pump-record-627.txt",
+    "machine_id": "a8c2f32d-293e-488c-b74e-1c4cf4bdfb3a"
+  },
+  "edited_file": {
+    "sha256_before": "6446a515c4d7075a502d228a114e8cd70959071a88a780936f33f58d7b448975",
+    "sha256_after": "fb1aeb3cc65134cf25a05cec4117c1e91ba3cf32a509d2460262a8a7f45b2660",
+    "artifact": {
+      "id": "8b7d4c65-2f13-4e0a-9c88-5a1f2d6b7e93",
+      "name": "pump-record-627.txt",
+      "run_id": "24cac9f4-e91a-4fe8-84e8-90f167bd1215",
+      "sha256": "fb1aeb3cc65134cf25a05cec4117c1e91ba3cf32a509d2460262a8a7f45b2660",
+      "source_path": "tools04-mint-627/pump-record-627.txt",
+      "workspace_id": "f9439c0c-eddf-4918-b6ee-fb8ce5c07ca0"
+    }
+  },
+  "comparison_file": {
+    "name": "pump-ledger-637.txt",
+    "sha256_before": "a96e9e61d1a2934ed072c4a9e5a962dffabc94fd0a63988cde8830a517fd8a2a",
+    "sha256_after": "a96e9e61d1a2934ed072c4a9e5a962dffabc94fd0a63988cde8830a517fd8a2a"
+  },
+  "library_screenshot": "published-file.png",
+  "verified_download_text": "Asset=Mint Gate 624\nMINT-VALVE=verified\nOwner=East platform\n",
+  "different_thread": {
+    "thread": "f6da8d07-a516-4cc5-a757-9e89fe20898f",
+    "workspace": "bd7cb32f-07d5-441f-b85c-a5d5740d2f7f",
+    "run": "7d563d27-276f-4084-b87c-c4f4bc61675c",
+    "tool": "ngertiin.read_attachment",
+    "result": "SCOPE_DENIED"
+  },
+  "mismatched_download_workspace": {
+    "code": "SCOPE_DENIED",
+    "status": 403
+  },
+  "differently_authenticated_account": {
+    "ownMachine": "8fa5551d-2db4-42b0-b8a8-e2f8072c307e",
+    "ownWorkspace": "d3b8b2a7-4c1f-4619-b113-0971477d2a8b",
+    "probeResults": [
+      {
+        "code": "NOT_FOUND",
+        "status": 404
+      },
+      {
+        "code": "NOT_FOUND",
+        "status": 404
+      },
+      {
+        "code": "NOT_FOUND",
+        "status": 404
+      }
+    ],
+    "thread": "65b34771-5925-41c9-aad6-c32f2c74b7b8"
+  }
+}

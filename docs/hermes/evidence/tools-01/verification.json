@@ -1,0 +1,160 @@
+{
+  "date": "2026-11-19",
+  "surface": "Ngertiin Web (Chromium)",
+  "harness": "Pi ACP",
+  "provider": {
+    "mode": "loopback fixture",
+    "billing": "api_key"
+  },
+  "app_host": "isolated Harbor Docs fixture",
+  "grant": {
+    "grants": [
+      {
+        "agent_id": "bf61dd07-e39f-4e51-ad91-52271b43c3ed",
+        "resources": {},
+        "thread_id": "6f110b13-915f-4c40-ab1e-ec83c4007ed3",
+        "tools": [
+          "HARBOR_READ_SIGNAL"
+        ]
+      }
+    ],
+    "id": "4275cfe6-7f1c-43b3-8641-ee0ff1de773e",
+    "ownership": "personal",
+    "state": "active",
+    "toolkit": "harbor_docs"
+  },
+  "execution_receipt": {
+    "agent_id": "bf61dd07-e39f-4e51-ad91-52271b43c3ed",
+    "connection_id": "4275cfe6-7f1c-43b3-8641-ee0ff1de773e",
+    "id": "702c4e10-51e1-4e88-b14b-ee0fd1d08663",
+    "result": {
+      "signal": "HARBOR-SIGNAL-574"
+    },
+    "run_id": "9ff1617b-a448-4bea-b9d8-9b05f1d76bb3",
+    "state": "succeeded",
+    "thread_id": "6f110b13-915f-4c40-ab1e-ec83c4007ed3",
+    "tool": "HARBOR_READ_SIGNAL"
+  },
+  "remote_calls": 1,
+  "search": {
+    "event": "harbor_search",
+    "canRead": true,
+    "canUpdate": false,
+    "at": "2026-11-18T21:23:03.168Z"
+  },
+  "cases": [
+    {
+      "case": "before_grant",
+      "thread_id": "6f110b13-915f-4c40-ab1e-ec83c4007ed3",
+      "agent": {
+        "harness": "pi",
+        "id": "bf61dd07-e39f-4e51-ad91-52271b43c3ed",
+        "name": "Scope Reviewer"
+      },
+      "run_id": "e35f3728-42be-4f1b-bfc7-f80c118e1aa0",
+      "native_binding": {
+        "active": true,
+        "id": "e7072965-5753-45d4-9ecb-7161f29aa31f",
+        "native_session_id": "01a1f085-000a-7211-8bdd-abef6d1979f6",
+        "workspace_id": "5285ad07-5d86-4e2d-a0dc-cdf35c99c4d0"
+      },
+      "effective_catalog": {
+        "event": "harbor_catalog",
+        "workspace": true,
+        "search": false,
+        "execute": false,
+        "count": 52,
+        "at": "2026-11-18T21:19:53.893Z"
+      },
+      "authorized_tool_calls": [
+        "ngertiin.get_workspace",
+        "ngertiin.list_apps"
+      ],
+      "refused_schema_requests": [
+        {
+          "code": "INVALID_REQUEST",
+          "created_at": "2026-11-18T21:19:57.255Z",
+          "name": "ngertiin.describe_tools"
+        }
+      ],
+      "shown_answer": "I can use Workspace. Harbor Docs requires access in this conversation."
+    },
+    {
+      "case": "read_only_grant",
+      "thread_id": "6f110b13-915f-4c40-ab1e-ec83c4007ed3",
+      "agent": {
+        "harness": "pi",
+        "id": "bf61dd07-e39f-4e51-ad91-52271b43c3ed",
+        "name": "Scope Reviewer"
+      },
+      "run_id": "9ff1617b-a448-4bea-b9d8-9b05f1d76bb3",
+      "native_binding": {
+        "active": true,
+        "id": "e7072965-5753-45d4-9ecb-7161f29aa31f",
+        "native_session_id": "01a1f085-000a-7211-8bdd-abef6d1979f6",
+        "workspace_id": "5285ad07-5d86-4e2d-a0dc-cdf35c99c4d0"
+      },
+      "effective_catalog": {
+        "event": "harbor_catalog",
+        "workspace": true,
+        "search": true,
+        "execute": true,
+        "count": 54,
+        "at": "2026-11-18T21:22:37.947Z"
+      },
+      "authorized_tool_calls": [
+        "ngertiin.get_workspace",
+        "ngertiin.describe_tools",
+        "ngertiin.list_apps",
+        "ngertiin.search_app_tools",
+        "ngertiin.execute_app_tool"
+      ],
+      "refused_schema_requests": [],
+      "shown_answer": "Harbor Docs returned HARBOR-SIGNAL-574. I checked from Workspace."
+    },
+    {
+      "case": "different_agent",
+      "thread_id": "ccfe2439-cddc-4f25-a7a5-d95dfb20ec39",
+      "agent": {
+        "harness": "pi",
+        "id": "2362f652-38fd-4082-906a-a8f942252831",
+        "name": "Ruth"
+      },
+      "run_id": "89eb5e32-9817-46f8-907b-1ec974754634",
+      "native_binding": {
+        "active": true,
+        "id": "fa90583c-08df-4ec0-81eb-c94624743ebf",
+        "native_session_id": "01a1f08b-556e-75d1-b958-ea0affa8102c",
+        "workspace_id": "4bd5ff71-d2ea-449a-9086-ab388b1a9669"
+      },
+      "effective_catalog": {
+        "event": "harbor_catalog",
+        "workspace": true,
+        "search": false,
+        "execute": false,
+        "count": 52,
+        "at": "2026-11-18T21:23:49.081Z"
+      },
+      "authorized_tool_calls": [
+        "ngertiin.get_workspace",
+        "ngertiin.list_apps"
+      ],
+      "refused_schema_requests": [
+        {
+          "code": "INVALID_REQUEST",
+          "created_at": "2026-11-18T21:23:52.148Z",
+          "name": "ngertiin.describe_tools"
+        }
+      ],
+      "shown_answer": "I can use Workspace. Harbor Docs requires access in this conversation."
+    }
+  ],
+  "initial_transport_gap_retested": {
+    "event": "harbor_catalog",
+    "workspace": true,
+    "search": true,
+    "execute": true,
+    "count": 54,
+    "at": "2026-11-18T21:16:54.383Z"
+  }
+}

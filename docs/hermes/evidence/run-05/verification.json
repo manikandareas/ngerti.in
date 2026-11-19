@@ -1,0 +1,203 @@
+{
+  "date": "2026-11-19",
+  "surface": "Ngertiin Web (Chromium)",
+  "harness": "Pi ACP",
+  "provider": {
+    "mode": "fixture",
+    "model": "lifecycle-fixture/conversation-lifecycle",
+    "billing": "api_key"
+  },
+  "addition_thread": "222e9b60-775f-43da-b77c-4d36e60a529c",
+  "redirect_thread": "254d1c0f-5416-4db0-ae6d-7d191e7acdc2",
+  "native_steering": {
+    "harness": "pi",
+    "id": "5398ffc1-494d-47a4-8b6d-4b20b7632da4",
+    "state": "active",
+    "steer": "unsupported"
+  },
+  "native_steering_requests": 0,
+  "addition_queued_until_original_settlement": true,
+  "redirect_user_action": "Submit the replacement objective, then Stop run on the currently active objective.",
+  "runs": [
+    {
+      "billing": "api_key",
+      "binding_id": "e76cfbce-af53-4fbe-8ed9-5100195197c5",
+      "cancellation": "none",
+      "diagnostic": null,
+      "id": "e3df6050-9347-4ee7-8654-92d9d65a2668",
+      "input_message_id": "b2b5d5bb-320a-4120-9dc1-c92bad2bcc32",
+      "manual_routine": false,
+      "model": "lifecycle-fixture/conversation-lifecycle",
+      "outcome": "succeeded",
+      "preparation": {
+        "attempts": 1,
+        "configuration_revision": "1:6:1",
+        "next_attempt_at": null,
+        "runtime_revision": "/Users/vitoandareasmanik/.local/share/ngertiin/harnesses/pi/bin/pi-acp:16777234:119123450:106049:1794835781762:supported:0.0.34",
+        "state": "ready"
+      },
+      "product_tools": [],
+      "routine_id": null,
+      "status": "succeeded",
+      "timings": {
+        "accepted_at": "2026-11-19T02:18:49.078Z",
+        "dispatched_at": "2026-11-19T02:18:45.699Z",
+        "first_output_at": "2026-11-19T02:18:51.033Z",
+        "preparing_at": "2026-11-19T02:17:59.943Z",
+        "ready_at": "2026-11-19T02:18:45.699Z",
+        "settled_at": "2026-11-19T02:20:03.826Z"
+      },
+      "tool_errors": [],
+      "workspace_id": "a88238e1-5259-482d-be26-06d9e0813ea9"
+    },
+    {
+      "billing": "api_key",
+      "binding_id": "e76cfbce-af53-4fbe-8ed9-5100195197c5",
+      "cancellation": "none",
+      "diagnostic": null,
+      "id": "534094e8-e06a-4929-94f9-7c466b344a08",
+      "input_message_id": "9362fe3f-9950-489b-920c-e5e8bb6f3f3a",
+      "manual_routine": false,
+      "model": "lifecycle-fixture/conversation-lifecycle",
+      "outcome": "succeeded",
+      "preparation": {
+        "attempts": 1,
+        "configuration_revision": "1:6:1",
+        "next_attempt_at": null,
+        "runtime_revision": "/Users/vitoandareasmanik/.local/share/ngertiin/harnesses/pi/bin/pi-acp:16777234:119123450:106049:1794835781762:supported:0.0.34",
+        "state": "ready"
+      },
+      "product_tools": [],
+      "routine_id": null,
+      "status": "succeeded",
+      "timings": {
+        "accepted_at": "2026-11-19T02:20:30.339Z",
+        "dispatched_at": "2026-11-19T02:20:26.710Z",
+        "first_output_at": "2026-11-19T02:20:32.158Z",
+        "preparing_at": "2026-11-19T02:20:12.362Z",
+        "ready_at": "2026-11-19T02:20:26.710Z",
+        "settled_at": "2026-11-19T02:20:38.412Z"
+      },
+      "tool_errors": [],
+      "workspace_id": "a88238e1-5259-482d-be26-06d9e0813ea9"
+    },
+    {
+      "billing": "api_key",
+      "binding_id": "e294a710-ad18-4384-b880-a88844c82d54",
+      "cancellation": "confirmed",
+      "diagnostic": null,
+      "id": "4af076ed-333a-4d51-b8a9-41c939a72937",
+      "input_message_id": "e1d8f366-0bf0-407a-9a8f-168d5f5b2018",
+      "manual_routine": false,
+      "model": "lifecycle-fixture/conversation-lifecycle",
+      "outcome": "cancelled",
+      "preparation": {
+        "attempts": 1,
+        "configuration_revision": "1:6:1",
+        "next_attempt_at": null,
+        "runtime_revision": "/Users/vitoandareasmanik/.local/share/ngertiin/harnesses/pi/bin/pi-acp:16777234:119123450:106049:1794835781762:supported:0.0.34",
+        "state": "ready"
+      },
+      "product_tools": [],
+      "routine_id": null,
+      "status": "cancelled",
+      "timings": {
+        "accepted_at": "2026-11-19T02:24:19.564Z",
+        "dispatched_at": "2026-11-19T02:24:15.916Z",
+        "first_output_at": "2026-11-19T02:24:21.368Z",
+        "preparing_at": "2026-11-19T02:23:57.535Z",
+        "ready_at": "2026-11-19T02:24:15.916Z",
+        "settled_at": "2026-11-19T02:24:45.986Z"
+      },
+      "tool_errors": [],
+      "workspace_id": "305e3517-ba14-4848-baf4-3768de3fc41f"
+    },
+    {
+      "billing": "api_key",
+      "binding_id": "e294a710-ad18-4384-b880-a88844c82d54",
+      "cancellation": "none",
+      "diagnostic": null,
+      "id": "21a9975c-275c-4f83-8496-a67022287261",
+      "input_message_id": "5f2fe7f8-ef91-4b59-8a0f-2ff03073bc4d",
+      "manual_routine": false,
+      "model": "lifecycle-fixture/conversation-lifecycle",
+      "outcome": "succeeded",
+      "preparation": {
+        "attempts": 1,
+        "configuration_revision": "1:7:1",
+        "next_attempt_at": null,
+        "runtime_revision": "/Users/vitoandareasmanik/.local/share/ngertiin/harnesses/pi/bin/pi-acp:16777234:119123450:106049:1794835781762:supported:0.0.34",
+        "state": "ready"
+      },
+      "product_tools": [],
+      "routine_id": null,
+      "status": "succeeded",
+      "timings": {
+        "accepted_at": "2026-11-19T02:25:15.793Z",
+        "dispatched_at": "2026-11-19T02:25:08.610Z",
+        "first_output_at": "2026-11-19T02:25:18.129Z",
+        "preparing_at": "2026-11-19T02:24:48.053Z",
+        "ready_at": "2026-11-19T02:25:08.610Z",
+        "settled_at": "2026-11-19T02:25:25.689Z"
+      },
+      "tool_errors": [],
+      "workspace_id": "305e3517-ba14-4848-baf4-3768de3fc41f"
+    }
+  ],
+  "answers": {
+    "e3df6050-9347-4ee7-8654-92d9d65a2668": "I started the first request. First request complete. Receipt QUEUE-ED103F70-FIRST.",
+    "534094e8-e06a-4929-94f9-7c466b344a08": "Additional focus applied to Harbor. Receipt QUEUE-78C5206D-SECOND.",
+    "4af076ed-333a-4d51-b8a9-41c939a72937": "I started the",
+    "21a9975c-275c-4f83-8496-a67022287261": "Replacement focus applied to Basin. Receipt QUEUE-F011B337-SECOND."
+  },
+  "provider_events": [
+    {
+      "event": "provider_started",
+      "marker": "QUEUE-ED103F70",
+      "step": "first",
+      "at": "2026-11-19T02:18:49.480Z"
+    },
+    {
+      "event": "provider_finished",
+      "marker": "QUEUE-ED103F70",
+      "step": "first",
+      "at": "2026-11-19T02:19:35.498Z"
+    },
+    {
+      "event": "provider_started",
+      "marker": "QUEUE-78C5206D",
+      "step": "second",
+      "at": "2026-11-19T02:20:30.753Z"
+    },
+    {
+      "event": "provider_finished",
+      "marker": "QUEUE-78C5206D",
+      "step": "second",
+      "at": "2026-11-19T02:20:30.764Z"
+    },
+    {
+      "event": "provider_started",
+      "marker": "QUEUE-E937EB0A",
+      "step": "first",
+      "at": "2026-11-19T02:24:19.351Z"
+    },
+    {
+      "event": "provider_aborted",
+      "marker": "QUEUE-E937EB0A",
+      "step": "first",
+      "at": "2026-11-19T02:24:37.579Z"
+    },
+    {
+      "event": "provider_started",
+      "marker": "QUEUE-F011B337",
+      "step": "second",
+      "at": "2026-11-19T02:25:16.734Z"
+    },
+    {
+      "event": "provider_finished",
+      "marker": "QUEUE-F011B337",
+      "step": "second",
+      "at": "2026-11-19T02:25:16.746Z"
+    }
+  ]
+}

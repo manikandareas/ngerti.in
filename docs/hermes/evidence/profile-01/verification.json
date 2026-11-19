@@ -1,0 +1,137 @@
+{
+  "date": "2026-11-19",
+  "surface": "Chrome Web and authenticated Ngertiin API",
+  "harness": "Pi ACP 0.0.34 (Pi 1.5.2)",
+  "providers": [
+    "Isolated API-key fixture for the source chat and its schedule",
+    "Live Sumopod DeepSeek V4 Flash API key selected in the clone"
+  ],
+  "beforeFirstCloneRun": [
+    {
+      "agent": {
+        "avatar_config": {
+          "color": "peach",
+          "face": "shy",
+          "seed": "5bfce623-a849-4e02-86b0-8d3ba2921af5",
+          "shape": "diamond",
+          "version": 1
+        },
+        "connection_id": null,
+        "harness": "pi",
+        "id": "5bfce623-a849-4e02-86b0-8d3ba2921af5",
+        "instructions": "For requests about a release code, use your release checklist and inspect its supporting reference before reporting.",
+        "model_id": null,
+        "name": "Alder Release Desk",
+        "soul": "You are the Alder Release Desk. Begin every release check with the exact line ALDER OPERATIONS."
+      },
+      "counts": {
+        "messages": 2,
+        "routines": 1,
+        "runs": 1
+      },
+      "id": "eb09d635-a50f-45b3-b103-4e60d66e4d84",
+      "savedConnection": {
+        "connection_id": "b3bf623b-1e7f-4682-9c56-0397c22377a1",
+        "model_id": "hermes-verification/verification-beta",
+        "reasoning": null
+      },
+      "skill": {
+        "enabled": true,
+        "id": "d1109012-7915-46ca-b4f9-9f4a3476b2f1",
+        "version": 1
+      }
+    },
+    {
+      "agent": {
+        "avatar_config": {
+          "color": "peach",
+          "face": "shy",
+          "seed": "5bfce623-a849-4e02-86b0-8d3ba2921af5",
+          "shape": "diamond",
+          "version": 1
+        },
+        "connection_id": null,
+        "harness": "pi",
+        "id": "33e2ab8c-2868-4ba5-8815-85b9237e84eb",
+        "instructions": "For requests about a release code, use your release checklist and inspect its supporting reference before reporting.",
+        "model_id": null,
+        "name": "Alder Review Desk",
+        "soul": "You are the Alder Release Desk. Begin every release check with the exact line ALDER OPERATIONS."
+      },
+      "counts": {
+        "messages": 0,
+        "routines": 0,
+        "runs": 0
+      },
+      "id": "8899bf7b-af2e-441c-b8c8-9640473da853",
+      "savedConnection": null,
+      "skill": {
+        "enabled": true,
+        "id": "34e6d933-60fc-4bf7-9dca-85ad42936be3",
+        "version": 1
+      }
+    }
+  ],
+  "packages": [
+    {
+      "agent_id": "5bfce623-a849-4e02-86b0-8d3ba2921af5",
+      "assets": [
+        "references/current-release.txt"
+      ],
+      "hash": "42abc1973b570bcb5d19327a7f7129bd968fd04c32dd5c712d06aee493ae5d95",
+      "skill_id": "d1109012-7915-46ca-b4f9-9f4a3476b2f1",
+      "thread_id": "eb09d635-a50f-45b3-b103-4e60d66e4d84",
+      "version": 1
+    },
+    {
+      "agent_id": "33e2ab8c-2868-4ba5-8815-85b9237e84eb",
+      "assets": [
+        "references/current-release.txt"
+      ],
+      "hash": "42abc1973b570bcb5d19327a7f7129bd968fd04c32dd5c712d06aee493ae5d95",
+      "skill_id": "34e6d933-60fc-4bf7-9dca-85ad42936be3",
+      "thread_id": "8899bf7b-af2e-441c-b8c8-9640473da853",
+      "version": 1
+    }
+  ],
+  "sourceSchedule": {
+    "agent": "5bfce623-a849-4e02-86b0-8d3ba2921af5",
+    "id": "91ec7e1d-c80a-4f42-8db1-47ec99a193c8",
+    "model": "hermes-verification/verification-beta",
+    "name": "Alder release handover",
+    "next": "2030-01-18T15:00:00.000Z",
+    "provider": "b3bf623b-1e7f-4682-9c56-0397c22377a1",
+    "state": "active",
+    "thread": "eb09d635-a50f-45b3-b103-4e60d66e4d84"
+  },
+  "cloneRun": {
+    "answers": [
+      "\n\nALDER OPERATIONS\n\nThe approved release code is **ALD-684-SM**.\n\nI verified it against the checklist reference `references/current-release.txt` in the `alder-release-checklist` package (version 1), whose instructions state: read that file first and report the exact code rather than inferring one from history."
+    ],
+    "routines": 0,
+    "runs": [
+      {
+        "billing": "api_key",
+        "connection": "0d5b2e2b-03de-4f61-ba77-d6883fbad084",
+        "id": "1e40eba7-a1c5-43b1-b95c-f54b0d431017",
+        "model": "sumopod/deepseek-v4-flash",
+        "product_tools": [
+          "ngertiin.read_skill",
+          "ngertiin.read_skill"
+        ],
+        "skill_reads": [
+          {
+            "skill_id": "34e6d933-60fc-4bf7-9dca-85ad42936be3",
+            "version": 1
+          },
+          {
+            "skill_id": "34e6d933-60fc-4bf7-9dca-85ad42936be3",
+            "version": 1
+          }
+        ],
+        "status": "succeeded"
+      }
+    ],
+    "thread": "8899bf7b-af2e-441c-b8c8-9640473da853"
+  }
+}

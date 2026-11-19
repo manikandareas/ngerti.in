@@ -1,0 +1,77 @@
+{
+  "date": "2026-11-19",
+  "surface": "Authenticated Ngertiin Web / Chromium",
+  "harness": "Claude ACP protocol subprocess fixture",
+  "provider": "fixture / API key selection",
+  "during": {
+    "run": "b41e23a9-6663-4d85-8350-400863141ac3",
+    "plan": {
+      "id": "legacy",
+      "text": null,
+      "entries": [
+        {
+          "text": "Check Alder dispatch details",
+          "state": "in_progress",
+          "priority": "medium"
+        }
+      ]
+    },
+    "model": "model-b",
+    "usage": {
+      "cost": null,
+      "size": 1000,
+      "used": 124
+    },
+    "status": "running",
+    "thread": "71b1801d-b255-4d17-bf8b-9f56bb445559",
+    "billing": "api_key",
+    "activity": "tool_running",
+    "active_tools": [
+      {
+        "kind": "reading",
+        "call_id": "native:verify-dispatch",
+        "target_agent_id": null
+      }
+    ]
+  },
+  "after_reload": {
+    "active_tools": [],
+    "activity": "idle",
+    "billing": "api_key",
+    "messages": [
+      {
+        "author": "user",
+        "id": "c5c3563e-03b6-4e2c-892b-8ef34d010d07",
+        "state": "complete",
+        "text": "Verify Alder ACP progress."
+      },
+      {
+        "author": "agent",
+        "id": "b08c7731-0b94-42c3-86a6-3780afdf9aba",
+        "state": "complete",
+        "text": "Dispatch details check started. Alder dispatch details verified. ALDER-ACP-318."
+      }
+    ],
+    "model": "model-b",
+    "plan": {
+      "entries": [
+        {
+          "priority": "medium",
+          "state": "completed",
+          "text": "Check Alder dispatch details"
+        }
+      ],
+      "id": "legacy",
+      "text": null
+    },
+    "run": "b41e23a9-6663-4d85-8350-400863141ac3",
+    "runCount": 1,
+    "status": "succeeded",
+    "thread": "71b1801d-b255-4d17-bf8b-9f56bb445559",
+    "usage": {
+      "cost": null,
+      "size": 1000,
+      "used": 318
+    }
+  }
+}

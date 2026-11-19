@@ -1,0 +1,271 @@
+{
+  "date": "2026-11-19",
+  "surface": "Ngertiin Web (Chromium)",
+  "harness": "Pi ACP",
+  "model_provider": "live",
+  "data": "synthetic intentionally invalid line",
+  "thread": "3288aab8-1f3e-4cc3-ac81-4963a278e97e",
+  "first_rejection": {
+    "goal": {
+      "id": "8c1f4a2e-5b7d-4e93-9a61-2d0f7b3c8e14",
+      "state": "active",
+      "work_state": "ready",
+      "revision": 4,
+      "generation": 1,
+      "continuation_at": null,
+      "evidence_artifact_ids": [],
+      "verification": {
+        "attempt_limit": 2,
+        "attempts_used": 1,
+        "checks": [
+          {
+            "artifact_name": "birch-budget.txt",
+            "exact_text": "SEAL=APPROVED\n",
+            "title": "Seal content"
+          }
+        ],
+        "last_check": {
+          "results": [
+            {
+              "artifact_id": "c93a2e57-6f18-4d0b-a784-2e5b9f13d8c1",
+              "artifact_name": "birch-budget.txt",
+              "status": "mismatch",
+              "title": "Seal content"
+            }
+          ],
+          "run_id": "f8b79ca4-7379-4e1e-9846-f36d462f5471"
+        }
+      },
+      "progress": "Verification attempt 1 of 2 failed. Seal content: birch-budget.txt does not match the required text. The Goal is still active. The remaining requirements will be tried again."
+    },
+    "runs": [
+      {
+        "id": "f8b79ca4-7379-4e1e-9846-f36d462f5471",
+        "status": "succeeded",
+        "goal_id": null,
+        "goal_generation": null,
+        "product_tools": [
+          "ngertiin.capture_goal",
+          "ngertiin.list_files",
+          "ngertiin.list_files",
+          "ngertiin.list_files",
+          "ngertiin.describe_tools",
+          "ngertiin.machine_exec",
+          "ngertiin.create_file",
+          "ngertiin.publish_artifact",
+          "ngertiin.report_goal"
+        ],
+        "model": "sumopod/deepseek-v4-flash",
+        "billing": "api_key"
+      },
+      {
+        "id": "d6dadf65-134e-4348-ac30-a4b54e5e7045",
+        "status": "running",
+        "goal_id": "8c1f4a2e-5b7d-4e93-9a61-2d0f7b3c8e14",
+        "goal_generation": 1,
+        "product_tools": [],
+        "model": "sumopod/deepseek-v4-flash",
+        "billing": "api_key"
+      }
+    ],
+    "files": [
+      {
+        "id": "c93a2e57-6f18-4d0b-a784-2e5b9f13d8c1",
+        "name": "birch-budget.txt",
+        "sha256": "ff75c0e692baa44795497e0719a480a55b9b96d3dd7731553807094399c86b95",
+        "run_id": "f8b79ca4-7379-4e1e-9846-f36d462f5471"
+      }
+    ]
+  },
+  "after_reload": {
+    "goal": {
+      "id": "8c1f4a2e-5b7d-4e93-9a61-2d0f7b3c8e14",
+      "state": "paused",
+      "work_state": "blocked",
+      "revision": 7,
+      "generation": 2,
+      "continuation_at": null,
+      "evidence_artifact_ids": [],
+      "verification": {
+        "attempt_limit": 2,
+        "attempts_used": 2,
+        "checks": [
+          {
+            "artifact_name": "birch-budget.txt",
+            "exact_text": "SEAL=APPROVED\n",
+            "title": "Seal content"
+          }
+        ],
+        "last_check": {
+          "results": [
+            {
+              "artifact_id": "a7d5b932-4c61-4e08-8b27-6f91d3a5e0c4",
+              "artifact_name": "birch-budget.txt",
+              "status": "mismatch",
+              "title": "Seal content"
+            }
+          ],
+          "run_id": "d6dadf65-134e-4348-ac30-a4b54e5e7045"
+        }
+      },
+      "progress": "Verification attempt 2 of 2 failed. Seal content: birch-budget.txt does not match the required text. Paused because the verification attempt limit was reached."
+    },
+    "runs": [
+      {
+        "id": "f8b79ca4-7379-4e1e-9846-f36d462f5471",
+        "status": "succeeded",
+        "goal_id": null,
+        "goal_generation": null,
+        "product_tools": [
+          "ngertiin.capture_goal",
+          "ngertiin.list_files",
+          "ngertiin.list_files",
+          "ngertiin.list_files",
+          "ngertiin.describe_tools",
+          "ngertiin.machine_exec",
+          "ngertiin.create_file",
+          "ngertiin.publish_artifact",
+          "ngertiin.report_goal"
+        ],
+        "model": "sumopod/deepseek-v4-flash",
+        "billing": "api_key"
+      },
+      {
+        "id": "d6dadf65-134e-4348-ac30-a4b54e5e7045",
+        "status": "succeeded",
+        "goal_id": "8c1f4a2e-5b7d-4e93-9a61-2d0f7b3c8e14",
+        "goal_generation": 1,
+        "product_tools": [
+          "ngertiin.create_file",
+          "ngertiin.publish_artifact",
+          "ngertiin.report_goal"
+        ],
+        "model": "sumopod/deepseek-v4-flash",
+        "billing": "api_key"
+      }
+    ],
+    "files": [
+      {
+        "id": "c93a2e57-6f18-4d0b-a784-2e5b9f13d8c1",
+        "name": "birch-budget.txt",
+        "sha256": "ff75c0e692baa44795497e0719a480a55b9b96d3dd7731553807094399c86b95",
+        "run_id": "f8b79ca4-7379-4e1e-9846-f36d462f5471"
+      },
+      {
+        "id": "a7d5b932-4c61-4e08-8b27-6f91d3a5e0c4",
+        "name": "birch-budget.txt",
+        "sha256": "ff75c0e692baa44795497e0719a480a55b9b96d3dd7731553807094399c86b95",
+        "run_id": "d6dadf65-134e-4348-ac30-a4b54e5e7045"
+      }
+    ]
+  },
+  "events": [
+    {
+      "state": "active",
+      "cursor": 4534,
+      "attempts": 0,
+      "last_check": null,
+      "work_state": "ready",
+      "continuation_at": "2026-11-18T18:03:20.077Z"
+    },
+    {
+      "state": "active",
+      "cursor": 4628,
+      "attempts": 0,
+      "last_check": null,
+      "work_state": "completion_pending",
+      "continuation_at": null
+    },
+    {
+      "state": "active",
+      "cursor": 4643,
+      "attempts": 1,
+      "last_check": {
+        "run_id": "f8b79ca4-7379-4e1e-9846-f36d462f5471",
+        "results": [
+          {
+            "title": "Seal content",
+            "status": "mismatch",
+            "artifact_id": "c93a2e57-6f18-4d0b-a784-2e5b9f13d8c1",
+            "artifact_name": "birch-budget.txt"
+          }
+        ]
+      },
+      "work_state": "ready",
+      "continuation_at": "2026-11-18T18:04:20.365Z"
+    },
+    {
+      "state": "active",
+      "cursor": 4646,
+      "attempts": 1,
+      "last_check": {
+        "run_id": "f8b79ca4-7379-4e1e-9846-f36d462f5471",
+        "results": [
+          {
+            "title": "Seal content",
+            "status": "mismatch",
+            "artifact_id": "c93a2e57-6f18-4d0b-a784-2e5b9f13d8c1",
+            "artifact_name": "birch-budget.txt"
+          }
+        ]
+      },
+      "work_state": "ready",
+      "continuation_at": null
+    },
+    {
+      "state": "active",
+      "cursor": 4678,
+      "attempts": 1,
+      "last_check": {
+        "run_id": "f8b79ca4-7379-4e1e-9846-f36d462f5471",
+        "results": [
+          {
+            "title": "Seal content",
+            "status": "mismatch",
+            "artifact_id": "c93a2e57-6f18-4d0b-a784-2e5b9f13d8c1",
+            "artifact_name": "birch-budget.txt"
+          }
+        ]
+      },
+      "work_state": "completion_pending",
+      "continuation_at": null
+    },
+    {
+      "state": "active",
+      "cursor": 4692,
+      "attempts": 2,
+      "last_check": {
+        "run_id": "d6dadf65-134e-4348-ac30-a4b54e5e7045",
+        "results": [
+          {
+            "title": "Seal content",
+            "status": "mismatch",
+            "artifact_id": "a7d5b932-4c61-4e08-8b27-6f91d3a5e0c4",
+            "artifact_name": "birch-budget.txt"
+          }
+        ]
+      },
+      "work_state": "blocked",
+      "continuation_at": null
+    },
+    {
+      "state": "paused",
+      "cursor": 4693,
+      "attempts": 2,
+      "last_check": {
+        "run_id": "d6dadf65-134e-4348-ac30-a4b54e5e7045",
+        "results": [
+          {
+            "title": "Seal content",
+            "status": "mismatch",
+            "artifact_id": "a7d5b932-4c61-4e08-8b27-6f91d3a5e0c4",
+            "artifact_name": "birch-budget.txt"
+          }
+        ]
+      },
+      "work_state": "blocked",
+      "continuation_at": null
+    }
+  ],
+  "downloaded_sha256": "ff75c0e692baa44795497e0719a480a55b9b96d3dd7731553807094399c86b95"
+}

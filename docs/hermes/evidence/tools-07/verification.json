@@ -1,0 +1,62 @@
+{
+  "date": "2026-11-19",
+  "surface": "Ngertiin Web (Chromium)",
+  "harness": "Pi ACP",
+  "provider": {
+    "mode": "loopback fixture",
+    "model": "schedule-fixture/schedule-recovery",
+    "billing": "api_key"
+  },
+  "connector": "synthetic Harbor Docs fixture",
+  "thread_id": "75b8985e-930a-4a8c-875a-ba2cd528a6cf",
+  "workspace_id": "b5cd91de-8d37-4550-aec4-b99d06f529ab",
+  "binding_id": "286e7732-bb83-49f4-aeda-85ef695e31ef",
+  "run_id": "04d29243-ad39-44a8-9a00-c2748031e498",
+  "state": "succeeded",
+  "connection": {
+    "id": "719e71b9-7079-46d7-9cc5-5ecf8e3a6352",
+    "grant": {
+      "agent_id": "2362f652-38fd-4082-906a-a8f942252831",
+      "resources": {},
+      "thread_id": "75b8985e-930a-4a8c-875a-ba2cd528a6cf",
+      "tools": [
+        "HARBOR_UPDATE_SIGNAL"
+      ]
+    },
+    "previous_generation": 3,
+    "state": "revoked",
+    "revoked_generation": 4,
+    "revoked_at": "2026-11-18T22:12:10.294Z"
+  },
+  "discovery_calls": [
+    "ngertiin.list_apps",
+    "ngertiin.search_app_tools"
+  ],
+  "dispatch_refusal": {
+    "code": "SCOPE_DENIED",
+    "created_at": "2026-11-18T22:12:18.190Z",
+    "name": "ngertiin.execute_app_tool"
+  },
+  "provider_events": [
+    {
+      "event": "harbor_update_discovered",
+      "at": "2026-11-18T22:12:06.974Z"
+    },
+    {
+      "event": "harbor_update_attempt_released",
+      "at": "2026-11-18T22:12:11.008Z"
+    },
+    {
+      "event": "harbor_update_refused",
+      "at": "2026-11-18T22:12:18.708Z"
+    }
+  ],
+  "target": {
+    "value": "HARBOR-ORIGINAL-731",
+    "before_sha256": "f7464648bbb5b36d21618282599698dba07db8b9946519988a5ed8e319e8cc6d",
+    "after_sha256": "f7464648bbb5b36d21618282599698dba07db8b9946519988a5ed8e319e8cc6d",
+    "native_update_admissions": 0,
+    "update_receipts": 0
+  },
+  "reply": "Harbor Docs access was removed before the update. The signal kept its previous value."
+}

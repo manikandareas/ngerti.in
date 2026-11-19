@@ -1,0 +1,19 @@
+{
+  "date": "2026-11-19",
+  "surface": "Direct application ACP adapter probe",
+  "harness": "Claude ACP 0.107.0",
+  "provider": "Loopback Messages fixture and synthetic key",
+  "login": "authenticated",
+  "billing": "api_key",
+  "productTools": "supported",
+  "catalog": [
+    "default",
+    "opus",
+    "fable",
+    "sonnet",
+    "haiku"
+  ],
+  "elapsedMs": 2673,
+  "diagnostics": [],
+  "usefulInferenceFixtureCalls": 0
+}

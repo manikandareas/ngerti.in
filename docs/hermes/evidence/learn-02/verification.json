@@ -1,0 +1,23 @@
+{
+  "date": "2026-11-18",
+  "surface": "Ngertiin Web (Chromium)",
+  "harness": "Pi ACP",
+  "provider": "Sumopod live",
+  "model": "sumopod/deepseek-v4-flash",
+  "billing": "api_key",
+  "dashboard_is_fixture": true,
+  "source_run_id": "883bf115-2897-4f1a-a319-e0c2ba9ef02d",
+  "review_attempts": 1,
+  "stable_fact": "Our reporting week always starts on Monday.",
+  "memory_visibility": "dm_private",
+  "temporary_status": "The Cedar handover is waiting for signoff today only.",
+  "temporary_status_retained_in_request_and_absent_from_memory_and_skill": true,
+  "learning_writes_in_background_only": true,
+  "revised_skill": "paginated-table-to-csv-fallback",
+  "previous_active_version": 2,
+  "reviewed_active_version": 3,
+  "procedure": "1. Inspect the dashboard pager or page-count label before using any export control.\n2. If the pager shows more than one page, do not use the built-in CSV export; read every table page directly instead. For a single page, an export may be usable, but verify it against the rendered table.\n3. Record the reported page count and entity total, then navigate every page and extract only the requested columns with one record per entity.\n4. Before calculating aggregates, compare the number of unique entities with the total shown by the pager. If they differ, re-read pages to find missing or duplicated rows.\n5. Create the CSV with a header plus one data row per entity. If file creation returns a conflict, stop retrying that call and switch to a scripted or direct write path, then list and read the file to confirm its contents.\n6. Validate that the file line count equals data rows plus one, that the row count matches both the sum of per-page counts and the pager's entity total, and that re-adding row values reproduces the requested totals and maximum.\n7. Publish the finished CSV as a downloadable artifact and report the requested summary, the number of pages read, the validation checks, and whether the built-in export was skipped or unavailable.",
+  "loaded_version_in_correction_turn": 2,
+  "same_skill_id_revised": true,
+  "subsequent_birch_run_used_version_3_without_repeating_the_correction": true
+}

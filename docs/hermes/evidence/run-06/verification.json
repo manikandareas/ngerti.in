@@ -1,0 +1,72 @@
+{
+  "date": "2026-11-19",
+  "surface": "Ngertiin Web (Chromium)",
+  "harness": "Pi ACP",
+  "provider": {
+    "mode": "fixture",
+    "model": "lifecycle-fixture/conversation-lifecycle",
+    "billing": "api_key"
+  },
+  "thread": "b7bf54c2-7fc0-4f63-a83c-d0d84b41dd5b",
+  "closed_app_tab": "t14",
+  "tab_closed_at": "2026-11-19T02:30:41.743120+00:00",
+  "outcome_observed_while_app_tab_closed": {
+    "id": "548231e4-dd75-4798-8ad7-6d2341f37587",
+    "status": "succeeded",
+    "settled_at": "2026-11-19T02:30:43.446Z"
+  },
+  "reopen_started_at": "2026-11-19T02:30:44.306384+00:00",
+  "before_close": {
+    "artifact_ids": [],
+    "author": "agent",
+    "id": "6f2fd054-1daa-4834-b4cb-05cbd8f3e913",
+    "run_id": "548231e4-dd75-4798-8ad7-6d2341f37587",
+    "text": "I published the reconnect file and am checking the"
+  },
+  "after_reopen": {
+    "artifact_ids": [],
+    "author": "agent",
+    "id": "6f2fd054-1daa-4834-b4cb-05cbd8f3e913",
+    "run_id": "548231e4-dd75-4798-8ad7-6d2341f37587",
+    "text": "I published the reconnect file and am checking the final handoff. Reconnect result REJOIN-4F08BEB5 is ready. [rejoin-4f08beb5.txt](ngertiin://file/a5e36ca5-5b9e-4035-aa86-361ce06bfb3f)"
+  },
+  "same_artifact": {
+    "id": "a5e36ca5-5b9e-4035-aa86-361ce06bfb3f",
+    "name": "rejoin-4f08beb5.txt",
+    "run_id": "548231e4-dd75-4798-8ad7-6d2341f37587",
+    "sha256": "af714f235e1b9d7c5ee0cec46e341e0150108f6729ef69bc5829fe5cb7d43e9c",
+    "source_path": "rejoin-4f08beb5.txt",
+    "workspace_id": "5faa1030-424f-4348-a7fe-7d11330a4859"
+  },
+  "owner_download": {
+    "bytes": 33,
+    "sha256": "af714f235e1b9d7c5ee0cec46e341e0150108f6729ef69bc5829fe5cb7d43e9c",
+    "matches_fixture_input": true
+  },
+  "provider_events": [
+    {
+      "event": "reconnect_create_requested",
+      "marker": "REJOIN-4F08BEB5",
+      "step": "create",
+      "at": "2026-11-19T02:29:03.922Z"
+    },
+    {
+      "event": "reconnect_publish_requested",
+      "marker": "REJOIN-4F08BEB5",
+      "step": "publish",
+      "at": "2026-11-19T02:29:15.291Z"
+    },
+    {
+      "event": "reconnect_file_ready",
+      "marker": "REJOIN-4F08BEB5",
+      "step": "stream",
+      "at": "2026-11-19T02:29:25.430Z"
+    },
+    {
+      "event": "provider_finished",
+      "marker": "REJOIN-4F08BEB5",
+      "step": "stream",
+      "at": "2026-11-19T02:30:42.097Z"
+    }
+  ]
+}

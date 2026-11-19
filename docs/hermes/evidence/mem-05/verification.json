@@ -1,0 +1,93 @@
+{
+  "date": "2026-11-19",
+  "surface": "Ngertiin Web (Chromium)",
+  "harness": "Pi ACP",
+  "model_provider": "live",
+  "memory_provider": "isolated loopback fixture",
+  "fixture_records": {
+    "quartz gate tally": "Quartz Gate tally: 46 sealed crates.",
+    "quartz gate reserve": "Quartz Gate reserve: aisle M-14."
+  },
+  "authorized_thread": {
+    "thread": "8bf3c30b-531b-4942-a313-a10cddacbe6c",
+    "agent": "bf61dd07-e39f-4e51-ad91-52271b43c3ed",
+    "authorized": {
+      "answer": "**Quartz Gate tally:** 46 sealed crates are recorded in your connected external memory.\n\n**6 + 7 = 13**",
+      "run": {
+        "id": "e0371709-8667-430c-9510-338e33473509",
+        "status": "succeeded",
+        "model": "sumopod/deepseek-v4-flash",
+        "billing": "api_key",
+        "product_tools": [
+          "ngertiin.recall_external_memory"
+        ]
+      }
+    },
+    "after_disconnect": {
+      "answer": "Your connected external memory is currently **disconnected**, so I couldn't look up \"Quartz Gate reserve\" — no aisle information is available from this lookup. Nothing from the earlier Quartz Gate lookup applies here.\n\n**9 + 8 = 17**",
+      "run": {
+        "id": "cff7da72-1636-461e-b01f-7b8ed35a8d09",
+        "status": "succeeded",
+        "model": "sumopod/deepseek-v4-flash",
+        "billing": "api_key",
+        "product_tools": [
+          "ngertiin.recall_external_memory"
+        ]
+      }
+    }
+  },
+  "different_thread_same_agent": {
+    "thread": "de956c47-4f58-45b3-905c-490ef2bff63a",
+    "agent": "bf61dd07-e39f-4e51-ad91-52271b43c3ed",
+    "answer": "I'll look that up now.The external memory connection is available, but the lookup for \"Quartz Gate tally\" returned no records — so there's no sealed-crate count for this chat.\n\n6 + 7 = 13",
+    "run": {
+      "id": "c653923a-f700-415c-a7a1-1718d2848619",
+      "status": "succeeded",
+      "model": "sumopod/deepseek-v4-flash",
+      "billing": "api_key",
+      "product_tools": [
+        "ngertiin.recall_external_memory"
+      ]
+    }
+  },
+  "provider_503": {
+    "thread": "de956c47-4f58-45b3-905c-490ef2bff63a",
+    "answer": "The external memory lookup for \"memory outage test\" failed: the connection reported itself as unavailable, so no records could be retrieved.\n\n8 + 9 = 17",
+    "run": {
+      "id": "f4ff8e99-9318-488b-a4c2-3981870393d0",
+      "status": "succeeded",
+      "model": "sumopod/deepseek-v4-flash",
+      "billing": "api_key",
+      "product_tools": [
+        "ngertiin.recall_external_memory"
+      ]
+    }
+  },
+  "settings_after_disconnect": {
+    "backend_id": null,
+    "options": [
+      {
+        "id": "fixture-memory",
+        "label": "Hermes Memory Lab"
+      }
+    ],
+    "revision": 2
+  },
+  "all_provider_requests": [
+    {
+      "query": "Quartz Gate tally",
+      "in_scope": true,
+      "found": true
+    },
+    {
+      "query": "Quartz Gate tally",
+      "in_scope": false,
+      "found": false
+    },
+    {
+      "query": "memory outage test",
+      "in_scope": false,
+      "found": false
+    }
+  ]
+}

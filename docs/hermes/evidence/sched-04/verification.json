@@ -1,0 +1,35 @@
+{
+  "surface": "Ngertiin Web (Chromium), connected to the isolated Ngertiin API",
+  "harness": "Pi ACP",
+  "provider": "Sumopod DeepSeek V4 Flash live API key",
+  "timezone": "Asia/Makassar",
+  "routine_id": "3c2a91d4-8e57-4b6f-a0c1-9d2e3f4a5b6c",
+  "thread_id": "f07c92de-ffbb-488a-87da-9a2d651f512f",
+  "workspace_id": "ccdb4075-6bd4-415c-978a-51a2f75a815c",
+  "first_slot": "2026-11-18T19:15:24+00:00",
+  "interval_seconds": 30,
+  "viewer_navigated_away_at": "2026-11-18T19:15:07+00:00",
+  "host_confirmed_down_at": "2026-11-18T19:15:34+00:00",
+  "definitely_missed_slots": [
+    "2026-11-18T19:15:54+00:00",
+    "2026-11-18T19:16:24+00:00",
+    "2026-11-18T19:16:54+00:00"
+  ],
+  "occurrences_before_restart": 0,
+  "host_launched_at": "2026-11-18T19:16:58+00:00",
+  "completed_before_viewer_reopened": {
+    "id": "0140ca4c-1334-4f24-8313-91c7c3001106",
+    "state": "completed",
+    "run_id": "96943453-f278-4e0c-ad59-2d593d0b2ed6",
+    "created_at": "2026-11-18T19:17:00.227Z",
+    "run_status": "succeeded",
+    "settled_at": "2026-11-18T19:17:09.817Z",
+    "scheduled_for": "2026-11-18T19:16:54.000Z"
+  },
+  "viewer_url_at_receipt_check": "about:blank",
+  "viewer_reopened_at": "2026-11-18T19:17:11+00:00",
+  "next_slot_on_reopen": "2026-11-18T19:17:24.000Z",
+  "visible_result_count": 1,
+  "visible_result": "LOON-RECOVERED-63",
+  "cleanup_state": "paused"
+}

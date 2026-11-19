@@ -1,0 +1,62 @@
+{
+  "date": "2026-11-19",
+  "surface": "Authenticated Ngertiin Web / Chromium",
+  "harness": "Pi ACP",
+  "provider": "Live Sumopod API key",
+  "expected": {
+    "total": 127,
+    "leader": "Copper South",
+    "leader_units": 58,
+    "audit_code": "CR-28"
+  },
+  "linkage": {
+    "thread": "58cc22b2-84cc-456c-9094-954bcbdcd0c3",
+    "profiles": [
+      {
+        "model": "sumopod/deepseek-v4-flash",
+        "billing": "api_key",
+        "harness": "pi"
+      }
+    ],
+    "child_task": "dd527774-39f7-46fd-bbe6-8ea46c6a600b",
+    "join_count": 1,
+    "joined_run": "cfcaa90c-ffb5-46bf-9512-aabf7e80b85a",
+    "source_run": "0b76abee-75b8-4b48-8e68-9e4bb8a9f116",
+    "worker_run": "b2202004-c1e8-40c7-bfcd-8f2fc6c124e1",
+    "child_state": "completed",
+    "parent_task": "757a24ff-8099-4f91-9744-346dd190eb46",
+    "worker_read": [
+      {
+        "pages": [
+          1
+        ],
+        "operation": "read",
+        "truncated": false,
+        "artifact_id": "abcb85f9-a090-441b-8ee8-ee4e6da2db75",
+        "source_sha256": "5d8f454371110b4d96a29d2f06d44a4f034aa0e92039dbe3d5119491df31ea25"
+      }
+    ],
+    "parent_state": "completed",
+    "worker_tools": [
+      "ngertiin.read_attachment",
+      "ngertiin.read_file"
+    ],
+    "joined_answer": "[@user](ngertiin://user/owner) — Ruth checked it herself against the source file, and her figures hold up.\n\n**File:** [copper-delegation-ledger.csv](ngertiin://file/abcb85f9-a090-441b-8ee8-ee4e6da2db75)\n\n| Location | Verified | Quarantined | Releasable (verified − quarantined) |\n|---|---|---|---|\n| Copper North | 38 | 6 | 32 |\n| Copper South | 67 | 9 | 58 |\n| Copper West | 41 | 4 | 37 |\n\n- **Total releasable units: 127** (32 + 58 + 37)\n- **Leading location: Copper South**, with 58 releasable units\n- **Copper South's audit code: CR-28**\n\nShe read all three rows directly from the file and reported no malformed or ambiguous entries; all three locations did have quarantined stock, so the rule applied cleanly throughout. No follow-up scheduled — this was a one-off check.",
+    "worker_answer": "Checked the ledger myself — both the attachment and the workspace copy of [copper-delegation-ledger.csv](ngertiin://file/abcb85f9-a090-441b-8ee8-ee4e6da2db75) read identically, three rows, no malformed or ambiguous entries.\n\n**Per-location arithmetic (verified − quarantined = releasable)**\n\n| Location | Verified | Quarantined | Releasable |\n|---|---|---|---|\n| Copper North | 38 | 6 | 38 − 6 = **32** |\n| Copper South | 67 | 9 | 67 − 9 = **58** |\n| Copper West | 41 | 4 | 41 − 4 = **37** |\n\n**1. Total releasable units:** 32 + 58 + 37 = **127**\n\n**2. Leading location:** **Copper South**, with **58** releasable units (ahead of Copper West 37 and Copper North 32).\n\n**3. Copper South's audit code:** **CR-28**\n\nSource: `copper-delegation-ledger.csv`, page 1 — all three rows read directly, rule applied per location before totalling.",
+    "same_workspace": true,
+    "worker_input_ids": [
+      "abcb85f9-a090-441b-8ee8-ee4e6da2db75"
+    ],
+    "same_actor_and_org": true,
+    "source_issued_handoff": true,
+    "joined_received_result": true,
+    "parent_read_attachment": false,
+    "worker_binding_differs": true,
+    "worker_received_formula": true
+  },
+  "public_snapshot": {
+    "file": "abcb85f9-a090-441b-8ee8-ee4e6da2db75",
+    "internalMessages": 0,
+    "thread": "58cc22b2-84cc-456c-9094-954bcbdcd0c3"
+  }
+}

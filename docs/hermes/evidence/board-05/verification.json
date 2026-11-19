@@ -1,0 +1,194 @@
+{
+  "date": "2026-11-19",
+  "surface": "Authenticated Ngertiin Web / Chromium",
+  "harness": "Pi ACP",
+  "provider": "OpenAI-compatible local fixture / API key selection",
+  "claim_1": {
+    "artifacts": [],
+    "assignee_agent_id": "c86e73bd-9015-46c4-8732-f19b9107f431",
+    "assignee_name": "Parallel Ledger",
+    "blocker": null,
+    "claim_heartbeat_at": "2026-11-19T06:02:48.062Z",
+    "current_run_id": "823ab314-34f7-4cfe-a656-7441640282d2",
+    "id": "6a541ddf-d2fd-4643-9b79-1e146870d367",
+    "result_artifact_ids": [],
+    "resume_context": "",
+    "revision": 3,
+    "run_status": "running",
+    "state": "running",
+    "submission": null,
+    "thread_id": "f80d88a9-c366-47f0-9ed0-8e5dc8cc857e"
+  },
+  "claim_2": {
+    "artifacts": [],
+    "assignee_agent_id": "c86e73bd-9015-46c4-8732-f19b9107f431",
+    "assignee_name": "Parallel Ledger",
+    "blocker": null,
+    "claim_heartbeat_at": "2026-11-19T06:02:53.070Z",
+    "current_run_id": "823ab314-34f7-4cfe-a656-7441640282d2",
+    "id": "6a541ddf-d2fd-4643-9b79-1e146870d367",
+    "result_artifact_ids": [],
+    "resume_context": "",
+    "revision": 4,
+    "run_status": "running",
+    "state": "running",
+    "submission": null,
+    "thread_id": "f80d88a9-c366-47f0-9ed0-8e5dc8cc857e"
+  },
+  "claim_delta_seconds": 5.008,
+  "rendered_heartbeat": "2026-11-19T06:02:48.062Z",
+  "stopped_after_refresh": {
+    "artifacts": [],
+    "assignee_agent_id": "c86e73bd-9015-46c4-8732-f19b9107f431",
+    "assignee_name": "Parallel Ledger",
+    "blocker": "The worker stopped before delivering the result.",
+    "claim_heartbeat_at": "2026-11-19T06:02:53.070Z",
+    "current_run_id": "823ab314-34f7-4cfe-a656-7441640282d2",
+    "id": "6a541ddf-d2fd-4643-9b79-1e146870d367",
+    "result_artifact_ids": [],
+    "resume_context": "",
+    "revision": 5,
+    "run_status": "cancelled",
+    "state": "blocked",
+    "submission": null,
+    "thread_id": "f80d88a9-c366-47f0-9ed0-8e5dc8cc857e"
+  },
+  "replacement_after_refresh": {
+    "artifacts": [
+      {
+        "id": "3289a019-0814-42e5-af4f-247cc4561421",
+        "name": "juniper-replacement.txt",
+        "workspace_id": "688d385a-7b13-4716-af19-7cb5fbd380a7"
+      }
+    ],
+    "assignee_agent_id": "c86e73bd-9015-46c4-8732-f19b9107f431",
+    "assignee_name": "Parallel Ledger",
+    "blocker": null,
+    "claim_heartbeat_at": "2026-11-19T06:03:10.114Z",
+    "current_run_id": "0c5b4b20-6016-45ef-80b0-8edfe5a8d9f8",
+    "id": "6a541ddf-d2fd-4643-9b79-1e146870d367",
+    "result_artifact_ids": [
+      "3289a019-0814-42e5-af4f-247cc4561421"
+    ],
+    "resume_context": "Replacement count 86",
+    "revision": 9,
+    "run_status": null,
+    "state": "done",
+    "submission": {
+      "artifact_ids": [
+        "3289a019-0814-42e5-af4f-247cc4561421"
+      ],
+      "summary": "The replacement worker verified 86."
+    },
+    "thread_id": "f80d88a9-c366-47f0-9ed0-8e5dc8cc857e"
+  },
+  "receipts": {
+    "card": "6a541ddf-d2fd-4643-9b79-1e146870d367",
+    "runs": [
+      {
+        "id": "823ab314-34f7-4cfe-a656-7441640282d2",
+        "agent": "c86e73bd-9015-46c4-8732-f19b9107f431",
+        "model": "delegation-fixture/peer-checks",
+        "tools": [],
+        "output": [],
+        "status": "cancelled",
+        "billing": "api_key",
+        "workspace": "688d385a-7b13-4716-af19-7cb5fbd380a7",
+        "settled_at": "2026-11-19T06:02:56.110Z",
+        "accepted_at": "2026-11-19T06:02:46.741Z",
+        "cancellation": "confirmed",
+        "has_replacement_count": false
+      },
+      {
+        "id": "0c5b4b20-6016-45ef-80b0-8edfe5a8d9f8",
+        "agent": "c86e73bd-9015-46c4-8732-f19b9107f431",
+        "model": "delegation-fixture/peer-checks",
+        "tools": [
+          "ngertiin.create_file",
+          "ngertiin.publish_artifact",
+          "ngertiin.submit_board_card"
+        ],
+        "output": [
+          {
+            "id": "3289a019-0814-42e5-af4f-247cc4561421",
+            "name": "juniper-replacement.txt",
+            "size": 27,
+            "sha256": "8ca9207543106fd86788be395eb50e0c2f090fdbe6421d64570a1fcb9de8c017"
+          }
+        ],
+        "status": "succeeded",
+        "billing": "api_key",
+        "workspace": "688d385a-7b13-4716-af19-7cb5fbd380a7",
+        "settled_at": "2026-11-19T06:03:16.169Z",
+        "accepted_at": "2026-11-19T06:03:08.681Z",
+        "cancellation": "none",
+        "has_replacement_count": true
+      }
+    ],
+    "states": [
+      {
+        "run": null,
+        "state": "ready",
+        "heartbeat": null
+      },
+      {
+        "run": "823ab314-34f7-4cfe-a656-7441640282d2",
+        "state": "running",
+        "heartbeat": null
+      },
+      {
+        "run": "823ab314-34f7-4cfe-a656-7441640282d2",
+        "state": "running",
+        "heartbeat": "2026-11-19T06:02:48.062Z"
+      },
+      {
+        "run": "823ab314-34f7-4cfe-a656-7441640282d2",
+        "state": "running",
+        "heartbeat": "2026-11-19T06:02:53.070Z"
+      },
+      {
+        "run": "823ab314-34f7-4cfe-a656-7441640282d2",
+        "state": "blocked",
+        "heartbeat": "2026-11-19T06:02:53.070Z"
+      },
+      {
+        "run": "0c5b4b20-6016-45ef-80b0-8edfe5a8d9f8",
+        "state": "running",
+        "heartbeat": null
+      },
+      {
+        "run": "0c5b4b20-6016-45ef-80b0-8edfe5a8d9f8",
+        "state": "running",
+        "heartbeat": "2026-11-19T06:03:10.114Z"
+      },
+      {
+        "run": "0c5b4b20-6016-45ef-80b0-8edfe5a8d9f8",
+        "state": "running",
+        "heartbeat": "2026-11-19T06:03:10.114Z"
+      },
+      {
+        "run": "0c5b4b20-6016-45ef-80b0-8edfe5a8d9f8",
+        "state": "done",
+        "heartbeat": "2026-11-19T06:03:10.114Z"
+      }
+    ],
+    "run_count": 2,
+    "result_ids": [
+      "3289a019-0814-42e5-af4f-247cc4561421"
+    ],
+    "same_scope": true
+  },
+  "provider_events": [
+    {
+      "event": "child_waiting",
+      "worker": "juniper-original",
+      "at": "2026-11-19T06:02:46.802Z"
+    },
+    {
+      "event": "child_stream_cancelled",
+      "worker": "juniper-original",
+      "at": "2026-11-19T06:02:55.917Z"
+    }
+  ],
+  "bytes_verified": true
+}

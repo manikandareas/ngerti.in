@@ -1,0 +1,109 @@
+{
+  "date": "2026-11-19",
+  "surface": "Ngertiin Web (Chromium) and its Computer viewer",
+  "harness": "Pi ACP",
+  "provider": {
+    "mode": "live",
+    "model": "sumopod/deepseek-v4-flash",
+    "billing": "api_key"
+  },
+  "target": "isolated Lotus ledger served in retained Chromium",
+  "thread": "31b0d8f6-d61b-474a-ad24-f8e743d2432d",
+  "open_run": "f1ad523f-5111-4565-9034-5eb17ace6e87",
+  "browser_run": "3e66ec5f-9e07-4a26-b9ed-8bb350eb8288",
+  "profile_preflight": "Initial browser consent refusal, followed by successful existing-profile preparation.",
+  "page_observations": {
+    "1": {
+      "receipt": "6f708192-a3b4-4ecf-b04c-5d6e7f8091a2",
+      "url": "http://host.docker.internal:8443/lotus-ledger",
+      "rows": [
+        [
+          "East",
+          16
+        ],
+        [
+          "North",
+          25
+        ]
+      ],
+      "at": "2026-11-18T23:29:59.035Z",
+      "mode": "snapshot"
+    },
+    "2": {
+      "receipt": "8b92a3b4-c5d6-40e1-a26e-7f8091a2b3c4",
+      "url": "http://host.docker.internal:8443/lotus-ledger?page=2",
+      "rows": [
+        [
+          "South",
+          31
+        ],
+        [
+          "West",
+          18
+        ]
+      ],
+      "at": "2026-11-18T23:30:40.606Z",
+      "mode": "snapshot"
+    },
+    "3": {
+      "receipt": "a10c4c5d-6e7f-4281-b48f-91a2b3c4d5e6",
+      "url": "http://host.docker.internal:8443/lotus-ledger?page=3",
+      "rows": [
+        [
+          "Yard",
+          20
+        ],
+        [
+          "Annex",
+          15
+        ]
+      ],
+      "at": "2026-11-18T23:31:10.415Z",
+      "mode": "snapshot"
+    }
+  },
+  "total": 125,
+  "input_receipts": [
+    {
+      "id": "7a8192a3-b4c5-4fd0-915d-6e7f8091a2b3",
+      "name": "browser_click",
+      "state": "succeeded",
+      "updated_at": "2026-11-18T23:30:26.733Z"
+    },
+    {
+      "id": "9c03b4c5-d6e7-41f2-b37f-8091a2b3c4d5",
+      "name": "browser_click",
+      "state": "succeeded",
+      "updated_at": "2026-11-18T23:30:58.618Z"
+    },
+    {
+      "id": "b21d5d6e-7f80-4392-959f-a2b3c4d5e6f7",
+      "name": "browser_type",
+      "state": "succeeded",
+      "updated_at": "2026-11-18T23:31:33.258Z"
+    },
+    {
+      "id": "d43f7f80-91a2-45b4-97b1-c4d5e6f70819",
+      "name": "browser_click",
+      "state": "succeeded",
+      "updated_at": "2026-11-18T23:32:10.422Z"
+    }
+  ],
+  "server_save": {
+    "event": "review_saved",
+    "review": "LOTUS-REVIEW-681",
+    "submissions": 1,
+    "at": "2026-11-18T23:32:10.227Z"
+  },
+  "final_browser_observation": {
+    "receipt": "e5408a91-a2b3-46c5-98c2-d5e6f708192a",
+    "at": "2026-11-18T23:32:32.618Z",
+    "url": "http://host.docker.internal:8443/lotus-ledger?page=3",
+    "review": "LOTUS-REVIEW-681"
+  },
+  "user_viewer": {
+    "frames": 1,
+    "live": "true"
+  },
+  "viewer_fix": "The local proxy forwards the scoped media WebSocket and preserves the browser Origin."
+}

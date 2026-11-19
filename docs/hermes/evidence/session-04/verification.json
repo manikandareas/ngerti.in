@@ -1,0 +1,64 @@
+{
+  "date": "2026-11-19",
+  "surface": "Authenticated Ngertiin Web / Chromium",
+  "harness": "Pi ACP",
+  "provider": "Sumopod live / API key",
+  "thread": "19181f00-f7bb-4f9e-a67b-92ee785eea17",
+  "binding": {
+    "active": true,
+    "id": "273a0723-5a5e-42e3-8021-272d12f7901b",
+    "native_session_id": "01a1f1fc-6e13-779f-ada2-848c36554ce9",
+    "workspace_id": "27ad96a4-987e-4003-ba15-a9e3e268b752"
+  },
+  "original_binding": {
+    "active": true,
+    "id": "273a0723-5a5e-42e3-8021-272d12f7901b",
+    "native_session_id": "01a1f1fc-6e13-779f-ada2-848c36554ce9",
+    "workspace_id": "27ad96a4-987e-4003-ba15-a9e3e268b752"
+  },
+  "original_message": {
+    "artifact_ids": [],
+    "author": "user",
+    "id": "1002bb43-eda7-4355-8571-0352a75efb15",
+    "run_id": "0e601c77-9dac-427c-9b9b-6917342c563c",
+    "text": "For this operation only, I considered Frost West and North Tower. The final release decision is Meridian Bay, tray 26, code WINTER-LANTERN-7219. Acknowledge this decision for this conversation only."
+  },
+  "archive_after_reload": {
+    "bytes": 93652,
+    "id": "faf22257-88c2-4d3c-91dc-14b4d3a35580",
+    "sha256": "d5049758d6ddfea887f639813426d447ea04cbc7468d5d0cbaad98c67ffbdb48"
+  },
+  "compaction": {
+    "entries": 1,
+    "id": "bd54f184",
+    "tokens_before": 56993,
+    "first_kept_entry": "56754b6a",
+    "original_decision_entry": "4e7a332a",
+    "original_entry_precedes_retained_tail": true,
+    "summary_contains_all_decision_values": true
+  },
+  "initial_failure": {
+    "id": "eb17d736-13f2-4e1c-98b8-b7d68336656c",
+    "status": "failed",
+    "diagnostic": {
+      "category": "configuration",
+      "code": "CAPABILITY_UNSUPPORTED",
+      "outcome": "not_dispatched"
+    }
+  },
+  "completed_compaction": {
+    "id": "c839b326-dffc-475b-ac44-2c6f4238a950",
+    "status": "succeeded",
+    "binding_id": "273a0723-5a5e-42e3-8021-272d12f7901b",
+    "model": "sumopod/deepseek-v4-flash",
+    "billing": "api_key"
+  },
+  "followup": {
+    "id": "f8ef02e6-fc92-4488-bdfd-0f3630f1af88",
+    "text": "Write the one-line release slip using the final release decision for this conversation. Include the location, tray number, and code."
+  },
+  "answer": {
+    "id": "ffd13687-2dbc-4819-b059-95d196b96b25",
+    "text": "Release slip: Meridian Bay — tray 26 — WINTER-LANTERN-7219"
+  }
+}

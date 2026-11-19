@@ -1,0 +1,41 @@
+{
+  "date": "2026-11-19",
+  "surface": "Ngertiin Web (Chromium)",
+  "harness": "Pi ACP",
+  "provider": {
+    "mode": "live",
+    "model": "sumopod/deepseek-v4-flash",
+    "billing": "api_key"
+  },
+  "skill_id": "b35c125f-68b1-402a-b8f4-542a23be9d91",
+  "version": 1,
+  "overview_paths": [
+    "references/daytime.md",
+    "references/overnight.md"
+  ],
+  "overview_contained_asset_content": false,
+  "cases": [
+    {
+      "shift": "daytime",
+      "measured_percent": 41,
+      "thread": "4d27c1ad-5a43-4708-88cb-b960d8958d9d",
+      "run": "6dc60f58-dc77-4dbd-a56b-2880d731799b",
+      "opened_reference": "references/daytime.md",
+      "reference_sha256": "30bd5ba849c3b72ba33f7e31d4f0f46d52e6f4514a1b5008946e819f821ea206",
+      "other_reference_opened": false,
+      "answer_code": "MIS-D-174",
+      "response": "Humidify during attended checks"
+    },
+    {
+      "shift": "overnight",
+      "measured_percent": 83,
+      "thread": "9bde4e35-8135-4a31-becf-54a10db19564",
+      "run": "f14043c7-2685-48f2-86a8-d0f3a1b21e69",
+      "opened_reference": "references/overnight.md",
+      "reference_sha256": "2c1cfe929478c9be5c982b35db6239020cab14a7fb7fba8e8423b4243c3cdd0a",
+      "other_reference_opened": false,
+      "answer_code": "MIS-N-855",
+      "response": "Flag inspection at shift change"
+    }
+  ]
+}

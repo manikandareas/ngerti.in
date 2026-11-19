@@ -1,0 +1,134 @@
+{
+  "date": "2026-11-19",
+  "surface": "Web (Chrome), authenticated Ngertiin API",
+  "harness": "Pi ACP 0.0.34 (Pi 1.5.2)",
+  "provider": "Loopback API-key fixture",
+  "catalogImport": {
+    "authenticated_account": true,
+    "authentication": "harness_config",
+    "billing": "api_key",
+    "discovery": "succeeded",
+    "effective_billing": "api_key",
+    "harness": "pi",
+    "id": "b3bf623b-1e7f-4682-9c56-0397c22377a1",
+    "login": "authenticated",
+    "models": [
+      "hermes-verification/verification-alpha",
+      "hermes-verification/verification-beta"
+    ],
+    "state": "active"
+  },
+  "beforeRelease": {
+    "runs": [
+      {
+        "id": "eca7acb3-7ec5-4ffe-a40f-637be86eaf0b",
+        "input": "7879319d-c7b3-40c1-a906-c9b5e1a60389",
+        "status": "running",
+        "timings": {
+          "ready_at": "2026-11-19T06:18:37.297Z",
+          "accepted_at": "2026-11-19T06:18:38.461Z",
+          "preparing_at": "2026-11-19T06:18:30.591Z",
+          "dispatched_at": "2026-11-19T06:18:37.297Z",
+          "first_output_at": "2026-11-19T06:18:38.748Z"
+        },
+        "selection": {
+          "model": "hermes-verification/verification-alpha",
+          "billing": "api_key",
+          "harness": "pi",
+          "connection": "b3bf623b-1e7f-4682-9c56-0397c22377a1",
+          "authenticated_account": true
+        }
+      },
+      {
+        "id": "5794c811-df13-46f2-a1e2-8e84055e8cc1",
+        "input": "3fe0eb34-748c-423b-ad9e-b8d99cccd9e2",
+        "status": "queued",
+        "timings": null,
+        "selection": {
+          "model": "hermes-verification/verification-beta",
+          "billing": "api_key",
+          "harness": "pi",
+          "connection": "b3bf623b-1e7f-4682-9c56-0397c22377a1",
+          "authenticated_account": true
+        }
+      }
+    ],
+    "thread": "1331b61d-da68-4dc2-95b2-11a7819766fd"
+  },
+  "providerEvents": [
+    {
+      "event": "requested",
+      "step": "first",
+      "model": "verification-alpha",
+      "at": "2026-11-19T06:18:38.537Z"
+    },
+    {
+      "event": "finished",
+      "step": "first",
+      "model": "verification-alpha",
+      "at": "2026-11-19T06:18:45.567Z"
+    },
+    {
+      "event": "requested",
+      "step": "second",
+      "model": "verification-beta",
+      "at": "2026-11-19T06:18:51.877Z"
+    },
+    {
+      "event": "finished",
+      "step": "second",
+      "model": "verification-beta",
+      "at": "2026-11-19T06:18:51.879Z"
+    }
+  ],
+  "settled": {
+    "runs": [
+      {
+        "id": "eca7acb3-7ec5-4ffe-a40f-637be86eaf0b",
+        "input": "7879319d-c7b3-40c1-a906-c9b5e1a60389",
+        "status": "succeeded",
+        "timings": {
+          "ready_at": "2026-11-19T06:18:37.297Z",
+          "settled_at": "2026-11-19T06:18:46.314Z",
+          "accepted_at": "2026-11-19T06:18:38.461Z",
+          "preparing_at": "2026-11-19T06:18:30.591Z",
+          "dispatched_at": "2026-11-19T06:18:37.297Z",
+          "first_output_at": "2026-11-19T06:18:38.748Z"
+        },
+        "selection": {
+          "model": "hermes-verification/verification-alpha",
+          "billing": "api_key",
+          "harness": "pi",
+          "connection": "b3bf623b-1e7f-4682-9c56-0397c22377a1",
+          "authenticated_account": true
+        }
+      },
+      {
+        "id": "5794c811-df13-46f2-a1e2-8e84055e8cc1",
+        "input": "3fe0eb34-748c-423b-ad9e-b8d99cccd9e2",
+        "status": "succeeded",
+        "timings": {
+          "ready_at": "2026-11-19T06:18:50.084Z",
+          "settled_at": "2026-11-19T06:18:52.456Z",
+          "accepted_at": "2026-11-19T06:18:51.815Z",
+          "preparing_at": "2026-11-19T06:18:46.701Z",
+          "dispatched_at": "2026-11-19T06:18:50.084Z",
+          "first_output_at": "2026-11-19T06:18:52.107Z"
+        },
+        "selection": {
+          "model": "hermes-verification/verification-beta",
+          "billing": "api_key",
+          "harness": "pi",
+          "connection": "b3bf623b-1e7f-4682-9c56-0397c22377a1",
+          "authenticated_account": true
+        }
+      }
+    ],
+    "thread": "1331b61d-da68-4dc2-95b2-11a7819766fd"
+  },
+  "afterReload": [
+    "The first Redwood run completed on verification-alpha.",
+    "The second Redwood run used verification-beta."
+  ],
+  "limitation": "Chrome needed a reload to show both final answers after native settlement in this retest. Real provider charges were outside this fixture."
+}

@@ -1,0 +1,147 @@
+{
+  "date": "2026-11-19",
+  "surface": "Chrome Web, distinct source and destination Ngertiin origins, application and authentication schemas",
+  "sourceOrigin": "http://127.0.0.1:4172",
+  "destinationOrigin": "http://127.0.0.1:4173",
+  "harness": "Pi ACP 0.0.34 (Pi 1.5.2)",
+  "provider": "Destination API-key loopback fixture with separate credential and connection",
+  "downloadHashes": {
+    "alder-profile.json": "a7f43e3d981b626db8bd2c0393d085744eaf28982ffba2e5bdce70b96f80f892",
+    "alder-profile-backup.json": "1a6b4679d439d8d8b568af594e09af41223e3f0bbc7c6f2c36b5f6c5926704ca"
+  },
+  "sourceSchedule": {
+    "agent": "5bfce623-a849-4e02-86b0-8d3ba2921af5",
+    "id": "91ec7e1d-c80a-4f42-8db1-47ec99a193c8",
+    "model": "hermes-verification/verification-beta",
+    "name": "Alder release handover",
+    "next": "2030-01-18T15:00:00.000Z",
+    "provider": "b3bf623b-1e7f-4682-9c56-0397c22377a1",
+    "state": "active",
+    "thread": "eb09d635-a50f-45b3-b103-4e60d66e4d84"
+  },
+  "blockedResume": {
+    "actor": "f0a5f328-32c6-4592-b899-0993051e8bff",
+    "agent": "a39f64c1-47e1-4f52-afc4-60d832c274ef",
+    "occurrences": 0,
+    "routines": [
+      {
+        "id": "47153385-957c-49e9-af0c-92780da5f0bb",
+        "name": "Alder release handover",
+        "next_run_at": null,
+        "provider_selection": null,
+        "restore_pending": true,
+        "state": "paused"
+      }
+    ],
+    "runCount": 0,
+    "thread": "064f183d-9435-4fa6-810b-033ac7e9d291"
+  },
+  "destination": {
+    "actor": "f0a5f328-32c6-4592-b899-0993051e8bff",
+    "emailVerified": true,
+    "org": "f01467fc-dc33-43e7-ac5e-c4e21730794c",
+    "profiles": [
+      {
+        "agent": {
+          "id": "745f4143-fcf7-4e68-abd7-73a766ef13a1",
+          "name": "Alder Release Desk",
+          "soul": "You are the Alder Release Desk. Begin every release check with the exact line ALDER OPERATIONS."
+        },
+        "answers": [],
+        "memories": [],
+        "occurrences": [],
+        "routines": [],
+        "runs": [],
+        "skill": {
+          "id": "446fb69a-69fa-4f4e-8b5b-4e9d00277c6a",
+          "sha256": "42abc1973b570bcb5d19327a7f7129bd968fd04c32dd5c712d06aee493ae5d95",
+          "version": 1
+        },
+        "thread": "5644be22-881c-4453-bb51-d4ff7b4671e3"
+      },
+      {
+        "agent": {
+          "id": "a39f64c1-47e1-4f52-afc4-60d832c274ef",
+          "name": "Alder Release Desk",
+          "soul": "You are the Alder Release Desk. Begin every release check with the exact line ALDER OPERATIONS."
+        },
+        "answers": [
+          "ALDER OPERATIONS\n\nVerified ALD-684-SM from references/current-release.txt."
+        ],
+        "memories": [
+          {
+            "text": "Use the Alder local lab for release verification. Synthetic fixture token example: Bearer [REDACTED]",
+            "visibility": "dm_private"
+          }
+        ],
+        "occurrences": [
+          {
+            "id": "b9416e3f-80b3-4c84-b04c-6b320ed9b1fb",
+            "routine_id": "47153385-957c-49e9-af0c-92780da5f0bb",
+            "run_id": "db4f69a8-a75c-4728-a2ea-758e6efe4d3e",
+            "state": "completed",
+            "trigger": "manual"
+          }
+        ],
+        "routines": [
+          {
+            "id": "47153385-957c-49e9-af0c-92780da5f0bb",
+            "name": "Alder release handover",
+            "next_run_at": "2030-01-18T15:00:00.000Z",
+            "restore_pending": false,
+            "selection": {
+              "billing_source": "api_key",
+              "connection_id": "c6d28efe-694a-48ac-ab33-3fee5f7995af",
+              "model_id": "hermes-destination/verification-alpha"
+            },
+            "state": "active"
+          }
+        ],
+        "runs": [
+          {
+            "id": "db4f69a8-a75c-4728-a2ea-758e6efe4d3e",
+            "routine_id": "47153385-957c-49e9-af0c-92780da5f0bb",
+            "selection": {
+              "billing_source": "api_key",
+              "connection_id": "c6d28efe-694a-48ac-ab33-3fee5f7995af",
+              "model_id": "hermes-destination/verification-alpha"
+            },
+            "skill_reads": [
+              {
+                "skill_id": "db0235e1-83db-4c72-81d7-dd167c2e1828",
+                "version": 1
+              }
+            ],
+            "status": "succeeded"
+          }
+        ],
+        "skill": {
+          "id": "db0235e1-83db-4c72-81d7-dd167c2e1828",
+          "sha256": "42abc1973b570bcb5d19327a7f7129bd968fd04c32dd5c712d06aee493ae5d95",
+          "version": 1
+        },
+        "thread": "064f183d-9435-4fa6-810b-033ac7e9d291"
+      }
+    ]
+  },
+  "providerEvents": [
+    {
+      "event": "alder",
+      "model": "verification-alpha",
+      "step": 0,
+      "at": "2026-11-19T06:54:10.425Z"
+    },
+    {
+      "event": "alder",
+      "model": "verification-alpha",
+      "step": 1,
+      "at": "2026-11-19T06:54:14.979Z"
+    },
+    {
+      "event": "alder",
+      "model": "verification-alpha",
+      "step": 2,
+      "at": "2026-11-19T06:54:17.749Z"
+    }
+  ]
+}

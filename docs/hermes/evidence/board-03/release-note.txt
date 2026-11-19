@@ -1,0 +1,2 @@
+Released units: 42
+Operator sign-off: Harbor QA

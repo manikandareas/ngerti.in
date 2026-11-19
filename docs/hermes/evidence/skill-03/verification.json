@@ -1,0 +1,70 @@
+{
+  "date": "2026-11-19",
+  "surface": "Ngertiin Web (Chromium)",
+  "harness": "Pi ACP",
+  "provider": {
+    "mode": "live",
+    "model": "sumopod/deepseek-v4-flash",
+    "billing": "api_key"
+  },
+  "fixture": {
+    "assignment": "55bead3c-6cf3-4564-985b-cf50ffea4cf9",
+    "context": {
+      "agent_id": "a8a1aeaa-6387-4351-999c-2c37df2e29f3",
+      "thread_id": "7cda4f39-79f9-444b-bb1d-926e608a3423"
+    },
+    "enabled": true,
+    "name": "mistral-humidity-triage",
+    "sha256": "e1c624b69483c424ef2a1e47dbda11f91645fb50c02b8d60d43953ce7b144f2a",
+    "skill_id": "b35c125f-68b1-402a-b8f4-542a23be9d91",
+    "version": 1
+  },
+  "automatic_selection": {
+    "thread": "4006aac5-12e5-4368-82f1-5d2cea18cb70",
+    "run": "3cd6c00b-7a1a-4c0f-b355-4998f1225f48",
+    "workspace": "3ac2604f-9092-458a-905d-fd3be783a19b",
+    "version": 1,
+    "listed_reference_paths": [
+      "references/daytime.md",
+      "references/overnight.md"
+    ],
+    "opened_reference": "references/daytime.md",
+    "reference_sha256": "30bd5ba849c3b72ba33f7e31d4f0f46d52e6f4514a1b5008946e819f821ea206",
+    "answer_code": "MIS-D-945"
+  },
+  "explicit_selection": {
+    "thread": "7270b9b8-25d6-482f-92ef-968e21cb7b5f",
+    "run": "f58adae5-bd69-4625-9cd0-0b0c9c595c02",
+    "workspace": "6c65c558-f980-4f74-86fc-8de1688ba193",
+    "version": 1,
+    "listed_reference_paths": [
+      "references/daytime.md",
+      "references/overnight.md"
+    ],
+    "opened_reference": "references/overnight.md",
+    "reference_sha256": "2c1cfe929478c9be5c982b35db6239020cab14a7fb7fba8e8423b4243c3cdd0a",
+    "answer_code": "MIS-N-164"
+  },
+  "routine": {
+    "id": "5d1c8e77-2a94-4b3c-8f01-6e2b9c4d7a58",
+    "schedule": {
+      "at": "2026-11-18T23:02:15Z",
+      "type": "once"
+    },
+    "occurrence": "73ed28a7-060c-47d1-8bb9-810d7fe2557a",
+    "actual_dispatch": "2026-11-18T23:02:21.550Z",
+    "result": {
+      "thread": "7270b9b8-25d6-482f-92ef-968e21cb7b5f",
+      "run": "83094234-49fc-4eca-b5bb-3e4faa65b6b8",
+      "workspace": "6c65c558-f980-4f74-86fc-8de1688ba193",
+      "version": 1,
+      "listed_reference_paths": [
+        "references/daytime.md",
+        "references/overnight.md"
+      ],
+      "opened_reference": "references/daytime.md",
+      "reference_sha256": "30bd5ba849c3b72ba33f7e31d4f0f46d52e6f4514a1b5008946e819f821ea206",
+      "answer_code": "MIS-D-732"
+    }
+  }
+}

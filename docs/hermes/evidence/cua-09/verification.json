@@ -1,0 +1,128 @@
+{
+  "date": "2026-11-19",
+  "surface": "Ngertiin Web (Chromium) and retained Computer viewer",
+  "harness": "Pi ACP",
+  "provider": {
+    "mode": "fixture",
+    "model": "handoff-fixture/computer-handoff",
+    "billing": "api_key"
+  },
+  "thread": "9581aaf9-9c37-4cd5-b072-99ccf8ead25f",
+  "setup_run": "bee73720-0541-496e-b8d6-787002c5a785",
+  "action_run": "77a05473-f18d-4d49-a3f1-a28fe2dcd36f",
+  "window": 29360201,
+  "original_observation": {
+    "at": "2026-11-19T01:38:06.412Z",
+    "id": "645d6e36-8247-477e-92a2-7f358ad1918b",
+    "tab": "tab-2abe169d-1954-44cc-be74-0c1460104872",
+    "name": "get_browser_state",
+    "page": "http://host.docker.internal:8450/spruce-review",
+    "state": "succeeded",
+    "target": "bt-5f9c96cf-34a4-42ae-9537-78f36d647c1a",
+    "started": "2026-11-19T01:37:57.806Z",
+    "snapshot": "p7",
+    "action_refs": [
+      {
+        "ref": "p7:1",
+        "label": "Accept original SPRUCE-29381"
+      }
+    ],
+    "native_error": false,
+    "visible_labels": [
+      "Original queue",
+      "No ticket accepted"
+    ]
+  },
+  "observed_target_change_guidance": true,
+  "queue_replaced": {
+    "event": "queue_revised",
+    "original": "SPRUCE-29381",
+    "revised": "SPRUCE-58934",
+    "other": "SPRUCE-65573",
+    "revision": 2,
+    "submissions": [],
+    "at": "2026-11-19T01:38:34.722Z"
+  },
+  "revised_observation": {
+    "at": "2026-11-19T01:38:55.451Z",
+    "id": "6dbf1a89-0d39-4dcc-91db-4522fd04ff80",
+    "tab": "tab-2abe169d-1954-44cc-be74-0c1460104872",
+    "name": "get_browser_state",
+    "page": "http://host.docker.internal:8450/spruce-review",
+    "state": "succeeded",
+    "target": "bt-5f9c96cf-34a4-42ae-9537-78f36d647c1a",
+    "started": "2026-11-19T01:38:46.135Z",
+    "snapshot": "p8",
+    "action_refs": [
+      {
+        "ref": "p8:1",
+        "label": "Accept other SPRUCE-65573"
+      },
+      {
+        "ref": "p8:2",
+        "label": "Accept revised SPRUCE-58934"
+      }
+    ],
+    "native_error": false,
+    "visible_labels": [
+      "No ticket accepted",
+      "Revised queue"
+    ]
+  },
+  "input": {
+    "at": "2026-11-19T01:39:32.096Z",
+    "id": "d2178f0c-1fd5-4a7b-a309-f5e28424cd4b",
+    "name": "browser_click",
+    "state": "succeeded",
+    "effect": "unverifiable",
+    "started": "2026-11-19T01:39:06.723Z",
+    "native_error": false,
+    "request": {
+      "name": "browser_click",
+      "arguments": {
+        "target_id": "bt-5f9c96cf-34a4-42ae-9537-78f36d647c1a",
+        "tab_id": "tab-2abe169d-1954-44cc-be74-0c1460104872",
+        "ref": "p8:2",
+        "input_route": "dom_event"
+      }
+    }
+  },
+  "target_effect": {
+    "event": "ticket_accepted",
+    "original": "SPRUCE-29381",
+    "revised": "SPRUCE-58934",
+    "other": "SPRUCE-65573",
+    "revision": 2,
+    "submissions": [
+      "SPRUCE-58934"
+    ],
+    "at": "2026-11-19T01:39:27.919Z"
+  },
+  "observed_result": {
+    "at": "2026-11-19T01:40:22.452Z",
+    "id": "198e0cf9-c49f-4760-96dc-d4e7edc8d473",
+    "tab": "tab-2abe169d-1954-44cc-be74-0c1460104872",
+    "name": "get_browser_state",
+    "page": "http://host.docker.internal:8450/spruce-review",
+    "state": "succeeded",
+    "target": "bt-5f9c96cf-34a4-42ae-9537-78f36d647c1a",
+    "started": "2026-11-19T01:39:54.072Z",
+    "snapshot": "p9",
+    "action_refs": [
+      {
+        "ref": "p9:1",
+        "label": "Accept revised SPRUCE-58934"
+      },
+      {
+        "ref": "p9:2",
+        "label": "Accept other SPRUCE-65573"
+      }
+    ],
+    "native_error": false,
+    "visible_labels": [
+      "Revised queue",
+      "Accepted SPRUCE-58934"
+    ]
+  },
+  "answer": "I accepted the ticket in the revised Spruce queue. The board shows Accepted SPRUCE-58934."
+}

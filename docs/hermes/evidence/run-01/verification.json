@@ -1,0 +1,22 @@
+{
+  "date": "2026-11-18",
+  "surface": "Ngertiin Web (Chromium)",
+  "harness": "Pi ACP",
+  "provider": "Sumopod live",
+  "model": "sumopod/deepseek-v4-flash",
+  "billing": "api_key",
+  "source": "../../../../scripts/verification/hermes/dashboard.ts",
+  "source_is_fixture": true,
+  "source_export_status": 503,
+  "dashboard_pages": {
+    "1": [["Cedar North", 41], ["Cedar East", 83]],
+    "2": [["Cedar South", 130], ["Cedar West", 63]]
+  },
+  "downloaded_data_rows": 4,
+  "downloaded_rows_match_both_pages": true,
+  "run_status": "succeeded",
+  "artifact_origin": "native_output",
+  "artifact_and_download_sha256": "e67793028db977c4e4dfb15b03d204c0b556de3e8d140bfb02a3b96037af0b5d",
+  "chat_total_units": 317,
+  "chat_highest_volume_site": {"site": "Cedar South", "units": 130}
+}

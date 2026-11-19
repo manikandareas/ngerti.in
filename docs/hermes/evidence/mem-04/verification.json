@@ -1,0 +1,145 @@
+{
+  "date": "2026-11-19",
+  "surface": "Ngertiin Web (Chromium)",
+  "harness": "Pi ACP",
+  "provider": {
+    "type": "live",
+    "model": "sumopod/deepseek-v4-flash",
+    "billing": "api_key"
+  },
+  "inputs": "synthetic",
+  "dm": {
+    "save": {
+      "thread": "577e1b25-c976-4a17-97d9-ec3a874d0482",
+      "run": {
+        "id": "becae72b-a050-44cb-b474-7ceb9d5343eb",
+        "status": "succeeded",
+        "agent_id": null,
+        "model": "sumopod/deepseek-v4-flash",
+        "billing": "api_key",
+        "product_tools": [
+          "ngertiin.write_memory"
+        ]
+      },
+      "reply": "Saved. DM-LAGOON-47 is stored as a private memory scoped to this direct conversation only — it won't appear in any other chat or group.",
+      "memories": [
+        {
+          "actor_id": "29066a95-2b82-4c8b-b498-3217693003c7",
+          "agent_id": "bf61dd07-e39f-4e51-ad91-52271b43c3ed",
+          "created_at": "2026-11-18T17:30:02.371Z",
+          "id": "3f2a91c4-7d18-4a6b-9e52-c0b7d1e84a63",
+          "kind": "memory",
+          "organization_id": "f82a07c3-7161-417b-a258-09a2e1c7d0ef",
+          "owner_id": "10747d0f-bf61-4838-818f-edcf83c5ca4c",
+          "revision": 1,
+          "source_run_id": "becae72b-a050-44cb-b474-7ceb9d5343eb",
+          "state": "active",
+          "text": "Private marker for this direct conversation: DM-LAGOON-47",
+          "thread_id": "577e1b25-c976-4a17-97d9-ec3a874d0482",
+          "updated_at": "2026-11-18T17:30:02.371Z",
+          "visibility": "dm_private"
+        }
+      ]
+    },
+    "recall": {
+      "thread": "577e1b25-c976-4a17-97d9-ec3a874d0482",
+      "run": {
+        "id": "dbc9dd59-b604-44da-a0a3-1da3985e4a78",
+        "status": "succeeded",
+        "agent_id": "bf61dd07-e39f-4e51-ad91-52271b43c3ed",
+        "model": "sumopod/deepseek-v4-flash",
+        "billing": "api_key",
+        "product_tools": [
+          "ngertiin.list_memories",
+          "ngertiin.list_memories"
+        ]
+      },
+      "reply": "DM-LAGOON-47",
+      "memories": [
+        {
+          "actor_id": "29066a95-2b82-4c8b-b498-3217693003c7",
+          "agent_id": "bf61dd07-e39f-4e51-ad91-52271b43c3ed",
+          "created_at": "2026-11-18T17:30:02.371Z",
+          "id": "3f2a91c4-7d18-4a6b-9e52-c0b7d1e84a63",
+          "kind": "memory",
+          "organization_id": "f82a07c3-7161-417b-a258-09a2e1c7d0ef",
+          "owner_id": "10747d0f-bf61-4838-818f-edcf83c5ca4c",
+          "revision": 1,
+          "source_run_id": "becae72b-a050-44cb-b474-7ceb9d5343eb",
+          "state": "active",
+          "text": "Private marker for this direct conversation: DM-LAGOON-47",
+          "thread_id": "577e1b25-c976-4a17-97d9-ec3a874d0482",
+          "updated_at": "2026-11-18T17:30:02.371Z",
+          "visibility": "dm_private"
+        }
+      ]
+    }
+  },
+  "group": {
+    "save": {
+      "thread": "7ce58ae9-2ea1-4a00-9354-65621b0fb27d",
+      "run": {
+        "id": "bd26eaf5-a336-42e7-a991-6707ff6bfd25",
+        "status": "succeeded",
+        "agent_id": "bf61dd07-e39f-4e51-ad91-52271b43c3ed",
+        "model": "sumopod/deepseek-v4-flash",
+        "billing": "api_key",
+        "product_tools": [
+          "ngertiin.write_memory"
+        ]
+      },
+      "reply": "Saved with group visibility, [@user](ngertiin://user/owner): the marker **GROUP-CANOPY-26** is now stored in Memory scoped to this group only — it stays with this group's thread and won't appear in other conversations.",
+      "memories": [
+        {
+          "actor_id": "29066a95-2b82-4c8b-b498-3217693003c7",
+          "agent_id": "bf61dd07-e39f-4e51-ad91-52271b43c3ed",
+          "created_at": "2026-11-18T17:31:21.536Z",
+          "id": "c4f4b4f0-9f6c-4b1e-9a6d-2f0f0a5a9a3b",
+          "kind": "memory",
+          "organization_id": "f82a07c3-7161-417b-a258-09a2e1c7d0ef",
+          "owner_id": "10747d0f-bf61-4838-818f-edcf83c5ca4c",
+          "revision": 1,
+          "source_run_id": "bd26eaf5-a336-42e7-a991-6707ff6bfd25",
+          "state": "active",
+          "text": "Group marker for \"Hermes memory scope lab\": GROUP-CANOPY-26 (exact, case-sensitive).",
+          "thread_id": "7ce58ae9-2ea1-4a00-9354-65621b0fb27d",
+          "updated_at": "2026-11-18T17:31:21.536Z",
+          "visibility": "group"
+        }
+      ]
+    },
+    "recall": {
+      "thread": "7ce58ae9-2ea1-4a00-9354-65621b0fb27d",
+      "run": {
+        "id": "a4fd00c1-97aa-4ab4-ac67-2d9ffcc1f864",
+        "status": "succeeded",
+        "agent_id": "bf61dd07-e39f-4e51-ad91-52271b43c3ed",
+        "model": "sumopod/deepseek-v4-flash",
+        "billing": "api_key",
+        "product_tools": [
+          "ngertiin.list_memories",
+          "ngertiin.list_memories"
+        ]
+      },
+      "reply": "GROUP-CANOPY-26\n\n(Read back from this conversation's group-scoped Memory, [@user](ngertiin://user/owner).)",
+      "memories": [
+        {
+          "actor_id": "29066a95-2b82-4c8b-b498-3217693003c7",
+          "agent_id": "bf61dd07-e39f-4e51-ad91-52271b43c3ed",
+          "created_at": "2026-11-18T17:31:21.536Z",
+          "id": "c4f4b4f0-9f6c-4b1e-9a6d-2f0f0a5a9a3b",
+          "kind": "memory",
+          "organization_id": "f82a07c3-7161-417b-a258-09a2e1c7d0ef",
+          "owner_id": "10747d0f-bf61-4838-818f-edcf83c5ca4c",
+          "revision": 1,
+          "source_run_id": "bd26eaf5-a336-42e7-a991-6707ff6bfd25",
+          "state": "active",
+          "text": "Group marker for \"Hermes memory scope lab\": GROUP-CANOPY-26 (exact, case-sensitive).",
+          "thread_id": "7ce58ae9-2ea1-4a00-9354-65621b0fb27d",
+          "updated_at": "2026-11-18T17:31:21.536Z",
+          "visibility": "group"
+        }
+      ]
+    }
+  }
+}

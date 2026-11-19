@@ -1,0 +1,793 @@
+{
+  "date": "2026-11-19",
+  "surface": "Ngertiin Web (Chromium)",
+  "harness": "Pi ACP",
+  "model_provider": "live",
+  "data": "synthetic group artifacts",
+  "collaboration": {
+    "thread": {
+      "id": "3b2320c7-6e5e-4cdd-8576-b49207b97e91",
+      "member_agent_ids": [
+        "2362f652-38fd-4082-906a-a8f942252831",
+        "bf61dd07-e39f-4e51-ad91-52271b43c3ed"
+      ],
+      "name": "Ridge validation lab"
+    },
+    "members": [
+      {
+        "id": "2362f652-38fd-4082-906a-a8f942252831",
+        "name": "Ruth"
+      },
+      {
+        "id": "bf61dd07-e39f-4e51-ad91-52271b43c3ed",
+        "name": "Scope Reviewer"
+      }
+    ],
+    "goal": {
+      "id": "c0a8a1f2-7d33-4c1b-9a51-4d0a0d9a1e01",
+      "state": "completed",
+      "work_state": "ready",
+      "coordinator_agent_id": "bf61dd07-e39f-4e51-ad91-52271b43c3ed",
+      "assignment_revision": 1,
+      "generation": 2,
+      "root_task_id": "0a291206-27d9-4284-85ec-ceddec35b32b",
+      "current_run_id": "136826a7-d62a-46ee-8368-1684c0648256",
+      "report_run_id": "136826a7-d62a-46ee-8368-1684c0648256",
+      "last_report_error": null,
+      "verification": {
+        "attempt_limit": 3,
+        "attempts_used": 1,
+        "checks": [
+          {
+            "artifact_name": "ridge-contributor-row.txt",
+            "exact_text": "RIDGE_TOTAL=43\n",
+            "title": "Contributor row states total 43"
+          },
+          {
+            "artifact_name": "ridge-final-summary.txt",
+            "exact_text": "RIDGE_REMAINING=7\n",
+            "title": "Final summary states remaining 7"
+          }
+        ],
+        "last_check": {
+          "results": [
+            {
+              "artifact_id": "3a7e1c94-2b6f-4d18-a0c5-71f2b8e94d63",
+              "artifact_name": "ridge-contributor-row.txt",
+              "status": "passed",
+              "title": "Contributor row states total 43"
+            },
+            {
+              "artifact_id": "9f4d2a63-8e15-4b70-a2c8-5d31e6b0f74a",
+              "artifact_name": "ridge-final-summary.txt",
+              "status": "passed",
+              "title": "Final summary states remaining 7"
+            }
+          ],
+          "run_id": "136826a7-d62a-46ee-8368-1684c0648256"
+        }
+      },
+      "evidence_artifact_ids": [
+        "3a7e1c94-2b6f-4d18-a0c5-71f2b8e94d63",
+        "9f4d2a63-8e15-4b70-a2c8-5d31e6b0f74a"
+      ]
+    },
+    "runs": [
+      {
+        "agent_id": "2362f652-38fd-4082-906a-a8f942252831",
+        "billing": "api_key",
+        "diagnostic": null,
+        "goal_assignment_revision": null,
+        "goal_generation": null,
+        "goal_id": null,
+        "id": "9adf3649-1535-4b9e-8cbc-1c6ffcf48d10",
+        "input_message_id": "484cc014-94ac-48ce-a152-bd7c5eacd3c8",
+        "model": "sumopod/deepseek-v4-flash",
+        "product_tools": [],
+        "routine_id": null,
+        "status": "succeeded",
+        "task_id": "9c12c9f7-cfd1-4b21-af64-a4160279bc1f",
+        "tool_errors": []
+      },
+      {
+        "agent_id": "bf61dd07-e39f-4e51-ad91-52271b43c3ed",
+        "billing": "api_key",
+        "diagnostic": null,
+        "goal_assignment_revision": null,
+        "goal_generation": null,
+        "goal_id": null,
+        "id": "0b36baa1-4f87-4194-a3d6-f96f597c89b0",
+        "input_message_id": "b95b58de-8fef-414f-aef7-f25049876bbd",
+        "model": "sumopod/deepseek-v4-flash",
+        "product_tools": [
+          "ngertiin.read_skill",
+          "ngertiin.list_goals",
+          "ngertiin.capture_goal",
+          "ngertiin.group_handoff"
+        ],
+        "routine_id": null,
+        "status": "succeeded",
+        "task_id": "0a291206-27d9-4284-85ec-ceddec35b32b",
+        "tool_errors": []
+      },
+      {
+        "agent_id": "2362f652-38fd-4082-906a-a8f942252831",
+        "billing": "api_key",
+        "diagnostic": null,
+        "goal_assignment_revision": null,
+        "goal_generation": null,
+        "goal_id": null,
+        "id": "b254a1f2-ef50-4f6c-a7e6-5fbe905443e4",
+        "input_message_id": "b25a0fcd-a288-40eb-922d-fab60fe0f881",
+        "model": "sumopod/deepseek-v4-flash",
+        "product_tools": [
+          "ngertiin.get_workspace",
+          "ngertiin.list_files",
+          "ngertiin.create_file",
+          "ngertiin.read_file",
+          "ngertiin.machine_exec",
+          "ngertiin.publish_artifact",
+          "ngertiin.group_read_task"
+        ],
+        "routine_id": null,
+        "status": "succeeded",
+        "task_id": "81b93465-4cd8-44c9-b3f4-507ba7f21dbb",
+        "tool_errors": [
+          {
+            "code": "CONFLICT",
+            "created_at": "2026-11-18T18:38:45.526Z",
+            "name": "ngertiin.group_handoff"
+          }
+        ]
+      },
+      {
+        "agent_id": "bf61dd07-e39f-4e51-ad91-52271b43c3ed",
+        "billing": "api_key",
+        "diagnostic": null,
+        "goal_assignment_revision": null,
+        "goal_generation": null,
+        "goal_id": null,
+        "id": "136826a7-d62a-46ee-8368-1684c0648256",
+        "input_message_id": "316d1d81-001c-477b-9f6a-27ddaac2bc11",
+        "model": "sumopod/deepseek-v4-flash",
+        "product_tools": [
+          "ngertiin.get_workspace",
+          "ngertiin.read_attachment",
+          "ngertiin.list_files",
+          "ngertiin.create_file",
+          "ngertiin.read_file",
+          "ngertiin.publish_artifact",
+          "ngertiin.report_goal"
+        ],
+        "routine_id": null,
+        "status": "succeeded",
+        "task_id": "0a291206-27d9-4284-85ec-ceddec35b32b",
+        "tool_errors": []
+      }
+    ],
+    "tasks": [
+      {
+        "current_run_id": "9adf3649-1535-4b9e-8cbc-1c6ffcf48d10",
+        "goal_generations": {},
+        "goal_ids": [],
+        "id": "9c12c9f7-cfd1-4b21-af64-a4160279bc1f",
+        "parent_task_id": null,
+        "result_artifact_ids": [],
+        "root_task_id": "9c12c9f7-cfd1-4b21-af64-a4160279bc1f",
+        "source_run_id": null,
+        "state": "completed"
+      },
+      {
+        "current_run_id": "136826a7-d62a-46ee-8368-1684c0648256",
+        "goal_generations": {
+          "c0a8a1f2-7d33-4c1b-9a51-4d0a0d9a1e01": 1
+        },
+        "goal_ids": [
+          "c0a8a1f2-7d33-4c1b-9a51-4d0a0d9a1e01"
+        ],
+        "id": "0a291206-27d9-4284-85ec-ceddec35b32b",
+        "parent_task_id": null,
+        "result_artifact_ids": [
+          "9f4d2a63-8e15-4b70-a2c8-5d31e6b0f74a"
+        ],
+        "root_task_id": "0a291206-27d9-4284-85ec-ceddec35b32b",
+        "source_run_id": null,
+        "state": "completed"
+      },
+      {
+        "current_run_id": "b254a1f2-ef50-4f6c-a7e6-5fbe905443e4",
+        "goal_generations": {
+          "c0a8a1f2-7d33-4c1b-9a51-4d0a0d9a1e01": 1
+        },
+        "goal_ids": [
+          "c0a8a1f2-7d33-4c1b-9a51-4d0a0d9a1e01"
+        ],
+        "id": "81b93465-4cd8-44c9-b3f4-507ba7f21dbb",
+        "parent_task_id": "0a291206-27d9-4284-85ec-ceddec35b32b",
+        "result_artifact_ids": [
+          "3a7e1c94-2b6f-4d18-a0c5-71f2b8e94d63"
+        ],
+        "root_task_id": "0a291206-27d9-4284-85ec-ceddec35b32b",
+        "source_run_id": "0b36baa1-4f87-4194-a3d6-f96f597c89b0",
+        "state": "completed"
+      }
+    ],
+    "artifacts": [
+      {
+        "created_by_agent_id": "2362f652-38fd-4082-906a-a8f942252831",
+        "goal_generations": {
+          "c0a8a1f2-7d33-4c1b-9a51-4d0a0d9a1e01": 1
+        },
+        "id": "3a7e1c94-2b6f-4d18-a0c5-71f2b8e94d63",
+        "name": "ridge-contributor-row.txt",
+        "run_id": "b254a1f2-ef50-4f6c-a7e6-5fbe905443e4",
+        "sha256": "f840add662eb06d3df343dfeb905e0ffef5792e1ec49d4073b72870a3327e1eb",
+        "workspace_id": "395eb9e6-de44-4c35-9942-2bfe7c53047a"
+      },
+      {
+        "created_by_agent_id": "bf61dd07-e39f-4e51-ad91-52271b43c3ed",
+        "goal_generations": {
+          "c0a8a1f2-7d33-4c1b-9a51-4d0a0d9a1e01": 1
+        },
+        "id": "9f4d2a63-8e15-4b70-a2c8-5d31e6b0f74a",
+        "name": "ridge-final-summary.txt",
+        "run_id": "136826a7-d62a-46ee-8368-1684c0648256",
+        "sha256": "f3db2fd9023397e43792ca724fa65bf97eac0eea3a811cf23aee4b50c3cac559",
+        "workspace_id": "395eb9e6-de44-4c35-9942-2bfe7c53047a"
+      }
+    ]
+  },
+  "prior_bug": {
+    "thread": {
+      "id": "7f504bc0-98b7-4586-ac92-47efb614f5e6",
+      "member_agent_ids": [
+        "2362f652-38fd-4082-906a-a8f942252831",
+        "bf61dd07-e39f-4e51-ad91-52271b43c3ed"
+      ],
+      "name": "Cinder assignment lab"
+    },
+    "members": [
+      {
+        "id": "2362f652-38fd-4082-906a-a8f942252831",
+        "name": "Ruth"
+      },
+      {
+        "id": "bf61dd07-e39f-4e51-ad91-52271b43c3ed",
+        "name": "Scope Reviewer"
+      }
+    ],
+    "goal": {
+      "id": "e0f3a1c7-2b48-4d95-9a63-6c1b8f2d4e70",
+      "state": "completed",
+      "work_state": "ready",
+      "coordinator_agent_id": "2362f652-38fd-4082-906a-a8f942252831",
+      "assignment_revision": 2,
+      "generation": 2,
+      "root_task_id": "e514abe3-fc3e-41c1-99c6-c693d4cc060e",
+      "current_run_id": "7123515b-f97d-4663-9a43-62aee3b768b0",
+      "report_run_id": "7123515b-f97d-4663-9a43-62aee3b768b0",
+      "last_report_error": null,
+      "verification": null,
+      "evidence_artifact_ids": [
+        "6c2a9e40-71b3-4d8f-9a25-3e7b0c4d5f61"
+      ]
+    },
+    "runs": [
+      {
+        "agent_id": "bf61dd07-e39f-4e51-ad91-52271b43c3ed",
+        "billing": "api_key",
+        "diagnostic": null,
+        "goal_assignment_revision": null,
+        "goal_generation": null,
+        "goal_id": null,
+        "id": "a15108d6-bdd2-40f5-a70a-e872ebba0deb",
+        "input_message_id": "5bad78a9-0a4c-4aff-85a7-4773f1c601af",
+        "model": "sumopod/deepseek-v4-flash",
+        "product_tools": [
+          "ngertiin.get_workspace",
+          "ngertiin.list_goals",
+          "ngertiin.create_file",
+          "ngertiin.publish_artifact",
+          "ngertiin.capture_goal",
+          "ngertiin.report_goal"
+        ],
+        "routine_id": null,
+        "status": "succeeded",
+        "task_id": "e514abe3-fc3e-41c1-99c6-c693d4cc060e",
+        "tool_errors": []
+      },
+      {
+        "agent_id": "2362f652-38fd-4082-906a-a8f942252831",
+        "billing": "api_key",
+        "diagnostic": null,
+        "goal_assignment_revision": null,
+        "goal_generation": null,
+        "goal_id": null,
+        "id": "673f5e01-d5ff-4ab7-95bb-eaca8b745ff8",
+        "input_message_id": "1909529d-d096-48b9-ab65-c03d8eec5532",
+        "model": "sumopod/deepseek-v4-flash",
+        "product_tools": [],
+        "routine_id": null,
+        "status": "succeeded",
+        "task_id": "c9274a41-a356-481d-99a7-9f01185502df",
+        "tool_errors": []
+      },
+      {
+        "agent_id": "2362f652-38fd-4082-906a-a8f942252831",
+        "billing": "api_key",
+        "diagnostic": null,
+        "goal_assignment_revision": 2,
+        "goal_generation": 1,
+        "goal_id": "e0f3a1c7-2b48-4d95-9a63-6c1b8f2d4e70",
+        "id": "7123515b-f97d-4663-9a43-62aee3b768b0",
+        "input_message_id": "d634e2d2-bc65-4c19-85c0-e382077577a1",
+        "model": "sumopod/deepseek-v4-flash",
+        "product_tools": [
+          "ngertiin.report_goal"
+        ],
+        "routine_id": null,
+        "status": "succeeded",
+        "task_id": null,
+        "tool_errors": []
+      }
+    ],
+    "tasks": [
+      {
+        "current_run_id": "a15108d6-bdd2-40f5-a70a-e872ebba0deb",
+        "goal_generations": {
+          "e0f3a1c7-2b48-4d95-9a63-6c1b8f2d4e70": 1
+        },
+        "goal_ids": [
+          "e0f3a1c7-2b48-4d95-9a63-6c1b8f2d4e70"
+        ],
+        "id": "e514abe3-fc3e-41c1-99c6-c693d4cc060e",
+        "parent_task_id": null,
+        "result_artifact_ids": [
+          "6c2a9e40-71b3-4d8f-9a25-3e7b0c4d5f61"
+        ],
+        "root_task_id": "e514abe3-fc3e-41c1-99c6-c693d4cc060e",
+        "source_run_id": null,
+        "state": "completed"
+      },
+      {
+        "current_run_id": "673f5e01-d5ff-4ab7-95bb-eaca8b745ff8",
+        "goal_generations": {},
+        "goal_ids": [],
+        "id": "c9274a41-a356-481d-99a7-9f01185502df",
+        "parent_task_id": null,
+        "result_artifact_ids": [],
+        "root_task_id": "c9274a41-a356-481d-99a7-9f01185502df",
+        "source_run_id": null,
+        "state": "completed"
+      }
+    ],
+    "artifacts": [
+      {
+        "created_by_agent_id": "bf61dd07-e39f-4e51-ad91-52271b43c3ed",
+        "goal_generations": {},
+        "id": "6c2a9e40-71b3-4d8f-9a25-3e7b0c4d5f61",
+        "name": "cinder-prior-assignment.txt",
+        "run_id": "a15108d6-bdd2-40f5-a70a-e872ebba0deb",
+        "sha256": "6108428660b1f3d30a84cb2c0835b8ac05e7416417e95e510b259d3fd1938862",
+        "workspace_id": "d1ace311-e73e-456b-9d3e-264bfa0dd5f8"
+      }
+    ]
+  },
+  "former_assignment": {
+    "thread": {
+      "id": "64eb3710-3352-48c0-b6db-ec2f58338681",
+      "member_agent_ids": [
+        "2362f652-38fd-4082-906a-a8f942252831",
+        "bf61dd07-e39f-4e51-ad91-52271b43c3ed"
+      ],
+      "name": "Hazel assignment lab"
+    },
+    "members": [
+      {
+        "id": "2362f652-38fd-4082-906a-a8f942252831",
+        "name": "Ruth"
+      },
+      {
+        "id": "bf61dd07-e39f-4e51-ad91-52271b43c3ed",
+        "name": "Scope Reviewer"
+      }
+    ],
+    "goal": {
+      "id": "3f1c9a54-6d2b-4e8a-9f10-2b7c5d8e4a61",
+      "state": "active",
+      "work_state": "waiting",
+      "coordinator_agent_id": "bf61dd07-e39f-4e51-ad91-52271b43c3ed",
+      "assignment_revision": 1,
+      "generation": 1,
+      "root_task_id": "a5670d75-93e4-49b9-9004-b73997b95b81",
+      "current_run_id": "4d0c5246-c008-4d3f-a62c-9e5e5427fce6",
+      "report_run_id": "4d0c5246-c008-4d3f-a62c-9e5e5427fce6",
+      "last_report_error": null,
+      "verification": {
+        "attempt_limit": 3,
+        "attempts_used": 0,
+        "checks": [
+          {
+            "artifact_name": "hazel-prior-assignment.txt",
+            "exact_text": "HAZEL_STAMP=23",
+            "title": "Prior assignment checkpoint file"
+          }
+        ],
+        "last_check": null
+      },
+      "evidence_artifact_ids": []
+    },
+    "runs": [
+      {
+        "agent_id": "bf61dd07-e39f-4e51-ad91-52271b43c3ed",
+        "billing": "api_key",
+        "diagnostic": null,
+        "goal_assignment_revision": null,
+        "goal_generation": null,
+        "goal_id": null,
+        "id": "4d0c5246-c008-4d3f-a62c-9e5e5427fce6",
+        "input_message_id": "78e9165f-4b24-4f69-81a4-68ede9571939",
+        "model": "sumopod/deepseek-v4-flash",
+        "product_tools": [
+          "ngertiin.capture_goal",
+          "ngertiin.create_file",
+          "ngertiin.publish_artifact",
+          "ngertiin.report_goal"
+        ],
+        "routine_id": null,
+        "status": "succeeded",
+        "task_id": "a5670d75-93e4-49b9-9004-b73997b95b81",
+        "tool_errors": []
+      },
+      {
+        "agent_id": "2362f652-38fd-4082-906a-a8f942252831",
+        "billing": "api_key",
+        "diagnostic": null,
+        "goal_assignment_revision": null,
+        "goal_generation": null,
+        "goal_id": null,
+        "id": "9d4fe261-c56a-4641-9e1d-924bb2b102f1",
+        "input_message_id": "ca450ba6-23f2-4773-9d11-6881abfe3327",
+        "model": "sumopod/deepseek-v4-flash",
+        "product_tools": [
+          "ngertiin.group_ask_user"
+        ],
+        "routine_id": null,
+        "status": "succeeded",
+        "task_id": "e5b6a24c-31d8-4d7c-ab28-1e3e04a4b785",
+        "tool_errors": []
+      }
+    ],
+    "tasks": [
+      {
+        "current_run_id": "4d0c5246-c008-4d3f-a62c-9e5e5427fce6",
+        "goal_generations": {
+          "3f1c9a54-6d2b-4e8a-9f10-2b7c5d8e4a61": 1
+        },
+        "goal_ids": [
+          "3f1c9a54-6d2b-4e8a-9f10-2b7c5d8e4a61"
+        ],
+        "id": "a5670d75-93e4-49b9-9004-b73997b95b81",
+        "parent_task_id": null,
+        "result_artifact_ids": [
+          "5a7d2e94-1c38-4f6b-8e05-9d3a4b6c1e28"
+        ],
+        "root_task_id": "a5670d75-93e4-49b9-9004-b73997b95b81",
+        "source_run_id": null,
+        "state": "completed"
+      },
+      {
+        "current_run_id": "9d4fe261-c56a-4641-9e1d-924bb2b102f1",
+        "goal_generations": {},
+        "goal_ids": [],
+        "id": "e5b6a24c-31d8-4d7c-ab28-1e3e04a4b785",
+        "parent_task_id": null,
+        "result_artifact_ids": [],
+        "root_task_id": "e5b6a24c-31d8-4d7c-ab28-1e3e04a4b785",
+        "source_run_id": null,
+        "state": "waiting_user"
+      }
+    ],
+    "artifacts": [
+      {
+        "created_by_agent_id": "bf61dd07-e39f-4e51-ad91-52271b43c3ed",
+        "goal_generations": {
+          "3f1c9a54-6d2b-4e8a-9f10-2b7c5d8e4a61": 1
+        },
+        "id": "5a7d2e94-1c38-4f6b-8e05-9d3a4b6c1e28",
+        "name": "hazel-prior-assignment.txt",
+        "run_id": "4d0c5246-c008-4d3f-a62c-9e5e5427fce6",
+        "sha256": "4514274d8670bfd02022d11a0419854357f6f7529d8cf71a00b04bb0f0cb0a37",
+        "workspace_id": "81d832e1-b7ff-4947-a2c3-3085a3e1cb77"
+      }
+    ]
+  },
+  "reassigned": {
+    "thread": {
+      "id": "64eb3710-3352-48c0-b6db-ec2f58338681",
+      "member_agent_ids": [
+        "2362f652-38fd-4082-906a-a8f942252831",
+        "bf61dd07-e39f-4e51-ad91-52271b43c3ed"
+      ],
+      "name": "Hazel assignment lab"
+    },
+    "members": [
+      {
+        "id": "2362f652-38fd-4082-906a-a8f942252831",
+        "name": "Ruth"
+      },
+      {
+        "id": "bf61dd07-e39f-4e51-ad91-52271b43c3ed",
+        "name": "Scope Reviewer"
+      }
+    ],
+    "goal": {
+      "id": "3f1c9a54-6d2b-4e8a-9f10-2b7c5d8e4a61",
+      "state": "active",
+      "work_state": "ready",
+      "coordinator_agent_id": "2362f652-38fd-4082-906a-a8f942252831",
+      "assignment_revision": 2,
+      "generation": 2,
+      "root_task_id": "a5670d75-93e4-49b9-9004-b73997b95b81",
+      "current_run_id": null,
+      "report_run_id": null,
+      "last_report_error": null,
+      "verification": {
+        "attempt_limit": 3,
+        "attempts_used": 0,
+        "checks": [
+          {
+            "artifact_name": "hazel-prior-assignment.txt",
+            "exact_text": "HAZEL_STAMP=23",
+            "title": "Prior assignment checkpoint file"
+          }
+        ],
+        "last_check": null
+      },
+      "evidence_artifact_ids": []
+    },
+    "runs": [
+      {
+        "agent_id": "bf61dd07-e39f-4e51-ad91-52271b43c3ed",
+        "billing": "api_key",
+        "diagnostic": null,
+        "goal_assignment_revision": null,
+        "goal_generation": null,
+        "goal_id": null,
+        "id": "4d0c5246-c008-4d3f-a62c-9e5e5427fce6",
+        "input_message_id": "78e9165f-4b24-4f69-81a4-68ede9571939",
+        "model": "sumopod/deepseek-v4-flash",
+        "product_tools": [
+          "ngertiin.capture_goal",
+          "ngertiin.create_file",
+          "ngertiin.publish_artifact",
+          "ngertiin.report_goal"
+        ],
+        "routine_id": null,
+        "status": "succeeded",
+        "task_id": "a5670d75-93e4-49b9-9004-b73997b95b81",
+        "tool_errors": []
+      },
+      {
+        "agent_id": "2362f652-38fd-4082-906a-a8f942252831",
+        "billing": "api_key",
+        "diagnostic": null,
+        "goal_assignment_revision": null,
+        "goal_generation": null,
+        "goal_id": null,
+        "id": "9d4fe261-c56a-4641-9e1d-924bb2b102f1",
+        "input_message_id": "ca450ba6-23f2-4773-9d11-6881abfe3327",
+        "model": "sumopod/deepseek-v4-flash",
+        "product_tools": [
+          "ngertiin.group_ask_user"
+        ],
+        "routine_id": null,
+        "status": "succeeded",
+        "task_id": "e5b6a24c-31d8-4d7c-ab28-1e3e04a4b785",
+        "tool_errors": []
+      }
+    ],
+    "tasks": [
+      {
+        "current_run_id": "4d0c5246-c008-4d3f-a62c-9e5e5427fce6",
+        "goal_generations": {
+          "3f1c9a54-6d2b-4e8a-9f10-2b7c5d8e4a61": 1
+        },
+        "goal_ids": [
+          "3f1c9a54-6d2b-4e8a-9f10-2b7c5d8e4a61"
+        ],
+        "id": "a5670d75-93e4-49b9-9004-b73997b95b81",
+        "parent_task_id": null,
+        "result_artifact_ids": [
+          "5a7d2e94-1c38-4f6b-8e05-9d3a4b6c1e28"
+        ],
+        "root_task_id": "a5670d75-93e4-49b9-9004-b73997b95b81",
+        "source_run_id": null,
+        "state": "completed"
+      },
+      {
+        "current_run_id": "9d4fe261-c56a-4641-9e1d-924bb2b102f1",
+        "goal_generations": {},
+        "goal_ids": [],
+        "id": "e5b6a24c-31d8-4d7c-ab28-1e3e04a4b785",
+        "parent_task_id": null,
+        "result_artifact_ids": [],
+        "root_task_id": "e5b6a24c-31d8-4d7c-ab28-1e3e04a4b785",
+        "source_run_id": null,
+        "state": "waiting_user"
+      }
+    ],
+    "artifacts": [
+      {
+        "created_by_agent_id": "bf61dd07-e39f-4e51-ad91-52271b43c3ed",
+        "goal_generations": {
+          "3f1c9a54-6d2b-4e8a-9f10-2b7c5d8e4a61": 1
+        },
+        "id": "5a7d2e94-1c38-4f6b-8e05-9d3a4b6c1e28",
+        "name": "hazel-prior-assignment.txt",
+        "run_id": "4d0c5246-c008-4d3f-a62c-9e5e5427fce6",
+        "sha256": "4514274d8670bfd02022d11a0419854357f6f7529d8cf71a00b04bb0f0cb0a37",
+        "workspace_id": "81d832e1-b7ff-4947-a2c3-3085a3e1cb77"
+      }
+    ]
+  },
+  "rejected": {
+    "thread": {
+      "id": "64eb3710-3352-48c0-b6db-ec2f58338681",
+      "member_agent_ids": [
+        "2362f652-38fd-4082-906a-a8f942252831",
+        "bf61dd07-e39f-4e51-ad91-52271b43c3ed"
+      ],
+      "name": "Hazel assignment lab"
+    },
+    "members": [
+      {
+        "id": "2362f652-38fd-4082-906a-a8f942252831",
+        "name": "Ruth"
+      },
+      {
+        "id": "bf61dd07-e39f-4e51-ad91-52271b43c3ed",
+        "name": "Scope Reviewer"
+      }
+    ],
+    "goal": {
+      "id": "3f1c9a54-6d2b-4e8a-9f10-2b7c5d8e4a61",
+      "state": "active",
+      "work_state": "blocked",
+      "coordinator_agent_id": "2362f652-38fd-4082-906a-a8f942252831",
+      "assignment_revision": 2,
+      "generation": 2,
+      "root_task_id": "a5670d75-93e4-49b9-9004-b73997b95b81",
+      "current_run_id": "cb66d49e-af3e-4719-938f-69f521494917",
+      "report_run_id": "cb66d49e-af3e-4719-938f-69f521494917",
+      "last_report_error": null,
+      "verification": {
+        "attempt_limit": 3,
+        "attempts_used": 0,
+        "checks": [
+          {
+            "artifact_name": "hazel-prior-assignment.txt",
+            "exact_text": "HAZEL_STAMP=23",
+            "title": "Prior assignment checkpoint file"
+          }
+        ],
+        "last_check": null
+      },
+      "evidence_artifact_ids": []
+    },
+    "runs": [
+      {
+        "agent_id": "bf61dd07-e39f-4e51-ad91-52271b43c3ed",
+        "billing": "api_key",
+        "diagnostic": null,
+        "goal_assignment_revision": null,
+        "goal_generation": null,
+        "goal_id": null,
+        "id": "4d0c5246-c008-4d3f-a62c-9e5e5427fce6",
+        "input_message_id": "78e9165f-4b24-4f69-81a4-68ede9571939",
+        "model": "sumopod/deepseek-v4-flash",
+        "product_tools": [
+          "ngertiin.capture_goal",
+          "ngertiin.create_file",
+          "ngertiin.publish_artifact",
+          "ngertiin.report_goal"
+        ],
+        "routine_id": null,
+        "status": "succeeded",
+        "task_id": "a5670d75-93e4-49b9-9004-b73997b95b81",
+        "tool_errors": []
+      },
+      {
+        "agent_id": "2362f652-38fd-4082-906a-a8f942252831",
+        "billing": "api_key",
+        "diagnostic": null,
+        "goal_assignment_revision": null,
+        "goal_generation": null,
+        "goal_id": null,
+        "id": "9d4fe261-c56a-4641-9e1d-924bb2b102f1",
+        "input_message_id": "ca450ba6-23f2-4773-9d11-6881abfe3327",
+        "model": "sumopod/deepseek-v4-flash",
+        "product_tools": [
+          "ngertiin.group_ask_user"
+        ],
+        "routine_id": null,
+        "status": "succeeded",
+        "task_id": "e5b6a24c-31d8-4d7c-ab28-1e3e04a4b785",
+        "tool_errors": []
+      },
+      {
+        "agent_id": "2362f652-38fd-4082-906a-a8f942252831",
+        "billing": "api_key",
+        "diagnostic": null,
+        "goal_assignment_revision": 2,
+        "goal_generation": 2,
+        "goal_id": "3f1c9a54-6d2b-4e8a-9f10-2b7c5d8e4a61",
+        "id": "cb66d49e-af3e-4719-938f-69f521494917",
+        "input_message_id": "065916ba-b6ef-466d-adee-ebb82741e50d",
+        "model": "sumopod/deepseek-v4-flash",
+        "product_tools": [
+          "ngertiin.list_goals",
+          "ngertiin.report_goal"
+        ],
+        "routine_id": null,
+        "status": "succeeded",
+        "task_id": null,
+        "tool_errors": [
+          {
+            "code": "SCOPE_DENIED",
+            "created_at": "2026-11-18T18:45:39.619Z",
+            "name": "ngertiin.report_goal"
+          }
+        ]
+      }
+    ],
+    "tasks": [
+      {
+        "current_run_id": "4d0c5246-c008-4d3f-a62c-9e5e5427fce6",
+        "goal_generations": {
+          "3f1c9a54-6d2b-4e8a-9f10-2b7c5d8e4a61": 1
+        },
+        "goal_ids": [
+          "3f1c9a54-6d2b-4e8a-9f10-2b7c5d8e4a61"
+        ],
+        "id": "a5670d75-93e4-49b9-9004-b73997b95b81",
+        "parent_task_id": null,
+        "result_artifact_ids": [
+          "5a7d2e94-1c38-4f6b-8e05-9d3a4b6c1e28"
+        ],
+        "root_task_id": "a5670d75-93e4-49b9-9004-b73997b95b81",
+        "source_run_id": null,
+        "state": "completed"
+      },
+      {
+        "current_run_id": "9d4fe261-c56a-4641-9e1d-924bb2b102f1",
+        "goal_generations": {},
+        "goal_ids": [],
+        "id": "e5b6a24c-31d8-4d7c-ab28-1e3e04a4b785",
+        "parent_task_id": null,
+        "result_artifact_ids": [],
+        "root_task_id": "e5b6a24c-31d8-4d7c-ab28-1e3e04a4b785",
+        "source_run_id": null,
+        "state": "waiting_user"
+      }
+    ],
+    "artifacts": [
+      {
+        "created_by_agent_id": "bf61dd07-e39f-4e51-ad91-52271b43c3ed",
+        "goal_generations": {
+          "3f1c9a54-6d2b-4e8a-9f10-2b7c5d8e4a61": 1
+        },
+        "id": "5a7d2e94-1c38-4f6b-8e05-9d3a4b6c1e28",
+        "name": "hazel-prior-assignment.txt",
+        "run_id": "4d0c5246-c008-4d3f-a62c-9e5e5427fce6",
+        "sha256": "4514274d8670bfd02022d11a0419854357f6f7529d8cf71a00b04bb0f0cb0a37",
+        "workspace_id": "81d832e1-b7ff-4947-a2c3-3085a3e1cb77"
+      }
+    ]
+  },
+  "downloaded_sha256": [
+    "f840add662eb06d3df343dfeb905e0ffef5792e1ec49d4073b72870a3327e1eb",
+    "f3db2fd9023397e43792ca724fa65bf97eac0eea3a811cf23aee4b50c3cac559",
+    "4514274d8670bfd02022d11a0419854357f6f7529d8cf71a00b04bb0f0cb0a37"
+  ]
+}

@@ -1,0 +1,177 @@
+{
+  "date": "2026-11-19",
+  "surface": "Ngertiin Web (Chromium)",
+  "harness": "Pi ACP",
+  "provider": {
+    "mode": "loopback fixture",
+    "billing": "api_key"
+  },
+  "provider_events": [
+    {
+      "event": "glasswing_check_1",
+      "at": "2026-11-18T21:04:20.285Z"
+    },
+    {
+      "event": "glasswing_check_2",
+      "at": "2026-11-18T21:04:37.872Z"
+    },
+    {
+      "event": "bramble_check_1",
+      "at": "2026-11-18T21:06:14.159Z"
+    },
+    {
+      "event": "bramble_check_2",
+      "at": "2026-11-18T21:06:52.239Z"
+    },
+    {
+      "event": "bramble_check_3",
+      "at": "2026-11-18T21:07:32.818Z"
+    }
+  ],
+  "exact_condition": {
+    "thread_id": "cf461df4-2f45-413e-b901-06edb25702f1",
+    "routine_id": "ef2abb12-5f1e-48b7-9f83-98ce745349fd",
+    "configuration": {
+      "every_ms": 15000,
+      "type": "loop",
+      "until": {
+        "artifact_name": "glasswing-state.txt",
+        "exact_text": "GLASSWING=READY"
+      }
+    },
+    "binding": {
+      "active": true,
+      "id": "248711d4-6804-4a1b-a27b-32e2caa47024",
+      "native_session_id": "01a1f079-62c6-77af-a76c-99116978f9f2",
+      "workspace_id": "2e75e1c5-d6a4-4b03-b24d-480e3e08caa7"
+    },
+    "final_state": "completed",
+    "reason": "condition_met",
+    "settled_checks": [
+      {
+        "occurrence_id": "26bf908a-c48b-4287-b088-50afd60f39ae",
+        "run_id": "054e0889-90df-4e80-a16b-c83304033c00",
+        "scheduled_for": "2026-11-18T21:04:15.155Z",
+        "state": "completed",
+        "condition": {
+          "artifact_id": null,
+          "status": "missing"
+        },
+        "dispatched_at": "2026-11-18T21:04:19.441Z",
+        "settled_at": "2026-11-18T21:04:20.824Z",
+        "run_status": "succeeded",
+        "diagnostic": null,
+        "answers": [
+          "Glasswing sensor is warming up."
+        ]
+      },
+      {
+        "occurrence_id": "de9559af-278b-4f4a-b460-58de61ab9b4f",
+        "run_id": "4cfd9471-2492-441c-8659-fc59c9dd0e5a",
+        "scheduled_for": "2026-11-18T21:04:35.824Z",
+        "state": "completed",
+        "condition": {
+          "artifact_id": "af0784ae-9f14-488f-a935-10aa8f081db4",
+          "status": "matched"
+        },
+        "dispatched_at": "2026-11-18T21:04:37.047Z",
+        "settled_at": "2026-11-18T21:04:45.165Z",
+        "run_status": "succeeded",
+        "diagnostic": null,
+        "answers": [
+          "Glasswing sensor is ready. I published glasswing-state.txt."
+        ]
+      }
+    ],
+    "evidence": {
+      "id": "af0784ae-9f14-488f-a935-10aa8f081db4",
+      "name": "glasswing-state.txt",
+      "run_id": "4cfd9471-2492-441c-8659-fc59c9dd0e5a",
+      "sha256": "614ea877ee13283e09d720c9defcbbbd246e695b4697d64ed3ce9a638f6d9fef",
+      "source_path": "glasswing-state.txt",
+      "workspace_id": "2e75e1c5-d6a4-4b03-b24d-480e3e08caa7"
+    },
+    "observed_text": "GLASSWING=READY",
+    "first_state_observed": "active"
+  },
+  "pause_resume_and_cap": {
+    "thread_id": "f359b242-7892-43fc-8495-8c610514df92",
+    "routine_id": "95886378-60dd-4879-a011-188ad45378c2",
+    "configuration": {
+      "every_ms": 35000,
+      "max_runs": 3,
+      "type": "loop"
+    },
+    "binding": {
+      "active": true,
+      "id": "062376e8-c0c3-4f1f-9ac4-9d51be4054ac",
+      "native_session_id": "01a1f07b-21c7-7074-a5de-52ccdafbab90",
+      "workspace_id": "4b0fdeea-71e1-4c3f-b608-1bbc5f02e51b"
+    },
+    "final_state": "completed",
+    "reason": "run_limit",
+    "settled_checks": [
+      {
+        "occurrence_id": "dc5eca3e-c6a0-4677-bb3b-b838cfe66c74",
+        "run_id": "718b61eb-8c12-4d04-9a71-c341bd6b5ff8",
+        "scheduled_for": "2026-11-18T21:06:09.378Z",
+        "state": "completed",
+        "condition": null,
+        "dispatched_at": "2026-11-18T21:06:13.276Z",
+        "settled_at": "2026-11-18T21:06:14.868Z",
+        "run_status": "succeeded",
+        "diagnostic": null,
+        "answers": [
+          "BRAMBLE-CHECK=1"
+        ]
+      },
+      {
+        "occurrence_id": "df5a30f6-f1bf-4b4a-8344-fb8a84e087d6",
+        "run_id": "2a38c815-adec-4dc9-af19-e41650bea512",
+        "scheduled_for": "2026-11-18T21:06:49.868Z",
+        "state": "failed",
+        "condition": null,
+        "dispatched_at": "2026-11-18T21:06:51.426Z",
+        "settled_at": "2026-11-18T21:06:52.523Z",
+        "run_status": "failed",
+        "diagnostic": {
+          "category": "provider",
+          "code": "NATIVE_REJECTED",
+          "outcome": "failed"
+        },
+        "answers": []
+      },
+      {
+        "occurrence_id": "8be16e4a-fe50-428a-a24c-d2a25a3c9df1",
+        "run_id": "ee394f6b-f4a5-4ff3-8a7e-7ea8d519f494",
+        "scheduled_for": "2026-11-18T21:07:27.523Z",
+        "state": "completed",
+        "condition": null,
+        "dispatched_at": "2026-11-18T21:07:31.985Z",
+        "settled_at": "2026-11-18T21:07:33.468Z",
+        "run_status": "succeeded",
+        "diagnostic": null,
+        "answers": [
+          "BRAMBLE-CHECK=3"
+        ]
+      }
+    ],
+    "temp_failure_checkpoint": {
+      "budget_used": 2,
+      "reason": null,
+      "resume_at": null,
+      "runs": 2
+    },
+    "saved_checkpoint": {
+      "budget_used": 2,
+      "reason": "paused_by_user",
+      "resume_at": "2026-11-18T21:07:27.523Z",
+      "runs": 2
+    },
+    "checks_observed_while_paused_past_due": 2
+  },
+  "first_attempt_retested": {
+    "initial_browser_error": "Timeline omitted the routine_completed event kind.",
+    "old_record_loaded_after_fix": "completed"
+  }
+}

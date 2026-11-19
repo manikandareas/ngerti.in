@@ -1,0 +1,62 @@
+{
+  "date": "2026-11-19",
+  "surface": "Ngertiin Web (Chromium) and retained Computer viewer",
+  "harness": "Pi ACP",
+  "provider": {
+    "mode": "fixture",
+    "model": "handoff-fixture/computer-handoff",
+    "billing": "api_key"
+  },
+  "thread": "6850ffe5-1414-47bf-9ded-40bdd2ff7ec0",
+  "setup_run": "8721d59d-58b3-4ece-8969-37d1a612c53c",
+  "action_run": "686bfcd8-8d19-4bdd-aed4-53fd066e8a92",
+  "pre_action_observation": {
+    "at": "2026-11-19T01:16:42.029Z",
+    "id": "7565bd32-cfbd-4e3d-989d-c8f0e8b8450f",
+    "name": "get_browser_state",
+    "page": "http://host.docker.internal:8448/wren-dispatch",
+    "state": "succeeded",
+    "started": "2026-11-19T01:16:38.530Z",
+    "snapshot": "p1",
+    "nativeError": false
+  },
+  "delivery_dispatch": {
+    "at": "2026-11-19T01:17:20.415Z",
+    "id": "a4d8bc02-1840-4a34-8ec4-34171084be63",
+    "name": "browser_click",
+    "error": "MACHINE_UNKNOWN",
+    "state": "unknown",
+    "started": "2026-11-19T01:16:48.375Z"
+  },
+  "target_received_and_committed": {
+    "event": "delivery_committed",
+    "deliveries": 1,
+    "receipt": "WREN-REC-19907",
+    "at": "2026-11-19T01:16:55.018Z"
+  },
+  "native_transport_paused_at": "2026-11-19T01:16:55.582Z",
+  "web_client_offline_at": "2026-11-19T01:16:55.816Z",
+  "client_and_native_restored_at": "2026-11-19T01:17:32.258Z",
+  "fixture_released_response": {
+    "event": "delivery_response_released",
+    "deliveries": 1,
+    "receipt": "WREN-REC-19907",
+    "at": "2026-11-19T01:17:32.290Z"
+  },
+  "fresh_target_observation": {
+    "at": "2026-11-19T01:18:09.444Z",
+    "id": "49f1b3eb-55ef-49f0-9c01-b3f13de6de2b",
+    "name": "get_browser_state",
+    "page": "http://host.docker.internal:8448/wren-dispatch",
+    "state": "succeeded",
+    "started": "2026-11-19T01:17:56.502Z",
+    "snapshot": "p2",
+    "nativeError": false,
+    "receiptInOutline": "WREN-REC-19907"
+  },
+  "native_window": 29360195,
+  "native_input_dispatches": 1,
+  "target_effects": 1,
+  "answer": "After reconnecting, the board shows one recorded delivery with receipt WREN-REC-19907.",
+  "fault_scope": "Only the verification browser session and the single isolated execution domain were interrupted; the fixture and Ngertiin API remained online."
+}

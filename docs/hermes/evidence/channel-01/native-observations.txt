@@ -1,0 +1,15 @@
+2026-11-19 · Ngertiin Development · Tauri 2.12.5 · macOS ARM64
+Account sign-in used the native PKCE browser callback. The desktop profile used the local test API and built web assets.
+
+The signed-in window showed Organization: Hermes Verification Lab.
+The selected conversation showed both the Web request and the Cedar answer:
+  Cross-surface proof. baseline. Confirm the clean Cedar receipt across both clients.
+  Web receipt confirmed. CEDAR-846.
+
+During the held turn, the same native conversation showed:
+  Cross-surface proof. reconnect. Verify the Wren receipt after I reconnect.
+  button Stop run
+
+After the Web client reconnected and the fixture released, the native transcript showed the original messages and:
+  Checking the cross-device receipt. Confirmed after reconnect. WREN-327.
+  button (disabled) Kirim

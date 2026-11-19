@@ -1,0 +1,92 @@
+{
+  "date": "2026-11-19",
+  "surface": "Chrome Ngertiin Web authenticated to the lab API",
+  "harness": "Claude ACP application adapter with subprocess fixture 0.107.0",
+  "provider": "Synthetic Anthropic API-key connection and model-b fixture",
+  "initialFixtureFailure": "The first fixture parsed structuredContent, while the session bridge returns the MCP text block. The fixture wrote and published the first file, then failed to link it. The corrected fixture used a different verification string.",
+  "first": {
+    "id": "35b20385-efdf-464a-81f7-48085b22885e",
+    "tools": [
+      "ngertiin.create_file",
+      "ngertiin.publish_artifact"
+    ],
+    "answer": null,
+    "inputs": [],
+    "status": "failed",
+    "visual": [],
+    "request": "Verify Claude ACP deliverable for HEMLOCK-867.",
+    "artifacts": [
+      {
+        "id": "a866f10c-77d0-41e1-bbfb-00d6b16e0264",
+        "hash": "d3a123d780f7bc1dc6e9ca3f7c3c401fca74196295ed19edae6d2b62af5e3c1b",
+        "name": "claude-acp-hemlock-867.txt",
+        "type": "text/plain",
+        "origin": "native_output",
+        "source": null,
+        "workspace": "18c9ea11-d436-4039-83ca-96b03b389f48",
+        "size_bytes": 11
+      }
+    ],
+    "selection": {
+      "harness": "claude",
+      "model_id": "model-b",
+      "reasoning": null,
+      "account_id": "e4a6e04fe7657cfabc80f3ddbedc052814c0ff3fdb132f50d8a60741bf1e04e0",
+      "provider_id": "anthropic",
+      "connection_id": "3789c7ee-3c7c-4210-9a37-a427e7ac5fcd",
+      "billing_source": "api_key",
+      "connection_generation": 2
+    },
+    "diagnostic": {
+      "code": "NATIVE_REJECTED",
+      "outcome": "failed",
+      "category": "provider"
+    },
+    "toolErrors": []
+  },
+  "retrial": {
+    "id": "8f1459b0-a940-4ca0-97c1-c52eb61a45a4",
+    "tools": [
+      "ngertiin.create_file",
+      "ngertiin.publish_artifact"
+    ],
+    "answer": "The verification file is ready. [claude-acp-aspen-482.txt](ngertiin://file/a955ce36-f93c-4e73-9958-5c3f68bc7d7c)",
+    "inputs": [],
+    "status": "succeeded",
+    "visual": [],
+    "request": "Verify Claude ACP deliverable for ASPEN-482.",
+    "artifacts": [
+      {
+        "id": "a955ce36-f93c-4e73-9958-5c3f68bc7d7c",
+        "hash": "9af2707df8ebb295dabd02bc1df10544e5148827980fb2c8f7fcee1c7362cd54",
+        "name": "claude-acp-aspen-482.txt",
+        "type": "text/plain",
+        "origin": "native_output",
+        "source": null,
+        "workspace": "18c9ea11-d436-4039-83ca-96b03b389f48",
+        "size_bytes": 9
+      }
+    ],
+    "selection": {
+      "harness": "claude",
+      "model_id": "model-b",
+      "reasoning": null,
+      "account_id": "e4a6e04fe7657cfabc80f3ddbedc052814c0ff3fdb132f50d8a60741bf1e04e0",
+      "provider_id": "anthropic",
+      "connection_id": "3789c7ee-3c7c-4210-9a37-a427e7ac5fcd",
+      "billing_source": "api_key",
+      "connection_generation": 2
+    },
+    "diagnostic": null,
+    "toolErrors": []
+  },
+  "activity": "- StaticText \"Updating your file…\"",
+  "preview": {
+    "exact": true,
+    "text": "ASPEN-482"
+  },
+  "download": {
+    "bytes": 9,
+    "sha256": "9af2707df8ebb295dabd02bc1df10544e5148827980fb2c8f7fcee1c7362cd54"
+  }
+}

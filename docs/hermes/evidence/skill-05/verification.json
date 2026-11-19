@@ -1,0 +1,64 @@
+{
+  "date": "2026-11-19",
+  "surface": "Ngertiin Web (Chromium)",
+  "harness": "Pi ACP",
+  "provider": {
+    "mode": "live",
+    "model": "sumopod/deepseek-v4-flash",
+    "billing": "api_key"
+  },
+  "skill_id": "b35c125f-68b1-402a-b8f4-542a23be9d91",
+  "revision_run": "aedbd39f-bdfe-4c42-ba1c-3f8a3f99ec73",
+  "versions": [
+    {
+      "sha256": "e1c624b69483c424ef2a1e47dbda11f91645fb50c02b8d60d43953ce7b144f2a",
+      "source_run_id": null,
+      "status": 200
+    },
+    {
+      "sha256": "a564eda34ee7c2d4390e20b1248fbba6f2299bff154d72665d84190a9ed8b332",
+      "source_run_id": "aedbd39f-bdfe-4c42-ba1c-3f8a3f99ec73",
+      "status": 200
+    }
+  ],
+  "assignment_revisions": [
+    {
+      "id": "55bead3c-6cf3-4564-985b-cf50ffea4cf9",
+      "version": 1,
+      "revision": 1,
+      "enabled": true
+    },
+    {
+      "id": "55bead3c-6cf3-4564-985b-cf50ffea4cf9",
+      "version": 2,
+      "revision": 2,
+      "enabled": true
+    },
+    {
+      "id": "55bead3c-6cf3-4564-985b-cf50ffea4cf9",
+      "version": 1,
+      "revision": 3,
+      "enabled": true
+    }
+  ],
+  "same_prompt": true,
+  "prompt_sha256": "cbd5f7fc7f14e9d94086fe7cd3398ac27402437e1f6bc8bb7f11b20a8f79a38b",
+  "daytime_reading_percent": 64,
+  "results": [
+    {
+      "thread": "ce46e6d9-1fca-4616-8f07-06b3793bbb47",
+      "run": "5ee51da0-f124-4da9-b7bc-b092bfb29ecc",
+      "version": 2,
+      "code": "MIS-D-732",
+      "reference": "references/daytime.md"
+    },
+    {
+      "thread": "abd68f8e-d442-4768-8623-0ae38898683e",
+      "run": "e4f0efeb-b5cf-4d5e-a83d-53d7bcf2aa1d",
+      "version": 1,
+      "code": "MIS-D-945",
+      "reference": "references/daytime.md"
+    }
+  ],
+  "other_reference_unchanged": true
+}

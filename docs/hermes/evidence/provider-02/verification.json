@@ -1,0 +1,118 @@
+{
+  "date": "2026-11-19",
+  "surface": "Chrome Web and authenticated API",
+  "harness": "Pi ACP 0.0.34 (Pi 1.5.2)",
+  "provider": "Two independent loopback API key connections",
+  "baseline": {
+    "id": "f9c7987d-7ad5-4ec4-bd29-2db001a901c2",
+    "input": "f59ee4c0-68dc-48f8-a197-9039c3552c33",
+    "status": "succeeded",
+    "timings": {
+      "ready_at": "2026-11-19T06:21:03.518Z",
+      "settled_at": "2026-11-19T06:21:07.346Z",
+      "accepted_at": "2026-11-19T06:21:06.178Z",
+      "preparing_at": "2026-11-19T06:20:55.455Z",
+      "dispatched_at": "2026-11-19T06:21:03.518Z",
+      "first_output_at": "2026-11-19T06:21:06.432Z"
+    },
+    "selection": {
+      "model": "hermes-expiry/verification-alpha",
+      "billing": "api_key",
+      "harness": "pi",
+      "connection": "80caeab2-66d7-4c71-9d3f-4112f0cb25f1",
+      "authenticated_account": true
+    }
+  },
+  "failureBeforeFix": {
+    "id": "c86fe80e-a212-4d6d-bc25-bc476078a72c",
+    "input": "e75b2dec-3f23-446b-accd-c91ce0d4b92c",
+    "status": "failed",
+    "timings": {
+      "ready_at": "2026-11-19T06:21:12.550Z",
+      "settled_at": "2026-11-19T06:21:13.978Z",
+      "accepted_at": "2026-11-19T06:21:13.515Z",
+      "preparing_at": "2026-11-19T06:21:08.932Z",
+      "dispatched_at": "2026-11-19T06:21:12.550Z"
+    },
+    "selection": {
+      "model": "hermes-expiry/verification-alpha",
+      "billing": "api_key",
+      "harness": "pi",
+      "connection": "80caeab2-66d7-4c71-9d3f-4112f0cb25f1",
+      "authenticated_account": true
+    }
+  },
+  "failureAfterFix": {
+    "id": "6a64c42f-18aa-44e1-afd9-eaa5ba240526",
+    "input": "35b793fe-f4ed-4cac-80ff-301af8a4f399",
+    "status": "failed",
+    "timings": {
+      "ready_at": "2026-11-19T06:23:35.357Z",
+      "settled_at": "2026-11-19T06:23:36.926Z",
+      "accepted_at": "2026-11-19T06:23:36.159Z",
+      "preparing_at": "2026-11-19T06:23:24.801Z",
+      "dispatched_at": "2026-11-19T06:23:35.357Z"
+    },
+    "selection": {
+      "model": "hermes-expiry/verification-alpha",
+      "billing": "api_key",
+      "harness": "pi",
+      "connection": "80caeab2-66d7-4c71-9d3f-4112f0cb25f1",
+      "authenticated_account": true
+    }
+  },
+  "diagnosticAfterFix": {
+    "diagnostic": {
+      "category": "authentication",
+      "code": "AUTH_REJECTED",
+      "outcome": "failed"
+    },
+    "id": "6a64c42f-18aa-44e1-afd9-eaa5ba240526",
+    "status": "failed",
+    "thread": "46dc2ddd-130e-4998-beb4-75f0a3a30b64"
+  },
+  "expiredEndpointEvents": [
+    {
+      "event": "credential_expired",
+      "status": 401,
+      "at": "2026-11-19T06:23:36.223Z"
+    }
+  ],
+  "alternateRequestsDuringExpiryFailure": 0,
+  "explicitAlternateRun": {
+    "id": "ba0b4aa3-5d25-4c59-9816-d2d26d51a570",
+    "input": "b693e99c-0f60-420e-b13c-8f6baa45c232",
+    "status": "succeeded",
+    "timings": {
+      "ready_at": "2026-11-19T06:23:51.850Z",
+      "settled_at": "2026-11-19T06:23:54.162Z",
+      "accepted_at": "2026-11-19T06:23:53.316Z",
+      "preparing_at": "2026-11-19T06:23:45.685Z",
+      "dispatched_at": "2026-11-19T06:23:51.850Z",
+      "first_output_at": "2026-11-19T06:23:53.537Z"
+    },
+    "selection": {
+      "model": "hermes-verification/verification-alpha",
+      "billing": "api_key",
+      "harness": "pi",
+      "connection": "b3bf623b-1e7f-4682-9c56-0397c22377a1",
+      "authenticated_account": true
+    }
+  },
+  "explicitAlternateEndpointEvents": [
+    {
+      "event": "requested",
+      "step": "second",
+      "model": "verification-alpha",
+      "at": "2026-11-19T06:23:53.378Z"
+    },
+    {
+      "event": "finished",
+      "step": "second",
+      "model": "verification-alpha",
+      "at": "2026-11-19T06:23:53.380Z"
+    }
+  ],
+  "userVisibleFailure": "The provider rejected your credentials. Reconnect this account in settings.",
+  "billingEvidence": "Explicit api_key on both attempts. No provider charge or live expiry exercised."
+}

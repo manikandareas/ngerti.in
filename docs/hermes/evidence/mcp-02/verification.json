@@ -1,0 +1,115 @@
+{
+  "date": "2026-11-19",
+  "surface": "Chrome Web and authenticated Ngertiin API",
+  "harness": "Pi ACP 0.0.34 (Pi 1.5.2)",
+  "provider": "Pi API-key fixture and stateful MCP fixture",
+  "grantWithoutWriteTrust": {
+    "grant": {
+      "action_budget": {
+        "allow_writes": false,
+        "limit_units": 2
+      },
+      "agent_id": "33e2ab8c-2868-4ba5-8815-85b9237e84eb",
+      "resources": {},
+      "thread_id": "2e13954b-066f-45a8-868a-b5b1f2a9db94",
+      "tools": [
+        "MCP_LOOKUP_KITE_ITEM",
+        "MCP_SET_KITE_STATUS"
+      ]
+    },
+    "revision": 3,
+    "state": "active"
+  },
+  "grantWithWriteTrust": {
+    "grant": {
+      "action_budget": {
+        "allow_writes": true,
+        "limit_units": 2
+      },
+      "agent_id": "33e2ab8c-2868-4ba5-8815-85b9237e84eb",
+      "resources": {},
+      "thread_id": "2e13954b-066f-45a8-868a-b5b1f2a9db94",
+      "tools": [
+        "MCP_LOOKUP_KITE_ITEM",
+        "MCP_SET_KITE_STATUS"
+      ]
+    },
+    "revision": 4,
+    "state": "active"
+  },
+  "runs": [
+    {
+      "id": "596c8c31-b585-476d-8566-6a1bccea44da",
+      "tools": [
+        "ngertiin.list_apps",
+        "ngertiin.search_app_tools",
+        "ngertiin.execute_app_tool"
+      ],
+      "errors": [
+        {
+          "code": "SCOPE_DENIED",
+          "name": "ngertiin.execute_app_tool",
+          "created_at": "2026-11-19T07:21:10.222Z"
+        }
+      ],
+      "status": "succeeded"
+    },
+    {
+      "id": "8134232d-98f1-4213-b315-357ca11b8f6d",
+      "tools": [
+        "ngertiin.list_apps",
+        "ngertiin.search_app_tools",
+        "ngertiin.execute_app_tool"
+      ],
+      "errors": [],
+      "status": "succeeded"
+    },
+    {
+      "id": "59331ff3-6bcf-42f9-a621-03bbf450ed64",
+      "tools": [
+        "ngertiin.list_apps",
+        "ngertiin.search_app_tools"
+      ],
+      "errors": [
+        {
+          "code": "APP_BUDGET_EXCEEDED",
+          "name": "ngertiin.execute_app_tool",
+          "created_at": "2026-11-19T07:33:32.070Z"
+        }
+      ],
+      "status": "succeeded"
+    }
+  ],
+  "effects": [
+    {
+      "id": "7e240fb7-ef2f-4f9d-895c-631ca47bf981",
+      "run": "596c8c31-b585-476d-8566-6a1bccea44da",
+      "tool": "MCP_LOOKUP_KITE_ITEM",
+      "state": "succeeded",
+      "units": 0,
+      "connection": "c2222463-420e-443b-b7e6-39d45456a180"
+    },
+    {
+      "id": "2d87fc7a-a94d-400f-8de5-20e4df7a456d",
+      "run": "8134232d-98f1-4213-b315-357ca11b8f6d",
+      "tool": "MCP_SET_KITE_STATUS",
+      "state": "succeeded",
+      "units": 2,
+      "connection": "c2222463-420e-443b-b7e6-39d45456a180"
+    }
+  ],
+  "remoteCalls": [
+    {
+      "event": "lookup",
+      "item": "KITE-624",
+      "found": true
+    },
+    {
+      "event": "write",
+      "item": "KITE-624",
+      "status": "checker-accepted"
+    }
+  ],
+  "remoteStatusAfterBudgetDenial": "checker-accepted",
+  "budgetInterpretation": "Fixture policy units tracked by Ngertiin, with reserved units retained across service restart."
+}

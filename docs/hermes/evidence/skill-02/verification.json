@@ -1,0 +1,53 @@
+{
+  "date": "2026-11-19",
+  "surface": "Ngertiin Web (Chromium)",
+  "harness": "Pi ACP",
+  "provider": {
+    "mode": "live",
+    "model": "sumopod/deepseek-v4-flash",
+    "billing": "api_key"
+  },
+  "connector": "isolated Harbor Docs fixture",
+  "skill": {
+    "actor_id": "29066a95-2b82-4c8b-b498-3217693003c7",
+    "agent_id": "a8a1aeaa-6387-4351-999c-2c37df2e29f3",
+    "assignment": {
+      "enabled": true,
+      "id": "67ec4a21-bc35-40f3-99a5-49edc5192fef",
+      "version": 1
+    },
+    "distribution": "optional",
+    "id": "c3df8b32-4312-4ff3-a22f-22ab0cc80af6",
+    "name": "connected-app-status-brief",
+    "visibility": "shared"
+  },
+  "thread": "7cda4f39-79f9-444b-bb1d-926e608a3423",
+  "unassigned_agent": "2362f652-38fd-4082-906a-a8f942252831",
+  "same_prompt": true,
+  "same_native_session": true,
+  "before_access": {
+    "run": "27670140-d1bc-4011-90a7-54a6e4de5e54",
+    "skill_reads": [
+      {
+        "skill_id": "c3df8b32-4312-4ff3-a22f-22ab0cc80af6",
+        "version": 1
+      }
+    ],
+    "reported_status": "unverified",
+    "connector_effects": 0
+  },
+  "after_access": {
+    "run": "e737f263-86c2-4e88-be3e-b09a53cb6f64",
+    "action_grant_ready": true,
+    "receipt": {
+      "id": "4b7c9e12-3a58-4f6d-8c21-90e5b2d7a4f1",
+      "tool": "HARBOR_READ_SIGNAL",
+      "state": "succeeded",
+      "log_id": "harbor-signal-read",
+      "result": {
+        "signal": "HARBOR-RIDGE-906"
+      },
+      "run_id": "e737f263-86c2-4e88-be3e-b09a53cb6f64"
+    }
+  }
+}

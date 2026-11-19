@@ -1,0 +1,75 @@
+{
+  "date": "2026-11-19",
+  "surface": "Ngertiin Web (Chromium) and Computer viewer",
+  "harness": "Pi ACP",
+  "provider": {
+    "mode": "fixture",
+    "model": "handoff-fixture/computer-handoff",
+    "billing": "api_key"
+  },
+  "thread": "c5c2e22d-381f-4906-8840-8c5d51f59e23",
+  "action_run": "2f21b2f0-3d34-4120-8c04-36a8dd838f30",
+  "observed_before_input": {
+    "at": "2026-11-19T02:40:29.149Z",
+    "id": "2f261543-c280-4367-a2cc-373c9e7daea4",
+    "tab": "tab-04002b28-2b9e-4258-8b25-11773db45b40",
+    "name": "get_browser_state",
+    "page": "http://host.docker.internal:8448/wren-dispatch",
+    "state": "succeeded",
+    "target": "bt-b9b7b5af-b26d-459b-92a6-97c5e956d3da",
+    "started": "2026-11-19T02:40:26.030Z",
+    "snapshot": "p10",
+    "native_error": false,
+    "visible_labels": [
+      "0",
+      "No delivery recorded"
+    ]
+  },
+  "input_receipt": {
+    "at": "2026-11-19T02:41:07.645Z",
+    "id": "61f152c5-6285-4db0-a2d5-723207ee1c53",
+    "name": "browser_click",
+    "error": "MACHINE_UNKNOWN",
+    "state": "unknown",
+    "started": "2026-11-19T02:40:34.985Z"
+  },
+  "target_commit": {
+    "event": "delivery_committed",
+    "deliveries": 1,
+    "receipt": "WREN-REC-50508",
+    "at": "2026-11-19T02:40:45.301Z"
+  },
+  "host_paused_at": "2026-11-19T02:40:46.611815+00:00",
+  "host_resumed_at": "2026-11-19T02:41:24.306496+00:00",
+  "owner_observed_existing_delivery_at": "2026-11-19T02:42:07.961004+00:00",
+  "owner_reconnected_at": "2026-11-19T02:42:08.781896+00:00",
+  "owner_reconnect_receipt": {
+    "at": "2026-11-19T02:42:15.711Z",
+    "id": "f09824ea-e175-47bc-922a-3b5deea90d10",
+    "name": "control.reconcile",
+    "state": "succeeded",
+    "started": "2026-11-19T02:42:09.297Z",
+    "lease_state": "active",
+    "lease_holder": "none"
+  },
+  "agent_observed_after_reconnect": {
+    "at": "2026-11-19T02:42:24.250Z",
+    "id": "d9ce4e7c-261f-4807-8dc0-2b871feae806",
+    "tab": "tab-04002b28-2b9e-4258-8b25-11773db45b40",
+    "name": "get_browser_state",
+    "page": "http://host.docker.internal:8448/wren-dispatch",
+    "state": "succeeded",
+    "target": "bt-b9b7b5af-b26d-459b-92a6-97c5e956d3da",
+    "started": "2026-11-19T02:42:09.226Z",
+    "snapshot": "p11",
+    "native_error": false,
+    "visible_labels": [
+      "1",
+      "WREN-REC-50508"
+    ]
+  },
+  "answer": "After reconnecting, the board shows one recorded delivery with receipt WREN-REC-50508.",
+  "native_input_dispatches": 1,
+  "target_effects": 1,
+  "fault_scope": "A dedicated retained desktop execution domain was paused. The Web browser, API, provider fixture, and target server remained available."
+}

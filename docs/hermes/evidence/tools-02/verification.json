@@ -1,0 +1,65 @@
+{
+  "date": "2026-11-19",
+  "surface": "Ngertiin Web (Chromium)",
+  "harness": "Pi ACP",
+  "provider": {
+    "mode": "live",
+    "model": "sumopod/deepseek-v4-flash",
+    "billing": "api_key"
+  },
+  "source": "synthetic Chromium window in retained verification desktop",
+  "thread_id": "37adce2a-9bdc-4eba-95b5-88a9868f324f",
+  "run_id": "806411fe-a7ea-4b68-8588-6ceb862289f0",
+  "binding": {
+    "active": true,
+    "id": "c1fa8695-b164-4498-b3b5-8d51649b5ce2",
+    "native_session_id": "01a1f091-6024-7395-a97c-410b4c6aab94",
+    "workspace_id": "65c5bad8-333e-413f-a3b2-e575a5b5d147"
+  },
+  "discovery": {
+    "query": "list open desktop windows application title",
+    "catalog_size": 26,
+    "summary_names": [
+      "list_windows",
+      "list_apps",
+      "get_desktop_state",
+      "get_accessibility_tree",
+      "click",
+      "double_click",
+      "drag",
+      "move_cursor",
+      "right_click"
+    ],
+    "direct_candidate_schema_in_search": false
+  },
+  "exact_schema": {
+    "name": "list_windows",
+    "properties": [
+      "app",
+      "on_screen_only",
+      "pid"
+    ],
+    "requires_input_lease": false
+  },
+  "tool_calls": [
+    "ngertiin.computer_tools",
+    "ngertiin.computer_tools",
+    "ngertiin.computer_call"
+  ],
+  "native_observation": {
+    "id": "3f1c2a9e-5b64-4d17-9a08-2c7e6d1b4f83",
+    "name": "list_windows",
+    "state": "succeeded",
+    "run_id": "806411fe-a7ea-4b68-8588-6ceb862289f0",
+    "is_error": false,
+    "machine_id": "a8c2f32d-293e-488c-b74e-1c4cf4bdfb3a",
+    "target_observed": true
+  },
+  "title_shown_in_reply": "birch Operations Dashboard - Chromium",
+  "earlier_browser_page_probe": {
+    "run_id": "665357fb-1ff7-43c1-81e3-4a076f8c2765",
+    "final_state": "cancelled",
+    "launch_observation": "Window appeared; managed launch receipt remained unknown.",
+    "browser_driver_refusal": "browser_consent_required"
+  }
+}

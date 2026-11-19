@@ -1,0 +1,266 @@
+{
+  "date": "2026-11-19",
+  "surface": "Chrome Ngertiin Web, authenticated lab API",
+  "harness": "Pi ACP 0.0.34 (Pi 1.5.2)",
+  "provider": "Kite Inference API-key fixture; Cedar Media loopback fixture decoded and rendered actual MP4 with FFmpeg",
+  "runs": [
+    {
+      "id": "e8580425-280e-41f2-8f65-2730bf6fac27",
+      "tools": [
+        "ngertiin.process_media"
+      ],
+      "answer": "The screen changes from blue to orange.",
+      "inputs": [
+        "259f98d4-202b-45d8-8043-13a6c3f9b244"
+      ],
+      "status": "succeeded",
+      "visual": [],
+      "request": "[signal-shift.mp4](ngertiin://file/259f98d4-202b-45d8-8043-13a6c3f9b244) Media video check. inspect. What color appears first, and which color replaces it in this clip?",
+      "artifacts": [],
+      "selection": {
+        "harness": "pi",
+        "model_id": "kite-inference/verification-alpha",
+        "reasoning": null,
+        "account_id": "5b7f819583399f3f60ef5119f53c96ded864f6e05a400f38dc95882074d3bf1d",
+        "provider_id": "kite-inference",
+        "connection_id": "95ceefb4-090f-4a15-bb2e-acafedd55ccb",
+        "billing_source": "api_key",
+        "connection_generation": 2
+      },
+      "diagnostic": null,
+      "toolErrors": []
+    },
+    {
+      "id": "22983219-018c-45e9-965d-0da755a2f7fa",
+      "tools": [],
+      "answer": "The uploaded clip is not a valid MP4.",
+      "inputs": [
+        "06c35518-2c5d-4d7a-bd73-ef43576b96c9"
+      ],
+      "status": "succeeded",
+      "visual": [],
+      "request": "[truncated-shift.mp4](ngertiin://file/06c35518-2c5d-4d7a-bd73-ef43576b96c9) Media video check. bad-input. Analyze this uploaded clip.",
+      "artifacts": [],
+      "selection": {
+        "harness": "pi",
+        "model_id": "kite-inference/verification-alpha",
+        "reasoning": null,
+        "account_id": "5b7f819583399f3f60ef5119f53c96ded864f6e05a400f38dc95882074d3bf1d",
+        "provider_id": "kite-inference",
+        "connection_id": "95ceefb4-090f-4a15-bb2e-acafedd55ccb",
+        "billing_source": "api_key",
+        "connection_generation": 2
+      },
+      "diagnostic": null,
+      "toolErrors": [
+        {
+          "code": "INVALID_REQUEST",
+          "name": "ngertiin.process_media",
+          "created_at": "2026-11-19T10:00:41.723Z"
+        }
+      ]
+    },
+    {
+      "id": "8b2ed0ac-82fd-42f9-96cf-892e55bce1ee",
+      "tools": [],
+      "answer": "Cedar Media did not return a valid video. No file was published.",
+      "inputs": [],
+      "status": "succeeded",
+      "visual": [],
+      "request": "Media video check. broken-output. Generate the green to purple three-second slate using the broken-media fixture.",
+      "artifacts": [],
+      "selection": {
+        "harness": "pi",
+        "model_id": "kite-inference/verification-alpha",
+        "reasoning": null,
+        "account_id": "5b7f819583399f3f60ef5119f53c96ded864f6e05a400f38dc95882074d3bf1d",
+        "provider_id": "kite-inference",
+        "connection_id": "95ceefb4-090f-4a15-bb2e-acafedd55ccb",
+        "billing_source": "api_key",
+        "connection_generation": 2
+      },
+      "diagnostic": null,
+      "toolErrors": [
+        {
+          "code": "MEDIA_BACKEND_FAILED",
+          "name": "ngertiin.process_media",
+          "created_at": "2026-11-19T10:01:02.729Z"
+        }
+      ]
+    },
+    {
+      "id": "c556488b-3e11-4ea4-b346-bac03049baa1",
+      "tools": [
+        "ngertiin.process_media"
+      ],
+      "answer": "The green and purple slate is ready. [generated-video.mp4](ngertiin://file/a613c526-4b99-4546-b67f-7d90198fb56e)",
+      "inputs": [],
+      "status": "succeeded",
+      "visual": [],
+      "request": "Media video check. generate. Create a three-second slate with a full green first half and full purple second half. Give me a playable MP4.",
+      "artifacts": [
+        {
+          "id": "a613c526-4b99-4546-b67f-7d90198fb56e",
+          "hash": "461f199f4e12fab1196a0a1537ebac15bfef516a4a42a597d818f35d723a5bcb",
+          "name": "generated-video.mp4",
+          "type": "video/mp4",
+          "origin": "native_output",
+          "source": null,
+          "workspace": "33aaf077-2ce7-49b3-afc6-641149161789",
+          "size_bytes": 3618
+        }
+      ],
+      "selection": {
+        "harness": "pi",
+        "model_id": "kite-inference/verification-alpha",
+        "reasoning": null,
+        "account_id": "5b7f819583399f3f60ef5119f53c96ded864f6e05a400f38dc95882074d3bf1d",
+        "provider_id": "kite-inference",
+        "connection_id": "95ceefb4-090f-4a15-bb2e-acafedd55ccb",
+        "billing_source": "api_key",
+        "connection_generation": 2
+      },
+      "diagnostic": null,
+      "toolErrors": []
+    }
+  ],
+  "backendCalls": [
+    {
+      "operation": "inspect_video",
+      "command_id": "ae50371a-8a09-4928-ad05-8a6f73e0340d",
+      "sha256": "85df1ce365b9663793f517b2f0704fd5e97443858219744365dc5592d2ada412",
+      "frames": [
+        [
+          40,
+          82,
+          216
+        ],
+        [
+          238,
+          125,
+          36
+        ]
+      ],
+      "colors": [
+        "blue",
+        "orange"
+      ]
+    },
+    {
+      "operation": "generate_video",
+      "command_id": "e96b1531-b92a-47d0-aade-e8d1c2e767e4",
+      "sha256": "a7a870eb49c3efe294b7bedbab6ab58ab5f932643688e782b076c87cf0263acb",
+      "bytes": 3586,
+      "truncated": true
+    },
+    {
+      "operation": "generate_video",
+      "command_id": "a613c526-4b99-4546-b67f-7d90198fb56e",
+      "sha256": "461f199f4e12fab1196a0a1537ebac15bfef516a4a42a597d818f35d723a5bcb",
+      "bytes": 3618,
+      "truncated": false
+    }
+  ],
+  "modelTrace": [
+    {
+      "event": "video_analysis",
+      "stage": "inspect",
+      "artifact_id": "259f98d4-202b-45d8-8043-13a6c3f9b244",
+      "nativeMediaParts": 0
+    },
+    {
+      "event": "alternate_vision",
+      "imageParts": 0,
+      "artifact": "02540001-9a74-452b-8aac-b66eafb0084e"
+    },
+    {
+      "event": "video_analysis",
+      "stage": "bad-input",
+      "artifact_id": "06c35518-2c5d-4d7a-bd73-ef43576b96c9",
+      "nativeMediaParts": 0
+    }
+  ],
+  "playerMetadata": {
+    "controls": true,
+    "duration": 3,
+    "error": null,
+    "height": 200,
+    "paused": true,
+    "readyState": 4,
+    "width": 320
+  },
+  "playback": {
+    "currentTime": 3,
+    "ended": true,
+    "error": null,
+    "events": [
+      {
+        "event": "play",
+        "time": 0
+      },
+      {
+        "event": "playing",
+        "time": 0
+      },
+      {
+        "event": "ended",
+        "time": 3
+      }
+    ],
+    "played": 3,
+    "sampled": {
+      "first": {
+        "rgb": [
+          37,
+          144,
+          71
+        ],
+        "time": 0.25
+      },
+      "second": {
+        "rgb": [
+          134,
+          74,
+          206
+        ],
+        "time": 1.75
+      }
+    }
+  },
+  "unconfigured": {
+    "mediaOperations": [],
+    "selectedFiles": 0,
+    "status": 200,
+    "verifiedOtherAccount": true
+  },
+  "sourceProbe": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "width": 320,
+        "height": 200,
+        "nb_frames": "48"
+      }
+    ],
+    "format": {
+      "duration": "2.000000"
+    }
+  },
+  "resultProbe": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "width": 320,
+        "height": 200,
+        "nb_frames": "72"
+      }
+    ],
+    "format": {
+      "duration": "3.000000"
+    }
+  }
+}

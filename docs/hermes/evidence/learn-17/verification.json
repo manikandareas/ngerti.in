@@ -1,0 +1,111 @@
+{
+  "date": "2026-11-19",
+  "surface": "Ngertiin Web (Chromium)",
+  "harness": "Pi ACP",
+  "provider": {
+    "type": "live",
+    "model": "sumopod/deepseek-v4-flash",
+    "billing": "api_key"
+  },
+  "input": "synthetic",
+  "curator": {
+    "original": {
+      "assignment": {
+        "enabled": true,
+        "version": 1
+      },
+      "head": 1,
+      "id": "0b0cdadf-bfb3-4f03-9c5f-b7e6aabd6d74",
+      "locked": false,
+      "name": "curator-reusable-ticket-count",
+      "restored_at": null,
+      "sha256": "e70d79b603ed0d5ef34165039450199176b7b411ca22f593061add59df0099cd",
+      "state": "stale",
+      "version": 1
+    },
+    "after_use": {
+      "assignment": {
+        "enabled": true,
+        "version": 1
+      },
+      "head": 1,
+      "id": "0b0cdadf-bfb3-4f03-9c5f-b7e6aabd6d74",
+      "last_used_at": "2026-11-18T16:49:37.591Z",
+      "locked": false,
+      "name": "curator-reusable-ticket-count",
+      "restored_at": null,
+      "sha256": "e70d79b603ed0d5ef34165039450199176b7b411ca22f593061add59df0099cd",
+      "state": "active",
+      "version": 1
+    },
+    "interval_ms": 45000,
+    "next_due_before_restart": {
+      "entries": [
+        {
+          "id": "7d478296-ecc6-4600-aa85-62e51de4ffba",
+          "revision": 1,
+          "next_pass_at": "2026-11-18T16:49:04.136Z"
+        }
+      ],
+      "observed_at": "2026-11-18T16:48:28.542666+00:00"
+    },
+    "next_due_after_restart": {
+      "entries": [
+        {
+          "id": "7d478296-ecc6-4600-aa85-62e51de4ffba",
+          "revision": 1,
+          "next_pass_at": "2026-11-18T16:49:04.136Z"
+        }
+      ],
+      "observed_at": "2026-11-18T16:48:50.178355+00:00"
+    },
+    "after_pass": {
+      "entries": [
+        {
+          "id": "7d478296-ecc6-4600-aa85-62e51de4ffba",
+          "revision": 3,
+          "next_pass_at": "2026-11-18T16:50:34.607Z"
+        }
+      ],
+      "observed_at": "2026-11-18T16:49:55.419002+00:00"
+    }
+  },
+  "first_use": {
+    "thread": "34ea3624-03b7-45e1-98df-c7035236a938",
+    "provider_model": "sumopod/deepseek-v4-flash",
+    "run": {
+      "id": "7af3ef63-840c-4d77-b5bf-39a1f3b8ebd1",
+      "status": "succeeded",
+      "skill_reads": [
+        {
+          "skill_id": "0b0cdadf-bfb3-4f03-9c5f-b7e6aabd6d74",
+          "version": 1
+        }
+      ],
+      "product_tools": [
+        "ngertiin.read_skill",
+        "ngertiin.read_attachment"
+      ]
+    },
+    "reply": "TICKET CHECK\n\n- Open: 2 (C-41, C-43)\n- Waiting: 1 (C-42)\n- Complete: 1 (C-44)\n- Unique tickets: 4\n\nReconciled: 2 + 1 + 1 = 4, matching the 4 distinct ticket IDs (C-41 through C-44, no duplicates) in `cedar-tickets.txt` page 1."
+  },
+  "next_task": {
+    "thread": "a514259a-c525-4242-811d-8bed59544812",
+    "provider_model": "sumopod/deepseek-v4-flash",
+    "run": {
+      "id": "9a0f989d-ca75-4bac-86ba-be1066f04aca",
+      "status": "succeeded",
+      "skill_reads": [
+        {
+          "skill_id": "0b0cdadf-bfb3-4f03-9c5f-b7e6aabd6d74",
+          "version": 1
+        }
+      ],
+      "product_tools": [
+        "ngertiin.read_skill",
+        "ngertiin.read_attachment"
+      ]
+    },
+    "reply": "I'll read the assigned skill procedure and the full log.TICKET CHECK\n\n**Counts by status (distinct tickets)**\n- Open: 2 — N-1, N-5\n- Waiting: 1 — N-2\n- Blocked: 1 — N-3\n- Complete: 1 — N-4\n\n**Unique tickets:** 5\n**Duplicate rows:** 1 (N-1 | Open appears twice, both rows agree on status)\n\n**Reconciliation:** 2 + 1 + 1 + 1 = 5 unique tickets ✓ — matches the 6 log rows minus 1 duplicate row. No ticket ID shows conflicting statuses, so no dedupe conflict to resolve.\n\nSource: curator-reuse-tickets.txt, page 1."
+  }
+}

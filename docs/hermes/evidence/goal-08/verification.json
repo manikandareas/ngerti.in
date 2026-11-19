@@ -1,0 +1,146 @@
+{
+  "date": "2026-11-19",
+  "surface": "Ngertiin Web (Chromium)",
+  "harness": "Pi ACP",
+  "model_provider": "live",
+  "data": "synthetic Willow tally",
+  "first": {
+    "thread": "f8a9dbcb-0a6f-46e1-ace6-e73a12d4bad1",
+    "goal": {
+      "id": "3f2b8c1e-7a4d-4f9a-9b2e-1c6d5e8f0a41",
+      "state": "active",
+      "work_state": "ready",
+      "verification": {
+        "attempt_limit": 3,
+        "attempts_used": 1,
+        "checks": [
+          {
+            "artifact_name": "willow-mix.txt",
+            "exact_text": "MIX_TALLY=32\n",
+            "title": "Willow tally"
+          }
+        ],
+        "last_check": {
+          "results": [
+            {
+              "artifact_id": "c3d4e5f6-7a8b-4b9c-8d2e-3f4a5b6c7d8e",
+              "artifact_name": "willow-mix.txt",
+              "status": "mismatch",
+              "title": "Willow tally"
+            }
+          ],
+          "run_id": "a3140156-626e-48cd-b8ff-70dcdfbcb016"
+        }
+      },
+      "progress": "Verification attempt 1 of 3 failed. Willow tally: willow-mix.txt does not match the required text. The Goal is still active. The remaining requirements will be tried again.",
+      "evidence_artifact_ids": []
+    },
+    "runs": [
+      {
+        "id": "a3140156-626e-48cd-b8ff-70dcdfbcb016",
+        "status": "succeeded",
+        "goal_id": null,
+        "goal_generation": null,
+        "product_tools": [
+          "ngertiin.capture_goal",
+          "ngertiin.create_file",
+          "ngertiin.create_file",
+          "ngertiin.publish_artifact",
+          "ngertiin.report_goal"
+        ],
+        "model": "sumopod/deepseek-v4-flash",
+        "billing": "api_key"
+      }
+    ],
+    "answer": "Goal created with the \"Willow tally\" exact-content check (single line `MIX_TALLY=32`) and a three-attempt budget.\n\nFirst run done as instructed: the imported draft was published unchanged as [willow-mix.txt](ngertiin://artifact/c3d4e5f6-7a8b-4b9c-8d2e-3f4a5b6c7d8e) with `MIX_TALLY=28`, and submitted for verification with a completed disposition. I did not reconcile anything yet — the verifier will flag the mismatch after this run.\n\nIn the automatic follow-up I'll act on that gate result: 11 + 13 + 8 = 32 written to a fresh path, published under the same `willow-mix.txt` display name, with this original version left intact as the archive.",
+    "files": [
+      {
+        "id": "c3d4e5f6-7a8b-4b9c-8d2e-3f4a5b6c7d8e",
+        "name": "willow-mix.txt",
+        "sha256": "161cd48c548e56eb38232de0e024602f0dd444a8727abdbe7d422f612c048b30",
+        "run_id": "a3140156-626e-48cd-b8ff-70dcdfbcb016"
+      }
+    ]
+  },
+  "settled": {
+    "thread": "f8a9dbcb-0a6f-46e1-ace6-e73a12d4bad1",
+    "goal": {
+      "id": "3f2b8c1e-7a4d-4f9a-9b2e-1c6d5e8f0a41",
+      "state": "completed",
+      "work_state": "ready",
+      "verification": {
+        "attempt_limit": 3,
+        "attempts_used": 2,
+        "checks": [
+          {
+            "artifact_name": "willow-mix.txt",
+            "exact_text": "MIX_TALLY=32\n",
+            "title": "Willow tally"
+          }
+        ],
+        "last_check": {
+          "results": [
+            {
+              "artifact_id": "07b8c9d0-e1f2-4a3b-8c4d-7e8f9a0b1c23",
+              "artifact_name": "willow-mix.txt",
+              "status": "passed",
+              "title": "Willow tally"
+            }
+          ],
+          "run_id": "c9123903-3119-46f4-8394-690da2cebc70"
+        }
+      },
+      "progress": "Attempt 2 of 3 reacted to the gate result from attempt 1 (mismatch). Reconciled the real component counts: 11 + 13 + 8 = 32. Wrote the corrected single line MIX_TALLY=32 to a fresh path and published it under the same display name willow-mix.txt. The original imported draft (MIX_TALLY=28) is preserved intact as the archived version and was not modified. Submitted the corrected file for the \"Willow tally\" exact-content check; verdict left to verification.",
+      "evidence_artifact_ids": [
+        "07b8c9d0-e1f2-4a3b-8c4d-7e8f9a0b1c23"
+      ]
+    },
+    "runs": [
+      {
+        "id": "a3140156-626e-48cd-b8ff-70dcdfbcb016",
+        "status": "succeeded",
+        "goal_id": null,
+        "goal_generation": null,
+        "product_tools": [
+          "ngertiin.capture_goal",
+          "ngertiin.create_file",
+          "ngertiin.create_file",
+          "ngertiin.publish_artifact",
+          "ngertiin.report_goal"
+        ],
+        "model": "sumopod/deepseek-v4-flash",
+        "billing": "api_key"
+      },
+      {
+        "id": "c9123903-3119-46f4-8394-690da2cebc70",
+        "status": "succeeded",
+        "goal_id": "3f2b8c1e-7a4d-4f9a-9b2e-1c6d5e8f0a41",
+        "goal_generation": 1,
+        "product_tools": [
+          "ngertiin.create_file",
+          "ngertiin.publish_artifact",
+          "ngertiin.report_goal"
+        ],
+        "model": "sumopod/deepseek-v4-flash",
+        "billing": "api_key"
+      }
+    ],
+    "answer": "Followed up on the gate result from the first attempt and corrected the tally.\n\n- Reconciled counts: 11 + 13 + 8 = **32**\n- Corrected file: [willow-mix.txt](ngertiin://file/07b8c9d0-e1f2-4a3b-8c4d-7e8f9a0b1c23) — single line `MIX_TALLY=32`, published under the same display name from a fresh path\n- The original imported draft (`MIX_TALLY=28`) is preserved untouched as the archive\n\nSubmitted the corrected file for the \"Willow tally\" exact-content check on this second of three attempts. The verifier settles the verdict.",
+    "files": [
+      {
+        "id": "c3d4e5f6-7a8b-4b9c-8d2e-3f4a5b6c7d8e",
+        "name": "willow-mix.txt",
+        "sha256": "161cd48c548e56eb38232de0e024602f0dd444a8727abdbe7d422f612c048b30",
+        "run_id": "a3140156-626e-48cd-b8ff-70dcdfbcb016"
+      },
+      {
+        "id": "07b8c9d0-e1f2-4a3b-8c4d-7e8f9a0b1c23",
+        "name": "willow-mix.txt",
+        "sha256": "4314211f67f2da4bfb92ae15f85a3647e194e5b864bb291b3d36355128af98dc",
+        "run_id": "c9123903-3119-46f4-8394-690da2cebc70"
+      }
+    ]
+  },
+  "initial_fixture_sha256": "161cd48c548e56eb38232de0e024602f0dd444a8727abdbe7d422f612c048b30",
+  "downloaded_sha256": "4314211f67f2da4bfb92ae15f85a3647e194e5b864bb291b3d36355128af98dc"
+}

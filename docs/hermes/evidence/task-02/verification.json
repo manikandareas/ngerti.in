@@ -1,0 +1,122 @@
+{
+  "date": "2026-11-19",
+  "surface": "Authenticated Ngertiin Web / Chromium",
+  "harness": "Claude ACP subprocess fixture",
+  "provider": "fixture / API key selection",
+  "readings": [
+    17,
+    29,
+    46
+  ],
+  "tab_closed_and_reopened": {
+    "closed": "2026-11-19T04:40:22.312174+00:00",
+    "reopened": "2026-11-19T04:40:40.160118+00:00"
+  },
+  "before_close": {
+    "open": true,
+    "steps": [
+      {
+        "label": "Read Cypress measurements",
+        "state": "in progress"
+      },
+      {
+        "label": "Verify Cypress total",
+        "state": "pending"
+      },
+      {
+        "label": "Report Cypress total",
+        "state": "pending"
+      }
+    ]
+  },
+  "only_app_tab_absent_during_midpoint": true,
+  "while_closed": {
+    "id": "dd74334b-083c-466f-b6e2-14d737863712",
+    "plan": {
+      "id": "legacy",
+      "text": null,
+      "entries": [
+        {
+          "text": "Read Cypress measurements",
+          "state": "completed",
+          "priority": "medium"
+        },
+        {
+          "text": "Verify Cypress total",
+          "state": "in_progress",
+          "priority": "medium"
+        },
+        {
+          "text": "Report Cypress total",
+          "state": "pending",
+          "priority": "medium"
+        }
+      ]
+    },
+    "status": "running"
+  },
+  "reopened": {
+    "open": true,
+    "steps": [
+      {
+        "label": "Read Cypress measurements",
+        "state": "completed"
+      },
+      {
+        "label": "Verify Cypress total",
+        "state": "in progress"
+      },
+      {
+        "label": "Report Cypress total",
+        "state": "pending"
+      }
+    ]
+  },
+  "final": {
+    "open": true,
+    "steps": [
+      {
+        "label": "Read Cypress measurements",
+        "state": "completed"
+      },
+      {
+        "label": "Verify Cypress total",
+        "state": "completed"
+      },
+      {
+        "label": "Report Cypress total",
+        "state": "completed"
+      }
+    ]
+  },
+  "snapshot": {
+    "answers": [
+      "Cypress: verified 92 across 3 readings."
+    ],
+    "count": 1,
+    "id": "dd74334b-083c-466f-b6e2-14d737863712",
+    "plan": {
+      "entries": [
+        {
+          "priority": "medium",
+          "state": "completed",
+          "text": "Read Cypress measurements"
+        },
+        {
+          "priority": "medium",
+          "state": "completed",
+          "text": "Verify Cypress total"
+        },
+        {
+          "priority": "medium",
+          "state": "completed",
+          "text": "Report Cypress total"
+        }
+      ],
+      "id": "legacy",
+      "text": null
+    },
+    "status": "succeeded",
+    "thread": "dc1bb124-e3de-4d97-a17c-895366d2f862"
+  }
+}

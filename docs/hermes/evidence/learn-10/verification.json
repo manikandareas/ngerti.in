@@ -1,0 +1,46 @@
+{
+  "date": "2026-11-18",
+  "surface": "Ngertiin Web (Chromium)",
+  "harness": "Pi ACP",
+  "provider": "Sumopod live",
+  "model": "sumopod/deepseek-v4-flash",
+  "billing": "api_key",
+  "inputs_are_synthetic": true,
+  "memory_only": {
+    "settings": {
+      "memory_turns": 2,
+      "skill_steps": 1000
+    },
+    "first_turn_due": false,
+    "routine_outputs": 2,
+    "routine_reviews": 0,
+    "earlier_user_fact_saved": "Our standard name for the operations desk is Harbor Control.",
+    "skill_versions": 0,
+    "attempts": 1,
+    "review_seconds": 16.09,
+    "foreground_and_review_ran_concurrently": true,
+    "foreground_answer": "17",
+    "foreground_generated_no_review": true
+  },
+  "skill_only": {
+    "settings": {
+      "memory_turns": 100,
+      "skill_steps": 1
+    },
+    "first_run_scopes": {
+      "memory": false,
+      "skill": true
+    },
+    "accepted_skill_versions": 1,
+    "memories_written": 0,
+    "attempts": 1
+  },
+  "budget_expiry": {
+    "budget_ms": 100,
+    "review_attempts": 1,
+    "diagnostic": "LEARNING_REVIEW_TIMEOUT",
+    "foreground_status": "succeeded",
+    "artifact": "cadence-budget.txt",
+    "learning_mutations": 0
+  }
+}

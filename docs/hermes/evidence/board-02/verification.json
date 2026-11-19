@@ -1,0 +1,227 @@
+{
+  "date": "2026-11-19",
+  "surface": "Authenticated Ngertiin Web / Chromium",
+  "harness": "Pi ACP",
+  "provider": "live Sumopod API key",
+  "waiting_restored_after_refresh": [
+    {
+      "artifacts": [],
+      "assignee_agent_id": "0b01150a-95b8-45ec-9bf7-9c39a87d2dbd",
+      "assignee_name": "Glenn",
+      "blocker": null,
+      "current_run_id": null,
+      "dependency_ids": [],
+      "id": "0abc46cf-e2f0-4667-95b3-f982ae8e15a7",
+      "revision": 1,
+      "start_requested": false,
+      "state": "ready",
+      "submission": null,
+      "thread_id": "d224221d-a5cf-4182-9619-b76870e31be9",
+      "title": "Harbor approved source"
+    },
+    {
+      "artifacts": [],
+      "assignee_agent_id": "2362f652-38fd-4082-906a-a8f942252831",
+      "assignee_name": "Ruth",
+      "blocker": null,
+      "current_run_id": null,
+      "dependency_ids": [
+        "0abc46cf-e2f0-4667-95b3-f982ae8e15a7"
+      ],
+      "id": "e5c01b37-f964-46e1-8cdc-86ea497c70ca",
+      "revision": 2,
+      "start_requested": true,
+      "state": "waiting",
+      "submission": null,
+      "thread_id": "81107b04-5b82-4a41-b3f5-3db417e01810",
+      "title": "Harbor downstream check"
+    }
+  ],
+  "predecessor_running": [
+    {
+      "artifacts": [],
+      "assignee_agent_id": "0b01150a-95b8-45ec-9bf7-9c39a87d2dbd",
+      "assignee_name": "Glenn",
+      "blocker": null,
+      "current_run_id": "1500d85f-689f-48a2-8bd2-7cd84c17938c",
+      "dependency_ids": [],
+      "id": "0abc46cf-e2f0-4667-95b3-f982ae8e15a7",
+      "revision": 2,
+      "start_requested": false,
+      "state": "running",
+      "submission": null,
+      "thread_id": "d224221d-a5cf-4182-9619-b76870e31be9",
+      "title": "Harbor approved source"
+    },
+    {
+      "artifacts": [],
+      "assignee_agent_id": "2362f652-38fd-4082-906a-a8f942252831",
+      "assignee_name": "Ruth",
+      "blocker": null,
+      "current_run_id": null,
+      "dependency_ids": [
+        "0abc46cf-e2f0-4667-95b3-f982ae8e15a7"
+      ],
+      "id": "e5c01b37-f964-46e1-8cdc-86ea497c70ca",
+      "revision": 2,
+      "start_requested": true,
+      "state": "waiting",
+      "submission": null,
+      "thread_id": "81107b04-5b82-4a41-b3f5-3db417e01810",
+      "title": "Harbor downstream check"
+    }
+  ],
+  "done": [
+    {
+      "artifacts": [
+        {
+          "id": "b2f4d681-1c39-4e05-9d72-3a6bc0e4f704",
+          "name": "shift-sheet.txt",
+          "workspace_id": "3b0b1e97-6044-4d56-826f-26050be60cff"
+        }
+      ],
+      "assignee_agent_id": "0b01150a-95b8-45ec-9bf7-9c39a87d2dbd",
+      "assignee_name": "Glenn",
+      "blocker": null,
+      "current_run_id": "1500d85f-689f-48a2-8bd2-7cd84c17938c",
+      "dependency_ids": [],
+      "id": "0abc46cf-e2f0-4667-95b3-f982ae8e15a7",
+      "revision": 4,
+      "start_requested": false,
+      "state": "done",
+      "submission": {
+        "artifact_ids": [
+          "b2f4d681-1c39-4e05-9d72-3a6bc0e4f704"
+        ],
+        "summary": "Approved shift sheet ready"
+      },
+      "thread_id": "d224221d-a5cf-4182-9619-b76870e31be9",
+      "title": "Harbor approved source"
+    },
+    {
+      "artifacts": [
+        {
+          "id": "7d15e9c4-2a83-4f0b-b6d5-1e93c8a70f42",
+          "name": "harbor-checked-count.txt",
+          "workspace_id": "609da093-df44-4776-82f4-d81292818d26"
+        }
+      ],
+      "assignee_agent_id": "2362f652-38fd-4082-906a-a8f942252831",
+      "assignee_name": "Ruth",
+      "blocker": null,
+      "current_run_id": "a0d7b955-92fa-4b32-b838-43b652d3b745",
+      "dependency_ids": [
+        "0abc46cf-e2f0-4667-95b3-f982ae8e15a7"
+      ],
+      "id": "e5c01b37-f964-46e1-8cdc-86ea497c70ca",
+      "revision": 5,
+      "start_requested": true,
+      "state": "done",
+      "submission": {
+        "artifact_ids": [
+          "7d15e9c4-2a83-4f0b-b6d5-1e93c8a70f42"
+        ],
+        "summary": "Read the approved shift sheet (Harbor release count: 64), added 7 to get 71, and published harbor-checked-count.txt containing \"Harbor adjusted count: 71\"."
+      },
+      "thread_id": "81107b04-5b82-4a41-b3f5-3db417e01810",
+      "title": "Harbor downstream check"
+    }
+  ],
+  "bindings": {
+    "scoped": true,
+    "child_run": "a0d7b955-92fa-4b32-b838-43b652d3b745",
+    "child_card": "e5c01b37-f964-46e1-8cdc-86ea497c70ca",
+    "parent_run": "1500d85f-689f-48a2-8bd2-7cd84c17938c",
+    "done_cursor": 19218,
+    "parent_card": "0abc46cf-e2f0-4667-95b3-f982ae8e15a7",
+    "child_inputs": [
+      {
+        "id": "602f21e2-8337-4a6f-91c2-f629501d9086",
+        "name": "shift-sheet.txt",
+        "origin": "shared_copy",
+        "sha256": "9f95d9eee228ae952695f3cc936ada32abae52e4170348dee245f18945b0b5e7",
+        "source_id": "b2f4d681-1c39-4e05-9d72-3a6bc0e4f704",
+        "workspace": "609da093-df44-4776-82f4-d81292818d26",
+        "materialization": "ready"
+      }
+    ],
+    "child_output": {
+      "id": "7d15e9c4-2a83-4f0b-b6d5-1e93c8a70f42",
+      "name": "harbor-checked-count.txt",
+      "sha256": "9fec786edb239235705af555acc9334d854f8301149d3aef8938ec416f0909ea",
+      "workspace": "609da093-df44-4776-82f4-d81292818d26"
+    },
+    "selected_model": "sumopod/deepseek-v4-flash",
+    "child_artifacts": [
+      "7d15e9c4-2a83-4f0b-b6d5-1e93c8a70f42"
+    ],
+    "child_run_count": 1,
+    "parent_versions": [
+      {
+        "id": "b2f4d681-1c39-4e05-9d72-3a6bc0e4f704",
+        "name": "shift-sheet.txt",
+        "path": "approved/shift-sheet.txt",
+        "sha256": "9f95d9eee228ae952695f3cc936ada32abae52e4170348dee245f18945b0b5e7",
+        "workspace": "3b0b1e97-6044-4d56-826f-26050be60cff"
+      },
+      {
+        "id": "a1e3c5f7-0b28-4d94-8c61-2f5ab9d3e603",
+        "name": "shift-sheet.txt",
+        "path": "drafts/shift-sheet.txt",
+        "sha256": "7f14d4f690b17be08efaec5bb6a6a58e25e028471ab3f5d585850716e27f82bb",
+        "workspace": "3b0b1e97-6044-4d56-826f-26050be60cff"
+      }
+    ],
+    "child_run_status": "succeeded",
+    "parent_artifacts": [
+      "b2f4d681-1c39-4e05-9d72-3a6bc0e4f704"
+    ],
+    "selected_billing": "api_key",
+    "input_message_ids": [
+      "602f21e2-8337-4a6f-91c2-f629501d9086"
+    ],
+    "parent_run_status": "succeeded",
+    "distinct_workspaces": true,
+    "child_enqueue_cursor": 19222,
+    "input_read_observations": [
+      {
+        "pages": [
+          1
+        ],
+        "operation": "context",
+        "truncated": true,
+        "created_at": "2026-11-19T05:43:36.343Z",
+        "artifact_id": "602f21e2-8337-4a6f-91c2-f629501d9086",
+        "source_sha256": "9f95d9eee228ae952695f3cc936ada32abae52e4170348dee245f18945b0b5e7"
+      },
+      {
+        "pages": [
+          1
+        ],
+        "operation": "read",
+        "truncated": false,
+        "created_at": "2026-11-19T05:43:43.016Z",
+        "artifact_id": "602f21e2-8337-4a6f-91c2-f629501d9086",
+        "source_sha256": "9f95d9eee228ae952695f3cc936ada32abae52e4170348dee245f18945b0b5e7"
+      }
+    ],
+    "input_contains_release_count": false
+  },
+  "contents_verified": [
+    {
+      "id": "b2f4d681-1c39-4e05-9d72-3a6bc0e4f704",
+      "status": 200,
+      "text": "Harbor release count: 64\n"
+    },
+    {
+      "id": "a1e3c5f7-0b28-4d94-8c61-2f5ab9d3e603",
+      "status": 200,
+      "text": "Harbor release count: 38\n"
+    },
+    {
+      "id": "7d15e9c4-2a83-4f0b-b6d5-1e93c8a70f42",
+      "status": 200,
+      "text": "Harbor adjusted count: 71\n"
+    }
+  ]
+}

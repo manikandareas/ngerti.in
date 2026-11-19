@@ -1,0 +1,262 @@
+{
+  "date": "2026-11-19",
+  "surface": "Ngertiin Web (Chromium)",
+  "harness": "Pi ACP",
+  "model_provider": "live",
+  "data": "synthetic local reminders",
+  "thread": "c52da20e-4d85-4eb3-9295-4cc7d86dda76",
+  "requested": {
+    "once": "2026-11-18T18:49:25Z",
+    "interval": "2026-11-18T18:49:40Z",
+    "interval_ms": 35000,
+    "calendar_local": "02:51",
+    "calendar_utc": "2026-11-18T18:51:00Z",
+    "timezone": "Asia/Makassar"
+  },
+  "configured": [
+    {
+      "id": "3f7c1a20-5b6d-4e8f-9a01-2c3d4e5f6a71",
+      "name": "Junco one-time marker",
+      "state": "active",
+      "timezone": "Asia/Makassar",
+      "schedule": {
+        "at": "2026-11-18T18:49:25Z",
+        "type": "once"
+      },
+      "next_run_at": "2026-11-18T18:49:25Z",
+      "goal_id": null
+    },
+    {
+      "id": "8a2e6b41-7c9d-4f03-8b52-6d7e8f9a0b12",
+      "name": "Wren interval marker",
+      "state": "active",
+      "timezone": "Asia/Makassar",
+      "schedule": {
+        "anchor_at": "2026-11-18T18:49:40Z",
+        "every_ms": 35000,
+        "type": "interval"
+      },
+      "next_run_at": "2026-11-18T18:49:40Z",
+      "goal_id": null
+    },
+    {
+      "id": "5c9d3e72-1a4b-4c85-9d63-7e8f9a0b1c23",
+      "name": "Tern calendar marker",
+      "state": "active",
+      "timezone": "Asia/Makassar",
+      "schedule": {
+        "local_time": "02:51",
+        "type": "calendar",
+        "weekdays": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      },
+      "next_run_at": "2026-11-18T18:51:00.000Z",
+      "goal_id": null
+    }
+  ],
+  "ui_next": {
+    "once": "Scheduled\nJunco one-time marker\n\nNov 19, 2026, 2:49 AM\n\nReply with ONCE-JUNCO-16.\n\nAsia/Makassar · Next run: Nov 19, 2026, 2:49 AM\n\nRun history\n\nNo runs yet.\n\nView conversation\n\nActive\n\nEdit in chat\nStop routine\n",
+    "interval": "Scheduled\nWren interval marker\n\nEvery 35 seconds\n\nReply with INTERVAL-WREN-17.\n\nAsia/Makassar · Next run: Nov 19, 2026, 2:49 AM\n\nRun history\n\nNo runs yet.\n\nView conversation\n\nActive\n\nEdit in chat\nStop routine\n",
+    "calendar": "Scheduled\nTern calendar marker\n\nEvery day · 02:51 · Asia/Makassar\n\nReply with CALENDAR-TERN-18.\n\nAsia/Makassar · Next run: Nov 19, 2026, 2:51 AM\n\nRun history\n\nNo runs yet.\n\nView conversation\n\nActive\n\nEdit in chat\nStop routine\n",
+    "calendar_after_fire": "Scheduled\nTern calendar marker\n\nEvery day · 02:51 · Asia/Makassar\n\nReply with CALENDAR-TERN-18.\n\nAsia/Makassar · Next run: Nov 20, 2026, 2:51 AM\n\nRun history\nSucceeded · scheduled\nNov 19, 2026, 2:51 AM\nView conversation\n\nActive\n\nEdit in chat\nStop routine\n"
+  },
+  "fired_routines": [
+    {
+      "id": "3f7c1a20-5b6d-4e8f-9a01-2c3d4e5f6a71",
+      "name": "Junco one-time marker",
+      "state": "active",
+      "timezone": "Asia/Makassar",
+      "schedule": {
+        "at": "2026-11-18T18:49:25Z",
+        "type": "once"
+      },
+      "next_run_at": null,
+      "goal_id": null
+    },
+    {
+      "id": "8a2e6b41-7c9d-4f03-8b52-6d7e8f9a0b12",
+      "name": "Wren interval marker",
+      "state": "paused",
+      "timezone": "Asia/Makassar",
+      "schedule": {
+        "anchor_at": "2026-11-18T18:49:40Z",
+        "every_ms": 35000,
+        "type": "interval"
+      },
+      "next_run_at": null,
+      "goal_id": null
+    },
+    {
+      "id": "5c9d3e72-1a4b-4c85-9d63-7e8f9a0b1c23",
+      "name": "Tern calendar marker",
+      "state": "active",
+      "timezone": "Asia/Makassar",
+      "schedule": {
+        "local_time": "02:51",
+        "type": "calendar",
+        "weekdays": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      },
+      "next_run_at": "2026-11-19T18:51:00.000Z",
+      "goal_id": null
+    }
+  ],
+  "outputs": [
+    {
+      "run_id": "f5157d7a-ce81-450b-8e87-fe665adb435c",
+      "routine_id": "3f7c1a20-5b6d-4e8f-9a01-2c3d4e5f6a71",
+      "status": "succeeded",
+      "model": "sumopod/deepseek-v4-flash",
+      "billing": "api_key",
+      "answer": "ONCE-JUNCO-16"
+    },
+    {
+      "run_id": "a1af771a-3e4e-4783-83ec-d313d9f59910",
+      "routine_id": "8a2e6b41-7c9d-4f03-8b52-6d7e8f9a0b12",
+      "status": "succeeded",
+      "model": "sumopod/deepseek-v4-flash",
+      "billing": "api_key",
+      "answer": "INTERVAL-WREN-17"
+    },
+    {
+      "run_id": "e9c1c91f-bdf1-4f35-a80e-c0374ca5441e",
+      "routine_id": "8a2e6b41-7c9d-4f03-8b52-6d7e8f9a0b12",
+      "status": "succeeded",
+      "model": "sumopod/deepseek-v4-flash",
+      "billing": "api_key",
+      "answer": "INTERVAL-WREN-17"
+    },
+    {
+      "run_id": "fa9a2b92-fc9f-44cb-bcae-00de97fc13a2",
+      "routine_id": "5c9d3e72-1a4b-4c85-9d63-7e8f9a0b1c23",
+      "status": "succeeded",
+      "model": "sumopod/deepseek-v4-flash",
+      "billing": "api_key",
+      "answer": "CALENDAR-TERN-18"
+    }
+  ],
+  "occurrences": [
+    {
+      "run_id": "f5157d7a-ce81-450b-8e87-fe665adb435c",
+      "run_times": {
+        "ready_at": "2026-11-18T18:49:30.060Z",
+        "settled_at": "2026-11-18T18:49:34.583Z",
+        "accepted_at": "2026-11-18T18:49:30.802Z",
+        "preparing_at": "2026-11-18T18:49:25.727Z",
+        "dispatched_at": "2026-11-18T18:49:30.060Z",
+        "first_output_at": "2026-11-18T18:49:34.261Z"
+      },
+      "routine_id": "3f7c1a20-5b6d-4e8f-9a01-2c3d4e5f6a71",
+      "run_status": "succeeded",
+      "occurrence_id": "5c67d27a-fc17-40a4-b6c1-c3d27f162edd",
+      "scheduled_for": "2026-11-18T18:49:25Z"
+    },
+    {
+      "run_id": "a1af771a-3e4e-4783-83ec-d313d9f59910",
+      "run_times": {
+        "ready_at": "2026-11-18T18:49:44.759Z",
+        "settled_at": "2026-11-18T18:49:48.676Z",
+        "accepted_at": "2026-11-18T18:49:45.436Z",
+        "preparing_at": "2026-11-18T18:49:40.764Z",
+        "dispatched_at": "2026-11-18T18:49:44.759Z",
+        "first_output_at": "2026-11-18T18:49:48.443Z"
+      },
+      "routine_id": "8a2e6b41-7c9d-4f03-8b52-6d7e8f9a0b12",
+      "run_status": "succeeded",
+      "occurrence_id": "347e1279-1ae8-43cc-a466-3968e689b614",
+      "scheduled_for": "2026-11-18T18:49:40.000Z"
+    },
+    {
+      "run_id": "e9c1c91f-bdf1-4f35-a80e-c0374ca5441e",
+      "run_times": {
+        "ready_at": "2026-11-18T18:50:15.915Z",
+        "settled_at": "2026-11-18T18:50:19.945Z",
+        "accepted_at": "2026-11-18T18:50:16.561Z",
+        "preparing_at": "2026-11-18T18:50:15.759Z",
+        "dispatched_at": "2026-11-18T18:50:15.915Z",
+        "first_output_at": "2026-11-18T18:50:19.599Z"
+      },
+      "routine_id": "8a2e6b41-7c9d-4f03-8b52-6d7e8f9a0b12",
+      "run_status": "succeeded",
+      "occurrence_id": "9020552b-c52c-4084-869e-8c5a235f007d",
+      "scheduled_for": "2026-11-18T18:50:15.000Z"
+    },
+    {
+      "run_id": "fa9a2b92-fc9f-44cb-bcae-00de97fc13a2",
+      "run_times": {
+        "ready_at": "2026-11-18T18:51:05.326Z",
+        "settled_at": "2026-11-18T18:51:09.691Z",
+        "accepted_at": "2026-11-18T18:51:05.990Z",
+        "preparing_at": "2026-11-18T18:51:00.835Z",
+        "dispatched_at": "2026-11-18T18:51:05.326Z",
+        "first_output_at": "2026-11-18T18:51:09.307Z"
+      },
+      "routine_id": "5c9d3e72-1a4b-4c85-9d63-7e8f9a0b1c23",
+      "run_status": "succeeded",
+      "occurrence_id": "20fe8e37-9683-4254-b5c6-1adea93a4da7",
+      "scheduled_for": "2026-11-18T18:51:00.000Z"
+    }
+  ],
+  "cleanup": [
+    {
+      "id": "3f7c1a20-5b6d-4e8f-9a01-2c3d4e5f6a71",
+      "name": "Junco one-time marker",
+      "state": "active",
+      "timezone": "Asia/Makassar",
+      "schedule": {
+        "at": "2026-11-18T18:49:25Z",
+        "type": "once"
+      },
+      "next_run_at": null,
+      "goal_id": null
+    },
+    {
+      "id": "8a2e6b41-7c9d-4f03-8b52-6d7e8f9a0b12",
+      "name": "Wren interval marker",
+      "state": "paused",
+      "timezone": "Asia/Makassar",
+      "schedule": {
+        "anchor_at": "2026-11-18T18:49:40Z",
+        "every_ms": 35000,
+        "type": "interval"
+      },
+      "next_run_at": null,
+      "goal_id": null
+    },
+    {
+      "id": "5c9d3e72-1a4b-4c85-9d63-7e8f9a0b1c23",
+      "name": "Tern calendar marker",
+      "state": "paused",
+      "timezone": "Asia/Makassar",
+      "schedule": {
+        "local_time": "02:51",
+        "type": "calendar",
+        "weekdays": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      },
+      "next_run_at": null,
+      "goal_id": null
+    }
+  ]
+}

@@ -1,0 +1,94 @@
+{
+  "date": "2026-11-19",
+  "surface": "Authenticated Ngertiin Web / Chromium",
+  "harness": "Claude ACP subprocess fixture",
+  "provider": "fixture / API key selection",
+  "input_readings": [
+    23,
+    41,
+    57
+  ],
+  "first": {
+    "open": true,
+    "private_visible": false,
+    "steps": [
+      {
+        "label": "Read Rowan measurements",
+        "state": "in progress"
+      },
+      {
+        "label": "Verify Rowan total",
+        "state": "pending"
+      },
+      {
+        "label": "Report Rowan total",
+        "state": "pending"
+      }
+    ]
+  },
+  "middle": {
+    "open": true,
+    "private_visible": false,
+    "steps": [
+      {
+        "label": "Read Rowan measurements",
+        "state": "completed"
+      },
+      {
+        "label": "Verify Rowan total",
+        "state": "in progress"
+      },
+      {
+        "label": "Report Rowan total",
+        "state": "pending"
+      }
+    ]
+  },
+  "completed": {
+    "open": true,
+    "private_visible": false,
+    "steps": [
+      {
+        "label": "Read Rowan measurements",
+        "state": "completed"
+      },
+      {
+        "label": "Verify Rowan total",
+        "state": "completed"
+      },
+      {
+        "label": "Report Rowan total",
+        "state": "completed"
+      }
+    ]
+  },
+  "snapshot": {
+    "answer": "Rowan: verified 121 across 3 readings.",
+    "count": 1,
+    "plan": {
+      "entries": [
+        {
+          "priority": "medium",
+          "state": "completed",
+          "text": "Read Rowan measurements"
+        },
+        {
+          "priority": "medium",
+          "state": "completed",
+          "text": "Verify Rowan total"
+        },
+        {
+          "priority": "medium",
+          "state": "completed",
+          "text": "Report Rowan total"
+        }
+      ],
+      "id": "legacy",
+      "text": null
+    },
+    "private_in_snapshot": false,
+    "run": "833e8657-cbcd-4eb4-a8f1-113e70c9fbf6",
+    "status": "succeeded",
+    "thread": "f0b07460-8697-41d4-b060-cf34ab369342"
+  }
+}

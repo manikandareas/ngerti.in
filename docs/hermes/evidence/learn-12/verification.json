@@ -1,0 +1,148 @@
+{
+  "date": "2026-11-18",
+  "surface": "Ngertiin Web (Chromium)",
+  "harness": "Pi ACP",
+  "provider": {
+    "type": "live",
+    "model": "sumopod/deepseek-v4-flash",
+    "billing": "api_key"
+  },
+  "input": "synthetic private attachment",
+  "foreground": {
+    "id": "0aeef501-c0bc-43ff-8346-25629d363644",
+    "status": "succeeded",
+    "skill_reads": [
+      {
+        "skill_id": "18d66496-ef95-48e0-9572-6fa26a2d75da",
+        "version": 1
+      }
+    ],
+    "product_tools": [
+      "ngertiin.read_skill",
+      "ngertiin.read_attachment",
+      "ngertiin.create_file",
+      "ngertiin.publish_artifact"
+    ]
+  },
+  "review": {
+    "state": "applied",
+    "attempts": 1,
+    "scopes": {
+      "memory": false,
+      "skill": true
+    },
+    "skill_versions": [
+      {
+        "skill_id": "199b4d96-d2a6-4b61-80b4-5eeb812b4820",
+        "version": 1
+      }
+    ]
+  },
+  "private_source": {
+    "rows": 6,
+    "exact_duplicates": 1,
+    "distinct_incidents": 5,
+    "open_high_severity": 1,
+    "marker": "MOSS-12-Q79Z",
+    "chat_reply": "I'll read the assigned procedure and the source file first.Here's the brief, plus the reconciliation you asked for.\n\n**Downloadable brief:** [shift-brief-2026-11-18.md](ngertiin://file/a3f72bd6-1c48-4e0d-9b57-2c8e6f0d41ab)\n\n**Reconciliation check**\n- Input data rows (excluding the title and header lines): 6\n- Exact duplicate records removed: 1 (a repeated row with identical incident, category, severity and state)\n- Distinct incidents counted: 5\n- Category sum: 2 + 2 + 1 = 5 ✓ matches the distinct count\n\n**Distinct incidents per category**\n\n| Category | Distinct incidents |\n| --- | --- |\n| Inventory | 2 |\n| Equipment | 2 |\n| Documentation | 1 |\n| **Total** | **5** |\n\n**Open high-severity incidents:** 1 (the Inventory high-severity incident that is still open; the Equipment high-severity one is already resolved).\n\n**Internal log marker:** MOSS-12-Q79Z — confirmed here in chat only, deliberately left out of the downloadable file.\n\nTwo notes on how I handled the procedure: the assigned brief instructions say to keep incident identifiers in the private conversation, so the Markdown file carries category counts and severity/state totals without the incident IDs — they're visible only here in chat if you want them. The file covers all 1 page of the log; nothing was skipped."
+  },
+  "deliverable": {
+    "name": "shift-brief-2026-11-18.md",
+    "origin": "native_output",
+    "sha256": "1e4e614aaf598130d625c74263f1c020640498bcba57cf6d21c38346417c15d5",
+    "size_bytes": 879,
+    "download_sha256": "1e4e614aaf598130d625c74263f1c020640498bcba57cf6d21c38346417c15d5"
+  },
+  "team_before": {
+    "actor_id": null,
+    "assignment": {
+      "enabled": true,
+      "version": 1
+    },
+    "package": {
+      "assets": [],
+      "description": "Use to prepare a short Markdown category brief from a private incident log for a shift.",
+      "instructions": "Read the provided incident log. Group rows by recorded category. Count each category and verify counts sum to the input row count. Summarize in a concise downloadable Markdown brief. Keep incident identifiers in the private conversation."
+    },
+    "sha256": "c1a8ebf6d094d6f1f804cf814ac08b04aa602f3709bd01f9fbcd3a9e7c933db0",
+    "skill_id": "18d66496-ef95-48e0-9572-6fa26a2d75da",
+    "status": 200,
+    "version": 1
+  },
+  "checks": {
+    "other_agent": {
+      "catalog": [
+        {
+          "name": "paginated-table-to-csv-fallback",
+          "revision": 5
+        },
+        {
+          "name": "cross-source-handover-reconciliation",
+          "revision": 2
+        },
+        {
+          "name": "plain-text-file-delivery",
+          "revision": 3
+        },
+        {
+          "name": "ticket-status-cadence-summary",
+          "revision": 1
+        }
+      ],
+      "personal_read": {
+        "error": "SCOPE_DENIED",
+        "status": 403
+      },
+      "team_read": {
+        "error": "SCOPE_DENIED",
+        "status": 403
+      }
+    },
+    "personal": {
+      "head": 1,
+      "id": "199b4d96-d2a6-4b61-80b4-5eeb812b4820",
+      "owner": "personal",
+      "package": {
+        "assets": [],
+        "description": "Use when producing aggregate counts (per-category totals, severity/state breakdowns) from a raw record log, especially when exact duplicates may exist or when some fields must stay out of a shared deliverable.",
+        "instructions": "1. Parse the source into discrete records using the header to define field boundaries; exclude title/header lines from the record count.\n2. Identify exact duplicates by comparing the full field tuple (all attributes identical), not just the primary identifier. Remove only exact matches and note how many were removed.\n3. Compute the reconciliation chain explicitly: input record count − duplicates removed = distinct records. Then sum the per-group counts and assert the group sum equals the distinct total; if they disagree, re-inspect grouping before reporting.\n4. Derive secondary aggregates (e.g., open high-severity) from the deduplicated set, and state the contrasting case for entries that look similar but differ in a qualifying field.\n5. Separate confidential markers or private identifiers from the shared artifact: surface them in the conversational response only, and confirm their presence without embedding them in the file.\n6. Validate before delivery: re-read the produced file and confirm it contains the intended aggregates, omits the restricted fields, and covers the full input (no skipped sections); report that the whole input was processed."
+      },
+      "sha256": "5c421a1b510bad1ace356bdacd62b2a1532c46f58795ea56260294b9879ff0d4",
+      "source_run_id": "0aeef501-c0bc-43ff-8346-25629d363644",
+      "status": 200,
+      "version": 1
+    },
+    "team": {
+      "head": 1,
+      "id": "18d66496-ef95-48e0-9572-6fa26a2d75da",
+      "owner": "team",
+      "package": {
+        "assets": [],
+        "description": "Use to prepare a short Markdown category brief from a private incident log for a shift.",
+        "instructions": "Read the provided incident log. Group rows by recorded category. Count each category and verify counts sum to the input row count. Summarize in a concise downloadable Markdown brief. Keep incident identifiers in the private conversation."
+      },
+      "sha256": "c1a8ebf6d094d6f1f804cf814ac08b04aa602f3709bd01f9fbcd3a9e7c933db0",
+      "source_run_id": null,
+      "status": 200,
+      "version": 1
+    },
+    "team_after_attempt": {
+      "head": 1,
+      "id": "18d66496-ef95-48e0-9572-6fa26a2d75da",
+      "owner": "team",
+      "package": {
+        "assets": [],
+        "description": "Use to prepare a short Markdown category brief from a private incident log for a shift.",
+        "instructions": "Read the provided incident log. Group rows by recorded category. Count each category and verify counts sum to the input row count. Summarize in a concise downloadable Markdown brief. Keep incident identifiers in the private conversation."
+      },
+      "sha256": "c1a8ebf6d094d6f1f804cf814ac08b04aa602f3709bd01f9fbcd3a9e7c933db0",
+      "source_run_id": null,
+      "status": 200,
+      "version": 1
+    },
+    "team_private_revision_attempt": {
+      "error": "SCOPE_DENIED",
+      "status": 403
+    }
+  }
+}

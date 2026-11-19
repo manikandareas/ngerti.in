@@ -1,0 +1,66 @@
+{
+  "date": "2026-11-19",
+  "surface": "Ngertiin Web (Chromium)",
+  "harness": "Pi ACP",
+  "provider": {
+    "mode": "fixture",
+    "model": "lifecycle-fixture/conversation-lifecycle",
+    "billing": "api_key"
+  },
+  "thread": "fc2069dd-93b8-40b5-98ba-51e04fb0b66b",
+  "first_response": {
+    "event": "committed_ack_dropped",
+    "key": "9fc93587-6602-4f7c-ae2f-63b0cc98902d",
+    "body_sha256": "237e4311245dc9890db199885be94a6f6c2e12e8c5c1d3916cec75b4749bcb2c",
+    "status": 200,
+    "run": "081c9b3a-ffa8-4399-ba6e-f09b151f0ea8",
+    "message": "729e97f3-979d-492a-9982-f2fbff77ecb7",
+    "at": "2026-11-19T02:07:35.467Z"
+  },
+  "retry_response": {
+    "event": "retry_ack_delivered",
+    "key": "9fc93587-6602-4f7c-ae2f-63b0cc98902d",
+    "body_sha256": "237e4311245dc9890db199885be94a6f6c2e12e8c5c1d3916cec75b4749bcb2c",
+    "status": 200,
+    "run": "081c9b3a-ffa8-4399-ba6e-f09b151f0ea8",
+    "message": "729e97f3-979d-492a-9982-f2fbff77ecb7",
+    "at": "2026-11-19T02:07:37.508Z"
+  },
+  "pending_submission_after_failure": {
+    "key": "9fc93587-6602-4f7c-ae2f-63b0cc98902d",
+    "text": "Queue check second QUEUE-4B5A4FAD"
+  },
+  "pending_submission_cleared_on_retry": true,
+  "fault": "The browser test received a committed HTTP 200 from Ngertiin then interrupted the response to the composer with InternetDisconnected. The retry response was delivered.",
+  "retry": "The user clicked Retry on the failure notification.",
+  "provider_events": [
+    {
+      "event": "provider_started",
+      "marker": "QUEUE-4B5A4FAD",
+      "step": "second",
+      "at": "2026-11-19T02:07:50.693Z"
+    },
+    {
+      "event": "provider_finished",
+      "marker": "QUEUE-4B5A4FAD",
+      "step": "second",
+      "at": "2026-11-19T02:07:50.698Z"
+    }
+  ],
+  "messages": [
+    {
+      "artifact_ids": [],
+      "author": "user",
+      "id": "729e97f3-979d-492a-9982-f2fbff77ecb7",
+      "run_id": "081c9b3a-ffa8-4399-ba6e-f09b151f0ea8",
+      "text": "Queue check second QUEUE-4B5A4FAD"
+    },
+    {
+      "artifact_ids": [],
+      "author": "agent",
+      "id": "90f1bc75-8982-400d-80a4-8bd6ac011c9d",
+      "run_id": "081c9b3a-ffa8-4399-ba6e-f09b151f0ea8",
+      "text": "Second request complete. Receipt QUEUE-4B5A4FAD-SECOND."
+    }
+  ]
+}

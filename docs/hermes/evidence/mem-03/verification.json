@@ -1,0 +1,139 @@
+{
+  "date": "2026-11-19",
+  "surface": "Ngertiin Web (Chromium, separate authenticated browser sessions)",
+  "harness": "Pi ACP",
+  "input": "synthetic",
+  "live_recall": {
+    "provider": {
+      "type": "live",
+      "model": "sumopod/deepseek-v4-flash",
+      "billing": "api_key"
+    },
+    "run": {
+      "id": "8fb01efc-a695-41c6-8ccb-b86348ba1e90",
+      "status": "succeeded",
+      "product_tools": [
+        "ngertiin.search_history",
+        "ngertiin.search_history",
+        "ngertiin.read_history"
+      ]
+    },
+    "source": {
+      "agent_id": "bf61dd07-e39f-4e51-ad91-52271b43c3ed",
+      "created_at": "2026-11-18T17:20:06.583Z",
+      "finished": "succeeded",
+      "message_id": "1e49365b-6631-47c2-bfa3-156c5cc19098",
+      "text": "Record this decision in this conversation only. For our Copper Lantern project, the agreed delivery checkpoint is Dock 4 at 17:25. Acknowledge the decision briefly. Keep it in this conversation, without saving a standing preference or Memory.",
+      "thread_id": "08c255a1-c2c8-41c3-a68d-26cbcbdb026d"
+    },
+    "reply": "I'll search your conversation history for that decision.**Dock 4 at 17:25** — that's the agreed delivery checkpoint for Copper Lantern.\n\nOriginal message (you wrote it in the other conversation at 17:20 today): [Copper Lantern delivery decision](ngertiin://history/08c255a1-c2c8-41c3-a68d-26cbcbdb026d/1e49365b-6631-47c2-bfa3-156c5cc19098)\n\nTwo notes so you can trust the source: I pulled this from conversation history just now rather than from stored memory, and I haven't written a standing preference or memory entry from it — consistent with your earlier instruction to keep it in that one conversation.",
+    "opened_source": "Conversation source\n\nScope Reviewer · You · 11/19/2026, 1:20:06 AM\n\nRecord this decision in this conversation only. For our Copper Lantern project, the agreed delivery checkpoint is Dock 4 at 17:25. Acknowledge the decision briefly. Keep it in this conversation, without saving a standing preference or Memory.\n\nClose\n"
+  },
+  "alternate_private_source": {
+    "provider": {
+      "type": "loopback fixture",
+      "model": "history-fixture/history-lab"
+    },
+    "source": {
+      "agent_id": "bf61dd07-e39f-4e51-ad91-52271b43c3ed",
+      "created_at": "2026-11-18T17:26:23.590Z",
+      "finished": "succeeded",
+      "message_id": "768613dd-cf5a-4b7b-a080-3c51de56135b",
+      "model": "history-fixture/history-lab",
+      "reply": "Recorded for this conversation.",
+      "text": "Record this decision in this conversation only. For my Copper Lantern project, the private delivery checkpoint is Pier 9 at 06:10. Reply with a short acknowledgement.",
+      "thread_id": "61d5585a-b46f-4445-a236-b1785538e3d8"
+    }
+  },
+  "authorization": {
+    "owner": {
+      "other_read": {
+        "body": {
+          "error": {
+            "code": "NOT_FOUND",
+            "message": "NOT_FOUND"
+          }
+        },
+        "status": 404
+      },
+      "own_read": {
+        "body": {
+          "author": "user",
+          "conversation": "Scope Reviewer",
+          "created_at": "2026-11-18T17:20:06.583Z",
+          "message_id": "1e49365b-6631-47c2-bfa3-156c5cc19098",
+          "reference": "ngertiin://history/08c255a1-c2c8-41c3-a68d-26cbcbdb026d/1e49365b-6631-47c2-bfa3-156c5cc19098",
+          "text": "Record this decision in this conversation only. For our Copper Lantern project, the agreed delivery checkpoint is Dock 4 at 17:25. Acknowledge the decision briefly. Keep it in this conversation, without saving a standing preference or Memory.",
+          "thread_id": "08c255a1-c2c8-41c3-a68d-26cbcbdb026d",
+          "truncated": false
+        },
+        "status": 200
+      },
+      "search": {
+        "body": {
+          "matches": [
+            {
+              "author": "agent",
+              "conversation": "Scope Reviewer",
+              "created_at": "2026-11-18T17:20:17.974Z",
+              "excerpt": "Noted for this conversation only: Copper Lantern delivery checkpoint is Dock 4 at 17:25. Nothing saved to Memory.",
+              "message_id": "3edf429d-a66c-4189-9e38-5da7c2c628fb",
+              "reference": "ngertiin://history/08c255a1-c2c8-41c3-a68d-26cbcbdb026d/3edf429d-a66c-4189-9e38-5da7c2c628fb",
+              "thread_id": "08c255a1-c2c8-41c3-a68d-26cbcbdb026d"
+            },
+            {
+              "author": "user",
+              "conversation": "Scope Reviewer",
+              "created_at": "2026-11-18T17:20:06.583Z",
+              "excerpt": "Record this decision in this conversation only. For our Copper Lantern project, the agreed delivery checkpoint is Dock 4 at 17:25. Acknowledge the decision briefly. Keep it in this conversation, without saving a standing preference or Memory.",
+              "message_id": "1e49365b-6631-47c2-bfa3-156c5cc19098",
+              "reference": "ngertiin://history/08c255a1-c2c8-41c3-a68d-26cbcbdb026d/1e49365b-6631-47c2-bfa3-156c5cc19098",
+              "thread_id": "08c255a1-c2c8-41c3-a68d-26cbcbdb026d"
+            }
+          ]
+        },
+        "status": 200
+      }
+    },
+    "member": {
+      "other_read": {
+        "body": {
+          "error": {
+            "code": "NOT_FOUND",
+            "message": "NOT_FOUND"
+          }
+        },
+        "status": 404
+      },
+      "own_read": {
+        "body": {
+          "author": "user",
+          "conversation": "Scope Reviewer",
+          "created_at": "2026-11-18T17:26:23.590Z",
+          "message_id": "768613dd-cf5a-4b7b-a080-3c51de56135b",
+          "reference": "ngertiin://history/61d5585a-b46f-4445-a236-b1785538e3d8/768613dd-cf5a-4b7b-a080-3c51de56135b",
+          "text": "Record this decision in this conversation only. For my Copper Lantern project, the private delivery checkpoint is Pier 9 at 06:10. Reply with a short acknowledgement.",
+          "thread_id": "61d5585a-b46f-4445-a236-b1785538e3d8",
+          "truncated": false
+        },
+        "status": 200
+      },
+      "search": {
+        "body": {
+          "matches": [
+            {
+              "author": "user",
+              "conversation": "Scope Reviewer",
+              "created_at": "2026-11-18T17:26:23.590Z",
+              "excerpt": "Record this decision in this conversation only. For my Copper Lantern project, the private delivery checkpoint is Pier 9 at 06:10. Reply with a short acknowledgement.",
+              "message_id": "768613dd-cf5a-4b7b-a080-3c51de56135b",
+              "reference": "ngertiin://history/61d5585a-b46f-4445-a236-b1785538e3d8/768613dd-cf5a-4b7b-a080-3c51de56135b",
+              "thread_id": "61d5585a-b46f-4445-a236-b1785538e3d8"
+            }
+          ]
+        },
+        "status": 200
+      }
+    }
+  }
+}

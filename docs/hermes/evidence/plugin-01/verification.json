@@ -1,0 +1,139 @@
+{
+  "date": "2026-11-19",
+  "surface": "Chrome Web and authenticated Ngertiin API",
+  "harness": "Pi ACP 0.0.34 (Pi 1.5.2)",
+  "provider": "API-key test fixture",
+  "manifest": {
+    "id": "kite-release-formatter",
+    "name": "Kite Release Formatter",
+    "version": "1.0.0",
+    "source": "Managed verification catalog",
+    "dependency": {
+      "toolkit": "mcp_kite",
+      "name": "Kite Laboratory"
+    },
+    "match_prefix": "WORKFLOW_VERDICT:",
+    "replace_prefix": "Release verdict:"
+  },
+  "thread": "53765643-3a61-4911-80e9-dfcd04f3ef3f",
+  "registry": [
+    {
+      "plugins": [
+        {
+          "dependency": "Kite Laboratory",
+          "enabled": false,
+          "id": "kite-release-formatter",
+          "name": "Kite Release Formatter",
+          "source": "Managed verification catalog",
+          "state": "dependency_missing",
+          "version": "1.0.0"
+        }
+      ],
+      "revision": 1
+    },
+    {
+      "plugins": [
+        {
+          "dependency": "Kite Laboratory",
+          "enabled": true,
+          "id": "kite-release-formatter",
+          "name": "Kite Release Formatter",
+          "source": "Managed verification catalog",
+          "state": "active",
+          "version": "1.0.0"
+        }
+      ],
+      "revision": 2
+    },
+    {
+      "plugins": [
+        {
+          "dependency": "Kite Laboratory",
+          "enabled": false,
+          "id": "kite-release-formatter",
+          "name": "Kite Release Formatter",
+          "source": "Managed verification catalog",
+          "state": "inactive",
+          "version": "1.0.0"
+        }
+      ],
+      "revision": 3
+    }
+  ],
+  "requests": [
+    {
+      "event": "output_plugin",
+      "stage": "active",
+      "model": "verification-alpha",
+      "result": "WORKFLOW_VERDICT: STAGED ACT-625"
+    },
+    {
+      "event": "output_plugin",
+      "stage": "disabled",
+      "model": "verification-alpha",
+      "result": "WORKFLOW_VERDICT: STAGED OFF-997"
+    }
+  ],
+  "runs": [
+    {
+      "id": "4d2b0098-ebca-47b9-81f9-5e571347ad78",
+      "text": "Release verdict: STAGED ACT-625",
+      "plugin": {
+        "id": "kite-release-formatter",
+        "name": "Kite Release Formatter",
+        "version": "1.0.0",
+        "match_prefix": "WORKFLOW_VERDICT:",
+        "replace_prefix": "Release verdict:"
+      },
+      "status": "succeeded",
+      "timings": {
+        "ready_at": "2026-11-19T07:57:29.534Z",
+        "settled_at": "2026-11-19T07:57:31.345Z",
+        "accepted_at": "2026-11-19T07:57:30.457Z",
+        "preparing_at": "2026-11-19T07:57:21.287Z",
+        "dispatched_at": "2026-11-19T07:57:29.534Z",
+        "first_output_at": "2026-11-19T07:57:30.654Z"
+      },
+      "selection": {
+        "harness": "pi",
+        "model_id": "kite-inference/verification-alpha",
+        "reasoning": null,
+        "account_id": "5b7f819583399f3f60ef5119f53c96ded864f6e05a400f38dc95882074d3bf1d",
+        "provider_id": "kite-inference",
+        "connection_id": "95ceefb4-090f-4a15-bb2e-acafedd55ccb",
+        "billing_source": "api_key",
+        "connection_generation": 2
+      },
+      "answerState": "complete",
+      "pluginStatus": "applied",
+      "pendingAnswer": null
+    },
+    {
+      "id": "fc708af2-0ba7-48dc-aa6d-2761e5703647",
+      "text": "WORKFLOW_VERDICT: STAGED OFF-997",
+      "plugin": null,
+      "status": "succeeded",
+      "timings": {
+        "ready_at": "2026-11-19T07:57:40.858Z",
+        "settled_at": "2026-11-19T07:57:43.062Z",
+        "accepted_at": "2026-11-19T07:57:42.391Z",
+        "preparing_at": "2026-11-19T07:57:38.420Z",
+        "dispatched_at": "2026-11-19T07:57:40.858Z",
+        "first_output_at": "2026-11-19T07:57:42.605Z"
+      },
+      "selection": {
+        "harness": "pi",
+        "model_id": "kite-inference/verification-alpha",
+        "reasoning": null,
+        "account_id": "5b7f819583399f3f60ef5119f53c96ded864f6e05a400f38dc95882074d3bf1d",
+        "provider_id": "kite-inference",
+        "connection_id": "95ceefb4-090f-4a15-bb2e-acafedd55ccb",
+        "billing_source": "api_key",
+        "connection_generation": 2
+      },
+      "answerState": "complete",
+      "pluginStatus": null,
+      "pendingAnswer": null
+    }
+  ]
+}

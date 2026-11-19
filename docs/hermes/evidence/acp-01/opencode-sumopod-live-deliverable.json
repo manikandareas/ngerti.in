@@ -1,0 +1,44 @@
+{
+  "date": "2026-11-19",
+  "surface": "Chrome Ngertiin Web with real authenticated HTTP, PostgreSQL, and a disposable Cua domain",
+  "harness": "OpenCode ACP 1.19.5, native OpenCode 1.19.5",
+  "provider": "Sumopod live, owner-approved API key from the Pi profile",
+  "completed": true,
+  "catalog": {
+    "model": "sumopod/deepseek-v4-flash",
+    "provider": "sumopod",
+    "authentication": "local_config"
+  },
+  "workingFilePreflight": {
+    "state": "verified",
+    "ms": 507
+  },
+  "sessionOpenStatus": 200,
+  "run": {
+    "id": "dc24bf48-5bd6-4398-9e1d-db9bdfb95d4b",
+    "status": "succeeded",
+    "provider_selection": {
+      "connection_id": "b3a6b31d-0390-4111-8e8f-4c834693f65c",
+      "connection_generation": 2,
+      "account_id": "cad94d4a366597bc6101bd340cc07be1bedcce5e33e8323cff47748ffd40ce5b",
+      "harness": "opencode",
+      "provider_id": "sumopod",
+      "model_id": "sumopod/deepseek-v4-flash",
+      "reasoning": null,
+      "billing_source": "api_key"
+    },
+    "product_tools": [
+      "ngertiin.read_file",
+      "ngertiin.publish_artifact"
+    ]
+  },
+  "activity": "OpenCode Willow Verification: Reading your file…",
+  "artifact": {
+    "id": "b6f1d0c8-2a4e-4c5a-9a51-3f6d7e2b8c41",
+    "name": "opencode-acp-sumopod-cedar.txt",
+    "sha256": "aa9161f87f1a34cec7ca76a44625ed3920244c8e45cd8ad7c3001aec1963948a",
+    "bytes": 27,
+    "contents": "OPENCODE-SUMOPOD-CEDAR-7631"
+  },
+  "disposableDomainVolumeRemoved": true
+}

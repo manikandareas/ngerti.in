@@ -1,0 +1,151 @@
+{
+  "date": "2026-11-19",
+  "surface": "Authenticated Ngertiin Web, Chromium",
+  "harness": "Pi ACP 0.0.34 (Pi 1.5.2)",
+  "provider": "API-key chat fixture and loopback media provider",
+  "sttModel": "whisper.cpp tiny.en",
+  "sttModelSource": "https://huggingface.co/ggerganov/whisper.cpp/blob/main/ggml-tiny.en.bin",
+  "ttsVoice": "macOS Samantha",
+  "failedFixtureTrial": {
+    "id": "ee9b91fb-5db9-48ed-b9c9-aabd1bfbe217",
+    "tools": [],
+    "answer": "I could not transcribe the sample.",
+    "inputs": [
+      "afde7900-8ead-46d2-8171-43f794940c41"
+    ],
+    "status": "succeeded",
+    "visual": [],
+    "request": "[office-gate.wav](ngertiin://file/afde7900-8ead-46d2-8171-43f794940c41) Media audio check. transcribe. Please transcribe the attached spoken note.",
+    "artifacts": [],
+    "selection": {
+      "harness": "pi",
+      "model_id": "kite-inference/verification-alpha",
+      "reasoning": null,
+      "account_id": "5b7f819583399f3f60ef5119f53c96ded864f6e05a400f38dc95882074d3bf1d",
+      "provider_id": "kite-inference",
+      "connection_id": "95ceefb4-090f-4a15-bb2e-acafedd55ccb",
+      "billing_source": "api_key",
+      "connection_generation": 2
+    },
+    "diagnostic": null,
+    "toolErrors": [
+      {
+        "code": "MEDIA_BACKEND_FAILED",
+        "name": "ngertiin.process_media",
+        "created_at": "2026-11-19T09:00:22.627Z"
+      }
+    ]
+  },
+  "transcription": {
+    "id": "55e048a7-2987-4140-943d-11c9f6df582a",
+    "tools": [
+      "ngertiin.process_media"
+    ],
+    "answer": "Transcription: The office gate opens at 7.30 each morning.",
+    "inputs": [
+      "502e4af8-35f4-439f-a20c-0c8a00b8e883"
+    ],
+    "status": "succeeded",
+    "visual": [],
+    "request": "[office-gate.wav](ngertiin://file/502e4af8-35f4-439f-a20c-0c8a00b8e883) Media audio check. transcribe. Please transcribe the attached spoken note.",
+    "artifacts": [],
+    "selection": {
+      "harness": "pi",
+      "model_id": "kite-inference/verification-alpha",
+      "reasoning": null,
+      "account_id": "5b7f819583399f3f60ef5119f53c96ded864f6e05a400f38dc95882074d3bf1d",
+      "provider_id": "kite-inference",
+      "connection_id": "95ceefb4-090f-4a15-bb2e-acafedd55ccb",
+      "billing_source": "api_key",
+      "connection_generation": 2
+    },
+    "diagnostic": null,
+    "toolErrors": []
+  },
+  "spokenReply": {
+    "id": "5e3a8422-4401-4e6a-82cc-4d79da859ef0",
+    "tools": [
+      "ngertiin.process_media",
+      "ngertiin.process_media"
+    ],
+    "answer": "The office gate opens at 7:30. [voice-reply.wav](ngertiin://file/5e3a8422-4401-4e6a-82cc-4d79da859ef0)",
+    "inputs": [],
+    "status": "succeeded",
+    "visual": [],
+    "request": "Media audio check. speak. Now tell me the opening time aloud.",
+    "artifacts": [
+      {
+        "id": "5e3a8422-4401-4e6a-82cc-4d79da859ef0",
+        "hash": "a5a4219edf5ff75e1dd1adbf0453ed1b6b5ce2b597ff94edb0d43a7db9cc670b",
+        "name": "voice-reply.wav",
+        "type": "audio/wav",
+        "origin": "native_output",
+        "source": null,
+        "workspace": "33aaf077-2ce7-49b3-afc6-641149161789",
+        "size_bytes": 73522
+      }
+    ],
+    "selection": {
+      "harness": "pi",
+      "model_id": "kite-inference/verification-alpha",
+      "reasoning": null,
+      "account_id": "5b7f819583399f3f60ef5119f53c96ded864f6e05a400f38dc95882074d3bf1d",
+      "provider_id": "kite-inference",
+      "connection_id": "95ceefb4-090f-4a15-bb2e-acafedd55ccb",
+      "billing_source": "api_key",
+      "connection_generation": 2
+    },
+    "diagnostic": null,
+    "toolErrors": []
+  },
+  "backendCalls": [
+    {
+      "operation": "transcribe_audio",
+      "text": "The office gate opens at 7.30 each morning.",
+      "sha256": "827abef4b1a4864513696eeb095ad7128a777e346d6bd27772319bae05898028",
+      "command_id": "3b0ffffe-f940-4d9e-b147-f7e7c89c75b6"
+    },
+    {
+      "operation": "speak",
+      "text": "The office gate opens at seven thirty.",
+      "sha256": "a5a4219edf5ff75e1dd1adbf0453ed1b6b5ce2b597ff94edb0d43a7db9cc670b",
+      "bytes": 73522,
+      "command_id": "5e3a8422-4401-4e6a-82cc-4d79da859ef0"
+    }
+  ],
+  "harnessSpeechCalls": [
+    {
+      "event": "speak_request",
+      "attempt": 1,
+      "command_id": "8602a3ef-0a10-4800-9265-d819a0ac5168"
+    },
+    {
+      "event": "speak_request",
+      "attempt": 2,
+      "command_id": "cd505e3e-6dfd-4b73-a4f4-f264ad6c2356"
+    }
+  ],
+  "browserPlayback": {
+    "currentTime": 2.295125,
+    "duration": 2.295125,
+    "ended": true,
+    "error": null,
+    "played": 1,
+    "ready": 4
+  },
+  "downloadedAudio": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "pcm_s16le",
+        "sample_rate": "16000",
+        "channels": 1
+      }
+    ],
+    "format": {
+      "duration": "2.295125"
+    }
+  },
+  "downloadedAudioTranscript": "The office gate opens at 7.30"
+}

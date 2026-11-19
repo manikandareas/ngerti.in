@@ -1,0 +1,126 @@
+{
+  "date": "2026-11-19",
+  "surface": "Ngertiin Web (Chromium)",
+  "curator": "deterministic application pass",
+  "routine_harness": "Pi ACP",
+  "provider": {
+    "type": "live",
+    "model": "sumopod/deepseek-v4-flash",
+    "billing": "api_key"
+  },
+  "inputs": "synthetic",
+  "fixture_aging": {
+    "skills": [
+      {
+        "name": "curator-retired-checklist",
+        "age_days": 41
+      },
+      {
+        "name": "curator-locked-template",
+        "age_days": 41
+      },
+      {
+        "name": "curator-routine-counter",
+        "age_days": 41
+      },
+      {
+        "name": "curator-reusable-ticket-count",
+        "age_days": 16
+      }
+    ],
+    "routine_rows": 1,
+    "routine_read_age_days": 41
+  },
+  "routine": {
+    "id": "5bbf86b5-31f0-4918-87e0-a485570d94f3",
+    "state": "active",
+    "revision": 2,
+    "next_run_at": "2026-11-19T16:41:22.533Z",
+    "schedule_type": "interval",
+    "run": {
+      "id": "b92a1d86-6449-4182-bf4e-9f670f774600",
+      "status": "succeeded",
+      "skill_reads": [
+        {
+          "skill_id": "fcbc9873-fbe5-4c9a-9207-34de7efb9c68",
+          "version": 1
+        }
+      ]
+    },
+    "reply": "CURATOR-POLL | closed 3 of 5 | pending 2"
+  },
+  "after_review": {
+    "fresh": {
+      "assignment": null,
+      "head": 1,
+      "id": "41435aa6-9461-46ab-aa45-c7628e61053b",
+      "locked": false,
+      "name": "curator-current-dispatch",
+      "restored_at": null,
+      "sha256": "16a4f3be9f3a5285f265c18c1998d6fb09b443f5bf9cbd50f18d6cdc784e5246",
+      "state": "active",
+      "version": 1
+    },
+    "locked": {
+      "assignment": null,
+      "head": 1,
+      "id": "25f5bb29-06d5-4fd9-a857-d0bf310a64b9",
+      "locked": true,
+      "name": "curator-locked-template",
+      "restored_at": null,
+      "sha256": "30112460051ae323d8f2302ca6100ce2811202cee444e7cde1c39166e857e263",
+      "state": "active",
+      "version": 1
+    },
+    "routine_dependency": {
+      "assignment": {
+        "enabled": false,
+        "version": 1
+      },
+      "head": 1,
+      "id": "fcbc9873-fbe5-4c9a-9207-34de7efb9c68",
+      "locked": false,
+      "name": "curator-routine-counter",
+      "restored_at": null,
+      "sha256": "ea30613a24ccdb775aa525c35b54a8a868e5319954414b11211f06457c0c5a9a",
+      "state": "stale",
+      "version": 1
+    },
+    "stale": {
+      "assignment": {
+        "enabled": true,
+        "version": 1
+      },
+      "head": 1,
+      "id": "0b0cdadf-bfb3-4f03-9c5f-b7e6aabd6d74",
+      "locked": false,
+      "name": "curator-reusable-ticket-count",
+      "restored_at": null,
+      "sha256": "e70d79b603ed0d5ef34165039450199176b7b411ca22f593061add59df0099cd",
+      "state": "stale",
+      "version": 1
+    },
+    "archived": {
+      "assignment": null,
+      "head": 1,
+      "id": "050f1f6c-b933-4ba3-9c3f-7aee008ccffc",
+      "locked": false,
+      "name": "curator-retired-checklist",
+      "restored_at": null,
+      "sha256": "83e9acd1a76367f775b8f05a5595f69cf6c94c7df6b900a4d7ef3de206041e2d",
+      "state": "archived",
+      "version": 1
+    }
+  },
+  "after_restore_and_another_review": {
+    "assignment": null,
+    "head": 1,
+    "id": "050f1f6c-b933-4ba3-9c3f-7aee008ccffc",
+    "locked": false,
+    "name": "curator-retired-checklist",
+    "restored_at": "2026-11-18T16:45:22.780Z",
+    "sha256": "83e9acd1a76367f775b8f05a5595f69cf6c94c7df6b900a4d7ef3de206041e2d",
+    "state": "active",
+    "version": 1
+  }
+}

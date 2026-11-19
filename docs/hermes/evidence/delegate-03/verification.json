@@ -1,0 +1,199 @@
+{
+  "date": "2026-11-19",
+  "surface": "Authenticated Ngertiin Web / Chromium",
+  "harness": "Pi ACP",
+  "provider": "OpenAI-compatible local fixture / API key selection",
+  "actual_only_tab_closed": "2026-11-19T05:05:57Z",
+  "tab_reopened": "2026-11-19T05:06:05Z",
+  "while_open": {
+    "marker": "oak",
+    "models": [
+      "delegation-fixture/peer-checks",
+      "delegation-fixture/peer-checks",
+      "delegation-fixture/peer-checks"
+    ],
+    "thread": "4a23dd16-46b1-45a0-914a-3df35816389e",
+    "child_task": "b1e928ed-fba0-4d1a-91c5-31e4ce88622d",
+    "join_match": false,
+    "source_run": "14fa2fdb-7466-4648-bc67-af43bc789965",
+    "worker_run": "422959ba-148a-4224-bd85-55e531eaa45e",
+    "child_state": "working",
+    "parent_task": "77002cf2-a407-403a-8ad3-e4445c738e71",
+    "scope_match": true,
+    "parent_state": "waiting_peer",
+    "worker_tools": [],
+    "parent_answer": null,
+    "worker_cancel": "none",
+    "worker_status": "running",
+    "worker_artifacts": [],
+    "parent_join_count": 0,
+    "child_artifact_ids": []
+  },
+  "while_closed": {
+    "marker": "oak",
+    "models": [
+      "delegation-fixture/peer-checks",
+      "delegation-fixture/peer-checks",
+      "delegation-fixture/peer-checks"
+    ],
+    "thread": "4a23dd16-46b1-45a0-914a-3df35816389e",
+    "child_task": "b1e928ed-fba0-4d1a-91c5-31e4ce88622d",
+    "join_match": false,
+    "source_run": "14fa2fdb-7466-4648-bc67-af43bc789965",
+    "worker_run": "422959ba-148a-4224-bd85-55e531eaa45e",
+    "child_state": "completed",
+    "parent_task": "77002cf2-a407-403a-8ad3-e4445c738e71",
+    "scope_match": true,
+    "parent_state": "waiting_peer",
+    "worker_tools": [
+      "ngertiin.create_file",
+      "ngertiin.publish_artifact"
+    ],
+    "parent_answer": null,
+    "worker_cancel": "none",
+    "worker_status": "succeeded",
+    "worker_artifacts": [
+      {
+        "id": "0f541898-6382-4582-841f-55d850b2a338",
+        "name": "silver-delegation-oak.txt",
+        "bytes": 20,
+        "sha256": "44052b692e915ebcccbccf71064cc1839eb56f84fba1c531b3f15c964f43960c",
+        "workspace": "e81cc655-b7ed-417a-82ac-5a000388ecc9",
+        "source_path": "silver-delegation-oak.txt"
+      }
+    ],
+    "parent_join_count": 0,
+    "child_artifact_ids": [
+      "0f541898-6382-4582-841f-55d850b2a338"
+    ]
+  },
+  "restored": {
+    "marker": "oak",
+    "models": [
+      "delegation-fixture/peer-checks",
+      "delegation-fixture/peer-checks",
+      "delegation-fixture/peer-checks"
+    ],
+    "thread": "4a23dd16-46b1-45a0-914a-3df35816389e",
+    "child_task": "b1e928ed-fba0-4d1a-91c5-31e4ce88622d",
+    "join_match": true,
+    "source_run": "14fa2fdb-7466-4648-bc67-af43bc789965",
+    "worker_run": "422959ba-148a-4224-bd85-55e531eaa45e",
+    "child_state": "completed",
+    "parent_task": "77002cf2-a407-403a-8ad3-e4445c738e71",
+    "scope_match": true,
+    "parent_state": "completed",
+    "worker_tools": [
+      "ngertiin.create_file",
+      "ngertiin.publish_artifact"
+    ],
+    "parent_answer": "Silver oak delivery confirmed. [silver-delegation-oak.txt](ngertiin://file/0f541898-6382-4582-841f-55d850b2a338)",
+    "worker_cancel": "none",
+    "worker_status": "succeeded",
+    "worker_artifacts": [
+      {
+        "id": "0f541898-6382-4582-841f-55d850b2a338",
+        "name": "silver-delegation-oak.txt",
+        "bytes": 20,
+        "sha256": "44052b692e915ebcccbccf71064cc1839eb56f84fba1c531b3f15c964f43960c",
+        "workspace": "e81cc655-b7ed-417a-82ac-5a000388ecc9",
+        "source_path": "silver-delegation-oak.txt"
+      }
+    ],
+    "parent_join_count": 1,
+    "child_artifact_ids": [
+      "0f541898-6382-4582-841f-55d850b2a338"
+    ]
+  },
+  "stopped": {
+    "marker": "pine",
+    "models": [
+      "delegation-fixture/peer-checks",
+      "delegation-fixture/peer-checks",
+      "delegation-fixture/peer-checks"
+    ],
+    "thread": "4a23dd16-46b1-45a0-914a-3df35816389e",
+    "child_task": "924ae11f-b83d-48fe-a80d-05fa4530613c",
+    "join_match": true,
+    "source_run": "a8f60402-bbd4-4213-84c1-c9f17697af4f",
+    "worker_run": "e7e99e43-2b12-4a7a-9161-c2c5766a651b",
+    "child_state": "cancelled",
+    "parent_task": "1ce5f641-8fce-459a-aee7-009d0cfde2ae",
+    "scope_match": true,
+    "parent_state": "completed",
+    "worker_tools": [],
+    "parent_answer": "Silver pine stopped before delivery. No file was produced.",
+    "worker_cancel": "confirmed",
+    "worker_status": "cancelled",
+    "worker_artifacts": [],
+    "parent_join_count": 1,
+    "child_artifact_ids": []
+  },
+  "revoked": {
+    "marker": "ash",
+    "models": [
+      "delegation-fixture/peer-checks",
+      "delegation-fixture/peer-checks",
+      "delegation-fixture/peer-checks"
+    ],
+    "thread": "4a23dd16-46b1-45a0-914a-3df35816389e",
+    "child_task": "9cdd4373-bee1-4f4d-9e78-f302286014fd",
+    "join_match": true,
+    "source_run": "79f82d9a-06d5-4f4a-92c2-a361b2666e96",
+    "worker_run": "6778a516-1ae5-40d5-b484-abde7727ecb3",
+    "child_state": "cancelled",
+    "parent_task": "71e71b67-93b2-4364-8103-ec99c30138f6",
+    "scope_match": true,
+    "parent_state": "completed",
+    "worker_tools": [],
+    "parent_answer": "Silver ash stopped before delivery. No file was produced.",
+    "worker_cancel": "confirmed",
+    "worker_status": "cancelled",
+    "worker_artifacts": [],
+    "parent_join_count": 1,
+    "child_artifact_ids": []
+  },
+  "membership_after_revoke": {
+    "id": "4a23dd16-46b1-45a0-914a-3df35816389e",
+    "members": [
+      "Parallel Coordinator",
+      "Parallel Secondary"
+    ],
+    "revision": 3
+  },
+  "fixture_events": [
+    {
+      "event": "child_waiting",
+      "worker": "oak",
+      "at": "2026-11-19T05:05:18.589Z"
+    },
+    {
+      "event": "child_requested_create",
+      "worker": "oak",
+      "at": "2026-11-19T05:05:57.781Z"
+    },
+    {
+      "event": "child_waiting",
+      "worker": "pine",
+      "at": "2026-11-19T05:07:39.652Z"
+    },
+    {
+      "event": "child_stream_cancelled",
+      "worker": "pine",
+      "at": "2026-11-19T05:08:02.408Z"
+    },
+    {
+      "event": "child_waiting",
+      "worker": "ash",
+      "at": "2026-11-19T05:09:27.280Z"
+    },
+    {
+      "event": "child_stream_cancelled",
+      "worker": "ash",
+      "at": "2026-11-19T05:09:34.563Z"
+    }
+  ],
+  "physical_test_files": [
+    "silver-delegation-oak.txt"
+  ]
+}

@@ -1,0 +1,189 @@
+{
+  "date": "2026-11-19",
+  "surface": "Authenticated Ngertiin Web / Chromium",
+  "harness": "Pi ACP",
+  "provider": "OpenAI-compatible local fixture / API key selection",
+  "expected_total": 71,
+  "configured_seconds": 30,
+  "first_attempt_cancel_request_seconds": 33.416,
+  "retest_cancel_request_seconds": 30.142,
+  "provider_stream_cancelled_seconds": 30.273,
+  "native_settlement_seconds": 30.747,
+  "active": [
+    {
+      "id": "300ee45d-46c4-4a06-b2af-7478ae9d7e8a",
+      "source": "b8d52e11-ff25-4309-98a5-8631ebbc2685",
+      "status": "running",
+      "timings": {
+        "ready_at": "2026-11-19T05:24:02.739Z",
+        "accepted_at": "2026-11-19T05:24:13.648Z",
+        "preparing_at": "2026-11-19T05:23:48.809Z",
+        "dispatched_at": "2026-11-19T05:24:02.739Z"
+      },
+      "agent_id": "c86e73bd-9015-46c4-8732-f19b9107f431",
+      "diagnostic": null,
+      "cancellation": "none",
+      "budget_seconds": null,
+      "cancel_requested_at": null
+    },
+    {
+      "id": "b6a2c061-9272-4e60-9327-ce076fb04b65",
+      "source": "b8d52e11-ff25-4309-98a5-8631ebbc2685",
+      "status": "running",
+      "timings": {
+        "ready_at": "2026-11-19T05:24:19.101Z",
+        "accepted_at": "2026-11-19T05:24:26.010Z",
+        "preparing_at": "2026-11-19T05:23:49.068Z",
+        "dispatched_at": "2026-11-19T05:24:19.101Z",
+        "first_output_at": "2026-11-19T05:24:26.804Z"
+      },
+      "agent_id": "13102529-3c18-4af3-a7b4-6414108d5edd",
+      "diagnostic": null,
+      "cancellation": "none",
+      "budget_seconds": 30,
+      "cancel_requested_at": null
+    }
+  ],
+  "settled_runs": [
+    {
+      "id": "300ee45d-46c4-4a06-b2af-7478ae9d7e8a",
+      "source": "b8d52e11-ff25-4309-98a5-8631ebbc2685",
+      "status": "succeeded",
+      "timings": {
+        "ready_at": "2026-11-19T05:24:02.739Z",
+        "settled_at": "2026-11-19T05:25:10.002Z",
+        "accepted_at": "2026-11-19T05:24:13.648Z",
+        "preparing_at": "2026-11-19T05:23:48.809Z",
+        "dispatched_at": "2026-11-19T05:24:02.739Z",
+        "first_output_at": "2026-11-19T05:24:40.351Z"
+      },
+      "agent_id": "c86e73bd-9015-46c4-8732-f19b9107f431",
+      "diagnostic": null,
+      "cancellation": "none",
+      "budget_seconds": null,
+      "cancel_requested_at": null
+    },
+    {
+      "id": "b6a2c061-9272-4e60-9327-ce076fb04b65",
+      "source": "b8d52e11-ff25-4309-98a5-8631ebbc2685",
+      "status": "cancelled",
+      "timings": {
+        "ready_at": "2026-11-19T05:24:19.101Z",
+        "settled_at": "2026-11-19T05:24:49.848Z",
+        "accepted_at": "2026-11-19T05:24:26.010Z",
+        "preparing_at": "2026-11-19T05:23:49.068Z",
+        "dispatched_at": "2026-11-19T05:24:19.101Z",
+        "first_output_at": "2026-11-19T05:24:26.804Z"
+      },
+      "agent_id": "13102529-3c18-4af3-a7b4-6414108d5edd",
+      "diagnostic": {
+        "code": "PEER_BUDGET_EXCEEDED",
+        "outcome": "failed",
+        "category": "configuration"
+      },
+      "cancellation": "confirmed",
+      "budget_seconds": 30,
+      "cancel_requested_at": "2026-11-19T05:24:49.243Z"
+    }
+  ],
+  "joined_outcomes": [
+    {
+      "task_id": "8d6cbbef-91a9-4c5e-bab5-cc10620eceae",
+      "agent_id": "c86e73bd-9015-46c4-8732-f19b9107f431",
+      "state": "completed",
+      "artifact_ids": [],
+      "text": "Checking the three Birch primary rows. Birch primary: 71 verified units."
+    },
+    {
+      "task_id": "0528c902-7608-45bb-bd0c-2069d38ad35b",
+      "agent_id": "13102529-3c18-4af3-a7b4-6414108d5edd",
+      "state": "cancelled",
+      "reason": "The child exceeded its time budget.",
+      "artifact_ids": [],
+      "text": null
+    }
+  ],
+  "final": {
+    "state": "completed",
+    "checks": [
+      {
+        "run": "300ee45d-46c4-4a06-b2af-7478ae9d7e8a",
+        "agent": "c86e73bd-9015-46c4-8732-f19b9107f431",
+        "reads": [
+          {
+            "pages": [
+              1
+            ],
+            "operation": "context",
+            "truncated": true,
+            "created_at": "2026-11-19T05:24:11.941Z",
+            "artifact_id": "ea253440-824d-45fb-a2af-f4f6fca9d40a",
+            "source_sha256": "57d71b5ee8c7af5ff97a166bb8e813f1d11a7deaa7ee09af46c31ab05c78690e"
+          },
+          {
+            "pages": [
+              1
+            ],
+            "operation": "read",
+            "truncated": false,
+            "created_at": "2026-11-19T05:24:36.435Z",
+            "artifact_id": "ea253440-824d-45fb-a2af-f4f6fca9d40a",
+            "source_sha256": "57d71b5ee8c7af5ff97a166bb8e813f1d11a7deaa7ee09af46c31ab05c78690e"
+          }
+        ],
+        "state": "completed",
+        "tools": [
+          "ngertiin.read_attachment"
+        ],
+        "errors": [],
+        "status": "succeeded",
+        "binding": "19f7cc97-ea9e-47ec-8faf-c4596357eac2",
+        "input_ids": [
+          "ea253440-824d-45fb-a2af-f4f6fca9d40a"
+        ],
+        "settled_at": "2026-11-19T05:25:10.002Z",
+        "accepted_at": "2026-11-19T05:24:13.648Z"
+      },
+      {
+        "run": "b6a2c061-9272-4e60-9327-ce076fb04b65",
+        "agent": "13102529-3c18-4af3-a7b4-6414108d5edd",
+        "reads": [],
+        "state": "cancelled",
+        "tools": [],
+        "errors": [],
+        "status": "cancelled",
+        "binding": "892fd4be-ab1d-4f5e-a3a5-dc8dba428106",
+        "input_ids": [],
+        "settled_at": "2026-11-19T05:24:49.848Z",
+        "accepted_at": "2026-11-19T05:24:26.010Z"
+      }
+    ],
+    "thread": "67b45e9e-6c69-4f23-9c4d-0ee1c08eaa2e",
+    "join_run": "7fb8f7bf-b8a8-498e-8349-0c513b9b0725",
+    "profiles": [
+      {
+        "model": "delegation-fixture/peer-checks",
+        "billing": "api_key",
+        "harness": "pi"
+      }
+    ],
+    "join_count": 1,
+    "source_run": "b8d52e11-ff25-4309-98a5-8631ebbc2685",
+    "owned_scope": true,
+    "parent_task": "e58c40c7-fae3-4bde-82af-0b0993787eee",
+    "final_answer": "Birch primary verified 71 units. I stopped the unfinished secondary check when it reached its time budget.",
+    "native_outputs": 0
+  },
+  "provider_events": [
+    {
+      "event": "budget_child_started",
+      "at": "2026-11-19T05:24:26.027Z"
+    },
+    {
+      "event": "budget_stream_cancelled",
+      "at": "2026-11-19T05:24:49.374Z"
+    }
+  ],
+  "restored_after_reload": true,
+  "late_output_visible": false
+}

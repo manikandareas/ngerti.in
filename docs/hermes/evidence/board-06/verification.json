@@ -1,0 +1,220 @@
+{
+  "date": "2026-11-19",
+  "surface": "Authenticated Ngertiin Web / Chromium",
+  "harness": "Pi ACP",
+  "provider": "OpenAI-compatible local fixture / API key selection",
+  "initial": {
+    "artifacts": [],
+    "assignee_agent_id": "c86e73bd-9015-46c4-8732-f19b9107f431",
+    "assignee_name": "Parallel Ledger",
+    "blocker": null,
+    "current_run_id": null,
+    "id": "424c7675-3a8c-42fa-b2a9-fa70a88feb96",
+    "result_artifact_ids": [],
+    "revision": 1,
+    "run_status": null,
+    "state": "ready",
+    "submission": null,
+    "thread_id": "d04c90ad-8813-4b8d-bfd6-64755a8d523b"
+  },
+  "claimed_done_but_still_open": {
+    "artifacts": [],
+    "assignee_agent_id": "c86e73bd-9015-46c4-8732-f19b9107f431",
+    "assignee_name": "Parallel Ledger",
+    "blocker": "The worker finished without submitting the required result.",
+    "current_run_id": "5b239c05-a7ec-4bba-ad4b-f8d022c6873a",
+    "id": "424c7675-3a8c-42fa-b2a9-fa70a88feb96",
+    "result_artifact_ids": [],
+    "revision": 3,
+    "run_status": "succeeded",
+    "state": "blocked",
+    "submission": null,
+    "thread_id": "d04c90ad-8813-4b8d-bfd6-64755a8d523b"
+  },
+  "valid_submission_before_native_settlement": {
+    "artifacts": [],
+    "assignee_agent_id": "c86e73bd-9015-46c4-8732-f19b9107f431",
+    "assignee_name": "Parallel Ledger",
+    "blocker": null,
+    "current_run_id": "dfde2f25-1f94-4557-821f-91cada3e300a",
+    "id": "424c7675-3a8c-42fa-b2a9-fa70a88feb96",
+    "result_artifact_ids": [],
+    "revision": 7,
+    "run_status": "running",
+    "state": "running",
+    "submission": {
+      "artifact_ids": [
+        "b85d4bbc-5fa5-4df9-ad6e-334c515a4253"
+      ],
+      "summary": "Verified the published release note for WILLOW-92F."
+    },
+    "thread_id": "d04c90ad-8813-4b8d-bfd6-64755a8d523b"
+  },
+  "done_after_refresh": {
+    "artifacts": [
+      {
+        "id": "b85d4bbc-5fa5-4df9-ad6e-334c515a4253",
+        "name": "willow-settled-note.txt",
+        "workspace_id": "aa2af463-a68f-4ae0-aaa2-63def269c442"
+      }
+    ],
+    "assignee_agent_id": "c86e73bd-9015-46c4-8732-f19b9107f431",
+    "assignee_name": "Parallel Ledger",
+    "blocker": null,
+    "current_run_id": "dfde2f25-1f94-4557-821f-91cada3e300a",
+    "id": "424c7675-3a8c-42fa-b2a9-fa70a88feb96",
+    "result_artifact_ids": [
+      "b85d4bbc-5fa5-4df9-ad6e-334c515a4253"
+    ],
+    "revision": 10,
+    "run_status": null,
+    "state": "done",
+    "submission": {
+      "artifact_ids": [
+        "b85d4bbc-5fa5-4df9-ad6e-334c515a4253"
+      ],
+      "summary": "Verified the published release note for WILLOW-92F."
+    },
+    "thread_id": "d04c90ad-8813-4b8d-bfd6-64755a8d523b"
+  },
+  "receipts": {
+    "card": "424c7675-3a8c-42fa-b2a9-fa70a88feb96",
+    "runs": [
+      {
+        "id": "5b239c05-a7ec-4bba-ad4b-f8d022c6873a",
+        "agent": "c86e73bd-9015-46c4-8732-f19b9107f431",
+        "model": "delegation-fixture/peer-checks",
+        "tools": [],
+        "status": "succeeded",
+        "answers": [
+          "Done. The Willow report is ready."
+        ],
+        "billing": "api_key",
+        "artifacts": [],
+        "workspace": "aa2af463-a68f-4ae0-aaa2-63def269c442",
+        "tool_errors": [
+          {
+            "code": "CONFLICT",
+            "name": "ngertiin.submit_board_card",
+            "created_at": "2026-11-19T06:05:56.123Z"
+          }
+        ]
+      },
+      {
+        "id": "dfde2f25-1f94-4557-821f-91cada3e300a",
+        "agent": "c86e73bd-9015-46c4-8732-f19b9107f431",
+        "model": "delegation-fixture/peer-checks",
+        "tools": [
+          "ngertiin.create_file",
+          "ngertiin.publish_artifact",
+          "ngertiin.submit_board_card"
+        ],
+        "status": "succeeded",
+        "answers": [
+          "The Willow report was submitted. The Willow release note is finished."
+        ],
+        "billing": "api_key",
+        "artifacts": [
+          {
+            "id": "b85d4bbc-5fa5-4df9-ad6e-334c515a4253",
+            "name": "willow-settled-note.txt",
+            "size": 32,
+            "sha256": "43a69f0a3d8ec20137d03edd38bb1ddb0bff06a0fc7d4e5e9c9fddc700a8a640"
+          }
+        ],
+        "workspace": "aa2af463-a68f-4ae0-aaa2-63def269c442",
+        "tool_errors": []
+      }
+    ],
+    "result_ids": [
+      "b85d4bbc-5fa5-4df9-ad6e-334c515a4253"
+    ],
+    "scope_match": true,
+    "board_events": [
+      {
+        "state": "ready",
+        "cursor": 19673,
+        "result_ids": [],
+        "submission": null
+      },
+      {
+        "state": "running",
+        "cursor": 19679,
+        "result_ids": [],
+        "submission": null
+      },
+      {
+        "state": "blocked",
+        "cursor": 19702,
+        "result_ids": [],
+        "submission": null
+      },
+      {
+        "state": "running",
+        "cursor": 19707,
+        "result_ids": [],
+        "submission": null
+      },
+      {
+        "state": "running",
+        "cursor": 19716,
+        "result_ids": [],
+        "submission": null
+      },
+      {
+        "state": "running",
+        "cursor": 19731,
+        "result_ids": [],
+        "submission": null
+      },
+      {
+        "state": "running",
+        "cursor": 19740,
+        "result_ids": [],
+        "submission": {
+          "summary": "Verified the published release note for WILLOW-92F.",
+          "artifact_ids": [
+            "b85d4bbc-5fa5-4df9-ad6e-334c515a4253"
+          ]
+        }
+      },
+      {
+        "state": "running",
+        "cursor": 19748,
+        "result_ids": [],
+        "submission": {
+          "summary": "Verified the published release note for WILLOW-92F.",
+          "artifact_ids": [
+            "b85d4bbc-5fa5-4df9-ad6e-334c515a4253"
+          ]
+        }
+      },
+      {
+        "state": "running",
+        "cursor": 19749,
+        "result_ids": [],
+        "submission": {
+          "summary": "Verified the published release note for WILLOW-92F.",
+          "artifact_ids": [
+            "b85d4bbc-5fa5-4df9-ad6e-334c515a4253"
+          ]
+        }
+      },
+      {
+        "state": "done",
+        "cursor": 19755,
+        "result_ids": [
+          "b85d4bbc-5fa5-4df9-ad6e-334c515a4253"
+        ],
+        "submission": {
+          "summary": "Verified the published release note for WILLOW-92F.",
+          "artifact_ids": [
+            "b85d4bbc-5fa5-4df9-ad6e-334c515a4253"
+          ]
+        }
+      }
+    ],
+    "successor_settled_cursor": 19753
+  },
+  "bytes_verified": true
+}

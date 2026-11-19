@@ -1,0 +1,83 @@
+{
+  "date": "2026-11-19",
+  "surface": "Ngertiin Web (Chromium)",
+  "harness": "Pi ACP",
+  "provider": {
+    "mode": "fixture",
+    "model": "lifecycle-fixture/conversation-lifecycle",
+    "billing": "api_key"
+  },
+  "thread": "9075e625-ee79-41b7-ae0a-e43b8ea4edfb",
+  "binding": "9c683b48-9c2c-4701-8338-46e16f880d2a",
+  "stopped_run": "b568cc40-91a3-4d6f-ab0e-7c6333a3892c",
+  "continuation_run": "b563ae6a-ba14-4281-8467-85d76ea60ac1",
+  "visible_before_stop": {
+    "artifact_ids": [],
+    "author": "agent",
+    "id": "53b6951e-78cb-48ee-a188-7e70bc452b15",
+    "run_id": "b568cc40-91a3-4d6f-ab0e-7c6333a3892c",
+    "state": "partial",
+    "text": "Checkpoint RECOVER-F362CA64. Primary verified at 281 units. Detail is still pending. I am preparing the next source check, and the full reconciliation will follow after the remaining source has"
+  },
+  "replayed_partial": {
+    "artifact_ids": [],
+    "author": "agent",
+    "id": "53b6951e-78cb-48ee-a188-7e70bc452b15",
+    "run_id": "b568cc40-91a3-4d6f-ab0e-7c6333a3892c",
+    "state": "partial",
+    "text": "Checkpoint RECOVER-F362CA64. Primary verified at 281 units. Detail is still pending. I am preparing the next source check, and the full reconciliation will follow after the remaining source has"
+  },
+  "continuation_source": "The fixture recovered the primary result from the previously retained native tool receipt. It requested the detail once.",
+  "final_answer": {
+    "artifact_ids": [],
+    "author": "agent",
+    "id": "42b800a7-b30e-4c44-b992-2f542b78ac0a",
+    "run_id": "b563ae6a-ba14-4281-8467-85d76ea60ac1",
+    "state": "complete",
+    "text": "The final checkpoint report is complete. Primary 281 units. Detail 438 units. Combined total 719 units."
+  },
+  "provider_events": [
+    {
+      "event": "checkpoint_partial_sent",
+      "marker": "RECOVER-F362CA64",
+      "step": "partial",
+      "at": "2026-11-19T02:57:03.269Z"
+    },
+    {
+      "event": "provider_aborted",
+      "marker": "RECOVER-F362CA64",
+      "step": "partial",
+      "at": "2026-11-19T02:57:05.762Z"
+    },
+    {
+      "event": "checkpoint_recovered_primary",
+      "marker": "RECOVER-F362CA64",
+      "step": "continue",
+      "at": "2026-11-19T02:57:28.198Z"
+    },
+    {
+      "event": "checkpoint_completed",
+      "marker": "RECOVER-F362CA64",
+      "step": "continue",
+      "at": "2026-11-19T02:57:43.457Z"
+    }
+  ],
+  "target_requests": [
+    {
+      "marker": "RECOVER-F362CA64",
+      "source": "primary",
+      "view": null,
+      "status": 200,
+      "units": 281,
+      "at": "2026-11-19T02:57:02.252Z"
+    },
+    {
+      "marker": "RECOVER-F362CA64",
+      "source": "detail",
+      "view": "rows",
+      "status": 200,
+      "units": 438,
+      "at": "2026-11-19T02:57:41.390Z"
+    }
+  ]
+}

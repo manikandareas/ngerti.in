@@ -1,0 +1,57 @@
+{
+  "date": "2026-11-19",
+  "surface": "Ngertiin Web (Chromium), two isolated user accounts",
+  "harness": "Pi ACP",
+  "provider": {
+    "mode": "live",
+    "model": "sumopod/deepseek-v4-flash",
+    "billing": "api_key"
+  },
+  "authorized_context": {
+    "agent_id": "bf61dd07-e39f-4e51-ad91-52271b43c3ed",
+    "thread_id": "4eb956fe-ceae-44f0-9560-f7b4a0b594da"
+  },
+  "read_run": "100732be-5fc2-475c-bfcc-37b0b29b4bab",
+  "change_run": "e1b7af14-15b3-4e24-920c-251155441a41",
+  "private_skill": {
+    "id": "1b7d6162-833f-4266-a620-ee3b3365750e",
+    "original_hash": "c3bc36c63b1d49ca86dd12d38bad007d39b6da33e4ee5eb883d7120247f4df2c",
+    "active_version": 2,
+    "new_hash": "a0d8c5894f0978859a917d05278038fe902cb0c20054b36919cbf1e9d1e20603",
+    "new_label": "PRIVATE-DOCK-683"
+  },
+  "team_skill": {
+    "id": "09fdba1c-ad66-4e5e-be4e-710931bb6b70",
+    "unchanged_hash": "2992214998903e97f90515488750bb24de6215838ab814d7dc76e21fe4eb37cd",
+    "active_version": 1,
+    "other_version_http": 404,
+    "edit_denial": {
+      "code": "SCOPE_DENIED",
+      "created_at": "2026-11-18T23:07:19.066Z",
+      "name": "ngertiin.revise_skill"
+    }
+  },
+  "harness_skill": {
+    "description": "Read the inherited harness label for the skills scope check.",
+    "key": "harness:scope-harness-handoff:0b4b20972cead8fa",
+    "location": "home-agents/scope-harness-handoff",
+    "name": "scope-harness-handoff",
+    "sha256": "0b4b20972cead8fa19ffc320e252cdbd8ac222020f35542bbb0cde75cb38f0af",
+    "source": "harness",
+    "writable": false,
+    "unchanged_source_sha256": "f8ac8c4c83d6b31b1bd04d335bd6315ac82e52932938020d10fa82d14e657278"
+  },
+  "second_account": {
+    "context": {
+      "agent_id": "bf61dd07-e39f-4e51-ad91-52271b43c3ed",
+      "thread_id": "61d5585a-b46f-4445-a236-b1785538e3d8"
+    },
+    "hasTeam": true,
+    "privateRead": 404,
+    "showsOtherHarness": false,
+    "showsPrivate": false,
+    "status": 200,
+    "teamHash": "2992214998903e97f90515488750bb24de6215838ab814d7dc76e21fe4eb37cd",
+    "teamRead": 200
+  }
+}

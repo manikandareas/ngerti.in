@@ -1,0 +1,170 @@
+{
+  "date": "2026-11-19",
+  "surface": "Ngertiin Web (Chromium)",
+  "harness": "Pi ACP",
+  "provider": {
+    "type": "live",
+    "model": "sumopod/deepseek-v4-flash",
+    "billing": "api_key"
+  },
+  "input": "synthetic",
+  "merge": {
+    "run": {
+      "id": "61349db2-6137-45a7-b2ce-ee1448212e44",
+      "status": "succeeded",
+      "skill_reads": [
+        {
+          "skill_id": "3885e4d3-6648-4624-b921-20c89ea820f7",
+          "version": 1
+        },
+        {
+          "skill_id": "0b0cdadf-bfb3-4f03-9c5f-b7e6aabd6d74",
+          "version": 1
+        },
+        {
+          "skill_id": "3885e4d3-6648-4624-b921-20c89ea820f7",
+          "version": 1
+        }
+      ],
+      "product_tools": [
+        "ngertiin.read_skill",
+        "ngertiin.read_skill",
+        "ngertiin.read_skill",
+        "ngertiin.list_skills",
+        "ngertiin.describe_tools",
+        "ngertiin.revise_skill"
+      ]
+    },
+    "original": {
+      "head": 2,
+      "name": "curator-dispatch-poll",
+      "package": {
+        "assets": [
+          {
+            "path": "references/daily-format.md",
+            "text": "Example for counts explicitly provided: CURATOR-POLL | closed 2 of 5 | pending 3."
+          }
+        ],
+        "description": "Use when a scheduled dispatch poll supplies closed and open counts.",
+        "instructions": "When the input explicitly supplies closed and open counts, print one line using the exact pattern CURATOR-POLL | closed <closed count> of <total count> | pending <open count>. Derive the total as closed plus open."
+      },
+      "saved_at": "2026-11-18T17:01:15.207Z",
+      "sha256": "4b996455eb70c0b03408b095abef35a11d56fe5ca399c8b254bf7515b4731905",
+      "skill_id": "3885e4d3-6648-4624-b921-20c89ea820f7",
+      "source_run_id": null,
+      "version": 1
+    },
+    "source": {
+      "head": 1,
+      "name": "curator-reusable-ticket-count",
+      "package": {
+        "assets": [],
+        "description": "Use to count distinct tickets by status in a ticket log.",
+        "instructions": "Deduplicate by the ticket ID, then count status rows. Start the reply with TICKET CHECK. Show the count of unique tickets and validate status counts reconcile."
+      },
+      "saved_at": "2026-11-18T16:41:01.018Z",
+      "sha256": "e70d79b603ed0d5ef34165039450199176b7b411ca22f593061add59df0099cd",
+      "skill_id": "0b0cdadf-bfb3-4f03-9c5f-b7e6aabd6d74",
+      "source_run_id": null,
+      "version": 1
+    },
+    "combined": {
+      "head": 2,
+      "name": "curator-dispatch-poll",
+      "package": {
+        "assets": [
+          {
+            "path": "references/daily-format.md",
+            "text": "Example for counts explicitly provided: CURATOR-POLL | closed 2 of 5 | pending 3."
+          }
+        ],
+        "description": "Use when a dispatch poll supplies closed and open counts, or when counts must be derived from a ticket log.",
+        "instructions": "Identify which case the input matches before replying. The two cases have different input requirements and different output formats; do not mix them or emit both formats for one input.\n\nCASE 1 - COUNTS SUPPLIED\nInput requirement: the request explicitly supplies closed and open counts.\nOutput: one line using the exact pattern CURATOR-POLL | closed <closed count> of <total count> | pending <open count>.\nDerive the total as closed plus open.\nSee references/daily-format.md for the worked example.\n\nCASE 2 - TICKET LOG\nInput requirement: a log of ticket IDs and statuses, with counts not supplied.\nProcessing: deduplicate by ticket ID first, then count status rows.\nOutput: start the reply with TICKET CHECK, show the count of unique tickets, and validate that the status counts reconcile to the unique total. Duplicate rows are not counted as tickets.\n\nSHARED RULE\nIn both cases derive the total arithmetically from its components - supplied counts in Case 1, deduplicated counts in Case 2. Never output a total that contradicts its parts. If the parts cannot be made to reconcile, say so plainly rather than adjusting numbers.\n\nUNDEFINED CASES - ASK, DO NOT GUESS\nLeave these open for clarification instead of inventing a rule or silently picking a case:\n- only one of the two counts is supplied;\n- a ticket ID carries conflicting statuses;\n- status values fall outside the categories present in the log;\n- the input is neither supplied counts nor a ticket log."
+      },
+      "saved_at": "2026-11-18T17:02:36.668Z",
+      "sha256": "f53ff7fa4e63535ce95bde3adbcc6d8a70bcc1bed90f9982582aa2e793fc7ca4",
+      "skill_id": "3885e4d3-6648-4624-b921-20c89ea820f7",
+      "source_run_id": "61349db2-6137-45a7-b2ce-ee1448212e44",
+      "version": 2
+    },
+    "pins_while_reviewing": [
+      {
+        "active_version": 1,
+        "enabled": true,
+        "head": 1,
+        "id": "0b0cdadf-bfb3-4f03-9c5f-b7e6aabd6d74",
+        "name": "curator-reusable-ticket-count"
+      },
+      {
+        "active_version": 1,
+        "enabled": true,
+        "head": 2,
+        "id": "3885e4d3-6648-4624-b921-20c89ea820f7",
+        "name": "curator-dispatch-poll"
+      }
+    ]
+  },
+  "routine": {
+    "created_at": "2026-11-18T17:01:15.349Z",
+    "id": "fd8b9a14-aac9-4a9e-9262-894ada5b1752",
+    "next_run_at": "2026-11-18T17:02:35.325Z",
+    "state": "active",
+    "run": {
+      "id": "f08202c2-6fbd-4de3-b285-3d23e660117d",
+      "status": "succeeded",
+      "skill_reads": [
+        {
+          "skill_id": "3885e4d3-6648-4624-b921-20c89ea820f7",
+          "version": 1
+        }
+      ],
+      "dispatched_at": "2026-11-18T17:02:48.835Z"
+    },
+    "reply": "CURATOR-POLL | closed 7 of 9 | pending 2"
+  },
+  "merged_in_use": {
+    "run": {
+      "id": "6f792e42-f908-4629-9cfb-5e0bf0e23a84",
+      "status": "succeeded",
+      "skill_reads": [
+        {
+          "skill_id": "3885e4d3-6648-4624-b921-20c89ea820f7",
+          "version": 2
+        }
+      ]
+    },
+    "reply": "The active version of that skill is now 2, so I'll use its ticket-log case. Reading both.TICKET CHECK\n\n**Per-status counts (distinct tickets)**\n- Open: 2 — M-10, M-13\n- Complete: 1 — M-11\n- Waiting: 1 — M-12\n\n**Unique total:** 4\n\n**Reconciliation:** 2 + 1 + 1 = 4 ✓ — matches the 4 log rows. No ticket ID repeats, so there are no duplicates and no conflicting statuses to flag.\n\nThis is the ticket-log case of the active procedure, so I've used the check block only and deliberately left out the one-line poll format, which that procedure reserves for inputs that state their counts. Source: maple-tickets.txt, page 1."
+  },
+  "rollback": {
+    "pins": [
+      {
+        "active_version": 1,
+        "enabled": true,
+        "head": 1,
+        "id": "0b0cdadf-bfb3-4f03-9c5f-b7e6aabd6d74",
+        "name": "curator-reusable-ticket-count"
+      },
+      {
+        "active_version": 1,
+        "enabled": true,
+        "head": 2,
+        "id": "3885e4d3-6648-4624-b921-20c89ea820f7",
+        "name": "curator-dispatch-poll"
+      }
+    ],
+    "restored_sha256": "4b996455eb70c0b03408b095abef35a11d56fe5ca399c8b254bf7515b4731905",
+    "use": {
+      "run": {
+        "id": "1d4c0d75-c3f5-418a-8511-0466e32534d1",
+        "status": "succeeded",
+        "skill_reads": [
+          {
+            "skill_id": "3885e4d3-6648-4624-b921-20c89ea820f7",
+            "version": 1
+          }
+        ]
+      },
+      "reply": "CURATOR-POLL | closed 6 of 10 | pending 4"
+    }
+  }
+}

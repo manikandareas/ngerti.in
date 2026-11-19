@@ -1,0 +1,98 @@
+{
+  "date": "2026-11-19",
+  "surface": "HTTP webhook client, Chrome Ngertiin Web and Cedar Support Inbox",
+  "harness": "Pi ACP 0.0.34 (Pi 1.5.2)",
+  "provider": "API-key fixture and isolated loopback message bridge",
+  "client": {
+    "input": {
+      "event_id": "2eae010c-3b7e-4bd0-89a9-2d41a53ea54f",
+      "text": "Cedar bridge check. webhook. Record the inbound Cedar event."
+    },
+    "original": {
+      "status": 200,
+      "body": {
+        "id": "1a8f6917-ef95-4dd3-903e-af5bcb7811d5",
+        "run_id": "1a8f6917-ef95-4dd3-903e-af5bcb7811d5",
+        "event_id": "2eae010c-3b7e-4bd0-89a9-2d41a53ea54f",
+        "channel_label": "Cedar Support Inbox",
+        "state": "pending",
+        "attempts": 0
+      }
+    },
+    "duplicate": {
+      "status": 200,
+      "body": {
+        "id": "1a8f6917-ef95-4dd3-903e-af5bcb7811d5",
+        "run_id": "1a8f6917-ef95-4dd3-903e-af5bcb7811d5",
+        "event_id": "2eae010c-3b7e-4bd0-89a9-2d41a53ea54f",
+        "channel_label": "Cedar Support Inbox",
+        "state": "pending",
+        "attempts": 0
+      }
+    },
+    "conflict": {
+      "status": 409,
+      "code": "IDEMPOTENCY_CONFLICT"
+    },
+    "invalid": {
+      "status": 422
+    },
+    "unauthorized": {
+      "status": 401
+    }
+  },
+  "record": {
+    "run": {
+      "id": "1a8f6917-ef95-4dd3-903e-af5bcb7811d5",
+      "tools": [],
+      "status": "succeeded",
+      "timings": {
+        "ready_at": "2026-11-19T08:39:30.972Z",
+        "settled_at": "2026-11-19T08:39:34.625Z",
+        "accepted_at": "2026-11-19T08:39:32.745Z",
+        "preparing_at": "2026-11-19T08:39:16.069Z",
+        "dispatched_at": "2026-11-19T08:39:30.972Z",
+        "first_output_at": "2026-11-19T08:39:33.167Z"
+      },
+      "provider": {
+        "harness": "pi",
+        "model_id": "kite-inference/verification-alpha",
+        "reasoning": null,
+        "account_id": "5b7f819583399f3f60ef5119f53c96ded864f6e05a400f38dc95882074d3bf1d",
+        "provider_id": "kite-inference",
+        "connection_id": "95ceefb4-090f-4a15-bb2e-acafedd55ccb",
+        "billing_source": "api_key",
+        "connection_generation": 2
+      }
+    },
+    "answer": "Cedar event recorded once. CLAY-238.",
+    "request": "Cedar bridge check. webhook. Record the inbound Cedar event.",
+    "exchange": {
+      "id": "1a8f6917-ef95-4dd3-903e-af5bcb7811d5",
+      "state": "delivered",
+      "run_id": "1a8f6917-ef95-4dd3-903e-af5bcb7811d5",
+      "attempts": 1,
+      "updated_at": "2026-11-19T08:39:39.398Z",
+      "source_event": "2eae010c-3b7e-4bd0-89a9-2d41a53ea54f"
+    },
+    "artifacts": []
+  },
+  "providerRequests": [
+    {
+      "event": "channel_request",
+      "stage": "webhook",
+      "model": "verification-alpha"
+    }
+  ],
+  "deliveries": [
+    {
+      "event": "delivery",
+      "id": "1a8f6917-ef95-4dd3-903e-af5bcb7811d5",
+      "source_event": "2eae010c-3b7e-4bd0-89a9-2d41a53ea54f",
+      "room": "cedar-ticket-46",
+      "outcome": "delivered",
+      "attachments": 0
+    }
+  ],
+  "threadRunCount": 2
+}

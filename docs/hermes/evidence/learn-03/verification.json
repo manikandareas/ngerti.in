@@ -1,0 +1,37 @@
+{
+  "date": "2026-11-18",
+  "surface": "Ngertiin Web (Chromium)",
+  "harness": "Pi ACP",
+  "provider": "Sumopod live",
+  "model": "sumopod/deepseek-v4-flash",
+  "billing": "api_key",
+  "source_is_fixture": true,
+  "same_user_request_and_fresh_threads": true,
+  "same_agent_provider_account_and_execution_domain": true,
+  "run_version_3": {
+    "version_read": 3,
+    "data_rows": 6,
+    "total_units": 681,
+    "highest_site": "Birch West",
+    "highest_units": 211,
+    "csv_sha256": "f3ff4aa1e2d8f5d6e5e3909c65c5181f75ddfa93bfba96fab988d2a1fc34fd1e",
+    "export_statuses": [],
+    "table_requests": 4,
+    "completed_product_calls": 10
+  },
+  "run_after_rollback_to_version_1": {
+    "version_read": 1,
+    "data_rows": 6,
+    "total_units": 681,
+    "highest_site": "Birch West",
+    "highest_units": 211,
+    "csv_sha256": "f3ff4aa1e2d8f5d6e5e3909c65c5181f75ddfa93bfba96fab988d2a1fc34fd1e",
+    "export_statuses": [
+      503
+    ],
+    "table_requests": 7,
+    "completed_product_calls": 7
+  },
+  "observed_tradeoff": "Version 3 avoided the failing export and read fewer table pages in total. It completed ten product calls versus seven after rollback. The CSV bytes were identical.",
+  "paired_runs": 1
+}

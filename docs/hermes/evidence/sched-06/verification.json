@@ -1,0 +1,70 @@
+{
+  "date": "2026-11-19",
+  "surface": "Ngertiin Web (Chromium) and separate loopback receiver viewer",
+  "harness": "Pi ACP",
+  "provider": "Sumopod DeepSeek V4 Flash live API key",
+  "recipient_fixture": "../../../../scripts/verification/hermes/routine-delivery.ts",
+  "thread_id": "7536c528-9bc6-454f-99e3-5ca30f17f560",
+  "routine_id": "3f9d6a41-7c2e-4b58-9d10-8e5a2c4b7f61",
+  "occurrence_id": "56c467a3-96ee-4cb9-8b55-cd6ae0f8854d",
+  "scheduled_for": "2026-11-18T19:36:48Z",
+  "next_slot": null,
+  "selected_destination": "Verification inbox",
+  "committed_before_delivery_failure": {
+    "state": "succeeded",
+    "run_id": "18221c93-b1ec-4daa-a0af-401c1b99a88d",
+    "message": "DUNE-DELIVERED-82",
+    "message_id": "2f674e98-91ec-494a-adde-1b7ad0f143f7",
+    "routine_id": "3f9d6a41-7c2e-4b58-9d10-8e5a2c4b7f61",
+    "delivery_state": "sending",
+    "run_settled_at": "2026-11-18T19:36:57.112Z",
+    "delivery_attempts": 1,
+    "message_created_at": "2026-11-18T19:36:57.085Z"
+  },
+  "fixture_offline_switch_confirmed_at": "2026-11-18T19:36:58.752261+00:00",
+  "fixture_online_switch_confirmed_at": "2026-11-18T19:37:00.023649+00:00",
+  "fixture_events": [
+    {
+      "event_id": "18221c93-b1ec-4daa-a0af-401c1b99a88d",
+      "event": "request",
+      "at": "2026-11-18T19:36:58.402Z"
+    },
+    {
+      "event_id": "18221c93-b1ec-4daa-a0af-401c1b99a88d",
+      "event": "rejected_before_acceptance",
+      "at": "2026-11-18T19:36:58.725Z"
+    },
+    {
+      "event_id": "18221c93-b1ec-4daa-a0af-401c1b99a88d",
+      "event": "request",
+      "at": "2026-11-18T19:37:04.376Z"
+    },
+    {
+      "event_id": "18221c93-b1ec-4daa-a0af-401c1b99a88d",
+      "event": "accepted",
+      "at": "2026-11-18T19:37:04.376Z"
+    }
+  ],
+  "delivery_receipt": {
+    "id": "18221c93-b1ec-4daa-a0af-401c1b99a88d",
+    "state": "delivered",
+    "attempts": 2,
+    "settled_at": "2026-11-18T19:37:04.387Z",
+    "next_attempt_at": null
+  },
+  "same_execution_count_before_and_after_retry": 1,
+  "user_visible_conversation_results": 1,
+  "fixture_received_results": 1,
+  "run": {
+    "billing": "api_key",
+    "id": "18221c93-b1ec-4daa-a0af-401c1b99a88d",
+    "input_message_id": "e2dce4d7-fa12-499f-ae9e-29923573326b",
+    "manual_routine": false,
+    "model": "sumopod/deepseek-v4-flash",
+    "product_tools": [],
+    "routine_id": "3f9d6a41-7c2e-4b58-9d10-8e5a2c4b7f61",
+    "status": "succeeded",
+    "tool_errors": [],
+    "workspace_id": "869b1af5-d6ce-4df3-80a0-5ee9673ce1e5"
+  }
+}

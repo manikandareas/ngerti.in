@@ -1,0 +1,36 @@
+{
+  "observedAt": "2026-11-19T12:08:30.649Z",
+  "surface": "Native OpenCode catalog probe, private disposable home",
+  "harness": "OpenCode 1.19.5",
+  "billing": "free",
+  "status": 0,
+  "models": [
+    "opencode/beam-free",
+    "opencode/big-pickle",
+    "opencode/deepseek-v4.1-flash-free",
+    "opencode/flint-40b-free",
+    "opencode/hy4-flash-free",
+    "opencode/iceman-free",
+    "opencode/inkling-2-small-free",
+    "opencode/longcat-2.5-free",
+    "opencode/mimo-v2.6-flash-free",
+    "opencode/nemotron-3.5-lightning-free",
+    "opencode/nemotron-3.5-super-vl-free",
+    "opencode/tidepool-alpha-free"
+  ],
+  "free": [
+    "opencode/beam-free",
+    "opencode/deepseek-v4.1-flash-free",
+    "opencode/flint-40b-free",
+    "opencode/hy4-flash-free",
+    "opencode/iceman-free",
+    "opencode/inkling-2-small-free",
+    "opencode/longcat-2.5-free",
+    "opencode/mimo-v2.6-flash-free",
+    "opencode/nemotron-3.5-lightning-free",
+    "opencode/nemotron-3.5-super-vl-free",
+    "opencode/tidepool-alpha-free"
+  ],
+  "designatedGlmFlashFree": [],
+  "inferenceRequests": 0
+}

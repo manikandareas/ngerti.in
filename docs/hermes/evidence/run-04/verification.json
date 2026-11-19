@@ -1,0 +1,146 @@
+{
+  "date": "2026-11-19",
+  "surface": "Ngertiin Web (Chromium)",
+  "harness": "Pi ACP",
+  "provider": {
+    "mode": "fixture",
+    "model": "lifecycle-fixture/conversation-lifecycle",
+    "billing": "api_key"
+  },
+  "thread": "8ab03433-a63e-42b7-bfde-e833fe210040",
+  "removed_queued_run": {
+    "billing": "api_key",
+    "binding_id": null,
+    "cancellation": "confirmed",
+    "diagnostic": null,
+    "id": "f33afbdb-5f3a-4682-9b50-19da70051252",
+    "input_message_id": "d18228c8-cf26-4792-abc8-28513cd8d0f1",
+    "manual_routine": false,
+    "model": "lifecycle-fixture/conversation-lifecycle",
+    "outcome": "cancelled",
+    "product_tools": [],
+    "routine_id": null,
+    "status": "cancelled",
+    "tool_errors": [],
+    "workspace_id": null
+  },
+  "deleted_queued_message": {
+    "id": "d18228c8-cf26-4792-abc8-28513cd8d0f1",
+    "kind": "message",
+    "text": "Queue check second QUEUE-468CC83A",
+    "state": "deleted"
+  },
+  "stopped_active_run": {
+    "billing": "api_key",
+    "binding_id": "058a3f03-522a-4661-accf-4a9e6aa8c4a9",
+    "cancellation": "confirmed",
+    "diagnostic": null,
+    "id": "b29dce08-4e16-425c-8e4b-35ed6dab8b83",
+    "input_message_id": "c19dc054-96e8-4cff-bb0e-d365b5d3702e",
+    "manual_routine": false,
+    "model": "lifecycle-fixture/conversation-lifecycle",
+    "outcome": "cancelled",
+    "preparation": {
+      "attempts": 1,
+      "configuration_revision": "1:4:1",
+      "next_attempt_at": null,
+      "runtime_revision": "/Users/vitoandareasmanik/.local/share/ngertiin/harnesses/pi/bin/pi-acp:16777234:119123450:106049:1794835781762:supported:0.0.34",
+      "state": "ready"
+    },
+    "product_tools": [],
+    "routine_id": null,
+    "status": "cancelled",
+    "timings": {
+      "accepted_at": "2026-11-19T02:10:19.343Z",
+      "dispatched_at": "2026-11-19T02:10:17.479Z",
+      "first_output_at": "2026-11-19T02:10:19.562Z",
+      "preparing_at": "2026-11-19T02:10:11.038Z",
+      "ready_at": "2026-11-19T02:10:17.479Z",
+      "settled_at": "2026-11-19T02:10:26.907Z"
+    },
+    "tool_errors": [],
+    "workspace_id": "22b70191-8705-4a7c-94a5-3ac0d70c4659"
+  },
+  "stop_record": {
+    "id": "b29dce08-4e16-425c-8e4b-35ed6dab8b83",
+    "kind": "run",
+    "status": "cancelled",
+    "outcome": "cancelled",
+    "delivery": "delivered",
+    "cancellation": "confirmed"
+  },
+  "native_session": "01a1f191-9adc-7160-aaa7-33a21dea52f1",
+  "successor_run": {
+    "billing": "api_key",
+    "binding_id": "058a3f03-522a-4661-accf-4a9e6aa8c4a9",
+    "cancellation": "none",
+    "diagnostic": null,
+    "id": "bc0b2388-8d5c-45f4-a94c-4fe994e06db1",
+    "input_message_id": "7f693480-b13b-4e8b-b7c8-a72e52ff5853",
+    "manual_routine": false,
+    "model": "lifecycle-fixture/conversation-lifecycle",
+    "outcome": "succeeded",
+    "preparation": {
+      "attempts": 1,
+      "configuration_revision": "1:5:1",
+      "next_attempt_at": null,
+      "runtime_revision": "/Users/vitoandareasmanik/.local/share/ngertiin/harnesses/pi/bin/pi-acp:16777234:119123450:106049:1794835781762:supported:0.0.34",
+      "state": "ready"
+    },
+    "product_tools": [],
+    "routine_id": null,
+    "status": "succeeded",
+    "timings": {
+      "accepted_at": "2026-11-19T02:10:32.030Z",
+      "dispatched_at": "2026-11-19T02:10:30.906Z",
+      "first_output_at": "2026-11-19T02:10:32.205Z",
+      "preparing_at": "2026-11-19T02:10:27.957Z",
+      "ready_at": "2026-11-19T02:10:30.906Z",
+      "settled_at": "2026-11-19T02:10:32.792Z"
+    },
+    "tool_errors": [],
+    "workspace_id": "22b70191-8705-4a7c-94a5-3ac0d70c4659"
+  },
+  "answers": [
+    {
+      "artifact_ids": [],
+      "author": "agent",
+      "id": "a9560f0d-c527-43e7-9af1-f479c97c0005",
+      "run_id": "b29dce08-4e16-425c-8e4b-35ed6dab8b83",
+      "text": "I started the"
+    },
+    {
+      "artifact_ids": [],
+      "author": "agent",
+      "id": "118a821a-b387-4c5d-96be-51fad01a4142",
+      "run_id": "bc0b2388-8d5c-45f4-a94c-4fe994e06db1",
+      "text": "Second request complete. Receipt QUEUE-A41C6F7B-SECOND."
+    }
+  ],
+  "provider_events": [
+    {
+      "event": "provider_started",
+      "marker": "QUEUE-41654876",
+      "step": "first",
+      "at": "2026-11-19T02:10:19.400Z"
+    },
+    {
+      "event": "provider_aborted",
+      "marker": "QUEUE-41654876",
+      "step": "first",
+      "at": "2026-11-19T02:10:26.109Z"
+    },
+    {
+      "event": "provider_started",
+      "marker": "QUEUE-A41C6F7B",
+      "step": "second",
+      "at": "2026-11-19T02:10:32.090Z"
+    },
+    {
+      "event": "provider_finished",
+      "marker": "QUEUE-A41C6F7B",
+      "step": "second",
+      "at": "2026-11-19T02:10:32.090Z"
+    }
+  ]
+}

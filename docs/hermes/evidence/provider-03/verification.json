@@ -1,0 +1,114 @@
+{
+  "date": "2026-11-19",
+  "surface": "Chrome Web and authenticated Ngertiin API",
+  "harness": "Pi ACP 0.0.34 (Pi 1.5.2)",
+  "provider": "Two independent API-key loopback fixtures",
+  "thread": "23c4be22-ef7a-4a29-a1ff-ace0f7f3a20d",
+  "run": {
+    "id": "068ad6ae-1b0b-4e30-8726-8a41863079c4",
+    "learning_review": {
+      "attempt_id": null,
+      "attempts": 1,
+      "authority_epoch": null,
+      "authorization_generation": 10,
+      "membership_generation": 1,
+      "memory_saved": false,
+      "memory_sources": [],
+      "memory_superseded": false,
+      "provider_selection": {
+        "billing_source": "api_key",
+        "connection_generation": 2,
+        "connection_id": "842e90bf-1591-4dcd-b1dd-6fc301ae8cd4",
+        "harness": "pi",
+        "model_id": "hermes-review/verification-beta",
+        "provider_id": "hermes-review",
+        "reasoning": null
+      },
+      "scopes": {
+        "memory": false,
+        "skill": true
+      },
+      "skill_sources": [
+        "068ad6ae-1b0b-4e30-8726-8a41863079c4"
+      ],
+      "skill_versions": [
+        {
+          "skill_id": "06e331d1-9456-4b1d-89bc-2f9d80151fa9",
+          "version": 1
+        }
+      ],
+      "state": "applied",
+      "usage": {
+        "input_tokens": 97,
+        "output_tokens": 21,
+        "total_tokens": 118
+      }
+    },
+    "product_tools": [
+      "ngertiin.read_attachment",
+      "ngertiin.publish_artifact"
+    ],
+    "provider_selection": {
+      "billing_source": "api_key",
+      "connection_generation": 2,
+      "connection_id": "322a7ebe-7bc0-43bb-a80a-1ad1b02bd55e",
+      "harness": "pi",
+      "model_id": "hermes-spruce/verification-alpha",
+      "provider_id": "hermes-spruce",
+      "reasoning": null
+    },
+    "status": "succeeded",
+    "tool_errors": [
+      {
+        "code": "CONFLICT",
+        "created_at": "2026-11-19T06:37:04.712Z",
+        "name": "ngertiin.create_file"
+      }
+    ],
+    "workspace_id": "fe55df51-5b77-4c74-bfee-88db9db0ffa3"
+  },
+  "accountIdentitiesDiffer": true,
+  "providerRequests": {
+    "foreground": [
+      {
+        "event": "foreground",
+        "model": "verification-alpha",
+        "at": "2026-11-19T06:36:57.205Z"
+      },
+      {
+        "event": "foreground",
+        "model": "verification-alpha",
+        "at": "2026-11-19T06:37:02.172Z"
+      },
+      {
+        "event": "foreground",
+        "model": "verification-alpha",
+        "at": "2026-11-19T06:37:04.835Z"
+      },
+      {
+        "event": "foreground",
+        "model": "verification-alpha",
+        "at": "2026-11-19T06:37:09.203Z"
+      }
+    ],
+    "auxiliary": [
+      {
+        "event": "review",
+        "model": "verification-beta",
+        "at": "2026-11-19T06:37:16.068Z"
+      }
+    ]
+  },
+  "output": {
+    "id": "d12495a9-d4e5-4f21-a051-2e9f85c41416",
+    "name": "spruce-release-total.txt",
+    "origin": "native_output",
+    "sha256": "ad2bf4fc305443265f69d38328be85585545bd8de63b6b7c45bc43f68717342c",
+    "size_bytes": 26,
+    "bytes": "Spruce verified total: 63\n",
+    "tag": "\"ad2bf4fc305443265f69d38328be85585545bd8de63b6b7c45bc43f68717342c\""
+  },
+  "marketplaceEntry": "spruce-gate-audit",
+  "previousPreparationBlocker": "An older OpenCode run remained queued and blocked in preparation; review resumed after skipping parked work in the idle check.",
+  "limit": "Provider-reported token telemetry from fixtures, with an isolated one-step review cadence. This measures routing and recording."
+}

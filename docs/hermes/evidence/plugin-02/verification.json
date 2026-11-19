@@ -1,0 +1,141 @@
+{
+  "date": "2026-11-19",
+  "surface": "Chrome Web and authenticated Ngertiin API",
+  "harness": "Pi ACP 0.0.34 (Pi 1.5.2)",
+  "provider": "API-key test fixture",
+  "thread": "2f93a018-6e25-49ec-91e3-33b6968aada6",
+  "duringHold": {
+    "id": "769d19de-6f4a-4eec-b81e-2d57f269d2c5",
+    "text": null,
+    "plugin": {
+      "id": "kite-release-formatter",
+      "name": "Kite Release Formatter",
+      "version": "1.0.0",
+      "match_prefix": "WORKFLOW_VERDICT:",
+      "replace_prefix": "Release verdict:"
+    },
+    "status": "running",
+    "timings": {
+      "ready_at": "2026-11-19T07:59:34.629Z",
+      "accepted_at": "2026-11-19T07:59:35.944Z",
+      "preparing_at": "2026-11-19T07:59:25.628Z",
+      "dispatched_at": "2026-11-19T07:59:34.629Z",
+      "first_output_at": "2026-11-19T07:59:36.210Z"
+    },
+    "selection": {
+      "harness": "pi",
+      "model_id": "kite-inference/verification-alpha",
+      "reasoning": null,
+      "account_id": "5b7f819583399f3f60ef5119f53c96ded864f6e05a400f38dc95882074d3bf1d",
+      "provider_id": "kite-inference",
+      "connection_id": "95ceefb4-090f-4a15-bb2e-acafedd55ccb",
+      "billing_source": "api_key",
+      "connection_generation": 2
+    },
+    "answerState": null,
+    "pluginStatus": null,
+    "pendingAnswer": null
+  },
+  "disabledDuringHold": {
+    "plugins": [
+      {
+        "dependency": "Kite Laboratory",
+        "enabled": false,
+        "id": "kite-release-formatter",
+        "name": "Kite Release Formatter",
+        "source": "Managed verification catalog",
+        "state": "inactive",
+        "version": "1.0.0"
+      }
+    ],
+    "revision": 3
+  },
+  "releaseGateAt": "2026-11-19T07:59:42.908702+00:00",
+  "nativeResponses": [
+    {
+      "event": "output_plugin",
+      "stage": "held",
+      "model": "verification-alpha",
+      "result": "WORKFLOW_VERDICT: READY HOLD-308"
+    },
+    {
+      "event": "output_plugin_partial",
+      "stage": "held",
+      "prefix": "WORKFLOW_VERDICT:"
+    },
+    {
+      "event": "output_plugin",
+      "stage": "failure",
+      "model": "verification-alpha",
+      "result": "The release review is complete for FAIL-212."
+    }
+  ],
+  "runs": [
+    {
+      "id": "769d19de-6f4a-4eec-b81e-2d57f269d2c5",
+      "text": "Release verdict: READY HOLD-308",
+      "plugin": {
+        "id": "kite-release-formatter",
+        "name": "Kite Release Formatter",
+        "version": "1.0.0",
+        "match_prefix": "WORKFLOW_VERDICT:",
+        "replace_prefix": "Release verdict:"
+      },
+      "status": "succeeded",
+      "timings": {
+        "ready_at": "2026-11-19T07:59:34.629Z",
+        "settled_at": "2026-11-19T07:59:43.582Z",
+        "accepted_at": "2026-11-19T07:59:35.944Z",
+        "preparing_at": "2026-11-19T07:59:25.628Z",
+        "dispatched_at": "2026-11-19T07:59:34.629Z",
+        "first_output_at": "2026-11-19T07:59:36.210Z"
+      },
+      "selection": {
+        "harness": "pi",
+        "model_id": "kite-inference/verification-alpha",
+        "reasoning": null,
+        "account_id": "5b7f819583399f3f60ef5119f53c96ded864f6e05a400f38dc95882074d3bf1d",
+        "provider_id": "kite-inference",
+        "connection_id": "95ceefb4-090f-4a15-bb2e-acafedd55ccb",
+        "billing_source": "api_key",
+        "connection_generation": 2
+      },
+      "answerState": "complete",
+      "pluginStatus": "applied",
+      "pendingAnswer": null
+    },
+    {
+      "id": "5fba7bb2-d4b7-4d03-8143-ae85815008a5",
+      "text": "The release review is complete for FAIL-212.",
+      "plugin": {
+        "id": "kite-release-formatter",
+        "name": "Kite Release Formatter",
+        "version": "1.0.0",
+        "match_prefix": "WORKFLOW_VERDICT:",
+        "replace_prefix": "Release verdict:"
+      },
+      "status": "succeeded",
+      "timings": {
+        "ready_at": "2026-11-19T07:59:58.252Z",
+        "settled_at": "2026-11-19T08:00:02.658Z",
+        "accepted_at": "2026-11-19T08:00:01.218Z",
+        "preparing_at": "2026-11-19T07:59:52.477Z",
+        "dispatched_at": "2026-11-19T07:59:58.252Z",
+        "first_output_at": "2026-11-19T08:00:01.777Z"
+      },
+      "selection": {
+        "harness": "pi",
+        "model_id": "kite-inference/verification-alpha",
+        "reasoning": null,
+        "account_id": "5b7f819583399f3f60ef5119f53c96ded864f6e05a400f38dc95882074d3bf1d",
+        "provider_id": "kite-inference",
+        "connection_id": "95ceefb4-090f-4a15-bb2e-acafedd55ccb",
+        "billing_source": "api_key",
+        "connection_generation": 2
+      },
+      "answerState": "complete",
+      "pluginStatus": "failed",
+      "pendingAnswer": null
+    }
+  ]
+}

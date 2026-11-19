@@ -1,0 +1,105 @@
+{
+  "date": "2026-11-19",
+  "surface": "Ngertiin Web (Chromium)",
+  "harness": "Pi ACP",
+  "provider": {
+    "mode": "loopback fixture",
+    "billing": "api_key"
+  },
+  "thread_id": "9ddc18e2-c6bd-4f51-841c-55f8137d5096",
+  "binding": {
+    "active": true,
+    "id": "4750a557-6ac5-41b5-9d8b-e2378c1ce955",
+    "native_session_id": "01a1f06e-6444-7077-a66c-d8e0e17a6f5a",
+    "workspace_id": "922c2921-239e-4b1f-8d69-4834eef65ce5"
+  },
+  "configuration": {
+    "every_ms": 15000,
+    "self_paced": {
+      "max_every_ms": 50000
+    },
+    "type": "loop"
+  },
+  "routine_id": "faf8e6f3-cc85-443f-b894-8f2341f582ba",
+  "final_routine_state": "paused",
+  "checks": [
+    {
+      "number": 1,
+      "occurrence_id": "cfd00d12-bcea-4b9f-ab47-c32433819f0b",
+      "run_id": "56d4818b-da9b-46f9-80b8-7aaead805b52",
+      "scheduled_for": "2026-11-18T20:52:15.213Z",
+      "dispatched_at": "2026-11-18T20:52:19.891Z",
+      "settled_at": "2026-11-18T20:52:21.813Z",
+      "answer_id": "fc9eaa42-c363-4794-8de4-4fb5b411b30b",
+      "result": "IBIS-STATE=STABLE",
+      "digest": "50fe40b65ced73f2c5faa1a27f66c36a71b20cc0190bbe35f6ecf4dd94732c43",
+      "delay_after_settlement_ms": 15000,
+      "next_run_at": "2026-11-18T20:52:36.813Z"
+    },
+    {
+      "number": 2,
+      "occurrence_id": "249515ff-fc94-455c-9296-3cac735d7942",
+      "run_id": "4162aaa8-5f22-4e8b-8ff3-b56f810b2f61",
+      "scheduled_for": "2026-11-18T20:52:36.813Z",
+      "dispatched_at": "2026-11-18T20:52:40.145Z",
+      "settled_at": "2026-11-18T20:52:41.830Z",
+      "answer_id": "22a44c04-ebbb-4db2-8123-5bd3555ef03b",
+      "result": "IBIS-STATE=STABLE",
+      "digest": "50fe40b65ced73f2c5faa1a27f66c36a71b20cc0190bbe35f6ecf4dd94732c43",
+      "delay_after_settlement_ms": 30000,
+      "next_run_at": "2026-11-18T20:53:11.830Z"
+    },
+    {
+      "number": 3,
+      "occurrence_id": "a949c4b9-2093-4984-9123-c3c149273216",
+      "run_id": "57158fe0-adcb-4758-a0ca-d10c8d36ab56",
+      "scheduled_for": "2026-11-18T20:53:11.830Z",
+      "dispatched_at": "2026-11-18T20:53:17.177Z",
+      "settled_at": "2026-11-18T20:53:18.750Z",
+      "answer_id": "a1277160-b887-413f-9eec-8a660048848e",
+      "result": "IBIS-STATE=STABLE",
+      "digest": "50fe40b65ced73f2c5faa1a27f66c36a71b20cc0190bbe35f6ecf4dd94732c43",
+      "delay_after_settlement_ms": 50000,
+      "next_run_at": "2026-11-18T20:54:08.750Z"
+    },
+    {
+      "number": 4,
+      "occurrence_id": "beea6a79-5efd-404f-abbc-ac50712a589c",
+      "run_id": "4f2de409-f2cc-4971-a862-c38afbe6f6cc",
+      "scheduled_for": "2026-11-18T20:54:08.750Z",
+      "dispatched_at": "2026-11-18T20:54:13.610Z",
+      "settled_at": "2026-11-18T20:54:14.992Z",
+      "answer_id": "ef470f72-1fca-4aa4-9ce9-4d50fc3f7a3c",
+      "result": "IBIS-STATE=CHANGED",
+      "digest": "1a83927c9c19494badd33bb3e3f4911ae15f778f0fa23259eb1d0593c4ea2da0",
+      "delay_after_settlement_ms": 15000,
+      "next_run_at": "2026-11-18T20:54:29.992Z"
+    }
+  ],
+  "provider_events": [
+    {
+      "event": "ibis_check",
+      "check": 1,
+      "result": "IBIS-STATE=STABLE",
+      "at": "2026-11-18T20:52:20.944Z"
+    },
+    {
+      "event": "ibis_check",
+      "check": 2,
+      "result": "IBIS-STATE=STABLE",
+      "at": "2026-11-18T20:52:40.957Z"
+    },
+    {
+      "event": "ibis_check",
+      "check": 3,
+      "result": "IBIS-STATE=STABLE",
+      "at": "2026-11-18T20:53:17.774Z"
+    },
+    {
+      "event": "ibis_check",
+      "check": 4,
+      "result": "IBIS-STATE=CHANGED",
+      "at": "2026-11-18T20:54:14.285Z"
+    }
+  ]
+}

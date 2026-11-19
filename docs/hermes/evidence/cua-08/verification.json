@@ -1,0 +1,116 @@
+{
+  "date": "2026-11-19",
+  "surface": "Ngertiin Web (Chromium) and retained Computer viewer",
+  "harness": "Pi ACP",
+  "provider": {
+    "mode": "fixture",
+    "model": "handoff-fixture/computer-handoff",
+    "billing": "api_key"
+  },
+  "thread": "891eacbf-a375-4c1a-aa5a-fd6b51474b62",
+  "setup_run": "8a4d6193-1a1a-4427-9fc3-181515f98449",
+  "action_run": "1f8feb81-e86e-4c28-add0-c008469b763f",
+  "initial_launch": "Setup read settled before the browser window appeared. The action run reused the window after it became visible.",
+  "before_action": {
+    "at": "2026-11-19T01:26:57.921Z",
+    "id": "959e4cab-d564-4d55-9ec8-5a5acf7bbb81",
+    "tab": "tab-03630297-c954-47b0-be4a-86237e7e11c3",
+    "name": "get_browser_state",
+    "page": "http://host.docker.internal:8449/fern-save",
+    "state": "succeeded",
+    "target": "bt-72c0e0fc-57e4-47ea-95e2-bc1d855dcc15",
+    "started": "2026-11-19T01:26:50.581Z",
+    "snapshot": "p3",
+    "native_error": false,
+    "visible_labels": [
+      "No request yet",
+      "Not saved yet"
+    ]
+  },
+  "first_input": {
+    "at": "2026-11-19T01:27:29.239Z",
+    "id": "bcf24e8b-cc89-48c4-8f36-d49f4c695808",
+    "name": "browser_click",
+    "state": "succeeded",
+    "effect": "unverifiable",
+    "started": "2026-11-19T01:27:10.449Z",
+    "native_error": false
+  },
+  "first_target_effect": {
+    "event": "request_received_without_save",
+    "attempts": 1,
+    "saves": 0,
+    "receipt": "FERN-SAVE-37779",
+    "at": "2026-11-19T01:27:33.013Z"
+  },
+  "observed_unsaved": {
+    "at": "2026-11-19T01:28:15.529Z",
+    "id": "4fa4fe8e-9405-491a-bbfd-321a5c57c382",
+    "tab": "tab-03630297-c954-47b0-be4a-86237e7e11c3",
+    "name": "get_browser_state",
+    "page": "http://host.docker.internal:8449/fern-save",
+    "state": "succeeded",
+    "target": "bt-72c0e0fc-57e4-47ea-95e2-bc1d855dcc15",
+    "started": "2026-11-19T01:27:57.082Z",
+    "snapshot": "p4",
+    "native_error": false,
+    "visible_labels": [
+      "Save request sent",
+      "Not saved yet"
+    ]
+  },
+  "operator_capture_gate_released_at": "2026-11-19T01:28:19Z",
+  "reobserved_before_retry": {
+    "at": "2026-11-19T01:28:50.819Z",
+    "id": "c0126117-f6a2-492d-9439-0099e4608bde",
+    "tab": "tab-03630297-c954-47b0-be4a-86237e7e11c3",
+    "name": "get_browser_state",
+    "page": "http://host.docker.internal:8449/fern-save",
+    "state": "succeeded",
+    "target": "bt-72c0e0fc-57e4-47ea-95e2-bc1d855dcc15",
+    "started": "2026-11-19T01:28:30.178Z",
+    "snapshot": "p5",
+    "native_error": false,
+    "visible_labels": [
+      "Save request sent",
+      "Not saved yet"
+    ]
+  },
+  "second_input": {
+    "at": "2026-11-19T01:29:35.925Z",
+    "id": "36a96a10-1fc1-4409-96f3-7bbbc87ad779",
+    "name": "browser_click",
+    "state": "succeeded",
+    "effect": "unverifiable",
+    "started": "2026-11-19T01:29:05.670Z",
+    "native_error": false
+  },
+  "confirmed_target_effect": {
+    "event": "report_saved",
+    "attempts": 2,
+    "saves": 1,
+    "receipt": "FERN-SAVE-37779",
+    "at": "2026-11-19T01:29:33.689Z"
+  },
+  "observed_saved": {
+    "at": "2026-11-19T01:30:06.955Z",
+    "id": "22104816-b199-40eb-a95e-c325cbb85c04",
+    "tab": "tab-03630297-c954-47b0-be4a-86237e7e11c3",
+    "name": "get_browser_state",
+    "page": "http://host.docker.internal:8449/fern-save",
+    "state": "succeeded",
+    "target": "bt-72c0e0fc-57e4-47ea-95e2-bc1d855dcc15",
+    "started": "2026-11-19T01:29:49.018Z",
+    "snapshot": "p6",
+    "native_error": false,
+    "visible_labels": [
+      "Save request sent",
+      "Saved FERN-SAVE-37779"
+    ]
+  },
+  "published_answer": {
+    "id": "35c9dad9-84ee-4ee3-8463-0be76d5d8379",
+    "text": "The Fern report is saved. The board shows Saved FERN-SAVE-37779.",
+    "created_at": "2026-11-19T01:30:11.368Z"
+  }
+}

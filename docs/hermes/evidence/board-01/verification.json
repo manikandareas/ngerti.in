@@ -1,0 +1,169 @@
+{
+  "date": "2026-11-19",
+  "surface": "Authenticated Ngertiin Web / Chromium",
+  "harness": "Pi ACP",
+  "provider": "live Sumopod API key",
+  "ready": [
+    {
+      "artifacts": [],
+      "assignee_agent_id": "0b01150a-95b8-45ec-9bf7-9c39a87d2dbd",
+      "assignee_name": "Glenn",
+      "blocker": null,
+      "current_run_id": null,
+      "id": "fb4c4ca2-d64d-4662-bcb2-a7f36896063d",
+      "revision": 1,
+      "state": "ready",
+      "submission": null,
+      "thread_id": "2cb7a3f9-2c64-4b2c-a57d-30489c737f7b"
+    },
+    {
+      "artifacts": [],
+      "assignee_agent_id": "2362f652-38fd-4082-906a-a8f942252831",
+      "assignee_name": "Ruth",
+      "blocker": null,
+      "current_run_id": null,
+      "id": "78baadc0-15d0-4189-82b7-b4b6beea8832",
+      "revision": 1,
+      "state": "ready",
+      "submission": null,
+      "thread_id": "bad7149b-df33-46ee-a97e-b7c1ae86bb40"
+    }
+  ],
+  "running": [
+    {
+      "artifacts": [],
+      "assignee_agent_id": "0b01150a-95b8-45ec-9bf7-9c39a87d2dbd",
+      "assignee_name": "Glenn",
+      "blocker": null,
+      "current_run_id": "418e19f9-f67a-4577-bdae-3813130b7c3b",
+      "id": "fb4c4ca2-d64d-4662-bcb2-a7f36896063d",
+      "revision": 2,
+      "state": "running",
+      "submission": null,
+      "thread_id": "2cb7a3f9-2c64-4b2c-a57d-30489c737f7b"
+    },
+    {
+      "artifacts": [],
+      "assignee_agent_id": "2362f652-38fd-4082-906a-a8f942252831",
+      "assignee_name": "Ruth",
+      "blocker": null,
+      "current_run_id": "c76bfe7c-ec18-4232-a976-e7fb22e46294",
+      "id": "78baadc0-15d0-4189-82b7-b4b6beea8832",
+      "revision": 2,
+      "state": "running",
+      "submission": null,
+      "thread_id": "bad7149b-df33-46ee-a97e-b7c1ae86bb40"
+    }
+  ],
+  "restored_cards": [
+    {
+      "artifacts": [
+        {
+          "id": "7a2b8d4f-1c6e-4b02-8d3e-5f6071829304",
+          "name": "board-maple-total.txt",
+          "workspace_id": "3f0d670a-ed49-4f89-8427-012772f379ae"
+        }
+      ],
+      "assignee_agent_id": "0b01150a-95b8-45ec-9bf7-9c39a87d2dbd",
+      "assignee_name": "Glenn",
+      "blocker": null,
+      "current_run_id": "418e19f9-f67a-4577-bdae-3813130b7c3b",
+      "id": "fb4c4ca2-d64d-4662-bcb2-a7f36896063d",
+      "revision": 4,
+      "state": "done",
+      "submission": {
+        "artifact_ids": [
+          "7a2b8d4f-1c6e-4b02-8d3e-5f6071829304"
+        ],
+        "summary": "17 + 29 = 46. Verified the published plain-text file contains exactly one line: \"Maple verified total: 46\"."
+      },
+      "thread_id": "2cb7a3f9-2c64-4b2c-a57d-30489c737f7b",
+      "title": "Maple board calibration"
+    },
+    {
+      "artifacts": [
+        {
+          "id": "7c4e8d21-6a9b-4f35-8e02-1b3a5d6c9e14",
+          "name": "board-aspen-total.txt",
+          "workspace_id": "ac712ebd-2b19-464d-a209-8f46a444b4c6"
+        }
+      ],
+      "assignee_agent_id": "2362f652-38fd-4082-906a-a8f942252831",
+      "assignee_name": "Ruth",
+      "blocker": null,
+      "current_run_id": "c76bfe7c-ec18-4232-a976-e7fb22e46294",
+      "id": "78baadc0-15d0-4189-82b7-b4b6beea8832",
+      "revision": 4,
+      "state": "done",
+      "submission": {
+        "artifact_ids": [
+          "7c4e8d21-6a9b-4f35-8e02-1b3a5d6c9e14"
+        ],
+        "summary": "Computed 31 + 42 = 73 (verified with a shell arithmetic check) and published board-aspen-total.txt as a plain-text file containing one line: \"Aspen verified total: 73\". File contents re-read after writing to confirm the exact text."
+      },
+      "thread_id": "bad7149b-df33-46ee-a97e-b7c1ae86bb40",
+      "title": "Aspen board inventory"
+    }
+  ],
+  "bound_runs": [
+    {
+      "run": "418e19f9-f67a-4577-bdae-3813130b7c3b",
+      "card": "fb4c4ca2-d64d-4662-bcb2-a7f36896063d",
+      "agent": "0b01150a-95b8-45ec-9bf7-9c39a87d2dbd",
+      "title": "Maple board calibration",
+      "thread": "2cb7a3f9-2c64-4b2c-a57d-30489c737f7b",
+      "profile": {
+        "model": "sumopod/deepseek-v4-flash",
+        "billing": "api_key",
+        "harness": "pi"
+      },
+      "artifact": {
+        "id": "7a2b8d4f-1c6e-4b02-8d3e-5f6071829304",
+        "name": "board-maple-total.txt",
+        "bytes": 25,
+        "sha256": "b8602ab8b65e23bfbe3471d865d688bbca609afece9881a3de6b971d8a8fddcb",
+        "workspace": "3f0d670a-ed49-4f89-8427-012772f379ae"
+      },
+      "workspace": "3f0d670a-ed49-4f89-8427-012772f379ae",
+      "run_status": "succeeded",
+      "bound_output": true,
+      "submit_calls": 1,
+      "same_actor_org": true,
+      "distinct_run_count": 1
+    },
+    {
+      "run": "c76bfe7c-ec18-4232-a976-e7fb22e46294",
+      "card": "78baadc0-15d0-4189-82b7-b4b6beea8832",
+      "agent": "2362f652-38fd-4082-906a-a8f942252831",
+      "title": "Aspen board inventory",
+      "thread": "bad7149b-df33-46ee-a97e-b7c1ae86bb40",
+      "profile": {
+        "model": "sumopod/deepseek-v4-flash",
+        "billing": "api_key",
+        "harness": "pi"
+      },
+      "artifact": {
+        "id": "7c4e8d21-6a9b-4f35-8e02-1b3a5d6c9e14",
+        "name": "board-aspen-total.txt",
+        "bytes": 25,
+        "sha256": "22831e1050674bcce9e6620e9845510b379c1257eafc4788c6bc51bb996b72e7",
+        "workspace": "ac712ebd-2b19-464d-a209-8f46a444b4c6"
+      },
+      "workspace": "ac712ebd-2b19-464d-a209-8f46a444b4c6",
+      "run_status": "succeeded",
+      "bound_output": true,
+      "submit_calls": 1,
+      "same_actor_org": true,
+      "distinct_run_count": 1
+    }
+  ],
+  "other_verified_actor_api": {
+    "count": 0,
+    "organization_scope_status": 200,
+    "verified_other_test_account": true
+  },
+  "other_verified_actor_ui": {
+    "boardLoaded": true,
+    "visibleCards": 0
+  }
+}

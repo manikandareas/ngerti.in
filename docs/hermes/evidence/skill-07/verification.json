@@ -1,0 +1,45 @@
+{
+  "date": "2026-11-19",
+  "surface": "Ngertiin Web (Chromium)",
+  "harness": "Pi ACP",
+  "provider": {
+    "mode": "live",
+    "model": "sumopod/deepseek-v4-flash",
+    "billing": "api_key"
+  },
+  "connector": "isolated Harbor Docs fixture",
+  "thread": "a08ecb96-9925-4d1d-88f0-59932ce60613",
+  "same_prompt": true,
+  "skill": {
+    "id": "c3df8b32-4312-4ff3-a22f-22ab0cc80af6",
+    "version": 1,
+    "opened_in_earlier_turn": "2ba2a246-8b6e-410f-ad0e-9f89873219ed",
+    "same_native_session": true
+  },
+  "before_revocation": {
+    "run": "42e821c6-f7d4-4177-b81c-4daaf6070fe2",
+    "receipt": {
+      "id": "b1d4a0e2-7d55-4f2f-9f0b-6a1c3e8d2a41",
+      "tool": "HARBOR_READ_SIGNAL",
+      "state": "succeeded",
+      "log_id": "harbor-signal-read",
+      "result": {
+        "signal": "HARBOR-RIDGE-906"
+      },
+      "run_id": "42e821c6-f7d4-4177-b81c-4daaf6070fe2"
+    }
+  },
+  "revocation": {
+    "at": "2026-11-18T23:16:50.864Z",
+    "id": "17f81117-a850-464d-9324-456099216540",
+    "generation": 6
+  },
+  "after_revocation": {
+    "run": "9efc5e85-3089-41ec-8e97-1ad877e3c120",
+    "app_effect_count": 0,
+    "result": "unverified",
+    "previous_signal_marked_stale": true,
+    "requested_scope": "Harbor Docs published signal read access in this conversation"
+  },
+  "unchanged_target_sha256": "f1bb0ec9346c53f51b534cb4148c0e08cb0c9e1e5ccc24b8c62fc373a1e6218a"
+}

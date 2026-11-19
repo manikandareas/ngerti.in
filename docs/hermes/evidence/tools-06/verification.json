@@ -1,0 +1,98 @@
+{
+  "date": "2026-11-19",
+  "surface": "Ngertiin Web (Chromium)",
+  "harness": "Pi ACP",
+  "provider": {
+    "mode": "live",
+    "model": "sumopod/deepseek-v4-flash",
+    "billing": "api_key"
+  },
+  "thread": "a6ad6ce7-5f67-4feb-9624-b7049aa9806b",
+  "workspace": "077d9ee2-4f5c-4451-961b-1636f7813049",
+  "start_run": "f248bf19-ecbf-4e7c-acd5-a06e04ebab5f",
+  "control_run": "efaa387d-ecb8-4f5e-8cd9-2071d1ff0fdd",
+  "running_after_first_turn": [
+    {
+      "id": "b7d2f0aa-3c66-4a2e-8a4f-6e3f1c9a2d55",
+      "state": "running",
+      "run_id": "f248bf19-ecbf-4e7c-acd5-a06e04ebab5f",
+      "stderr": "",
+      "stdout": "ASPEN-WATCH-READY\n",
+      "exit_code": null,
+      "machine_id": "a8c2f32d-293e-488c-b74e-1c4cf4bdfb3a",
+      "updated_at": "2026-11-18T21:53:18.654Z",
+      "exit_signal": null
+    },
+    {
+      "id": "d9c47f11-2b8a-4bd0-a3d6-91f7c5e04b28",
+      "state": "running",
+      "run_id": "f248bf19-ecbf-4e7c-acd5-a06e04ebab5f",
+      "stderr": "",
+      "stdout": "ASPEN-REPORT-READY\n",
+      "exit_code": null,
+      "machine_id": "a8c2f32d-293e-488c-b74e-1c4cf4bdfb3a",
+      "updated_at": "2026-11-18T21:53:27.066Z",
+      "exit_signal": null
+    }
+  ],
+  "receipt_for_selected_stop": {
+    "id": "6c3a91d4-5d2f-4b7e-a0c1-8e47b2d5f913",
+    "name": "process.terminate",
+    "state": "succeeded",
+    "result": {
+      "requested": "terminate",
+      "process_id": "b7d2f0aa-3c66-4a2e-8a4f-6e3f1c9a2d55"
+    },
+    "run_id": "efaa387d-ecb8-4f5e-8cd9-2071d1ff0fdd",
+    "updated_at": "2026-11-18T21:53:59.041Z"
+  },
+  "observed_after_watch_exited": [
+    {
+      "id": "b7d2f0aa-3c66-4a2e-8a4f-6e3f1c9a2d55",
+      "state": "exited",
+      "run_id": "f248bf19-ecbf-4e7c-acd5-a06e04ebab5f",
+      "stderr": "",
+      "stdout": "ASPEN-WATCH-READY\n",
+      "exit_code": null,
+      "machine_id": "a8c2f32d-293e-488c-b74e-1c4cf4bdfb3a",
+      "updated_at": "2026-11-18T21:53:59.047Z",
+      "exit_signal": "term"
+    },
+    {
+      "id": "d9c47f11-2b8a-4bd0-a3d6-91f7c5e04b28",
+      "state": "running",
+      "run_id": "f248bf19-ecbf-4e7c-acd5-a06e04ebab5f",
+      "stderr": "",
+      "stdout": "ASPEN-REPORT-READY\n",
+      "exit_code": null,
+      "machine_id": "a8c2f32d-293e-488c-b74e-1c4cf4bdfb3a",
+      "updated_at": "2026-11-18T21:53:27.066Z",
+      "exit_signal": null
+    }
+  ],
+  "report_gate_released_at": "2026-11-18T21:53:59Z",
+  "native_final_states": [
+    {
+      "id": "b7d2f0aa-3c66-4a2e-8a4f-6e3f1c9a2d55",
+      "state": "exited",
+      "run_id": "f248bf19-ecbf-4e7c-acd5-a06e04ebab5f",
+      "stderr": "",
+      "stdout": "ASPEN-WATCH-READY\n",
+      "exit_code": null,
+      "machine_id": "a8c2f32d-293e-488c-b74e-1c4cf4bdfb3a",
+      "updated_at": "2026-11-18T21:53:59.047Z",
+      "exit_signal": "term"
+    },
+    {
+      "id": "d9c47f11-2b8a-4bd0-a3d6-91f7c5e04b28",
+      "state": "exited",
+      "run_id": "f248bf19-ecbf-4e7c-acd5-a06e04ebab5f",
+      "stderr": "",
+      "stdout": "ASPEN-REPORT-READY\nASPEN-REPORT-DONE\n",
+      "exit_code": 0,
+      "machine_id": "a8c2f32d-293e-488c-b74e-1c4cf4bdfb3a",
+      "updated_at": "2026-11-18T21:54:00.525Z",
+      "exit_signal": null
+    }
+  ]
+}

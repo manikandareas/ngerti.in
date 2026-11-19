@@ -1,0 +1,166 @@
+{
+  "date": "2026-11-19",
+  "surface": "Authenticated Ngertiin Web / Chromium",
+  "harness": "Pi ACP",
+  "provider": "Sumopod live / API key",
+  "choice": {
+    "thread": "475dbc70-9977-4474-9db8-6edcc8ced167",
+    "pending": {
+      "continuation_run_id": null,
+      "id": "15984ae5-52db-45d1-9300-0c8b74406e17",
+      "options": {
+        "allow_custom": true,
+        "choices": [
+          {
+            "id": "north_desk_counter_12",
+            "label": "North Desk, counter 12"
+          },
+          {
+            "id": "south_yard_bay_7",
+            "label": "South Yard, bay 7"
+          }
+        ],
+        "max": 1,
+        "min": 1
+      },
+      "response_message_id": null,
+      "source_run_id": "5f38e57c-d111-44ce-9a1d-c1d37a53ad1e",
+      "state": "pending"
+    },
+    "settled": {
+      "continuation_run_id": "fcc47bd1-2034-459c-8703-d26937a1e341",
+      "id": "15984ae5-52db-45d1-9300-0c8b74406e17",
+      "options": {
+        "allow_custom": true,
+        "choices": [
+          {
+            "id": "north_desk_counter_12",
+            "label": "North Desk, counter 12"
+          },
+          {
+            "id": "south_yard_bay_7",
+            "label": "South Yard, bay 7"
+          }
+        ],
+        "max": 1,
+        "min": 1
+      },
+      "response_message_id": "3febfa86-d5f1-4d68-b582-2cf2d70f2f21",
+      "source_run_id": "5f38e57c-d111-44ce-9a1d-c1d37a53ad1e",
+      "state": "answered"
+    },
+    "input": {
+      "artifact_ids": [],
+      "author": "user",
+      "id": "3febfa86-d5f1-4d68-b582-2cf2d70f2f21",
+      "run_id": null,
+      "text": "South Yard, bay 7"
+    },
+    "answer": {
+      "artifact_ids": [],
+      "author": "agent",
+      "id": "59552f38-bbfe-4607-ad8a-34e741cd7132",
+      "run_id": "fcc47bd1-2034-459c-8703-d26937a1e341",
+      "text": "**Pickup ticket:** `OAK-01 — Oak pickup — South Yard, bay 7.`\n\nOne line, location only as chosen. Say the word if you want it dropped into a file or reformatted for your ticket system."
+    },
+    "runs": [
+      {
+        "id": "5f38e57c-d111-44ce-9a1d-c1d37a53ad1e",
+        "status": "succeeded",
+        "model": "sumopod/deepseek-v4-flash",
+        "billing": "api_key",
+        "product_tools": [
+          "ngertiin.ask_user"
+        ]
+      },
+      {
+        "id": "fcc47bd1-2034-459c-8703-d26937a1e341",
+        "status": "succeeded",
+        "model": "sumopod/deepseek-v4-flash",
+        "billing": "api_key",
+        "product_tools": []
+      }
+    ]
+  },
+  "free_text": {
+    "thread": "ae49efb2-cb55-4986-8d6b-7b7d9c8132ba",
+    "pending": {
+      "continuation_run_id": null,
+      "id": "d0dd1853-b075-4083-b017-31d2c658a09e",
+      "options": {
+        "allow_custom": true,
+        "choices": [
+          {
+            "id": "west-platform-5",
+            "label": "West Platform — spot 5"
+          },
+          {
+            "id": "east-platform-9",
+            "label": "East Platform — spot 9"
+          }
+        ],
+        "max": 1,
+        "min": 1
+      },
+      "response_message_id": null,
+      "source_run_id": "7ce7af62-5146-44a1-b60d-563d0ed97922",
+      "state": "pending"
+    },
+    "settled": {
+      "continuation_run_id": "8c1eba73-b586-4242-b11d-6daa086a2b5c",
+      "id": "d0dd1853-b075-4083-b017-31d2c658a09e",
+      "options": {
+        "allow_custom": true,
+        "choices": [
+          {
+            "id": "west-platform-5",
+            "label": "West Platform — spot 5"
+          },
+          {
+            "id": "east-platform-9",
+            "label": "East Platform — spot 9"
+          }
+        ],
+        "max": 1,
+        "min": 1
+      },
+      "response_message_id": "2513b8e7-2b3c-44d7-936d-18554c72cf52",
+      "source_run_id": "7ce7af62-5146-44a1-b60d-563d0ed97922",
+      "state": "answered"
+    },
+    "input": {
+      "artifact_ids": [],
+      "author": "user",
+      "id": "2513b8e7-2b3c-44d7-936d-18554c72cf52",
+      "run_id": null,
+      "text": "River Annex, station 19"
+    },
+    "answer": {
+      "artifact_ids": [],
+      "author": "agent",
+      "id": "19ecebb8-b53d-4207-b2be-34e4ef503640",
+      "run_id": "8c1eba73-b586-4242-b11d-6daa086a2b5c",
+      "text": "**Pickup ticket — Mica — River Annex, station 19.**"
+    },
+    "runs": [
+      {
+        "id": "7ce7af62-5146-44a1-b60d-563d0ed97922",
+        "status": "succeeded",
+        "model": "sumopod/deepseek-v4-flash",
+        "billing": "api_key",
+        "product_tools": [
+          "ngertiin.ask_user"
+        ]
+      },
+      {
+        "id": "8c1eba73-b586-4242-b11d-6daa086a2b5c",
+        "status": "succeeded",
+        "model": "sumopod/deepseek-v4-flash",
+        "billing": "api_key",
+        "product_tools": [
+          "ngertiin.read_run_context"
+        ]
+      }
+    ]
+  }
+}

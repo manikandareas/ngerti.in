@@ -1,0 +1,129 @@
+{
+  "date": "2026-11-19",
+  "surface": "Ngertiin Web (Chromium) and retained Computer viewer",
+  "harness": "Pi ACP",
+  "provider": {
+    "mode": "fixture",
+    "model": "handoff-fixture/computer-handoff",
+    "billing": "api_key",
+    "gate": "The fixture was released after the user pressed Return control. The operator code came from the browser observation."
+  },
+  "thread": "8c47876e-55e8-44c5-9da7-cac64afc9113",
+  "main_run": "e4e58c2f-4f14-41cc-be87-3b5adb440ad5",
+  "main_run_statuses": [
+    {
+      "at": "2026-11-19T00:05:15.977Z",
+      "cursor": 13924,
+      "status": "running"
+    },
+    {
+      "at": "2026-11-19T00:08:22.399Z",
+      "cursor": 14032,
+      "status": "succeeded"
+    }
+  ],
+  "readback_run": "c9249d51-1810-440c-bcd7-1b58bfacc13b",
+  "initial_input_order_failure": {
+    "run": "877d5573-556b-4024-aaf6-f0e13babdb1f",
+    "duplicate_form_posts": 98,
+    "ordered_probe_before_fix": [
+      "key-up",
+      "key-down"
+    ],
+    "ordered_probe_after_fix": [
+      "key-down",
+      "key-up"
+    ],
+    "targeted_tests": "10 passed"
+  },
+  "pre_takeover": {
+    "at": "2026-11-19T00:05:43.826Z",
+    "id": "bb6f6a49-1d59-4d47-8b83-60567465bfc8",
+    "run": "e4e58c2f-4f14-41cc-be87-3b5adb440ad5",
+    "url": "http://host.docker.internal:8446/iris-handoff",
+    "name": "get_browser_state",
+    "state": "succeeded",
+    "snapshot": "p2",
+    "dispatched_at": "2026-11-19T00:05:40.718Z",
+    "input_revision": 38
+  },
+  "takeover": {
+    "at": "2026-11-19T00:06:51.671Z",
+    "id": "003d0571-d1ce-4aa1-a878-971617e90479",
+    "name": "control.acquire",
+    "state": "succeeded",
+    "lease_holder": "human",
+    "dispatched_at": "2026-11-19T00:06:51.455Z",
+    "lease_revision": 39
+  },
+  "operator_effect": {
+    "event": "operator_saved",
+    "operatorCode": "IRIS-5826",
+    "publishedCode": null,
+    "at": "2026-11-19T00:07:11.515Z"
+  },
+  "handback": {
+    "at": "2026-11-19T00:07:23.446Z",
+    "id": "e28341c7-74a9-4558-b7f6-d43ec88cc843",
+    "name": "control.release",
+    "state": "succeeded",
+    "lease_holder": "none",
+    "dispatched_at": "2026-11-19T00:07:20.693Z",
+    "lease_revision": 40
+  },
+  "stale_input_error": {
+    "code": "RECONCILIATION_REQUIRED",
+    "created_at": "2026-11-19T00:07:34.047Z",
+    "name": "ngertiin.computer_call"
+  },
+  "fresh_observation": {
+    "at": "2026-11-19T00:07:48.113Z",
+    "id": "c6a07ecb-92eb-4ba3-a417-a91afa8031ec",
+    "run": "e4e58c2f-4f14-41cc-be87-3b5adb440ad5",
+    "url": "http://host.docker.internal:8446/iris-handoff",
+    "name": "get_browser_state",
+    "state": "succeeded",
+    "snapshot": "p3",
+    "dispatched_at": "2026-11-19T00:07:43.783Z",
+    "input_revision": 40,
+    "code_in_outline": "IRIS-5826"
+  },
+  "publication_dispatch": {
+    "at": "2026-11-19T00:08:19.828Z",
+    "id": "572076a2-d822-4f0a-813c-2693f13fc8ea",
+    "run": "e4e58c2f-4f14-41cc-be87-3b5adb440ad5",
+    "name": "browser_click",
+    "error": "MACHINE_UNKNOWN",
+    "state": "unknown",
+    "dispatched_at": "2026-11-19T00:07:52.748Z"
+  },
+  "publication_effect": {
+    "event": "entry_published",
+    "operatorCode": "IRIS-5826",
+    "publishedCode": "IRIS-5826",
+    "at": "2026-11-19T00:08:21.703Z"
+  },
+  "reconnect_control": {
+    "at": "2026-11-19T00:09:51.665Z",
+    "id": "ee92fe89-7423-4823-a54d-5aa84989d949",
+    "name": "control.reconcile",
+    "state": "succeeded",
+    "lease_holder": "none",
+    "dispatched_at": "2026-11-19T00:09:50.054Z",
+    "lease_revision": 42
+  },
+  "postcondition_observation": {
+    "at": "2026-11-19T00:10:27.763Z",
+    "id": "595b86f7-e1fd-4038-b576-32193918da19",
+    "run": "c9249d51-1810-440c-bcd7-1b58bfacc13b",
+    "url": "http://host.docker.internal:8446/iris-handoff",
+    "name": "get_browser_state",
+    "state": "succeeded",
+    "snapshot": "p4",
+    "dispatched_at": "2026-11-19T00:10:24.893Z",
+    "input_revision": 43,
+    "code_in_outline": "IRIS-5826",
+    "publication_in_outline": "Published IRIS-5826"
+  },
+  "answer": "The Iris handoff board now shows Published IRIS-5826."
+}

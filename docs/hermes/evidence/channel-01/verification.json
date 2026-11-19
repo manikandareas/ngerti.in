@@ -1,0 +1,152 @@
+{
+  "date": "2026-11-19",
+  "surface": "Chrome Web and native Tauri 2.12.5 development client",
+  "harness": "Pi ACP 0.0.34 (Pi 1.5.2)",
+  "provider": "API-key test fixture",
+  "account": {
+    "sameVerifiedAccount": true,
+    "differentDevices": true,
+    "authentication": [
+      "web",
+      "native"
+    ]
+  },
+  "thread": {
+    "thread_id": "1df1bff6-f43d-48c1-add7-b834034ddcf3",
+    "actor_id": "29066a95-2b82-4c8b-b498-3217693003c7",
+    "organization_id": "f82a07c3-7161-417b-a258-09a2e1c7d0ef",
+    "runs": [
+      {
+        "id": "169c085f-1326-440e-a8ef-0a1ee9e7f7ce",
+        "status": "succeeded"
+      },
+      {
+        "id": "7dbae48f-66ac-461b-8c51-adbd91683aa3",
+        "status": "succeeded"
+      }
+    ]
+  },
+  "webBeforeReconnect": {
+    "id": "7dbae48f-66ac-461b-8c51-adbd91683aa3",
+    "text": "Checking the cross",
+    "plugin": null,
+    "status": "running",
+    "timings": {
+      "ready_at": "2026-11-19T08:22:39.060Z",
+      "accepted_at": "2026-11-19T08:22:43.271Z",
+      "preparing_at": "2026-11-19T08:22:24.840Z",
+      "dispatched_at": "2026-11-19T08:22:39.060Z",
+      "first_output_at": "2026-11-19T08:22:43.903Z"
+    },
+    "selection": {
+      "harness": "pi",
+      "model_id": "kite-inference/verification-alpha",
+      "reasoning": null,
+      "account_id": "5b7f819583399f3f60ef5119f53c96ded864f6e05a400f38dc95882074d3bf1d",
+      "provider_id": "kite-inference",
+      "connection_id": "95ceefb4-090f-4a15-bb2e-acafedd55ccb",
+      "billing_source": "api_key",
+      "connection_generation": 2
+    },
+    "answerState": "partial",
+    "pluginStatus": null,
+    "pendingAnswer": null
+  },
+  "webAfterReconnect": {
+    "id": "7dbae48f-66ac-461b-8c51-adbd91683aa3",
+    "text": "Checking the cross",
+    "plugin": null,
+    "status": "running",
+    "timings": {
+      "ready_at": "2026-11-19T08:22:39.060Z",
+      "accepted_at": "2026-11-19T08:22:43.271Z",
+      "preparing_at": "2026-11-19T08:22:24.840Z",
+      "dispatched_at": "2026-11-19T08:22:39.060Z",
+      "first_output_at": "2026-11-19T08:22:43.903Z"
+    },
+    "selection": {
+      "harness": "pi",
+      "model_id": "kite-inference/verification-alpha",
+      "reasoning": null,
+      "account_id": "5b7f819583399f3f60ef5119f53c96ded864f6e05a400f38dc95882074d3bf1d",
+      "provider_id": "kite-inference",
+      "connection_id": "95ceefb4-090f-4a15-bb2e-acafedd55ccb",
+      "billing_source": "api_key",
+      "connection_generation": 2
+    },
+    "answerState": "partial",
+    "pluginStatus": null,
+    "pendingAnswer": null
+  },
+  "releaseGateAt": "2026-11-19T08:23:27.724477+00:00",
+  "requests": [
+    {
+      "event": "cross_surface",
+      "stage": "baseline",
+      "model": "verification-alpha",
+      "at": "2026-11-19T08:13:45.033Z"
+    },
+    {
+      "event": "cross_surface",
+      "stage": "reconnect",
+      "model": "verification-alpha",
+      "at": "2026-11-19T08:22:43.476Z"
+    }
+  ],
+  "runs": [
+    {
+      "id": "169c085f-1326-440e-a8ef-0a1ee9e7f7ce",
+      "text": "Web receipt confirmed. CEDAR-846.",
+      "plugin": null,
+      "status": "succeeded",
+      "timings": {
+        "ready_at": "2026-11-19T08:13:35.289Z",
+        "settled_at": "2026-11-19T08:13:50.152Z",
+        "accepted_at": "2026-11-19T08:13:44.544Z",
+        "preparing_at": "2026-11-19T08:12:33.752Z",
+        "dispatched_at": "2026-11-19T08:13:35.289Z",
+        "first_output_at": "2026-11-19T08:13:47.813Z"
+      },
+      "selection": {
+        "harness": "pi",
+        "model_id": "kite-inference/verification-alpha",
+        "reasoning": null,
+        "account_id": "5b7f819583399f3f60ef5119f53c96ded864f6e05a400f38dc95882074d3bf1d",
+        "provider_id": "kite-inference",
+        "connection_id": "95ceefb4-090f-4a15-bb2e-acafedd55ccb",
+        "billing_source": "api_key",
+        "connection_generation": 2
+      },
+      "answerState": "complete",
+      "pluginStatus": null,
+      "pendingAnswer": null
+    },
+    {
+      "id": "7dbae48f-66ac-461b-8c51-adbd91683aa3",
+      "text": "Checking the cross-device receipt. Confirmed after reconnect. WREN-327.",
+      "plugin": null,
+      "status": "succeeded",
+      "timings": {
+        "ready_at": "2026-11-19T08:22:39.060Z",
+        "settled_at": "2026-11-19T08:23:31.805Z",
+        "accepted_at": "2026-11-19T08:22:43.271Z",
+        "preparing_at": "2026-11-19T08:22:24.840Z",
+        "dispatched_at": "2026-11-19T08:22:39.060Z",
+        "first_output_at": "2026-11-19T08:22:43.903Z"
+      },
+      "selection": {
+        "harness": "pi",
+        "model_id": "kite-inference/verification-alpha",
+        "reasoning": null,
+        "account_id": "5b7f819583399f3f60ef5119f53c96ded864f6e05a400f38dc95882074d3bf1d",
+        "provider_id": "kite-inference",
+        "connection_id": "95ceefb4-090f-4a15-bb2e-acafedd55ccb",
+        "billing_source": "api_key",
+        "connection_generation": 2
+      },
+      "answerState": "complete",
+      "pluginStatus": null,
+      "pendingAnswer": null
+    }
+  ]
+}

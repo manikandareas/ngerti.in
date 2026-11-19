@@ -1,0 +1,162 @@
+{
+  "date": "2026-11-19",
+  "surface": "Ngertiin Web (Chromium), isolated authenticated Ngertiin API",
+  "harness": "Pi ACP",
+  "provider": "Sumopod DeepSeek V4 Flash live API key",
+  "source_fixture": "../../../../scripts/verification/hermes/dashboard.ts",
+  "thread_id": "af37e526-cf5f-475f-9af0-ae2129a2dd07",
+  "routine_id": "3f9c1a52-7d84-4b6e-9c11-5a2e8d47b0c3",
+  "metric": {
+    "above": 350,
+    "metric": "total Cedar daily units"
+  },
+  "baseline_source_rows": [
+    [
+      "Cedar North",
+      41
+    ],
+    [
+      "Cedar East",
+      83
+    ],
+    [
+      "Cedar South",
+      130
+    ],
+    [
+      "Cedar West",
+      63
+    ]
+  ],
+  "changed_source_rows": [
+    [
+      "Cedar North",
+      41
+    ],
+    [
+      "Cedar East",
+      83
+    ],
+    [
+      "Cedar South",
+      180
+    ],
+    [
+      "Cedar West",
+      63
+    ]
+  ],
+  "source_changed_at": "2026-11-18T19:26:29Z",
+  "host_restarted_at": "2026-11-18T19:28:45Z",
+  "reported_run": {
+    "billing": "api_key",
+    "id": "78e0ccd1-964f-4b0f-a15a-573275d3d4db",
+    "input_message_id": "25279819-2b77-46c6-89dd-80e637b14acc",
+    "manual_routine": false,
+    "model": "sumopod/deepseek-v4-flash",
+    "product_tools": [
+      "ngertiin.machine_exec",
+      "ngertiin.machine_exec",
+      "ngertiin.observe_routine",
+      "ngertiin.create_file",
+      "ngertiin.publish_artifact"
+    ],
+    "routine_id": "3f9c1a52-7d84-4b6e-9c11-5a2e8d47b0c3",
+    "routine_observation": {
+      "decision": "alert",
+      "value": 367
+    },
+    "status": "succeeded",
+    "tool_errors": [],
+    "workspace_id": "0d851199-4b7f-4365-b10f-28c982bdeee8"
+  },
+  "reported_message": {
+    "id": "000c5477-1a4e-4d99-84c1-79d48cc06892",
+    "text": "**Cedar threshold alert**\n\nThe total came in above your limit on this reading.\n\n- **Observed total:** 367 Cedar daily units (both pages read fresh: Cedar North 41, Cedar East 83, Cedar South 180, Cedar West 63)\n- **Threshold:** 350 (strictly above)\n- **Highest site:** Cedar South at 180 units\n\nThe four observed rows are in [cedar-threshold-alert.csv](artifact://7d0f5a2c-93e1-4b68-8d40-c5e1f8a3b296), with no total row. The watch keeps running every 60 seconds and will stay quiet unless a new alert is warranted."
+  },
+  "baseline_run_ids": [
+    "97c3944d-5045-4361-ba8a-8ce9fa016863",
+    "05bd48fa-0920-4369-8828-77e7158649d0"
+  ],
+  "post_restart_quiet_run_ids": [
+    "360ef364-ccdb-497e-96be-03adbb62188a"
+  ],
+  "observations": [
+    {
+      "occurrence_id": "aa662634-c00e-4074-ab16-c516a644ec3f",
+      "scheduled_for": "2026-11-18T19:24:58.000Z",
+      "created_at": "2026-11-18T19:24:59.004Z",
+      "trigger": "schedule",
+      "occurrence_state": "completed",
+      "run_id": "97c3944d-5045-4361-ba8a-8ce9fa016863",
+      "run_status": "succeeded",
+      "observation": {
+        "decision": "below_threshold",
+        "value": 317
+      }
+    },
+    {
+      "occurrence_id": "e2e67c74-0f11-4aa7-bed2-4212aaf4026c",
+      "scheduled_for": "2026-11-18T19:25:58.000Z",
+      "created_at": "2026-11-18T19:25:58.990Z",
+      "trigger": "schedule",
+      "occurrence_state": "completed",
+      "run_id": "05bd48fa-0920-4369-8828-77e7158649d0",
+      "run_status": "succeeded",
+      "observation": {
+        "decision": "below_threshold",
+        "value": 317
+      }
+    },
+    {
+      "occurrence_id": "6830f8b9-90e2-4109-8b24-2d582ec05ac2",
+      "scheduled_for": "2026-11-18T19:26:58.000Z",
+      "created_at": "2026-11-18T19:26:59.075Z",
+      "trigger": "schedule",
+      "occurrence_state": "completed",
+      "run_id": "78e0ccd1-964f-4b0f-a15a-573275d3d4db",
+      "run_status": "succeeded",
+      "observation": {
+        "decision": "alert",
+        "value": 367
+      }
+    },
+    {
+      "occurrence_id": "5ce10e30-5f02-4f19-824d-b26db2287085",
+      "scheduled_for": "2026-11-18T19:27:58.000Z",
+      "created_at": "2026-11-18T19:27:59.160Z",
+      "trigger": "schedule",
+      "occurrence_state": "completed",
+      "run_id": "23bf4b98-d499-40c7-81c4-f1283749fd73",
+      "run_status": "succeeded",
+      "observation": {
+        "decision": "already_alerted",
+        "value": 367
+      }
+    },
+    {
+      "occurrence_id": "f8859c97-cc5c-4544-93c1-d43bc43adba1",
+      "scheduled_for": "2026-11-18T19:28:58.000Z",
+      "created_at": "2026-11-18T19:28:59.327Z",
+      "trigger": "schedule",
+      "occurrence_state": "completed",
+      "run_id": "360ef364-ccdb-497e-96be-03adbb62188a",
+      "run_status": "succeeded",
+      "observation": {
+        "decision": "already_alerted",
+        "value": 367
+      }
+    }
+  ],
+  "alert_messages": 1,
+  "published_artifacts": 1,
+  "downloaded_artifact": {
+    "id": "7d0f5a2c-93e1-4b68-8d40-c5e1f8a3b296",
+    "name": "cedar-threshold-alert.csv",
+    "run_id": "78e0ccd1-964f-4b0f-a15a-573275d3d4db",
+    "sha256": "ee9ad260c6495ebf86e03edfb3a606a080a2b7bfeae70a48c5fd33ce0aff6995",
+    "source_path": "cedar-threshold-alert.csv",
+    "workspace_id": "0d851199-4b7f-4365-b10f-28c982bdeee8"
+  },
+  "routine_cleanup_state": "paused"
+}

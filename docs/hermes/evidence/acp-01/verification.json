@@ -1,0 +1,81 @@
+{
+  "date": "2026-11-19",
+  "surface": "Authenticated Ngertiin Web / Chromium, isolated lab",
+  "pi": {
+    "harness": "pi",
+    "backend": "live",
+    "thread": "6a615d6e-b0e9-410a-8684-f401c6dfd2ac",
+    "run": {
+      "id": "62de4ddd-f393-4517-afa5-53fc9a7219c6",
+      "status": "succeeded",
+      "model": "sumopod/deepseek-v4-flash",
+      "billing": "api_key",
+      "binding_id": "6f73f0bd-92af-4bd7-a1fa-573472733ee2",
+      "product_tools": [
+        "ngertiin.get_workspace",
+        "ngertiin.describe_tools",
+        "ngertiin.machine_exec",
+        "ngertiin.create_file",
+        "ngertiin.machine_exec",
+        "ngertiin.publish_artifact"
+      ]
+    },
+    "artifact": {
+      "id": "4d9b17e2-58a3-4c60-9f12-3b8e6da0c571",
+      "name": "pi-acp-elm.txt",
+      "sha256": "0f6f9e99ab0d194237f65fd4ef99dcf87248a46b1a0da606c3d7faa8950fedc9",
+      "run_id": "62de4ddd-f393-4517-afa5-53fc9a7219c6",
+      "download_bytes": 17,
+      "download_matches": true
+    }
+  },
+  "opencode": {
+    "harness": "opencode",
+    "backend": "live Free, preparation blocked",
+    "first_attempt": {
+      "id": "7b2043db-9e53-4115-9922-7cf4efba4ce9",
+      "model": "opencode/deepseek-v4.1-flash-free",
+      "status": "queued",
+      "billing": "free",
+      "binding_id": null,
+      "diagnostic": {
+        "code": "SERVICE_UNAVAILABLE",
+        "outcome": "not_dispatched",
+        "category": "temporary"
+      },
+      "preparation": {
+        "state": "blocked",
+        "attempts": 3,
+        "next_attempt_at": null,
+        "configuration_revision": "1:4:1"
+      },
+      "dispatched_at": null
+    },
+    "retry": {
+      "id": "7b2043db-9e53-4115-9922-7cf4efba4ce9",
+      "model": "opencode/deepseek-v4.1-flash-free",
+      "status": "queued",
+      "billing": "free",
+      "binding_id": null,
+      "diagnostic": {
+        "code": "NATIVE_UNKNOWN",
+        "outcome": "unknown",
+        "category": "unknown"
+      },
+      "preparation": {
+        "state": "blocked",
+        "attempts": 1,
+        "next_attempt_at": null,
+        "configuration_revision": "1:8:1"
+      },
+      "dispatched_at": null
+    }
+  },
+  "codex": {
+    "harness": "codex",
+    "backend": "live Subscription, login required",
+    "login": "required",
+    "billing": "subscription",
+    "models": []
+  }
+}

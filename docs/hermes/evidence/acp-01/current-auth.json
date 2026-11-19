@@ -1,0 +1,39 @@
+{
+  "date": "2026-11-19",
+  "surface": "Ngertiin authenticated lab account",
+  "scope": "Same actor and verification organization used for ACP-01",
+  "current_connections": [
+    {
+      "id": "3789c7ee-3c7c-4210-9a37-a427e7ac5fcd",
+      "login": "authenticated",
+      "state": "active",
+      "models": [
+        "model-a",
+        "model-b"
+      ],
+      "harness": "claude",
+      "account_linked": true,
+      "effective_billing": "api_key",
+      "configured_billing": "api_key"
+    },
+    {
+      "id": "513f9bbb-3a7a-4246-bb46-b82b6f8c44f9",
+      "login": "required",
+      "state": "active",
+      "models": [],
+      "harness": "codex",
+      "account_linked": false,
+      "effective_billing": "unknown",
+      "configured_billing": "subscription"
+    }
+  ],
+  "prior_browser_inspect": {
+    "billing": "subscription",
+    "diagnostic": null,
+    "login": "required",
+    "models": [],
+    "state": "active",
+    "status": 200
+  },
+  "claude_fixture_connection": "3789c7ee-3c7c-4210-9a37-a427e7ac5fcd"
+}

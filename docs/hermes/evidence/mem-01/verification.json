@@ -1,0 +1,71 @@
+{
+  "date": "2026-11-19",
+  "surface": "Ngertiin Web (Chromium)",
+  "harness": "Pi ACP",
+  "provider": {
+    "type": "live",
+    "model": "sumopod/deepseek-v4-flash",
+    "billing": "api_key"
+  },
+  "input": "synthetic",
+  "saved": {
+    "observation": {
+      "thread": "a514259a-c525-4242-811d-8bed59544812",
+      "agent": "bf61dd07-e39f-4e51-ad91-52271b43c3ed",
+      "run": {
+        "id": "b7145c2f-eff4-4067-bdda-68d5f15d5214",
+        "status": "succeeded",
+        "product_tools": [
+          "ngertiin.write_memory"
+        ]
+      },
+      "reply": "Saved — [@user](ngertiin://user/owner), that's now a shared preference for this agent, so it applies in every future conversation, not just here. From now on any ticket summary starts with the exact first line `Slate queue briefing`.\n\nOne conflict worth settling: your saved ticket-counting procedure requires the first line to be `TICKET CHECK`. I've recorded that your preference wins over a procedure's opening line, so summaries will open with `Slate queue briefing` and treat the skill's wording as superseded. Tell me if you'd rather have `TICKET CHECK` kept as the opener with the briefing line second — that would mean amending the saved procedure instead of the preference."
+    },
+    "memory": {
+      "actor_id": "29066a95-2b82-4c8b-b498-3217693003c7",
+      "agent_id": "bf61dd07-e39f-4e51-ad91-52271b43c3ed",
+      "created_at": "2026-11-18T17:08:11.329Z",
+      "id": "5d7c41e6-9b32-4a0f-8e61-7c2ab9d43f15",
+      "kind": "memory",
+      "organization_id": "f82a07c3-7161-417b-a258-09a2e1c7d0ef",
+      "owner_id": "10747d0f-bf61-4838-818f-edcf83c5ca4c",
+      "revision": 1,
+      "source_run_id": "b7145c2f-eff4-4067-bdda-68d5f15d5214",
+      "state": "active",
+      "text": "Standing formatting preference (set 2026-11-18): every ticket-summary answer must begin with the exact first line \"Slate queue briefing\". Applies to all future conversations with this agent. The owner set no exceptions; when a saved procedure specifies a different opening line, this preference wins unless the owner says otherwise.",
+      "thread_id": "a514259a-c525-4242-811d-8bed59544812",
+      "updated_at": "2026-11-18T17:08:11.329Z",
+      "visibility": "shared"
+    }
+  },
+  "fresh_chat": {
+    "previous_messages": 0,
+    "observation": {
+      "thread": "f52fe773-340e-4fd9-98c8-3e2690dff3e7",
+      "agent": "bf61dd07-e39f-4e51-ad91-52271b43c3ed",
+      "run": {
+        "id": "9edcf60a-979e-4663-b878-39eb951c4d18",
+        "status": "succeeded",
+        "product_tools": [
+          "ngertiin.read_skill",
+          "ngertiin.read_attachment",
+          "ngertiin.read_skill"
+        ]
+      },
+      "reply": "Slate queue briefing\n\n**cedar-tickets.txt** — 4 records read, 0 exact duplicates removed, 4 distinct tickets.\n\n| Status | Tickets | Count |\n|---|---|---|\n| Open | C-41, C-43 | 2 |\n| Waiting | C-42 | 1 |\n| Complete | C-44 | 1 |\n\nDistinct total: **4** (2 + 1 + 1 = 4)."
+    }
+  },
+  "other_agent": {
+    "thread": "08be73df-eacc-4a15-a2f9-f36514443359",
+    "agent": "2362f652-38fd-4082-906a-a8f942252831",
+    "run": {
+      "id": "85b0d199-1a0c-498f-94dd-29b3c1b99c85",
+      "status": "succeeded",
+      "product_tools": [
+        "ngertiin.read_attachment"
+      ]
+    },
+    "reply": "**Cedar ticket log — status summary**\n\n| Status | Count | Tickets |\n| --- | --- | --- |\n| Open | 2 | C-41, C-43 |\n| Waiting | 1 | C-42 |\n| Complete | 1 | C-44 |\n| **Distinct tickets** | **4** | C-41 – C-44 |\n\nStatus counts sum to 4, matching the 4 distinct ticket IDs, and each ID appears once in the log."
+  },
+  "attachment_sha256": "156b4e5301aa809f49cb22b0ba1993fd86335b9f200fe6911d98bb71afa8f963"
+}

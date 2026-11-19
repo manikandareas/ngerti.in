@@ -1,0 +1,104 @@
+{
+  "date": "2026-11-19",
+  "surface": "Authenticated Ngertiin Web / Chromium",
+  "harness": "Pi ACP",
+  "provider": "OpenAI-compatible local fixture / API key selection",
+  "before": {
+    "artifacts": [],
+    "assignee_agent_id": "c86e73bd-9015-46c4-8732-f19b9107f431",
+    "assignee_name": "Parallel Ledger",
+    "blocker": null,
+    "current_run_id": null,
+    "id": "e05d825b-2093-4969-9346-106eb9d1fb90",
+    "result_artifact_ids": [],
+    "resume_context": "",
+    "revision": 1,
+    "state": "ready",
+    "submission": null,
+    "thread_id": "c26535d6-3df8-41ae-ac0b-c47c3b19ca7d"
+  },
+  "blocked_after_reload": {
+    "artifacts": [],
+    "assignee_agent_id": "c86e73bd-9015-46c4-8732-f19b9107f431",
+    "assignee_name": "Parallel Ledger",
+    "blocker": "The operator ticket ID is missing. Provide the ticket ID to continue.",
+    "current_run_id": "90a5dc00-00aa-4218-9a60-f568d9183914",
+    "id": "e05d825b-2093-4969-9346-106eb9d1fb90",
+    "result_artifact_ids": [],
+    "resume_context": "",
+    "revision": 4,
+    "state": "blocked",
+    "submission": null,
+    "thread_id": "c26535d6-3df8-41ae-ac0b-c47c3b19ca7d"
+  },
+  "resumed_after_reload": {
+    "artifacts": [
+      {
+        "id": "b51daf6e-ab59-46d5-81a6-96e2cbd8f04a",
+        "name": "operator-ticket.txt",
+        "workspace_id": "c37ed7fb-0496-4be1-9b5c-de6d488b328e"
+      }
+    ],
+    "assignee_agent_id": "c86e73bd-9015-46c4-8732-f19b9107f431",
+    "assignee_name": "Parallel Ledger",
+    "blocker": null,
+    "current_run_id": "a301a830-465b-4895-92b6-7f28a1ae994b",
+    "id": "e05d825b-2093-4969-9346-106eb9d1fb90",
+    "result_artifact_ids": [
+      "b51daf6e-ab59-46d5-81a6-96e2cbd8f04a"
+    ],
+    "resume_context": "Operator ticket LIFT-714",
+    "revision": 7,
+    "state": "done",
+    "submission": {
+      "artifact_ids": [
+        "b51daf6e-ab59-46d5-81a6-96e2cbd8f04a"
+      ],
+      "summary": "Verified and recorded operator ticket LIFT-714."
+    },
+    "thread_id": "c26535d6-3df8-41ae-ac0b-c47c3b19ca7d"
+  },
+  "receipts": {
+    "card": "e05d825b-2093-4969-9346-106eb9d1fb90",
+    "runs": [
+      {
+        "id": "90a5dc00-00aa-4218-9a60-f568d9183914",
+        "agent": "c86e73bd-9015-46c4-8732-f19b9107f431",
+        "model": "delegation-fixture/peer-checks",
+        "tools": [
+          "ngertiin.block_board_card"
+        ],
+        "status": "succeeded",
+        "billing": "api_key",
+        "outputs": [],
+        "workspace": "c37ed7fb-0496-4be1-9b5c-de6d488b328e",
+        "owner_information": false
+      },
+      {
+        "id": "a301a830-465b-4895-92b6-7f28a1ae994b",
+        "agent": "c86e73bd-9015-46c4-8732-f19b9107f431",
+        "model": "delegation-fixture/peer-checks",
+        "tools": [
+          "ngertiin.create_file",
+          "ngertiin.publish_artifact",
+          "ngertiin.submit_board_card"
+        ],
+        "status": "succeeded",
+        "billing": "api_key",
+        "outputs": [
+          {
+            "id": "b51daf6e-ab59-46d5-81a6-96e2cbd8f04a",
+            "name": "operator-ticket.txt",
+            "size": 26,
+            "sha256": "29e5502b636cd66f14e2d440351e8a09514b5c913065d9854176c6c52a185183"
+          }
+        ],
+        "workspace": "c37ed7fb-0496-4be1-9b5c-de6d488b328e",
+        "owner_information": true
+      }
+    ],
+    "same_scope": true,
+    "same_title_count": 1
+  },
+  "bytes_verified": true
+}

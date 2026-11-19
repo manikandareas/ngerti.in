@@ -1,0 +1,82 @@
+{
+  "date": "2026-11-19",
+  "surface": "Ngertiin Web (Chromium)",
+  "harness": "Pi ACP",
+  "provider": {
+    "mode": "loopback fixture",
+    "billing": "api_key"
+  },
+  "routine_id": "328de9b7-0a9b-4418-a4dc-5d9a2c10b135",
+  "thread_id": "8fc77ad3-50ae-4a3b-9b6f-146ea845a6ae",
+  "config": {
+    "every_ms": 35000,
+    "max_runs": 4,
+    "type": "loop",
+    "until": {
+      "artifact_name": "marsh-seal.txt",
+      "exact_text": "MARSH=SEALED"
+    }
+  },
+  "binding": {
+    "active": true,
+    "id": "d492efae-433e-4881-b739-66c01c9551b1",
+    "native_session_id": "01a1f07e-0c76-75e4-8f45-8510110142b6",
+    "workspace_id": "56e35621-5c65-4678-b9e6-8dd63f464697"
+  },
+  "source_changed_at": "2026-11-18T21:09:44Z",
+  "provider_events": [
+    {
+      "event": "marsh_check",
+      "number": 1,
+      "result": "MARSH=SEALED_PENDING",
+      "at": "2026-11-18T21:09:26.861Z"
+    },
+    {
+      "event": "marsh_check",
+      "number": 2,
+      "result": "MARSH=SEALED",
+      "at": "2026-11-18T21:10:16.704Z"
+    }
+  ],
+  "state_after_mismatched_evidence": "active",
+  "state_after_verified_evidence": "completed",
+  "completion_reason": "condition_met",
+  "checks": [
+    {
+      "number": 1,
+      "occurrence_id": "5b5db363-4c08-416c-92f9-92a82e7b7b15",
+      "scheduled_for": "2026-11-18T21:09:21.179Z",
+      "run_id": "6f1538cf-ac55-4133-80e2-69adefc7ffe3",
+      "settled_at": "2026-11-18T21:09:37.275Z",
+      "shown_answer": "The Marsh seal is confirmed complete.",
+      "evidence_status": "mismatch",
+      "artifact": {
+        "id": "980dfd9a-eaec-4e8b-ad96-0b7fd0c9e1ee",
+        "name": "marsh-seal.txt",
+        "run_id": "6f1538cf-ac55-4133-80e2-69adefc7ffe3",
+        "sha256": "043f1d03c8e30627017adf15dd6ef9920160a13182138e5e71d8c3774c01dcee",
+        "source_path": "marsh-seal.txt",
+        "workspace_id": "56e35621-5c65-4678-b9e6-8dd63f464697"
+      },
+      "text_shown_in_file_viewer": "MARSH=SEALED_PENDING"
+    },
+    {
+      "number": 2,
+      "occurrence_id": "4723e798-b9c3-43db-b7d9-e77378322592",
+      "scheduled_for": "2026-11-18T21:10:12.275Z",
+      "run_id": "01d88869-2440-42e4-9998-20ce691cf44f",
+      "settled_at": "2026-11-18T21:10:25.209Z",
+      "shown_answer": "I published the actual sealed state.",
+      "evidence_status": "matched",
+      "artifact": {
+        "id": "20ec031f-e494-4550-8354-5d00de025bb6",
+        "name": "marsh-seal.txt",
+        "run_id": "01d88869-2440-42e4-9998-20ce691cf44f",
+        "sha256": "d4a60ec08b400e737a1b713859a094ef685b3223bc777eb8642d80a6c022b17f",
+        "source_path": "marsh-seal.txt",
+        "workspace_id": "56e35621-5c65-4678-b9e6-8dd63f464697"
+      },
+      "text_shown_in_file_viewer": "MARSH=SEALED"
+    }
+  ]
+}

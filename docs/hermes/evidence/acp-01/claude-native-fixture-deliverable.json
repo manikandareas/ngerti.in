@@ -1,0 +1,91 @@
+{
+  "date": "2026-11-19",
+  "surface": "Chrome Ngertiin Web with real authenticated HTTP, PostgreSQL, and a disposable Cua domain",
+  "harness": "Pinned Claude ACP 0.107.0 and Claude Agent SDK 0.3.323",
+  "provider": "Local Messages API fixture with a synthetic key; no Anthropic inference",
+  "completed": true,
+  "fixturePermissionMode": "Manual",
+  "cuaPolicy": {
+    "version": 1,
+    "max_domains": 1,
+    "memory_mib": 1536,
+    "cpus": 2,
+    "pids": 512
+  },
+  "workingFilePreflight": {
+    "state": "verified",
+    "ms": 1562
+  },
+  "sessionOpenStatus": 200,
+  "latestPermissionSubject": "mcp__ngertiin__ngertiin_publish_artifact",
+  "browserRunScopedApprovals": [
+    "mcp__ngertiin__ngertiin_read_file",
+    "mcp__ngertiin__ngertiin_publish_artifact"
+  ],
+  "run": {
+    "id": "15522df5-6ead-45de-8199-e8154e0f4264",
+    "status": "succeeded",
+    "provider_selection": {
+      "connection_id": "b817093c-031e-467f-8888-cc34d5188f74",
+      "connection_generation": 2,
+      "account_id": "9eedd8f301ba1d82a0503eb5ffda7575d3092353d18dd7572aa35b86b04527b6",
+      "harness": "claude",
+      "provider_id": "anthropic",
+      "model_id": "haiku",
+      "reasoning": null,
+      "billing_source": "api_key"
+    },
+    "product_tools": [
+      "ngertiin.read_file",
+      "ngertiin.publish_artifact"
+    ]
+  },
+  "activity": "Claude Code Willow Verification: Reading your file…",
+  "artifact": {
+    "id": "71ddd825-ea95-4b15-bc6d-3bacd44ae62b",
+    "name": "claude-acp-willow.txt",
+    "sha256": "f5f0bd80a69963ec5a47174acd66b094298f729feb808479b3c5cd57d3d86d4e",
+    "bytes": 22,
+    "contents": "CLAUDE-ACP-WILLOW-9163"
+  },
+  "providerFixtureCalls": [
+    {
+      "action": "read_file",
+      "model": "claude-haiku-5-5"
+    },
+    {
+      "action": "publish_artifact",
+      "model": "claude-haiku-5-5"
+    },
+    {
+      "action": "verified_publish_receipt",
+      "model": "claude-haiku-5-5"
+    }
+  ],
+  "providerFixtureToolErrors": [],
+  "toolRequests": [
+    {
+      "method": "initialize",
+      "status": 200,
+      "elapsedMs": 1740
+    },
+    {
+      "method": "notifications/initialized",
+      "status": 202,
+      "elapsedMs": 741
+    },
+    {
+      "method": "tools/call",
+      "tool": "ngertiin.read_file",
+      "status": 200,
+      "elapsedMs": 8613
+    },
+    {
+      "method": "tools/call",
+      "tool": "ngertiin.publish_artifact",
+      "status": 200,
+      "elapsedMs": 20249
+    }
+  ],
+  "disposableDomainVolumeRemoved": true
+}

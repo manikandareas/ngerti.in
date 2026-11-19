@@ -1,0 +1,89 @@
+{
+  "date": "2026-11-19",
+  "surface": "Chrome Ngertiin Web authenticated to the lab API",
+  "harness": "OpenCode ACP 1.19.5",
+  "provider": "OpenCode Free live, no API key",
+  "oldRunRejectedForStaleGrant": true,
+  "newRunProviderLimited": true,
+  "observedBrowserCopy": "Usage limit reached. Wait for quota to reset or choose another connection.",
+  "records": {
+    "runs": [
+      {
+        "id": "7b2043db-9e53-4115-9922-7cf4efba4ce9",
+        "status": "queued",
+        "binding_id": null,
+        "diagnostic": {
+          "code": "NATIVE_UNKNOWN",
+          "outcome": "unknown",
+          "category": "unknown"
+        },
+        "updated_at": "2026-11-19T10:17:25.839Z",
+        "preparation": {
+          "state": "blocked",
+          "attempts": 1,
+          "next_attempt_at": null,
+          "configuration_revision": "1:20:1"
+        },
+        "dispatched_at": null,
+        "product_tools": [],
+        "artifact_count": 0,
+        "frozen_provider": {
+          "harness": "opencode",
+          "model_id": "opencode/deepseek-v4.1-flash-free",
+          "reasoning": null,
+          "account_id": null,
+          "provider_id": "opencode",
+          "connection_id": "24ea198b-34d8-4a0a-8da6-7abf994ba85f",
+          "billing_source": "free",
+          "connection_generation": 2
+        },
+        "native_reply_count": 0
+      },
+      {
+        "id": "22134b54-b508-49f8-9a33-72d9024ce4fe",
+        "status": "failed",
+        "binding_id": "85097d81-dfe5-431b-834f-325e041a8700",
+        "diagnostic": {
+          "code": "PROVIDER_LIMIT",
+          "outcome": "failed",
+          "category": "provider"
+        },
+        "updated_at": "2026-11-19T10:17:12.156Z",
+        "preparation": {
+          "state": "ready",
+          "attempts": 1,
+          "next_attempt_at": null,
+          "configuration_revision": "1:19:1"
+        },
+        "dispatched_at": null,
+        "product_tools": [],
+        "artifact_count": 0,
+        "frozen_provider": {
+          "harness": "opencode",
+          "model_id": "opencode/deepseek-v4.1-flash-free",
+          "reasoning": null,
+          "account_id": null,
+          "provider_id": "opencode",
+          "connection_id": "24ea198b-34d8-4a0a-8da6-7abf994ba85f",
+          "billing_source": "free",
+          "connection_generation": 12
+        },
+        "native_reply_count": 0
+      }
+    ],
+    "current_grant_revision": 12
+  },
+  "timings": {
+    "event": "harness.turn_timing",
+    "run_id": "22134b54-b508-49f8-9a33-72d9024ce4fe",
+    "outcome": "failed",
+    "phases": {
+      "session_ready": 554,
+      "account_settings_ready": 561,
+      "inputs_ready": 1769,
+      "skills_ready": 1773,
+      "prompt_sent": 5023,
+      "completed": 34571
+    }
+  }
+}

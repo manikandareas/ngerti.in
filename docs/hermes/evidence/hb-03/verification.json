@@ -1,0 +1,142 @@
+{
+  "date": "2026-11-19",
+  "surface": "Ngertiin Web (Chromium)",
+  "harness": "Pi ACP",
+  "provider": "Loopback OpenAI-compatible fixture, API key mode",
+  "thread_id": "9d80fff4-5666-4152-b8d7-d159b02c3688",
+  "routine_id": "8ce61e01-2cb2-42c0-b090-3f76c93a0f97",
+  "isolated_fault": "The Pi ACP symlink for this isolated development server was unavailable at startup. Restoring that test symlink repaired preparation in the same API process.",
+  "same_server_process_during_repair": true,
+  "binding_before_and_after": {
+    "active": true,
+    "id": "9a06629e-ff27-4966-952d-c1f08bee8fe5",
+    "native_session_id": "01a1f05e-c277-74c0-8f86-7763b45aca63",
+    "workspace_id": "850b96e4-3e7d-476d-bda1-eeffa1a19d84"
+  },
+  "native_auto_compaction": {
+    "id": "4b8762e5",
+    "type": "compaction",
+    "firstKeptEntryId": "8da9b97f",
+    "tokensBefore": 50474,
+    "timestamp": "2026-11-18T20:35:16.075Z",
+    "contains_reference": true
+  },
+  "provider_compaction_observation": {
+    "event": "tern_native_compaction",
+    "reference": "TERN-REEF-83",
+    "at": "2026-11-18T20:35:16.071Z"
+  },
+  "harness_unavailable_confirmed_at": "2026-11-18T20:37:41.934564+00:00",
+  "harness_restored_confirmed_at": "2026-11-18T20:38:28.689608+00:00",
+  "queued_occurrence": {
+    "actor_id": "29066a95-2b82-4c8b-b498-3217693003c7",
+    "check": null,
+    "created_at": "2026-11-18T20:38:26.896Z",
+    "id": "6012db8b-6836-471b-bf61-67ca63e42d45",
+    "kind": "occurrence",
+    "organization_id": "f82a07c3-7161-417b-a258-09a2e1c7d0ef",
+    "owner_id": "10747d0f-bf61-4838-818f-edcf83c5ca4c",
+    "revision": 1,
+    "route_id": null,
+    "routine_generation": 1,
+    "routine_id": "8ce61e01-2cb2-42c0-b090-3f76c93a0f97",
+    "run_id": "3b7e1b06-b17a-42c5-8569-c6cc735d8050",
+    "scheduled_for": "2026-11-18T20:38:26.000Z",
+    "selected_agent_id": "bf61dd07-e39f-4e51-ad91-52271b43c3ed",
+    "state": "queued",
+    "trigger": "schedule",
+    "updated_at": "2026-11-18T20:38:26.896Z"
+  },
+  "queued_run_before_dispatch": {
+    "billing": "api_key",
+    "binding_id": null,
+    "diagnostic": {
+      "category": "configuration",
+      "code": "EXECUTABLE_MISSING",
+      "outcome": "not_dispatched"
+    },
+    "id": "3b7e1b06-b17a-42c5-8569-c6cc735d8050",
+    "input_message_id": "1c16e555-2092-408f-959c-373bd0e0ae4e",
+    "manual_routine": false,
+    "model": "schedule-fixture/schedule-recovery",
+    "preparation": {
+      "attempts": 1,
+      "configuration_revision": "1:10:1",
+      "next_attempt_at": null,
+      "runtime_revision": "missing:missing:unknown",
+      "state": "blocked"
+    },
+    "product_tools": [],
+    "routine_id": "8ce61e01-2cb2-42c0-b090-3f76c93a0f97",
+    "status": "queued",
+    "timings": {
+      "preparing_at": "2026-11-18T20:38:26.975Z"
+    },
+    "tool_errors": [],
+    "workspace_id": null
+  },
+  "completed_occurrence": {
+    "actor_id": "29066a95-2b82-4c8b-b498-3217693003c7",
+    "check": null,
+    "created_at": "2026-11-18T20:38:26.896Z",
+    "id": "6012db8b-6836-471b-bf61-67ca63e42d45",
+    "kind": "occurrence",
+    "organization_id": "f82a07c3-7161-417b-a258-09a2e1c7d0ef",
+    "owner_id": "10747d0f-bf61-4838-818f-edcf83c5ca4c",
+    "revision": 3,
+    "route_id": null,
+    "routine_generation": 1,
+    "routine_id": "8ce61e01-2cb2-42c0-b090-3f76c93a0f97",
+    "run_id": "3b7e1b06-b17a-42c5-8569-c6cc735d8050",
+    "scheduled_for": "2026-11-18T20:38:26.000Z",
+    "selected_agent_id": "bf61dd07-e39f-4e51-ad91-52271b43c3ed",
+    "state": "completed",
+    "trigger": "schedule",
+    "updated_at": "2026-11-18T20:38:35.934Z"
+  },
+  "settled_run": {
+    "billing": "api_key",
+    "binding_id": "9a06629e-ff27-4966-952d-c1f08bee8fe5",
+    "diagnostic": null,
+    "id": "3b7e1b06-b17a-42c5-8569-c6cc735d8050",
+    "input_message_id": "1c16e555-2092-408f-959c-373bd0e0ae4e",
+    "manual_routine": false,
+    "model": "schedule-fixture/schedule-recovery",
+    "preparation": {
+      "attempts": 1,
+      "configuration_revision": "1:10:1",
+      "next_attempt_at": null,
+      "runtime_revision": "/Users/vitoandareasmanik/Development/project/ngertiin/.dev/verification/hermes/hb03-bin/pi-acp:16777234:119123450:106049:1794835781762:missing:unknown",
+      "state": "ready"
+    },
+    "product_tools": [],
+    "routine_id": "8ce61e01-2cb2-42c0-b090-3f76c93a0f97",
+    "status": "succeeded",
+    "timings": {
+      "accepted_at": "2026-11-18T20:38:34.574Z",
+      "dispatched_at": "2026-11-18T20:38:33.815Z",
+      "first_output_at": "2026-11-18T20:38:34.810Z",
+      "preparing_at": "2026-11-18T20:38:26.975Z",
+      "ready_at": "2026-11-18T20:38:33.815Z",
+      "settled_at": "2026-11-18T20:38:35.260Z"
+    },
+    "tool_errors": [],
+    "workspace_id": "850b96e4-3e7d-476d-bda1-eeffa1a19d84"
+  },
+  "scheduled_provider_requests": 1,
+  "provider_context_receipt": {
+    "event": "tern_heartbeat_dispatched",
+    "used_native_compaction_context": true,
+    "reference": "TERN-REEF-83",
+    "at": "2026-11-18T20:38:34.625Z"
+  },
+  "visible_answer": {
+    "artifact_ids": [],
+    "author": "agent",
+    "id": "f95f2182-94dc-4f2c-8952-caeaca84efbb",
+    "run_id": "3b7e1b06-b17a-42c5-8569-c6cc735d8050",
+    "text": "Tern recovered session \u00b7 TERN-REEF-83"
+  },
+  "routine_cleanup_state": "paused",
+  "boundary": "The native checkpoint was written by automatic compaction during the synthetic long conversation. A later manual compact probe returned a native rejection and did not supply the checkpoint used here."
+}

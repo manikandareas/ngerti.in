@@ -1,0 +1,118 @@
+{
+  "date": "2026-11-19",
+  "surface": "Ngertiin Web (Chromium)",
+  "harness": "Pi ACP",
+  "provider": {
+    "type": "live",
+    "model": "sumopod/deepseek-v4-flash",
+    "billing": "api_key"
+  },
+  "input": "synthetic",
+  "queued_case": {
+    "report": {
+      "id": "1465c951-51fb-487d-b118-550c6b613b3f",
+      "status": "succeeded",
+      "product_tools": [
+        "ngertiin.read_attachment",
+        "ngertiin.write_memory",
+        "ngertiin.create_file",
+        "ngertiin.publish_artifact"
+      ],
+      "review": {
+        "state": "cancelled",
+        "attempts": 0,
+        "scopes": {
+          "memory": true,
+          "skill": true
+        },
+        "skill_versions": [],
+        "memory_saved": false
+      }
+    },
+    "next_reply": "42"
+  },
+  "active_case": {
+    "state_before_stop": "running",
+    "report": {
+      "id": "e8f2316b-0bbb-4fbe-8095-9df4a42e52fc",
+      "status": "succeeded",
+      "product_tools": [
+        "ngertiin.read_attachment",
+        "ngertiin.create_file",
+        "ngertiin.publish_artifact"
+      ],
+      "review": {
+        "state": "cancelled",
+        "attempts": 1,
+        "scopes": {
+          "memory": true,
+          "skill": true
+        },
+        "skill_versions": [],
+        "memory_saved": false
+      }
+    },
+    "events": {
+      "timeline": [
+        {
+          "at": "2026-11-18T16:14:43.489Z",
+          "state": "pending"
+        },
+        {
+          "at": "2026-11-18T16:14:43.777Z",
+          "state": "running"
+        },
+        {
+          "at": "2026-11-18T16:14:48.926Z",
+          "state": "cancelled"
+        }
+      ],
+      "observed_at": "2026-11-18T16:16:14.93044+00:00"
+    },
+    "download": {
+      "name": "review-stop-total.csv",
+      "origin": "native_output",
+      "sha256": "7ae028bb7f8fd1902ab54fcc4cdee89ce32f4a4235798347bb8abd1f10c16594",
+      "size_bytes": 119
+    },
+    "next_reply": "8"
+  },
+  "unchanged": {
+    "active_skill_assignments": [
+      {
+        "assignment": {
+          "enabled": true,
+          "revision": 1,
+          "version": 1
+        },
+        "id": "18d66496-ef95-48e0-9572-6fa26a2d75da",
+        "name": "team-incident-brief",
+        "revision": 1,
+        "visibility": "shared"
+      },
+      {
+        "assignment": {
+          "enabled": true,
+          "revision": 2,
+          "version": 2
+        },
+        "id": "199b4d96-d2a6-4b61-80b4-5eeb812b4820",
+        "name": "dedupe-count-reconciliation",
+        "revision": 2,
+        "visibility": "shared"
+      },
+      {
+        "assignment": {
+          "enabled": true,
+          "revision": 1,
+          "version": 1
+        },
+        "id": "84d7c94d-877f-415b-9b46-ef47fd25bbff",
+        "name": "time-bucket-coverage-rollup",
+        "revision": 1,
+        "visibility": "shared"
+      }
+    ],
+    "memory_entries": 1
+  }
+}

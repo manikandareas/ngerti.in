@@ -1,0 +1,74 @@
+{
+  "date": "2026-11-19",
+  "surface": "Ngertiin Web (Chromium)",
+  "harness": "Pi ACP",
+  "model_provider": {
+    "mode": "live",
+    "model": "sumopod/deepseek-v4-flash",
+    "billing": "api_key"
+  },
+  "web_backend": "Firecrawl v2-compatible loopback fixture",
+  "run_id": "e5a08bee-691e-4918-9d94-50012d771d47",
+  "thread_id": "ab07f67e-d71d-439f-8e61-9c20fb4c6505",
+  "binding": {
+    "active": true,
+    "id": "1a1c7857-94d1-4cd7-ac5f-19d801faecd6",
+    "native_session_id": "01a1f098-86b1-743c-827e-78855b8479f6",
+    "workspace_id": "92864d3f-9a5d-4bf8-b1fc-e58e9a602fe1"
+  },
+  "tool_calls": [
+    "ngertiin.web_search",
+    "ngertiin.web_search",
+    "ngertiin.web_extract",
+    "ngertiin.web_extract"
+  ],
+  "web_events": [
+    {
+      "event": "web_search",
+      "query": "\"Hazel Beacon\" field guide",
+      "at": "2026-11-18T21:38:19.158Z"
+    },
+    {
+      "event": "web_search",
+      "query": "Hazel Beacon field guide amber review desk alert clear",
+      "at": "2026-11-18T21:38:19.171Z"
+    },
+    {
+      "event": "web_extract",
+      "path": "/hazel/field-guide-2026",
+      "at": "2026-11-18T21:38:23.588Z"
+    },
+    {
+      "event": "web_extract",
+      "path": "/hazel/archive-2024",
+      "at": "2026-11-18T21:38:27.582Z"
+    },
+    {
+      "event": "source_opened",
+      "path": "/hazel/field-guide-2026",
+      "at": "2026-11-18T21:38:58.004Z"
+    }
+  ],
+  "recorded_sources": [
+    {
+      "operation": "openPage",
+      "title": "Hazel Beacon Field Guide \u00b7 November 2026",
+      "url": "http://127.0.0.1:8431/hazel/field-guide-2026"
+    },
+    {
+      "operation": "openPage",
+      "title": "Archived Hazel Beacon Field Guide \u00b7 November 2024",
+      "url": "http://127.0.0.1:8431/hazel/archive-2024"
+    }
+  ],
+  "opened_browser_page": {
+    "content": "Hazel Beacon Field Guide \u00b7 November 2026\nAmber review\n\nOpen a manual review when the Hazel Beacon falls below 42 signal units in two consecutive observation windows. Route the review to the Reliability desk. Clear the alert only after three consecutive windows at or above 48 signal units.",
+    "title": "Hazel Beacon Field Guide \u00b7 November 2026",
+    "url": "http://127.0.0.1:8431/hazel/field-guide-2026"
+  },
+  "matched_facts": {
+    "review_open": "Below 42 units for two consecutive windows",
+    "review_desk": "Reliability",
+    "alert_clear": "At least 48 units for three consecutive windows"
+  }
+}

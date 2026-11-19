@@ -1,0 +1,83 @@
+{
+  "date": "2026-11-19",
+  "surface": "Ngertiin Web (Chromium)",
+  "harness": "Pi ACP",
+  "provider": {
+    "mode": "fixture",
+    "model": "lifecycle-fixture/conversation-lifecycle",
+    "billing": "api_key"
+  },
+  "thread": "f9a2d3c4-a4b9-429f-9645-43ed76128210",
+  "run": "87b85d64-a057-490b-8c30-75bf874855f0",
+  "one_run": true,
+  "target_requests": [
+    {
+      "marker": "RECOVER-4261A371",
+      "source": "primary",
+      "view": null,
+      "status": 200,
+      "units": 310,
+      "at": "2026-11-19T02:53:26.514Z"
+    },
+    {
+      "marker": "RECOVER-4261A371",
+      "source": "detail",
+      "view": "compact",
+      "status": 503,
+      "error": "The compact detail view is temporarily unavailable.",
+      "available_view": "rows",
+      "at": "2026-11-19T02:53:30.735Z"
+    },
+    {
+      "marker": "RECOVER-4261A371",
+      "source": "detail",
+      "view": "rows",
+      "status": 200,
+      "units": 416,
+      "at": "2026-11-19T02:53:36.033Z"
+    }
+  ],
+  "processes": [
+    {
+      "type": "request",
+      "command": "curl --fail-with-body --silent --show-error --max-time 6 'http://host.docker.internal:8452/recovery/RECOVER-4261A371/primary'"
+    },
+    {
+      "type": "receipt",
+      "id": "7dc2e4cd-42a9-4fec-8acd-517e244c2ba8",
+      "run_id": "87b85d64-a057-490b-8c30-75bf874855f0",
+      "state": "exited",
+      "exit_code": 0,
+      "stdout": "{\"source\":\"primary\",\"units\":310}",
+      "stderr": ""
+    },
+    {
+      "type": "request",
+      "command": "curl --fail-with-body --silent --show-error --max-time 6 'http://host.docker.internal:8452/recovery/RECOVER-4261A371/detail?view=compact'"
+    },
+    {
+      "type": "receipt",
+      "id": "d706eb64-da6a-442e-bf08-1f8de47fee37",
+      "run_id": "87b85d64-a057-490b-8c30-75bf874855f0",
+      "state": "exited",
+      "exit_code": 22,
+      "stdout": "{\"error\":\"The compact detail view is temporarily unavailable.\",\"available_view\":\"rows\"}",
+      "stderr": "curl: (22) The requested URL returned error: 503\n"
+    },
+    {
+      "type": "request",
+      "command": "curl --fail-with-body --silent --show-error --max-time 6 'http://host.docker.internal:8452/recovery/RECOVER-4261A371/detail?view=rows'"
+    },
+    {
+      "type": "receipt",
+      "id": "80ccb277-93b6-4b06-9736-4e8b44e031eb",
+      "run_id": "87b85d64-a057-490b-8c30-75bf874855f0",
+      "state": "exited",
+      "exit_code": 0,
+      "stdout": "{\"source\":\"detail\",\"units\":416}",
+      "stderr": ""
+    }
+  ],
+  "verified_total": 726,
+  "answer": "The primary source showed 310 units. The compact detail view was temporarily unavailable. The row view recovered 416 detail units. The verified combined total is 726 units."
+}

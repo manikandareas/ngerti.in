@@ -1,0 +1,88 @@
+{
+  "date": "2026-11-19",
+  "surface": "Ngertiin Web (Chromium)",
+  "harness": "Pi ACP",
+  "provider": {
+    "mode": "live",
+    "model": "sumopod/deepseek-v4-flash",
+    "billing": "api_key"
+  },
+  "data": "Isolated Harbor Docs and Chromium board fixtures",
+  "same_prompt": true,
+  "prompt_sha256": "06a0242f20bbd48ee48cbf202074763240e0ec8453767a6edfa338f423dd342c",
+  "signal": "HARBOR-RIDGE-906",
+  "structured": {
+    "thread": "45f13aed-96bb-4c5e-a936-1fe0d9e0daef",
+    "run": "f521c4a1-b3bb-434d-a51d-305ebbfd5bf7",
+    "receipt": {
+      "id": "1b3c0a55-6dbb-4ef9-9a4e-5bb1d4a1c001",
+      "tool": "HARBOR_READ_SIGNAL",
+      "state": "succeeded",
+      "log_id": "harbor-signal-read",
+      "result": {
+        "signal": "HARBOR-RIDGE-906"
+      },
+      "settled_at": "2026-11-18T22:28:52.684Z"
+    },
+    "tools": [
+      "ngertiin.list_apps",
+      "ngertiin.machine_status",
+      "ngertiin.execute_app_tool"
+    ]
+  },
+  "browser": {
+    "thread": "b2ec4640-c4ad-43f4-8ce0-01bd4428513f",
+    "run": "5246be12-73eb-462d-aac0-7e7f61afb4ca",
+    "structured_connections": 0,
+    "window_title": "Harbor Signal Board",
+    "native_window_observation": {
+      "current": "HARBOR-RIDGE-906",
+      "confirmation": "HARBOR-RIDGE-906"
+    },
+    "launch_status": "reconciliation required; actual window observed",
+    "render_events": [
+      {
+        "event": "harbor_board_rendered",
+        "at": "2026-11-18T22:33:54.306Z"
+      },
+      {
+        "event": "harbor_board_rendered",
+        "at": "2026-11-18T22:34:50.301Z"
+      },
+      {
+        "event": "harbor_board_rendered",
+        "at": "2026-11-18T22:35:22.811Z"
+      }
+    ],
+    "additional_headless_processes": [
+      {
+        "id": "7f3ba1c2-9d05-4e6b-8a41-2c6d3f9e0b58",
+        "state": "exited",
+        "exit_code": 0,
+        "settled_at": "2026-11-18T22:34:51.725Z",
+        "result_has_signal": true
+      },
+      {
+        "id": "b91c4d7e-2a63-4c19-8f7d-53e8a1c6d924",
+        "state": "exited",
+        "exit_code": 0,
+        "settled_at": "2026-11-18T22:35:25.131Z",
+        "result_has_signal": true
+      }
+    ],
+    "tools": [
+      "ngertiin.list_apps",
+      "ngertiin.machine_status",
+      "ngertiin.describe_tools",
+      "ngertiin.machine_window",
+      "ngertiin.computer_tools",
+      "ngertiin.computer_call",
+      "ngertiin.computer_tools",
+      "ngertiin.computer_call",
+      "ngertiin.machine_exec",
+      "ngertiin.machine_exec",
+      "ngertiin.machine_process"
+    ],
+    "verification_lab_guest_memory_mib": 1280
+  }
+}

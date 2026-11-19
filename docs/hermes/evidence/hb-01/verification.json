@@ -1,0 +1,122 @@
+{
+  "date": "2026-11-19",
+  "surface": "Ngertiin Web (Chromium)",
+  "harness": "Pi ACP",
+  "provider": "Loopback OpenAI-compatible fixture, API key mode",
+  "thread_id": "1db0c665-cfcd-47ec-98b3-2442c44ddcf4",
+  "routine_id": "f4e292a5-bb68-4708-9c97-293412f1cdd7",
+  "busy_slots": [
+    "2026-11-18T20:13:59+00:00",
+    "2026-11-18T20:14:19+00:00",
+    "2026-11-18T20:14:39+00:00"
+  ],
+  "busy_provider_start": "2026-11-18T20:13:28.203Z",
+  "while_busy": {
+    "foreground_statuses": [
+      "running",
+      "queued"
+    ],
+    "heartbeat_occurrences": 0
+  },
+  "release_requested_at": "2026-11-18T20:14:41.922191+00:00",
+  "provider_events": [
+    {
+      "event": "lark_first_started",
+      "at": "2026-11-18T20:13:28.203Z"
+    },
+    {
+      "event": "lark_first_released",
+      "at": "2026-11-18T20:14:42.849Z"
+    },
+    {
+      "event": "lark_queued_user_started",
+      "at": "2026-11-18T20:14:48.904Z"
+    },
+    {
+      "event": "lark_heartbeat_started",
+      "at": "2026-11-18T20:14:52.709Z"
+    }
+  ],
+  "heartbeat_occurrence": {
+    "actor_id": "29066a95-2b82-4c8b-b498-3217693003c7",
+    "check": null,
+    "created_at": "2026-11-18T20:14:50.917Z",
+    "id": "a05222b7-c4dc-4313-9261-b62cab3cc14c",
+    "kind": "occurrence",
+    "organization_id": "f82a07c3-7161-417b-a258-09a2e1c7d0ef",
+    "owner_id": "10747d0f-bf61-4838-818f-edcf83c5ca4c",
+    "revision": 2,
+    "route_id": null,
+    "routine_generation": 1,
+    "routine_id": "f4e292a5-bb68-4708-9c97-293412f1cdd7",
+    "run_id": "086979b0-f07c-4246-9f73-a8b7722b2fc7",
+    "scheduled_for": "2026-11-18T20:14:39.000Z",
+    "selected_agent_id": "bf61dd07-e39f-4e51-ad91-52271b43c3ed",
+    "state": "completed",
+    "trigger": "schedule",
+    "updated_at": "2026-11-18T20:14:53.373Z"
+  },
+  "run_receipts": [
+    {
+      "author": "user",
+      "run_id": "fdc9d137-ba68-45ff-9836-fdc94f666892",
+      "status": "succeeded",
+      "created_at": "2026-11-18T20:13:14.931Z",
+      "routine_id": null,
+      "settled_at": "2026-11-18T20:13:24.141Z",
+      "dispatched_at": "2026-11-18T20:13:19.551Z"
+    },
+    {
+      "author": "user",
+      "run_id": "c8df251e-b21f-432a-a144-3c7e8f359017",
+      "status": "succeeded",
+      "created_at": "2026-11-18T20:13:26.825Z",
+      "routine_id": null,
+      "settled_at": "2026-11-18T20:14:43.295Z",
+      "dispatched_at": "2026-11-18T20:13:27.550Z"
+    },
+    {
+      "author": "user",
+      "run_id": "380732f8-86af-4503-9abc-4318428c85c7",
+      "status": "succeeded",
+      "created_at": "2026-11-18T20:13:29.566Z",
+      "routine_id": null,
+      "settled_at": "2026-11-18T20:14:49.625Z",
+      "dispatched_at": "2026-11-18T20:14:48.125Z"
+    },
+    {
+      "author": "routine",
+      "run_id": "086979b0-f07c-4246-9f73-a8b7722b2fc7",
+      "status": "succeeded",
+      "created_at": "2026-11-18T20:14:50.894Z",
+      "routine_id": "f4e292a5-bb68-4708-9c97-293412f1cdd7",
+      "settled_at": "2026-11-18T20:14:53.168Z",
+      "dispatched_at": "2026-11-18T20:14:51.978Z"
+    }
+  ],
+  "visible_messages": [
+    {
+      "artifact_ids": [],
+      "author": "agent",
+      "id": "f444f581-4b25-4ec7-9d0b-96d3ce21fd7c",
+      "run_id": "c8df251e-b21f-432a-a144-3c7e8f359017",
+      "text": "LARK-FIRST-WORKING \u00b7 LARK-FIRST-DONE"
+    },
+    {
+      "artifact_ids": [],
+      "author": "agent",
+      "id": "237b96a3-ad54-4317-bd0a-69d036a23f65",
+      "run_id": "380732f8-86af-4503-9abc-4318428c85c7",
+      "text": "LARK-USER-SECOND"
+    },
+    {
+      "artifact_ids": [],
+      "author": "agent",
+      "id": "c64445ee-8871-47fa-913a-5de55d57d64e",
+      "run_id": "086979b0-f07c-4246-9f73-a8b7722b2fc7",
+      "text": "LARK-CHECK-COMPLETE"
+    }
+  ],
+  "heartbeat_model_runs": 1,
+  "cleanup_state": "paused"
+}

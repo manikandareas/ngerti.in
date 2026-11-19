@@ -1,0 +1,58 @@
+{
+  "date": "2026-11-19",
+  "surface": "Chrome Ngertiin Web with real authenticated HTTP, PostgreSQL, and a disposable Cua domain",
+  "harness": "Pinned Claude ACP 0.107.0 and Claude Agent SDK 0.3.323",
+  "provider": "Local Messages API fixture with a synthetic key; no Anthropic inference",
+  "completed": false,
+  "fixturePermissionMode": "Manual",
+  "workingFilePreflight": {
+    "state": "verified",
+    "ms": 1752
+  },
+  "sessionOpenStatus": 200,
+  "latestPermissionSubject": "mcp__ngertiin__ngertiin_read_file",
+  "browserRunScopedApprovals": [
+    "mcp__ngertiin__ngertiin_read_file"
+  ],
+  "run": {
+    "status": "succeeded",
+    "diagnostic": null,
+    "product_tools": []
+  },
+  "providerFixtureCalls": [
+    {
+      "action": "read_file",
+      "model": "claude-haiku-5-5"
+    },
+    {
+      "action": "Workspace source bytes did not match the test input.",
+      "model": "claude-haiku-5-5"
+    }
+  ],
+  "providerFixtureToolErrors": [
+    {
+      "tool": "toolu_hermes_read_workspace",
+      "isError": true,
+      "reason": "MACHINE_UNAVAILABLE"
+    }
+  ],
+  "toolRequests": [
+    {
+      "method": "initialize",
+      "status": 200,
+      "elapsedMs": 1603
+    },
+    {
+      "method": "notifications/initialized",
+      "status": 202,
+      "elapsedMs": 1485
+    },
+    {
+      "method": "tools/call",
+      "tool": "ngertiin.read_file",
+      "status": 200,
+      "elapsedMs": 26380
+    }
+  ],
+  "disposableDomainVolumeRemoved": true
+}

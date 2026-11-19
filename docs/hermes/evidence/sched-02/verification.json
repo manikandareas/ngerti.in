@@ -1,0 +1,204 @@
+{
+  "date": "2026-11-19",
+  "surface": "Ngertiin Web (Chromium)",
+  "harness": "Pi ACP",
+  "model_provider": "live",
+  "data": "synthetic interval",
+  "thread": "4291ba6f-f60c-4966-a0ca-6394bd4804f9",
+  "initial": {
+    "routine": {
+      "id": "7f3c9a52-1b64-4d8e-9a17-2c5e8f4b6d31",
+      "name": "Kite cadence marker",
+      "revision": 1,
+      "generation": 1,
+      "state": "active",
+      "goal_id": null,
+      "timezone": "Asia/Makassar",
+      "schedule": {
+        "anchor_at": "2026-11-18T19:02:04Z",
+        "every_ms": 45000,
+        "type": "interval"
+      },
+      "next_run_at": "2026-11-18T19:02:04Z"
+    },
+    "outputs": []
+  },
+  "edited": {
+    "routine": {
+      "id": "7f3c9a52-1b64-4d8e-9a17-2c5e8f4b6d31",
+      "name": "Kite cadence marker",
+      "revision": 2,
+      "generation": 2,
+      "state": "active",
+      "goal_id": null,
+      "timezone": "Asia/Makassar",
+      "schedule": {
+        "anchor_at": "2026-11-18T19:01:11Z",
+        "every_ms": 75000,
+        "type": "interval"
+      },
+      "next_run_at": "2026-11-18T19:01:11Z"
+    },
+    "outputs": []
+  },
+  "paused": {
+    "routine": {
+      "id": "7f3c9a52-1b64-4d8e-9a17-2c5e8f4b6d31",
+      "name": "Kite cadence marker",
+      "revision": 3,
+      "generation": 3,
+      "state": "paused",
+      "goal_id": null,
+      "timezone": "Asia/Makassar",
+      "schedule": {
+        "anchor_at": "2026-11-18T19:01:11Z",
+        "every_ms": 75000,
+        "type": "interval"
+      },
+      "next_run_at": null
+    },
+    "outputs": []
+  },
+  "manual": {
+    "routine": {
+      "id": "7f3c9a52-1b64-4d8e-9a17-2c5e8f4b6d31",
+      "name": "Kite cadence marker",
+      "revision": 3,
+      "generation": 3,
+      "state": "paused",
+      "goal_id": null,
+      "timezone": "Asia/Makassar",
+      "schedule": {
+        "anchor_at": "2026-11-18T19:01:11Z",
+        "every_ms": 75000,
+        "type": "interval"
+      },
+      "next_run_at": null
+    },
+    "outputs": [
+      {
+        "id": "873b0723-9416-4787-8c38-3f6624987b36",
+        "status": "succeeded",
+        "model": "sumopod/deepseek-v4-flash",
+        "billing": "api_key"
+      }
+    ]
+  },
+  "idempotency_replay": {
+    "occurrence_id": "74f640db-fe78-457f-832a-03dc9995e221",
+    "run_id": "873b0723-9416-4787-8c38-3f6624987b36",
+    "status": 200,
+    "trigger": "manual"
+  },
+  "resumed": {
+    "routine": {
+      "id": "7f3c9a52-1b64-4d8e-9a17-2c5e8f4b6d31",
+      "name": "Kite cadence marker",
+      "revision": 4,
+      "generation": 4,
+      "state": "active",
+      "goal_id": null,
+      "timezone": "Asia/Makassar",
+      "schedule": {
+        "anchor_at": "2026-11-18T19:01:11Z",
+        "every_ms": 75000,
+        "type": "interval"
+      },
+      "next_run_at": "2026-11-18T19:01:11Z"
+    },
+    "outputs": [
+      {
+        "id": "873b0723-9416-4787-8c38-3f6624987b36",
+        "status": "succeeded",
+        "model": "sumopod/deepseek-v4-flash",
+        "billing": "api_key"
+      }
+    ]
+  },
+  "scheduled": {
+    "routine": {
+      "id": "7f3c9a52-1b64-4d8e-9a17-2c5e8f4b6d31",
+      "name": "Kite cadence marker",
+      "revision": 5,
+      "generation": 4,
+      "state": "active",
+      "goal_id": null,
+      "timezone": "Asia/Makassar",
+      "schedule": {
+        "anchor_at": "2026-11-18T19:01:11Z",
+        "every_ms": 75000,
+        "type": "interval"
+      },
+      "next_run_at": "2026-11-18T19:02:26.000Z"
+    },
+    "outputs": [
+      {
+        "id": "873b0723-9416-4787-8c38-3f6624987b36",
+        "status": "succeeded",
+        "model": "sumopod/deepseek-v4-flash",
+        "billing": "api_key"
+      },
+      {
+        "id": "f8d35261-0766-4e30-89ad-e6db080be086",
+        "status": "succeeded",
+        "model": "sumopod/deepseek-v4-flash",
+        "billing": "api_key"
+      }
+    ]
+  },
+  "cleanup": {
+    "routine": {
+      "id": "7f3c9a52-1b64-4d8e-9a17-2c5e8f4b6d31",
+      "name": "Kite cadence marker",
+      "revision": 6,
+      "generation": 5,
+      "state": "paused",
+      "goal_id": null,
+      "timezone": "Asia/Makassar",
+      "schedule": {
+        "anchor_at": "2026-11-18T19:01:11Z",
+        "every_ms": 75000,
+        "type": "interval"
+      },
+      "next_run_at": null
+    },
+    "outputs": [
+      {
+        "id": "873b0723-9416-4787-8c38-3f6624987b36",
+        "status": "succeeded",
+        "model": "sumopod/deepseek-v4-flash",
+        "billing": "api_key"
+      },
+      {
+        "id": "f8d35261-0766-4e30-89ad-e6db080be086",
+        "status": "succeeded",
+        "model": "sumopod/deepseek-v4-flash",
+        "billing": "api_key"
+      }
+    ]
+  },
+  "occurrences": [
+    {
+      "id": "74f640db-fe78-457f-832a-03dc9995e221",
+      "state": "completed",
+      "run_id": "873b0723-9416-4787-8c38-3f6624987b36",
+      "trigger": "manual",
+      "generation": 3,
+      "run_status": "succeeded",
+      "scheduled_for": "2026-11-18T18:59:31.459Z"
+    },
+    {
+      "id": "15504e0a-dc71-4a65-a0bf-40eb1de18956",
+      "state": "completed",
+      "run_id": "f8d35261-0766-4e30-89ad-e6db080be086",
+      "trigger": "schedule",
+      "generation": 4,
+      "run_status": "succeeded",
+      "scheduled_for": "2026-11-18T19:01:11.000Z"
+    }
+  ],
+  "chat_outputs": [
+    "KITE-CADENCE-51",
+    "KITE-CADENCE-51"
+  ]
+}

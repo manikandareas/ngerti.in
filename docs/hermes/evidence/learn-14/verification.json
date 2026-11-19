@@ -1,0 +1,83 @@
+{
+  "date": "2026-11-19",
+  "surface": "Ngertiin Web (Chromium)",
+  "harness": "Pi ACP",
+  "provider": {
+    "type": "live",
+    "model": "sumopod/deepseek-v4-flash",
+    "billing": "api_key"
+  },
+  "input": "synthetic",
+  "before_first_restart": {
+    "observed_at": "2026-11-18T16:06:33.376988+00:00",
+    "id": "9f004ea7-4c00-46a2-aaf2-0e17afcd6982",
+    "status": "succeeded",
+    "artifact_count": 1,
+    "review": {
+      "state": "pending",
+      "attempts": 0
+    }
+  },
+  "recovered": {
+    "id": "9f004ea7-4c00-46a2-aaf2-0e17afcd6982",
+    "status": "succeeded",
+    "review": {
+      "state": "applied",
+      "attempts": 1,
+      "skill_versions": [
+        {
+          "skill_id": "84d7c94d-877f-415b-9b46-ef47fd25bbff",
+          "version": 1
+        }
+      ]
+    }
+  },
+  "retry_and_second_restart": {
+    "http_status": 200,
+    "reused_run": true,
+    "run_count_before_and_after": 2,
+    "message_count_before_and_after": 4,
+    "deliverables": [
+      {
+        "name": "cold-room-coverage.csv",
+        "sha256": "ccd005aa605a40612605b4193c3b9b1631ae8972c2cfa2257edcae95ed4beb1d"
+      }
+    ],
+    "download_sha256": "ccd005aa605a40612605b4193c3b9b1631ae8972c2cfa2257edcae95ed4beb1d"
+  },
+  "ledger": {
+    "events": [
+      {
+        "state": "pending",
+        "cursor": 2687
+      },
+      {
+        "state": "running",
+        "cursor": 2689
+      },
+      {
+        "state": "applied",
+        "cursor": 2693
+      }
+    ],
+    "entities": {
+      "run": 1,
+      "artifact": 1,
+      "skill_revision": 1
+    },
+    "versions": [
+      {
+        "sha256": "66718b5e61e02ada1d42e3e0ef3ab2cc774bbbc000979f74755ebf6f2f69e7d6",
+        "version": 1,
+        "skill_id": "84d7c94d-877f-415b-9b46-ef47fd25bbff",
+        "source_run_id": "9f004ea7-4c00-46a2-aaf2-0e17afcd6982"
+      }
+    ]
+  },
+  "report_counts": {
+    "pairs": 6,
+    "high": 3,
+    "missing": 1,
+    "okay": 2
+  }
+}

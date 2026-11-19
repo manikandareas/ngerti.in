@@ -1,0 +1,136 @@
+{
+  "date": "2026-11-19",
+  "surface": "Authenticated Ngertiin Web / Chromium",
+  "harness": "Pi ACP",
+  "provider": "OpenAI-compatible local fixture, with separate live Sumopod observation",
+  "fixture": {
+    "overlap_seconds": 36.316,
+    "concurrent_snapshot": [
+      {
+        "run": "03fa839f-40b4-4ffd-b72d-4bc542d4b337",
+        "agent": "c86e73bd-9015-46c4-8732-f19b9107f431",
+        "model": "delegation-fixture/peer-checks",
+        "source": "b3fa3a9b-93c0-4234-90d5-1c24c094ec4d",
+        "status": "running",
+        "accepted_at": "2026-11-19T04:59:39.288Z"
+      },
+      {
+        "run": "ef49b185-277c-44ff-b2fe-80ce9b01321b",
+        "agent": "13102529-3c18-4af3-a7b4-6414108d5edd",
+        "model": "delegation-fixture/peer-checks",
+        "source": "b3fa3a9b-93c0-4234-90d5-1c24c094ec4d",
+        "status": "running",
+        "accepted_at": "2026-11-19T04:59:39.057Z"
+      }
+    ],
+    "settled": {
+      "state": "completed",
+      "checks": [
+        {
+          "run": "ef49b185-277c-44ff-b2fe-80ce9b01321b",
+          "agent": "13102529-3c18-4af3-a7b4-6414108d5edd",
+          "reads": [],
+          "state": "failed",
+          "tools": [],
+          "errors": [],
+          "status": "failed",
+          "binding": "b883df5c-ecdc-40bf-af32-6b5399f3f25a",
+          "input_ids": [],
+          "settled_at": "2026-11-19T05:00:15.604Z",
+          "accepted_at": "2026-11-19T04:59:39.057Z"
+        },
+        {
+          "run": "03fa839f-40b4-4ffd-b72d-4bc542d4b337",
+          "agent": "c86e73bd-9015-46c4-8732-f19b9107f431",
+          "reads": [
+            {
+              "pages": [
+                1
+              ],
+              "operation": "context",
+              "truncated": true,
+              "created_at": "2026-11-19T04:59:37.726Z",
+              "artifact_id": "82b649d1-cc27-4d70-86e2-8646f2131a0a",
+              "source_sha256": "3a4a43a8eef3d06951b59288907632d4a91898f296f1e357c227fb693efeef39"
+            },
+            {
+              "pages": [
+                1
+              ],
+              "operation": "read",
+              "truncated": false,
+              "created_at": "2026-11-19T04:59:56.415Z",
+              "artifact_id": "82b649d1-cc27-4d70-86e2-8646f2131a0a",
+              "source_sha256": "3a4a43a8eef3d06951b59288907632d4a91898f296f1e357c227fb693efeef39"
+            }
+          ],
+          "state": "completed",
+          "tools": [
+            "ngertiin.read_attachment"
+          ],
+          "errors": [],
+          "status": "succeeded",
+          "binding": "32c8c616-ae3e-46c0-b4d8-908c15174471",
+          "input_ids": [
+            "82b649d1-cc27-4d70-86e2-8646f2131a0a"
+          ],
+          "settled_at": "2026-11-19T05:00:30.995Z",
+          "accepted_at": "2026-11-19T04:59:39.288Z"
+        }
+      ],
+      "thread": "4a23dd16-46b1-45a0-914a-3df35816389e",
+      "join_run": "6cc5a252-41be-4c60-948f-a2959f7ef68e",
+      "profiles": [
+        {
+          "model": "delegation-fixture/peer-checks",
+          "billing": "api_key",
+          "harness": "pi"
+        }
+      ],
+      "join_count": 1,
+      "source_run": "b3fa3a9b-93c0-4234-90d5-1c24c094ec4d",
+      "owned_scope": true,
+      "parent_task": "5d388863-f3e7-44cc-85f5-e291846183b8",
+      "final_answer": "Copper primary verified 65 units. The secondary count failed and remains unverified.",
+      "native_outputs": 0
+    },
+    "joined_outcomes": [
+      {
+        "task_id": "2e2dfea0-80f8-470f-a235-9d5b9725947e",
+        "agent_id": "c86e73bd-9015-46c4-8732-f19b9107f431",
+        "state": "completed",
+        "artifact_ids": [],
+        "text": "Checking the three Copper primary rows. Copper primary: 65 verified units."
+      },
+      {
+        "task_id": "ce467ecd-dcdb-4a9b-b51d-fd442d32e0bf",
+        "agent_id": "13102529-3c18-4af3-a7b4-6414108d5edd",
+        "state": "failed",
+        "artifact_ids": [],
+        "text": null
+      }
+    ],
+    "write_refusal": {
+      "tool": "mcp__ngertiin__ngertiin_create_file",
+      "error": true,
+      "code": "SCOPE_DENIED"
+    },
+    "forbidden_file_count": 0,
+    "reloaded": true
+  },
+  "live": {
+    "thread": "8d7c35b1-5af4-45c7-8321-4fe36fa9414e",
+    "overlap_seconds": 18.344,
+    "profile": {
+      "model": "sumopod/deepseek-v4-flash",
+      "billing": "api_key",
+      "harness": "pi"
+    },
+    "join_count": 1,
+    "task_states": [
+      "completed",
+      "completed"
+    ],
+    "final_answer": "Both checks are back.\n\n**Confirmed — primary ledger** ✅\n[@Parallel Ledger](ngertiin://agent/c86e73bd-9015-46c4-8732-f19b9107f431) read [copper-parallel-primary.txt](ngertiin://file/8cda515c-e244-40e0-a2d7-1b4b23454fba) in full (1 page, no extraction errors):\n\n| Bay | Copper (primary) |\n|---|---|\n| A | 12 |\n| B | 34 |\n| C | 19 |\n| **Total (A–C)** | **65** |\n\nThese are verbatim from the file, not adjusted or inferred.\n\n**Failed — secondary count** ❌\n[@Parallel Secondary](ngertiin://agent/13102529-3c18-4af3-a7b4-6414108d5edd) could not verify a secondary figure. It confirmed the task's attachment list contains only the primary file, and it was denied workspace and run-context access, so it could not look further. It correctly declined to derive a number from 12/34/19 — so **no secondary count is reported**.\n\n**Bottom line:** only the primary figures are usable — Bays A/B/C at 12/34/19. The secondary count check failed because its source is unavailable; nothing in this workspace could corroborate or contradict the primary ledger.\n\nTo close the gap, send the secondary-source document (or name/date/report reference for it), and re-enable workspace read access so unattached files can be located rather than assumed absent."
+  }
+}

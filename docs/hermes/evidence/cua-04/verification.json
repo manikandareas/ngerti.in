@@ -1,0 +1,127 @@
+{
+  "date": "2026-11-19",
+  "surface": "Ngertiin Web (Chromium) and retained Computer viewer",
+  "harness": "Pi ACP",
+  "provider": {
+    "mode": "fixture",
+    "model": "handoff-fixture/computer-handoff",
+    "billing": "api_key"
+  },
+  "target": "Isolated Orchid Session Portal. Session identifiers below are truncated hashes; the PIN and cookie values are excluded.",
+  "thread": "244ef016-faa0-4dc1-8e34-3e119dd0119e",
+  "binding": "24ac6a29-4b5c-406b-9705-29cbc55612ce",
+  "managed_launches": [
+    {
+      "at": "2026-11-19T00:15:29.017Z",
+      "id": "1f040bb0-501e-487b-87c4-4a0d0a40a908",
+      "run": "51147c9e-26c0-4505-918c-5b42e783ffd6",
+      "error": "RECONCILIATION_REQUIRED",
+      "state": "unknown",
+      "opened_at": "2026-11-19T00:15:22.191Z"
+    },
+    {
+      "at": "2026-11-19T00:21:33.809Z",
+      "id": "0cf85504-b78f-4942-ab23-45127e54be82",
+      "run": "6817f4b7-272c-457f-993b-47448eee6631",
+      "error": "RECONCILIATION_REQUIRED",
+      "state": "unknown",
+      "opened_at": "2026-11-19T00:21:27.247Z"
+    },
+    {
+      "at": "2026-11-19T00:26:23.992Z",
+      "id": "c8ee59e4-3165-4a25-9a97-140b66899124",
+      "pid": 245,
+      "run": "b4977a15-4a63-4005-9385-0be834b95b85",
+      "state": "open",
+      "opened_at": "2026-11-19T00:26:14.196Z",
+      "native_reference": "target-37f14b563ca59d737e42264b"
+    }
+  ],
+  "launch_fix": "Observe for a bounded period after launching once, and bind only a unique new window.",
+  "initial_sign_ins": [
+    {
+      "event": "signed_in",
+      "account": "Orchid Operator",
+      "generation": 1,
+      "session": "68911bb340a44736",
+      "at": "2026-11-19T00:18:52.939Z"
+    },
+    {
+      "event": "signed_in",
+      "account": "Orchid Operator",
+      "generation": 1,
+      "session": "c1053102d4dc4190",
+      "at": "2026-11-19T00:19:57.722Z"
+    }
+  ],
+  "initial_window_closed_at": "2026-11-19T00:20:46Z",
+  "first_reopen": {
+    "event": "protected_page",
+    "account": "Orchid Operator",
+    "generation": 1,
+    "session": "c1053102d4dc4190",
+    "docket": "ORCHID-DOCKET-81424",
+    "at": "2026-11-19T00:21:49.415Z"
+  },
+  "second_window_closed_at": "2026-11-19T00:25:44Z",
+  "verified_reopen": {
+    "event": "protected_page",
+    "account": "Orchid Operator",
+    "generation": 1,
+    "session": "c1053102d4dc4190",
+    "docket": "ORCHID-DOCKET-81424",
+    "at": "2026-11-19T00:26:22.505Z"
+  },
+  "expiry_set_at": "2026-11-19T00:28:01Z",
+  "expired_request": {
+    "event": "session_expired",
+    "account": "Orchid Operator",
+    "generation": 2,
+    "session": "c1053102d4dc4190",
+    "at": "2026-11-19T00:28:09.106Z"
+  },
+  "renewed_sign_in": {
+    "event": "signed_in",
+    "account": "Orchid Operator",
+    "generation": 2,
+    "session": "76a8054ff3f61e09",
+    "at": "2026-11-19T00:30:43.310Z"
+  },
+  "renewed_page": {
+    "event": "protected_page",
+    "account": "Orchid Operator",
+    "generation": 2,
+    "session": "76a8054ff3f61e09",
+    "docket": "ORCHID-DOCKET-70825",
+    "at": "2026-11-19T00:30:43.814Z"
+  },
+  "observations": [
+    {
+      "run": "e78adff7-ef84-4273-9dc2-7371d269397b",
+      "event": "orchid_docket_read",
+      "docket": "ORCHID-DOCKET-81424",
+      "snapshot": "p5",
+      "window_id": 29360187,
+      "at": "2026-11-19T00:27:35.744Z",
+      "answer": "The active Orchid Operator session shows docket ORCHID-DOCKET-81424."
+    },
+    {
+      "run": "f8845398-13b1-4dcd-bca5-8cd7c3099b7f",
+      "event": "orchid_login_required",
+      "snapshot": "p6",
+      "window_id": 29360187,
+      "at": "2026-11-19T00:29:39.051Z",
+      "answer": "Orchid requires you to sign in. Open Computer, take control, and sign in there. Tell me when I can continue."
+    },
+    {
+      "run": "7faa11d5-9949-487f-bd6b-79fa1ea8d4e6",
+      "event": "orchid_docket_read",
+      "docket": "ORCHID-DOCKET-70825",
+      "snapshot": "p7",
+      "window_id": 29360187,
+      "at": "2026-11-19T00:32:08.774Z",
+      "answer": "The active Orchid Operator session shows docket ORCHID-DOCKET-70825."
+    }
+  ],
+  "focused_checks": "15 managed-window lifecycle tests passed."
+}

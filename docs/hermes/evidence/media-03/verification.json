@@ -1,0 +1,150 @@
+{
+  "date": "2026-11-19",
+  "surface": "Chrome Ngertiin Web, authenticated lab API",
+  "harness": "Pi ACP 0.0.34 (Pi 1.5.2)",
+  "provider": "Kite Inference API-key fixture; Cedar Media loopback fixture used Sharp to render and edit actual PNG bytes",
+  "runs": [
+    {
+      "id": "8d3989f3-e174-4223-a60d-776f3da07704",
+      "tools": [
+        "ngertiin.process_media"
+      ],
+      "answer": "Orange circle on dark green. [generated-image.png](ngertiin://file/9fcd127a-bb37-44a2-8858-0dd6c44901dc)",
+      "inputs": [],
+      "status": "succeeded",
+      "visual": [],
+      "request": "Media image check. generate. Create an orange circle on a dark green background and give me the downloadable PNG.",
+      "artifacts": [
+        {
+          "id": "9fcd127a-bb37-44a2-8858-0dd6c44901dc",
+          "hash": "c31a27ed53a4aa60803da742f5ac4c49ae29a59217365bc96eacc42a359cdf6f",
+          "name": "generated-image.png",
+          "type": "image/png",
+          "origin": "native_output",
+          "source": null,
+          "workspace": "33aaf077-2ce7-49b3-afc6-641149161789",
+          "size_bytes": 10653
+        }
+      ],
+      "selection": {
+        "harness": "pi",
+        "model_id": "kite-inference/verification-alpha",
+        "reasoning": null,
+        "account_id": "5b7f819583399f3f60ef5119f53c96ded864f6e05a400f38dc95882074d3bf1d",
+        "provider_id": "kite-inference",
+        "connection_id": "95ceefb4-090f-4a15-bb2e-acafedd55ccb",
+        "billing_source": "api_key",
+        "connection_generation": 2
+      },
+      "diagnostic": null,
+      "toolErrors": []
+    },
+    {
+      "id": "3c2239b7-e23e-48a5-9f15-5437fb1a9544",
+      "tools": [
+        "ngertiin.process_media"
+      ],
+      "answer": "Changed the circle to blue and kept the dark green background. [revised-image.png](ngertiin://file/3c9ffe7c-a3f9-4a04-a50c-a8db23708867)",
+      "inputs": [],
+      "status": "succeeded",
+      "visual": [],
+      "request": "Media image check. edit. Change the circle to blue and preserve the dark green background. Give me the revised PNG.",
+      "artifacts": [
+        {
+          "id": "3c9ffe7c-a3f9-4a04-a50c-a8db23708867",
+          "hash": "c550498991372507225a20cb76f20bb0d7272b01beb38bf51eebfd92f02522d1",
+          "name": "revised-image.png",
+          "type": "image/png",
+          "origin": "native_output",
+          "source": "9fcd127a-bb37-44a2-8858-0dd6c44901dc",
+          "workspace": "33aaf077-2ce7-49b3-afc6-641149161789",
+          "size_bytes": 7360
+        }
+      ],
+      "selection": {
+        "harness": "pi",
+        "model_id": "kite-inference/verification-alpha",
+        "reasoning": null,
+        "account_id": "5b7f819583399f3f60ef5119f53c96ded864f6e05a400f38dc95882074d3bf1d",
+        "provider_id": "kite-inference",
+        "connection_id": "95ceefb4-090f-4a15-bb2e-acafedd55ccb",
+        "billing_source": "api_key",
+        "connection_generation": 2
+      },
+      "diagnostic": null,
+      "toolErrors": []
+    }
+  ],
+  "calls": [
+    {
+      "operation": "generate_image",
+      "command_id": "9fcd127a-bb37-44a2-8858-0dd6c44901dc",
+      "sha256": "c31a27ed53a4aa60803da742f5ac4c49ae29a59217365bc96eacc42a359cdf6f",
+      "bytes": 10653
+    },
+    {
+      "operation": "edit_image",
+      "command_id": "3c9ffe7c-a3f9-4a04-a50c-a8db23708867",
+      "source_sha256": "c31a27ed53a4aa60803da742f5ac4c49ae29a59217365bc96eacc42a359cdf6f",
+      "sha256": "c550498991372507225a20cb76f20bb0d7272b01beb38bf51eebfd92f02522d1",
+      "bytes": 7360
+    }
+  ],
+  "verification": {
+    "originalPreview": [
+      {
+        "height": 400,
+        "loaded": true,
+        "width": 640
+      }
+    ],
+    "revisionPreview": [
+      {
+        "height": 400,
+        "loaded": true,
+        "width": 640
+      }
+    ],
+    "originalCenterRgb": [
+      245,
+      149,
+      54
+    ],
+    "revisedCenterRgb": [
+      45,
+      104,
+      222
+    ],
+    "backgroundRgb": [
+      18,
+      56,
+      41
+    ],
+    "changedPixels": 39402,
+    "changedOutsideSourceCircleMask": 0,
+    "owner": {
+      "ownerLabAccount": true,
+      "status": 200,
+      "verified": true
+    },
+    "otherAccount": {
+      "separateLabAccount": true,
+      "status": 200,
+      "verified": true
+    },
+    "downloadsDenied": [
+      {
+        "code": "NOT_FOUND",
+        "contentDisposition": null,
+        "name": "generated-image.png",
+        "status": 404
+      },
+      {
+        "code": "NOT_FOUND",
+        "contentDisposition": null,
+        "name": "revised-image.png",
+        "status": 404
+      }
+    ]
+  }
+}

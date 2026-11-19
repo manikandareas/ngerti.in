@@ -1,0 +1,65 @@
+{
+  "date": "2026-11-19",
+  "surface": "Authenticated Ngertiin Web / Chromium",
+  "harness": "Claude ACP subprocess fixture",
+  "provider": "fixture / API key selection",
+  "thread": "35a26616-21ef-4916-be88-f28aadf9f3eb",
+  "native_binding": {
+    "active": true,
+    "id": "6d64e527-2b97-49cb-91ac-946eb9c143cf",
+    "native_session_id": "38ea76f4-bb4b-4d17-b35e-1c0638990ab6",
+    "workspace_id": "b2629955-5ad9-4b26-8303-f7b8d853a7ef"
+  },
+  "journal": {
+    "allow": {
+      "records": [
+        {
+          "decision": "allow",
+          "observed_at": "2026-11-19T04:21:09.050Z",
+          "observed_state": "not_pending",
+          "request_id": "b1d9bf36-9482-414c-956f-bedc28b8c8b2",
+          "submission_state": "submitted",
+          "tool": "Write ALDER-APPROVE-263.txt"
+        }
+      ],
+      "run": "bac045a1-eaac-49a8-a63b-45f4b0bd9950",
+      "status": "succeeded"
+    },
+    "deny": {
+      "records": [
+        {
+          "decision": "deny",
+          "observed_at": "2026-11-19T04:21:43.016Z",
+          "observed_state": "pending",
+          "request_id": "6c3e1c75-03fa-4437-9615-15846b93396c",
+          "submission_state": "submitted",
+          "tool": "Write BIRCH-DENY-774.txt"
+        }
+      ],
+      "run": "3782ad0b-4bc7-4b5d-bccb-f6211ec19734",
+      "status": "succeeded"
+    }
+  },
+  "target": {
+    "before_approval_no_file_at": "2026-11-19T04:21:10Z",
+    "after_approval": {
+      "files": 1,
+      "bytes": 17,
+      "sha256": "0003cef939f34b86b5301c9c3228f46dfed041f36660f86abd0e9cfacdcd12da",
+      "modified_at": "2026-11-19T04:21:11.619135+00:00"
+    },
+    "after_denial": {
+      "files": 0
+    }
+  },
+  "replies": [
+    {
+      "run_id": "bac045a1-eaac-49a8-a63b-45f4b0bd9950",
+      "text": "Wrote ALDER-APPROVE-263.txt once."
+    },
+    {
+      "run_id": "3782ad0b-4bc7-4b5d-bccb-f6211ec19734",
+      "text": "No file was written for BIRCH-DENY-774."
+    }
+  ]
+}

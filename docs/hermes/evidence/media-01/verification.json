@@ -1,0 +1,85 @@
+{
+  "date": "2026-11-19",
+  "surface": "Chrome Ngertiin Web",
+  "harness": "Pi ACP 0.0.34 (Pi 1.5.2)",
+  "provider": "API-key fixtures and scoped loopback Cedar Media backend",
+  "method": "Tesseract read the actual input pixels in both fixtures.",
+  "thread": "402fe61c-2381-48e0-ad62-7f265efc9bb7",
+  "nativeVision": {
+    "event": "native_attachment",
+    "value": "MAPLE-472",
+    "sha256": "a73c63641eff964b5247d7c8dff0250f9015ec15e6ddb30487ef1b1e62df963a",
+    "bytes": 15174,
+    "at": "2026-11-19T08:50:14.882Z"
+  },
+  "textModel": {
+    "event": "alternate_vision",
+    "imageParts": 0,
+    "artifact": "02540001-9a74-452b-8aac-b66eafb0084e"
+  },
+  "alternateBackend": {
+    "operation": "inspect_image",
+    "value": "BIRCH-683",
+    "sha256": "6a2219bac29e1f44beaeda04b0bd6564423b0a46ab1e5361e6e2cb95588071e7",
+    "command_id": "cd17b447-4fe2-4afd-8b82-0f0c4b84b4db"
+  },
+  "runs": [
+    {
+      "id": "90e8ad85-8d1c-4c74-94ad-919ceaa05fdb",
+      "tools": [],
+      "answer": "The image shows MAPLE-472.",
+      "inputs": [
+        "03517bbf-0f85-4a9f-8146-b0154ecf550e"
+      ],
+      "status": "succeeded",
+      "visual": [
+        {
+          "width": 1100,
+          "height": 300,
+          "artifact_id": "03517bbf-0f85-4a9f-8146-b0154ecf550e",
+          "source_sha256": "a73c63641eff964b5247d7c8dff0250f9015ec15e6ddb30487ef1b1e62df963a",
+          "normalized_sha256": "a73c63641eff964b5247d7c8dff0250f9015ec15e6ddb30487ef1b1e62df963a"
+        }
+      ],
+      "provider": {
+        "harness": "pi",
+        "model_id": "vision-fixture/computer-vision",
+        "reasoning": null,
+        "account_id": "d5639be3c384f0720b2744aab0c572265e47725c8a5ab736f78f264fb4f07d6e",
+        "provider_id": "vision-fixture",
+        "connection_id": "c5603482-bb4f-46ce-8509-a033e2091d95",
+        "billing_source": "api_key",
+        "connection_generation": 2
+      },
+      "toolErrors": []
+    },
+    {
+      "id": "48a5996f-ea4c-470c-a381-17aa9f2be107",
+      "tools": [
+        "ngertiin.process_media"
+      ],
+      "answer": "The inspection code is BIRCH-683. I read it using Cedar Media.",
+      "inputs": [
+        "02540001-9a74-452b-8aac-b66eafb0084e"
+      ],
+      "status": "succeeded",
+      "visual": [],
+      "provider": {
+        "harness": "pi",
+        "model_id": "kite-inference/verification-alpha",
+        "reasoning": null,
+        "account_id": "5b7f819583399f3f60ef5119f53c96ded864f6e05a400f38dc95882074d3bf1d",
+        "provider_id": "kite-inference",
+        "connection_id": "95ceefb4-090f-4a15-bb2e-acafedd55ccb",
+        "billing_source": "api_key",
+        "connection_generation": 2
+      },
+      "toolErrors": []
+    }
+  ],
+  "alternateReceipt": {
+    "text": "Inspection code BIRCH-683.",
+    "backend": "Cedar Media",
+    "artifact_id": "02540001-9a74-452b-8aac-b66eafb0084e"
+  }
+}

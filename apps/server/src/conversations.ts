@@ -21,9 +21,14 @@ import {
 } from "./contracts";
 import { conversationPart } from "./conversations/parts";
 import { conversationMessage } from "./conversations/projection";
+import { RoutineDelivery } from "./goals/delivery";
+import { routineDeliveryStatus, routineDeliveryTarget } from "./goals/delivery-contracts";
 import { groupRouteView } from "./groups/contracts";
 import { routeView } from "./groups/projection";
 import { Connections } from "./harness/connections";
+import { channelStatus } from "./integrations/channel-contracts";
+import { channelReceipt } from "./integrations/channels";
+import { mediaBackendsFor, mediaOperation } from "./integrations/media-contracts";
 import type { Lifecycle } from "./lifecycle";
 import { asyncFilter, asyncMap } from "./persistence/async-collections";
 
@@ -58,6 +63,10 @@ export const conversationSnapshot = z.strictObject({
   goals: z.array(goal),
   routines: z.array(routine),
   occurrences: z.array(occurrence),
+  routine_deliveries: z.array(routineDeliveryStatus).default([]),
+  routine_delivery_targets: z.array(routineDeliveryTarget).default([]),
+  channel_exchanges: z.array(channelStatus).default([]),
+  media_operations: z.array(mediaOperation).default([]),
   has_more: z.boolean(),
   next_before: id.nullable(),
   timeline: conversationTimeline,
@@ -151,6 +160,7 @@ export class Conversations {
     const { store } = this.lifecycle;
     return await store.read(async () => {
       const thread = await store.get("thread", threadId);
+      const delivery = new RoutineDelivery(this.lifecycle);
       return conversationSnapshot.parse({
         cursor: await store.cursor,
         thread,
@@ -195,6 +205,19 @@ export class Conversations {
           await store.list("occurrence"),
           async (item) => (await store.get("routine", item.routine_id)).thread_id === threadId,
         ),
+        routine_deliveries: await delivery.statuses(threadId),
+        routine_delivery_targets: delivery.options(),
+        channel_exchanges: (await store.list("channel_exchange", { thread_id: threadId })).map(
+          channelReceipt,
+        ),
+        media_operations:
+          thread.type === "dm"
+            ? [
+                ...new Set(
+                  mediaBackendsFor(this.lifecycle, threadId).flatMap((item) => item.operations),
+                ),
+              ]
+            : [],
         ...(await this.history(threadId)),
         timeline: await this.timeline(threadId),
       });

@@ -7,9 +7,18 @@ import { DomainError, type DomainEvent, type Entity, type Kind, schemas } from "
 import { ConversationJournal } from "./conversations/journal";
 import { type RoutingDecisionTrace, routingDecisionTrace } from "./groups/decision-trace";
 import type { DataContext } from "./persistence/access-context";
+import {
+  conversationSearchSchemaSql,
+  conversationSearchSchemaVersion,
+} from "./persistence/conversation-search-schema";
 import { executionSchemaSql, executionSchemaVersion } from "./persistence/execution-schema";
 import { integrationSchemaSql, integrationSchemaVersion } from "./persistence/integration-schema";
+import { learningSchemaSql, learningSchemaVersion } from "./persistence/learning-schema";
 import { providerSchemaSql, providerSchemaVersion } from "./persistence/provider-schema";
+import {
+  routineTriggerSchemaSql,
+  routineTriggerSchemaVersion,
+} from "./persistence/routine-trigger-schema";
 import { fenceScopedRun } from "./persistence/run-fence";
 import { schemaSql, schemaVersion } from "./persistence/schema";
 import { scopedSchemaSql, scopedSchemaVersion } from "./persistence/scoped-schema";
@@ -182,6 +191,11 @@ export class Store {
       const providerChecksum = createHash("sha256").update(providerSql).digest("hex");
       const integrationSql = integrationSchemaSql();
       const integrationChecksum = createHash("sha256").update(integrationSql).digest("hex");
+      const learningChecksum = createHash("sha256").update(learningSchemaSql).digest("hex");
+      const searchChecksum = createHash("sha256").update(conversationSearchSchemaSql).digest("hex");
+      const routineTriggerChecksum = createHash("sha256")
+        .update(routineTriggerSchemaSql)
+        .digest("hex");
       if (
         migrations.some(
           (migration) =>
@@ -193,7 +207,13 @@ export class Store {
               (migration.version === providerSchemaVersion &&
                 migration.sha256 === providerChecksum) ||
               (migration.version === executionSchemaVersion &&
-                migration.sha256 === executionChecksum)
+                migration.sha256 === executionChecksum) ||
+              (migration.version === learningSchemaVersion &&
+                migration.sha256 === learningChecksum) ||
+              (migration.version === conversationSearchSchemaVersion &&
+                migration.sha256 === searchChecksum) ||
+              (migration.version === routineTriggerSchemaVersion &&
+                migration.sha256 === routineTriggerChecksum)
             ),
         )
       )
@@ -231,6 +251,27 @@ export class Store {
         await this.#authority.query("INSERT INTO schema_migrations(version,sha256) VALUES($1,$2)", [
           integrationSchemaVersion,
           integrationChecksum,
+        ]);
+      }
+      if (!migrations.some((migration) => migration.version === learningSchemaVersion)) {
+        await this.#authority.query(learningSchemaSql);
+        await this.#authority.query("INSERT INTO schema_migrations(version,sha256) VALUES($1,$2)", [
+          learningSchemaVersion,
+          learningChecksum,
+        ]);
+      }
+      if (!migrations.some((migration) => migration.version === conversationSearchSchemaVersion)) {
+        await this.#authority.query(conversationSearchSchemaSql);
+        await this.#authority.query("INSERT INTO schema_migrations(version,sha256) VALUES($1,$2)", [
+          conversationSearchSchemaVersion,
+          searchChecksum,
+        ]);
+      }
+      if (!migrations.some((migration) => migration.version === routineTriggerSchemaVersion)) {
+        await this.#authority.query(routineTriggerSchemaSql);
+        await this.#authority.query("INSERT INTO schema_migrations(version,sha256) VALUES($1,$2)", [
+          routineTriggerSchemaVersion,
+          routineTriggerChecksum,
         ]);
       }
       await this.#authority.query(

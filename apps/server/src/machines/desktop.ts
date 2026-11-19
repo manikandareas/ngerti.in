@@ -56,10 +56,14 @@ export class MachineDesktop {
       if (item.state === "open" && !item.keep_open)
         await this.operations.update(item, { keep_open: true });
   }
-  private async listNativeWindows(): Promise<NativeWindow[]> {
+  private async listNativeWindows(signal?: AbortSignal): Promise<NativeWindow[]> {
     if (!this.host) throw new DomainError("MACHINE_UNAVAILABLE", 503);
     return windowList.parse(
-      await this.host.rpc("WindowsService/ListWindows", { filter: { includeSystem: false } }),
+      await this.host.rpc(
+        "WindowsService/ListWindows",
+        { filter: { includeSystem: false } },
+        signal,
+      ),
     ).windows;
   }
   async open(
@@ -111,15 +115,23 @@ export class MachineDesktop {
         waitForWindow: "5s",
       });
       // A retained Chromium process opens the new window on its existing PID;
-      // LaunchApp's short-lived launcher PID may therefore return no windows.
-      const created = (await this.listNativeWindows()).filter(
-        (window) =>
-          window.kind === "WINDOW_KIND_STANDARD" &&
-          !before.has(window.ref.id) &&
-          (application === "browser" ? /chromium/i : /terminal/i).test(window.app.name),
-      );
-      if (created.length !== 1) throw new DomainError("RECONCILIATION_REQUIRED");
-      const window = created[0] as NativeWindow;
+      // the short-lived launcher may return before the new window is mapped.
+      const deadline = performance.now() + 25_000;
+      let window: NativeWindow | undefined;
+      while (!window) {
+        const remaining = Math.ceil(deadline - performance.now());
+        if (remaining <= 0) throw new DomainError("RECONCILIATION_REQUIRED");
+        await authorize();
+        const created = (await this.listNativeWindows(AbortSignal.timeout(remaining))).filter(
+          (candidate) =>
+            candidate.kind === "WINDOW_KIND_STANDARD" &&
+            !before.has(candidate.ref.id) &&
+            (application === "browser" ? /chromium/i : /terminal/i).test(candidate.app.name),
+        );
+        [window] = created;
+        if (created.length > 1) throw new DomainError("RECONCILIATION_REQUIRED");
+        if (!window) await Bun.sleep(Math.min(250, remaining));
+      }
       item = await this.operations.update(item, {
         state: "open",
         native_ref: window.ref,

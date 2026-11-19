@@ -59,15 +59,18 @@ Creating another workspace replaces the active conversation binding, revokes the
 | Route | Behavior |
 | --- | --- |
 | `GET /v1/threads/:id/workspace?agent_id=<UUID>` | Current workspace or `null`; validates thread membership. |
+| `POST /v1/workspaces/:id/project-directory` | Select an existing folder for project context by sending `{ "expected_revision": number, "directory": string \| null }` with an idempotency key. `null` selects the working files root. |
 | `POST /v1/workspaces/:id/revoke` with `{}` | Durable revocation, native binding invalidation and stop intent for active runs. Stop confirmation retains native semantics. |
 | `GET /v1/workspaces/:id/files?path=&after=&limit=200` | Sorted child entries with `name`, relative `path`, `type` and `next_after`. Maximum page size 500; symlinks and protected names are omitted. |
 | `GET /v1/workspaces/:id/file?path=relative/path` | Authenticated bounded binary read. |
 
 These listing/read APIs support a later file-tree panel without implementing that UI now. They are not an arbitrary host-filesystem browser.
 
+The project folder is relative to the authenticated user's retained execution domain. On the next run, Ngertiin loads `AGENTS.md` from the selected folder and uses the updated workspace revision for native session binding. A selection keeps the workspace ID and its artifact references. Active or unsettled runs prevent selection changes.
+
 ## Shared group execution and recovery
 
-Each group conversation serializes native member turns through the authoritative run queue. All current group adapters can mutate workspace files, so they are conservatively treated as writers; parallel read-only turns are not advertised. The durable active/unknown run holds the workspace until settlement/reconciliation. Handoff children start after the parent's native turn has finished; continuations retain the original attachment identities. Native clients close after each group turn and resume their distinct persistent session on later turns. Owned Codex writer processes use a separate process group that is terminated before releasing the workspace; the descendant shutdown check is verified on macOS arm64. Muse native shell/write remain disabled.
+The authoritative queue serializes native group work that can mutate the workspace. Pi sibling checks explicitly delegated as read-only can overlap within the same parent run's batch and can only inspect their bound attachments. An unknown run holds the workspace until reconciliation. Handoff children start after the parent's native turn has finished. Ordinary continuations retain the original attachment identities. Native clients close after each group turn and resume their distinct persistent session on later turns. Owned Codex writer processes use a separate process group that is terminated before releasing the workspace. The descendant shutdown check is verified on macOS arm64. Muse native shell/write remain disabled.
 
 Owner-authorized native receipt inspection grants no workspace/tools and remains available after membership/workspace revocation. It does not resume a turn or issue a prompt. Unknown outcomes never expire into an implicit writer takeover.
 

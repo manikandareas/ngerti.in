@@ -20,6 +20,7 @@ export const errorCodes = [
   "BROWSER_UNKNOWN",
   "BROWSER_AUTH_REQUIRED",
   "BROWSER_ACTION_FAILED",
+  "WEB_UNAVAILABLE",
   "MACHINE_UNAVAILABLE",
   "MACHINE_UNKNOWN",
   "MACHINE_INPUT_BUSY",
@@ -30,6 +31,8 @@ export const errorCodes = [
   "APP_AUTH_REQUIRED",
   "APP_UNKNOWN",
   "APP_TOOL_FAILED",
+  "APP_BUDGET_EXCEEDED",
+  "MEDIA_BACKEND_FAILED",
 ] as const;
 export class DomainError extends Error {
   constructor(

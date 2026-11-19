@@ -46,6 +46,10 @@ Both adapters expose these structured tools through the existing scoped MCP brid
 
 Mutation fingerprints include operation, current group, actor, task and normalized input. Exact tool retries can return their original receipt across continuation runs without performing the effect again. Every call still validates the current native run lease, membership, connection, grants and capabilities before using the receipt or committing a new effect.
 
+On the current Pi ACP profile, `group_handoff` accepts `parallel: true` with `continuation: "synthesize"` for independent checks assigned to distinct Pi peers by one source run. When set, `attachment_ids` can select a subset of the source task's attachments. After the parent turn ends, those sibling runs may overlap. Their product-tool scope is limited to inspecting the bound attachments and describing those tools. Ordinary group work still needs the exclusive group lease. The parent resumes once the siblings have settled and receives each outcome, with result text from completed tasks.
+
+Parallel checks accept an optional `time_budget_seconds` between 1 and 3600. The deadline starts at dispatch. On expiry, the application fences new scoped calls and requests native stop. A late result cannot satisfy the peer task. The parent receives the budget failure reason and retains valid sibling results.
+
 A child returns by finishing its task, not by creating a reverse handoff to its ancestor. Task results carry published artifact references, goal IDs and generation pins. `continuation=synthesize` requests a combined answer; `finalize` retains the parent execution but suppresses its administrative answer. Default is synthesize. Native item phases keep commentary separate from final answers.
 
 Every root/child has a stable `peer_task` identity, `root_task_id`, optional `parent_task_id`, original request, source agent/run and `current_run_id`. The child's authored request has the source agent and `source_run_id`; its answer belongs to its own target run. This preserves authorship without treating an agent-to-agent request as a user message or as the child's answer.

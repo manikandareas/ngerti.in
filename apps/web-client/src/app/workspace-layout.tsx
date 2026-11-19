@@ -35,6 +35,7 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { Spinner } from "@/components/ui/spinner";
+import { Board } from "@/features/boards/board";
 import { AttachInput } from "@/features/conversation/components/attach-input";
 import {
   ComposerInput,
@@ -53,6 +54,10 @@ import { AgentAvatar, agentStyle } from "@/features/conversation/components/iden
 import { ModelPicker } from "@/features/conversation/components/model-picker";
 import { NativeInteractions } from "@/features/conversation/components/native-interactions";
 import { ConversationNavigation } from "@/features/conversation/components/navigation";
+import {
+  ProfileDialog,
+  type ProfileOperation,
+} from "@/features/conversation/components/profile-dialog";
 import {
   type QueuedMessage,
   QueuedMessages,
@@ -146,7 +151,9 @@ export default function Workspace() {
   } = useSettings();
   const marketplace = useMarketplace();
   const isMarketplace = marketplace.isOpen && !isSettings;
-  const isSecondaryScreen = isSettings || isMarketplace;
+  const [boardOpen, setBoardOpen] = useState(false);
+  const isBoard = boardOpen && !isSettings && !isMarketplace;
+  const isSecondaryScreen = isSettings || isMarketplace || isBoard;
   const lastSettings = useRef({
     section: settingsSection ?? "general",
     provider: settingsProvider,
@@ -167,10 +174,6 @@ export default function Workspace() {
     error,
     setError,
   } = workspace;
-  useFeedbackToast(error, {
-    retry: workspace.retry,
-    cancel: { label: "Periksa pengaturan", onClick: () => openSettings() },
-  });
   const [draft, setDraft] = useConversationDraft(threadId);
   const composerRequests = useComposerRequests(threadId);
   const reply = composerRequests.active;
@@ -198,6 +201,7 @@ export default function Workspace() {
   const [details, setDetails] = useState(false);
   const [createMenu, setCreateMenu] = useState(false);
   const [createGroupOpen, setCreateGroupOpen] = useState(false);
+  const [profileOperation, setProfileOperation] = useState<ProfileOperation | null>(null);
   const [location, locate] = useState<PanelLocation>({ tab: "detail", id: null });
   const showViewerInfo = useCallback((id: string) => {
     locate({ tab: "library", id });
@@ -272,6 +276,10 @@ export default function Workspace() {
   }, [submission.failure, setError]);
   const pending =
     (threadId ? pendingMessage(threadId) : null) ?? submission.pending?.body.text ?? null;
+  useFeedbackToast(error, {
+    retry: pending !== null ? send : workspace.retry,
+    cancel: { label: "Periksa pengaturan", onClick: () => openSettings() },
+  });
   const editPending = editing ? pendingText(`queued-edit:${editing.id}`) : null;
   const agent = snapshot?.agents[0];
   const connection = connections.find((c) => c.id === agent?.connection_id);
@@ -593,6 +601,11 @@ export default function Workspace() {
         setCreateMenu(false);
         setNavigation(false);
         setCreateGroupOpen(true);
+      }}
+      importProfile={() => {
+        setCreateMenu(false);
+        setNavigation(false);
+        setProfileOperation({ kind: "import" });
       }}
       choose={choose}
     />
@@ -960,11 +973,36 @@ export default function Workspace() {
           toggleSidebar={toggleSidebar}
           view={
             isSecondaryScreen
-              ? { kind: "page", title: isSettings ? "Settings" : "Marketplace" }
+              ? { kind: "page", title: isSettings ? "Settings" : isBoard ? "Board" : "Marketplace" }
               : {
                   kind: "conversation",
                   identity: conversationIdentity,
                   model: conversationActions,
+                  newChat:
+                    snapshot?.thread.type === "dm" && !busy
+                      ? () =>
+                          void act(async () => {
+                            const { id } = snapshot.thread;
+                            const thread = await durableCommand<Thread>(
+                              `new-dm:${id}`,
+                              `/v1/threads/${id}/new-dm`,
+                              {},
+                            );
+                            choose(thread.id);
+                          })
+                      : undefined,
+                  cloneProfile:
+                    snapshot?.thread.type === "dm" &&
+                    agent?.actor_id &&
+                    agent.actor_id === snapshot.thread.actor_id &&
+                    !agent.system_role
+                      ? () =>
+                          setProfileOperation({
+                            kind: "clone",
+                            threadId: snapshot.thread.id,
+                            name: agent.name,
+                          })
+                      : undefined,
                   panelOpen: details && !viewing,
                   panelDisabled: !snapshot || viewing,
                   togglePanel: toggleDetails,
@@ -976,7 +1014,9 @@ export default function Workspace() {
           <WorkspaceRail
             settings={isSettings}
             marketplace={isMarketplace}
+            board={isBoard}
             onConversation={() => {
+              setBoardOpen(false);
               if (isSettings) {
                 void closeSettings();
                 return;
@@ -991,14 +1031,23 @@ export default function Workspace() {
                 setDetails(false);
               }
             }}
+            onBoard={() => {
+              setNavigation(false);
+              setCreateMenu(false);
+              if (isSettings) void closeSettings();
+              if (isMarketplace) void marketplace.close();
+              setBoardOpen(true);
+            }}
             onMarketplace={() => {
               if (isMarketplace) return;
+              setBoardOpen(false);
               setNavigation(false);
               setCreateMenu(false);
               void marketplace.open();
             }}
             onSettings={() => {
               if (isSettings) return;
+              setBoardOpen(false);
               setNavigation(false);
               setCreateMenu(false);
               void showSettings(lastSettings.current.section, lastSettings.current.provider);
@@ -1513,6 +1562,17 @@ export default function Workspace() {
                   choose(thread.id);
                 }}
               />
+              {profileOperation && (
+                <ProfileDialog
+                  operation={profileOperation}
+                  close={() => setProfileOperation(null)}
+                  opened={(id) => {
+                    setProfileOperation(null);
+                    choose(id);
+                    void refresh().catch(() => {});
+                  }}
+                />
+              )}
             </div>
             {isSettings && (
               <Suspense
@@ -1528,6 +1588,7 @@ export default function Workspace() {
                 <SettingsPage sidebarOpen={mobile || sidebarOpen} />
               </Suspense>
             )}
+            {isBoard && <Board agents={workspace.invocableAgents} />}
             {isMarketplace && (
               <Suspense
                 fallback={

@@ -4,7 +4,7 @@ import { DomainError, type Entity } from "../contracts";
 import type { Lifecycle } from "../lifecycle";
 import { resolvedMachine } from "../machines/domains";
 import { machineFor } from "../machines/service";
-import { workspaceInput } from "./contracts";
+import { workspaceInput, workspaceProjectInput } from "./contracts";
 import { allowedPath, canonicalDirectory, WorkspaceFiles } from "./files";
 
 export const within = (root: string, path: string) => {
@@ -171,6 +171,34 @@ export class Workspaces {
       });
       if (shared) await this.adoptGroupFiles(workspace);
       return workspace;
+    });
+  }
+  async validateProjectDirectory(workspaceId: string, directory: string | null) {
+    if (directory !== null) await (await this.workingFiles(workspaceId)).list(directory, "", 1);
+  }
+  async selectProject(workspaceId: string, input: unknown) {
+    const { directory, expected_revision } = workspaceProjectInput.parse(input);
+    const store = this.lifecycle.store;
+    return await store.transaction(async () => {
+      const current = await this.get(workspaceId);
+      if (current.machine_id === null) throw new DomainError("SCOPE_DENIED", 403);
+      if (current.revision !== expected_revision) throw new DomainError("CONFLICT");
+      if ((current.project_directory ?? null) === directory) return current;
+      if (
+        (await store.list("run", { workspace_id: workspaceId })).some((run) =>
+          ["dispatching", "running", "cancel_requested", "unknown"].includes(run.status),
+        )
+      )
+        throw new DomainError("CONFLICT");
+      return await store.put(
+        {
+          ...current,
+          project_directory: directory,
+          revision: current.revision + 1,
+          updated_at: new Date().toISOString(),
+        },
+        current.revision,
+      );
     });
   }
   async get(workspaceId: string) {

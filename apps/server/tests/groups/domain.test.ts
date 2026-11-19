@@ -81,6 +81,104 @@ test("mention selects exactly one valid member and invalid addresses create no w
   expect(await f.store.list("run")).toHaveLength(1);
 });
 
+test("parallel sibling checks share execution without sharing write authority", async () => {
+  f = await fixture();
+  const connections = new Connections(f.lifecycle);
+  const connection = await connections.create({
+    harness: "pi",
+    provider_id: "checks",
+    authentication: {
+      method: "harness_config",
+      billing_source: "api_key",
+      credential_ref: crypto.randomUUID(),
+    },
+  });
+  await connections.update(connection, {
+    capabilities: { ...connection.capabilities, product_tools: "supported" },
+  });
+  const peers = await Promise.all(
+    ["First", "Second"].map(async (name) =>
+      f.lifecycle.createAgent({
+        name,
+        harness: "pi",
+        connection_id: connection.id,
+      }),
+    ),
+  );
+  const group = (await f.lifecycle.create("thread", {
+    type: "group",
+    member_agent_ids: [f.agent.id, ...peers.map((peer) => peer.id)],
+  })) as Entity<"thread">;
+  const groups = new Groups(f.lifecycle);
+  const { task, run } = await root(groups, group);
+  const children = [];
+  for (const peer of peers) {
+    children.push(
+      await groups.handoff(run.id, {
+        agent_id: peer.id,
+        instruction: "Verify only the attached inputs.",
+        purpose: "handoff",
+        parallel: true,
+        ...(peer.id === peers[1].id ? { time_budget_seconds: 60 } : {}),
+      }),
+    );
+    await f.lifecycle.bind(group.id, peer.id, crypto.randomUUID());
+    expect(await f.lifecycle.claimNext(group.id, peer.id)).toBeNull();
+  }
+  await finish(run);
+  const first = await start(children[0].current_run_id);
+  const second = await start(children[1].current_run_id);
+  expect(first.parallel_peer_source_id).toBe(run.id);
+  expect(second.parallel_peer_source_id).toBe(run.id);
+  const tools = await ProductTools.open(f.lifecycle);
+  const lease = await tools.issue(second);
+  try {
+    await expect(
+      tools.call(lease.token, lease.scope, "ngertiin.create_file", {
+        command_id: crypto.randomUUID(),
+        path: "blocked.txt",
+        text: "Must never be written",
+      }),
+    ).rejects.toMatchObject({ code: "SCOPE_DENIED" });
+  } finally {
+    lease.revoke();
+  }
+  const unrelatedRoute = await groups.send(group.id, {
+    text: "An unrelated turn",
+    agent_id: f.agent.id,
+  });
+  expect(unrelatedRoute.state).toBe("selected");
+  expect(await f.lifecycle.claimNext(group.id, f.agent.id)).toBeNull();
+  await f.lifecycle.appendAnswer(second.id, "Late result");
+  const current = await f.store.get("run", second.id);
+  const expired = await f.store.put(
+    {
+      ...current,
+      revision: current.revision + 1,
+      timings: { ...current.timings, dispatched_at: new Date(Date.now() - 61_000).toISOString() },
+    },
+    current.revision,
+  );
+  await expect(
+    f.lifecycle.authorizeDispatch(expired.id, expired.dispatch_token as string),
+  ).rejects.toMatchObject({ code: "STALE_DISPATCH" });
+  await f.lifecycle.settle(expired.id, expired.dispatch_token as string, "succeeded");
+  expect(await f.store.answer(expired.id)).toBeFalsy();
+  await groups.advance();
+  expect((await f.store.get("peer_task", task.id)).continuation).toBe(0);
+  await finish(first, "Verified result");
+  await groups.advance();
+  await groups.advance();
+  const parent = await f.store.get("peer_task", task.id);
+  expect(parent.continuation).toBe(1);
+  const continuation = await f.store.get("run", parent.current_run_id);
+  const result = await f.store.get("message", continuation.input_message_id);
+  expect(result.text).toContain("Verified result");
+  expect(result.text).toContain('"state":"failed"');
+  expect(result.text).toContain("The child exceeded its time budget.");
+  expect(result.text).not.toContain("Late result");
+});
+
 test("model routing uses the scoped packet, validates output and never writes selection bubbles", async () => {
   const { groups, group, peer } = await setup();
   await f.admit("PRIVATE_DM_SECRET");

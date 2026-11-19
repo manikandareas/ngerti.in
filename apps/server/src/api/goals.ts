@@ -1,7 +1,7 @@
 import type { Elysia } from "elysia";
 import { z } from "zod";
 import type { Background } from "../background";
-import { goalInput, id, routineInput } from "../contracts";
+import { DomainError, goalInput, id, routineInput } from "../contracts";
 import {
   captureGoal,
   completionRecovery,
@@ -10,6 +10,8 @@ import {
   routineControl,
   routineWrite,
 } from "../goals/contracts";
+import { RoutineDelivery } from "../goals/delivery";
+import { setRoutineDelivery } from "../goals/delivery-contracts";
 import { Goals } from "../goals/service";
 import type { Lifecycle } from "../lifecycle";
 import type { Command } from "./services";
@@ -87,6 +89,30 @@ export function registerGoalRoutes(
         return result;
       },
       { params: z.object({ id }), body: routineControl.omit({ routine_id: true }) },
+    )
+    .post(
+      "/v1/routines/:id/delivery",
+      async ({ request, params, body }) =>
+        await command(request, body, () =>
+          new RoutineDelivery(lifecycle).setTarget(params.id, body),
+        ),
+      { params: z.object({ id }), body: setRoutineDelivery },
+    )
+    .post(
+      "/v1/routines/:id/run-now",
+      async ({ request, params, body }) => {
+        const result = await command(request, body, async () => {
+          const occurrence = await lifecycle.fireRoutine(params.id, new Date(), body);
+          if (!occurrence) throw new DomainError("CONFLICT");
+          return occurrence;
+        });
+        if (result.run_id) {
+          const run = await lifecycle.store.get("run", result.run_id);
+          background.notifyAdmission(run.thread_id, run.agent_id);
+        }
+        return result;
+      },
+      { params: z.object({ id }), body: routineControl.pick({ expected_revision: true }) },
     )
     .post(
       "/v1/goals",

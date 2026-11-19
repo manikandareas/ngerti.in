@@ -1,10 +1,23 @@
 import { DomainError, type Entity } from "../contracts";
 import { Groups } from "../groups/service";
 import type { Lifecycle } from "../lifecycle";
-import { dueWindow } from "./schedule";
+import { settleLoop } from "./loops";
+import { checkedRoutineInstruction, checkRoutineSource, precheckCompletion } from "./precheck";
+import { dueWindow, nextLoopWake, routineCanRun, routineIsTerminal } from "./schedule";
 
 const terminal = new Set(["succeeded", "failed", "cancelled", "steered"]);
-const finished = new Set(["completed", "failed", "cancelled"]);
+const finished = new Set(["completed", "failed", "cancelled", "skipped"]);
+
+function occurrenceState(
+  run: Entity<"run">,
+  task?: Entity<"peer_task"> | null,
+): Entity<"occurrence">["state"] {
+  if (run.status === "succeeded")
+    return task && !finished.has(task.state) ? "running" : "completed";
+  if (run.status === "steered") return "cancelled";
+  if (run.status === "dispatching" || run.status === "cancel_requested") return "running";
+  return run.status;
+}
 
 /** Durable selection is part of an occurrence, before admitting its one execution. */
 export class GroupSchedules {
@@ -18,11 +31,72 @@ export class GroupSchedules {
       entity.revision,
     );
   }
+  private async syncExecution(
+    occurrence: Entity<"occurrence">,
+    run: Entity<"run">,
+    state: Entity<"occurrence">["state"],
+  ) {
+    if (state === occurrence.state) return;
+    await this.store.transaction(async () => {
+      const current = await this.store.get("occurrence", occurrence.id);
+      if (current.run_id !== run.id || current.state === state || finished.has(current.state))
+        return;
+      if (current.trigger === "manual" || !finished.has(state)) {
+        await this.update(current, { state });
+        return;
+      }
+      const routine = await this.store.get("routine", current.routine_id);
+      const loop =
+        routine.state === "active" &&
+        routine.generation === current.routine_generation &&
+        routine.next_run_at === null
+          ? await settleLoop(this.lifecycle, routine, run)
+          : null;
+      await this.update(current, { state, ...(loop ? { loop_condition: loop.condition } : {}) });
+      if (loop) await this.update(routine, loop.fields);
+    });
+  }
+  private async advanceExecution(occurrence: Entity<"occurrence">, group: boolean) {
+    if (!occurrence.run_id) return;
+    let run = await this.store.get("run", occurrence.run_id);
+    const task = group && run.task_id ? await this.store.get("peer_task", run.task_id) : null;
+    // A settled parent waiting for a peer is still the same occurrence.
+    if (task && task.current_run_id !== run.id) {
+      run = await this.store.get("run", task.current_run_id);
+      occurrence = await this.update(occurrence, { run_id: run.id, state: "running" });
+    }
+    await this.syncExecution(occurrence, run, occurrenceState(run, task));
+  }
+
+  /** Keep a finished check in the checkpoint even if Pause arrives before the next scheduler pass. */
+  async reconcileLoop(routine: Entity<"routine">) {
+    if (routine.schedule.type !== "loop" || routine.state !== "active" || routine.next_run_at)
+      return routine;
+    const occurrence = (await this.store.list("occurrence")).find(
+      (item) =>
+        item.routine_id === routine.id &&
+        item.routine_generation === routine.generation &&
+        item.trigger === "schedule" &&
+        item.run_id &&
+        !finished.has(item.state),
+    );
+    if (!occurrence) return routine;
+    await this.advanceExecution(occurrence, routine.scope === "group");
+    return await this.store.get("routine", routine.id);
+  }
+
   async advance() {
     for (const occurrence of await this.store.list("occurrence")) {
+      if (finished.has(occurrence.state)) continue;
       const routine = await this.store.get("routine", occurrence.routine_id);
-      if (routine.scope !== "group" || finished.has(occurrence.state)) continue;
-      if (routine.state !== "active" || routine.generation !== occurrence.routine_generation) {
+      if (routine.scope !== "group") {
+        await this.advanceExecution(occurrence, false);
+        continue;
+      }
+      if (
+        !routineCanRun(routine.state, occurrence.trigger === "manual") ||
+        routine.generation !== occurrence.routine_generation
+      ) {
         if (occurrence.run_id) await this.lifecycle.cancel(occurrence.run_id);
         let unresolved = occurrence.run_id
           ? !terminal.has((await this.store.get("run", occurrence.run_id)).status)
@@ -36,39 +110,25 @@ export class GroupSchedules {
         }
         const state = unresolved ? "unknown" : "cancelled";
         if (occurrence.state !== state) await this.update(occurrence, { state });
-      } else if (occurrence.run_id) {
-        const run = await this.store.get("run", occurrence.run_id);
-        const task = run.task_id ? await this.store.get("peer_task", run.task_id) : null;
-        // A settled parent waiting for a peer is still the same occurrence.
-        if (task && task.current_run_id !== run.id)
-          await this.update(occurrence, { run_id: task.current_run_id, state: "running" });
-        else {
-          const state =
-            run.status === "succeeded"
-              ? task && !finished.has(task.state)
-                ? "running"
-                : "completed"
-              : run.status === "steered"
-                ? "cancelled"
-                : run.status === "dispatching" || run.status === "cancel_requested"
-                  ? "running"
-                  : run.status;
-          if (state !== occurrence.state) await this.update(occurrence, { state });
-        }
-      }
+      } else if (occurrence.run_id) await this.advanceExecution(occurrence, true);
+      else if (routine.state === "paused" && occurrence.trigger === "manual")
+        await this.lifecycle.fireRoutine(routine.id, new Date());
     }
   }
-  async fire(routine: Entity<"routine">, now: Date) {
-    if (routine.state !== "active") return null;
-    const thread = await this.store.get("thread", routine.thread_id);
+  async fire(routine: Entity<"routine">, now: Date, manual = false) {
+    if (routine.restore_pending || routineIsTerminal(routine.state)) return null;
     let occurrence = (await this.store.list("occurrence")).find(
       (o) =>
         o.routine_id === routine.id &&
         o.routine_generation === routine.generation &&
         !finished.has(o.state),
     );
+    if (manual && occurrence) return null;
+    if (!routineCanRun(routine.state, manual || occurrence?.trigger === "manual")) return null;
+    const thread = await this.store.get("thread", routine.thread_id);
     if (!occurrence) {
-      if (!routine.next_run_at || Date.parse(routine.next_run_at) > now.getTime()) return null;
+      const due = manual ? now.toISOString() : routine.next_run_at;
+      if (!due || Date.parse(due) > now.getTime()) return null;
       if (routine.goal_id) {
         const goal = await this.store.get("goal", routine.goal_id);
         if (goal.state !== "active" || goal.work_state !== "ready") return null;
@@ -81,17 +141,19 @@ export class GroupSchedules {
             return null;
         }
       }
-      const { scheduled_for, next } = dueWindow(
-        routine.schedule,
-        routine.timezone,
-        routine.next_run_at,
-        now,
-      );
+      const trigger = manual ? ("manual" as const) : ("schedule" as const);
+      const { scheduled_for, next } = manual
+        ? { scheduled_for: due, next: routine.next_run_at }
+        : dueWindow(routine.schedule, routine.timezone, due, now);
       occurrence = await this.store.command(
-        `routine:${routine.id}:${routine.generation}:${scheduled_for}`,
-        { scheduled_for },
+        manual
+          ? `routine:${routine.id}:${routine.generation}:manual:${scheduled_for}`
+          : `routine:${routine.id}:${routine.generation}:${scheduled_for}`,
+        manual ? { scheduled_for, trigger } : { scheduled_for },
         async () => {
           const stamp = new Date().toISOString();
+          const check = await checkRoutineSource(this.lifecycle, routine);
+          const completedByCheck = precheckCompletion(check, manual);
           const saved = await this.store.put({
             kind: "occurrence",
             id: crypto.randomUUID(),
@@ -101,18 +163,27 @@ export class GroupSchedules {
             updated_at: stamp,
             routine_id: routine.id,
             routine_generation: routine.generation,
+            trigger,
+            check,
             scheduled_for,
             run_id: null,
             route_id: null,
             selected_agent_id: null,
-            state: "pending",
+            state: completedByCheck ?? "pending",
           });
-          await this.update(routine, { next_run_at: next });
+          if (!manual)
+            await this.update(routine, {
+              next_run_at:
+                completedByCheck && routine.schedule.type === "loop"
+                  ? nextLoopWake(routine.schedule, stamp, routine.loop_pacing)
+                  : next,
+            });
           return saved;
         },
       );
     }
-    if (occurrence.run_id || occurrence.state === "blocked") return occurrence;
+    if (occurrence.run_id || occurrence.state === "blocked" || finished.has(occurrence.state))
+      return occurrence;
     let selected =
       routine.execution_target?.type === "agent" ? routine.execution_target.agent_id : null;
     if (!selected) {
@@ -164,17 +235,23 @@ export class GroupSchedules {
       { occurrence_id: occurrence.id, agent_id: actor },
       async () => {
         const current = await this.store.get("routine", routine.id);
-        if (current.state !== "active" || current.generation !== occurrence.routine_generation)
+        const manualRoutine = occurrence.trigger === "manual";
+        if (
+          !routineCanRun(current.state, manualRoutine) ||
+          current.generation !== occurrence.routine_generation
+        )
           throw new DomainError("CONFLICT");
         const receipt = await this.lifecycle.admit(
           {
             thread_id: thread.id,
             agent_id: actor,
-            text: routine.instruction,
+            text: checkedRoutineInstruction(routine, occurrence.check),
             goal_id: routine.goal_id,
             routine_id: routine.id,
+            artifact_ids: occurrence.check?.artifact_id ? [occurrence.check.artifact_id] : [],
           },
           "routine",
+          { manualRoutine },
         );
         const task = await new Groups(this.lifecycle).attachScheduled(receipt.run);
         if (routine.goal_id) {

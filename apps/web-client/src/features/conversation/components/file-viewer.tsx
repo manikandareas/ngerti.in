@@ -29,6 +29,8 @@ type LoadedContent = {
   url: string;
   text?: string;
   image?: string;
+  audio?: string;
+  video?: string;
   table?: TextTable;
   language?: string;
   markdown?: boolean;
@@ -57,6 +59,8 @@ export function FileContent({ file, headerInset = 0 }: { file: FileView; headerI
         const raster =
           /^(image\/(png|jpeg|webp))$/.test(file.mediaType ?? "") ||
           /\.(png|jpe?g|webp)$/i.test(file.name);
+        const audio = mediaType.startsWith("audio/");
+        const video = mediaType === "video/mp4";
         const text = isTextFile(file.name, mediaType);
         if (abort.signal.aborted) return;
         if (pdf) {
@@ -68,11 +72,11 @@ export function FileContent({ file, headerInset = 0 }: { file: FileView; headerI
           const { default: View } = await import("./pdf-content");
           if (!abort.signal.aborted)
             setContent({ url: file.url, pdf: { bytes: preview.bytes.slice(), View } });
-        } else if (raster) {
+        } else if (raster || audio || video) {
           const preview = await readFilePreview(response, 16 * 1024 * 1024, abort.signal);
           if (preview.truncated)
             throw new Error(
-              "Image exceeds the 16 MB preview limit. Download it to view the original.",
+              "This file exceeds the 16 MB preview limit. Download it to open the original.",
             );
           const blob = new Blob([preview.bytes], {
             type:
@@ -80,7 +84,8 @@ export function FileContent({ file, headerInset = 0 }: { file: FileView; headerI
           });
           if (abort.signal.aborted) return;
           objectUrl = URL.createObjectURL(blob);
-          setContent({ url: file.url, image: objectUrl });
+          const kind = audio ? "audio" : video ? "video" : "image";
+          setContent({ url: file.url, [kind]: objectUrl });
         } else {
           const delimiter = tableDelimiter(file.name);
           const preview = await readFilePreview(response, FILE_PREVIEW_MAX_BYTES, abort.signal);
@@ -171,6 +176,35 @@ export function FileContent({ file, headerInset = 0 }: { file: FileView; headerI
       );
     if (view?.image)
       return <img src={view.image} alt={file.name} className="max-h-full w-full object-contain" />;
+    if (view?.video)
+      return (
+        // biome-ignore lint/a11y/useMediaCaption: An uploaded or generated video may have no captions.
+        <video
+          aria-label={file.name}
+          controls
+          playsInline
+          preload="metadata"
+          src={view.video}
+          onError={() =>
+            setContent({
+              url: file.url,
+              error: "Video tidak dapat diputar di perangkat ini. Unduh untuk membuka file asli.",
+            })
+          }
+          className="max-h-full w-full object-contain"
+        />
+      );
+    if (view?.audio)
+      return (
+        // biome-ignore lint/a11y/useMediaCaption: The viewer also plays audio uploads that may have no caption file.
+        <audio
+          aria-label={file.name}
+          controls
+          preload="metadata"
+          src={view.audio}
+          className="w-full"
+        />
+      );
     if (view?.table)
       return (
         <RichTable

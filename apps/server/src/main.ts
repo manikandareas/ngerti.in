@@ -21,6 +21,8 @@ import { configureNativeStorage } from "./harness/native-storage";
 import { HarnessRuntime } from "./harness/runtime";
 import { ProductTools } from "./harness/tools";
 import { HarnessUpdater } from "./harness/updater";
+import type { AppHost } from "./integrations/host";
+import { McpHost } from "./integrations/mcp-host";
 import { Lifecycle } from "./lifecycle";
 import { readMachineConfiguration } from "./machines/config";
 import { ExecutionDomains } from "./machines/domains";
@@ -28,8 +30,22 @@ import { Machines } from "./machines/service";
 import { publishRuntime } from "./runtime-record";
 import { Store } from "./store";
 
-type ApplicationConfig = ReturnType<typeof developmentConfig>;
-export async function startApplication(config: ApplicationConfig = developmentConfig()) {
+type DevelopmentConfig = ReturnType<typeof developmentConfig>;
+type OptionalConfiguration =
+  | "channels"
+  | "learningCadence"
+  | "mcpServers"
+  | "mediaBackends"
+  | "memoryBackends"
+  | "outputPlugins"
+  | "routineDeliveryDestinations"
+  | "webResearch";
+type ApplicationConfig = Omit<DevelopmentConfig, OptionalConfiguration> &
+  Partial<Pick<DevelopmentConfig, OptionalConfiguration>>;
+export async function startApplication(
+  config: ApplicationConfig = developmentConfig(),
+  appHost?: AppHost,
+) {
   const store = await Store.open(config.database, config.owner_id, {
     connectionString: config.databaseUrl,
     schema: config.databaseSchema,
@@ -47,22 +63,35 @@ export async function startApplication(config: ApplicationConfig = developmentCo
     const lifecycle = await Lifecycle.open(
       store,
       config.groupRouter === "jev" ? new JevRouter(config.typesafeApiKey as string) : undefined,
+      config.learningCadence,
+      config.memoryBackends,
+      config.routineDeliveryDestinations,
+      config.outputPlugins,
+      config.channels,
+      config.mediaBackends,
     );
     const machines = await Machines.open(lifecycle, readMachineConfiguration(config.stateDir));
     cleanup.push(() => machines.close());
     const domains = ExecutionDomains.open(lifecycle, config.stateDir);
     cleanup.push(() => domains.close());
-    const tools = await ProductTools.open(lifecycle, (scope, name) => {
-      console.log(
-        JSON.stringify({
-          event: "product_tool.completed",
-          run_id: scope.run_id,
-          thread_id: scope.thread_id,
-          agent_id: scope.agent_id,
-          name,
-        }),
-      );
-    });
+    const tools = await ProductTools.open(
+      lifecycle,
+      (scope, name) => {
+        console.log(
+          JSON.stringify({
+            event: "product_tool.completed",
+            run_id: scope.run_id,
+            thread_id: scope.thread_id,
+            agent_id: scope.agent_id,
+            name,
+          }),
+        );
+      },
+      undefined,
+      appHost,
+      config.webResearch,
+      new McpHost(config.mcpServers ?? []),
+    );
     const localProfiles =
       config.authentication.allowInsecureLoopback &&
       config.authentication.email.delivery === "local"

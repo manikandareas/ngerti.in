@@ -8,11 +8,13 @@ import { ConversationActionsMenu } from "@/features/conversation/components/conv
 import { WorkspaceHeaderSlot } from "./desktop-shell";
 
 type HeaderView =
-  | { kind: "page"; title: "Settings" | "Marketplace" }
+  | { kind: "page"; title: "Settings" | "Marketplace" | "Board" }
   | {
       kind: "conversation";
       identity: ReactNode;
       model: ReactNode;
+      newChat?: () => void;
+      cloneProfile?: () => void;
       panelOpen: boolean;
       panelDisabled: boolean;
       togglePanel: () => void;
@@ -63,7 +65,7 @@ export function WorkspaceHeader({
           {view.kind === "conversation" && (
             <div className="workspace-toolbar-actions">
               {view.model}
-              <ConversationActionsMenu />
+              <ConversationActionsMenu newChat={view.newChat} cloneProfile={view.cloneProfile} />
               <span aria-hidden="true" className="workspace-toolbar-separator" />
               <Tooltip>
                 <TooltipTrigger asChild>

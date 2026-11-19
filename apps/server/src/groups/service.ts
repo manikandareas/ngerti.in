@@ -6,6 +6,7 @@ import { asyncEvery, asyncFilter, asyncMap } from "../persistence/async-collecti
 import { Workspaces } from "../workspaces/service";
 import { requireAttachmentSupport } from "./attachments";
 import { groupMessage, handoffInput, membershipUpdate, routeResult, routeRetry } from "./contracts";
+import { peerBudgetDiagnostic } from "./execution";
 import { nativeRoutingPrompt } from "./native-routing";
 import type { RoutingDecision, RoutingPacket } from "./router";
 import { routingEvidence } from "./routing-policy";
@@ -59,6 +60,7 @@ export class Groups {
         agent_id: a.id,
         name: a.name,
         handle: a.handle,
+        harness: a.harness,
         soul: excerpt(a.soul, budget / 2),
         instructions: excerpt(a.instructions, budget / 2),
       };
@@ -94,12 +96,18 @@ export class Groups {
     parent?: Entity<"peer_task">,
     existingRun?: Entity<"run">,
     summary: string | null = null,
+    execution?: { parallel?: boolean; time_budget_seconds?: number },
   ): Promise<Entity<"peer_task">> {
     await this.member(message.thread_id, agentId);
     await requireAttachmentSupport(this.lifecycle, agentId, message.artifact_ids);
     const base = this.base();
     const run =
-      existingRun ?? (await this.lifecycle.enqueue(message, agentId, { task_id: base.id }));
+      existingRun ??
+      (await this.lifecycle.enqueue(message, agentId, {
+        task_id: base.id,
+        parallel_peer_source_id: execution?.parallel ? source?.id : undefined,
+        peer_budget_seconds: execution?.time_budget_seconds,
+      }));
     if (existingRun) await this.update(existingRun, { task_id: base.id });
     return await this.store.put({
       ...base,
@@ -143,8 +151,14 @@ export class Groups {
         )
           await this.update(goal, {
             coordinator_agent_id: null,
+            generation: goal.generation + 1,
             assignment_revision: goal.assignment_revision + 1,
+            checkpoint_evidence: null,
+            evidence_artifact_ids: [],
             assignment_route_id: null,
+            last_report_error: null,
+            report_run_id: null,
+            deferred_by_run_id: null,
             work_state: "waiting_assignment",
             continuation_at: goal.state === "active" ? new Date().toISOString() : null,
           });
@@ -371,6 +385,7 @@ export class Groups {
       shared_instructions: "",
       type: "group",
       purpose: "routing",
+      additional_dm: false,
       group_thread_id: threadId,
       member_agent_ids: [router.id],
     });
@@ -624,7 +639,18 @@ export class Groups {
     const data = handoffInput.parse(input);
     return await this.store.transaction(async () => {
       const { run, task } = await this.source(runId);
-      await this.member(run.thread_id, data.agent_id);
+      const peer = await this.member(run.thread_id, data.agent_id);
+      if (data.parallel && (peer.harness !== "pi" || data.continuation !== "synthesize"))
+        throw new DomainError("SCOPE_DENIED", 403);
+      if (data.time_budget_seconds !== undefined && !data.parallel)
+        throw new DomainError("SCOPE_DENIED", 403);
+      const sourceAttachments = (await this.store.get("message", task.request_message_id))
+        .artifact_ids;
+      if (
+        data.attachment_ids &&
+        (!data.parallel || data.attachment_ids.some((id) => !sourceAttachments.includes(id)))
+      )
+        throw new DomainError("SCOPE_DENIED", 403);
       if (data.continuation === "complete" && (run.goal_id || task.goal_ids.length))
         throw new DomainError("CONFLICT");
       // Prevent self/ancestor cycles, while allowing peers to complete independent sibling work.
@@ -649,9 +675,17 @@ export class Groups {
         data.instruction,
         data.purpose,
         run,
-        (await this.store.get("message", task.request_message_id)).artifact_ids,
+        data.attachment_ids ? [...new Set(data.attachment_ids)] : sourceAttachments,
       );
-      const child = await this.task(message, data.agent_id, run, task, undefined, data.summary);
+      const child = await this.task(
+        message,
+        data.agent_id,
+        run,
+        task,
+        undefined,
+        data.summary,
+        data,
+      );
       await this.update(task, { state: "waiting_peer", continuation_mode: data.continuation });
       return await this.store.get("peer_task", child.id);
     });
@@ -721,9 +755,13 @@ export class Groups {
       if (["completed", "failed", "cancelled"].includes(task.state)) return;
       const run = await this.store.get("run", task.current_run_id);
       if (!terminal.has(run.status)) return;
-      if (run.status !== "succeeded") {
-        if (task.state !== run.status && (run.status !== "unknown" || task.state === "working"))
-          await this.update(task, { state: run.status as "failed" | "cancelled" | "unknown" });
+      const state =
+        run.status === "succeeded" && run.diagnostic?.code === peerBudgetDiagnostic.code
+          ? "failed"
+          : run.status;
+      if (state !== "succeeded") {
+        if (task.state !== state && (state !== "unknown" || task.state === "working"))
+          await this.update(task, { state: state as "failed" | "cancelled" | "unknown" });
         if (run.status !== "unknown")
           for (const child of await this.store.list("peer_task"))
             if (
@@ -797,13 +835,19 @@ export class Groups {
             task_id: c.id,
             agent_id: c.agent_id,
             state: c.state,
+            ...(c.state !== "completed" &&
+            (await this.store.get("run", c.current_run_id)).diagnostic?.code ===
+              peerBudgetDiagnostic.code
+              ? { reason: "The child exceeded its time budget." }
+              : {}),
             artifact_ids: c.result_artifact_ids,
-            text: c.result_message_id
-              ? excerpt(
-                  (await this.store.get("message", c.result_message_id)).text,
-                  Math.floor(28_000 / children.length),
-                )
-              : null,
+            text:
+              c.state === "completed" && c.result_message_id
+                ? excerpt(
+                    (await this.store.get("message", c.result_message_id)).text,
+                    Math.floor(28_000 / children.length),
+                  )
+                : null,
           })),
           user_replies: await asyncMap(
             requests.filter((r) => r.state === "answered"),
@@ -896,7 +940,7 @@ export class Groups {
         messages.findIndex((item) => item.id === run.input_message_id)
         ? marker
         : run.input_message_id;
-    return `Current group context; use only this shared thread, never private DM history. Only selected agents speak. Use ngertiin.group_handoff for peer work/review and ngertiin.group_ask_user for necessary user input/review/approval. For a handoff, put your useful public result in announcement before delegating, including readable file links. The application publishes announcement before the handoff milestone and suppresses a duplicate final answer. Keep announcement separate from the private instruction. After either tool, end this turn; the application continues the task with bound results. A child returns results by finishing its task, never by handing back to an ancestor. If a task requests a file deliverable, publish it before returning. A coordinator requesting artifact evidence must include that deliverable requirement in the peer instruction. Keep technical instructions in the handoff instruction field. Supply a short user-friendly summary without UUIDs or bookkeeping. Delegate as soon as the instruction and required evidence are ready; do not duplicate the peer's work first. Use continuation=complete for an ordinary task without a Goal when the peer will deliver the entire remaining public answer. Use finalize for Goal bookkeeping and synthesize when you must assess or combine results. Shared group goals have one coordinator; contributors finish their tasks and return artifact evidence, never create a duplicate goal or a second continuation owner. Do not invent a peer or user response.\n${JSON.stringify(
+    return `Current group context; use only this shared thread, never private DM history. Only selected agents speak. Use ngertiin.group_handoff for peer work/review and ngertiin.group_ask_user for necessary user input/review/approval. For a handoff, put your useful public result in announcement before delegating, including readable file links. The application publishes announcement before the handoff milestone and suppresses a duplicate final answer. Keep announcement separate from the private instruction. Use parallel=true for independent read-only checks by distinct Pi peers. Assign each check before ending your turn. After assigning work or asking the user, end this turn; the application continues the task with bound results. A child returns results by finishing its task, never by handing back to an ancestor. If a task requests a file deliverable, publish it before returning. A coordinator requesting artifact evidence must include that deliverable requirement in the peer instruction. Keep technical instructions in the handoff instruction field. Supply a short user-friendly summary without UUIDs or bookkeeping. Delegate as soon as the instruction and required evidence are ready; do not duplicate the peer's work first. Use continuation=complete for an ordinary task without a Goal when the peer will deliver the entire remaining public answer. Use finalize for Goal bookkeeping and synthesize when you must assess or combine results. Shared group goals have one coordinator; contributors finish their tasks and return artifact evidence, never create a duplicate goal or a second continuation owner. Do not invent a peer or user response.\n${JSON.stringify(
       {
         group_id: group.id,
         revision: group.revision,

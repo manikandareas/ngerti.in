@@ -350,9 +350,11 @@ export class Machines {
         if (this.#input) throw new DomainError("MACHINE_INPUT_BUSY");
         if (lease.state === "unknown") {
           if (data.operation !== "reconcile") throw new DomainError("RECONCILIATION_REQUIRED");
-          const observation = await this.host?.call("get_desktop_state", {
-            session: `ngertiin-reconcile-${data.command_id}`,
-          });
+          const observation = await this.host?.call(
+            "get_desktop_state",
+            { session: `ngertiin-reconcile-${data.command_id}` },
+            AbortSignal.timeout(45_000),
+          );
           if (!observation || observation.isError) throw new DomainError("RECONCILIATION_REQUIRED");
         }
         await authorize();

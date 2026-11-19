@@ -1,12 +1,18 @@
 import { AttachmentSubmissions } from "./attachments/submissions";
+import { Boards } from "./boards/service";
 import { DomainError, type Entity } from "./contracts";
+import { RoutineDelivery } from "./goals/delivery";
 import { GroupSchedules } from "./goals/group-schedules";
 import { Goals } from "./goals/service";
+import { groupRunBlocks, peerBudgetDeadline, peerBudgetExpired } from "./groups/execution";
 import { RoutingWorker } from "./groups/routing-worker";
 import { Groups } from "./groups/service";
 import type { HarnessId } from "./harness/availability";
-import { diagnostic } from "./harness/contracts";
+import { diagnostic, HarnessError } from "./harness/contracts";
+import { Channels } from "./integrations/channels";
 import { Interactions } from "./interactions/service";
+import { SkillCurator } from "./learning/curator";
+import { LearningReviews, type ReviewInference } from "./learning/reviews";
 import type { Lifecycle } from "./lifecycle";
 import type { DataContext } from "./persistence/access-context";
 
@@ -18,6 +24,7 @@ export interface ExecutorContext {
   controlReady?(): Promise<void>;
 }
 export interface HarnessExecutor {
+  review?: ReviewInference;
   settled?(run: Entity<"run">): Promise<unknown>;
   preparationRevision?(): string;
   prepare?(threadId: string, agentId: string): Promise<unknown>;
@@ -48,6 +55,10 @@ export class Background {
   #tickAgain = false;
   #dispatching: Promise<void> = Promise.resolve();
   readonly #routing: RoutingWorker;
+  readonly #learning: LearningReviews;
+  readonly #curator: SkillCurator;
+  readonly #deliveries: RoutineDelivery;
+  readonly #channels: Channels;
   constructor(
     readonly lifecycle: Lifecycle,
     private readonly executors: Partial<Record<HarnessId, HarnessExecutor>> = {},
@@ -55,6 +66,10 @@ export class Background {
     private readonly concurrency = 4,
   ) {
     this.#routing = new RoutingWorker(lifecycle, async () => await this.wake());
+    this.#learning = new LearningReviews(lifecycle);
+    this.#curator = new SkillCurator(lifecycle);
+    this.#deliveries = new RoutineDelivery(lifecycle);
+    this.#channels = new Channels(lifecycle);
     lifecycle.store.signal.addEventListener(
       "abort",
       () => {
@@ -69,6 +84,14 @@ export class Background {
   }
   get activeCount() {
     return this.#work.size;
+  }
+
+  cancelLearningReview(runId: string) {
+    return this.#learning.cancel(runId);
+  }
+
+  interruptCancelledLearningReview(runId: string) {
+    this.#learning.interruptCancelled(runId);
   }
 
   async start(intervalMs = 1000) {
@@ -101,13 +124,18 @@ export class Background {
     }
     this.#ticking = (async () => {
       for (const work of this.#work.values()) {
-        if (!work.scope || !checkControls || this.lifecycle.toolControlHeld(work.run.id)) continue;
+        if (!checkControls || this.lifecycle.toolControlHeld(work.run.id)) continue;
         try {
+          if (peerBudgetExpired(work.run, Math.max(now.getTime(), Date.now()))) {
+            if (!work.controller.signal.aborted) await this.stopExpiredPeer(work);
+            continue;
+          }
+          if (!work.scope) continue;
           await this.inScope(work, () =>
             this.lifecycle.authorizeDispatch(work.run.id, work.run.dispatch_token as string),
           );
         } catch {
-          await this.lifecycle.store.fenceScopedRun(work.run);
+          if (work.scope) await this.lifecycle.store.fenceScopedRun(work.run);
           work.controller.abort();
         }
       }
@@ -133,6 +161,13 @@ export class Background {
     if (checkControls) {
       await this.advanceSchedules(now);
       await this.dispatchReady(now, checkControls);
+      await this.#learning.advance(async (run, prompt, signal, authorize) => {
+        const review =
+          run.provider_selection && this.executors[run.provider_selection.harness]?.review;
+        if (!review) throw new HarnessError("CAPABILITY_UNSUPPORTED");
+        return await review(run, prompt, signal, authorize);
+      }, this.report);
+      await this.#curator.advance(now);
     }
   }
 
@@ -147,9 +182,17 @@ export class Background {
     }
     await new Interactions(this.lifecycle).advance();
     await new Groups(this.lifecycle).advance();
+    await new Boards(this.lifecycle).advance(now, (run) => {
+      const work = this.#work.get(run.id);
+      return (
+        !!work && work.run.dispatch_token === run.dispatch_token && !work.controller.signal.aborted
+      );
+    });
     await this.#routing.advance();
     await new Goals(this.lifecycle).advance(now);
     await new GroupSchedules(this.lifecycle).advance();
+    await this.#deliveries.advance(now, this.report);
+    await this.#channels.advance(now, this.report);
     for (const routine of await this.lifecycle.store.list("routine", { state: "active" })) {
       try {
         await this.lifecycle.fireRoutine(routine.id, now);
@@ -240,11 +283,7 @@ export class Background {
       if (
         thread.type === "group" &&
         thread.purpose === "conversation" &&
-        runs.some(
-          (run) =>
-            run.thread_id === thread.id &&
-            ["dispatching", "running", "cancel_requested", "unknown"].includes(run.status),
-        )
+        runs.some((run) => groupRunBlocks(queued, run))
       )
         continue;
       if (
@@ -347,6 +386,18 @@ export class Background {
   private async execute(work: Work, executor: HarnessExecutor) {
     const token = work.run.dispatch_token;
     if (!token) throw new Error("Dispatch token is required.");
+    const deadline = peerBudgetDeadline(work.run);
+    // The next general scheduler tick may be busy reconciling unrelated work.
+    const budgetTimer =
+      deadline === undefined
+        ? undefined
+        : setTimeout(
+            () => {
+              if (!work.controller.signal.aborted && !this.#closed)
+                void this.stopExpiredPeer(work).catch(() => this.report("SCHEDULER_ERROR"));
+            },
+            Math.max(0, deadline - Date.now()),
+          );
     try {
       const run = await this.lifecycle.authorizeDispatch(work.run.id, token);
       const outcome = await executor.execute(run, {
@@ -386,6 +437,7 @@ export class Background {
       }
       await this.report(error instanceof DomainError ? error.code : "EXECUTION_UNKNOWN");
     } finally {
+      clearTimeout(budgetTimer);
       this.#work.delete(work.run.id);
       await this.wake();
     }
@@ -395,6 +447,8 @@ export class Background {
     await this.#ticking;
     await this.#dispatching;
     await this.#routing.idle();
+    await this.#deliveries.idle();
+    await this.#channels.idle();
     await Promise.all([...this.#preparing.values()]);
     await Promise.all([...this.#work.values()].map((work) => work.done));
   }
@@ -403,10 +457,18 @@ export class Background {
     return work.scope ? this.lifecycle.store.withDataContext(work.scope, action) : action();
   }
 
+  private async stopExpiredPeer(work: Work) {
+    const stopped = await this.inScope(work, () =>
+      this.lifecycle.cancel(work.run.id, "peer_budget"),
+    );
+    if (stopped.cancellation === "requested") work.controller.abort();
+  }
+
   async stop(timeoutMs = 5000) {
     this.#stopping = true;
     await this.#unsubscribe?.();
     this.#unsubscribe = null;
+    await this.#learning.close();
     await this.#routing.close();
     if (this.#timer) clearInterval(this.#timer);
     this.#timer = null;

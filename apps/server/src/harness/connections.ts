@@ -174,6 +174,13 @@ export class Connections {
         (data.scope === "organization" && connection.actor_id !== null)
       )
         throw new DomainError("SCOPE_DENIED", 403);
+      if (data.scope === "review") {
+        if (!connection.models.some((model) => model.id === data.selection?.model_id))
+          throw new HarnessError("MODEL_UNAVAILABLE");
+        if (connection.login !== "authenticated") throw new HarnessError("LOGIN_REQUIRED");
+        if (connection.effective_billing_source !== connection.authentication.billing_source)
+          throw new HarnessError("BILLING_MISMATCH");
+      }
     }
     return store.transaction(async () => {
       const previous = (await store.list("ai_selection")).find(
@@ -217,11 +224,25 @@ export class Connections {
       personal.find((row) => row.scope === "user"),
       rows.find((row) => row.scope === "organization" && row.harness === agent.harness),
     ].find((row) => row?.selection !== null && row?.selection !== undefined)?.selection;
-    if (!selected) return null;
+    return selected ? await this.materializeSelection(agent.harness, selected) : null;
+  }
+  async resolveReviewSelection(harness: ProviderSelection["harness"]) {
+    const store = this.lifecycle.store;
+    const scope = store.dataContext;
+    if (!scope) return null;
+    const selected = (await store.list("ai_selection")).find(
+      (row) => row.scope === "review" && row.actor_id === scope.userId && row.harness === harness,
+    )?.selection;
+    return selected ? await this.materializeSelection(harness, selected) : null;
+  }
+  private async materializeSelection(
+    harness: ProviderSelection["harness"],
+    selected: NonNullable<ReturnType<typeof selectionInput.parse>["selection"]>,
+  ): Promise<ProviderSelection> {
     // A selected but unavailable account never proceeds to the next default.
     const connection = await this.get(selected.connection_id);
     await this.authorize(connection);
-    if (connection.harness !== agent.harness) throw new HarnessError("MODEL_UNAVAILABLE");
+    if (connection.harness !== harness) throw new HarnessError("MODEL_UNAVAILABLE");
     const model = connection.models.find((model) => model.id === selected.model_id);
     if (
       connection.discovery === "succeeded" &&

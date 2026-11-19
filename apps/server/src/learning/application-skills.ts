@@ -3,14 +3,18 @@ import { DomainError, type Entity } from "../contracts";
 import { Connections } from "../harness/connections";
 import { asyncFilter, asyncFind } from "../persistence/async-collections";
 import { canonical } from "../store";
+import { builtInSkills } from "./built-in-skills";
 import {
   type LearningContext,
+  type SkillConsolidation,
   skillAssign,
   skillCreate,
   skillRead,
   skillRevise,
+  skillToolRead,
   teamSkillPublication,
 } from "./contracts";
+import { optionalSkills } from "./optional-skills";
 import { LearningScope } from "./scope";
 
 export const packageHash = (value: unknown) =>
@@ -18,6 +22,32 @@ export const packageHash = (value: unknown) =>
 
 /** Packages live in PostgreSQL, outside every native workspace and credential directory. */
 export class ApplicationSkills extends LearningScope {
+  async seedBuiltIns(agentId: string) {
+    for (const definition of builtInSkills) {
+      const skill = await this.lifecycle.store.put({
+        ...this.base(),
+        kind: "skill",
+        agent_id: agentId,
+        thread_id: null,
+        visibility: definition.visibility,
+        name: definition.name,
+        source: "application",
+        distribution: "built_in",
+      });
+      const revision = await this.publish(skill, definition.package, null);
+      await this.lifecycle.store.put({
+        ...this.base(),
+        kind: "skill_assignment",
+        agent_id: agentId,
+        thread_id: null,
+        visibility: definition.visibility,
+        skill_id: skill.id,
+        version: revision.version,
+        enabled: true,
+      });
+    }
+  }
+
   async list(context: LearningContext) {
     await this.context(context);
     return await asyncFilter(
@@ -25,16 +55,37 @@ export class ApplicationSkills extends LearningScope {
       async (item) => await this.visible(context, item),
     );
   }
-  async read(context: LearningContext, input: unknown) {
+  async read(context: LearningContext, input: unknown, includeArchived = false) {
     const data = skillRead.parse(input);
     const skill = await this.lifecycle.store.get("skill", data.skill_id);
     await this.require(context, skill);
+    if (!includeArchived && (await this.maintenance(skill))?.state === "archived")
+      throw new DomainError("NOT_FOUND", 404);
     const revision = (await this.lifecycle.store.list("skill_revision")).find(
       (item) => item.skill_id === skill.id && item.version === data.version,
     );
     if (!revision) throw new DomainError("NOT_FOUND", 404);
     if (packageHash(revision.package) !== revision.sha256) throw new DomainError("CONFLICT");
     return { skill, revision };
+  }
+  async readForTool(context: LearningContext, input: unknown) {
+    const { view, asset_path: assetPath, ...reference } = skillToolRead.parse(input);
+    const { skill, revision } = await this.read(context, reference);
+    const { assets, ...summary } = revision.package;
+    if (assetPath) {
+      const asset = assets.find((item) => item.path === assetPath);
+      if (!asset) throw new DomainError("NOT_FOUND", 404);
+      return { skill_id: skill.id, version: revision.version, asset };
+    }
+    return view === "overview"
+      ? {
+          skill,
+          revision: {
+            ...revision,
+            package: { ...summary, asset_paths: assets.map((asset) => asset.path) },
+          },
+        }
+      : { skill, revision };
   }
   private async publish(
     skill: Entity<"skill">,
@@ -52,7 +103,12 @@ export class ApplicationSkills extends LearningScope {
       source_run_id: sourceRunId,
     });
   }
-  async create(context: LearningContext, input: unknown, sourceRunId: string | null = null) {
+  async create(
+    context: LearningContext,
+    input: unknown,
+    sourceRunId: string | null = null,
+    distribution?: "optional",
+  ) {
     const data = skillCreate.parse(input);
     await this.validate(context, data.visibility);
     return await this.lifecycle.store.transaction(async () => {
@@ -71,8 +127,45 @@ export class ApplicationSkills extends LearningScope {
         visibility: data.visibility,
         name: data.name,
         source: "application",
+        ...(distribution ? { distribution } : {}),
       });
       return { skill, revision: await this.publish(skill, data.package, sourceRunId) };
+    });
+  }
+  async installOptional(context: LearningContext, name: string) {
+    const { thread } = await this.context(context);
+    if (thread.purpose !== "conversation") throw new DomainError("SCOPE_DENIED", 403);
+    const definition = optionalSkills.find((entry) => entry.name === name);
+    if (!definition) throw new DomainError("NOT_FOUND", 404);
+    return await this.lifecycle.store.transaction(async () => {
+      const current = (await this.list(context)).find(
+        (item) =>
+          item.agent_id === context.agent_id &&
+          item.distribution === "optional" &&
+          item.name === name,
+      );
+      const active = current
+        ? (await this.assignments(context)).find((item) => item.skill_id === current.id)
+        : undefined;
+      const result = current
+        ? await this.read(context, {
+            skill_id: current.id,
+            version: active?.version ?? current.revision,
+          })
+        : await this.create(
+            context,
+            { name, visibility: definition.visibility, package: definition.package },
+            null,
+            "optional",
+          );
+      if (!active?.enabled)
+        await this.assign(context, {
+          skill_id: result.skill.id,
+          version: result.revision.version,
+          expected_revision: active?.revision ?? 0,
+          enabled: true,
+        });
+      return result;
     });
   }
   async revise(context: LearningContext, input: unknown, sourceRunId: string | null = null) {
@@ -84,8 +177,63 @@ export class ApplicationSkills extends LearningScope {
         throw new DomainError("SCOPE_DENIED", 403);
       if (current.agent_id !== context.agent_id) throw new DomainError("SCOPE_DENIED", 403);
       if (current.revision !== data.expected_revision) throw new DomainError("CONFLICT");
+      const maintenance = await this.maintenance(current);
+      if (maintenance?.locked || maintenance?.state === "archived")
+        throw new DomainError("CONFLICT");
       const skill = await this.update(current, {});
       return { skill, revision: await this.publish(skill, data.package, sourceRunId) };
+    });
+  }
+  async consolidationPair(context: LearningContext, pair: SkillConsolidation) {
+    const { thread } = await this.context(context);
+    const actor = this.lifecycle.store.dataContext;
+    if (!actor || thread.type !== "dm" || pair.target.skill_id === pair.source.skill_id)
+      throw new DomainError("SCOPE_DENIED", 403);
+    const target = await this.read(context, pair.target);
+    const source = await this.read(context, pair.source);
+    for (const item of [target, source]) {
+      if (item.skill.actor_id !== actor.userId || item.skill.agent_id !== context.agent_id)
+        throw new DomainError("SCOPE_DENIED", 403);
+      if (
+        item.skill.revision !== item.revision.version ||
+        (await this.maintenance(item.skill))?.locked
+      )
+        throw new DomainError("CONFLICT");
+    }
+    return { target, source };
+  }
+  async consolidate(context: LearningContext, input: unknown, run: Entity<"run">) {
+    const data = skillRevise.parse(input);
+    const pair = run.skill_consolidation;
+    if (
+      !pair ||
+      data.skill_id !== pair.target.skill_id ||
+      data.expected_revision !== pair.target.version ||
+      ![pair.target, pair.source].every((item) =>
+        run.skill_reads.some(
+          (read) => read.skill_id === item.skill_id && read.version === item.version,
+        ),
+      )
+    )
+      throw new DomainError("SCOPE_DENIED", 403);
+    return await this.lifecycle.store.transaction(async () => {
+      const { target, source } = await this.consolidationPair(context, pair);
+      const assets = new Map<string, (typeof data.package.assets)[number]>();
+      for (const asset of [
+        ...target.revision.package.assets,
+        ...source.revision.package.assets,
+        ...data.package.assets,
+      ]) {
+        const key = asset.path.toLowerCase();
+        const previous = assets.get(key);
+        if (previous && canonical(previous) !== canonical(asset)) throw new DomainError("CONFLICT");
+        assets.set(key, asset);
+      }
+      return await this.revise(
+        context,
+        { ...data, package: { ...data.package, assets: [...assets.values()] } },
+        run.id,
+      );
     });
   }
   async assignments(context: LearningContext) {
@@ -246,13 +394,29 @@ export class ApplicationSkills extends LearningScope {
       ) ?? null
     );
   }
-  async inventory(context: LearningContext) {
+  private async maintenance(skill: Entity<"skill">) {
+    return (
+      await this.lifecycle.store.list("skill_maintenance", { agent_id: skill.agent_id })
+    ).find((item) => item.id === skill.id);
+  }
+
+  async inventory(context: LearningContext, includeArchived = false) {
     const assignments = await this.assignments(context);
-    const application = (await this.list(context)).map((skill) => ({
-      ...skill,
-      key: `application:${skill.id}`,
-      assignment: assignments.find((item) => item.skill_id === skill.id) ?? null,
-    }));
+    const maintenance = new Map(
+      (
+        await this.lifecycle.store.list("skill_maintenance", {
+          agent_id: context.agent_id,
+        })
+      ).map((item) => [item.id, item]),
+    );
+    const application = (await this.list(context))
+      .map((skill) => ({
+        ...skill,
+        key: `application:${skill.id}`,
+        assignment: assignments.find((item) => item.skill_id === skill.id) ?? null,
+        maintenance: maintenance.get(skill.id) ?? null,
+      }))
+      .filter((skill) => includeArchived || skill.maintenance?.state !== "archived");
     const agent = await this.lifecycle.store.get("agent", context.agent_id);
     const binding = await this.selectedBinding(context);
     const native = (

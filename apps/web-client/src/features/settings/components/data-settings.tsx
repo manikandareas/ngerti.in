@@ -15,6 +15,7 @@ import { PreferenceToggle } from "@/features/settings/components/preference-sect
 import { SettingsRow, SettingsSection } from "@/features/settings/components/shared";
 import { useSettings } from "@/features/settings/hooks/use-settings";
 import { usePreferences } from "@/hooks/use-preferences";
+import { ExternalMemorySettings } from "./external-memory-settings";
 
 export function DataSettings() {
   const { reset } = usePreferences();
@@ -38,6 +39,7 @@ export function DataSettings() {
           </Button>
         </SettingsRow>
       </SettingsSection>
+      <ExternalMemorySettings />
       <SettingsSection title="App preferences">
         <SettingsRow
           title="Reset preferences"

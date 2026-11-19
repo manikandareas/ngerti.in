@@ -18,7 +18,7 @@ class Host implements AppHost {
   sessions: AppSessionConfig[] = [];
   users: string[] = [];
   active = true;
-  before: (() => void) | null = null;
+  before: (() => void | Promise<void>) | null = null;
   effect: (() => Promise<void>) | null = null;
   async catalog() {
     return { items: [{ slug: "github", name: "GitHub", connected: this.active }] };
@@ -49,7 +49,7 @@ class Host implements AppHost {
     _args: Record<string, unknown>,
     authorize: () => void,
   ) {
-    this.before?.();
+    await this.before?.();
     await authorize();
     this.calls++;
     await this.effect?.();

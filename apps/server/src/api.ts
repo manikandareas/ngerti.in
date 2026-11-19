@@ -1,5 +1,7 @@
 import { registerAttachmentRoutes } from "./api/attachments";
+import { registerBoardRoutes } from "./api/boards";
 import { registerBrowserRoutes } from "./api/browser";
+import { registerChannelRoutes } from "./api/channels";
 import { registerConversationRoutes } from "./api/conversations";
 import { registerEventRoutes } from "./api/events";
 import { registerGoalRoutes } from "./api/goals";
@@ -93,6 +95,7 @@ export async function createApi(
             "user",
             "run_lease",
             "ticket",
+            "channel_key",
           ],
           operator: "local_cli_only_no_http_elevation",
           database: "transaction_local_non_owner_non_superuser_non_bypassrls_role",
@@ -142,12 +145,14 @@ export async function createApi(
       },
     }));
   await registerConversationRoutes(api, lifecycle, command);
+  registerChannelRoutes(api, lifecycle, scoped);
   await registerIntegrationRoutes(api, lifecycle, services, command);
   await registerHarnessRoutes(api, services, command);
   await registerEventRoutes(api, lifecycle, services.authentication);
-  await registerLearningRoutes(api, lifecycle, command);
+  await registerLearningRoutes(api, lifecycle, background, services.tools.applications, command);
   await registerGroupRoutes(api, lifecycle, background, command);
   await registerGoalRoutes(api, lifecycle, background, command);
+  await registerBoardRoutes(api, lifecycle, background, command);
   await registerWorkspaceRoutes(api, lifecycle, background, command);
   await registerAttachmentRoutes(api, lifecycle);
   await registerBrowserRoutes(api, services, command);

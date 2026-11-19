@@ -25,11 +25,15 @@ export function goalStatus(goal: Goal): string {
     ? (responsibilityLabels[goal.work_state] ?? responsibilityLabels.active)
     : responsibilityLabels[goal.state];
 }
-export function responsibilityTime(value: string | null, timezone?: string): string {
+export function responsibilityTime(
+  value: string | null,
+  timezone?: string,
+  showSeconds = false,
+): string {
   return value
     ? new Intl.DateTimeFormat("en-US", {
         dateStyle: "medium",
-        timeStyle: "short",
+        timeStyle: showSeconds ? "medium" : "short",
         ...(timezone ? { timeZone: timezone } : {}),
       }).format(new Date(value))
     : "—";

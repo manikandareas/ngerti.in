@@ -115,4 +115,12 @@ describe("durable inline references", () => {
     expect(tree.children[0].children.filter((node) => node.type === "link")).toHaveLength(2);
     expect(tree.children[0].children.at(-1)).toEqual({ type: "code", value: id });
   });
+  test("published artifact links resolve through the same file reference", () => {
+    const id = "b6869bf7-af0b-4a32-a96f-d8a823a3deeb";
+    const label = "release.txt";
+    const legacy = referenceFromUrl(`ngertiin://artifact/${id}`, label);
+    expect(legacy).toEqual({ kind: "file", id, label });
+    expect(legacy).toEqual(referenceFromUrl(`ngertiin://file/${id}`, label));
+    expect(referenceFromUrl(`ngertiin://artifact/${id}?workspace=other`, label)).toBeNull();
+  });
 });

@@ -1,6 +1,7 @@
 import {
   Add01Icon,
   Analytics01Icon,
+  ArrowUpRight01Icon,
   CodeIcon,
   FileEditIcon,
   PackageIcon,
@@ -78,6 +79,7 @@ export function EntryRow({
   onOpen: () => void;
   onAction: () => void;
 }) {
+  const canCreate = !available && entry.prompts.length > 0;
   return (
     <div className="marketplace-entry">
       <button type="button" className="marketplace-entry-open" onClick={onOpen}>
@@ -99,11 +101,15 @@ export function EntryRow({
         <button
           type="button"
           className="marketplace-entry-action"
-          aria-label={available ? `View ${entry.name}` : `Create skill ${entry.name}`}
-          title={available ? "View details" : "Create with agent"}
-          onClick={available ? onOpen : onAction}
+          aria-label={canCreate ? `Create skill ${entry.name}` : `View ${entry.name}`}
+          title={canCreate ? "Create with agent" : "View details"}
+          onClick={canCreate ? onAction : onOpen}
         >
-          <HugeiconsIcon icon={available ? Tick02Icon : Add01Icon} size={20} strokeWidth={1.5} />
+          <HugeiconsIcon
+            icon={available ? Tick02Icon : canCreate ? Add01Icon : ArrowUpRight01Icon}
+            size={20}
+            strokeWidth={1.5}
+          />
         </button>
       )}
     </div>

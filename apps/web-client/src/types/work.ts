@@ -7,6 +7,20 @@ export interface Goal extends Base {
   created_by_agent_id: string | null;
   title: string;
   objective: string;
+  verification?: {
+    checks: { title: string; artifact_name: string; exact_text?: string }[];
+    attempt_limit: number;
+    attempts_used: number;
+    last_check: {
+      run_id: string;
+      results: {
+        title: string;
+        artifact_name: string;
+        status: "passed" | "missing" | "mismatch";
+        artifact_id: string | null;
+      }[];
+    } | null;
+  } | null;
   progress: string;
   state: "active" | "paused" | "stopped" | "completed";
   work_state: string;
@@ -17,6 +31,14 @@ export interface Goal extends Base {
 export type Schedule =
   | { type: "once"; at: string }
   | { type: "interval" | "heartbeat"; anchor_at: string; every_ms: number }
+  | {
+      type: "loop";
+      anchor_at?: string;
+      every_ms: number;
+      self_paced?: { max_every_ms?: number };
+      max_runs?: number;
+      until?: { artifact_name: string; exact_text: string };
+    }
   | { type: "calendar"; local_time: string; weekdays: number[] };
 export interface Routine extends Base {
   name: string | null;
@@ -28,8 +50,22 @@ export interface Routine extends Base {
   goal_id: string | null;
   instruction: string;
   state: string;
+  restore_pending?: boolean;
   schedule: Schedule;
+  loop_pacing?: { delay_ms: number } | null;
+  loop_progress?: {
+    runs: number;
+    reason: "condition_met" | "run_limit" | "safety_limit" | "paused_by_user" | null;
+  } | null;
   timezone: string;
+  monitor?: { metric: string; above: number } | null;
+  delivery_target?: { id: string; label: string } | null;
+  precheck?:
+    | ({
+        workspace_id: string;
+        source_path: string;
+      } & ({ exact_text: string } | { on_change: true } | { source_routine_id: string }))
+    | null;
   next_run_at: string | null;
   source_message_id: string | null;
 }
@@ -41,6 +77,7 @@ export interface Workspace extends Base {
   scope: "agent" | "group";
   name: string;
   project_path: string | null;
+  project_directory?: string | null;
   state: "active" | "revoked";
 }
 export interface Artifact extends Base {
@@ -119,6 +156,7 @@ export interface AppConnection extends Base {
     thread_id: string | null;
     tools: string[];
     resources?: Record<string, (string | number | boolean)[]>;
+    action_budget?: { allow_writes: boolean; limit_units: number };
   }[];
 }
 export interface AppEffect extends Base {
@@ -127,6 +165,7 @@ export interface AppEffect extends Base {
   agent_id: string;
   run_id: string;
   tool: string;
+  budget_units?: number;
   state: string;
   error_code: string | null;
   log_id: string | null;

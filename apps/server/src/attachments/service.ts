@@ -21,7 +21,9 @@ export class Attachments {
       await this.lifecycle.store.list("message", { thread_id: run.thread_id })
     ).filter((m) => m.thread_id === run.thread_id);
     const end = messages.findIndex((m) => m.id === run.input_message_id);
-    const retained = messages.slice(0, end + 1).filter((m) => m.state !== "deleted");
+    const retained = messages
+      .slice(run.parallel_peer_source_id ? end : 0, end + 1)
+      .filter((m) => m.state !== "deleted");
     const ids = new Set(retained.flatMap((m) => m.artifact_ids));
     const outputRuns = new Set(
       retained
@@ -90,7 +92,7 @@ export class Attachments {
       ),
     };
   }
-  private async get(run: Entity<"run">, id: string) {
+  async get(run: Entity<"run">, id: string) {
     const item = (await this.visible(run)).find((a) => a.id === id);
     if (!item) throw new DomainError("SCOPE_DENIED", 403);
     return item;

@@ -32,18 +32,23 @@ export function EntryDetail({
             {entry.name}
           </h1>
           <p>
-            {plugin ? categoryLabel(entry.category) : available ? "Available skill" : "Skill idea"}
+            {plugin
+              ? categoryLabel(entry.category)
+              : entry.prompts.length > 0
+                ? available
+                  ? "Available skill"
+                  : "Skill idea"
+                : entry.description}
           </p>
         </div>
         <div className="marketplace-detail-actions">
-          {plugin ? (
-            installAction
-          ) : entry.prompts[0] ? (
-            <Button className="marketplace-primary" onClick={() => onPrompt(entry.prompts[0])}>
-              {available ? "Try now" : "Create with agent"}
-              <HugeiconsIcon icon={ArrowUpRight01Icon} size={16} />
-            </Button>
-          ) : null}
+          {installAction ??
+            (!plugin && entry.prompts[0] ? (
+              <Button className="marketplace-primary" onClick={() => onPrompt(entry.prompts[0])}>
+                {available ? "Try now" : "Create with agent"}
+                <HugeiconsIcon icon={ArrowUpRight01Icon} size={16} />
+              </Button>
+            ) : null)}
         </div>
       </header>
       {feedback}
@@ -64,7 +69,9 @@ export function EntryDetail({
           </div>
         </section>
       )}
-      <p className="marketplace-detail-about">{entry.about}</p>
+      {(plugin || entry.prompts.length > 0 || entry.about !== entry.description) && (
+        <p className="marketplace-detail-about">{entry.about}</p>
+      )}
       {management}
       <section className="marketplace-detail-section" aria-labelledby="marketplace-info-heading">
         <h2 id="marketplace-info-heading">Information</h2>

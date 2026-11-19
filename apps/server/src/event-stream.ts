@@ -10,9 +10,18 @@ export function eventStream(
 ) {
   const scope = store.dataContext;
   const revoked = new AbortController();
+  let validating = false;
   const permissionTimer = scope
-    ? setInterval(() => {
-        void scope.validate().catch(() => revoked.abort());
+    ? setInterval(async () => {
+        if (validating) return;
+        validating = true;
+        try {
+          await scope.validate();
+        } catch {
+          revoked.abort();
+        } finally {
+          validating = false;
+        }
       }, 1000)
     : undefined;
   const signal = AbortSignal.any([requestSignal, revoked.signal, ...(lease ? [lease.signal] : [])]);
@@ -74,7 +83,9 @@ export function eventStream(
                 return;
               }
               cursor = page.next_cursor;
-              await store.waitForEvents(cursor, signal, Math.min(10_000, deadline - Date.now()));
+              const remaining = deadline - Date.now();
+              if (remaining <= 0) break;
+              await store.waitForEvents(cursor, signal, Math.min(10_000, remaining));
             }
             if (closed) return;
             if (signal.aborted || store.closed || Date.now() >= deadline) {

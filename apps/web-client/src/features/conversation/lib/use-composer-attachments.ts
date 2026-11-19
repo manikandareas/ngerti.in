@@ -149,7 +149,12 @@ export function useComposerAttachments(options: Options) {
         ? null
         : "Belum ada anggota yang dituju dengan koneksi dan model yang mendukung gambar ini.";
     }
-    return attachmentIssue(mediaType, current.connection, current.snapshot?.agents[0]?.model_id);
+    return attachmentIssue(
+      mediaType,
+      current.connection,
+      current.snapshot?.agents[0]?.model_id,
+      current.snapshot?.media_operations,
+    );
   }
   function allowed(mediaType: string, count: number, images: number) {
     const current = latest.current;

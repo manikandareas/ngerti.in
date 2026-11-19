@@ -47,13 +47,15 @@ export function registerMachineRoutes(
     )
     .post(
       "/v1/machine/control",
-      async ({ body, request }) =>
-        (await machine()).control(
+      async ({ body, request, server }) => {
+        server?.timeout(request, 60);
+        return (await machine()).control(
           body,
           null,
           () => authorize(request),
           authentication.principal(request).sessionId,
-        ),
+        );
+      },
       {
         body: machineControl,
       },

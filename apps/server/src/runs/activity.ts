@@ -10,6 +10,8 @@ export function toolActivityKind(name: string): z.infer<typeof activityKind> {
   switch (name) {
     case "webSearch":
     case "web_search":
+    case "ngertiin.web_search":
+    case "ngertiin.search_files":
       return "searching";
     case "ngertiin.search_attachment":
     case "ngertiin.read_attachment":
@@ -25,6 +27,7 @@ export function toolActivityKind(name: string): z.infer<typeof activityKind> {
       return "creating";
     case "ngertiin.browser_open":
     case "ngertiin.browser_action":
+    case "ngertiin.web_extract":
       return "browsing";
     default:
       return "working";

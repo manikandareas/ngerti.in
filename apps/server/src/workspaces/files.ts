@@ -100,7 +100,7 @@ export class WorkspaceFiles {
       for (const handle of handles.reverse()) closeSync(handle);
     }
   }
-  read(path: string) {
+  read(path: string, maxBytes = MAX_FILE_BYTES) {
     return this.withParent(path, false, (directory, name) => {
       const handle = openAt(
         directory,
@@ -109,7 +109,7 @@ export class WorkspaceFiles {
       );
       try {
         const before = fstatSync(handle);
-        if (!before.isFile() || before.nlink !== 1 || before.size > MAX_FILE_BYTES)
+        if (!before.isFile() || before.nlink !== 1 || before.size > maxBytes)
           throw new DomainError("SCOPE_DENIED", 403);
         const bytes = Buffer.alloc(before.size);
         // An fd-backed bounded read avoids FIFOs and files growing past the advertised size.

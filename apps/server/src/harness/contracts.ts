@@ -2,6 +2,11 @@ import { z } from "zod";
 import { base, billingSource, harness, id } from "../contracts/base";
 import { activeTool } from "../runs/activity-contracts";
 import { nativeProgress } from "../runs/native-progress";
+import { providerUsage } from "./selection-contracts";
+
+export function nativeSessionCommand(text: string) {
+  return /^\/([^/\s]+)(?:\s|$)/.exec(text.trimStart())?.[1];
+}
 
 export const harnessId = harness;
 export const capabilityState = z.enum(["supported", "unsupported", "unknown"]);
@@ -122,6 +127,7 @@ export const terminal = z.strictObject({
   status: z.enum(["succeeded", "failed", "cancelled", "unknown"]),
   native_session_id: z.string().min(1).max(1000),
   native_run_id: z.string().min(1).max(1000).nullable(),
+  usage: providerUsage.optional(),
 });
 export const nativeEvent = z.discriminatedUnion("type", [
   z.strictObject({ type: z.literal("progress"), progress: nativeProgress }),

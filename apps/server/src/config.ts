@@ -6,7 +6,15 @@ import { parseEnv } from "node:util";
 import { z } from "zod";
 import { authenticationConfig } from "./auth/config";
 import { id } from "./contracts";
+import { parseRoutineDeliveryDestinations } from "./goals/delivery-contracts";
 import type { HarnessId } from "./harness/availability";
+import { parseChannels } from "./integrations/channel-contracts";
+import { parseMcpServers } from "./integrations/mcp-host";
+import { parseMediaBackends } from "./integrations/media-contracts";
+import { parseOutputPlugins } from "./integrations/output-plugin-contracts";
+import { parseMemoryBackends } from "./learning/external-memory-contracts";
+import { learningCadence } from "./learning/review-contracts";
+import { webResearchConfig } from "./web-research/contracts";
 
 const installationSchema = z.object({
   owner_id: id,
@@ -91,6 +99,47 @@ export function developmentConfig() {
     port,
     groupRouter,
     typesafeApiKey,
+    channels: parseChannels({ ...rootEnvironment, ...process.env }, environment === "development"),
+    mediaBackends: parseMediaBackends(
+      { ...rootEnvironment, ...process.env },
+      environment === "development",
+    ),
+    mcpServers: parseMcpServers(
+      { ...rootEnvironment, ...process.env },
+      environment === "development",
+    ),
+    outputPlugins: parseOutputPlugins(
+      process.env.NGERTIIN_OUTPUT_PLUGINS ?? rootEnvironment.NGERTIIN_OUTPUT_PLUGINS,
+    ),
+    routineDeliveryDestinations: parseRoutineDeliveryDestinations(
+      process.env.NGERTIIN_ROUTINE_DELIVERY_DESTINATIONS ??
+        rootEnvironment.NGERTIIN_ROUTINE_DELIVERY_DESTINATIONS,
+      environment === "development",
+    ),
+    memoryBackends: parseMemoryBackends(
+      process.env.NGERTIIN_MEMORY_BACKENDS ?? rootEnvironment.NGERTIIN_MEMORY_BACKENDS,
+      environment === "development",
+    ),
+    webResearch: webResearchConfig(
+      process.env.FIRECRAWL_API_URL ?? rootEnvironment.FIRECRAWL_API_URL,
+      process.env.FIRECRAWL_API_KEY ?? rootEnvironment.FIRECRAWL_API_KEY,
+      environment === "development",
+    ),
+    learningCadence: learningCadence.parse({
+      memory_turns:
+        process.env.NGERTIIN_LEARNING_MEMORY_TURNS ??
+        rootEnvironment.NGERTIIN_LEARNING_MEMORY_TURNS,
+      skill_steps:
+        process.env.NGERTIIN_LEARNING_SKILL_STEPS ?? rootEnvironment.NGERTIIN_LEARNING_SKILL_STEPS,
+      review_ms:
+        process.env.NGERTIIN_LEARNING_REVIEW_MS ?? rootEnvironment.NGERTIIN_LEARNING_REVIEW_MS,
+      curator_interval_ms:
+        process.env.NGERTIIN_CURATOR_INTERVAL_MS ?? rootEnvironment.NGERTIIN_CURATOR_INTERVAL_MS,
+      stale_skill_ms:
+        process.env.NGERTIIN_CURATOR_STALE_MS ?? rootEnvironment.NGERTIIN_CURATOR_STALE_MS,
+      archive_skill_ms:
+        process.env.NGERTIIN_CURATOR_ARCHIVE_MS ?? rootEnvironment.NGERTIIN_CURATOR_ARCHIVE_MS,
+    }),
     ...(providerMasterKeyFile ? { providerMasterKeyFile } : {}),
     authentication,
     nativeCodexExecutable: executableOverride("NGERTIIN_CODEX_EXECUTABLE"),

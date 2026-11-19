@@ -8,12 +8,14 @@ import {
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useCallback, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { toast } from "sonner";
 import { SlidingPanel } from "@/app/sliding-panel";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useSettingsWorkspace } from "@/hooks/settings-workspace";
 import { useApiResource } from "@/hooks/use-api-resource";
+import { command } from "@/lib/api-client";
 import type { Skills } from "@/types/workspace";
 import { useMarketplace } from "../hooks/use-marketplace";
 import { useMarketplaceToast } from "../hooks/use-marketplace-toast";
@@ -24,9 +26,38 @@ import { belongsToCategory, categoryLabel, primaryCategory } from "../lib/catego
 import { EntryIcon } from "./catalog-entry";
 import { CatalogResults } from "./catalog-results";
 import { EntryDetail } from "./entry-detail";
+import { OutputPlugins } from "./output-plugins";
 import { PluginFeedback, PluginInstall } from "./plugin-install";
 import { PluginManagement } from "./plugin-management";
+import { SkillVersions } from "./skill-versions";
 import "../marketplace.css";
+
+function applicationEntry(skill: Skills["application"][number]): CatalogEntry {
+  const status = skill.maintenance?.state;
+  const builtIn = skill.distribution === "built_in";
+  const optional = skill.distribution === "optional";
+  const description = skill.maintenance?.locked
+    ? "Locked application skill"
+    : status === "stale"
+      ? "Stale application skill"
+      : status === "archived"
+        ? "Archived application skill"
+        : skill.actor_id === null
+          ? "Team skill"
+          : builtIn
+            ? "Built-in skill"
+            : optional
+              ? "Optional skill"
+              : "Application skill";
+  return {
+    id: `application:${skill.id}`,
+    name: skill.name,
+    description,
+    about: description,
+    category: builtIn ? "Built-in" : optional ? "Optional" : "Application",
+    prompts: [],
+  };
+}
 
 export default function MarketplacePage({
   onPrompt,
@@ -35,11 +66,13 @@ export default function MarketplacePage({
   onPrompt: (prompt: string) => void;
   sidebarOpen?: boolean;
 }) {
-  const { section, item, category, open } = useMarketplace();
+  const { section, item, category, open, close } = useMarketplace();
   const { snapshot, agents, appConnectionCursor } = useSettingsWorkspace();
   const [query, setQuery] = useState("");
   const [tab, setTab] = useState("discover");
   const [agentId, setAgentId] = useState("");
+  const [reviewing, setReviewing] = useState(false);
+  const [installingSkill, setInstallingSkill] = useState(false);
   const content = useRef<HTMLElement>(null);
   const plugin = section === "plugins";
   const title = plugin ? "Plugins" : "Skills";
@@ -80,21 +113,33 @@ export default function MarketplacePage({
     agent && snapshot
       ? new URLSearchParams({ agent_id: agent.id, thread_id: snapshot.thread.id })
       : null;
-  const skills = useApiResource<Skills>(!plugin && scope ? `/v1/learning/skills?${scope}` : null);
+  const skills = useApiResource<Skills>(
+    !plugin && scope ? `/v1/learning/skills?${scope}` : null,
+    appConnectionCursor,
+  );
+  const optionalEntries = useMemo<CatalogEntry[]>(
+    () =>
+      (skills.data?.optional ?? []).map((skill) => ({
+        id: `optional:${skill.name}`,
+        name: skill.name,
+        description: "Optional skill",
+        about: skill.description,
+        category: "Optional",
+        prompts: [],
+      })),
+    [skills.data?.optional],
+  );
   const availableSkills = useMemo<CatalogEntry[]>(
     () =>
       skills.data
         ? [
             ...skills.data.application
-              .filter((skill) => skill.assignment?.enabled)
-              .map((skill) => ({
-                id: `application:${skill.id}`,
-                name: skill.name,
-                description: "Application skill",
-                about: "Application skill enabled for the selected agent and conversation.",
-                category: "Application",
-                prompts: [],
-              })),
+              .filter(
+                (skill) =>
+                  skill.maintenance?.state !== "archived" &&
+                  (skill.actor_id !== null || skill.assignment?.enabled),
+              )
+              .map(applicationEntry),
             ...skills.data.harness.map((skill) => ({
               id: `harness:${skill.key}`,
               name: skill.name,
@@ -119,6 +164,13 @@ export default function MarketplacePage({
               })),
           ]
         : [],
+    [skills.data],
+  );
+  const archivedSkills = useMemo(
+    () =>
+      skills.data?.application
+        .filter((skill) => skill.maintenance?.state === "archived")
+        .map(applicationEntry) ?? [],
     [skills.data],
   );
   const pluginEntries = useMemo(
@@ -146,7 +198,8 @@ export default function MarketplacePage({
         : pluginEntries,
     [category, pluginEntries],
   );
-  let catalog = skillIdeas;
+  const recommendedSkills = useMemo(() => [...optionalEntries, ...skillIdeas], [optionalEntries]);
+  let catalog = recommendedSkills;
   let description = "Extend what your agents can do.";
   if (plugin) {
     catalog = categoryEntries;
@@ -155,16 +208,28 @@ export default function MarketplacePage({
       : "Connect your apps to work with your agents.";
   } else if (tab === "available") {
     catalog = availableSkills;
+  } else if (tab === "archived") {
+    catalog = archivedSkills;
   }
   const selected = useMemo(
     () =>
       item
         ? (catalogById.get(item) ??
           availableSkills.find((entry) => entry.id === item) ??
+          archivedSkills.find((entry) => entry.id === item) ??
+          optionalEntries.find((entry) => entry.id === item) ??
           skillIdeas.find((entry) => entry.id === item) ??
           installed.find((entry) => entry.id === item))
         : undefined,
-    [item, catalogById, availableSkills, installed],
+    [item, catalogById, availableSkills, archivedSkills, optionalEntries, installed],
+  );
+  const applicationSkill = skills.data?.application.find(
+    (skill) => item === `application:${skill.id}`,
+  );
+  const optionalSkill = skills.data?.optional?.find(
+    (skill) =>
+      item === `optional:${skill.name}` ||
+      (applicationSkill && skill.installed_skill_id === applicationSkill.id),
   );
   const normalized = query.trim().toLocaleLowerCase();
   const searchIndex = useMemo(
@@ -190,7 +255,7 @@ export default function MarketplacePage({
   const locationKey = `${section}:${category ?? ""}:${item ?? ""}`;
   const loading = plugin
     ? liveCatalog.busy && !liveCatalog.entries.length
-    : tab === "available" && !skills.data && Boolean(scope) && !skills.error;
+    : (item !== undefined || tab !== "discover") && !skills.data && Boolean(scope) && !skills.error;
 
   useMarketplaceToast(connections.error ? "Installation status unavailable" : "", {
     description: "Refresh to verify installation status.",
@@ -235,6 +300,40 @@ export default function MarketplacePage({
     setQuery("");
     setTab("discover");
     void open(next);
+  }
+  async function reviewLibrary() {
+    if (!agent || !snapshot || reviewing) return;
+    setReviewing(true);
+    try {
+      await command("/v1/learning/skills/review-library", {
+        agent_id: agent.id,
+        thread_id: snapshot.thread.id,
+      });
+      skills.retry();
+      toast.success("Skill library reviewed.");
+    } catch (failure) {
+      toast.error(
+        failure instanceof Error ? failure.message : "Could not review the skill library.",
+      );
+    } finally {
+      setReviewing(false);
+    }
+  }
+  async function enableOptionalSkill(name: string) {
+    if (!agent || !snapshot || installingSkill) return;
+    setInstallingSkill(true);
+    try {
+      await command("/v1/learning/skills/install", {
+        name,
+        context: { agent_id: agent.id, thread_id: snapshot.thread.id },
+      });
+      skills.retry();
+      toast.success(`Skill enabled for ${agent.name}.`);
+    } catch (failure) {
+      toast.error(failure instanceof Error ? failure.message : "Could not enable this skill.");
+    } finally {
+      setInstallingSkill(false);
+    }
   }
   const clearSearch = useCallback(() => setQuery(""), []);
   const openCategory = useCallback(
@@ -369,7 +468,28 @@ export default function MarketplacePage({
                 plugin={plugin}
                 available={isAvailable(selected)}
                 installAction={
-                  plugin ? <PluginInstall entry={selected} manager={manager} /> : undefined
+                  plugin ? (
+                    <PluginInstall entry={selected} manager={manager} />
+                  ) : optionalSkill && !applicationSkill && agent ? (
+                    optionalSkill.enabled && optionalSkill.installed_skill_id ? (
+                      <Button
+                        variant="secondary"
+                        onClick={() =>
+                          void open("skills", `application:${optionalSkill.installed_skill_id}`)
+                        }
+                      >
+                        Open enabled skill
+                      </Button>
+                    ) : (
+                      <Button
+                        className="marketplace-primary"
+                        disabled={installingSkill}
+                        onClick={() => void enableOptionalSkill(optionalSkill.name)}
+                      >
+                        {installingSkill ? "Enabling…" : `Enable for ${agent.name}`}
+                      </Button>
+                    )
+                  ) : undefined
                 }
                 management={
                   plugin ? (
@@ -379,7 +499,45 @@ export default function MarketplacePage({
                       manager={manager}
                       snapshot={snapshot}
                     />
-                  ) : undefined
+                  ) : (
+                    <>
+                      {optionalSkill && (
+                        <section className="marketplace-detail-section" aria-label="Setup">
+                          <h2>Setup</h2>
+                          <p>{optionalSkill.setup}</p>
+                          <p role="status">
+                            {optionalSkill.app_actions_available
+                              ? "App actions available in this conversation"
+                              : "Waiting for app access in this conversation"}
+                          </p>
+                        </section>
+                      )}
+                      {applicationSkill && snapshot && agent && (
+                        <SkillVersions
+                          key={`${scope}:${applicationSkill.id}`}
+                          skill={applicationSkill}
+                          threadId={snapshot.thread.id}
+                          agentId={agent.id}
+                          refresh={skills.retry}
+                          consolidation={
+                            snapshot.thread.type === "dm"
+                              ? {
+                                  candidates:
+                                    skills.data?.application.filter(
+                                      (entry) =>
+                                        entry.actor_id &&
+                                        !entry.maintenance?.locked &&
+                                        entry.maintenance?.state !== "archived" &&
+                                        entry.id !== applicationSkill.id,
+                                    ) ?? [],
+                                  openConversation: () => void close(),
+                                }
+                              : undefined
+                          }
+                        />
+                      )}
+                    </>
+                  )
                 }
                 feedback={
                   plugin ? <PluginFeedback manager={manager} toolkit={selected.id} /> : undefined
@@ -459,6 +617,15 @@ export default function MarketplacePage({
                       </button>
                     )}
                   </label>
+                  {!plugin && scope && (
+                    <Button
+                      variant="secondary"
+                      disabled={reviewing}
+                      onClick={() => void reviewLibrary()}
+                    >
+                      {reviewing ? "Reviewing…" : "Review library"}
+                    </Button>
+                  )}
                   {!plugin && (
                     <Button
                       className="marketplace-primary marketplace-add"
@@ -473,6 +640,14 @@ export default function MarketplacePage({
               {plugin ? (
                 <>
                   <PluginFeedback manager={manager} />
+                  {!category && snapshot?.thread.type === "dm" && (
+                    <OutputPlugins
+                      key={snapshot.thread.id}
+                      threadId={snapshot.thread.id}
+                      cursor={appConnectionCursor}
+                      query={normalized}
+                    />
+                  )}
                   {results}
                 </>
               ) : (
@@ -484,6 +659,12 @@ export default function MarketplacePage({
                         Available
                         {availableSkills.length > 0 && (
                           <span className="marketplace-tab-count">{availableSkills.length}</span>
+                        )}
+                      </TabsTrigger>
+                      <TabsTrigger value="archived">
+                        Archived
+                        {archivedSkills.length > 0 && (
+                          <span className="marketplace-tab-count">{archivedSkills.length}</span>
                         )}
                       </TabsTrigger>
                     </TabsList>
@@ -502,12 +683,14 @@ export default function MarketplacePage({
                       </select>
                     )}
                   </div>
-                  {["discover", "available"].map((value) => (
+                  {["discover", "available", "archived"].map((value) => (
                     <TabsContent key={value} value={value} className="marketplace-tab-content">
                       <p className="marketplace-availability-note">
                         {value === "discover"
                           ? "Skill ideas to create with your agent."
-                          : `Skills available to ${agent?.name ?? "your agent"} in this conversation.`}
+                          : value === "archived"
+                            ? "Archived skills can be restored."
+                            : `Skills available to ${agent?.name ?? "your agent"} in this conversation.`}
                       </p>
                       {results}
                     </TabsContent>

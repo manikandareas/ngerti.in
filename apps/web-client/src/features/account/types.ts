@@ -63,7 +63,7 @@ export interface Invitation {
 export interface AISelection {
   id: string;
   actor_id: string | null;
-  scope: "conversation" | "user" | "organization";
+  scope: "conversation" | "user" | "organization" | "review";
   harness: import("@/lib/harnesses").HarnessId;
   thread_id: string | null;
   agent_id: string | null;

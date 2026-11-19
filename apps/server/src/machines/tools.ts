@@ -5,6 +5,27 @@ import type { ProductTools } from "../harness/tools";
 import { sha256 } from "./cua";
 import { resolvedMachine } from "./domains";
 
+type ToolSummary = { name: string; description: string; requires_input_lease: boolean };
+const words = (value: string) => value.toLowerCase().match(/[\p{L}\p{N}]+/gu) ?? [];
+
+function searchComputerTools(catalog: ToolSummary[], query: string, limit: number) {
+  const terms = [...new Set(words(query))];
+  return catalog
+    .map((tool) => {
+      const name = new Set(words(tool.name));
+      const description = new Set(words(tool.description));
+      const score = terms.reduce(
+        (sum, term) => sum + (name.has(term) ? 4 : description.has(term) ? 1 : 0),
+        0,
+      );
+      return { tool, score };
+    })
+    .filter(({ score }) => score > 0)
+    .sort((a, b) => b.score - a.score || a.tool.name.localeCompare(b.tool.name))
+    .slice(0, limit)
+    .map(({ tool }) => tool);
+}
+
 export function registerMachineTools(tools: ProductTools) {
   for (const name of [
     "ngertiin.machine_status",
@@ -19,6 +40,7 @@ export function registerMachineTools(tools: ProductTools) {
   ] as const) {
     tools.register(name, {
       schema: productToolSchemas[name],
+      requires: "machine",
       resources: () => [],
       execute: async (input, access) => {
         const machines = await resolvedMachine(tools.lifecycle);
@@ -34,18 +56,23 @@ export function registerMachineTools(tools: ProductTools) {
             processes: await machines.processes.list(actor),
           };
         if (name === "ngertiin.computer_tools") {
-          const { names } = productToolSchemas[name].parse(input);
+          const { names, query, limit } = productToolSchemas[name].parse(input);
           const catalog = await machines.catalog();
           if (names?.some((selected) => !catalog.some((tool) => tool.name === selected)))
             throw new DomainError("INVALID_REQUEST", 422);
+          const summaries = catalog.map(({ name, description, requires_input_lease }) => ({
+            name,
+            description: description.slice(0, 400),
+            requires_input_lease,
+          }));
+          await access.authorize();
           return {
             tools: names
               ? catalog.filter((tool) => names.includes(tool.name))
-              : catalog.map(({ name, description, requires_input_lease }) => ({
-                  name,
-                  description: description.slice(0, 400),
-                  requires_input_lease,
-                })),
+              : query
+                ? searchComputerTools(summaries, query, limit ?? 5)
+                : summaries,
+            catalog_size: catalog.length,
             session_identity: "supplied_by_ngertiin",
             shared_machine: true,
           };

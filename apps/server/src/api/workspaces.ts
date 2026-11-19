@@ -5,7 +5,13 @@ import type { Background } from "../background";
 import { DomainError, id } from "../contracts";
 import type { Lifecycle } from "../lifecycle";
 import { machineFor } from "../machines/service";
-import { fileQuery, publicationInput, uploadInput, workspaceInput } from "../workspaces/contracts";
+import {
+  fileQuery,
+  publicationInput,
+  uploadInput,
+  workspaceInput,
+  workspaceProjectInput,
+} from "../workspaces/contracts";
 import type { Command } from "./services";
 
 export function registerWorkspaceRoutes(
@@ -32,6 +38,23 @@ export function registerWorkspaceRoutes(
             : await workspaces.current(params.id, query.agent_id),
         ),
       { params: z.object({ id }), query: z.strictObject({ agent_id: id }) },
+    )
+    .post(
+      "/v1/workspaces/:id/project-directory",
+      async ({ request, params, body }) => {
+        // Machine readiness can write domain state. Resolve it before taking the SQL write lock.
+        const validation = await workspaces
+          .validateProjectDirectory(params.id, body.directory)
+          .then(
+            () => null,
+            (error: unknown) => ({ error }),
+          );
+        return await command(request, body, () => {
+          if (validation) throw validation.error;
+          return workspaces.selectProject(params.id, body);
+        });
+      },
+      { params: z.object({ id }), body: workspaceProjectInput },
     )
     .post(
       "/v1/workspaces/:id/revoke",

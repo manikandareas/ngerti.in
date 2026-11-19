@@ -1,7 +1,54 @@
+import { createHash } from "node:crypto";
 import type { z } from "zod";
-import type { schedule } from "./contracts";
+import type { routineState, schedule } from "./contracts";
 
 type Schedule = z.infer<typeof schedule>;
+type RoutineState = z.infer<typeof routineState>;
+export function routineIsTerminal(state: RoutineState) {
+  return state === "stopped" || state === "completed";
+}
+
+export function routineCanRun(state: RoutineState, manual: boolean) {
+  return state === "active" || (manual && state === "paused");
+}
+
+export function routineHasFuture(routine: {
+  state: RoutineState;
+  schedule: Schedule;
+  next_run_at: string | null;
+}) {
+  return (
+    routine.state === "active" && (routine.next_run_at !== null || routine.schedule.type === "loop")
+  );
+}
+
+type LoopSchedule = Extract<Schedule, { type: "loop" }>;
+type LoopPacing = { delay_ms: number; digest: string };
+
+export function nextLoopWake(
+  schedule: LoopSchedule,
+  settledAt: string,
+  pacing?: LoopPacing | null,
+) {
+  return new Date(Date.parse(settledAt) + (pacing?.delay_ms ?? schedule.every_ms)).toISOString();
+}
+
+export function updateLoopPacing(
+  schedule: LoopSchedule,
+  previous: LoopPacing | null,
+  result: { reading: number } | { answer: string } | null,
+): LoopPacing | null {
+  if (!schedule.self_paced) return null;
+  if (!result) return previous;
+  const digest = createHash("sha256").update(JSON.stringify(result)).digest("hex");
+  const ceiling = schedule.self_paced.max_every_ms ?? Math.max(schedule.every_ms, 900_000);
+  return {
+    digest,
+    delay_ms:
+      previous?.digest === digest ? Math.min(ceiling, previous.delay_ms * 2) : schedule.every_ms,
+  };
+}
+
 const formatters = new Map<string, Intl.DateTimeFormat>();
 function localParts(at: number, zone: string) {
   let formatter = formatters.get(zone);
@@ -50,6 +97,7 @@ function calendarInstant(day: number, time: string, zone: string) {
 }
 export function firstDue(value: Schedule, zone: string, now = new Date()): string {
   if (value.type === "once") return value.at;
+  if (value.type === "loop") return value.anchor_at ?? now.toISOString();
   if (value.type !== "calendar") return value.anchor_at;
   const day = dayAt(now.getTime(), zone);
   for (let offset = 0; offset <= 14; offset++) {
@@ -62,7 +110,7 @@ export function firstDue(value: Schedule, zone: string, now = new Date()): strin
 }
 /** Coalesce missed periodic work into one latest occurrence, never a catch-up burst. */
 export function dueWindow(value: Schedule, zone: string, due: string, now: Date) {
-  if (value.type === "once") return { scheduled_for: due, next: null };
+  if (value.type === "once" || value.type === "loop") return { scheduled_for: due, next: null };
   if (value.type !== "calendar") {
     const latest =
       Date.parse(due) +

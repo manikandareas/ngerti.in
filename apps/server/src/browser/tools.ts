@@ -16,6 +16,7 @@ export function registerBrowserTools(tools: ProductTools) {
   });
   tools.register("ngertiin.browser_open", {
     schema: z.strictObject({ profile_id: z.uuid() }),
+    requires: "browser_profile",
     resources: () => [],
     execute: async (input, access) =>
       tools.browsers.open(
@@ -26,6 +27,7 @@ export function registerBrowserTools(tools: ProductTools) {
   });
   tools.register("ngertiin.browser_action", {
     schema: browserActionInput,
+    requires: "browser_profile",
     resources: () => [],
     execute: async (input, access) => tools.browsers.action(input, access),
   });

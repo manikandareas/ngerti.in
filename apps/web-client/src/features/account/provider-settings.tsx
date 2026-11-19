@@ -1,10 +1,14 @@
 import { useCallback, useState } from "react";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
 import { SettingsError } from "@/features/settings/components/settings-ui";
 import { useSettings } from "@/features/settings/hooks/use-settings";
 import { useSettingsWorkspace } from "@/hooks/settings-workspace";
 import { useApiResource } from "@/hooks/use-api-resource";
 import { durableCommand } from "@/lib/api-client";
+import { harnessModelCatalog, harnessModelKey } from "@/lib/harness-models";
 import type { HarnessId } from "@/lib/harnesses";
+import { useAccountAction } from "./account-forms";
 import { AIConnectionList } from "./ai-connection-list";
 import { AudienceFields, type AudiencePolicy, ResourceState } from "./organization-controls";
 import { useAccount } from "./session";
@@ -58,6 +62,13 @@ export function ScopedProviderSettings({ ownership }: { ownership: "personal" | 
         context="settings"
         disabled={ownership === "organization" && canConnect && (!groups.data || !!groups.error)}
         prepareAudience={ownership === "organization" ? prepareAudience : undefined}
+        reviewFields={
+          ownership === "personal"
+            ? (harness, disabled) => (
+                <ReviewModelSetting key={harness} harness={harness} disabled={disabled} />
+              )
+            : undefined
+        }
         accessFields={
           ownership === "organization"
             ? (disabled) => (
@@ -74,5 +85,79 @@ export function ScopedProviderSettings({ ownership }: { ownership: "personal" | 
         }
       />
     </div>
+  );
+}
+
+function ReviewModelSetting({ harness, disabled }: { harness: HarnessId; disabled: boolean }) {
+  const workspace = useSettingsWorkspace();
+  const action = useAccountAction();
+  const current = workspace.selections?.find(
+    (row) => row.scope === "review" && row.harness === harness,
+  )?.selection;
+  const saved = current ? harnessModelKey(current.connection_id, current.model_id) : "";
+  const [draft, setDraft] = useState<string | null>(null);
+  const selected = draft ?? saved;
+  const { providers, choices } = harnessModelCatalog(
+    workspace.connections.filter(
+      (connection) =>
+        connection.actor_id !== null ||
+        workspace.allowedOrganizationConnectionIds?.includes(connection.id),
+    ),
+    harness,
+  );
+  const models = providers.find((item) => item.id === harness)?.models ?? [];
+  if (!models.length && !saved) return null;
+
+  return (
+    <form
+      className="ai-auth-row"
+      aria-label="Learning review model"
+      onSubmit={(event) => {
+        event.preventDefault();
+        const choice = choices.get(selected);
+        if (selected && !choice) return;
+        void action.run(async () => {
+          await durableCommand(`learning-review-model:${harness}`, "/v1/ai/selections", {
+            scope: "review",
+            harness,
+            selection: choice
+              ? {
+                  connection_id: choice.connection.id,
+                  model_id: choice.model.id,
+                }
+              : null,
+          });
+          await workspace.refresh();
+          setDraft(null);
+          toast.success("Learning review model saved.");
+        });
+      }}
+    >
+      <label className="onboarding-login-instructions min-w-0">
+        <span className="onboarding-login-title">Learning review model</span>
+        <select
+          className="settings-select max-w-full"
+          value={selected}
+          onChange={(event) => setDraft(event.target.value)}
+          disabled={disabled || action.busy}
+        >
+          <option value="">Use the conversation model and account</option>
+          {saved && !choices.has(saved) && <option value={saved}>Saved model unavailable</option>}
+          {models.map((model) => (
+            <option key={model.id} value={model.id}>
+              {model.name} · {model.description}
+            </option>
+          ))}
+        </select>
+      </label>
+      <Button
+        type="submit"
+        size="sm"
+        variant="outline"
+        disabled={disabled || action.busy || saved === selected}
+      >
+        Save
+      </Button>
+    </form>
   );
 }

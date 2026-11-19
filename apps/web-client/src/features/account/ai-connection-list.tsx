@@ -22,6 +22,7 @@ export function AIConnectionList({
   canConnect = true,
   disabled = false,
   accessFields,
+  reviewFields,
   prepareAudience,
   context = "onboarding",
 }: {
@@ -33,6 +34,7 @@ export function AIConnectionList({
   canConnect?: boolean;
   disabled?: boolean;
   accessFields?: (disabled: boolean) => ReactNode;
+  reviewFields?: (harness: HarnessId, disabled: boolean) => ReactNode;
   prepareAudience?: () => Promise<string>;
   context?: "onboarding" | "settings";
 }) {
@@ -198,6 +200,7 @@ export function AIConnectionList({
                 {canConnect && supported && (
                   <>
                     {accessFields?.(locked)}
+                    {reviewFields?.(harness.id, blocked || locked)}
                     {harnesses[harness.id].nativeLogin && (
                       <div className="ai-auth-row">
                         <div className="onboarding-login-instructions">

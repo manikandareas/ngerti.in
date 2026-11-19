@@ -1,14 +1,18 @@
 import { Composio } from "@composio/core";
+import type { z } from "zod";
 import { DomainError } from "../contracts";
+import type { appActionPolicy } from "./contracts";
 import { appOutput } from "./output";
 
 export type AppSessionConfig = { toolkit: string; account_id?: string; tools?: string[] };
 export type AppSessionIdentity = { user: string; account: string };
+export type AppActionPolicy = z.infer<typeof appActionPolicy>;
 export type AppTool = {
   slug: string;
   toolkit: string;
   description?: string;
   input_schema?: Record<string, unknown>;
+  action_policy?: AppActionPolicy;
 };
 export type AppCatalogItem = {
   slug: string;
@@ -38,7 +42,10 @@ export interface AppHost {
     search: string,
     cursor?: string,
   ): Promise<{ items: AppCatalogItem[]; cursor?: string; metadata_complete?: boolean }>;
-  connect(user: string, toolkit: string): Promise<{ account_id: string; connect_url: string }>;
+  connect(
+    user: string,
+    toolkit: string,
+  ): Promise<{ account_id: string; connect_url: string | null }>;
   accounts(user: string): Promise<{ id: string; toolkit: string; active: boolean }[]>;
   session(user: string, config: AppSessionConfig): Promise<string>;
   search(session: string, query: string, expected?: AppSessionIdentity): Promise<AppTool[]>;
@@ -47,7 +54,7 @@ export interface AppHost {
     account: string,
     tool: string,
     args: Record<string, unknown>,
-    authorize: () => void | Promise<void>,
+    authorize: (policy?: AppActionPolicy) => void | Promise<void>,
     expected?: AppSessionIdentity,
   ): Promise<{
     data: unknown;

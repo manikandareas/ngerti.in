@@ -4,6 +4,7 @@ import { z } from "zod";
 import { registerAgentTools } from "../agents/tools";
 import { Attachments } from "../attachments/service";
 import { registerAttachmentTools } from "../attachments/tools";
+import { registerBoardTools } from "../boards/tools";
 import { type BrowserHost, DockerBrowserHost } from "../browser/host";
 import { Browsers } from "../browser/service";
 import { registerBrowserTools } from "../browser/tools";
@@ -12,10 +13,15 @@ import { Goals } from "../goals/service";
 import { registerGoalTools } from "../goals/tools";
 import { registerGroupTools } from "../groups/tools";
 import type { AppHost } from "../integrations/host";
+import type { McpHost } from "../integrations/mcp-host";
+import { processMedia } from "../integrations/media";
+import { mediaBackendsFor, mediaInput } from "../integrations/media-contracts";
 import { Applications } from "../integrations/service";
 import { registerAppTools } from "../integrations/tools";
 import { Interactions } from "../interactions/service";
 import { registerInteractionTools } from "../interactions/tools";
+import { skillToolRead } from "../learning/contracts";
+import { learningPathDigest } from "../learning/eligibility";
 import { registerLearningTools } from "../learning/tools";
 import type { Lifecycle } from "../lifecycle";
 import { resolvedMachine } from "../machines/domains";
@@ -24,6 +30,9 @@ import { registerMachineTools } from "../machines/tools";
 import type { DataContext } from "../persistence/access-context";
 import { observeToolActivity, toolActivityKind } from "../runs/activity";
 import { canonical } from "../store";
+import type { WebResearchConfig } from "../web-research/contracts";
+import { registerWebResearchTools } from "../web-research/tools";
+import { Workspaces } from "../workspaces/service";
 import { registerWorkspaceTools } from "../workspaces/tools";
 import { Connections } from "./connections";
 import { type ToolScope, toolScope } from "./contracts";
@@ -35,11 +44,27 @@ export type Resource = {
   id: string;
 };
 export type ToolAccess = { scope: Readonly<ToolScope>; authorize(): void | Promise<void> };
+type CatalogScope = Pick<ToolScope, "agent_id" | "thread_id">;
+type ToolRequirement = "workspace" | "machine" | "browser_profile" | "app_grant" | "media_backend";
 type Tool = {
   schema: z.ZodType;
+  requires?: ToolRequirement;
   resources(input: unknown): Resource[];
   execute(input: unknown, access: ToolAccess): unknown | Promise<unknown>;
 };
+const consolidationTools = new Set([
+  "ngertiin.describe_tools",
+  "ngertiin.list_skills",
+  "ngertiin.read_skill",
+  "ngertiin.revise_skill",
+]);
+const parallelPeerTools = new Set([
+  "ngertiin.describe_tools",
+  "ngertiin.list_attachments",
+  "ngertiin.read_attachment",
+  "ngertiin.search_attachment",
+]);
+
 export class ProductTools {
   #browsers!: Browsers | undefined;
   machines!: Machines | undefined;
@@ -51,10 +76,9 @@ export class ProductTools {
   readonly #mcp = new ProductToolMcp({
     scope: async (token) => await this.lease(token),
     list: async (scope) =>
-      ((await this.lifecycle.store.get("thread", scope.thread_id)).purpose === "routing"
-        ? []
-        : [...this.#tools]
-      ).map(([name, tool]) => productToolDefinition(name, tool.schema)),
+      (await this.effectiveTools(scope)).map(([name, tool]) =>
+        productToolDefinition(name, tool.schema),
+      ),
     call: async (token, scope, name, input) => this.call(token, scope, name, input),
   });
   private constructor(
@@ -69,6 +93,47 @@ export class ProductTools {
     if (!/^[a-z][\w.]{1,100}$/.test(name) || this.#tools.has(name))
       throw new Error("Invalid or duplicate product tool.");
     this.#tools.set(name, tool);
+  }
+  private async effectiveTools(scope: ToolScope) {
+    const store = this.lifecycle.store;
+    const thread = await store.get("thread", scope.thread_id);
+    if (thread.purpose === "routing") return [];
+    const run = await store.get("run", scope.run_id);
+    const registered = [...this.#tools];
+    if (run.skill_consolidation) return registered.filter(([name]) => consolidationTools.has(name));
+    if (run.parallel_peer_source_id)
+      return registered.filter(([name]) => parallelPeerTools.has(name));
+
+    let workspace: Entity<"workspace"> | null = null;
+    if (run.workspace_id) {
+      try {
+        workspace = await new Workspaces(this.lifecycle).authorizeRun(run);
+      } catch (error) {
+        if (
+          !(error instanceof DomainError) ||
+          !["NOT_FOUND", "SCOPE_DENIED", "STALE_DISPATCH"].includes(error.code)
+        )
+          throw error;
+      }
+    }
+    return await this.selectTools(scope, workspace);
+  }
+  private async selectTools(scope: CatalogScope, workspace: Entity<"workspace"> | null) {
+    const enabled = {
+      workspace: workspace !== null,
+      machine: !!workspace && (!this.lifecycle.store.dataContext || workspace.machine_id !== null),
+      browser_profile: !!this.#browsers && (await this.#browsers.list(scope)).length > 0,
+      app_grant: await this.applications.hasEnabledTools(scope),
+      media_backend: !!workspace && mediaBackendsFor(this.lifecycle, scope.thread_id).length > 0,
+    };
+    return [...this.#tools].filter(([, tool]) => !tool.requires || enabled[tool.requires]);
+  }
+  async sessionCatalog(scope: CatalogScope, workspace: Entity<"workspace">) {
+    if ((await this.lifecycle.store.get("thread", scope.thread_id)).purpose === "routing")
+      return [];
+    return (await this.selectTools(scope, workspace)).map(([name, tool]) =>
+      productToolDefinition(name, tool.schema),
+    );
   }
   async issue(run: Entity<"run">, ready: () => Promise<void> = async () => {}) {
     const { agent, connection } = await new Connections(this.lifecycle).forAgent(
@@ -135,43 +200,45 @@ export class ProductTools {
   }
   private async authorize(scope: ToolScope, controlReceipt = false) {
     const store = this.lifecycle.store;
-    await store.assertAuthority();
-    const run = await store.get("run", scope.run_id);
-    if (!run.dispatch_token) throw new DomainError("SCOPE_DENIED", 403);
-    if (controlReceipt) {
+    await store.read(async () => {
+      await store.assertAuthority();
+      const run = await store.get("run", scope.run_id);
+      if (!run.dispatch_token) throw new DomainError("SCOPE_DENIED", 403);
+      if (controlReceipt) {
+        if (
+          run.authority_epoch !== this.lifecycle.epoch ||
+          run.cancellation !== "requested" ||
+          !["running", "cancel_requested"].includes(run.status)
+        )
+          throw new DomainError("STALE_DISPATCH");
+        const thread = await store.get("thread", run.thread_id);
+        if (
+          !thread.member_agent_ids.includes(run.agent_id) ||
+          (run.thread_revision !== null && run.thread_revision !== thread.revision)
+        )
+          throw new DomainError("SCOPE_DENIED", 403);
+      } else await this.lifecycle.authorizeDispatch(run.id, run.dispatch_token);
+      const { agent, connection } = await new Connections(this.lifecycle).forAgent(
+        scope.agent_id,
+        scope.thread_id,
+      );
+      const binding = await store.get("binding", scope.binding_id);
       if (
-        run.authority_epoch !== this.lifecycle.epoch ||
-        run.cancellation !== "requested" ||
-        !["running", "cancel_requested"].includes(run.status)
-      )
-        throw new DomainError("STALE_DISPATCH");
-      const thread = await store.get("thread", run.thread_id);
-      if (
-        !thread.member_agent_ids.includes(run.agent_id) ||
-        (run.thread_revision !== null && run.thread_revision !== thread.revision)
+        scope.owner_id !== store.ownerId ||
+        run.owner_id !== scope.owner_id ||
+        run.agent_id !== scope.agent_id ||
+        run.thread_id !== scope.thread_id ||
+        run.binding_id !== scope.binding_id ||
+        agent.connection_id !== scope.connection_id ||
+        agent.grant_revision !== scope.grant_revision ||
+        connection.grant_revision !== scope.connection_revision ||
+        connection.capabilities.product_tools !== "supported" ||
+        binding.agent_id !== scope.agent_id ||
+        binding.thread_id !== scope.thread_id ||
+        binding.connection_id !== scope.connection_id
       )
         throw new DomainError("SCOPE_DENIED", 403);
-    } else await this.lifecycle.authorizeDispatch(run.id, run.dispatch_token);
-    const { agent, connection } = await new Connections(this.lifecycle).forAgent(
-      scope.agent_id,
-      scope.thread_id,
-    );
-    const binding = await store.get("binding", scope.binding_id);
-    if (
-      scope.owner_id !== store.ownerId ||
-      run.owner_id !== scope.owner_id ||
-      run.agent_id !== scope.agent_id ||
-      run.thread_id !== scope.thread_id ||
-      run.binding_id !== scope.binding_id ||
-      agent.connection_id !== scope.connection_id ||
-      agent.grant_revision !== scope.grant_revision ||
-      connection.grant_revision !== scope.connection_revision ||
-      connection.capabilities.product_tools !== "supported" ||
-      binding.agent_id !== scope.agent_id ||
-      binding.thread_id !== scope.thread_id ||
-      binding.connection_id !== scope.connection_id
-    )
-      throw new DomainError("SCOPE_DENIED", 403);
+    });
   }
   private async resource(scope: ToolScope, reference: Resource) {
     const entity = await this.lifecycle.store.get(reference.kind, reference.id);
@@ -230,6 +297,20 @@ export class ProductTools {
     await authorize();
     // Asynchronous tools must call authorize immediately before committing their effect.
     const before = await this.lifecycle.store.get("run", scope.run_id);
+    if (before.parallel_peer_source_id && !parallelPeerTools.has(name))
+      throw new DomainError("SCOPE_DENIED", 403);
+    if (before.skill_consolidation && !consolidationTools.has(name))
+      throw new DomainError("SCOPE_DENIED", 403);
+    if (before.skill_consolidation && name === "ngertiin.read_skill") {
+      const read = skillToolRead.parse(parsed);
+      const { target, source } = before.skill_consolidation;
+      if (
+        ![target, source].some(
+          (item) => item.skill_id === read.skill_id && item.version === read.version,
+        )
+      )
+        throw new DomainError("SCOPE_DENIED", 403);
+    }
     const thread = await this.lifecycle.store.get("thread", before.thread_id);
     const target =
       name === "ngertiin.group_handoff" ? (parsed as { agent_id: string }).agent_id : null;
@@ -358,8 +439,24 @@ export class ProductTools {
     } else await authorize();
     await this.lifecycle.store.transaction(async () => {
       const current = await this.lifecycle.store.get("run", scope.run_id);
+      const skill = name === "ngertiin.read_skill" ? skillToolRead.parse(parsed) : null;
+      const file =
+        name === "ngertiin.read_file"
+          ? learningPathDigest((parsed as { path: string }).path)
+          : null;
       await this.lifecycle.observe(current.id, current.dispatch_token as string, {
         product_tools: [...current.product_tools, name].slice(-200),
+        ...(skill
+          ? {
+              skill_reads: [
+                ...current.skill_reads,
+                { skill_id: skill.skill_id, version: skill.version },
+              ].slice(-100),
+            }
+          : {}),
+        ...(file
+          ? { learning_file_reads: [...current.learning_file_reads, file].slice(-100) }
+          : {}),
       });
     });
     await this.completed(scope, name);
@@ -382,9 +479,26 @@ export class ProductTools {
     return this.inContext(token, () => this.#mcp.rpc(token, input));
   }
 
-  private async initialize(lifecycle: Lifecycle, browserHost?: BrowserHost, appHost?: AppHost) {
-    this.applications = await Applications.open(lifecycle, appHost);
+  private async initialize(
+    lifecycle: Lifecycle,
+    browserHost?: BrowserHost,
+    appHost?: AppHost,
+    webResearch?: WebResearchConfig,
+    mcpHost?: McpHost,
+  ) {
+    this.applications = await Applications.open(lifecycle, appHost, mcpHost);
     registerAppTools(this);
+    if (lifecycle.mediaBackends.length)
+      this.register("ngertiin.process_media", {
+        schema: productToolSchemas["ngertiin.process_media"],
+        requires: "media_backend",
+        resources: (input) => {
+          const data = mediaInput.parse(input);
+          return data.artifact_id ? [{ kind: "artifact", id: data.artifact_id }] : [];
+        },
+        execute: (input, access) => processMedia(lifecycle, mediaInput.parse(input), access),
+      });
+    if (webResearch) registerWebResearchTools(this, webResearch);
     this.machines = machineFor(lifecycle);
     if (this.machines) registerMachineTools(this);
     else {
@@ -399,6 +513,7 @@ export class ProductTools {
     registerGroupTools(this);
     registerInteractionTools(this);
     registerGoalTools(this);
+    registerBoardTools(this);
     this.register("ngertiin.cancel_run", {
       schema: productToolSchemas["ngertiin.cancel_run"],
       resources: () => [],
@@ -459,13 +574,15 @@ export class ProductTools {
     this.register("ngertiin.describe_tools", {
       schema: productToolSchemas["ngertiin.describe_tools"],
       resources: () => [],
-      execute: async (input, { authorize }) => {
+      execute: async (input, { scope, authorize }) => {
         await authorize();
         const { names } = productToolSchemas["ngertiin.describe_tools"].parse(input);
-        if (names?.some((name) => !this.#tools.has(name)))
+        const tools = await this.effectiveTools(scope);
+        if (names?.some((name) => !tools.some(([effective]) => name === effective)))
           throw new DomainError("INVALID_REQUEST", 422);
+        await authorize();
         return {
-          tools: [...this.#tools]
+          tools: tools
             .filter(([name]) => !names || names.includes(name))
             .map(([name, tool]) => productToolDefinition(name, tool.schema)),
         };
@@ -479,9 +596,11 @@ export class ProductTools {
     completed: (scope: ToolScope, name: string) => void | Promise<void> = () => {},
     browserHost?: BrowserHost,
     appHost?: AppHost,
+    webResearch?: WebResearchConfig,
+    mcpHost?: McpHost,
   ): Promise<ProductTools> {
     const instance = new ProductTools(lifecycle, completed);
-    await instance.initialize(lifecycle, browserHost, appHost);
+    await instance.initialize(lifecycle, browserHost, appHost, webResearch, mcpHost);
     return instance;
   }
 }

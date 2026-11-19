@@ -231,7 +231,7 @@ export default function SettingsPage({ sidebarOpen = true }: { sidebarOpen?: boo
                 <ScopedProviderSettings ownership="organization" />
               )}
               {page.id === "activity" && <ActivitySettings />}
-              {page.id === "data" && <DataSettings />}
+              {page.id === "data" && <DataSettings key={account.scopeEpoch} />}
               {page.id === "shortcuts" && <KeyboardSettings />}
               {page.id === "about" && (
                 <SettingsSection title="Application">

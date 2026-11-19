@@ -151,6 +151,23 @@ export const handoffInput = z.strictObject({
   agent_id: id,
   instruction: text,
   purpose: z.enum(["handoff", "review"]),
+  parallel: z
+    .boolean()
+    .optional()
+    .describe(
+      "Enable only for an independent read-only check by a Pi peer. Assign each independent check to a distinct peer in this turn, use synthesize, then finish the turn. Parallel checks can read their attached inputs and cannot change files or apps.",
+    ),
+  attachment_ids: z
+    .array(id)
+    .max(20)
+    .optional()
+    .describe("For a parallel check, optionally select a subset of the source task's attachments."),
+  time_budget_seconds: z
+    .int()
+    .min(1)
+    .max(3600)
+    .optional()
+    .describe("Optional elapsed-time limit for a parallel read-only check, excluding queue time."),
   summary: z.string().trim().min(1).max(240).nullable().default(null),
   announcement: z.string().trim().min(1).max(16_000).nullable().default(null),
   continuation: z

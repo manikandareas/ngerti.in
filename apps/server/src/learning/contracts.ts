@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { base, harness } from "../contracts/base";
+import { externalMemoryChange } from "./external-memory-contracts";
 
 export const learningContext = z.strictObject({ agent_id: z.uuid(), thread_id: z.uuid() });
 export type LearningContext = z.infer<typeof learningContext>;
@@ -81,6 +82,32 @@ export const skillRevise = z.strictObject({
   package: skillPackage,
 });
 export const skillRead = z.strictObject({ skill_id: z.uuid(), version: z.int().positive() });
+export const skillToolRead = skillRead
+  .extend({
+    view: z.literal("overview").optional(),
+    asset_path: assetPath.optional(),
+  })
+  .refine((input) => !(input.view && input.asset_path), "Choose the overview or one asset.");
+export const optionalSkillInstall = z.strictObject({
+  context: learningContext,
+  name: skillName,
+});
+export const optionalSkillView = z.strictObject({
+  name: skillName,
+  description: z.string(),
+  setup: z.string(),
+  app_actions_available: z.boolean(),
+  installed_skill_id: z.uuid().nullable(),
+  enabled: z.boolean(),
+});
+export const skillConsolidation = z.strictObject({ target: skillRead, source: skillRead });
+export const skillConsolidationRequest = skillConsolidation
+  .extend({ context: learningContext })
+  .refine(
+    ({ target, source }) => target.skill_id !== source.skill_id,
+    "Choose two different skills.",
+  );
+export type SkillConsolidation = z.infer<typeof skillConsolidation>;
 export const skillAssign = z.strictObject({
   skill_id: z.uuid(),
   version: z.int().positive(),
@@ -99,6 +126,7 @@ export const skillFields = {
   thread_id: z.uuid().nullable(),
   name: skillName,
   source: z.literal("application"),
+  distribution: z.enum(["built_in", "optional"]).optional(),
 };
 export const skillRevisionFields = {
   agent_id: z.uuid().optional(),
@@ -146,6 +174,7 @@ export const learningCommands = {
   memory_write: memoryWrite,
   memory_delete: memoryDelete,
   memory_query: memoryQuery,
+  external_memory_change: externalMemoryChange,
   skill_create: skillCreate,
   skill_revise: skillRevise,
   skill_read: skillRead,
@@ -163,6 +192,31 @@ export const skillAssignment = z.strictObject({
   ...base,
   ...skillAssignmentFields,
   kind: z.literal("skill_assignment"),
+});
+export const skillMaintenance = z.strictObject({
+  ...base,
+  ...scopeFields,
+  thread_id: z.uuid().nullable(),
+  kind: z.literal("skill_maintenance"),
+  state: z.enum(["active", "stale", "archived"]),
+  locked: z.boolean(),
+  restored_at: z.iso.datetime().nullable(),
+  last_used_at: z.iso.datetime().nullable().default(null),
+});
+export const skillMaintenanceAction = z.strictObject({
+  context: learningContext,
+  skill_id: z.uuid(),
+  action: z.enum(["lock", "unlock", "restore"]),
+});
+export const skillCuratorState = z.strictObject({
+  ...base,
+  kind: z.literal("skill_curator_state"),
+  next_pass_at: z.iso.datetime(),
+});
+export const skillLibraryReview = z.strictObject({
+  active: z.int().nonnegative(),
+  stale: z.int().nonnegative(),
+  archived: z.int().nonnegative(),
 });
 export const harnessInventory = z.strictObject({
   ...base,

@@ -35,17 +35,27 @@ const window = (id: string) => ({
 class Host extends CuaMachine {
   windows = [window("user-window")];
   calls: { method: string; input: unknown }[] = [];
+  deferWindow = false;
+  pendingWindow?: ReturnType<typeof window>;
   block = false;
   loseClose = false;
   closeEffect: (() => Promise<void>) | undefined;
   override async rpc(method: string, input: unknown = {}): Promise<unknown> {
     this.calls.push({ method, input });
-    if (method === "WindowsService/ListWindows") return { windows: [...this.windows] };
+    if (method === "WindowsService/ListWindows") {
+      const windows = [...this.windows];
+      if (this.pendingWindow) {
+        this.windows.push(this.pendingWindow);
+        this.pendingWindow = undefined;
+      }
+      return { windows };
+    }
     if (method === "WindowsService/LaunchApp") {
       const created = window(crypto.randomUUID());
       if ((input as { app: { executable: string } }).app.executable.includes("terminal"))
         created.app.name = "Xfce4-terminal";
-      this.windows.push(created);
+      if (this.deferWindow) this.pendingWindow = created;
+      else this.windows.push(created);
       return { windows: [] }; // Retained browser opens the window on its existing PID.
     }
     if (method === "WindowsService/CloseWindow") {
@@ -147,6 +157,7 @@ async function finish(
 
 test("successful task closes only its explicit temporary window, retaining the browser profile and user window", async () => {
   const s = await setup();
+  s.host.deferWindow = true;
   const request = open();
   const item = (await s.a.call(request)) as Entity<"machine_window">;
   expect(await s.a.call(request)).toEqual(item);

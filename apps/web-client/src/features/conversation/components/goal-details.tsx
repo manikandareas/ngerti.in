@@ -5,14 +5,22 @@ import { routineName } from "@/features/conversation/lib/routine-name";
 import { routineSchedule } from "@/features/conversation/lib/routine-schedule";
 import type { Goal } from "@/types/work";
 import type { Snapshot } from "@/types/workspace";
+import { GoalCoordinator } from "./goal-coordinator";
 
 type GoalDetailsProps = {
   goal: Goal;
   snapshot: Snapshot;
   openFile: (id: string) => void;
+  refresh: () => Promise<unknown>;
 };
 
-export function GoalDetails({ goal, snapshot, openFile }: GoalDetailsProps) {
+const verificationStatus = {
+  passed: "Passed",
+  missing: "File missing",
+  mismatch: "Content mismatch",
+} as const;
+
+export function GoalDetails({ goal, snapshot, openFile, refresh }: GoalDetailsProps) {
   const goalRuns = snapshot.runs.filter((run) => run.goal_id === goal.id);
   const runIds = new Set(goalRuns.map((run) => run.id));
   const results = snapshot.artifacts.filter(
@@ -43,10 +51,41 @@ export function GoalDetails({ goal, snapshot, openFile }: GoalDetailsProps) {
   ].sort((a, b) => b.at.localeCompare(a.at));
   return (
     <div className="mt-6 space-y-7">
+      {goal.scope === "group" && (
+        <GoalCoordinator key={goal.id} goal={goal} snapshot={snapshot} refresh={refresh} />
+      )}
       {goal.progress && (
         <p className="whitespace-pre-wrap text-sm leading-6 text-muted-foreground">
           {goal.progress}
         </p>
+      )}
+      {goal.verification && (
+        <section aria-label="Goal verification">
+          <div className="mb-2 flex flex-wrap items-baseline justify-between gap-2">
+            <h3 className="text-base font-semibold">Verification</h3>
+            <p className="text-sm text-muted-foreground">
+              {goal.verification.attempts_used} of {goal.verification.attempt_limit} attempts
+            </p>
+          </div>
+          <ul className="divide-y divide-border rounded-xl border px-3">
+            {goal.verification.checks.map((check) => {
+              const result = goal.verification?.last_check?.results.find(
+                (item) => item.artifact_name === check.artifact_name,
+              );
+              return (
+                <li
+                  className="flex flex-wrap items-center justify-between gap-2 py-2.5 text-sm"
+                  key={check.artifact_name}
+                >
+                  <span className="min-w-0 break-words">{check.title}</span>
+                  <span className="text-muted-foreground">
+                    {result ? verificationStatus[result.status] : "Pending"}
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
       )}
       {(results.length > 0 || relatedRoutines.length > 0) && (
         <section

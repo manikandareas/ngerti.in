@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { agent, agentInput, agentSnapshot, agentUpdate } from "./agents/contracts";
 import { attachmentDocument, stagedUpload } from "./attachments/contracts";
+import { boardCard, boardResume, newBoardCard } from "./boards/contracts";
 import {
   browserAction,
   browserCommands,
@@ -20,9 +21,11 @@ import {
   routineInput,
   schedule,
 } from "./goals/contracts";
+import { routineDelivery } from "./goals/delivery-contracts";
 import { groupCommands, groupRoute, humanRequest, peerTask } from "./groups/contracts";
 import { binding, connection } from "./harness/contracts";
 import { aiSelection } from "./harness/selection-contracts";
+import { channelExchange } from "./integrations/channel-contracts";
 import {
   appConnection,
   appEffect,
@@ -35,8 +38,11 @@ import {
   memory,
   skill,
   skillAssignment,
+  skillCuratorState,
+  skillMaintenance,
   skillRevision,
 } from "./learning/contracts";
+import { externalMemoryConnection } from "./learning/external-memory-contracts";
 import {
   executionDomain,
   machine,
@@ -121,6 +127,7 @@ export const schemas = {
   app_connection: appConnection,
   app_session: appSession,
   app_effect: appEffect,
+  channel_exchange: channelExchange,
   browser_profile: browserProfile,
   browser_session: browserSession,
   browser_action: browserAction,
@@ -131,11 +138,15 @@ export const schemas = {
   machine_window: machineWindow,
   group_route: groupRoute,
   peer_task: peerTask,
+  board_card: boardCard,
   human_request: humanRequest,
+  external_memory_connection: externalMemoryConnection,
   memory,
   skill,
   skill_revision: skillRevision,
   skill_assignment: skillAssignment,
+  skill_maintenance: skillMaintenance,
+  skill_curator_state: skillCuratorState,
   harness_inventory: harnessInventory,
   connection,
   agent,
@@ -144,6 +155,7 @@ export const schemas = {
   message,
   goal,
   routine,
+  routine_delivery: routineDelivery,
   artifact,
   binding,
   occurrence,
@@ -184,6 +196,8 @@ export function contractDocument() {
         ...groupCommands,
         ...goalCommands,
         ...learningCommands,
+        create_board_card: newBoardCard,
+        resume_board_card: boardResume,
         agent: agentInput,
         update_agent: agentUpdate,
         thread: threadInput,

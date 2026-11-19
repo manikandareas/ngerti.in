@@ -27,6 +27,10 @@ export class MachineProcesses {
         this.#stopping.add(process.id);
         void this.stop(process)
           .catch(async () => await this.unknown(process.id))
+          .catch(() => {
+            if (!this.#closed && !this.lifecycle.store.closed)
+              console.error(JSON.stringify({ event: "machine.process_stop_observation_failed" }));
+          })
           .finally(() => this.#stopping.delete(process.id));
       }
     });
@@ -45,10 +49,22 @@ export class MachineProcesses {
   private async current(id: string) {
     return await this.lifecycle.store.get("machine_process", id);
   }
+  private async updateLive(
+    id: string,
+    change: (item: Entity<"machine_process">) => Partial<Entity<"machine_process">> | null,
+  ) {
+    await this.lifecycle.store.transaction(async () => {
+      const current = await this.current(id);
+      if (current.state === "exited") return;
+      const fields = change(current);
+      if (fields) await this.operations.update(current, fields);
+    });
+  }
   private async unknown(id: string) {
     if (this.#closed || this.lifecycle.store.closed) return;
-    const current = await this.current(id);
-    if (current.state !== "exited") await this.operations.update(current, { state: "unknown" });
+    await this.updateLive(id, (current) =>
+      current.state === "unknown" ? null : { state: "unknown" },
+    );
   }
   private async handle(item: Entity<"machine_process">) {
     if (item.generation !== (await await this.generation()))
@@ -73,31 +89,32 @@ export class MachineProcesses {
         const event = await handle.nextEvent();
         if (this.#closed || this.lifecycle.store.closed) return;
         if (!event) break;
-        const current = await this.current(id);
         if (event.kind === ProcessEventKind.Exit) {
-          await this.operations.update(current, {
+          await this.updateLive(id, () => ({
             state: event.exit?.error ? "unknown" : "exited",
             exit_code: event.exit?.code ?? null,
             exit_signal: event.exit?.signal ?? null,
             lost: /lost/i.test(event.exit?.error ?? ""),
-          });
+          }));
           return;
         }
         const key = event.kind === ProcessEventKind.Stderr ? "stderr" : "stdout";
-        const seen = BigInt(current.output_offset);
         const end = event.offset + BigInt(event.data.byteLength);
-        if (end <= seen) continue;
-        const data = new Uint8Array(event.data).subarray(
-          Number(seen > event.offset ? seen - event.offset : 0n),
-        );
-        const text =
-          current[key] + (key === "stderr" ? stderr : stdout).decode(data, { stream: true });
-        await this.operations.update(current, {
-          state: "running",
-          [key]: text.slice(-131_072),
-          output_offset: String(end),
-          output_truncated:
-            current.output_truncated || text.length > 131_072 || event.offset > seen,
+        await this.updateLive(id, (current) => {
+          const seen = BigInt(current.output_offset);
+          if (end <= seen) return null;
+          const data = new Uint8Array(event.data).subarray(
+            Number(seen > event.offset ? seen - event.offset : 0n),
+          );
+          const text =
+            current[key] + (key === "stderr" ? stderr : stdout).decode(data, { stream: true });
+          return {
+            state: "running",
+            [key]: text.slice(-131_072),
+            output_offset: String(end),
+            output_truncated:
+              current.output_truncated || text.length > 131_072 || event.offset > seen,
+          };
         });
       }
       await this.unknown(id);
@@ -144,10 +161,10 @@ export class MachineProcesses {
             pty: data.pty,
             timeoutMs: data.timeout_ms,
           });
-          await this.operations.update(await this.current(record.id), {
+          await this.updateLive(record.id, () => ({
             pid: handle.pid(),
             state: "running",
-          });
+          }));
           this.#handles.set(record.id, handle);
           void this.collect(record.id, handle).catch(() => {});
           return { process_id: record.id };
@@ -227,18 +244,18 @@ export class MachineProcesses {
           .parse(await this.host.rpc("ProcessService/GetExecRecord", { requestId: item.id }));
         if (ledger.record?.state === "EXEC_STATE_RUNNING") {
           await this.handle(item);
-          await this.operations.update(await this.current(item.id), { state: "running" });
+          await this.updateLive(item.id, () => ({ state: "running" }));
         } else if (ledger.record?.state === "EXEC_STATE_EXITED")
-          await this.operations.update(await this.current(item.id), {
+          await this.updateLive(item.id, () => ({
             state: "exited",
-            exit_code: ledger.record.end?.exitCode ?? null,
-            exit_signal: ledger.record.end?.signal ?? null,
-          });
+            exit_code: ledger.record?.end?.exitCode ?? null,
+            exit_signal: ledger.record?.end?.signal ?? null,
+          }));
         else
-          await this.operations.update(await this.current(item.id), {
+          await this.updateLive(item.id, () => ({
             state: "unknown",
             lost: true,
-          });
+          }));
         if (
           ledger.record &&
           ["EXEC_STATE_RUNNING", "EXEC_STATE_EXITED"].includes(ledger.record.state)

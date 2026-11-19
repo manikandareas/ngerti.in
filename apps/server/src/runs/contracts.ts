@@ -2,8 +2,12 @@ import { z } from "zod";
 import { agentSnapshot } from "../agents/contracts";
 import { attachmentObservation } from "../attachments/contracts";
 import { base, id, text } from "../contracts/base";
+import { routineObservation } from "../goals/monitor-contracts";
 import { nativeInteractionJournal } from "../harness/interaction-contracts";
 import { providerSelection } from "../harness/selection-contracts";
+import { outputPluginSnapshot, outputPluginStatus } from "../integrations/output-plugin-contracts";
+import { skillConsolidation } from "../learning/contracts";
+import { learningProgress, learningReview } from "../learning/review-contracts";
 import { activeTool } from "./activity-contracts";
 import { nativeProgress } from "./native-progress";
 
@@ -38,6 +42,8 @@ export const run = z
     retry_of_run_id: id.nullable().default(null),
     retried_by_run_id: id.nullable().default(null),
     task_id: id.nullable().default(null),
+    parallel_peer_source_id: id.optional(),
+    peer_budget_seconds: z.int().min(1).max(3600).optional(),
     thread_revision: z.int().positive().nullable().default(null),
     goal_id: id.nullable(),
     routine_id: id.nullable(),
@@ -49,8 +55,12 @@ export const run = z
       .max(50)
       .default([]),
     routine_generation: z.int().positive().nullable().default(null),
+    manual_routine: z.boolean().default(false),
+    routine_observation: routineObservation.nullable().default(null),
     publication: z.enum(["immediate", "deferred", "quiet"]).default("immediate"),
     pending_answer: z.string().max(100_000).nullable().default(null),
+    output_plugin: outputPluginSnapshot.nullable().optional(),
+    output_plugin_status: outputPluginStatus.nullable().optional(),
     status: runStatus,
     timings: z
       .partialRecord(
@@ -96,6 +106,22 @@ export const run = z
     native_interactions: nativeInteractionJournal,
     native_progress: nativeProgress.nullable().default(null),
     provider_selection: providerSelection.nullable().default(null),
+    learning_review: learningReview.nullable().default(null),
+    learning_progress: learningProgress.nullable().default(null),
+    skill_consolidation: skillConsolidation.nullable().default(null),
+    learning_file_reads: z
+      .array(z.string().regex(/^[a-f0-9]{64}$/))
+      .max(100)
+      .default([]),
+    skill_reads: z
+      .array(
+        z.strictObject({
+          skill_id: id,
+          version: z.int().positive(),
+        }),
+      )
+      .max(100)
+      .default([]),
     agent_snapshot: agentSnapshot.nullable().default(null),
     workspace_id: id.nullable().default(null),
     workspace_revision: z.int().positive().nullable().default(null),

@@ -28,28 +28,29 @@ export class RunRecovery {
   #unsubscribe: (() => void) | undefined;
   #closed = false;
   #wakePending = false;
+  #scanning?: Promise<void>;
 
   constructor(
     private readonly store: Store,
     private readonly reconcile: (runId: string) => Promise<unknown>,
     policy: Partial<RecoveryPolicy> = {},
-    private readonly report: (runId: string, error: unknown) => void = () => {},
+    private readonly report: (runId: string, error: unknown) => void | Promise<void> = () => {},
   ) {
     this.#policy = { ...defaults, ...policy };
   }
 
   async start() {
     if (this.#closed || this.#timer !== undefined) return;
-    this.#timer = setInterval(async () => await this.tick(), this.#policy.interval_ms);
+    this.#timer = setInterval(() => void this.scan(), this.#policy.interval_ms);
     this.#unsubscribe = this.store.subscribe(() => {
       if (this.#wakePending) return;
       this.#wakePending = true;
-      queueMicrotask(async () => {
+      queueMicrotask(() => {
         this.#wakePending = false;
-        await this.tick();
+        void this.scan();
       });
     });
-    await this.tick();
+    await this.scan();
   }
 
   watch(runId: string, inspect: () => Promise<void>) {
@@ -70,6 +71,19 @@ export class RunRecovery {
         if (this.#watches.get(runId) === watch) this.#watches.delete(runId);
       },
     };
+  }
+
+  private scan() {
+    if (this.#closed || this.store.closed) return Promise.resolve();
+    // Commit notifications and the timer share one scope scan, even when the database is slow.
+    this.#scanning ??= this.tick()
+      .catch(() => {
+        if (!this.#closed) console.error(JSON.stringify({ event: "harness.recovery.scan_failed" }));
+      })
+      .finally(() => {
+        this.#scanning = undefined;
+      });
+    return this.#scanning;
   }
 
   private async tick(): Promise<void> {
@@ -108,9 +122,9 @@ export class RunRecovery {
     const observation = check.observation;
     void Promise.resolve()
       .then(operation)
-      .catch((error) => {
+      .catch(async (error) => {
         // Uncertain receipts never authorize replay. Keep diagnostics private and correlated.
-        if (!this.#closed) this.report(id, error);
+        if (!this.#closed) await this.report(id, error);
       })
       .finally(() => {
         this.#pending.delete(id);
@@ -123,7 +137,8 @@ export class RunRecovery {
           ),
         );
         check.next = Date.now() + delay;
-      });
+      })
+      .catch(() => {});
   }
 
   close() {

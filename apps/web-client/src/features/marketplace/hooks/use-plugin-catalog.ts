@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useSyncExternalStore } from "react";
+import { useApiResource } from "@/hooks/use-api-resource";
 import { type CatalogEntry, plugins } from "../lib/catalog";
+import type { CatalogApp } from "../lib/catalog-cache";
 import { pluginCatalogResource } from "../lib/plugin-catalog-resource";
 
 const curated = new Map(plugins.map((entry) => [entry.id, entry]));
@@ -13,9 +15,13 @@ export function usePluginCatalog() {
   useEffect(() => {
     pluginCatalogResource.ensure();
   }, []);
+  const managed = useApiResource<{ items: CatalogApp[] }>("/v1/apps/managed-connectors");
   const entries = useMemo<CatalogEntry[]>(
     () =>
-      snapshot.items.map((app) => ({
+      [
+        ...(managed.data?.items ?? []),
+        ...snapshot.items.filter((app) => !app.slug.startsWith("mcp_")),
+      ].map((app) => ({
         id: app.slug,
         name: app.name,
         description: app.description || `Connect ${app.name} to your workspace.`,
@@ -31,13 +37,16 @@ export function usePluginCatalog() {
         noAuth: app.no_auth,
         prompts: curated.get(app.slug)?.prompts ?? [],
       })),
-    [snapshot.items],
+    [managed.data?.items, snapshot.items],
   );
   return {
     entries,
     busy: snapshot.busy,
     error: snapshot.error,
     metadataComplete: snapshot.metadataComplete,
-    retry: pluginCatalogResource.retry,
+    retry: () => {
+      managed.retry();
+      pluginCatalogResource.retry();
+    },
   };
 }

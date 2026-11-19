@@ -29,10 +29,14 @@ type Bridge = {
   view: View;
   socket: WebSocket;
   mediaId: string;
-  queued: (string | Uint8Array<ArrayBuffer>)[];
+  inbound: Promise<void>;
+  inboundBytes: number;
+  outbound: Promise<void>;
+  releaseOutbound: () => void;
   queuedBytes: number;
 };
 const prefix = "/v1/machine/viewer/";
+const viewerBackpressureLimit = 8 * 1024 * 1024;
 
 /** Upstream HTML5 viewer, with scoped tickets and live takeover-revision fencing. */
 export class MachineViews {
@@ -51,8 +55,11 @@ export class MachineViews {
     // validates its own session; an expired creator must not fence later logins.
     const detached = <T>(action: () => T) => machines.lifecycle.store.outsideDataContext(action);
     this.#unsubscribe = machines.onControl(() => detached(() => this.sweep()));
+    let maintaining = false;
     this.#expiry = detached(() =>
       setInterval(() => {
+        if (maintaining) return;
+        maintaining = true;
         void (async () => {
           try {
             if (
@@ -67,7 +74,11 @@ export class MachineViews {
             // still be swept and closed even when lease maintenance is denied.
             await this.sweep();
           }
-        })().catch(() => {});
+        })()
+          .catch(() => {})
+          .finally(() => {
+            maintaining = false;
+          });
       }, 1000),
     );
     this.#expiry.unref();
@@ -259,7 +270,7 @@ export class MachineViews {
       },
       websocket: {
         maxPayloadLength: 65_536,
-        backpressureLimit: 8 * 1024 * 1024,
+        backpressureLimit: viewerBackpressureLimit,
         closeOnBackpressureLimit: true,
         open: async (peer) => await this.open(peer.data.request, peer),
         message: async (peer, message) => await this.message(peer, message),
@@ -462,24 +473,47 @@ export class MachineViews {
       endpoint.searchParams.set("ticket", ticket);
       const socket = new WebSocket(endpoint);
       socket.binaryType = "arraybuffer";
-      const bridge: Bridge = { view, socket, mediaId, queued: [], queuedBytes: 0 };
+      const connected = Promise.withResolvers<void>();
+      const bridge: Bridge = {
+        view,
+        socket,
+        mediaId,
+        inbound: connected.promise,
+        inboundBytes: 0,
+        outbound: connected.promise,
+        releaseOutbound: connected.resolve,
+        queuedBytes: 0,
+      };
       this.#peers.set(peer, bridge);
       socket.onopen = async () => {
         try {
           await this.valid(view);
-          for (const message of bridge.queued) socket.send(message);
-          bridge.queued.length = 0;
+          bridge.releaseOutbound();
         } catch {
           this.denyPeer(peer, "Machine view expired.");
         }
       };
-      socket.onmessage = async (event) => {
-        try {
-          await this.valid(view);
-          if (peer.send(event.data) === -1) throw new Error("Backpressure");
-        } catch {
-          this.denyPeer(peer, "Machine view expired.");
-        }
+      socket.onmessage = (event) => {
+        const data: string | ArrayBuffer = event.data;
+        const size = Math.max(
+          1,
+          typeof data === "string" ? Buffer.byteLength(data) : data.byteLength,
+        );
+        if (bridge.inboundBytes + size > viewerBackpressureLimit)
+          return this.denyPeer(peer, "Machine media reconnecting.");
+        bridge.inboundBytes += size;
+        // Preserve decoder order while limiting each stream to one in-flight authorization.
+        bridge.inbound = bridge.inbound
+          .then(async () => {
+            if (this.#peers.get(peer) !== bridge) return;
+            await this.valid(view);
+            if (this.#peers.get(peer) === bridge && peer.send(data) === -1)
+              this.denyPeer(peer, "Machine media reconnecting.");
+          })
+          .catch(() => this.denyPeer(peer, "Machine view expired."))
+          .finally(() => {
+            bridge.inboundBytes -= size;
+          });
       };
       socket.onclose = (event) => {
         // Preserve upstream ticket-expiry semantics so Cua can reopen its media session.
@@ -498,21 +532,32 @@ export class MachineViews {
     const bridge = this.#peers.get(peer);
     if (!bridge) return this.denyPeer(peer, "Machine view denied.");
     try {
-      await this.valid(bridge.view);
       const data =
         message instanceof Uint8Array
           ? Uint8Array.from(message)
           : typeof message === "string"
             ? message
             : JSON.stringify(message);
-      const size = typeof data === "string" ? Buffer.byteLength(data) : data.byteLength;
-      if (size > 65_536) throw new DomainError("INVALID_REQUEST", 413);
-      if (bridge.socket.readyState === WebSocket.OPEN) bridge.socket.send(data);
-      else {
-        bridge.queuedBytes += size;
-        if (bridge.queuedBytes > 131_072) throw new DomainError("INVALID_REQUEST", 413);
-        bridge.queued.push(data);
-      }
+      const size = Math.max(
+        1,
+        typeof data === "string" ? Buffer.byteLength(data) : data.byteLength,
+      );
+      if (size > 65_536 || bridge.queuedBytes + size > 131_072)
+        throw new DomainError("INVALID_REQUEST", 413);
+      bridge.queuedBytes += size;
+      // An async lease check can otherwise send a release before its key or button press.
+      bridge.outbound = bridge.outbound
+        .then(async () => {
+          if (this.#peers.get(peer) !== bridge) return;
+          await this.valid(bridge.view);
+          if (this.#peers.get(peer) === bridge && bridge.socket.readyState === WebSocket.OPEN)
+            bridge.socket.send(data);
+        })
+        .catch(() => this.denyPeer(peer, "Machine control changed."))
+        .finally(() => {
+          bridge.queuedBytes -= size;
+        });
+      await bridge.outbound;
     } catch {
       this.denyPeer(peer, "Machine control changed.");
     }
@@ -525,6 +570,7 @@ export class MachineViews {
       return;
     }
     this.#peers.delete(peer);
+    bridge.releaseOutbound();
     bridge.socket.onclose = null;
     bridge.socket.close();
     // Allow an upstream close frame to flush; terminate would erase its expiry code.

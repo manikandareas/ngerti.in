@@ -24,6 +24,7 @@ export function ConversationNavigation({
   setCreateMenu,
   createAgent,
   createGroup,
+  importProfile,
   choose,
   organizationHeader,
 }: {
@@ -38,6 +39,7 @@ export function ConversationNavigation({
   setCreateMenu: (open: boolean) => void;
   createAgent: () => void;
   createGroup: () => void;
+  importProfile?: () => void;
   choose: (id: string) => void;
   organizationHeader?: ReactNode;
 }) {
@@ -119,6 +121,11 @@ export function ConversationNavigation({
             <Button variant="ghost" className="w-full justify-start" onClick={createGroup}>
               <HugeiconsIcon icon={UserGroupIcon} size={16} strokeWidth={1.5} /> Create group
             </Button>
+            {importProfile && (
+              <Button variant="ghost" className="w-full justify-start" onClick={importProfile}>
+                Import agent profile
+              </Button>
+            )}
           </PopoverContent>
         </Popover>
       </div>
@@ -154,14 +161,14 @@ export function ConversationNavigation({
           <>
             <div className="agent-section-label">Team agents</div>
             {teamAgents.map((agent) => {
-              const thread = threads.find(
+              const conversations = filteredThreads.filter(
                 (item) => item.type === "dm" && item.member_agent_ids[0] === agent.id,
               );
-              return thread ? (
+              return conversations.length ? (
                 <ConversationList
                   key={agent.id}
                   agents={agents}
-                  threads={[thread]}
+                  threads={conversations}
                   agentsById={agentsById}
                   activitiesByThread={activitiesByThread}
                   previewsByThread={previewsByThread}

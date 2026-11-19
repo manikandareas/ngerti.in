@@ -13,12 +13,14 @@ export function registerAppTools(tools: ProductTools) {
   });
   tools.register("ngertiin.search_app_tools", {
     schema: appSearch,
+    requires: "app_grant",
     resources: () => [],
     execute: async (input, access) =>
       tools.applications.search(input, access.scope, access.authorize),
   });
   tools.register("ngertiin.execute_app_tool", {
     schema: appExecute,
+    requires: "app_grant",
     resources: () => [],
     execute: async (input, access) => tools.applications.execute(input, access),
   });

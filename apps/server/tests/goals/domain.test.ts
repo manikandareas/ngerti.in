@@ -302,15 +302,20 @@ test("calendar schedules honor IANA wall time and skip DST gaps and repeated fal
   ).toEqual({ scheduled_for: "2026-10-31T02:30:00.000Z", next: "2026-11-01T02:30:00.000Z" });
 });
 
-test("heartbeat coalesces missed occurrences and changed schedules invalidate old queued generation", async () => {
+test("heartbeat waits for foreground work, coalesces missed slots and invalidates old queued generations", async () => {
   const goals = await setup();
   const run = await start();
   const original = await routine(goals, run);
   await finish(run);
-  const occurrence = await f.lifecycle.fireRoutine(
-    original.id,
-    new Date("2026-10-31T00:00:10.500Z"),
-  );
+  const due = new Date("2026-10-31T00:00:10.500Z");
+  const busy = await start();
+  const queued = await f.admit("Read the latest source first.");
+  expect(await f.lifecycle.fireRoutine(original.id, due)).toBeNull();
+  await finish(busy);
+  expect(await f.lifecycle.fireRoutine(original.id, due)).toBeNull();
+  expect(await f.store.list("occurrence")).toHaveLength(0);
+  await finish(await start(queued.run.id));
+  const occurrence = await f.lifecycle.fireRoutine(original.id, due);
   expect(occurrence?.scheduled_for).toBe("2026-10-31T00:00:10.000Z");
   const current = await f.store.get("routine", original.id);
   const updated = await goals.writeRoutine(run.id, {
@@ -407,8 +412,14 @@ test("pause/resume preserves an independently paused Routine; stop fences queued
   expect((await f.store.get("routine", first.id)).state).toBe("paused");
   expect((await f.store.get("routine", second.id)).state).toBe("active");
   await goals.advance();
-  const current = await f.store.get("goal", goal.id);
-  const continuation = current.current_run_id;
+  expect((await f.store.get("goal", goal.id)).current_run_id).toBeNull();
+  const restored = await f.store.get("routine", second.id);
+  if (!restored.next_run_at) throw new Error("Expected a future Routine occurrence.");
+  const occurrence = await f.lifecycle.fireRoutine(restored.id, new Date(restored.next_run_at));
+  if (!occurrence) throw new Error("Expected the restored Routine to fire.");
+  const continuation = (await f.store.get("goal", goal.id)).current_run_id;
+  expect(continuation).toBe(occurrence.run_id);
+  expect((await f.store.get("run", continuation)).routine_id).toBe(restored.id);
   await f.lifecycle.controlGoal(goal.id, "stopped");
   await f.restart();
   await new Background(f.lifecycle).tick(new Date("2026-11-01T00:00:00Z"));

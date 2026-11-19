@@ -13,12 +13,36 @@ import {
   routine as routineSchema,
   threadInput,
 } from "./contracts";
+import { RoutineDelivery } from "./goals/delivery";
+import type { RoutineDeliveryDestination } from "./goals/delivery-contracts";
 import { GroupSchedules } from "./goals/group-schedules";
-import { dueWindow, firstDue } from "./goals/schedule";
+import { loopControlFields } from "./goals/loops";
+import {
+  checkedRoutineInstruction,
+  checkRoutineSource,
+  precheckCompletion,
+} from "./goals/precheck";
+import {
+  dueWindow,
+  firstDue,
+  nextLoopWake,
+  routineCanRun,
+  routineHasFuture,
+  routineIsTerminal,
+} from "./goals/schedule";
 import { ResponsibilityScope } from "./goals/scope";
+import { groupRunBlocks, peerBudgetDiagnostic, peerBudgetExpired } from "./groups/execution";
 import type { GroupRouter } from "./groups/router";
 import type { HarnessBindingMetadata } from "./harness/client";
 import { Connections } from "./harness/connections";
+import type { ManagedChannel } from "./integrations/channel-contracts";
+import type { MediaBackend } from "./integrations/media-contracts";
+import type { OutputPluginManifest } from "./integrations/output-plugin-contracts";
+import { OutputPlugins, transformOutput } from "./integrations/output-plugins";
+import { ApplicationSkills } from "./learning/application-skills";
+import { learningReviewCandidate } from "./learning/eligibility";
+import type { MemoryBackend } from "./learning/external-memory-contracts";
+import { type LearningCadence, learningCadence } from "./learning/review-contracts";
 import { asyncMap, asyncSome } from "./persistence/async-collections";
 import { InteractionJournal } from "./runs/interaction-journal";
 import { canRetryResponse } from "./runs/retry-policy";
@@ -44,10 +68,34 @@ export class Lifecycle {
   constructor(
     readonly store: Store,
     readonly groupRouter?: GroupRouter,
+    readonly reviewCadence = learningCadence.parse({}),
+    readonly memoryBackends: readonly MemoryBackend[] = [],
+    readonly routineDeliveryDestinations: readonly RoutineDeliveryDestination[] = [],
+    readonly outputPlugins: readonly OutputPluginManifest[] = [],
+    readonly channels: readonly ManagedChannel[] = [],
+    readonly mediaBackends: readonly MediaBackend[] = [],
   ) {}
 
-  static async open(store: Store, groupRouter?: GroupRouter): Promise<Lifecycle> {
-    const lifecycle = new Lifecycle(store, groupRouter);
+  static async open(
+    store: Store,
+    groupRouter?: GroupRouter,
+    reviewCadence?: LearningCadence,
+    memoryBackends?: readonly MemoryBackend[],
+    routineDeliveryDestinations?: readonly RoutineDeliveryDestination[],
+    outputPlugins?: readonly OutputPluginManifest[],
+    channels?: readonly ManagedChannel[],
+    mediaBackends?: readonly MediaBackend[],
+  ): Promise<Lifecycle> {
+    const lifecycle = new Lifecycle(
+      store,
+      groupRouter,
+      reviewCadence,
+      memoryBackends,
+      routineDeliveryDestinations,
+      outputPlugins,
+      channels,
+      mediaBackends,
+    );
     await lifecycle.initialize();
     return lifecycle;
   }
@@ -173,7 +221,10 @@ export class Lifecycle {
           }
           if (data.type === "dm") {
             const existing = (await this.store.list("thread")).find(
-              (item) => item.type === "dm" && item.member_agent_ids[0] === data.member_agent_ids[0],
+              (item) =>
+                item.type === "dm" &&
+                !item.additional_dm &&
+                item.member_agent_ids[0] === data.member_agent_ids[0],
             );
             if (existing) return existing;
           }
@@ -182,6 +233,7 @@ export class Lifecycle {
             ...data,
             kind,
             purpose: "conversation",
+            additional_dm: false,
             group_thread_id: null,
             name: null,
             shared_instructions: "",
@@ -214,39 +266,8 @@ export class Lifecycle {
             }),
           );
         }
-        case "routine": {
-          const data = routineInput.parse(input);
-          const actor =
-            data.agent_id ??
-            ((await this.store.get("thread", data.thread_id)).member_agent_ids[0] as string);
-          await this.scope(data.thread_id, actor);
-          if (data.goal_id) await this.checkGoal(data.goal_id, data.thread_id, actor);
-          const shared = (await this.store.get("thread", data.thread_id)).type === "group";
-          const target =
-            data.execution_target ??
-            (shared ? { type: "auto" as const } : { type: "agent" as const, agent_id: actor });
-          if (target.type === "agent") await this.scope(data.thread_id, target.agent_id);
-          else if (!shared) throw new DomainError("SCOPE_DENIED", 403);
-          return await this.store.put(
-            routineSchema.parse({
-              ...base,
-              ...data,
-              kind,
-              ...(await new ResponsibilityScope(this.store).ownership({
-                thread_id: data.thread_id,
-                agent_id: actor,
-              })),
-              provider_selection: await new Connections(this).resolveSelection(
-                await this.store.get("agent", actor),
-                data.thread_id,
-              ),
-              execution_target: target,
-              state: "active",
-              generation: 1,
-              next_run_at: firstDue(data.schedule, data.timezone),
-            }),
-          );
-        }
+        case "routine":
+          return await this.createRoutine(input);
         case "artifact": {
           const data = artifactInput.parse(input);
           if (!data.agent_id) throw new DomainError("SCOPE_DENIED", 403);
@@ -277,6 +298,64 @@ export class Lifecycle {
     });
   }
 
+  async createRoutine(input: unknown, restored = false) {
+    const data = routineInput.parse(input);
+    const thread = await this.store.get("thread", data.thread_id);
+    const actor = data.agent_id ?? (thread.member_agent_ids[0] as string);
+    await this.scope(thread.id, actor);
+    if (data.goal_id) await this.checkGoal(data.goal_id, thread.id, actor);
+    const shared = thread.type === "group";
+    const target =
+      data.execution_target ??
+      (shared ? { type: "auto" as const } : { type: "agent" as const, agent_id: actor });
+    if (target.type === "agent") await this.scope(thread.id, target.agent_id);
+    else if (!shared) throw new DomainError("SCOPE_DENIED", 403);
+    return await this.store.put(
+      routineSchema.parse({
+        ...this.base(),
+        ...data,
+        kind: "routine",
+        ...(await new ResponsibilityScope(this.store).ownership({
+          thread_id: thread.id,
+          agent_id: actor,
+        })),
+        provider_selection: restored
+          ? null
+          : await new Connections(this).resolveSelection(
+              await this.store.get("agent", actor),
+              thread.id,
+            ),
+        execution_target: target,
+        ...(restored ? { restore_pending: true } : {}),
+        state: restored ? "paused" : "active",
+        generation: 1,
+        next_run_at: restored ? null : firstDue(data.schedule, data.timezone),
+      }),
+    );
+  }
+
+  async openNewDm(threadId: string) {
+    return await this.store.transaction(async () => {
+      const source = await this.store.get("thread", threadId);
+      if (source.type !== "dm" || source.purpose !== "conversation")
+        throw new DomainError("SCOPE_DENIED", 403);
+      const agentId = source.member_agent_ids[0] as string;
+      await this.scope(source.id, agentId);
+      return await this.store.put({
+        ...this.base(),
+        kind: "thread",
+        type: "dm",
+        member_agent_ids: [agentId],
+        purpose: "conversation",
+        additional_dm: true,
+        group_thread_id: null,
+        name: null,
+        shared_instructions: "",
+        creation_operation_id: null,
+      });
+    });
+  }
+
   async createAgent(input: unknown): Promise<Entity<"agent">> {
     const data = agentInput.parse(input);
     if (data.workspace_id !== null) throw new DomainError("SCOPE_DENIED", 403);
@@ -295,18 +374,23 @@ export class Lifecycle {
     const handle = data.handle ?? `agent_${base.id.replaceAll("-", "")}`;
     if ((await this.store.list("agent")).some((item) => item.handle === handle))
       throw new DomainError("CONFLICT");
-    return await this.store.put({
-      ...base,
-      ...data,
-      handle,
-      avatar_config: data.avatar_config ?? defaultAgentAvatar(base.id),
-      kind: "agent",
-      ...(this.store.dataContext
-        ? { ownership: this.store.publishing ? ("organization" as const) : ("personal" as const) }
-        : {}),
-      grant_revision: 1,
-      system_role: null,
-      configuration_access: "self",
+    return await this.store.transaction(async () => {
+      const agent = await this.store.put({
+        ...base,
+        ...data,
+        handle,
+        avatar_config: data.avatar_config ?? defaultAgentAvatar(base.id),
+        kind: "agent",
+        ...(this.store.dataContext
+          ? { ownership: this.store.publishing ? ("organization" as const) : ("personal" as const) }
+          : {}),
+        grant_revision: 1,
+        system_role: null,
+        configuration_access: "self",
+      });
+      if (this.store.dataContext && agent.ownership === "personal")
+        await new ApplicationSkills(this).seedBuiltIns(agent.id);
+      return agent;
     });
   }
 
@@ -439,14 +523,21 @@ export class Lifecycle {
     }
     if (run.routine_id) {
       const routine = await this.store.get("routine", run.routine_id);
-      if (routine.state !== "active") throw new DomainError("CONFLICT");
+      if (!routineCanRun(routine.state, run.manual_routine)) throw new DomainError("CONFLICT");
       if (run.routine_generation !== null && run.routine_generation !== routine.generation)
         throw new DomainError("STALE_DISPATCH");
       if (routine.goal_id) await this.checkGoal(routine.goal_id, run.thread_id, run.agent_id);
     }
   }
 
-  async admit(input: unknown, author: "user" | "routine" = "user") {
+  async admit(
+    input: unknown,
+    author: "user" | "routine" = "user",
+    options: {
+      skillConsolidation?: Entity<"run">["skill_consolidation"];
+      manualRoutine?: boolean;
+    } = {},
+  ) {
     const data = admissionInput.parse(input);
     return await this.store.transaction(async () => {
       await this.scope(data.thread_id, data.agent_id);
@@ -459,7 +550,8 @@ export class Lifecycle {
           routine.goal_id !== data.goal_id
         )
           throw new DomainError("SCOPE_DENIED", 403);
-        if (routine.state !== "active") throw new DomainError("CONFLICT");
+        if (!routineCanRun(routine.state, author === "routine" && !!options.manualRoutine))
+          throw new DomainError("CONFLICT");
       }
       await new Workspaces(this).authorizeArtifacts(
         data.thread_id,
@@ -486,6 +578,8 @@ export class Lifecycle {
         id: runId,
         goal_id: data.goal_id,
         routine_id: data.routine_id,
+        skill_consolidation: options.skillConsolidation,
+        manual_routine: author === "routine" && !!options.manualRoutine,
       });
       return { message, run };
     });
@@ -498,8 +592,12 @@ export class Lifecycle {
     options: {
       id?: string;
       task_id?: string;
+      parallel_peer_source_id?: string;
+      peer_budget_seconds?: number;
       goal_id?: string | null;
       routine_id?: string | null;
+      skill_consolidation?: Entity<"run">["skill_consolidation"];
+      manual_routine?: boolean;
     } = {},
   ): Promise<Entity<"run">> {
     const { agent, thread } = await this.scope(message.thread_id, agentId);
@@ -509,6 +607,11 @@ export class Lifecycle {
       ...this.base(),
       id: options.id ?? crypto.randomUUID(),
       kind: "run",
+      learning_review: null,
+      learning_progress: null,
+      skill_consolidation: options.skill_consolidation ?? null,
+      learning_file_reads: [],
+      skill_reads: [],
       thread_id: thread.id,
       agent_id: agentId,
       input_message_id: message.id,
@@ -522,6 +625,10 @@ export class Lifecycle {
       retry_of_run_id: null,
       retried_by_run_id: null,
       task_id: options.task_id ?? null,
+      ...(options.parallel_peer_source_id
+        ? { parallel_peer_source_id: options.parallel_peer_source_id }
+        : {}),
+      ...(options.peer_budget_seconds ? { peer_budget_seconds: options.peer_budget_seconds } : {}),
       thread_revision: thread.type === "group" ? thread.revision : null,
       goal_id: options.goal_id ?? null,
       routine_id: options.routine_id ?? null,
@@ -534,8 +641,12 @@ export class Lifecycle {
       routine_generation: options.routine_id
         ? (await this.store.get("routine", options.routine_id)).generation
         : null,
+      manual_routine: options.manual_routine ?? false,
+      routine_observation: null,
       publication:
-        options.routine_id || message.purpose === "continuation" ? "deferred" : "immediate",
+        options.routine_id || options.peer_budget_seconds || message.purpose === "continuation"
+          ? "deferred"
+          : "immediate",
       pending_answer: null,
       response_mode: "answer",
       tool_errors: [],
@@ -576,6 +687,11 @@ export class Lifecycle {
     workspace ??= await new Workspaces(this).ensure(threadId, agentId);
     return await this.store.transaction(async () => {
       await this.scope(threadId, agentId);
+      if (
+        workspace &&
+        (await new Workspaces(this).get(workspace.id)).revision !== workspace.revision
+      )
+        throw new DomainError("STALE_DISPATCH");
       const agent = await this.executionAgent(threadId, agentId);
       if (!agent.connection_id) throw new DomainError("SCOPE_DENIED", 403);
       const connection = await new Connections(this).get(agent.connection_id);
@@ -659,23 +775,23 @@ export class Lifecycle {
       await this.store.validateDataContext(true);
       const { thread } = await this.scope(threadId, agentId);
       const agent = await this.executionAgent(threadId, agentId);
-      // Every current group adapter can mutate files. The durable run is the exclusive lease;
-      // unknown work keeps it until native reconciliation, including after an application restart.
-      if (
-        thread.type === "group" &&
-        thread.purpose === "conversation" &&
-        (await this.store.list("run", { thread_id: threadId })).some(
-          (run) =>
-            run.thread_id === threadId && (active.has(run.status) || run.status === "unknown"),
-        )
-      )
-        return null;
       const lane = (
         await this.store.list("run", { thread_id: threadId, agent_id: agentId })
       ).filter((run) => run.thread_id === threadId && run.agent_id === agentId);
       if (lane.some((run) => active.has(run.status) || run.status === "unknown")) return null;
       const next = lane.find((run) => run.status === "queued");
       if (next?.delivery !== "pending") return null;
+      // Only tool-fenced sibling checks may share a group turn. An unknown run retains its lease.
+      if (
+        thread.type === "group" &&
+        thread.purpose === "conversation" &&
+        (await this.store.list("run", { thread_id: threadId })).some((run) =>
+          groupRunBlocks(next, run),
+        )
+      )
+        return null;
+      if (next.parallel_peer_source_id && agent.harness !== "pi")
+        throw new DomainError("STALE_DISPATCH");
       if (preparedRunId && (next.id !== preparedRunId || next.preparation?.state !== "preparing"))
         return null;
       if (next.thread_revision !== null && next.thread_revision !== thread.revision)
@@ -707,6 +823,9 @@ export class Lifecycle {
       const dispatchedAt = new Date().toISOString();
       return await this.update(next, {
         status: "dispatching",
+        ...(thread.output_plugin
+          ? { output_plugin: await new OutputPlugins(this).forTurn(thread, next) }
+          : {}),
         ...(preparedRunId && next.preparation
           ? {
               preparation: { ...next.preparation, state: "ready" as const, next_attempt_at: null },
@@ -780,7 +899,11 @@ export class Lifecycle {
           throw new DomainError("SCOPE_DENIED", 403);
       }
       const agent = await this.executionAgent(run.thread_id, run.agent_id);
-      if (run.cancellation !== "none" || agent.grant_revision !== run.grant_revision)
+      if (
+        run.cancellation !== "none" ||
+        agent.grant_revision !== run.grant_revision ||
+        peerBudgetExpired(run)
+      )
         throw new DomainError("STALE_DISPATCH");
       await this.responsibility(run);
       if (run.workspace_id) await new Workspaces(this).authorizeRun(run);
@@ -823,17 +946,40 @@ export class Lifecycle {
     });
   }
 
+  private async sessionScheduleBusy(routine: Entity<"routine">) {
+    const group = routine.scope === "group";
+    const work = await this.store.page("run", {
+      thread_id: routine.thread_id,
+      ...(group ? {} : { agent_id: routine.agent_id }),
+      statuses: ["queued", "dispatching", "running", "cancel_requested", "unknown"],
+      limit: 1,
+    });
+    if (work.items.length) return true;
+    if (!group) return false;
+    return (await this.store.list("group_route", { thread_id: routine.thread_id })).some(
+      (route) => !route.selection_only && ["pending", "unknown"].includes(route.state),
+    );
+  }
+
   /** The application's single scheduler admits an occurrence and advances its cursor atomically. */
-  async fireRoutine(routineId: string, now: Date) {
+  async fireRoutine(routineId: string, now: Date, manual?: { expected_revision: number }) {
     return await this.store.transaction(async () => {
       const routine = await this.store.get("routine", routineId);
-      if (routine.scope === "group") return await new GroupSchedules(this).fire(routine, now);
+      if (manual && routine.revision !== manual.expected_revision)
+        throw new DomainError("CONFLICT");
       if (
-        routine.state !== "active" ||
-        !routine.next_run_at ||
-        Date.parse(routine.next_run_at) > now.getTime()
+        !manual &&
+        (routine.schedule.type === "heartbeat" || routine.schedule.type === "loop") &&
+        (routine.scope === "group" ||
+          (routine.next_run_at !== null && Date.parse(routine.next_run_at) <= now.getTime())) &&
+        (await this.sessionScheduleBusy(routine))
       )
         return null;
+      if (routine.scope === "group")
+        return await new GroupSchedules(this).fire(routine, now, !!manual);
+      if (!routineCanRun(routine.state, !!manual)) return null;
+      const due = manual ? now.toISOString() : routine.next_run_at;
+      if (!due || Date.parse(due) > now.getTime()) return null;
       if (!routine.agent_id) throw new DomainError("SCOPE_DENIED", 403);
       await this.scope(routine.thread_id, routine.agent_id);
       if (routine.goal_id) {
@@ -861,39 +1007,53 @@ export class Lifecycle {
         )
       )
         return null;
-      const { scheduled_for, next } = dueWindow(
-        routine.schedule,
-        routine.timezone,
-        routine.next_run_at,
-        now,
-      );
+      const trigger = manual ? ("manual" as const) : ("schedule" as const);
+      const { scheduled_for, next } = manual
+        ? { scheduled_for: due, next: routine.next_run_at }
+        : dueWindow(routine.schedule, routine.timezone, due, now);
       return await this.store.command(
-        `routine:${routine.id}:${routine.generation}:${scheduled_for}`,
-        { scheduled_for },
+        manual
+          ? `routine:${routine.id}:${routine.generation}:manual:${scheduled_for}`
+          : `routine:${routine.id}:${routine.generation}:${scheduled_for}`,
+        manual ? { scheduled_for, trigger } : { scheduled_for },
         async () => {
-          const receipt = await this.admit(
-            {
-              thread_id: routine.thread_id,
-              agent_id: routine.agent_id,
-              text: routine.instruction,
-              goal_id: routine.goal_id,
-              routine_id: routine.id,
-            },
-            "routine",
-          );
+          const check = await checkRoutineSource(this, routine);
+          const completedByCheck = precheckCompletion(check, !!manual);
+          const receipt = completedByCheck
+            ? null
+            : await this.admit(
+                {
+                  thread_id: routine.thread_id,
+                  agent_id: routine.agent_id,
+                  text: checkedRoutineInstruction(routine, check),
+                  goal_id: routine.goal_id,
+                  routine_id: routine.id,
+                  artifact_ids: check?.artifact_id ? [check.artifact_id] : [],
+                },
+                "routine",
+                { manualRoutine: trigger === "manual" },
+              );
           const occurrence = await this.store.put({
             ...this.base(),
             kind: "occurrence",
             routine_id: routine.id,
             routine_generation: routine.generation,
+            trigger,
+            check,
             scheduled_for,
-            run_id: receipt.run.id,
+            run_id: receipt?.run.id ?? null,
             route_id: null,
-            selected_agent_id: routine.agent_id,
-            state: "queued",
+            selected_agent_id: receipt?.run.agent_id ?? null,
+            state: completedByCheck ?? "queued",
           });
-          await this.update(routine, { next_run_at: next });
-          if (routine.goal_id) {
+          if (!manual)
+            await this.update(routine, {
+              next_run_at:
+                completedByCheck && routine.schedule.type === "loop"
+                  ? nextLoopWake(routine.schedule, occurrence.created_at, routine.loop_pacing)
+                  : next,
+            });
+          if (routine.goal_id && receipt) {
             const goal = await this.store.get("goal", routine.goal_id);
             await this.update(goal, {
               current_run_id: receipt.run.id,
@@ -915,15 +1075,28 @@ export class Lifecycle {
       const run = await this.dispatch(runId, token);
       if (outcome === "cancelled" && run.cancellation !== "requested")
         throw new DomainError("CONFLICT");
-      await this.publishDeferred(run, outcome);
+      const settledAt = new Date();
+      const exceeded = outcome === "succeeded" && peerBudgetExpired(run, settledAt.getTime());
+      if (!exceeded) await this.publishDeferred(run, outcome);
+      if (outcome === "succeeded" && run.output_plugin && run.pending_answer)
+        await this.authorizeDispatch(run.id, token);
+      const plugin = await this.publishOutputPlugin(run, outcome);
       const answer = await this.store.answer(runId);
       if (answer && answer.state !== (outcome === "succeeded" ? "complete" : "partial"))
         await this.update(answer, { state: outcome === "succeeded" ? "complete" : "partial" });
+      const learning =
+        outcome === "succeeded" && answer?.text.trim()
+          ? await learningReviewCandidate(this, run)
+          : null;
       return await this.update(run, {
         status: outcome,
         outcome,
+        ...plugin,
+        ...(exceeded ? { diagnostic: peerBudgetDiagnostic, pending_answer: null } : {}),
+        learning_review: learning?.review ?? null,
+        learning_progress: learning?.progress ?? null,
         retry_allowed: await canRetryResponse(this.store, { ...run, status: outcome, outcome }),
-        timings: { ...run.timings, settled_at: new Date().toISOString() },
+        timings: { ...run.timings, settled_at: settledAt.toISOString() },
         cancellation: outcome === "cancelled" ? "confirmed" : run.cancellation,
         activity: outcome === "unknown" ? "unknown" : "idle",
         active_tools: [],
@@ -951,6 +1124,14 @@ export class Lifecycle {
         )
       )
         return run;
+      if (run.output_plugin) {
+        if (state === "partial" || !text.trim()) return run;
+        const formatted = transformOutput(run.output_plugin, text);
+        return await this.update(run, {
+          pending_answer: formatted.text,
+          output_plugin_status: formatted.status,
+        });
+      }
       if (run.publication !== "immediate" || run.response_mode === "finalize") {
         return await this.update(run, { pending_answer: text });
       }
@@ -958,17 +1139,40 @@ export class Lifecycle {
     });
   }
 
+  private async publishOutputPlugin(run: Entity<"run">, outcome: string, recoveredText?: string) {
+    if (!run.output_plugin || outcome === "unknown") return {};
+    if (outcome === "succeeded" && run.cancellation === "none") {
+      const answer =
+        run.pending_answer && run.output_plugin_status
+          ? { text: run.pending_answer, status: run.output_plugin_status }
+          : recoveredText?.trim()
+            ? transformOutput(run.output_plugin, recoveredText)
+            : null;
+      if (answer) {
+        await this.writeAnswer(run, answer.text, "complete");
+        return { pending_answer: null, output_plugin_status: answer.status };
+      }
+    }
+    return { pending_answer: null, output_plugin_status: null };
+  }
+
   private async publishDeferred(run: Entity<"run">, outcome: string, text = run.pending_answer) {
+    if (outcome !== "succeeded" || run.cancellation !== "none") return;
+    if (!run.routine_id && run.publication !== "deferred") return;
+    const routine = run.routine_id ? await this.store.get("routine", run.routine_id) : null;
+    const observation = run.routine_observation;
+    const rearm = !!routine?.monitor && observation?.decision === "below_threshold";
+    if (routine?.monitor) {
+      if (!observation || observation.decision === "already_alerted") return;
+      if (rearm && !routine.monitor_alert_active) return;
+    }
     if (!text && run.goal_id) {
       const goal = await this.store.get("goal", run.goal_id);
       if (goal.report_run_id === run.id && goal.work_state !== "ready") text = goal.progress;
     }
     if (
-      run.publication !== "deferred" ||
-      outcome !== "succeeded" ||
-      !text ||
-      run.response_mode === "finalize" ||
-      run.cancellation !== "none"
+      !rearm &&
+      (run.publication !== "deferred" || !text?.trim() || run.response_mode === "finalize")
     )
       return;
     try {
@@ -977,7 +1181,15 @@ export class Lifecycle {
     } catch {
       return;
     }
-    await this.writeAnswer(run, text, "complete");
+    if (routine && rearm) {
+      await this.update(routine, { monitor_alert_active: false });
+      return;
+    }
+    if (!text) return;
+    const answer = await this.writeAnswer(run, text, "complete");
+    if (routine?.delivery_target) await new RoutineDelivery(this).enqueue(routine, run, answer);
+    if (routine?.monitor && observation?.decision === "alert")
+      await this.update(routine, { monitor_alert_active: true });
   }
 
   private async writeAnswer(run: Entity<"run">, text: string, state: "complete" | "partial") {
@@ -1015,6 +1227,8 @@ export class Lifecycle {
       | "native_tools"
       | "native_progress"
       | "product_tools"
+      | "skill_reads"
+      | "learning_file_reads"
       | "tool_errors"
       | "sources"
       | "computer_activity"
@@ -1118,7 +1332,7 @@ export class Lifecycle {
     });
   }
 
-  async cancel(runId: string) {
+  async cancel(runId: string, reason?: "peer_budget") {
     return await this.store.transaction(async () => {
       const run = await this.store.get("run", runId);
       if (final.has(run.status) || run.cancellation === "requested") return run;
@@ -1135,6 +1349,7 @@ export class Lifecycle {
               status: run.status === "unknown" ? "unknown" : "cancel_requested",
               cancellation: "requested",
               activity: run.status === "unknown" ? "unknown" : "stopping",
+              ...(reason === "peer_budget" ? { diagnostic: peerBudgetDiagnostic } : {}),
             },
       );
     });
@@ -1159,9 +1374,20 @@ export class Lifecycle {
           throw new DomainError("CONFLICT");
         if (outcome === "cancelled" && run.cancellation !== "requested")
           throw new DomainError("CONFLICT");
-        if (run.publication !== "immediate")
-          await this.publishDeferred(run, outcome, text ?? run.pending_answer);
-        else if (
+        const exceeded = outcome === "succeeded" && peerBudgetExpired(run);
+        let plugin: Partial<Entity<"run">> = {};
+        if (run.output_plugin) {
+          try {
+            await this.scope(run.thread_id, run.agent_id);
+            await this.responsibility(run);
+            plugin = await this.publishOutputPlugin(run, outcome, text);
+          } catch (error) {
+            if (!(error instanceof DomainError) || error.code !== "SCOPE_DENIED") throw error;
+            plugin = { pending_answer: null, output_plugin_status: null };
+          }
+        } else if (run.publication !== "immediate") {
+          if (!exceeded) await this.publishDeferred(run, outcome, text ?? run.pending_answer);
+        } else if (
           text !== undefined &&
           run.cancellation === "none" &&
           (text || (await this.store.answer(run.id)))
@@ -1177,6 +1403,8 @@ export class Lifecycle {
         return await this.update(run, {
           status: outcome,
           outcome,
+          ...plugin,
+          ...(exceeded ? { diagnostic: peerBudgetDiagnostic, pending_answer: null } : {}),
           cancellation: outcome === "cancelled" ? "confirmed" : run.cancellation,
           activity: "idle",
           native_run_id: nativeRunId ?? run.native_run_id,
@@ -1197,18 +1425,56 @@ export class Lifecycle {
           goal.work_state !== "completion_pending" ||
           !goal.current_run_id ||
           goal.report_run_id !== goal.current_run_id ||
-          !goal.evidence_artifact_ids.length
+          !goal.evidence_artifact_ids.length ||
+          (goal.verification &&
+            (goal.verification.last_check?.run_id !== goal.current_run_id ||
+              goal.verification.last_check.results.some((check) => check.status !== "passed")))
         )
           throw new DomainError("CONFLICT");
         const run = await this.store.get("run", goal.current_run_id);
         if (run.status !== "succeeded" || run.cancellation !== "none")
           throw new DomainError("CONFLICT");
       }
+      const routines = (await this.store.list("routine", { thread_id: goal.thread_id })).filter(
+        (routine) => routine.goal_id === goalId && !routineIsTerminal(routine.state),
+      );
+      const scheduleOwnsWake = routines.some(
+        (routine) =>
+          routineHasFuture(routine) ||
+          (routine.state === "paused" &&
+            routine.paused_by_goal &&
+            (routine.next_run_at !== null || routine.loop_progress?.resume_at != null)),
+      );
+      const retainCheckpoint =
+        state === "paused" ||
+        (state === "active" &&
+          goal.state === "paused" &&
+          goal.scope === "agent" &&
+          !goal.checkpoint_evidence);
       const result = await this.update(goal, {
         state,
         generation: goal.generation + 1,
-        continuation_at: state === "active" ? new Date().toISOString() : null,
+        continuation_at: state === "active" && !scheduleOwnsWake ? new Date().toISOString() : null,
+        ...(retainCheckpoint
+          ? {
+              checkpoint_evidence: {
+                assignment_revision: goal.assignment_revision,
+                artifact_ids: goal.evidence_artifact_ids,
+              },
+            }
+          : {}),
         work_state: state === "active" || state === "completed" ? "ready" : goal.work_state,
+        ...(state === "active" &&
+        goal.verification &&
+        goal.verification.attempts_used >= goal.verification.attempt_limit
+          ? {
+              verification: {
+                ...goal.verification,
+                attempts_used: 0,
+                last_check: null,
+              },
+            }
+          : {}),
         current_run_id:
           state === "active" &&
           goal.current_run_id &&
@@ -1233,25 +1499,29 @@ export class Lifecycle {
             if (request.task_id === task.id && request.state === "pending")
               await this.update(request, { state: "cancelled" });
         }
-        for (const routine of await this.store.list("routine")) {
-          if (routine.goal_id === goalId && routine.state !== "stopped")
-            await this.update(routine, {
-              state: state === "completed" ? "stopped" : state,
-              paused_by_goal: state === "paused" && routine.state === "active",
-              generation: routine.generation + 1,
-            });
+        for (const item of routines) {
+          const routine = await new GroupSchedules(this).reconcileLoop(item);
+          if (routineIsTerminal(routine.state)) continue;
+          const target = state === "completed" ? "stopped" : state;
+          await this.update(routine, {
+            state: target,
+            paused_by_goal: state === "paused" && routine.state === "active",
+            generation: routine.generation + 1,
+            ...loopControlFields(routine, target),
+          });
         }
         for (const run of await this.store.list("run"))
           if ((run.goal_id === goalId || run.id === goal.current_run_id) && !final.has(run.status))
             await this.cancel(run.id);
       }
       if (state === "active")
-        for (const routine of await this.store.list("routine"))
-          if (routine.goal_id === goalId && routine.paused_by_goal && routine.state === "paused")
+        for (const routine of routines)
+          if (routine.paused_by_goal && routine.state === "paused")
             await this.update(routine, {
               state: "active",
               paused_by_goal: false,
               generation: routine.generation + 1,
+              ...loopControlFields(routine, "active"),
             });
       return result;
     });

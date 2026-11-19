@@ -44,7 +44,7 @@ const guidance: Record<string, string> = {
   MODEL_UNAVAILABLE: "Choose an available model to get started.",
   LOGIN_REQUIRED: "Sign in to get started.",
   AUTH_REQUIRED: "Connect your account to get started.",
-  AUTH_REJECTED: "Your connection needs attention.",
+  AUTH_REJECTED: "The provider rejected your credentials. Reconnect this account in settings.",
   CREDENTIAL_MISSING: "Add your key in connection settings.",
   EXECUTABLE_MISSING: "Check your connection in settings.",
   VERSION_TOO_OLD: "Update your connected app to continue.",

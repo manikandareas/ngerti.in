@@ -7,6 +7,7 @@ import type { Goal } from "@/types/work";
 import type { Snapshot } from "@/types/workspace";
 import { NativeProgressDetails } from "./native-progress-details";
 import { PanelHelp } from "./panel-help";
+import { WorkspaceProject } from "./workspace-project";
 
 const goalStates: Goal["state"][] = ["active", "paused", "completed", "stopped"];
 const rowClassName =
@@ -16,10 +17,12 @@ export function DetailOverview({
   snapshot,
   open,
   compose,
+  refresh,
 }: {
   snapshot: Snapshot;
   open: (section: "goals" | "routine", id: string) => void;
   compose: (text: string) => void;
+  refresh: () => Promise<unknown>;
 }) {
   const routines = [...snapshot.routines].sort(
     (a, b) => Number(b.state === "active") - Number(a.state === "active"),
@@ -33,6 +36,7 @@ export function DetailOverview({
         agentName={progressAgent?.name ?? "Agent"}
         compose={snapshot.thread.type === "dm" ? compose : undefined}
       />
+      <WorkspaceProject key={snapshot.thread.id} snapshot={snapshot} refresh={refresh} />
       <section aria-label="Goals">
         <div className="mb-3 flex items-center justify-between gap-2">
           <h3 className="text-[16px] font-semibold">Goals</h3>

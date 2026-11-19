@@ -59,8 +59,14 @@ const durablePaths = new Set([
   "/v1/setup",
   "/v1/creation/agents",
   "/v1/creation/groups",
+  "/v1/profiles/import",
+  "/v1/threads/:id/clone-profile",
+  "/v1/threads/:id/output-plugins",
   "/v1/threads/:id/opening/retry",
   "/v1/groups/:id/configuration",
+  "/v1/boards/cards",
+  "/v1/boards/cards/:id/start",
+  "/v1/boards/cards/:id/resume",
   "/v1/connections",
   "/v1/connections/api-key",
   "/v1/connections/native-configuration",
@@ -70,13 +76,20 @@ const durablePaths = new Set([
   "/v1/messages/:id/edit",
   "/v1/messages/:id/delete",
   "/v1/learning/memories/write",
+  "/v1/learning/external-memory",
+  "/v1/learning/reviews/:id/stop",
   "/v1/learning/memories/delete",
   "/v1/learning/skills/create",
   "/v1/learning/skills/revise",
   "/v1/learning/skills/assign",
+  "/v1/learning/skills/install",
+  "/v1/learning/skills/review-library",
+  "/v1/learning/skills/maintenance",
+  "/v1/learning/skills/consolidate",
   "/v1/agents",
   "/v1/agents/:id/configuration",
   "/v1/agents/:id/dm",
+  "/v1/threads/:id/new-dm",
   "/v1/groups/:id/membership",
   "/v1/groups/:id/messages",
   "/v1/groups/:id/routes/:routeId/retry",
@@ -88,9 +101,12 @@ const durablePaths = new Set([
   "/v1/goals/:id/progress",
   "/v1/routines/write",
   "/v1/routines/:id/control",
+  "/v1/routines/:id/delivery",
+  "/v1/routines/:id/run-now",
   "/v1/goals",
   "/v1/routines",
   "/v1/workspaces",
+  "/v1/workspaces/:id/project-directory",
   "/v1/workspaces/:id/revoke",
   "/v1/workspaces/:id/uploads",
   "/v1/artifacts/:id/share",
@@ -149,6 +165,7 @@ function routeAuthentication(path: string) {
   if (path.startsWith("/v1/machine/viewer/"))
     return "scoped_viewer_ticket_and_issuing_user_session";
   if (path === "/v1/harness/tools") return "run_lease";
+  if (path.startsWith("/v1/channels/")) return "configured_channel_bearer";
   return "user_session_or_oauth_access_token";
 }
 
@@ -157,10 +174,13 @@ export function httpContract(routes: readonly Route[]) {
   return routes.map(({ method, path, hooks }) => {
     const mcp = path === "/v1/harness/tools";
     const viewer = path.startsWith("/v1/machine/viewer/");
+    const channelEvent = path === "/v1/channels/:channel/events";
+    const channelArtifact = path === "/v1/channels/:channel/exchanges/:id/artifacts/:artifactId";
     const organizationCommand = isOrganizationPath(path) && !path.endsWith("/send");
     if (
       method === "POST" &&
       !mcp &&
+      !channelEvent &&
       !durablePaths.has(path) &&
       !operationPaths.has(path) &&
       !path.startsWith("/v1/auth/") &&
@@ -176,14 +196,16 @@ export function httpContract(routes: readonly Route[]) {
         method === "POST" &&
         (durablePaths.has(path) || organizationCommand || path === "/v1/harnesses/:harness/update")
           ? "required_uuid"
-          : ["/v1/machine/control", "/v1/machine/processes/control"].includes(path)
-            ? "required_body_command_id"
-            : "not_applicable",
+          : channelEvent
+            ? "required_body_event_id"
+            : ["/v1/machine/control", "/v1/machine/processes/control"].includes(path)
+              ? "required_body_command_id"
+              : "not_applicable",
       semantics: mcp
         ? "mcp"
         : method === "GET"
           ? "read"
-          : durablePaths.has(path) || (method === "POST" && organizationCommand)
+          : durablePaths.has(path) || channelEvent || (method === "POST" && organizationCommand)
             ? "durable_command"
             : "operation",
       request: {
@@ -196,7 +218,8 @@ export function httpContract(routes: readonly Route[]) {
           ? "websocket"
           : path === "/v1/events/stream"
             ? "sse"
-            : /^\/v1\/(artifacts\/[^/]+\/content|workspaces\/[^/]+\/file)$/.test(path)
+            : channelArtifact ||
+                /^\/v1\/(artifacts\/[^/]+\/content|workspaces\/[^/]+\/file)$/.test(path)
               ? "bytes"
               : viewer
                 ? "upstream_viewer"

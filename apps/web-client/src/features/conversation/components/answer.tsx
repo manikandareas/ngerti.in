@@ -25,6 +25,7 @@ import { blockDirection } from "@/features/conversation/lib/text-direction";
 import type { Snapshot } from "@/types/workspace";
 import { useStreamingText } from "../lib/use-streaming-text";
 import { ActivityStatus } from "./activity-status";
+import { HistorySourceLink, historySourceFromUrl } from "./history-source";
 import { InlineReferenceChip, useInlineReferences } from "./inline-references";
 import { MessageActions } from "./message-actions";
 import { type ResearchSource, ResearchSources, SourceCitation } from "./research-sources";
@@ -38,7 +39,20 @@ interface AnswerScope {
 const AnswerContext = createContext<AnswerScope>({});
 
 function AnswerLink({ children, href }: { children?: ReactNode; href?: string }) {
-  const { openResource, snapshot, sources } = useContext(AnswerContext);
+  const { agentId, openResource, snapshot, sources } = useContext(AnswerContext);
+  const historySource = historySourceFromUrl(href);
+  const sourceAgent = agentId ?? snapshot?.thread.member_agent_ids[0];
+  if (historySource)
+    return snapshot && sourceAgent ? (
+      <HistorySourceLink
+        context={{ thread_id: snapshot.thread.id, agent_id: sourceAgent }}
+        source={historySource}
+      >
+        {children}
+      </HistorySourceLink>
+    ) : (
+      <span>{children}</span>
+    );
   const reference = href ? referenceFromUrl(href, plainMarkdown(children)) : null;
   if (reference?.kind === "file") {
     const file = snapshot?.artifacts.find((file) => file.id === reference.id);
@@ -167,7 +181,9 @@ const MarkdownText = memo(
       >
         <Markdown
           remarkPlugins={plugins}
-          urlTransform={(url) => (referenceFromUrl(url, "") ? url : defaultUrlTransform(url))}
+          urlTransform={(url) =>
+            referenceFromUrl(url, "") || historySourceFromUrl(url) ? url : defaultUrlTransform(url)
+          }
           skipHtml
           components={renderers}
         >

@@ -20,10 +20,16 @@ export function routineSchedule(routine: Routine): string {
     const days = schedule.weekdays.map((day) => weekdays[day]);
     return `${days.length === 7 ? "Every day" : days.join(", ")} · ${schedule.local_time} · ${routine.timezone}`;
   }
+  const selfPaced = schedule.type === "loop" && schedule.self_paced;
+  const delay = selfPaced
+    ? (routine.loop_pacing?.delay_ms ?? schedule.every_ms)
+    : schedule.every_ms;
   const [divisor, unit] =
-    intervalUnits.find(
-      ([value]) => schedule.every_ms >= value && schedule.every_ms % value === 0,
-    ) ?? intervalUnits[3];
-  const count = schedule.every_ms / divisor;
-  return `Every ${count} ${unit}${count === 1 ? "" : "s"}`;
+    intervalUnits.find(([value]) => delay >= value && delay % value === 0) ?? intervalUnits[3];
+  const count = delay / divisor;
+  const interval = `${count} ${unit}${count === 1 ? "" : "s"}`;
+  if (selfPaced) return `Self-paced session loop · Current delay ${interval}`;
+  return schedule.type === "loop"
+    ? `Session loop · ${interval} after each check finishes`
+    : `Every ${interval}`;
 }

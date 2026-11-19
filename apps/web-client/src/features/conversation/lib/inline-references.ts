@@ -38,12 +38,13 @@ export function referenceFromUrl(url: string, label: string): InlineReference | 
       return null;
     if (parsed.search === "" && parsed.hostname === "user" && parsed.pathname === "/owner")
       return { kind: "user", id: "owner", label: "@user" };
+    const kind = parsed.hostname === "artifact" ? "file" : parsed.hostname;
     if (
       parsed.search === "" &&
-      ["agent", "file"].includes(parsed.hostname) &&
+      (kind === "agent" || kind === "file") &&
       /^\/[\w-]+$/.test(parsed.pathname)
     )
-      return { kind: parsed.hostname as "agent" | "file", id: parsed.pathname.slice(1), label };
+      return { kind, id: parsed.pathname.slice(1), label };
     const match = /^\/(application|harness|native)\/([^/]+)$/.exec(parsed.pathname);
     const agentId = parsed.searchParams.get("agent");
     const version = parsed.searchParams.get("version");

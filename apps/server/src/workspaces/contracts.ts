@@ -22,6 +22,7 @@ export const workspaceInput = z.strictObject({
 });
 export const workspaceFields = {
   ...workspaceInput.shape,
+  project_directory: relativePath.nullable().optional(),
   scope: z.enum(["agent", "group"]).default("agent"),
   state: z.enum(["active", "revoked"]),
   root_device: z.string().nullable(),
@@ -29,6 +30,10 @@ export const workspaceFields = {
   machine_id: id.nullable().default(null),
   machine_root: z.string().nullable().default(null),
 };
+export const workspaceProjectInput = z.strictObject({
+  expected_revision: z.int().positive(),
+  directory: relativePath.max(990).nullable(),
+});
 export const uploadInput = z.strictObject({
   name: z
     .string()

@@ -101,10 +101,11 @@ async function setup(root?: string, commands = true, nativeEvents = false, reusa
     scope: Object.freeze({ run_id: crypto.randomUUID() }),
     revoke() {},
   } as ToolLease;
-  const prompt = (identity: { native_session_id: string }, text: string) =>
+  const prompt = (identity: { native_session_id: string }, text: string, learning?: string) =>
     opened.prompt({
       identity,
       text,
+      learning_context: learning,
       run_id: lease.scope.run_id,
       settings: { model_id: "model-b", reasoning: "low" },
       tools: lease,
@@ -211,6 +212,18 @@ test("reload suppresses historical output and receives a fresh MCP token and pro
   expect(next.events).toEqual([]);
   expect((await next.prompt(identity, "tool")).status).toBe("succeeded");
   expect(JSON.stringify(next.events)).not.toContain("REPLAY");
+});
+
+test("resumed ACP context commands wait for discovery and send the command without model context", async () => {
+  const first = await setup();
+  const identity = await first.session.open();
+  await first.session.close();
+  const next = await setup(first.directory);
+  await next.session.open(identity);
+  expect(
+    (await next.prompt(identity, "/compact", "Private context meant for a regular turn")).status,
+  ).toBe("succeeded");
+  expect(next.events.at(-1)).toEqual({ type: "text_snapshot", text: "Hello world" });
 });
 
 test("cancel sends intent and waits for a native cancelled prompt response", async () => {

@@ -1,5 +1,6 @@
 import { Elysia } from "elysia";
 import { z } from "zod";
+import { routeAccess } from "../api-access";
 import { isAuthenticationRoute, isPublicAuthenticationRoute } from "../auth/http";
 import type { Authentication } from "../auth/service";
 import { DomainError, id } from "../contracts";
@@ -19,7 +20,7 @@ export function createCommand(lifecycle: Lifecycle, authentication: Authenticati
       action,
       () =>
         lifecycle.store.dataContext
-          ? lifecycle.store.dataContext.validate()
+          ? lifecycle.store.validateDataContext()
           : authentication.assertOwner(request),
     );
   };
@@ -97,12 +98,13 @@ export function createHttp(
         return;
       }
       if (isPublicAuthenticationRoute(request)) return;
+      if (routeAccess(new URL(request.url).pathname).authentication_class === "channel_key") return;
+      if (scoped.requests.has(request)) return;
       await authentication.authenticate(request);
       if (
         !isAuthenticationRoute(request) &&
         new URL(request.url).pathname !== "/v1/contracts" &&
-        !isOrganizationPath(new URL(request.url).pathname) &&
-        !scoped.requests.has(request)
+        !isOrganizationPath(new URL(request.url).pathname)
       )
         await authentication.assertOwner(request);
       return;

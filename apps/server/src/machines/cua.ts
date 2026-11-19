@@ -133,10 +133,10 @@ export class MachineFiles {
     }
     return entry;
   }
-  async read(relative: string): Promise<Buffer<ArrayBuffer>> {
+  async read(relative: string, maxBytes = MAX_FILE_BYTES): Promise<Buffer<ArrayBuffer>> {
     const path = this.path(relative);
     const before = await this.inspect(relative);
-    if (before?.kind !== "file" || before.size > BigInt(MAX_FILE_BYTES))
+    if (before?.kind !== "file" || before.size > BigInt(maxBytes))
       throw new DomainError("SCOPE_DENIED", 403);
     const client = await this.machine.client();
     const download = await client.openDownload(path, 65_536, undefined);
@@ -147,7 +147,7 @@ export class MachineFiles {
         const chunk = await download.nextChunk({ signal: AbortSignal.timeout(20_000) });
         if (!chunk) break;
         size += chunk.byteLength;
-        if (size > MAX_FILE_BYTES) throw new DomainError("INVALID_REQUEST", 413);
+        if (size > maxBytes) throw new DomainError("INVALID_REQUEST", 413);
         chunks.push(Buffer.from(chunk));
       }
     } finally {
@@ -185,7 +185,8 @@ export class MachineFiles {
     if (sha256(await this.read(relative)) !== sha256(bytes)) throw new DomainError("CONFLICT");
   }
   async list(relative: string, after = "", limit = 200) {
-    await this.inspect(relative);
+    if ((await this.inspect(relative))?.kind !== "directory")
+      throw new DomainError("INVALID_REQUEST", 422);
     const client = await this.machine.client();
     const root = relative ? this.path(relative) : this.machine.configuration.root;
     const entries = (await client.listDir(root, 1, undefined, undefined))

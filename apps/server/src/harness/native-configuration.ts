@@ -16,7 +16,12 @@ export const piProviderConfiguration = z.strictObject({
         id: z.string().min(1).max(200),
         name: z.string().max(200).optional(),
         reasoning: z.boolean().optional(),
-        input: z.array(z.literal("text")).min(1).max(1).optional(),
+        input: z
+          .array(z.enum(["text", "image"]))
+          .min(1)
+          .max(2)
+          .refine((input) => input.includes("text") && new Set(input).size === input.length)
+          .optional(),
         contextWindow: z.int().positive().max(16_777_216).optional(),
         maxTokens: z.int().positive().max(1_048_576).optional(),
       }),

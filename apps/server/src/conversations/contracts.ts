@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { base, id } from "../contracts/base";
+import { outputPluginSelection } from "../integrations/output-plugin-contracts";
 
 export const threadInput = z
   .strictObject({
@@ -16,10 +17,12 @@ export const thread = threadInput.safeExtend({
   ...base,
   kind: z.literal("thread"),
   purpose: z.enum(["conversation", "routing"]).default("conversation"),
+  additional_dm: z.boolean().default(false),
   group_thread_id: id.nullable().default(null),
   name: z.string().trim().min(1).max(200).nullable().default(null),
   shared_instructions: z.string().max(100_000).default(""),
   creation_operation_id: id.nullable().default(null),
+  output_plugin: outputPluginSelection.nullable().optional(),
 });
 export const message = z
   .strictObject({

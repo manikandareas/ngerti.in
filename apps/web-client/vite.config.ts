@@ -17,6 +17,13 @@ const apiProxy: ProxyOptions = {
     });
   },
 };
+const proxy = {
+  // The media upgrade must preserve the browser's Origin for the API's viewer authorization.
+  "^/v1/machine/viewer/[a-f0-9]{64}/media(?:\\?|$)": { target, ws: true },
+  "/v1": apiProxy,
+  "/health": apiProxy,
+  "/api/auth": apiProxy,
+};
 const localApiGuard: Plugin = {
   name: "local-api-origin",
   configureServer(server) {
@@ -53,8 +60,8 @@ export default defineConfig(({ mode }) => ({
       babel({ presets: [reactCompilerPreset({ compilationMode: "annotation" })] }),
     tailwindcss(),
   ],
-  server: { proxy: { "/v1": apiProxy, "/health": apiProxy, "/api/auth": apiProxy } },
-  preview: { proxy: { "/v1": apiProxy, "/health": apiProxy, "/api/auth": apiProxy } },
+  server: { proxy },
+  preview: { proxy },
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),

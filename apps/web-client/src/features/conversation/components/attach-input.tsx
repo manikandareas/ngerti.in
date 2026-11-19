@@ -8,6 +8,7 @@ export function attachmentIssue(
   mediaType: string,
   connection?: Connection,
   modelId?: string | null,
+  mediaOperations: readonly string[] = [],
 ) {
   const kind = mediaType.startsWith("image/")
     ? "image"
@@ -15,11 +16,16 @@ export function attachmentIssue(
       ? "video"
       : null;
   if (!kind) return null;
-  if (kind === "video") return "Input video belum didukung oleh harness yang tersedia.";
+  if (kind === "video") {
+    if (!mediaOperations.includes("inspect_video"))
+      return "Analisis video belum tersedia di percakapan ini.";
+    return mediaType === "video/mp4" ? null : "Gunakan video MP4.";
+  }
   if (
-    connection?.state !== "active" ||
-    connection.capabilities.image_input !== "supported" ||
-    !connection.models.find((m) => m.id === modelId)?.input_modalities?.includes("image")
+    !mediaOperations.includes("inspect_image") &&
+    (connection?.state !== "active" ||
+      connection.capabilities.image_input !== "supported" ||
+      !connection.models.find((m) => m.id === modelId)?.input_modalities?.includes("image"))
   )
     return "Input gambar belum didukung oleh koneksi dan model yang dipilih.";
   if (!["image/png", "image/jpeg", "image/webp"].includes(mediaType))

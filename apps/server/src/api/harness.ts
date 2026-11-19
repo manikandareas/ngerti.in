@@ -13,6 +13,7 @@ import {
 } from "../harness/contracts";
 import { piProviderConfiguration } from "../harness/native-configuration";
 import { selectionInput } from "../harness/selection-contracts";
+import { productToolTimeoutMs } from "../harness/tool-results";
 import type { ApiServices, Command } from "./services";
 
 export function registerHarnessRoutes(api: Elysia, services: ApiServices, command: Command) {
@@ -303,7 +304,8 @@ export function registerHarnessRoutes(api: Elysia, services: ApiServices, comman
       },
       { params: z.object({ id }), body: z.strictObject({ agent_id: id }) },
     )
-    .post("/v1/harness/tools", async ({ request, body }) => {
+    .post("/v1/harness/tools", async ({ request, body, server }) => {
+      server?.timeout(request, productToolTimeoutMs / 1000);
       const result = await services.tools.rpc(
         (request.headers.get("Authorization") ?? "").replace(/^Bearer /, ""),
         body,

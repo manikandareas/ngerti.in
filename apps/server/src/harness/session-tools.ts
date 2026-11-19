@@ -2,8 +2,12 @@ import { timingSafeEqual } from "node:crypto";
 import { z } from "zod";
 import type { ToolLease } from "./client";
 import { HarnessError } from "./contracts";
-import { productToolCatalog, productToolNames } from "./product-tool-contracts";
-import { toolContentBlock } from "./tool-results";
+import {
+  type ProductToolDefinition,
+  productToolCatalog,
+  productToolNames,
+} from "./product-tool-contracts";
+import { productToolTimeoutMs, toolContentBlock } from "./tool-results";
 
 export type ActiveToolLease = {
   lease: ToolLease;
@@ -35,12 +39,13 @@ export class SessionTools {
     private readonly enabled = true,
     private readonly machine = false,
     private readonly reusable = false,
+    private readonly catalog?: readonly ProductToolDefinition[],
   ) {
     this.server = Bun.serve({
       hostname: "127.0.0.1",
       port: 0,
       maxRequestBodySize: 1_048_576,
-      fetch: async (request) => {
+      fetch: async (request, server) => {
         const expected = Buffer.from(`Bearer ${this.token}`);
         const supplied = Buffer.from(request.headers.get("Authorization") ?? "");
         const origin = request.headers.get("Origin");
@@ -73,11 +78,14 @@ export class SessionTools {
             };
           else if (frame.method === "tools/list")
             result = {
-              tools: this.enabled ? productToolCatalog(this.machine ? "machine" : "browser") : [],
+              tools: this.enabled
+                ? (this.catalog ?? productToolCatalog(this.machine ? "machine" : "browser"))
+                : [],
             };
-          else if (frame.method === "tools/call")
+          else if (frame.method === "tools/call") {
+            server.timeout(request, productToolTimeoutMs / 1000 + 5);
             result = await this.call(toolCall.parse(frame.params));
-          else
+          } else
             return Response.json({
               jsonrpc: "2.0",
               id,
@@ -152,7 +160,7 @@ export class SessionTools {
   }
   private async call(params: z.infer<typeof toolCall>) {
     const active = this.active;
-    if (!active) throw new HarnessError("NATIVE_REJECTED");
+    if (!this.enabled || !active) throw new HarnessError("NATIVE_REJECTED");
     active.validateCall?.(params._meta);
     await active.beforeCall?.();
     const check = () => {
@@ -175,7 +183,7 @@ export class SessionTools {
           method,
           params,
         }),
-        signal: AbortSignal.any([active.signal, AbortSignal.timeout(30_000)]),
+        signal: AbortSignal.any([active.signal, AbortSignal.timeout(productToolTimeoutMs)]),
       });
       if (!response.ok) throw new HarnessError("NATIVE_REJECTED");
       check();

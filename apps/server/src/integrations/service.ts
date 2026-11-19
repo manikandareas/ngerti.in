@@ -6,16 +6,29 @@ import type { Lifecycle } from "../lifecycle";
 import { canonical } from "../store";
 import { appAssignment, appExecute, appSearch, toolkitSlug } from "./contracts";
 import { type AppHost, ComposioHost } from "./host";
+import { McpHost } from "./mcp-host";
 import { appOutput } from "./output";
 
 type Scope = { agent_id: string; thread_id: string | null };
+function grantFor(connection: Entity<"app_connection">, scope: Scope) {
+  return connection.grants.find(
+    (grant) =>
+      grant.agent_id === scope.agent_id &&
+      (grant.thread_id === null || grant.thread_id === scope.thread_id),
+  );
+}
+
 export class Applications {
   readonly #opening = new Map<string, Promise<Entity<"app_session">>>();
   readonly #busy = new Set<string>();
   private constructor(
     readonly lifecycle: Lifecycle,
     readonly host: AppHost = new ComposioHost(),
+    private readonly mcp = new McpHost([]),
   ) {}
+  private connector(toolkit: string) {
+    return toolkit.startsWith("mcp_") ? this.mcp : this.host;
+  }
   private base() {
     const now = new Date().toISOString();
     return {
@@ -90,11 +103,22 @@ export class Applications {
       throw new DomainError("APP_AUTH_REQUIRED", 403);
     return connection.integration_identity ?? this.lifecycle.store.ownerId;
   }
+  private connectionInScope(connection: Entity<"app_connection">) {
+    const context = this.lifecycle.store.dataContext;
+    return (
+      !context ||
+      (connection.integration_identity === this.identity(connection.ownership) &&
+        (connection.ownership === "personal" ||
+          context.allowedAppConnections?.includes(connection.id)))
+    );
+  }
   private async checkAccount(
     connection: Entity<"app_connection">,
     authorize: () => void | Promise<void> = () => {},
   ) {
-    const accounts = await this.host.accounts(this.remoteIdentity(connection));
+    const accounts = await this.connector(connection.toolkit).accounts(
+      this.remoteIdentity(connection),
+    );
     await authorize();
     const current = await this.lifecycle.store.get("app_connection", connection.id);
     if (current.generation !== connection.generation || current.state !== "active")
@@ -118,17 +142,32 @@ export class Applications {
   async list(scope?: Scope) {
     if (scope) await this.scope(scope);
     return (await this.lifecycle.store.list("app_connection")).filter(
-      (c) =>
-        !scope ||
-        c.grants.some(
-          (g) =>
-            g.agent_id === scope.agent_id &&
-            (g.thread_id === null || g.thread_id === scope.thread_id),
-        ),
+      (connection) => !scope || (this.connectionInScope(connection) && grantFor(connection, scope)),
     );
   }
-  catalog(query: string, cursor?: string) {
-    return this.host.catalog(this.identity("personal"), query, cursor);
+  async hasEnabledTools(scope: Scope) {
+    return (await this.list(scope)).some(
+      (connection) =>
+        connection.state === "active" && (grantFor(connection, scope)?.tools.length ?? 0) > 0,
+    );
+  }
+  async catalog(query: string, cursor?: string) {
+    const identity = this.identity("personal");
+    if (!this.mcp.configured || cursor) return await this.host.catalog(identity, query, cursor);
+    const local = await this.mcp.catalog(identity, query);
+    try {
+      const remote = await this.host.catalog(identity, query);
+      return {
+        ...remote,
+        items: [...local.items, ...remote.items.filter((item) => !item.slug.startsWith("mcp_"))],
+      };
+    } catch (error) {
+      if (!(error instanceof DomainError) || error.code !== "APP_UNAVAILABLE") throw error;
+      return local;
+    }
+  }
+  managedCatalog() {
+    return this.mcp.catalog(this.identity("personal"), "");
   }
   async connect(
     toolkit: string,
@@ -152,13 +191,14 @@ export class Applications {
       await context.validateAudience?.(audienceId);
     } else if (audienceId) throw new DomainError("SCOPE_DENIED", 403);
     const identity = this.identity(ownership);
-    const link = await this.host.connect(identity, toolkit);
+    const link = await this.connector(toolkit).connect(identity, toolkit);
+    const state = link.connect_url === null ? "active" : "pending";
     await context?.validate();
     const save = async () =>
       previous
         ? await this.update(previous, {
             account_id: link.account_id,
-            state: "pending",
+            state,
             generation: previous.generation + 1,
             initiated_by: context?.userId ?? null,
             integration_identity: context ? identity : null,
@@ -172,7 +212,7 @@ export class Applications {
             integration_identity: context ? identity : null,
             initiated_by: context?.userId ?? null,
             account_id: link.account_id,
-            state: "pending",
+            state,
             generation: 1,
             grants: [],
           });
@@ -190,7 +230,9 @@ export class Applications {
     if (context && connection.state !== "active" && connection.initiated_by !== context.userId)
       throw new DomainError("SCOPE_DENIED", 403);
     if (connection.state === "revoked") throw new DomainError("SCOPE_DENIED", 403);
-    const accounts = await this.host.accounts(this.remoteIdentity(connection));
+    const accounts = await this.connector(connection.toolkit).accounts(
+      this.remoteIdentity(connection),
+    );
     await this.manage(connection);
     const current = await this.lifecycle.store.get("app_connection", id);
     if (current.revision !== connection.revision) throw new DomainError("STALE_DISPATCH");
@@ -210,6 +252,8 @@ export class Applications {
     if (connection.revision !== data.expected_revision) throw new DomainError("CONFLICT");
     for (const grant of data.grants) {
       await this.scope(grant);
+      if (grant.action_budget && !connection.toolkit.startsWith("mcp_"))
+        throw new DomainError("INVALID_REQUEST", 422);
       if (
         this.lifecycle.store.dataContext &&
         connection.ownership === "organization" &&
@@ -235,13 +279,7 @@ export class Applications {
     await this.scope(scope);
     await this.lifecycle.store.dataContext?.validate(true);
     const connection = await this.lifecycle.store.get("app_connection", id);
-    const context = this.lifecycle.store.dataContext;
-    if (
-      context &&
-      (connection.integration_identity !== this.identity(connection.ownership) ||
-        (connection.ownership === "organization" && !context.allowedAppConnections?.includes(id)))
-    )
-      throw new DomainError("SCOPE_DENIED", 403);
+    if (!this.connectionInScope(connection)) throw new DomainError("SCOPE_DENIED", 403);
     if (connection.state !== "active")
       throw new DomainError(
         connection.state === "revoked" ? "SCOPE_DENIED" : "APP_AUTH_REQUIRED",
@@ -249,10 +287,7 @@ export class Applications {
       );
     if (generation !== undefined && connection.generation !== generation)
       throw new DomainError("STALE_DISPATCH");
-    const grant = connection.grants.find(
-      (g) =>
-        g.agent_id === scope.agent_id && (g.thread_id === null || g.thread_id === scope.thread_id),
-    );
+    const grant = grantFor(connection, scope);
     if (!grant || (tool && !grant.tools.includes(tool))) throw new DomainError("SCOPE_DENIED", 403);
     return { connection, grant };
   }
@@ -271,11 +306,14 @@ export class Applications {
     const pending = this.#opening.get(key);
     if (pending) return pending;
     const opening = (async () => {
-      const native = await this.host.session(this.remoteIdentity(connection), {
-        toolkit: connection.toolkit,
-        account_id: connection.account_id,
-        tools: grant.tools,
-      });
+      const native = await this.connector(connection.toolkit).session(
+        this.remoteIdentity(connection),
+        {
+          toolkit: connection.toolkit,
+          account_id: connection.account_id,
+          tools: grant.tools,
+        },
+      );
       await this.authorized(id, scope, connection.generation);
       return await this.lifecycle.store.put({
         ...this.base(),
@@ -298,20 +336,23 @@ export class Applications {
   async search(input: unknown, scope?: Scope, authorize = () => {}) {
     const data = appSearch.parse(input);
     await authorize();
-    const connection = await this.lifecycle.store.get("app_connection", data.connection_id);
+    const connection = scope
+      ? (await this.authorized(data.connection_id, scope)).connection
+      : await this.lifecycle.store.get("app_connection", data.connection_id);
     if (!scope) await this.manage(connection);
     if (connection.state !== "active") throw new DomainError("APP_AUTH_REQUIRED");
+    const host = this.connector(connection.toolkit);
     await this.checkAccount(connection, authorize);
     const session = scope
       ? await this.session(connection.id, scope)
       : {
-          native_session_id: await this.host.session(this.remoteIdentity(connection), {
+          native_session_id: await host.session(this.remoteIdentity(connection), {
             toolkit: connection.toolkit,
             account_id: connection.account_id,
           }),
         };
     await authorize();
-    const tools = await this.host.search(session.native_session_id, data.query, {
+    const tools = await host.search(session.native_session_id, data.query, {
       user: this.remoteIdentity(connection),
       account: connection.account_id,
     });
@@ -329,7 +370,9 @@ export class Applications {
         (t) =>
           t.toolkit === connection.toolkit &&
           !t.slug.startsWith("COMPOSIO_") &&
-          (!grant || grant.tools.includes(t.slug)),
+          (!grant ||
+            (grant.tools.includes(t.slug) &&
+              (t.action_policy?.mutability !== "write" || grant.action_budget?.allow_writes))),
       ),
     );
   }
@@ -382,14 +425,18 @@ export class Applications {
         await this.authorized(connection.id, access.scope, connection.generation, data.tool);
       };
       await this.checkAccount(connection, authorize);
-      const result = await this.host.execute(
+      const result = await this.connector(connection.toolkit).execute(
         session.native_session_id,
         connection.account_id,
         data.tool,
         data.arguments,
-        async () => {
-          await authorize();
+        async (policy) => {
           effect = await this.lifecycle.store.transaction(async () => {
+            await authorize();
+            if (connection.toolkit.startsWith("mcp_") && !policy)
+              throw new DomainError("APP_UNAVAILABLE");
+            if (policy?.mutability === "write" && !grant.action_budget?.allow_writes)
+              throw new DomainError("SCOPE_DENIED", 403);
             const reserved = await this.lifecycle.store.query(
               "INSERT INTO app_account_holds(owner_id,account_id,effect_id,organization_id,actor_id) VALUES($1,$2,$3,$4,$5) ON CONFLICT DO NOTHING RETURNING effect_id",
               [
@@ -401,6 +448,19 @@ export class Applications {
               ],
             );
             if (!reserved.rowCount) throw new DomainError("RECONCILIATION_REQUIRED");
+            if (policy && policy.units > 0) {
+              const spent = await this.lifecycle.store.query<{ units: string }>(
+                `SELECT COALESCE(SUM((body->>'budget_units')::integer),0) AS units
+                 FROM entities WHERE kind='app_effect' AND body->>'account_id'=$1
+                   AND body->>'agent_id'=$2 AND ($3::text IS NULL OR body->>'thread_id'=$3)`,
+                [connection.account_id, grant.agent_id, grant.thread_id],
+              );
+              if (
+                Number(spent.rows[0]?.units ?? 0) + policy.units >
+                (grant.action_budget?.limit_units ?? 0)
+              )
+                throw new DomainError("APP_BUDGET_EXCEEDED");
+            }
             return this.lifecycle.store.put({
               ...this.base(),
               id: data.command_id,
@@ -414,6 +474,7 @@ export class Applications {
               tool: data.tool,
               fingerprint,
               state: "dispatched",
+              ...(policy ? { budget_units: policy.units } : {}),
               log_id: null,
               request_id: null,
               sdk_error: null,
@@ -466,8 +527,9 @@ export class Applications {
   static async open(
     lifecycle: Lifecycle,
     host: AppHost = new ComposioHost(),
+    mcp?: McpHost,
   ): Promise<Applications> {
-    const instance = new Applications(lifecycle, host);
+    const instance = new Applications(lifecycle, host, mcp);
     await instance.initialize(lifecycle);
     return instance;
   }

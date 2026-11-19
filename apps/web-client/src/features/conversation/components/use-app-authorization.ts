@@ -125,7 +125,7 @@ export function useAppAuthorization(refresh: () => void) {
     ownership: "personal" | "organization" = "personal",
   ) {
     if (inFlight.current) return;
-    const reserved = reservePage();
+    const reserved = toolkit.startsWith("mcp_") ? null : reservePage();
     launch.current = reserved;
     inFlight.current = true;
     setBusy(true);
@@ -145,11 +145,19 @@ export function useAppAuthorization(refresh: () => void) {
         audienceId = audience.audience.id;
       }
       assertScope(scope);
-      const value = await request<{ connection: AppConnection; connect_url: string }>(
+      const value = await request<{ connection: AppConnection; connect_url: string | null }>(
         id ? `/v1/apps/connections/${id}/reconnect` : "/v1/apps/connect",
         id ? {} : { toolkit, ownership, audience_id: audienceId },
       );
       if (!mounted.current) return;
+      if (value.connect_url === null && value.connection.state === "active") {
+        setVerified(value.connection);
+        setLink(null);
+        setNotice(`${name} installed. Choose the actions your agent can use.`);
+        refreshRef.current();
+        return;
+      }
+      if (!reserved || !value.connect_url) throw new Error("The connector could not be verified.");
       const url = new URL(value.connect_url);
       if (url.protocol !== "https:" || url.username || url.password)
         throw new Error("The authorization link is invalid. Try installing again.");
@@ -170,7 +178,7 @@ export function useAppAuthorization(refresh: () => void) {
         refreshRef.current();
       }
     } finally {
-      reserved.cancel();
+      reserved?.cancel();
       if (launch.current === reserved) launch.current = null;
       inFlight.current = false;
       if (mounted.current) setBusy(false);

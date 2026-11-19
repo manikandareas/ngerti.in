@@ -312,6 +312,16 @@ export const ConversationTranscript = memo(function ConversationTranscript({
     const previous = rows[index - 1];
     const next = rows[index + 1];
     const run = snapshot.runs.findLast((run) => run.input_message_id === message.id);
+    const channel =
+      row.last && run
+        ? snapshot.channel_exchanges?.find((exchange) => exchange.run_id === run.id)
+        : null;
+    const formatterFailure =
+      message.author === "agent" && row.last
+        ? snapshot.runs.find(
+            (entry) => entry.id === message.run_id && entry.output_plugin_status === "failed",
+          )?.output_plugin
+        : null;
     const author = publishedAuthor(message);
     const inlineAttachmentIds = new Set(
       message.author === "user"
@@ -395,6 +405,11 @@ export const ConversationTranscript = memo(function ConversationTranscript({
             ) : (
               answer(message, row.text, row.at, row.last)
             )}
+            {formatterFailure && (
+              <p className="text-xs text-muted-foreground">
+                {formatterFailure.name} could not format this reply. The original reply is shown.
+              </p>
+            )}
             {row.last && (
               <MessageAttachments
                 ids={message.artifact_ids.filter((id) => !inlineAttachmentIds.has(id))}
@@ -422,6 +437,22 @@ export const ConversationTranscript = memo(function ConversationTranscript({
                 ))}
           </MessageContent>
         </Message>
+        {channel && (
+          <p className="self-end text-xs text-muted-foreground">
+            {channel.channel_label} ·{" "}
+            {
+              {
+                pending: "Waiting for reply",
+                sending: "Sending reply",
+                retrying: "Delivery will retry",
+                delivered: "Reply delivered",
+                failed: "Delivery failed",
+                unknown: "Delivery unconfirmed",
+                cancelled: "Delivery cancelled",
+              }[channel.state]
+            }
+          </p>
+        )}
         {row.last && (
           <WorkActivity
             message={message}

@@ -184,7 +184,8 @@ export async function profileLaunch(
     ]);
     context.env.CODEX_CONFIG = JSON.stringify({
       project_doc_max_bytes: 0,
-      web_search: context.purpose === "routing" ? "disabled" : "live",
+      web_search:
+        context.purpose === "routing" || context.purpose === "review" ? "disabled" : "live",
     });
     context.env.NO_BROWSER = "1";
   } else if (harness === "claude") {
@@ -268,15 +269,20 @@ export async function profileLaunch(
       if (!native) throw new HarnessError("EXECUTABLE_MISSING");
       context.env.PI_ACP_PI_COMMAND = native;
       const packageDirectory = nativePiDirectory(native);
+      if (context.purpose === "review") context.env.NGERTIIN_PI_NO_MCP = "1";
       context.env.NGERTIIN_PI_STARTUP_ARGS = JSON.stringify([
         "--no-extensions",
-        "-e",
-        join(packageDirectory, "dist/extensions/mcp/index.js"),
         "--no-skills",
         "--no-context-files",
         "--no-prompt-templates",
-        "--tools",
-        "mcp__ngertiin__*",
+        ...(context.purpose === "review"
+          ? ["--no-tools"]
+          : [
+              "-e",
+              join(packageDirectory, "dist/extensions/mcp/index.js"),
+              "--tools",
+              "mcp__ngertiin__*",
+            ]),
         "--append-system-prompt",
         instructions,
       ]);

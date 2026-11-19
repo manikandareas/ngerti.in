@@ -13,9 +13,14 @@ export const providerSelection = z.strictObject({
   billing_source: billingSource,
 });
 export type ProviderSelection = z.infer<typeof providerSelection>;
+export const providerUsage = z.strictObject({
+  input_tokens: z.int().nonnegative(),
+  output_tokens: z.int().nonnegative(),
+  total_tokens: z.int().positive(),
+});
 export const selectionInput = z
   .strictObject({
-    scope: z.enum(["conversation", "user", "organization"]),
+    scope: z.enum(["conversation", "user", "organization", "review"]),
     harness,
     thread_id: id.nullable().default(null),
     agent_id: id.nullable().default(null),

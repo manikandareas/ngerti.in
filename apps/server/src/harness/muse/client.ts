@@ -67,8 +67,9 @@ export class MuseClient implements HarnessClient {
     try {
       this.tools = new MuseTools(
         endpoint,
-        context.purpose !== "routing",
+        context.purpose !== "routing" && context.purpose !== "review",
         context.machine !== undefined,
+        context.tool_catalog,
       );
       context.redactor.add(this.tools.token);
     } catch {

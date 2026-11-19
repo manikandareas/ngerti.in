@@ -5,6 +5,7 @@ import { HarnessBroker } from "../src/harness/broker";
 import type { HarnessClient, RecoveryObservation } from "../src/harness/client";
 import { CredentialContexts } from "../src/harness/context";
 import { HarnessError, unknownCapabilities } from "../src/harness/contracts";
+import { RunRecovery } from "../src/harness/recovery";
 import { ProductTools } from "../src/harness/tools";
 import { fixture } from "./helpers";
 
@@ -22,6 +23,37 @@ async function until(predicate: () => boolean | Promise<boolean>) {
   while (!(await predicate()) && Date.now() < deadline) await Bun.sleep(5);
   expect(await predicate()).toBe(true);
 }
+
+test("recovery does not stack scope scans while persistence is slow", async () => {
+  f = await fixture();
+  const started = Promise.withResolvers<void>();
+  const release = Promise.withResolvers<void>();
+  let scans = 0;
+  let active = 0;
+  let peak = 0;
+  f.store.scopeRunner = async () => {
+    scans++;
+    peak = Math.max(peak, ++active);
+    started.resolve();
+    await release.promise;
+    active--;
+  };
+  const recovery = new RunRecovery(f.store, async () => {}, { interval_ms: 5 });
+  const starting = recovery.start();
+  try {
+    await started.promise;
+    await Bun.sleep(45);
+    expect(scans).toBe(1);
+    release.resolve();
+    await starting;
+    await until(() => scans > 1);
+    expect(peak).toBe(1);
+  } finally {
+    recovery.close();
+    release.resolve();
+    await starting;
+  }
+});
 
 async function setup(
   mode: "disconnect" | "silent" = "disconnect",

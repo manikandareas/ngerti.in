@@ -47,7 +47,7 @@ export const settingsNavigation = [
     label: "Data & privacy",
     group: "Personal",
     icon: Shield01Icon,
-    keywords: "draft export reset storage privasi data",
+    keywords: "draft export reset storage external memory provider privasi data",
   },
   {
     id: "organization",

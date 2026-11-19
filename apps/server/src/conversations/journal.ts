@@ -163,9 +163,9 @@ export class ConversationJournal {
         if (!old) kind = entity.kind === "goal" ? "goal_created" : "routine_created";
         else if (
           entity.state !== old.state &&
-          ["completed", "paused", "stopped"].includes(entity.state)
+          (entity.state === "completed" || entity.state === "paused" || entity.state === "stopped")
         )
-          kind = `${entity.kind}_${entity.state}` as ConversationPart["kind"];
+          kind = `${entity.kind}_${entity.state}`;
         else if (entity.state === "active" && old.state === "paused")
           kind = entity.kind === "goal" ? "goal_resumed" : "routine_resumed";
         else if (

@@ -6,10 +6,17 @@ export const appToolSlug = z
   .string()
   .regex(/^[A-Z][A-Z0-9_]{1,200}$/)
   .refine((s) => !s.startsWith("COMPOSIO_"));
+export const appActionPolicy = z.strictObject({
+  mutability: z.enum(["read_only", "write"]),
+  units: z.int().min(0).max(100_000),
+});
 export const appGrant = z.strictObject({
   agent_id: z.uuid(),
   thread_id: z.uuid().nullable().default(null),
   tools: z.array(appToolSlug).max(100),
+  action_budget: z
+    .strictObject({ allow_writes: z.boolean(), limit_units: z.int().min(0).max(100_000) })
+    .optional(),
   resources: z
     .record(
       z.string().regex(/^[a-zA-Z][a-zA-Z0-9_]*(\.[a-zA-Z][a-zA-Z0-9_]*)*$/),
@@ -49,6 +56,7 @@ export const appEffectFields = {
   tool: appToolSlug,
   fingerprint: z.string().length(64),
   state: z.enum(["dispatched", "succeeded", "failed", "unknown"]),
+  budget_units: appActionPolicy.shape.units.optional(),
   log_id: z.string().max(200).nullable(),
   request_id: z.string().max(200).nullable().default(null),
   sdk_error: z.string().max(100).nullable().default(null),

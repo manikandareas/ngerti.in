@@ -3,8 +3,15 @@ import { z } from "zod";
 import type { Entity } from "../../contracts";
 import type { HarnessClient, SessionIdentity } from "../client";
 import type { Redactor } from "../context";
-import { HarnessError, interactionAnswer, NativeSessionMissing, type Settings } from "../contracts";
+import {
+  HarnessError,
+  interactionAnswer,
+  NativeSessionMissing,
+  nativeSessionCommand,
+  type Settings,
+} from "../contracts";
 import { approvalDisplay, type InteractionSnapshot } from "../interaction-contracts";
+import { providerUsage } from "../selection-contracts";
 import type { SessionTools } from "../session-tools";
 import type { AcpConnection } from "./connection";
 import { elicitationForm } from "./elicitation";
@@ -36,6 +43,7 @@ export class AcpSession {
   #session: string | null = null;
   #options: acp.SessionConfigOption[] = [];
   #commands: acp.AvailableCommand[] = [];
+  readonly #commandsReady = Promise.withResolvers<void>();
   readonly #setupCommands = new Map<string, acp.AvailableCommand[]>();
   #active: ActivePrompt | null = null;
   #spent = false;
@@ -68,9 +76,11 @@ export class AcpSession {
       metadata?: Record<string, unknown>;
       instruction_route?: "system_prompt" | "profile";
       unknown_error_codes?: readonly number[];
+      pi_provider_errors?: boolean;
       preview_roots?: readonly string[];
       message_phases?: boolean;
       reusable?: boolean;
+      omit_mcp?: boolean;
     } = {},
   ) {}
 
@@ -85,19 +95,21 @@ export class AcpSession {
     // Profiles must supply a separately verified instruction route for peers without this capability.
     if (this.instructions && !systemPrompt && this.options.instruction_route !== "profile")
       throw new HarnessError("CAPABILITY_UNSUPPORTED");
-    if (!this.initialization.agentCapabilities?.mcpCapabilities?.http)
+    if (!this.options.omit_mcp && !this.initialization.agentCapabilities?.mcpCapabilities?.http)
       throw new HarnessError("CAPABILITY_UNSUPPORTED");
     const config = this.tools.config.ngertiin;
     return {
       cwd: this.cwd,
-      mcpServers: [
-        {
-          type: "http" as const,
-          name: "ngertiin",
-          url: config.url,
-          headers: [{ name: "Authorization", value: config.headers.Authorization }],
-        },
-      ],
+      mcpServers: this.options.omit_mcp
+        ? []
+        : [
+            {
+              type: "http" as const,
+              name: "ngertiin",
+              url: config.url,
+              headers: [{ name: "Authorization", value: config.headers.Authorization }],
+            },
+          ],
       ...(this.instructions && this.options.instruction_route !== "profile"
         ? {
             systemPrompt: {
@@ -138,10 +150,14 @@ export class AcpSession {
       response = created;
     }
     if (!this.#session || this.#session.length > 1000) throw new HarnessError("PROTOCOL_ERROR");
+    const commands = this.#setupCommands.get(this.#session);
+    if (commands) {
+      this.#commands = commands;
+      this.#commandsReady.resolve();
+    }
+    this.#setupCommands.clear();
     await this.connection.bounded(this.connection.nativeReady);
     this.#options = response ? (response.configOptions ?? []) : [];
-    this.#commands = this.#setupCommands.get(this.#session) ?? [];
-    this.#setupCommands.clear();
     return { native_session_id: this.#session };
   }
 
@@ -206,8 +222,10 @@ export class AcpSession {
       const commands = notification.update.availableCommands;
       if (commands.length > 100 || commands.some((command) => command.name.length > 100))
         throw new HarnessError("PROTOCOL_ERROR", "unknown");
-      if (notification.sessionId === this.#session) this.#commands = commands;
-      else if (!this.#session && this.#setupCommands.size < 2)
+      if (notification.sessionId === this.#session) {
+        this.#commands = commands;
+        this.#commandsReady.resolve();
+      } else if (!this.#session && this.#setupCommands.size < 2)
         this.#setupCommands.set(notification.sessionId, commands);
       if (!this.#active) return;
     }
@@ -333,15 +351,17 @@ export class AcpSession {
 
   async prompt(request: Prompt) {
     this.assertSession(request.identity);
+    const command = nativeSessionCommand(request.text);
+    if (command) {
+      if (!["compact", "review"].includes(command) || request.images?.length)
+        throw new HarnessError("CAPABILITY_UNSUPPORTED");
+      // Some peers advertise commands after acknowledging session/load.
+      await Promise.race([this.#commandsReady.promise, Bun.sleep(4000)]);
+      if (!this.#commands.some((entry) => entry.name === command))
+        throw new HarnessError("CAPABILITY_UNSUPPORTED");
+    }
     if (this.#active || this.#spent || request.signal.aborted)
       throw new HarnessError("NATIVE_REJECTED");
-    const command = /^\/([^/\s]+)(?:\s|$)/.exec(request.text.trimStart())?.[1];
-    if (
-      command &&
-      (!["compact", "review"].includes(command) ||
-        !this.#commands.some((entry) => entry.name === command))
-    )
-      throw new HarnessError("CAPABILITY_UNSUPPORTED");
     const images = (request.images ?? []).map((uri): acp.ContentBlock => {
       const match = /^data:(image\/[\w.+-]+);base64,([A-Za-z0-9+/=]+)$/.exec(uri);
       if (!match || !this.initialization.agentCapabilities?.promptCapabilities?.image)
@@ -386,7 +406,14 @@ export class AcpSession {
         : {}),
       accepted: () => this.#active === active && active.observed,
       delivered: () => {
-        void request.onEvent({ type: "activity", activity: "generating" });
+        this.#updates = this.#updates
+          .then(async () => {
+            if (this.#active === active && !request.signal.aborted)
+              await request.onEvent({ type: "activity", activity: "generating" });
+          })
+          .catch((error) => {
+            if (!request.signal.aborted) this.updateFailed(error);
+          });
       },
     };
     const cancel = () => {
@@ -397,7 +424,7 @@ export class AcpSession {
       const response = await this.connection.agent.request("session/prompt", {
         sessionId: this.#session as string,
         prompt: [
-          ...(request.learning_context
+          ...(!command && request.learning_context
             ? [{ type: "text" as const, text: request.learning_context }]
             : []),
           { type: "text", text: request.text },
@@ -416,7 +443,15 @@ export class AcpSession {
       await request.onEvent(active.projection.final());
       if (this.options.reusable && status === "succeeded" && !request.signal.aborted)
         this.#spent = false;
-      return { status, native_session_id: this.#session, native_run_id: null };
+      const usage = this.options.pi_provider_errors
+        ? providerUsage.safeParse(response._meta?.ngertiinUsage).data
+        : undefined;
+      return {
+        status,
+        native_session_id: this.#session,
+        native_run_id: null,
+        ...(usage ? { usage } : {}),
+      };
     } catch (error) {
       active.finishing = true;
       clearTimeout(this.#textTimer);
@@ -430,9 +465,15 @@ export class AcpSession {
       if (error instanceof acp.RequestError && !this.connection.peer.signal.aborted) {
         if (this.options.unknown_error_codes?.includes(error.code))
           throw new HarnessError("NATIVE_UNKNOWN", "unknown");
-        if (error.code === -32000)
-          await request.onEvent({ type: "failure", code: "LOGIN_REQUIRED" });
-        else await request.onEvent({ type: "failure", code: "NATIVE_REJECTED" });
+        if (error.code === -32000) {
+          const rejected =
+            this.options.pi_provider_errors &&
+            z.strictObject({ credentialRejected: z.literal(true) }).safeParse(error.data).success;
+          await request.onEvent({
+            type: "failure",
+            code: rejected ? "AUTH_REJECTED" : "LOGIN_REQUIRED",
+          });
+        } else await request.onEvent({ type: "failure", code: "NATIVE_REJECTED" });
         // An explicit peer error is terminal failure. A lost transport acknowledgement is unknown.
         return { status: "failed", native_session_id: this.#session, native_run_id: null };
       }

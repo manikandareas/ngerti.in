@@ -85,6 +85,8 @@ export class Artifacts {
       origin: "upload" | "native_output" | "shared_copy";
       run_id?: string;
       source_artifact_id?: string;
+      storage_key?: string;
+      materialization?: "pending";
       native_session_id?: string;
       native_run_id?: string | null;
       created_by_agent_id?: string | null;
@@ -251,7 +253,33 @@ export class Artifacts {
       }
     }
   }
-  async publish(commandId: string, input: unknown, authorize: () => void) {
+  async publishGenerated(
+    run: Entity<"run">,
+    id: string,
+    file: { name: string; bytes: Uint8Array; media_type: string },
+    authorize: () => void | Promise<void>,
+    sourceArtifactId?: string,
+  ) {
+    const workspace = await this.workspaces.authorizeRun(run);
+    const data = publicationInput.parse({
+      workspace_id: workspace.id,
+      path: `media/${id}/${file.name}`,
+      media_type: file.media_type,
+      run_id: run.id,
+    });
+    if (!file.bytes.length || file.bytes.length > MAX_FILE_BYTES)
+      throw new DomainError("INVALID_REQUEST", 422);
+    await authorize();
+    await authorizeResponsibilityWork(this.lifecycle, run.id);
+    await this.stage(workspace.id, data.path, file.bytes);
+    return await this.publish(id, data, authorize, sourceArtifactId);
+  }
+  async publish(
+    commandId: string,
+    input: unknown,
+    authorize: () => void,
+    sourceArtifactId?: string,
+  ) {
     const data = publicationInput.parse(input);
     await authorize();
     const run = await this.lifecycle.store.get("run", data.run_id);
@@ -266,13 +294,23 @@ export class Artifacts {
     await this.lifecycle.authorizeDispatch(run.id, run.dispatch_token);
     const reauthorize = async () => {
       await authorize();
-      await this.workspaces.authorizeRun(await this.lifecycle.store.get("run", run.id));
+      const current = await this.lifecycle.store.get("run", run.id);
+      await this.workspaces.authorizeRun(current);
       await this.lifecycle.authorizeDispatch(run.id, run.dispatch_token as string);
       await authorizeResponsibilityWork(this.lifecycle, run.id);
+      if (current.routine_id) {
+        const routine = await this.lifecycle.store.get("routine", current.routine_id);
+        if (routine.monitor && current.routine_observation?.decision !== "alert")
+          throw new DomainError("CONFLICT");
+      }
     };
     return this.lifecycle.store.fileCommand(
       commandId,
-      { operation: "publish_artifact", ...data },
+      {
+        operation: "publish_artifact",
+        ...data,
+        ...(sourceArtifactId && { source_artifact_id: sourceArtifactId }),
+      },
       async () => {
         await reauthorize();
         const bytes = await (await this.workspaces.workingFiles(workspace.id)).read(data.path);
@@ -290,6 +328,7 @@ export class Artifacts {
             a.run_id === run.id &&
             a.workspace_id === workspace.id &&
             a.source_path === data.path &&
+            a.source_artifact_id === (sourceArtifactId ?? null) &&
             a.sha256 === digest(bytes),
         );
         if (previous) return previous;
@@ -311,6 +350,7 @@ export class Artifacts {
           media_type: data.media_type,
           source_path: data.path,
           origin: "native_output",
+          source_artifact_id: sourceArtifactId,
           run_id: run.id,
           native_session_id: binding.native_session_id,
           native_run_id: run.native_run_id,
@@ -368,5 +408,23 @@ export class Artifacts {
           throw new DomainError("STALE_DISPATCH");
       },
     );
+  }
+
+  async shareInput(artifactId: string, workspaceId: string) {
+    const original = await this.lifecycle.store.get("artifact", artifactId);
+    if (!original.workspace_id || !original.storage_key) throw new DomainError("SCOPE_DENIED", 403);
+    const { bytes } = await this.download(artifactId, original.workspace_id);
+    const target = await this.workspaces.get(workspaceId);
+    const id = crypto.randomUUID();
+    // Prompt preparation materializes these already verified bytes in the target workspace.
+    return this.save(id, target, bytes, {
+      name: original.name,
+      media_type: original.media_type,
+      source_path: `inputs/${id}/${basename(original.name)}`,
+      origin: "shared_copy",
+      source_artifact_id: original.id,
+      storage_key: original.storage_key,
+      materialization: "pending",
+    });
   }
 }

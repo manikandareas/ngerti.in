@@ -12,6 +12,7 @@ import {
 } from "./local-profile";
 import { type PiProviderConfiguration, piProviderConfiguration } from "./native-configuration";
 import { nativeStorageReady } from "./native-storage";
+import type { ProductToolDefinition } from "./product-tool-contracts";
 import { connectionProvider, credentialEnvironment } from "./providers";
 
 export class Redactor {
@@ -102,7 +103,8 @@ export type LaunchContext = {
   ) => Promise<{ accessToken: string; chatgptAccountId: string; chatgptPlanType?: string }>;
   nativeConfiguration?: PiProviderConfiguration;
   localProvider?: LocalProvider;
-  purpose?: "conversation" | "routing";
+  purpose?: "conversation" | "routing" | "review";
+  tool_catalog?: readonly ProductToolDefinition[];
   env: Record<string, string>;
   state_directory: string;
   redactor: Redactor;

@@ -2,7 +2,10 @@ import { command, request } from "@/lib/api-client";
 import { assertScope, clientScope } from "@/lib/client-scope";
 import type { Artifact, Workspace } from "@/types/work";
 
-export function artifactUrl(artifact: Artifact, workspaceId = artifact.workspace_id) {
+export function artifactUrl(
+  artifact: Pick<Artifact, "id" | "workspace_id">,
+  workspaceId = artifact.workspace_id,
+) {
   return `/v1/artifacts/${artifact.id}/content?workspace_id=${encodeURIComponent(workspaceId ?? "")}`;
 }
 export async function uploadFile(

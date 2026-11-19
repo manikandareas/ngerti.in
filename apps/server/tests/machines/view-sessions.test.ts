@@ -29,11 +29,11 @@ class Host extends CuaMachine {
     };
   }
 }
-async function setup() {
+async function setup(endpoint = "http://127.0.0.1:3211") {
   f = await fixture();
   const config = {
     id: crypto.randomUUID(),
-    endpoint: "http://127.0.0.1:3211",
+    endpoint,
     token: "x".repeat(64),
     root: "/home/cua/workspace" as const,
     generation: 1,
@@ -76,4 +76,90 @@ test("a renewal racing explicit revocation never resurrects the view", async () 
   await expect(
     (async () => views.authorize(new Request(`http://localhost${view.viewer_url}`)))(),
   ).rejects.toThrow("UNAUTHORIZED");
+});
+
+test("the viewer bridge preserves input and video frame order during authorization", async () => {
+  const received: string[] = [];
+  const displayed: string[] = [];
+  const twoInputs = Promise.withResolvers<void>();
+  const twoFrames = Promise.withResolvers<void>();
+  const desktop = Promise.withResolvers<Bun.ServerWebSocket<undefined>>();
+  const upstream = Bun.serve<undefined>({
+    hostname: "127.0.0.1",
+    port: 0,
+    fetch(request, server) {
+      if (server.upgrade(request, { data: undefined })) return;
+      return new Response(null, { status: 400 });
+    },
+    websocket: {
+      open(peer) {
+        desktop.resolve(peer);
+        peer.send("ready");
+      },
+      message(_peer, payload) {
+        received.push(String(payload));
+        if (received.length === 2) twoInputs.resolve();
+      },
+    },
+  });
+  const ready = Promise.withResolvers<void>();
+  const peer = {
+    send(data: string | ArrayBuffer | Uint8Array) {
+      if (data === "ready") return ready.resolve();
+      displayed.push(String(data));
+      if (displayed.length === 2) twoFrames.resolve();
+    },
+    close() {},
+  };
+  let releaseValidation: (() => void) | undefined;
+  try {
+    await setup(upstream.url.origin);
+    const view = await views.issue("http://localhost");
+    const issued = await views.authorize(new Request(`http://localhost${view.viewer_url}`));
+    issued.media.set("fixture-media-ticket", "fixture-media-session");
+    await views.open(
+      new Request(
+        `http://localhost/v1/machine/viewer/${view.viewer_id}/media?ticket=fixture-media-ticket`,
+      ),
+      peer,
+      false,
+    );
+    await ready.promise;
+    const assertViewer = machine.assertViewer.bind(machine);
+    function pauseNextFrame() {
+      const validating = Promise.withResolvers<void>();
+      const resume = Promise.withResolvers<void>();
+      releaseValidation = resume.resolve;
+      machine.assertViewer = async (...args) => {
+        machine.assertViewer = assertViewer;
+        validating.resolve();
+        await resume.promise;
+        return await assertViewer(...args);
+      };
+      return { entered: validating.promise, release: resume.resolve };
+    }
+    const inputGate = pauseNextFrame();
+    const down = views.message(peer, "key-down");
+    await inputGate.entered;
+    const up = views.message(peer, "key-up");
+    await Promise.race([up, Bun.sleep(30)]);
+    inputGate.release();
+    await Promise.all([down, up, twoInputs.promise]);
+    expect(received).toEqual(["key-down", "key-up"]);
+
+    const stream = await desktop.promise;
+    const videoGate = pauseNextFrame();
+    stream.send("video-frame-1");
+    await videoGate.entered;
+    stream.send("video-frame-2");
+    await Bun.sleep(30);
+    videoGate.release();
+    await twoFrames.promise;
+    expect(displayed).toEqual(["video-frame-1", "video-frame-2"]);
+  } finally {
+    releaseValidation?.();
+    views?.closePeer(peer);
+    void upstream.stop(true);
+    upstream.unref();
+  }
 });

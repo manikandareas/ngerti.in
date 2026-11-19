@@ -1,9 +1,13 @@
 import { AsyncResource } from "node:async_hooks";
+import { mkdtempSync, realpathSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { Artifacts } from "../artifacts";
 import { Attachments } from "../attachments/service";
 import type { ExecutorContext, HarnessExecutor } from "../background";
 import { agentInput, DomainError, type Entity } from "../contracts";
 import type { NativeSkillMetadata } from "../learning/contracts";
+import type { ReviewInference } from "../learning/reviews";
 import type { Lifecycle } from "../lifecycle";
 import { prepareVisualInputs } from "../multimodal";
 import type { DataContext } from "../persistence/access-context";
@@ -23,6 +27,7 @@ import {
   type NativeEvent,
   NativeSessionMissing,
   nativeEvent,
+  nativeSessionCommand,
   type Settings,
   settings,
   terminal,
@@ -160,10 +165,131 @@ export class HarnessBroker {
           },
           execute: async (run: Entity<"run">, context: ExecutorContext) =>
             this.execute(run, context),
+          review: this.review,
         },
       ]),
     );
   }
+
+  private review: ReviewInference = async (run, prompt, budget, authorize) => {
+    const selected = run.learning_review?.provider_selection;
+    const attempt = run.learning_review?.attempt_id;
+    if (!selected || !attempt || !run.binding_id || !run.organization_id || !run.actor_id)
+      throw new DomainError("STALE_DISPATCH");
+    const adapter = this.adapters[selected.harness];
+    if (!adapter || this.#closed) throw new HarnessError("ADAPTER_UNAVAILABLE");
+    const available = requireAvailable(
+      await bounded(this.detect(selected.harness), this.timeouts.request_ms),
+    );
+    const connection = await authorize();
+    const controller = new AbortController();
+    const signal = AbortSignal.any([controller.signal, budget]);
+    const launch: LaunchContext = {
+      ...this.credentials.create(
+        connection,
+        {
+          organization_id: run.organization_id,
+          actor_id: run.actor_id,
+          agent_id: run.agent_id,
+          thread_id: attempt,
+          generation: connection.grant_revision,
+        },
+        { externalCodexTokens: adapter.transport === "acp" },
+      ),
+      purpose: "review",
+      signal,
+    };
+    // Some harnesses encode the entire working directory in a single session filename.
+    const scratch = realpathSync(mkdtempSync(join(tmpdir(), "ngertiin-review-")));
+    launch.workspace = { id: attempt, root: scratch, revision: 1 };
+    Object.assign(launch.env, { TMPDIR: scratch, TMP: scratch, TEMP: scratch });
+    if (launch.codexAuth) {
+      const auth = launch.codexAuth;
+      const inScope = AsyncResource.bind(authorize);
+      launch.codexAuth = async (refresh) => {
+        await inScope();
+        return await auth(refresh);
+      };
+    }
+    this.#openingControllers.set(controller, connection.id);
+    const settings = { model_id: selected.model_id, reasoning: selected.reasoning };
+    let client: HarnessClient | undefined;
+    let connecting: Promise<HarnessClient> | undefined;
+    const dispose = async (opened?: HarnessClient) => {
+      if (opened) await bounded(opened.close(), this.timeouts.close_ms);
+      for (const path of [launch.state_directory, scratch])
+        rmSync(path, { recursive: true, force: true });
+    };
+    try {
+      signal.throwIfAborted();
+      connecting = adapter.connect({
+        ...launch,
+        executable: available.executable as string,
+        connection_id: connection.id,
+        agent_id: run.agent_id,
+        thread_id: attempt,
+        model_id: settings.model_id,
+      });
+      client = await bounded(connecting, this.timeouts.request_ms);
+      const observed = await bounded(client.inspect(), this.timeouts.request_ms);
+      if (
+        observed.login !== "authenticated" ||
+        observed.account_id !== selected.account_id ||
+        observed.auth_method !== connection.authentication.method ||
+        observed.billing_source !== selected.billing_source
+      )
+        throw new HarnessError("BILLING_MISMATCH");
+      const identity = await bounded(client.start(settings), this.timeouts.request_ms);
+      await authorize();
+      signal.throwIfAborted();
+      let text = "";
+      const native = await bounded(
+        client.prompt({
+          identity,
+          run_id: attempt,
+          text: launch.redactor.text(prompt),
+          settings,
+          signal,
+          tools: {
+            token: "",
+            scope: {
+              owner_id: run.owner_id,
+              organization_id: run.organization_id,
+              actor_id: run.actor_id,
+              connection_id: connection.id,
+              agent_id: run.agent_id,
+              thread_id: run.thread_id,
+              run_id: run.id,
+              binding_id: run.binding_id,
+              grant_revision: run.grant_revision,
+              connection_revision: connection.grant_revision,
+            },
+            revoke: () => {},
+          },
+          onEvent(event) {
+            if (event.type === "text_snapshot") text = event.text;
+            if (event.type === "text") text += event.text;
+            if (text.length > 12_000) controller.abort();
+          },
+        }),
+        60_000,
+      );
+      signal.throwIfAborted();
+      const outcome = terminal.parse(native);
+      if (
+        outcome.status !== "succeeded" ||
+        outcome.native_session_id !== identity.native_session_id
+      )
+        throw new HarnessError("NATIVE_REJECTED");
+      return { text: launch.redactor.text(text), usage: outcome.usage };
+    } finally {
+      controller.abort();
+      this.#openingControllers.delete(controller);
+      if (!client && connecting) void connecting.then(dispose, () => dispose()).catch(() => {});
+      else await dispose(client).catch(() => {});
+    }
+  };
+
   private selection(agent: Entity<"agent">): Settings {
     if (agent.model_id === null) throw new HarnessError("MODEL_UNAVAILABLE");
     return settings.parse({ model_id: agent.model_id, reasoning: agent.reasoning });
@@ -315,15 +441,31 @@ export class HarnessBroker {
       const observed = await this.lifecycle.store.read(async () => {
         const current = await this.member(threadId, agentId);
         const binding = await this.lifecycle.store.get("binding", existing.binding.id);
-        const reusable = existing.agent_revision === current.agent.revision && binding.active;
+        const workspace =
+          binding.active && binding.workspace_id
+            ? await new Workspaces(this.lifecycle).get(binding.workspace_id)
+            : null;
+        const catalog = workspace
+          ? await this.tools.sessionCatalog({ thread_id: threadId, agent_id: agentId }, workspace)
+          : [];
+        const catalogMatches = canonical(catalog) === canonical(existing.launch.tool_catalog ?? []);
+        const workspaceMatches =
+          binding.workspace_id === null || workspace?.revision === binding.workspace_revision;
+        const reusable =
+          catalogMatches &&
+          workspaceMatches &&
+          existing.agent_revision === current.agent.revision &&
+          binding.active;
         if (reusable) await this.check(existing, threadId, agentId, { ...current, binding });
-        return { ...current, binding, reusable };
+        return { ...current, binding, reusable, catalogMatches, workspaceMatches };
       });
       if (observed.reusable) {
         this.touch(lane, existing);
         return { session: existing, connection: observed.connection };
       }
       if (
+        observed.catalogMatches &&
+        observed.workspaceMatches &&
         existing.agent_revision !== observed.agent.revision &&
         existing.agent_config === executionConfiguration(observed.agent) &&
         existing.connection_revision === observed.connection.grant_revision &&
@@ -419,6 +561,10 @@ export class HarnessBroker {
         { externalCodexTokens: adapter.transport === "acp" },
       ),
       purpose: (await this.lifecycle.store.get("thread", threadId)).purpose,
+      tool_catalog: await this.tools.sessionCatalog(
+        { thread_id: threadId, agent_id: agentId },
+        workspace,
+      ),
       signal: controller.signal,
       workspace: {
         id: workspace.id,
@@ -910,7 +1056,11 @@ export class HarnessBroker {
     if (!run.dispatch_token || run.status !== "running" || run.cancellation !== "none")
       throw new DomainError("CONFLICT");
     await this.lifecycle.authorizeDispatch(run.id, run.dispatch_token);
-    const { session, connection } = await this.session(run.thread_id, run.agent_id);
+    // Interactions belong to the admitted transport. Catalogue changes apply
+    // to a subsequent turn; product tools revalidate their grants on each call.
+    const session = this.#sessions.get(`${run.thread_id}:${run.agent_id}`);
+    if (!session || session.binding.id !== run.binding_id) throw new DomainError("STALE_DISPATCH");
+    const connection = await this.check(session, run.thread_id, run.agent_id);
     this.requireCapability(connection, "permission_requests");
     await this.lifecycle.authorizeDispatch(run.id, run.dispatch_token);
     return session;
@@ -1089,7 +1239,7 @@ export class HarnessBroker {
         : await this.lifecycle.store.read(() => attachments.context(run, authorizeAttachments));
       const visual = input.artifact_ids.length
         ? await prepareVisualInputs(this.lifecycle, run, connection, session.selected.model_id)
-        : { images: [], receipts: [] };
+        : { images: [], receipts: [], alternate: [] };
       if (visual.receipts.length) {
         await authorizeAttachments();
         await this.lifecycle.observe(run.id, run.dispatch_token, {
@@ -1111,7 +1261,10 @@ export class HarnessBroker {
           if (nativeEventError) throw nativeEventError;
         });
         return {
-          learning: await prepareLearningContext(this.lifecycle, run, session.learningSections),
+          learning:
+            session.binding.transport === "acp" && nativeSessionCommand(input.text)
+              ? null
+              : await prepareLearningContext(this.lifecycle, run, session.learningSections),
         };
       });
       const learning = prepared.learning;
@@ -1188,7 +1341,16 @@ export class HarnessBroker {
           run_id: run.id,
           images: visual.images,
           text: input.text,
-          learning_context: [learning.text, attachmentContext.text].filter(Boolean).join("\n\n"),
+          learning_context: [
+            learning?.text,
+            attachmentContext.text,
+            ...visual.alternate.map(
+              ({ artifactId, operation }) =>
+                `When the user asks about artifact ${artifactId}, use ngertiin.process_media with operation ${operation}.`,
+            ),
+          ]
+            .filter(Boolean)
+            .join("\n\n"),
           settings: { ...session.selected },
           tools: lease,
           signal: context.signal,
@@ -1354,7 +1516,7 @@ export class HarnessBroker {
         (result.status === "succeeded" && !processingObserved)
       )
         throw new HarnessError("PROTOCOL_ERROR", "unknown");
-      if (result.status === "succeeded") session.learningSections = learning.sections;
+      if (result.status === "succeeded") session.learningSections = learning?.sections;
       outcome = result.status;
     } catch (error) {
       await nativeEvents;
@@ -1421,6 +1583,7 @@ export class HarnessBroker {
             );
             if (
               published &&
+              !run.output_plugin &&
               (await this.lifecycle.store.get("run", run.id)).publication === "immediate"
             )
               await this.publish(run.id, { type: "text", text: safe }, outcome);

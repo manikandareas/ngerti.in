@@ -1,5 +1,7 @@
 import { DomainError, type Entity, goal as goalSchema } from "../contracts";
 import { Groups } from "../groups/service";
+import { Connections } from "../harness/connections";
+import { HarnessError } from "../harness/contracts";
 import type { Lifecycle } from "../lifecycle";
 import {
   captureGoal,
@@ -10,14 +12,20 @@ import {
   routineControl,
   routineWrite,
 } from "./contracts";
-import { verifyGoalEvidence } from "./evidence";
+import { type VerifiedGoalFiles, verifyGoalEvidence } from "./evidence";
+import { GroupSchedules } from "./group-schedules";
 import { responsibilityInstructions } from "./instructions";
-import { firstDue } from "./schedule";
+import { loopControlFields } from "./loops";
+import { routineReading } from "./monitor-contracts";
+import { initialPrecheckBaseline, requirePrecheckDefinition } from "./precheck";
+import { firstDue, routineHasFuture, routineIsTerminal } from "./schedule";
 import { type GoalScope, ResponsibilityScope } from "./scope";
+import { evaluateGoalVerification } from "./verification";
 
 export type { GoalScope } from "./scope";
 
 const terminal = new Set(["succeeded", "failed", "cancelled", "steered"]);
+const normalizeProgress = (text: string) => text.trim().replace(/\s+/g, " ");
 
 /** Domain decisions use the existing lifecycle, queue, authority lock and transactional receipts. */
 export class Goals {
@@ -104,6 +112,9 @@ export class Goals {
         report_run_id: null,
         deferred_by_run_id: null,
       };
+      const freshVerification = data.verification
+        ? { ...data.verification, attempts_used: 0, last_check: null }
+        : null;
       if (data.expected_revision === 0) {
         if ((await this.store.list("goal")).some((g) => g.id === data.goal_id))
           throw new DomainError("CONFLICT");
@@ -111,6 +122,7 @@ export class Goals {
           goalSchema.parse({
             ...this.base(),
             ...fields,
+            verification: freshVerification,
             id: data.goal_id,
             kind: "goal",
             thread_id: run.thread_id,
@@ -139,9 +151,14 @@ export class Goals {
         await this.update(run, { goal_generation: current.generation + 1 });
       return await this.update(current, {
         ...fields,
+        verification:
+          data.verification === undefined && current.verification
+            ? { ...current.verification, attempts_used: 0, last_check: null }
+            : freshVerification,
         generation: current.generation + 1,
         continuation_sequence: current.continuation_sequence + 1,
         evidence_artifact_ids: [],
+        checkpoint_evidence: null,
         source_message_ids: [...new Set([...current.source_message_ids, source.id])].slice(-200),
         source_run_ids: [...new Set([...current.source_run_ids, run.id])].slice(-200),
       });
@@ -165,52 +182,70 @@ export class Goals {
             source.author !== "user")
         )
           throw new DomainError("CONFLICT");
-        if (current.deferred_by_run_id === run.id && data.disposition === "completed")
+        if (
+          current.deferred_by_run_id === run.id &&
+          (data.disposition === "completed" || current.work_state === "blocked")
+        )
           throw new DomainError("RESPONSIBILITY_DEFERRED");
         const hasSchedule = (await this.store.list("routine", { state: "active" })).some(
-          (r) => r.goal_id === current.id && r.state === "active" && r.next_run_at !== null,
+          (r) => r.goal_id === current.id && routineHasFuture(r),
         );
         if (
           (data.disposition === "scheduled" && !hasSchedule) ||
           (data.disposition === "continue" && hasSchedule)
         )
           throw new DomainError("CONFLICT");
-        if (
-          run.publication === "quiet" &&
-          ["wait", "blocked", "completed"].includes(data.disposition)
-        )
-          await this.update(run, { publication: "deferred" });
         const evidence = [
           ...new Set([...current.evidence_artifact_ids, ...data.evidence_artifact_ids]),
         ];
-        if (evidence.length || data.disposition === "completed")
-          await verifyGoalEvidence(this.lifecycle, current, evidence, run);
+        const verified =
+          evidence.length || (data.disposition === "completed" && !current.verification)
+            ? await verifyGoalEvidence(this.lifecycle, current, evidence, run)
+            : null;
+        const known = new Set(
+          current.evidence_artifact_ids.map((id) => verified?.fingerprints.get(id)),
+        );
+        const repeated =
+          source.purpose === "continuation" &&
+          current.report_run_id !== null &&
+          current.report_run_id !== run.id &&
+          data.continuation !== null &&
+          normalizeProgress(data.progress) === normalizeProgress(current.progress) &&
+          normalizeProgress(data.continuation.instruction) ===
+            normalizeProgress(current.continuation_instruction) &&
+          data.evidence_artifact_ids.every((id) => known.has(verified?.fingerprints.get(id)));
+        const disposition = repeated ? "blocked" : data.disposition;
+        if (run.publication === "quiet" && ["wait", "blocked", "completed"].includes(disposition))
+          await this.update(run, { publication: "deferred" });
         const saved = await this.update(current, {
-          progress: data.progress,
+          progress: repeated
+            ? "The last continuation repeated the same progress, evidence, and next step. The Goal is blocked until new evidence or direction is available."
+            : data.progress,
           last_report_error: null,
-          work_state: ["continue", "scheduled"].includes(data.disposition)
+          work_state: ["continue", "scheduled"].includes(disposition)
             ? "ready"
-            : data.disposition === "completed"
+            : disposition === "completed"
               ? "completion_pending"
-              : data.disposition === "wait"
+              : disposition === "wait"
                 ? "waiting"
                 : "blocked",
-          evidence_artifact_ids: evidence,
+          evidence_artifact_ids: repeated ? current.evidence_artifact_ids : evidence,
           source_message_ids:
             source.author === "user"
               ? [...new Set([...current.source_message_ids, source.id])].slice(-200)
               : current.source_message_ids,
           report_run_id: run.id,
-          deferred_by_run_id: ["continue", "scheduled"].includes(data.disposition)
-            ? run.id
-            : current.deferred_by_run_id,
+          deferred_by_run_id:
+            repeated || ["continue", "scheduled"].includes(disposition)
+              ? run.id
+              : current.deferred_by_run_id,
           current_run_id: run.id,
-          continuation_at: data.continuation?.at ?? null,
-          continuation_instruction: data.continuation?.instruction ?? "",
+          continuation_at: repeated ? null : (data.continuation?.at ?? null),
+          continuation_instruction: repeated ? "" : (data.continuation?.instruction ?? ""),
           continuation_sequence: current.continuation_sequence + 1,
           source_run_ids: [...new Set([...current.source_run_ids, run.id])].slice(-200),
         });
-        if (["continue", "scheduled"].includes(data.disposition)) {
+        if (["continue", "scheduled"].includes(disposition)) {
           const currentRun = await this.store.get("run", run.id);
           const progress = (await this.store.list("goal"))
             .filter((g) => g.current_run_id === run.id && g.report_run_id === run.id)
@@ -222,8 +257,8 @@ export class Goals {
         return {
           ...saved,
           execution_guidance:
-            data.disposition === "completed"
-              ? "Finish this turn. Completion is pending successful native settlement."
+            disposition === "completed"
+              ? "Finish this turn. Report what you submitted. The application settles the run and verifies the Goal before completion."
               : "Stop work on this responsibility for this turn. The application owns its next wakeup or wait; do not execute a future scheduled stage now.",
         };
       });
@@ -287,8 +322,14 @@ export class Goals {
       }
       return await this.update(goal, {
         coordinator_agent_id: data.agent_id,
+        generation: goal.generation + 1,
         assignment_revision: goal.assignment_revision + 1,
+        checkpoint_evidence: null,
+        evidence_artifact_ids: [],
         assignment_route_id: null,
+        last_report_error: null,
+        report_run_id: null,
+        deferred_by_run_id: null,
         work_state: "ready",
         continuation_at: new Date().toISOString(),
       });
@@ -307,9 +348,13 @@ export class Goals {
       const run = await this.store.get("run", goal.current_run_id);
       if (run.status !== "succeeded" || run.cancellation !== "none")
         throw new DomainError("RECONCILIATION_REQUIRED");
-      await verifyGoalEvidence(this.lifecycle, goal, data.evidence_artifact_ids);
+      const { files } = await verifyGoalEvidence(this.lifecycle, goal, data.evidence_artifact_ids);
+      const checks =
+        goal.verification && evaluateGoalVerification(goal.verification, run.id, files);
+      if (checks?.remaining.length) throw new DomainError("CONFLICT");
       await this.update(goal, {
-        evidence_artifact_ids: data.evidence_artifact_ids,
+        evidence_artifact_ids: checks ? checks.accepted : data.evidence_artifact_ids,
+        verification: checks ? checks.saved : goal.verification,
         progress: data.progress,
         work_state: "completion_pending",
         last_report_error: null,
@@ -346,6 +391,8 @@ export class Goals {
     return await this.store.transaction(async () => {
       const run = await this.store.get("run", runId);
       await this.scope(run);
+      if (data.precheck)
+        await requirePrecheckDefinition(this.lifecycle, data.routine_id, data.precheck, run);
       if (data.goal_id) {
         const goal = await this.require(run, await this.store.get("goal", data.goal_id));
         await this.scopes.reporting(run, goal);
@@ -371,7 +418,7 @@ export class Goals {
         await this.scope({ thread_id: run.thread_id, agent_id: data.execution_target.agent_id });
       if (data.execution_target?.type === "auto" && (await this.scope(run)).type !== "group")
         throw new DomainError("SCOPE_DENIED", 403);
-      const { routine_id, expected_revision, ...fields } = data;
+      const { routine_id, expected_revision, monitor, precheck, ...fields } = data;
       const next = firstDue(data.schedule, data.timezone);
       if (expected_revision === 0) {
         if ((await this.store.list("routine")).some((r) => r.id === routine_id))
@@ -395,13 +442,21 @@ export class Goals {
           source_run_id: run.id,
           provider_selection: run.provider_selection,
           paused_by_goal: false,
+          monitor: monitor ?? null,
+          monitor_alert_active: false,
+          delivery_target: null,
+          precheck: precheck ?? null,
+          precheck_revision: 1,
+          precheck_baseline_sha256: await initialPrecheckBaseline(this.lifecycle, precheck),
+          loop_pacing: null,
+          loop_progress: null,
           state: "active",
           generation: 1,
           next_run_at: next,
         });
       }
       const current = await this.require(run, await this.store.get("routine", routine_id));
-      if (current.revision !== expected_revision || current.state === "stopped")
+      if (current.revision !== expected_revision || routineIsTerminal(current.state))
         throw new DomainError("CONFLICT");
       for (const pending of await this.store.list("run"))
         if (
@@ -412,13 +467,34 @@ export class Goals {
           await this.lifecycle.cancel(pending.id);
       if (run.routine_id === current.id)
         await this.update(run, { routine_generation: current.generation + 1 });
+      const monitorChanged =
+        monitor !== undefined &&
+        (monitor?.metric !== current.monitor?.metric || monitor?.above !== current.monitor?.above);
+      const precheckChanged =
+        precheck !== undefined && JSON.stringify(precheck) !== JSON.stringify(current.precheck);
       return await this.update(current, {
         ...fields,
+        ...(precheckChanged
+          ? {
+              precheck,
+              precheck_revision: current.precheck_revision + 1,
+              precheck_baseline_sha256: await initialPrecheckBaseline(this.lifecycle, precheck),
+            }
+          : {}),
+        ...(monitorChanged ? { monitor, monitor_alert_active: false } : {}),
+        loop_pacing: null,
+        loop_progress: null,
         execution_target: data.execution_target ?? current.execution_target,
         assignment_state: "ready",
         error_code: null,
         generation: current.generation + 1,
         next_run_at: next,
+        ...(current.state === "paused"
+          ? loopControlFields(
+              { ...current, schedule: data.schedule, next_run_at: next, loop_progress: null },
+              "paused",
+            )
+          : {}),
         source_message_id: run.input_message_id,
         source_run_id: run.id,
       });
@@ -427,18 +503,40 @@ export class Goals {
   async controlRoutine(context: GoalScope, input: unknown) {
     const data = routineControl.parse(input);
     return await this.store.transaction(async () => {
-      const current = await this.require(context, await this.store.get("routine", data.routine_id));
-      if (current.revision !== data.expected_revision || current.state === "stopped")
+      let current = await this.require(context, await this.store.get("routine", data.routine_id));
+      if (current.revision !== data.expected_revision || routineIsTerminal(current.state))
         throw new DomainError("CONFLICT");
       if (data.state === "active" && current.goal_id) {
         const goal = await this.store.get("goal", current.goal_id);
         if (goal.state !== "active") throw new DomainError("CONFLICT");
+      }
+      if (current.schedule.type === "loop") {
+        current = await new GroupSchedules(this.lifecycle).reconcileLoop(current);
+        if (current.state === data.state || routineIsTerminal(current.state)) return current;
+      }
+      let restoredSelection = current.provider_selection;
+      if (current.restore_pending && data.state === "active") {
+        if (!current.agent_id) throw new DomainError("SCOPE_DENIED", 403);
+        const connections = new Connections(this.lifecycle);
+        restoredSelection = await connections.resolveSelection(
+          await this.store.get("agent", current.agent_id),
+          current.thread_id,
+        );
+        if (!restoredSelection) throw new HarnessError("LOGIN_REQUIRED");
+        const connection = await connections.get(restoredSelection.connection_id);
+        if (connection.login !== "authenticated") throw new HarnessError("LOGIN_REQUIRED");
+        if (connection.effective_billing_source !== restoredSelection.billing_source)
+          throw new HarnessError("BILLING_MISMATCH");
       }
       const saved = await this.update(current, {
         state: data.state,
         generation: current.generation + 1,
         paused_by_goal: false,
         next_run_at: data.state === "active" ? firstDue(current.schedule, current.timezone) : null,
+        ...(current.restore_pending && data.state === "active"
+          ? { restore_pending: false, provider_selection: restoredSelection }
+          : {}),
+        ...loopControlFields(current, data.state),
       });
       for (const run of await this.store.list("run"))
         if (run.routine_id === current.id && !terminal.has(run.status))
@@ -446,11 +544,35 @@ export class Goals {
       return saved;
     });
   }
+  async observeRoutine(runId: string, input: unknown) {
+    const reading = routineReading.parse(input);
+    const run = await this.store.get("run", runId);
+    const message = await this.store.get("message", run.input_message_id);
+    if (!run.routine_id || message.purpose !== "continuation" || message.author !== "routine")
+      throw new DomainError("SCOPE_DENIED", 403);
+    const routine = await this.require(run, await this.store.get("routine", run.routine_id));
+    if (!routine.monitor || routine.generation !== run.routine_generation)
+      throw new DomainError("CONFLICT");
+    if (run.routine_observation) {
+      if (run.routine_observation.value !== reading.value) throw new DomainError("CONFLICT");
+      return run.routine_observation;
+    }
+    const decision =
+      reading.value <= routine.monitor.above
+        ? "below_threshold"
+        : routine.monitor_alert_active
+          ? "already_alerted"
+          : "alert";
+    const observation = { ...reading, decision } as const;
+    await this.update(run, { routine_observation: observation });
+    return observation;
+  }
   async noUpdate(runId: string) {
     const run = await this.store.get("run", runId);
     const message = await this.store.get("message", run.input_message_id);
     if (
       (!run.goal_id && !run.routine_id) ||
+      run.routine_observation?.decision === "alert" ||
       run.publication === "immediate" ||
       message.purpose !== "continuation" ||
       (await this.store.list("artifact", { run_id: runId })).some((a) => a.run_id === runId) ||
@@ -585,18 +707,7 @@ export class Goals {
     }
     if (goal.work_state === "completion_pending") {
       if (!run || goal.report_run_id !== run.id) return;
-      try {
-        await verifyGoalEvidence(this.lifecycle, goal, goal.evidence_artifact_ids);
-      } catch {
-        await this.update(goal, {
-          work_state: "blocked",
-          continuation_at: null,
-          progress:
-            "Completion evidence could not be verified. Inspect the retained artifact before continuing.",
-        });
-        return;
-      }
-      await this.lifecycle.controlGoal(goal.id, "completed");
+      await this.finishCompletion(goal, run, now);
       return;
     }
     if (
@@ -618,7 +729,7 @@ export class Goals {
       run?.routine_id &&
       goal.work_state === "ready" &&
       !(await this.store.list("routine", { state: "active" })).some(
-        (r) => r.goal_id === goal.id && r.state === "active" && r.next_run_at !== null,
+        (r) => r.goal_id === goal.id && routineHasFuture(r),
       )
     ) {
       await this.update(goal, {
@@ -646,6 +757,12 @@ export class Goals {
       goal.work_state !== "ready" ||
       !goal.continuation_at ||
       Date.parse(goal.continuation_at) > now.getTime()
+    )
+      return;
+    if (
+      (await this.store.list("routine", { thread_id: goal.thread_id, state: "active" })).some(
+        (routine) => routine.goal_id === goal.id && routineHasFuture(routine),
+      )
     )
       return;
     if (
@@ -681,6 +798,51 @@ export class Goals {
       },
     );
   }
+  private async finishCompletion(goal: Entity<"goal">, run: Entity<"run">, now: Date) {
+    let files: VerifiedGoalFiles;
+    try {
+      files =
+        goal.verification && !goal.evidence_artifact_ids.length
+          ? new Map()
+          : (await verifyGoalEvidence(this.lifecycle, goal, goal.evidence_artifact_ids)).files;
+    } catch {
+      await this.update(goal, {
+        work_state: "blocked",
+        continuation_at: null,
+        progress:
+          "Completion evidence could not be verified. Inspect the retained artifact before continuing.",
+      });
+      return;
+    }
+    if (goal.verification) {
+      const { saved, remaining, accepted } = evaluateGoalVerification(
+        goal.verification,
+        run.id,
+        files,
+      );
+      if (remaining.length) {
+        const exhausted = saved.attempts_used >= saved.attempt_limit;
+        const scheduled = (await this.store.list("routine", { state: "active" })).some(
+          (routine) => routine.goal_id === goal.id && routineHasFuture(routine),
+        );
+        const instruction = `Verification needs these results: ${remaining.join(" ")} Repair only the remaining requirements and submit fresh evidence. Keep already verified evidence. Follow the user's objective and constraints.`;
+        const progress = `Verification attempt ${saved.attempts_used} of ${saved.attempt_limit} failed. ${remaining.join(" ")} ${exhausted ? "Paused because the verification attempt limit was reached." : "The Goal is still active. The remaining requirements will be tried again."}`;
+        await this.update(goal, {
+          verification: saved,
+          evidence_artifact_ids: accepted,
+          progress,
+          work_state: exhausted ? "blocked" : "ready",
+          continuation_at: exhausted || scheduled ? null : now.toISOString(),
+          continuation_instruction: instruction,
+          continuation_sequence: goal.continuation_sequence + 1,
+        });
+        if (exhausted) await this.lifecycle.controlGoal(goal.id, "paused");
+        return;
+      }
+      await this.update(goal, { verification: saved, evidence_artifact_ids: accepted });
+    }
+    await this.lifecycle.controlGoal(goal.id, "completed");
+  }
   async context(run: Entity<"run">) {
     return [...(await this.contextSections(run)), `Dates now: ${new Date().toISOString()}.`].join(
       "\n\n",
@@ -695,14 +857,26 @@ export class Goals {
       .map((g) => ({
         ...g,
         objective: g.objective.slice(0, 600),
+        verification: g.verification && {
+          ...g.verification,
+          checks: g.verification.checks.map(({ exact_text, ...check }) => ({
+            ...check,
+            exact_text: exact_text && exact_text.length <= 500 ? exact_text : undefined,
+            exact_text_requires_lookup: !!exact_text && exact_text.length > 500,
+          })),
+        },
         progress: g.progress.slice(0, 400),
         continuation_instruction: g.continuation_instruction.slice(0, 400),
         source_message_ids: g.source_message_ids.slice(-5),
         source_run_ids: g.source_run_ids.slice(-5),
+        checkpoint_evidence: undefined,
       }));
     return [
       responsibilityInstructions,
       `Current authoritative responsibility state.\n${JSON.stringify({ goal_id: run.goal_id, routine_id: run.routine_id, goals, routines: state.routines.slice(-20).map((r) => ({ ...r, instruction: r.instruction.slice(0, 500) })), truncated: state.goals.length > goals.length || state.routines.length > 20 })}`,
+      state.routines.find((routine) => routine.id === run.routine_id)?.monitor
+        ? "For this threshold check, first obtain the current numeric reading from the configured source. Call ngertiin.observe_routine once with that value before replying or publishing a file. If the decision is alert, include the measured value, threshold and any requested deliverable. For below_threshold or already_alerted, finish quietly without artifacts. Verify the number from the source each time. Never invent a reading when the source is unavailable."
+        : "",
     ];
   }
 }

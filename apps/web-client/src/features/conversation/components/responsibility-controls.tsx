@@ -73,23 +73,29 @@ export function ResponsibilityControls({
       );
       await refresh();
     } catch (failure) {
+      const connectionRequired =
+        failure instanceof ApiError &&
+        ["LOGIN_REQUIRED", "MODEL_UNAVAILABLE", "BILLING_MISMATCH"].includes(failure.code);
       if (
         failure instanceof ApiError &&
-        [
-          "CONFLICT",
-          "INVALID_REQUEST",
-          "SCOPE_DENIED",
-          "UNAUTHORIZED",
-          "NOT_FOUND",
-          "STALE_DISPATCH",
-        ].includes(failure.code)
+        (connectionRequired ||
+          [
+            "CONFLICT",
+            "INVALID_REQUEST",
+            "SCOPE_DENIED",
+            "UNAUTHORIZED",
+            "NOT_FOUND",
+            "STALE_DISPATCH",
+          ].includes(failure.code))
       ) {
         localStorage.removeItem(scopedStorageKey(`ngertiin:pending:${slot}`));
         setPending(null);
         setError(
-          failure.code === "CONFLICT"
-            ? "The status has changed. Refresh it before making another change."
-            : failure.message,
+          connectionRequired
+            ? "Choose an available model and account in this conversation, then try again."
+            : failure.code === "CONFLICT"
+              ? "The status has changed. Refresh it before making another change."
+              : failure.message,
         );
         void refresh().catch(() => {});
       } else {

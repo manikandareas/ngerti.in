@@ -1,5 +1,6 @@
 import { Artifacts } from "../artifacts";
 import { DomainError } from "../contracts";
+import { publicFileReference } from "../conversations/references";
 import { authorizeResponsibilityWork } from "../goals/work-fence";
 import { productToolSchemas } from "../harness/product-tool-contracts";
 import type { ProductTools, ToolAccess } from "../harness/tools";
@@ -7,6 +8,7 @@ import { sha256 } from "../machines/cua";
 import { resolvedMachine } from "../machines/domains";
 import { MachineEffectRefused } from "../machines/operations";
 import { machineFor } from "../machines/service";
+import { searchFiles, searchFilesInput } from "./search";
 
 export function registerWorkspaceTools(tools: ProductTools) {
   const { lifecycle } = tools;
@@ -16,6 +18,19 @@ export function registerWorkspaceTools(tools: ProductTools) {
     await access.authorize();
     return await workspaces.authorizeRun(await lifecycle.store.get("run", access.scope.run_id));
   };
+  tools.register("ngertiin.search_files", {
+    schema: productToolSchemas["ngertiin.search_files"],
+    requires: "workspace",
+    resources: () => [],
+    execute: async (input, access) => {
+      const workspace = await workspaceFor(access);
+      return await searchFiles(
+        await workspaces.workingFiles(workspace.id),
+        searchFilesInput.parse(input),
+        async () => await access.authorize(),
+      );
+    },
+  });
   for (const name of [
     "ngertiin.get_workspace",
     "ngertiin.list_files",
@@ -27,6 +42,7 @@ export function registerWorkspaceTools(tools: ProductTools) {
     if (name === "ngertiin.write_file" && !machineFor(lifecycle)) continue;
     tools.register(name, {
       schema: productToolSchemas[name],
+      requires: name === "ngertiin.write_file" ? "machine" : "workspace",
       resources: () => [],
       execute: async (raw, access) => {
         const workspace = await workspaceFor(access);
@@ -107,7 +123,7 @@ export function registerWorkspaceTools(tools: ProductTools) {
               return { path: data.path };
             },
           );
-        return artifacts.publish(
+        const artifact = await artifacts.publish(
           data.command_id,
           {
             workspace_id: workspace.id,
@@ -117,6 +133,7 @@ export function registerWorkspaceTools(tools: ProductTools) {
           },
           access.authorize,
         );
+        return { ...artifact, reference: publicFileReference(artifact.name, artifact.id) };
       },
     });
   }

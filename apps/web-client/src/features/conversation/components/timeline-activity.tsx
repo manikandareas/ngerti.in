@@ -15,6 +15,7 @@ const labels: Record<ConversationPart["kind"], string> = {
   goal_paused: "Goal dijeda",
   goal_stopped: "Goal dihentikan",
   routine_created: "Routine dibuat",
+  routine_completed: "Routine selesai",
   routine_paused: "Routine dijeda",
   routine_stopped: "Routine dihentikan",
   handoff_requested: "Meminta bantuan",

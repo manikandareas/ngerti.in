@@ -52,6 +52,9 @@ export interface Message extends Base {
   purpose: string;
 }
 export interface Run extends Base {
+  output_plugin?: { name: string } | null;
+  output_plugin_status?: "applied" | "failed" | null;
+  learning_review?: { state: string } | null;
   provider_selection?: {
     connection_id: string;
     account_id: string | null;
@@ -100,6 +103,10 @@ export interface Run extends Base {
   publication: string;
   goal_id: string | null;
   routine_id: string | null;
+  routine_observation?: {
+    value: number;
+    decision: "below_threshold" | "already_alerted" | "alert";
+  } | null;
 }
 export interface AgentActivity {
   active_tools?: Run["active_tools"];
@@ -165,6 +172,7 @@ export interface ConversationPart {
     | "goal_resumed"
     | "goal_stopped"
     | "routine_created"
+    | "routine_completed"
     | "routine_paused"
     | "routine_resumed"
     | "routine_stopped"
@@ -196,6 +204,7 @@ export interface Snapshot {
   workspaces: Workspace[];
   artifacts: Artifact[];
   attachment_documents?: AttachmentDocument[];
+  media_operations?: string[];
   goals: Goal[];
   routines: Routine[];
   human_requests: HumanRequest[];
@@ -228,10 +237,43 @@ export interface Snapshot {
   occurrences: {
     id: string;
     routine_id: string;
+    trigger?: "schedule" | "manual";
+    check?: {
+      outcome:
+        | "match"
+        | "mismatch"
+        | "unavailable"
+        | "unchanged"
+        | "recovery_blocked"
+        | "source_not_ready"
+        | "source_failed"
+        | "source_output_missing";
+      artifact_id: string | null;
+      recovery_of?: string;
+      source_occurrence_id?: string;
+    } | null;
+    loop_condition?: {
+      status: "matched" | "missing" | "mismatch" | "unavailable";
+      artifact_id: string | null;
+    } | null;
     scheduled_for: string;
     run_id: string | null;
     state: string;
     selected_agent_id: string | null;
+  }[];
+  routine_delivery_targets?: { id: string; label: string }[];
+  channel_exchanges?: {
+    id: string;
+    run_id: string;
+    channel_label: string;
+    state: "pending" | "sending" | "retrying" | "delivered" | "failed" | "unknown" | "cancelled";
+  }[];
+  routine_deliveries?: {
+    id: string;
+    routine_id: string;
+    run_id: string;
+    destination: string;
+    state: "queued" | "sending" | "retrying" | "delivered" | "failed" | "unknown" | "cancelled";
   }[];
 }
 export interface Opening {
@@ -246,8 +288,22 @@ export interface Memory extends Base {
 export interface Skills {
   application: (Base & {
     name: string;
-    assignment: { enabled: boolean; version: number } | null;
+    distribution?: "built_in" | "optional";
+    assignment: { enabled: boolean; version: number; revision: number } | null;
+    maintenance?: {
+      state: "active" | "stale" | "archived";
+      locked: boolean;
+      last_used_at?: string | null;
+    } | null;
   })[];
+  optional?: {
+    name: string;
+    description: string;
+    setup: string;
+    app_actions_available: boolean;
+    installed_skill_id: string | null;
+    enabled: boolean;
+  }[];
   harness: { key: string; name: string; description: string }[];
   native_catalog: { key: string; name: string; description: string; enabled: boolean }[];
   harness_state: string;

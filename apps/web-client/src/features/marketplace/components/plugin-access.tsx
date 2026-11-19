@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useId, useRef, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,7 +9,11 @@ import { command, request } from "@/lib/api-client";
 import type { AppConnection } from "@/types/work";
 import type { Snapshot } from "@/types/workspace";
 
-type AppTool = { slug: string; description?: string };
+type AppTool = {
+  slug: string;
+  description?: string;
+  action_policy?: { mutability: "read_only" | "write"; units: number };
+};
 
 export function PluginAccess({
   connection,
@@ -22,6 +26,7 @@ export function PluginAccess({
 }) {
   const workspace = useSettingsWorkspace();
   const organizationOwned = connection.ownership === "organization";
+  const managed = connection.toolkit.startsWith("mcp_");
   const agents = organizationOwned
     ? workspace.agents.filter((agent) => agent.organization_id && agent.actor_id === null)
     : snapshot.agents;
@@ -29,9 +34,18 @@ export function PluginAccess({
   const [agentId, setAgentId] = useState(agents[0]?.id ?? "");
   const [editing, setEditing] = useState(connection);
   const grantsFor = (id: string) =>
-    editing.grants.find((grant) => grant.thread_id === grantThread && grant.agent_id === id)
-      ?.tools ?? [];
-  const [selected, setSelected] = useState(() => grantsFor(agentId));
+    editing.grants.find((grant) => grant.thread_id === grantThread && grant.agent_id === id);
+  const [selected, setSelected] = useState(() => grantsFor(agentId)?.tools ?? []);
+  const [allowWrites, setAllowWrites] = useState(
+    () => grantsFor(agentId)?.action_budget?.allow_writes ?? false,
+  );
+  const [budget, setBudget] = useState(() =>
+    String(grantsFor(agentId)?.action_budget?.limit_units ?? 0),
+  );
+  const budgetId = useId();
+  const units = Number(budget);
+  const validBudget =
+    budget.trim() !== "" && Number.isInteger(units) && units >= 0 && units <= 100_000;
   const [query, setQuery] = useState("");
   const [tools, setTools] = useState<AppTool[]>([]);
   const [operation, setOperation] = useState<"search" | "save" | null>(null);
@@ -69,7 +83,10 @@ export function PluginAccess({
             disabled={busy}
             onChange={(event) => {
               setAgentId(event.target.value);
-              setSelected(grantsFor(event.target.value));
+              const grant = grantsFor(event.target.value);
+              setSelected(grant?.tools ?? []);
+              setAllowWrites(grant?.action_budget?.allow_writes ?? false);
+              setBudget(String(grant?.action_budget?.limit_units ?? 0));
               setTools([]);
               setQuery("");
             }}
@@ -85,6 +102,32 @@ export function PluginAccess({
               ))}
           </select>
         </>
+      )}
+      {managed && (
+        <div className="grid gap-3">
+          <label className="marketplace-tool-option">
+            <input
+              type="checkbox"
+              checked={allowWrites}
+              disabled={busy}
+              onChange={(event) => setAllowWrites(event.target.checked)}
+            />
+            <span>Allow selected write actions</span>
+          </label>
+          <div className="grid max-w-56 gap-2">
+            <Label htmlFor={budgetId}>Action budget (units)</Label>
+            <Input
+              id={budgetId}
+              type="number"
+              min={0}
+              max={100_000}
+              step={1}
+              value={budget}
+              disabled={busy}
+              onChange={(event) => setBudget(event.target.value)}
+            />
+          </div>
+        </div>
       )}
       <div className="marketplace-access-search">
         <Input
@@ -121,30 +164,41 @@ export function PluginAccess({
           <Skeleton className="h-5 w-3/4" />
         </div>
       ) : (
-        [...new Set([...selected, ...tools.map((tool) => tool.slug)])].map((slug) => (
-          <label key={slug} className="marketplace-tool-option">
-            <input
-              type="checkbox"
-              checked={selected.includes(slug)}
-              disabled={busy}
-              onChange={(event) =>
-                setSelected((previous) =>
-                  event.target.checked
-                    ? [...previous, slug]
-                    : previous.filter((value) => value !== slug),
-                )
-              }
-            />
-            <span>
-              {tools.find((tool) => tool.slug === slug)?.description ??
-                slug.toLowerCase().replaceAll("_", " ")}
-            </span>
-          </label>
-        ))
+        [...new Set([...selected, ...tools.map((tool) => tool.slug)])].map((slug) => {
+          const tool = tools.find((item) => item.slug === slug);
+          const policy = tool?.action_policy;
+          return (
+            <label key={slug} className="marketplace-tool-option">
+              <input
+                type="checkbox"
+                checked={selected.includes(slug)}
+                disabled={busy}
+                onChange={(event) =>
+                  setSelected((previous) =>
+                    event.target.checked
+                      ? [...previous, slug]
+                      : previous.filter((value) => value !== slug),
+                  )
+                }
+              />
+              <span>
+                {tool?.description ?? slug.toLowerCase().replaceAll("_", " ")}
+                {policy && (
+                  <small className="block text-muted-foreground">
+                    {policy.mutability === "read_only" ? "Read only" : "Write"} · {policy.units}{" "}
+                    units
+                  </small>
+                )}
+              </span>
+            </label>
+          );
+        })
       )}
       <Button
         className="self-start"
-        disabled={busy || !agents.some((agent) => agent.id === agentId)}
+        disabled={
+          busy || (managed && !validBudget) || !agents.some((agent) => agent.id === agentId)
+        }
         onClick={() =>
           void act("save", async () => {
             const grants = editing.grants.filter(
@@ -155,10 +209,10 @@ export function PluginAccess({
                 agent_id: agentId,
                 thread_id: grantThread,
                 tools: selected,
-                resources:
-                  editing.grants.find(
-                    (grant) => grant.agent_id === agentId && grant.thread_id === grantThread,
-                  )?.resources ?? {},
+                resources: grantsFor(agentId)?.resources ?? {},
+                ...(managed
+                  ? { action_budget: { allow_writes: allowWrites, limit_units: units } }
+                  : {}),
               });
             const result = await command<AppConnection>(
               `/v1/apps/connections/${editing.id}/assign`,

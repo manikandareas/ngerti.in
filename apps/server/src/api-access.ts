@@ -21,6 +21,12 @@ export function routeAccess(path: string) {
       scope: "issuing_device_and_execution_domain",
       visibility: "private",
     } as const;
+  if (path.startsWith("/v1/channels/"))
+    return {
+      authentication_class: "channel_key",
+      scope: "configured_channel_sender_and_conversation",
+      visibility: "private",
+    } as const;
   if (path === "/v1/harness/tools")
     return {
       authentication_class: "run_lease",

@@ -34,6 +34,28 @@ export class ScopedData {
     const access = await this.organizations.context(request, organizationId);
     return this.resolve(access, principal.validate, principal);
   }
+
+  async channelContext(userId: string, organizationId: string): Promise<DataContext> {
+    const verify = async () => {
+      if (
+        !(
+          await this.auth.pool.query('SELECT 1 FROM "user" WHERE id=$1 AND "emailVerified"=true', [
+            userId,
+          ])
+        ).rowCount
+      )
+        throw deny();
+    };
+    await verify();
+    const client = await this.auth.pool.connect();
+    let access: AccessContext;
+    try {
+      access = await accessContext(client, userId, organizationId);
+    } finally {
+      client.release();
+    }
+    return this.resolve(access, verify);
+  }
   private async resolve(
     access: AccessContext,
     validatePrincipal: () => Promise<unknown> = async () => {},
@@ -139,7 +161,9 @@ export class ScopedData {
   private async backgroundScopes(action: () => Promise<void>) {
     const rows = (
       await this.auth.pool.query(
-        "SELECT organization_id,user_id FROM ngertiin_membership_state WHERE status='active' AND private_work_suspended=false ORDER BY organization_id,user_id",
+        `SELECT s.organization_id,s.user_id FROM ngertiin_membership_state s
+         JOIN "user" u ON u.id=s.user_id AND u."emailVerified"=true
+         WHERE s.status='active' AND s.private_work_suspended=false ORDER BY s.organization_id,s.user_id`,
       )
     ).rows;
     for (const row of rows) {
@@ -435,6 +459,7 @@ export class ScopedData {
             ["public", "authentication_protocol"].includes(policy.authentication_class) ||
             policy.scope === "authenticated_account" ||
             policy.scope === "guarded_installation" ||
+            policy.authentication_class === "channel_key" ||
             path === "/v1/harness/tools"
           )
             return api.handle(request);

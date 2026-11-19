@@ -23,6 +23,7 @@ export const conversationPart = z.strictObject({
     "goal_resumed",
     "goal_stopped",
     "routine_created",
+    "routine_completed",
     "routine_paused",
     "routine_resumed",
     "routine_stopped",

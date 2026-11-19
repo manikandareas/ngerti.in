@@ -1,17 +1,29 @@
 import { z } from "zod";
 import { agentActivities } from "./agents/activity";
+import { portableProfile } from "./agents/profile-contracts";
 import { submissionStatus } from "./api/attachments";
 import { authenticationSession, deviceSessions, nativeAuthentication } from "./auth/contracts";
+import { boardArtifactView } from "./boards/contracts";
 import { browserContent } from "./browser/contracts";
 import { API_READINESS_GATE, agent, domainEvent, id, runStatus, schemas } from "./contracts";
 import { billingSource } from "./contracts/base";
 import { conversationPreviews } from "./conversations/previews";
+import { historySearchResult, historySourceResult } from "./conversations/search-contracts";
 import { routingDecisionTrace } from "./groups/decision-trace";
 import { apiKeyCheckResult, capabilities, harnessId } from "./harness/contracts";
 import { interactionSnapshot, nativeInteractionJournal } from "./harness/interaction-contracts";
 import { loginReadiness } from "./harness/login-readiness";
 import { maintenanceJob } from "./harness/maintenance-jobs";
-import { inheritedSkill, nativeSkillMetadata } from "./learning/contracts";
+import { channelStatus } from "./integrations/channel-contracts";
+import { appActionPolicy } from "./integrations/contracts";
+import { outputPluginRegistry } from "./integrations/output-plugin-contracts";
+import {
+  inheritedSkill,
+  nativeSkillMetadata,
+  optionalSkillView,
+  skillLibraryReview,
+} from "./learning/contracts";
+import { externalMemoryStatus } from "./learning/external-memory-contracts";
 import {
   accessView,
   audienceView,
@@ -50,6 +62,8 @@ export const operationSchemas = {
   }),
   routing_decision: z.strictObject({ trace: routingDecisionTrace.nullable() }),
   agent_activity: agentActivities,
+  installed_profile: z.strictObject({ agent, thread: schemas.thread }),
+  portable_profile: portableProfile,
   conversation_previews: conversationPreviews,
   harness_availability: z.array(
     z.strictObject({
@@ -119,8 +133,13 @@ export const operationSchemas = {
   }),
   skill_result: skillResult,
   skills: z.strictObject({
+    optional: z.array(optionalSkillView),
     application: z.array(
-      schemas.skill.extend({ key: z.string(), assignment: schemas.skill_assignment.nullable() }),
+      schemas.skill.extend({
+        key: z.string(),
+        assignment: schemas.skill_assignment.nullable(),
+        maintenance: schemas.skill_maintenance.nullable(),
+      }),
     ),
     harness: z.array(
       inheritedSkill.pick({ key: true, name: true, location: true, sha256: true }).extend({
@@ -192,7 +211,10 @@ export const operationSchemas = {
     cursor: z.string().optional(),
     metadata_complete: z.boolean().optional(),
   }),
-  app_connect: z.strictObject({ connection: schemas.app_connection, connect_url: z.url() }),
+  app_connect: z.strictObject({
+    connection: schemas.app_connection,
+    connect_url: z.url().nullable(),
+  }),
   app_search: z.union([
     z.array(
       z.strictObject({
@@ -200,6 +222,7 @@ export const operationSchemas = {
         toolkit: z.string(),
         description: z.string().optional(),
         input_schema: jsonSchema.optional(),
+        action_policy: appActionPolicy.optional(),
       }),
     ),
     z.strictObject({ truncated: z.literal(true), message: z.string() }),
@@ -258,11 +281,18 @@ routes(
 routes("POST", ["/v1/harnesses/:harness/update"], maintenanceJob);
 reference("POST", "/v1/setup", "setup");
 reference("POST", "/v1/runs", "admission");
+routes("GET", ["/v1/conversations/history/search"], historySearchResult);
+routes("GET", ["/v1/conversations/history/source"], historySourceResult);
+routes("POST", ["/v1/channels/:channel/events"], channelStatus);
+routes("GET", ["/v1/channels/:channel/exchanges/:id"], channelStatus);
+reference("POST", "/v1/learning/skills/consolidate", "admission");
 routes("POST", ["/v1/message-uploads"], schemas.attachment_upload);
 routes("GET", ["/v1/message-submissions/:id"], submissionStatus);
 routes("POST", ["/v1/groups/:id/routes/:routeId/retry"], schemas.group_route);
 routes("GET", ["/v1/groups/:id/routes/:routeId/decision"], operationSchemas.routing_decision);
 reference("GET", "/v1/threads/:id/snapshot", "conversation");
+routes("GET", ["/v1/threads/:id/output-plugins"], outputPluginRegistry);
+routes("POST", ["/v1/threads/:id/output-plugins"], outputPluginRegistry);
 reference("GET", "/v1/threads/:id/history", "history");
 reference("GET", "/v1/threads/:id/timeline", "conversation_timeline");
 reference("GET", "/v1/events", "events");
@@ -271,10 +301,22 @@ routes("GET", ["/v1/entities/:kind/:id"], domainEvent.shape.data);
 routes("POST", ["/v1/agents", "/v1/agents/:id/configuration"], agent);
 routes(
   "POST",
-  ["/v1/threads", "/v1/agents/:id/dm", "/v1/groups/:id/membership", "/v1/groups/:id/configuration"],
+  [
+    "/v1/threads",
+    "/v1/agents/:id/dm",
+    "/v1/threads/:id/new-dm",
+    "/v1/groups/:id/membership",
+    "/v1/groups/:id/configuration",
+  ],
   schemas.thread,
 );
 routes("POST", ["/v1/creation/agents"], operationSchemas.creation_agent);
+routes("GET", ["/v1/threads/:id/profile"], operationSchemas.portable_profile);
+routes(
+  "POST",
+  ["/v1/profiles/import", "/v1/threads/:id/clone-profile"],
+  operationSchemas.installed_profile,
+);
 routes("POST", ["/v1/creation/groups"], operationSchemas.creation_group);
 routes("GET", ["/v1/agents/activity"], operationSchemas.agent_activity);
 routes("GET", ["/v1/conversations/previews"], operationSchemas.conversation_previews);
@@ -291,6 +333,21 @@ routes("POST", ["/v1/runs/:id/steer"], schemas.control);
 routes("POST", ["/v1/runs/:id/retry-preparation", "/v1/runs/:id/retry"], schemas.run);
 routes("GET", ["/v1/threads/:id/goals"], operationSchemas.goals);
 routes(
+  "GET",
+  ["/v1/boards/cards"],
+  z.array(
+    schemas.board_card.extend({
+      artifacts: z.array(boardArtifactView),
+      run_status: runStatus.nullable(),
+    }),
+  ),
+);
+routes(
+  "POST",
+  ["/v1/boards/cards", "/v1/boards/cards/:id/start", "/v1/boards/cards/:id/resume"],
+  schemas.board_card,
+);
+routes(
   "POST",
   [
     "/v1/goals",
@@ -302,7 +359,12 @@ routes(
   schemas.goal,
 );
 routes("POST", ["/v1/goals/:id/progress"], operationSchemas.goal_progress);
-routes("POST", ["/v1/routines", "/v1/routines/write", "/v1/routines/:id/control"], schemas.routine);
+routes(
+  "POST",
+  ["/v1/routines", "/v1/routines/write", "/v1/routines/:id/control", "/v1/routines/:id/delivery"],
+  schemas.routine,
+);
+routes("POST", ["/v1/routines/:id/run-now"], schemas.occurrence);
 routes(
   "POST",
   [
@@ -333,21 +395,39 @@ routes("GET", ["/v1/runs/:id/interactions"], operationSchemas.interactions);
 routes("GET", ["/v1/runs/:id/interactions/history"], operationSchemas.interaction_history);
 routes("POST", ["/v1/runs/:id/interactions"], operationSchemas.interaction_submitted);
 routes("GET", ["/v1/learning/memories"], operationSchemas.memories);
+routes("GET", ["/v1/learning/external-memory"], externalMemoryStatus);
+routes("POST", ["/v1/learning/external-memory"], externalMemoryStatus);
+routes(
+  "POST",
+  ["/v1/learning/reviews/:id/stop"],
+  z.strictObject({ state: z.literal("cancelled") }),
+);
 routes("POST", ["/v1/learning/memories/write", "/v1/learning/memories/delete"], schemas.memory);
 routes("GET", ["/v1/learning/skills"], operationSchemas.skills);
 routes(
   "POST",
-  ["/v1/learning/skills/read", "/v1/learning/skills/create", "/v1/learning/skills/revise"],
+  [
+    "/v1/learning/skills/read",
+    "/v1/learning/skills/create",
+    "/v1/learning/skills/revise",
+    "/v1/learning/skills/install",
+  ],
   skillResult,
 );
 routes("POST", ["/v1/learning/skills/assign"], schemas.skill_assignment);
+routes("POST", ["/v1/learning/skills/review-library"], skillLibraryReview);
+routes("POST", ["/v1/learning/skills/maintenance"], schemas.skill_maintenance);
 routes(
   "POST",
   ["/v1/data/team-agents/:id/skills/publish"],
   skillResult.extend({ assignment: schemas.skill_assignment }),
 );
 routes("POST", ["/v1/data/team-agents/:id/skills/assign"], schemas.skill_assignment);
-routes("POST", ["/v1/workspaces", "/v1/workspaces/:id/revoke"], schemas.workspace);
+routes(
+  "POST",
+  ["/v1/workspaces", "/v1/workspaces/:id/project-directory", "/v1/workspaces/:id/revoke"],
+  schemas.workspace,
+);
 routes("GET", ["/v1/threads/:id/workspace"], schemas.workspace.nullable());
 routes("GET", ["/v1/workspaces/:id/files"], operationSchemas.files);
 routes(
@@ -356,6 +436,7 @@ routes(
   schemas.artifact,
 );
 routes("GET", ["/v1/apps/catalog"], operationSchemas.app_catalog);
+routes("GET", ["/v1/apps/managed-connectors"], operationSchemas.app_catalog);
 routes("GET", ["/v1/apps/connections"], z.array(schemas.app_connection));
 routes(
   "POST",
@@ -590,6 +671,7 @@ export function operationResponse(method: string, path: string) {
   if (
     path === "/v1/workspaces/:id/file" ||
     path === "/v1/artifacts/:id/content" ||
+    path === "/v1/channels/:channel/exchanges/:id/artifacts/:artifactId" ||
     path === "/v1/machine/file"
   )
     return {

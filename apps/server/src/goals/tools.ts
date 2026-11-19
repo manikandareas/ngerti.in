@@ -19,6 +19,7 @@ export function registerGoalTools(tools: ProductTools) {
     "ngertiin.assign_goal",
     "ngertiin.write_routine",
     "ngertiin.control_routine",
+    "ngertiin.observe_routine",
     "ngertiin.routine_no_update",
   ] as const) {
     tools.register(name, {
@@ -51,6 +52,8 @@ export function registerGoalTools(tools: ProductTools) {
                 return await goals.writeRoutine(access.scope.run_id, input);
               case "ngertiin.control_routine":
                 return await goals.controlRoutine(access.scope, input);
+              case "ngertiin.observe_routine":
+                return await goals.observeRoutine(access.scope.run_id, input);
               case "ngertiin.routine_no_update":
                 return await goals.noUpdate(access.scope.run_id);
             }

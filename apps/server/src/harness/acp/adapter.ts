@@ -108,9 +108,10 @@ export class AcpClient implements HarnessClient {
     );
     const tools = new SessionTools(
       this.endpoint,
-      this.context.purpose !== "routing",
+      this.context.purpose !== "routing" && this.context.purpose !== "review",
       !!this.context.machine,
       this.harness === "codex",
+      this.context.tool_catalog,
     );
     this.context.redactor.add(tools.token);
     let session: AcpSession | undefined;
@@ -207,9 +208,11 @@ export class AcpClient implements HarnessClient {
           metadata: launch.metadata,
           instruction_route: launch.instruction_route,
           unknown_error_codes: this.harness === "codex" ? [1001] : [],
+          pi_provider_errors: this.harness === "pi",
           preview_roots: [cwd, ...(this.context.machine ? [this.context.machine.root] : [])],
           message_phases: this.harness === "codex",
           reusable: correlatedTools,
+          omit_mcp: this.context.purpose === "review",
         },
       );
       const peer = { session, launch };
@@ -370,6 +373,20 @@ export class AcpClient implements HarnessClient {
           (model) =>
             !["opencode", "pi"].includes(this.harness) || model.id.startsWith(`${provider}/`),
         );
+      if (this.harness === "pi" && this.context.nativeConfiguration) {
+        const configured = new Map(
+          this.context.nativeConfiguration.models.map(({ id, input }) => [
+            `${provider}/${id}`,
+            input,
+          ]),
+        );
+        this.#catalog = this.#catalog.map((model) => ({
+          ...model,
+          input_modalities: model.input_modalities?.filter((modality) =>
+            (configured.get(model.id) ?? ["text"]).some((input) => input === modality),
+          ),
+        }));
+      }
       if (this.context.connection?.billing_source === "free")
         this.#catalog = this.#catalog.filter((model) => model.id.endsWith("-free"));
     }

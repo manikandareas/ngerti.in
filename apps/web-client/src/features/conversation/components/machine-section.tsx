@@ -60,11 +60,17 @@ export function MachineSection({ agents, cursor }: { agents: Agent[]; cursor: nu
     setBusy(true);
     setError("");
     try {
-      const confirmed = await request<Machine>("/v1/machine/control", {
-        command_id: crypto.randomUUID(),
-        operation,
-        expected_revision: machine.lease.revision,
-      });
+      const confirmed = await request<Machine>(
+        "/v1/machine/control",
+        {
+          command_id: crypto.randomUUID(),
+          operation,
+          expected_revision: machine.lease.revision,
+        },
+        undefined,
+        undefined,
+        60_000,
+      );
       setControlled(confirmed);
       resource.retry();
     } catch (e) {
@@ -90,7 +96,7 @@ export function MachineSection({ agents, cursor }: { agents: Agent[]; cursor: nu
   }
   return (
     <div className="context-section space-y-3 pt-3.5">
-      {machine?.state === "ready" && (
+      {machine?.state === "ready" && !open && (
         <MachineScreen
           surface="side-panel"
           interactive={false}

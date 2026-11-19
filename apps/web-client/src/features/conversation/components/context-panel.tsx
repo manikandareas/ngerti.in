@@ -280,6 +280,7 @@ export function ContextPanel({
                     <DetailOverview
                       snapshot={snapshot}
                       compose={compose}
+                      refresh={refresh}
                       open={(page, id) => locate({ tab: "detail", page, id })}
                     />
                     {groupPanel}

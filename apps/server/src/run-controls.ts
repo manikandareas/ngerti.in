@@ -7,7 +7,7 @@ import {
   steerInput,
 } from "./contracts";
 import type { Lifecycle } from "./lifecycle";
-import { hasUnresolvedResponseEffects } from "./runs/retry-policy";
+import { hasUnresolvedResponseEffects, scheduledSourceOwnsRetry } from "./runs/retry-policy";
 
 export class RunControls {
   constructor(readonly lifecycle: Lifecycle) {}
@@ -68,7 +68,8 @@ export class RunControls {
         run.status !== "failed" ||
         run.cancellation !== "none" ||
         run.retried_by_run_id ||
-        run.diagnostic?.outcome === "unknown"
+        run.diagnostic?.outcome === "unknown" ||
+        (await scheduledSourceOwnsRetry(store, run))
       )
         throw new DomainError("CONFLICT");
       if (await hasUnresolvedResponseEffects(store, run))
@@ -79,6 +80,7 @@ export class RunControls {
         task_id: run.task_id ?? undefined,
         goal_id: run.goal_id,
         routine_id: run.routine_id,
+        skill_consolidation: run.skill_consolidation,
       });
       await this.update(run, { retried_by_run_id: next.id, retry_allowed: false });
       const linked = await this.update(next, { retry_of_run_id: run.id, sources: run.sources });

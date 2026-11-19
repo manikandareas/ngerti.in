@@ -116,11 +116,16 @@ export function Responsibilities({
           <Description className="whitespace-pre-wrap break-words text-[14px] leading-6">
             {description}
           </Description>
-          {goal && <GoalDetails goal={goal} snapshot={snapshot} openFile={openFile} />}
+          {goal && (
+            <GoalDetails goal={goal} snapshot={snapshot} openFile={openFile} refresh={refresh} />
+          )}
           {routine && (
             <RoutineDetails
+              key={routine.id}
               routine={routine}
               snapshot={snapshot}
+              openFile={openFile}
+              refresh={refresh}
               openGoal={openGoal}
               viewSource={() => {
                 onClose();
@@ -141,7 +146,12 @@ export function Responsibilities({
                   snapshot.goals.find((g) => g.id === routine.goal_id)?.state !== "active"
                 }
                 actions={
-                  <Button variant="outline" className="flex-1" onClick={edit}>
+                  <Button
+                    variant="outline"
+                    className="flex-1"
+                    onClick={edit}
+                    disabled={routine.state === "completed"}
+                  >
                     Edit in chat
                   </Button>
                 }

@@ -10,6 +10,7 @@ import * as ngertiinFs from "node:fs";
 import * as ngertiinPath from "node:path";
 function ngertiinMcp(params) {
   const servers = params.mcpServers;
+  if (process.env.NGERTIIN_PI_NO_MCP === "1" && Array.isArray(servers) && servers.length === 0) return;
   if (!Array.isArray(servers) || servers.length !== 1) throw RequestError3.invalidParams();
   const server = servers[0];
   const url = new URL(server.url);
@@ -69,17 +70,35 @@ export function piExtension(executable: string, directory: string) {
       patched = replaceOnce(
         patched,
         "  cancelRequested = false;",
-        "  cancelRequested = false;\n  ngertiinStopReason = null;",
+        "  cancelRequested = false;\n  ngertiinStopReason = null;\n  ngertiinCredentialRejected = false;\n  ngertiinUsage = null;",
       );
       patched = replaceOnce(
         patched,
         "  startTurn(t) {\n    this.cancelRequested = false;",
-        "  startTurn(t) {\n    this.cancelRequested = false;\n    this.ngertiinStopReason = null;",
+        "  startTurn(t) {\n    this.cancelRequested = false;\n    this.ngertiinStopReason = null;\n    this.ngertiinCredentialRejected = false;\n    this.ngertiinUsage = null;",
       );
       patched = replaceOnce(
         patched,
         '      case "turn_end": {\n        break;',
-        '      case "message_end": {\n        if (ev.message?.role === "assistant") this.ngertiinStopReason = ev.message.stopReason;\n        break;\n      }\n      case "turn_end": {\n        break;',
+        `      case "message_end": {
+        const message = ev.message;
+        if (message?.role === "assistant") {
+          this.ngertiinStopReason = message.stopReason;
+          // shortcut: Pi 1.5.2 flattens this transport's HTTP status, switch to typed status when exposed.
+          this.ngertiinCredentialRejected = message.stopReason === "error" &&
+            message.api === "openai-completions" && /^401(?:[:\\s]|$)/.test(message.errorMessage ?? "");
+          if (process.env.NGERTIIN_PI_NO_MCP === "1" && message.usage?.totalTokens > 0) {
+            this.ngertiinUsage = {
+              input_tokens: (this.ngertiinUsage?.input_tokens ?? 0) + message.usage.input,
+              output_tokens: (this.ngertiinUsage?.output_tokens ?? 0) + message.usage.output,
+              total_tokens: (this.ngertiinUsage?.total_tokens ?? 0) + message.usage.totalTokens,
+            };
+          }
+        }
+        break;
+      }
+      case "turn_end": {
+        break;`,
       );
       patched = replaceOnce(
         patched,
@@ -88,8 +107,16 @@ export function piExtension(executable: string, directory: string) {
       );
       patched = replaceOnce(
         patched,
-        'const stopReason = result === "error" ? session.wasCancelRequested() ? "cancelled" : "end_turn" : result;',
-        'if (result === "error" && !session.wasCancelRequested()) throw RequestError3.internalError();\n    const stopReason = result === "error" ? "cancelled" : result;',
+        'const stopReason = result === "error" ? session.wasCancelRequested() ? "cancelled" : "end_turn" : result;\n    return { stopReason };',
+        `if (result === "error" && !session.wasCancelRequested()) {
+      if (session.ngertiinCredentialRejected) throw RequestError3.authRequired({ credentialRejected: true });
+      throw RequestError3.internalError();
+    }
+    const stopReason = result === "error" ? "cancelled" : result;
+    return {
+      stopReason,
+      ...(session.ngertiinUsage ? { _meta: { ngertiinUsage: session.ngertiinUsage } } : {})
+    };`,
       );
       return patched;
     },

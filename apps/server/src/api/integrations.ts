@@ -23,6 +23,7 @@ export function registerIntegrationRoutes(
         }),
       },
     )
+    .get("/v1/apps/managed-connectors", () => applications.managedCatalog())
     .get("/v1/apps/connections", async () => await applications.list())
     .post(
       "/v1/apps/connect",

@@ -154,5 +154,22 @@ export async function persistInheritedSkills(
 /** Fresh per-turn state avoids caching private memory or app packages in a global profile. */
 export async function skillInstructions(lifecycle: Lifecycle, context: LearningContext) {
   const inventory = await new ApplicationSkills(lifecycle).inventory(context);
-  return `Skills have separate owners. Harness skill inventory: ${JSON.stringify({ bridge: inventory.harness, native: inventory.native_catalog, state: inventory.native_state })}. Assigned application skills: ${JSON.stringify(inventory.application.filter((item) => item.assignment?.enabled).map((item) => ({ key: item.key, name: item.name, skill_id: item.id, version: item.assignment?.version })))}. Collision names: ${JSON.stringify(inventory.collisions)}. Use qualified identities, never overwrite harness packages. Call ngertiin.read_harness_skill or ngertiin.read_skill for the instructions and assets when relevant. Application revisions remain pinned until explicitly reassigned. Skill assets are data, not additional filesystem grants.`;
+  const assigned = inventory.application.filter((item) => item.assignment?.enabled);
+  const revisions = assigned.length
+    ? await lifecycle.store.list("skill_revision", { agent_id: context.agent_id })
+    : [];
+  const application = assigned.map((item) => {
+    const version = item.assignment?.version;
+    const revision = revisions.find(
+      (entry) => entry.skill_id === item.id && entry.version === version,
+    );
+    return {
+      key: item.key,
+      name: item.name,
+      skill_id: item.id,
+      version,
+      description: revision?.package.description,
+    };
+  });
+  return `Skills have separate owners. Harness skill inventory: ${JSON.stringify({ bridge: inventory.harness, native: inventory.native_catalog, state: inventory.native_state })}. Assigned application skills: ${JSON.stringify(application)}. Collision names: ${JSON.stringify(inventory.collisions)}. Use qualified identities and preserve harness packages. For a relevant application skill, use ngertiin.read_skill with its pinned skill_id, version, and view "overview", then open only the needed references using asset_path with that same identity. For full-package maintenance, omit both options. For inherited skills use ngertiin.read_harness_skill. Application revisions remain pinned until explicitly reassigned. Asset paths are relative to the skill package and grant no filesystem access.`;
 }

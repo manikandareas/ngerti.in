@@ -1,0 +1,18 @@
+{
+  "name": "mistral-humidity-triage",
+  "visibility": "shared",
+  "package": {
+    "description": "Classify Mistral greenhouse daytime and overnight humidity readings and provide the exact action code.",
+    "instructions": "Choose the reference matching the recorded shift. The daytime reference is references/daytime.md. The overnight reference is references/overnight.md. Read the matching reference and apply its exact band, code, and response. Report the measured percentage, the classification, the code, and the recommended action. A reading without a named shift requires clarification.",
+    "assets": [
+      {
+        "path": "references/daytime.md",
+        "text": "# Mistral daytime humidity\n\n| Humidity | Classification | Code | Response |\n| --- | --- | --- | --- |\n| Below 45% | Dry | MIS-D-174 | Humidify during attended checks. |\n| 45–62% inclusive | In range | MIS-D-732 | Keep daytime settings. |\n| Above 62% | Vent | MIS-D-945 | Air the bench for 8 minutes. |"
+      },
+      {
+        "path": "references/overnight.md",
+        "text": "# Mistral overnight humidity\n\n| Humidity | Classification | Code | Response |\n| --- | --- | --- | --- |\n| Below 55% | Dry | MIS-N-164 | Check the reservoir at opening. |\n| 55–76% inclusive | In range | MIS-N-330 | Keep overnight settings. |\n| Above 76% | Vent | MIS-N-855 | Flag inspection at shift change. |"
+      }
+    ]
+  }
+}

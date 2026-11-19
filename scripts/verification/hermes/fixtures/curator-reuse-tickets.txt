@@ -1,0 +1,7 @@
+Ticket | Status
+N-1 | Open
+N-1 | Open
+N-2 | Waiting
+N-3 | Blocked
+N-4 | Complete
+N-5 | Open

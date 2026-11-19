@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <meta charset="utf-8">
+  <title>Desktop Isolation Board</title>
+  <style>
+    body { margin: 0; background: #edf1f5; color: #172a3d; font: 22px system-ui, sans-serif; }
+    main { max-width: 690px; margin: 48px auto; padding: 34px; background: white; border: 1px solid #c3ced9; }
+    h1 { margin-top: 0; font-size: 38px; }
+    button { padding: 12px 18px; border: 0; background: #214c70; color: white; font: inherit; cursor: pointer; }
+  </style>
+  <main>
+    <h1>Desktop Isolation Board</h1>
+    <p>Desktop marker <strong>DOMAIN_MARKER</strong></p>
+    <p>Acknowledgements <strong id="count">0</strong></p>
+    <button id="acknowledge">Acknowledge on this desktop</button>
+  </main>
+  <script>
+    const storageKey = "hermes-isolation-DOMAIN_MARKER"
+    const count = document.querySelector("#count")
+    count.textContent = localStorage.getItem(storageKey) ?? "0"
+    document.querySelector("#acknowledge").addEventListener("click", () => {
+      count.textContent = String(Number(count.textContent) + 1)
+      localStorage.setItem(storageKey, count.textContent)
+    })
+  </script>
+</html>

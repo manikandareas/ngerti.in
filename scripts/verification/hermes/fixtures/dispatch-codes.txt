@@ -1,0 +1,5 @@
+Code | Priority | Closed / Total
+D5 | standard | 8 / 10
+M1 | urgent | 5 / 5
+Q2 | standard | 2 / 5
+K8 | urgent | 7 / 10

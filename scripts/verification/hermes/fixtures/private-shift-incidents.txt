@@ -1,0 +1,8 @@
+Private shift log. Internal log marker MOSS-12-Q79Z.
+Incident | Category | Severity | State
+WH-201 | Inventory | Low | Open
+WH-202 | Inventory | High | Open
+WH-202 | Inventory | High | Open
+WH-203 | Equipment | High | Resolved
+WH-204 | Equipment | Medium | Open
+WH-205 | Documentation | Low | Resolved

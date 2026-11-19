@@ -1,0 +1,5 @@
+Ticket | Summary | Status
+C-41 | Confirm dock equipment delivery | Open
+C-42 | Validate the evening checklist | Waiting
+C-43 | Approve the fuel invoice | Open
+C-44 | Send the shift attendance report | Complete

@@ -1,0 +1,7 @@
+Ticket | Owner
+M-10 | Nadiya
+M-10 | Nadiya
+M-11 | Isaac
+M-12 | Tania
+M-12 | Santi
+M-88 | Mira

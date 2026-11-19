@@ -1,0 +1,11 @@
+Briar Observatory release decision
+Review date: 19 November 2026
+
+Confirmed actions
+- Amara will reconcile the inbound queue by 21 November 2026.
+- Niko will verify the bench calibration by 22 November 2026.
+- The team committed to posting the sample manifest to the handover folder.
+
+Discussion
+- Weekend monitoring was suggested for a later review. The group did not approve it.
+- The current release sequence stays the same.

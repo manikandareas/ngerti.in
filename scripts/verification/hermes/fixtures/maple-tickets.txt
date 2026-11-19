@@ -1,0 +1,5 @@
+Ticket | Summary | Status
+M-10 | Restore maintenance log | Open
+M-11 | Confirm the dispatch handover | Complete
+M-12 | Validate the mirror copy | Waiting
+M-13 | Review the safety briefing | Open
